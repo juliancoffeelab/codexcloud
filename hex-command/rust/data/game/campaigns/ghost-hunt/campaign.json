@@ -1,0 +1,22 @@
+{
+  "id": "ghost-hunt",
+  "name": "Ghost Hunt",
+  "tagline": "Lanterns against darkness.",
+  "description": "Captain Boots leads the patrols into a contest for Pine Hamlet, Moss Hamlet and Fern Hamlet. Control all three villages at once, or defeat the opposing leader. You lose if your leader falls or the opposing army controls all three villages. Both armies can recruit from their keeps. Use your lantern bearers to expose ghosts. New recruits must stay near a bearer to see through the darkness.",
+  "shortDescription": "Lead human patrols against concealed ghosts.",
+  "race": "human",
+  "leader": "commander",
+  "characters": [
+    {
+      "id": "night-mayor",
+      "name": "Mayor Boo"
+    },
+    {
+      "id": "captain-boots",
+      "name": "Captain Boots"
+    }
+  ],
+  "human": false,
+  "ending": [],
+  "stages": ["stages/darkness-hunters-arena/stage.json"]
+}

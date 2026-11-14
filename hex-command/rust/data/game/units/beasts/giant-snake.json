@@ -1,0 +1,56 @@
+{
+  "id": "giant-snake",
+  "name": "Giant snake",
+  "role": "flank",
+  "race": "beast",
+  "hp": 24,
+  "move": 3,
+  "cost": 14,
+  "attacks": [
+    {
+      "id": "bite",
+      "name": "Bite",
+      "damage": 4,
+      "spread": 1,
+      "count": 2,
+      "damageType": "pierce",
+      "category": "melee",
+      "range": 1,
+      "sound": "attack-melee"
+    },
+    {
+      "id": "spit",
+      "name": "Spit",
+      "damage": 3,
+      "spread": 1,
+      "count": 2,
+      "damageType": "impact",
+      "category": "ranged",
+      "range": 2,
+      "sound": "attack-bow"
+    }
+  ],
+  "damageModifiers": {
+    "blade": 0,
+    "pierce": 0,
+    "impact": 0
+  },
+  "ability": "Forest camouflage",
+  "description": "A giant snake that hides among trees and spits at nearby threats.",
+  "level": 1,
+  "family": "giant-snake",
+  "experienceNeeded": 0,
+  "advancesTo": [],
+  "terrainModifiers": {},
+  "perception": {
+    "concealment": [
+      {
+        "kind": "forest-camouflage",
+        "revealWithin": 1,
+        "requires": {
+          "terrains": ["forest"]
+        }
+      }
+    ]
+  }
+}

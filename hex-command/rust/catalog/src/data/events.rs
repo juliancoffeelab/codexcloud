@@ -364,6 +364,8 @@ pub enum UnitReference {
 )]
 #[serde(deny_unknown_fields)]
 pub struct MarkSpec {
+    #[serde(default)]
+    pub sight: Option<SightEmission>,
     #[serde(rename = "type")]
     pub kind: String,
     pub tile: TileRef,
@@ -477,6 +479,12 @@ pub struct RecruitmentUnlock {
 )]
 #[serde(rename_all = "camelCase")]
 pub enum EventAction {
+    AddConcealment(ConcealmentChange),
+    RemoveConcealment(ConcealmentRemoval),
+    GrantPerception(PerceptionGrant),
+    RemovePerception(PerceptionRemoval),
+    RevealTerrain(TerrainReveal),
+    SetVisionGroup(VisionGroupAssignment),
     Spawn(ScriptSpawn),
     Give(GiveItem),
     PlaceItem(PlaceItem),
@@ -543,6 +551,8 @@ pub struct PlayerMarker {
 )]
 #[serde(deny_unknown_fields)]
 pub struct EventObjective {
+    /// Exact faction assigned this objective, independent of controller or diplomacy.
+    pub faction: String,
     #[serde(default)]
     pub id: Option<String>,
     #[serde(default, rename = "preserveLives")]
@@ -570,6 +580,8 @@ pub struct EventObjective {
 )]
 #[serde(deny_unknown_fields)]
 pub struct ScriptEvent {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub observer: Option<String>,
     pub id: String,
     pub when: When,
     #[serde(default = "yes")]
@@ -589,6 +601,8 @@ pub struct ScriptEvent {
 )]
 #[serde(deny_unknown_fields)]
 pub struct MapMark {
+    #[serde(default)]
+    pub sight: Option<SightEmission>,
     #[serde(default, rename = "lightRemembered")]
     pub light_remembered: bool,
     pub id: u32,
@@ -680,6 +694,27 @@ pub struct EventClock<'a> {
     pub when: Option<&'a When>,
 }
 impl When {
+    pub fn needs_observer(&self) -> bool {
+        let unit = |v: &UnitMatch| v.side == Some(ConditionSide::Observer);
+        match self {
+            Self::VisibleUnits(_) => true,
+            Self::All(v) | Self::Any(v) => v.iter().any(Self::needs_observer),
+            Self::Not(v) => v.needs_observer(),
+            Self::Stand(v) | Self::Left(v) => unit(&v.units),
+            Self::Proximity(v) => unit(&v.units) || v.target.as_ref().is_some_and(unit),
+            Self::Killed(v) => unit(&v.units),
+            Self::HasUnits(v) | Self::NoUnits(v) => unit(v),
+            Self::Held(v) => unit(&v.units) || v.when.as_ref().is_some_and(|w| w.needs_observer()),
+            Self::Own(v) => v.when.as_ref().is_some_and(|w| w.needs_observer()),
+            Self::Always(_)
+            | Self::Turn(_)
+            | Self::TurnAtLeast(_)
+            | Self::ChapterStarted(_)
+            | Self::Flag(_)
+            | Self::ObjectiveSatisfied(_)
+            | Self::Owner(_) => false,
+        }
+    }
     pub fn state_only(&self) -> bool {
         match self {
             Self::All(v) | Self::Any(v) => v.iter().all(Self::state_only),
@@ -826,6 +861,11 @@ impl EventState {
 }
 
 impl ScriptEvent {
+    pub fn condition_observer(&self) -> Option<&str> {
+        self.observer
+            .as_deref()
+            .or_else(|| self.objective.as_ref().map(|o| o.faction.as_str()))
+    }
     pub fn objective_id(&self) -> &str {
         self.objective
             .as_ref()
@@ -836,11 +876,37 @@ impl ScriptEvent {
         &self,
         tiles: &[Tile],
         factions: &[Faction],
+        groups: &[VisionGroupState],
         items: &std::collections::HashMap<String, Item>,
         path: &str,
     ) -> Result<(), ContentError> {
         use super::catalog::{identifier, unique};
         identifier(&self.id, path)?;
+        let group = |id: &str| {
+            if groups.iter().any(|g| g.id == id) {
+                Ok(())
+            } else {
+                Err(ContentError::new(
+                    path,
+                    format!("unknown vision group {id}"),
+                ))
+            }
+        };
+        for action in self.actions_recursive() {
+            match action {
+                EventAction::RevealTerrain(v) => group(&v.group)?,
+                EventAction::SetVisionGroup(v) => group(&v.group)?,
+                EventAction::CreateMark(v) => {
+                    if let Some(sight) = &v.sight {
+                        group(&sight.group)?;
+                        validate_unit_perception(&[], &sight.profile.penetrates)
+                            .map_err(|e| ContentError::new(path, e))?;
+                    }
+                }
+                _ => {}
+            }
+        }
+
         let fail = |s: String| ContentError::new(path, s);
         let tile = |id: &TileRef| -> Result<(), ContentError> {
             if tiles.iter().any(|t| t.matches_reference(id)) {
@@ -1053,6 +1119,39 @@ impl ScriptEvent {
                             &v.actions, tile, faction, item, path, bound_unit, true, death,
                         )?;
                     }
+                    EventAction::AddConcealment(v) => {
+                        v.rule.validate().map_err(|e| ContentError::new(path, e))?;
+                        if let PerceptionArea::Tiles(tiles) = &v.area {
+                            for t in tiles {
+                                reference(t)?;
+                            }
+                        }
+                    }
+                    EventAction::RemoveConcealment(v) => {
+                        if let PerceptionArea::Tiles(tiles) = &v.area {
+                            for t in tiles {
+                                reference(t)?;
+                            }
+                        }
+                    }
+                    EventAction::GrantPerception(v) => {
+                        v.effect
+                            .validate()
+                            .map_err(|e| ContentError::new(path, e))?;
+                    }
+                    EventAction::RemovePerception(v) => identifier(&v.effect, path)?,
+                    EventAction::RevealTerrain(v) => {
+                        identifier(&v.group, path)?;
+                        if let PerceptionArea::Tiles(tiles) = &v.area {
+                            for t in tiles {
+                                reference(t)?;
+                            }
+                        }
+                    }
+                    EventAction::SetVisionGroup(v) => {
+                        faction(&v.faction)?;
+                        identifier(&v.group, path)?;
+                    }
                     EventAction::SetTerrain(v) => reference(&v.tile)?,
                     EventAction::Gold(v) => faction(&v.faction)?,
                     EventAction::UnlockRecruits(v) | EventAction::Recruits(v) => {
@@ -1067,6 +1166,21 @@ impl ScriptEvent {
             }
             Ok(())
         }
+        let observer = self.condition_observer();
+        if let Some(id) = observer {
+            faction(id)?;
+        }
+        if observer.is_none()
+            && (self.when.needs_observer()
+                || self
+                    .selectors()
+                    .iter()
+                    .any(|s| s.side == Some(ConditionSide::Observer)))
+        {
+            return Err(fail(
+                "observer-dependent event requires an observer faction".into(),
+            ));
+        }
         when(&self.when, &tile, &faction, path)?;
         actions(
             &self.actions,
@@ -1079,6 +1193,7 @@ impl ScriptEvent {
             self.when.requires_death(),
         )?;
         if let Some(o) = &self.objective {
+            faction(&o.faction)?;
             if let Some(id) = &o.id {
                 identifier(id, path)?;
             }
@@ -1190,6 +1305,8 @@ impl ScriptEvent {
             for a in values {
                 match a {
                     EventAction::Give(v) => out.push(&v.units),
+                    EventAction::GrantPerception(v) => out.push(&v.units),
+                    EventAction::RemovePerception(v) => out.push(&v.units),
                     EventAction::ChangeAllegiance(v) => out.push(&v.units),
                     EventAction::DeleteUnit(UnitReference::Selection(v)) => out.push(v),
                     EventAction::ForEachUnit(v) => {

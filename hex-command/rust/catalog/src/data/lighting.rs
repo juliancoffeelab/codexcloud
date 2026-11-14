@@ -1,5 +1,5 @@
 //! Authored scenario lighting, loaded and validated with the Rust catalog.
-use super::{ConditionRule, Event, Hex, Tile};
+use super::{ConditionRule, Event, Hex, Tile, UnitAppearance};
 use serde::{Deserialize, Serialize};
 
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -16,7 +16,7 @@ pub enum TimeOfDay {
 }
 
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 #[cfg_attr(
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
@@ -47,6 +47,8 @@ pub struct BattlefieldLight {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct TileLight {
+    #[serde(default)]
+    pub emission: Option<super::LightEmission>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub color: Option<[u8; 3]>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -118,6 +120,9 @@ impl TileLight {
             );
         }
         if let Some(rule) = &self.when {
+            if rule.condition.needs_observer() && rule.observer.is_none() {
+                return Err("observer-dependent light rule requires an observer faction".into());
+            }
             rule.condition.validate_presentation()?;
             rule.condition.validate(tiles, events, true)?;
         }
@@ -187,4 +192,7 @@ impl BattlefieldLighting {
 pub struct BattlefieldPresentation {
     pub lighting: BattlefieldLighting,
     pub fog: Vec<Hex>,
+    /// Engine-resolved unit visibility, including concealment on visible terrain.
+    pub visible_units: Vec<String>,
+    pub unit_appearances: Vec<UnitAppearance>,
 }

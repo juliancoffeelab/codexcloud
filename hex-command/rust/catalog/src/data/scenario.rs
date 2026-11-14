@@ -14,11 +14,9 @@ use std::collections::BTreeMap;
 pub struct StartingUnit {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<Item>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub faction: Option<String>,
+    pub faction: String,
     pub tile: Hex,
     pub r#type: String,
-    pub side: Side,
     #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
     pub ai_group: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -35,7 +33,7 @@ pub struct StartingUnit {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct UnitFilter {
-    pub side: Side,
+    pub faction: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -44,7 +42,7 @@ pub struct UnitFilter {
 impl UnitFilter {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn accepts(&self, unit: &Unit, names: &Names) -> bool {
-        unit.side == self.side
+        names.get(unit.faction) == self.faction
             && self
                 .role
                 .as_ref()
@@ -328,11 +326,25 @@ impl Goal {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub enum Trigger {
-    Visit { tile: TileRef },
-    Condition { condition: Condition },
-    Round { round: u32 },
-    Held { tile: TileRef, turns: u32 },
-    Control { tile: TileRef, round: Option<u32> },
+    Visit {
+        tile: TileRef,
+    },
+    Condition {
+        condition: Condition,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        observer: Option<String>,
+    },
+    Round {
+        round: u32,
+    },
+    Held {
+        tile: TileRef,
+        turns: u32,
+    },
+    Control {
+        tile: TileRef,
+        round: Option<u32>,
+    },
 }
 /// A stable member identity prevents repeated or skipped spawns after restoration.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -347,7 +359,6 @@ pub struct SpawnUnit {
     pub faction: Option<String>,
     pub id: String,
     pub r#type: String,
-    pub side: Side,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub character: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -504,6 +515,8 @@ pub struct Layout {
 pub enum GroupOrder {
     Hold {
         #[serde(default, skip_serializing_if = "Option::is_none")]
+        observer: Option<String>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
         when: Option<Condition>,
         area: Vec<TileRef>,
         #[serde(rename = "attackRadius")]
@@ -534,6 +547,8 @@ pub struct EnemyGroup {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct LossCondition {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub observer: Option<String>,
     pub label: String,
     pub condition: Condition,
     pub message: String,
@@ -595,14 +610,18 @@ impl Mission {
         self.map
             .units
             .iter()
-            .filter(|u| u.side == Side::Player && u.role != Some(Role::Leader))
+            .filter(|u| u.faction == "player" && u.role != Some(Role::Leader))
             .filter_map(|u| u.character.as_deref())
             .chain(
                 self.events
                     .iter()
                     .filter_map(|e| e.spawn.as_ref())
-                    .flat_map(|group| &group.units)
-                    .filter(|u| u.side == Side::Player && u.role != Some(Role::Leader))
+                    .flat_map(|group| {
+                        group.units.iter().filter(move |u| {
+                            u.faction.as_deref().or(group.faction.as_deref()) == Some("player")
+                        })
+                    })
+                    .filter(|u| u.role != Some(Role::Leader))
                     .filter_map(|u| u.character.as_deref()),
             )
             .chain(self.arrivals.iter().map(|a| a.character.as_str()))

@@ -26,6 +26,7 @@ impl<'a> From<&'a State> for NativeFrame<'a> {
 impl ocamljs_bindgen::EncodeAs<StateFrame> for NativeFrame<'_> {
     fn encode_as(self, out: &mut ocamljs_bindgen::Encoder) {
         let State {
+            vision_groups,
             factions,
             ground_items,
             armies,
@@ -47,6 +48,7 @@ impl ocamljs_bindgen::EncodeAs<StateFrame> for NativeFrame<'_> {
             tiles: _,
         } = self.0;
         out.nested(|out| {
+            ocamljs_bindgen::EncodeRef::encode_ref(vision_groups, out);
             ocamljs_bindgen::EncodeRef::encode_ref(factions, out);
             ocamljs_bindgen::EncodeRef::encode_ref(ground_items, out);
             ocamljs_bindgen::EncodeRef::encode_ref(armies, out);
@@ -455,7 +457,17 @@ impl NativeEngineFactory {
         let mut game = RuntimeLoan::new(&battle.runtime, &self.rules);
         let ends_turn = matches!(command, Command::EndTurn);
         let planned = battle.pending.as_ref() == Some(&command);
-        game.execute(command)?;
+        if planned {
+            let faction = battle
+                .workspace
+                .as_ref()
+                .and_then(PlanningWorkspace::proposal_faction)
+                .map(str::to_owned);
+            game.set_active_faction(faction);
+        }
+        let applied = game.execute(command);
+        game.set_active_faction(None);
+        applied?;
         let terrain = if terrain_replaced(&battle.terrain, &game) {
             battle.terrain = PublishedTerrain::new(&game);
             TerrainDelta::Replace
@@ -621,16 +633,16 @@ impl NativeEngineFactory {
                             message: "Developer armies are authored".into(),
                         });
                     }
-                    for side in [Side::Player, Side::Enemy] {
+                    for (seat, faction) in ["player", "enemy"].into_iter().enumerate() {
                         let roster = self
                             .rules
                             .rosters
                             .iter()
-                            .find(|r| r.id == armies[side.index()])
+                            .find(|r| r.id == armies[seat])
                             .ok_or_else(|| EngineError::InvalidRequest {
                                 message: "Unknown faction".into(),
                             })?;
-                        for unit in state.units.iter_mut().filter(|u| u.side == side) {
+                        for unit in state.units.iter_mut().filter(|u| u.faction == faction) {
                             let original = &self.rules.units[self.rules.types[&unit.r#type]];
                             let kind = if unit.role == Some(Role::Leader) {
                                 roster.leader.as_str()
@@ -658,7 +670,7 @@ impl NativeEngineFactory {
                     }
                     state.armies = Some(armies);
                 }
-                state.turn = first.unwrap_or(Side::Player);
+                state.turn = first.unwrap_or(TurnPhase::Player);
                 Ok(Game::from_state(&self.rules, state))
             }
             Start::Campaign { id } => {

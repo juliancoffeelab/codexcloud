@@ -28,7 +28,7 @@ pub(crate) fn audit_leader_exposure(
     leader: &Unit,
     tiles: impl IntoIterator<Item = usize>,
 ) -> Vec<(usize, i32)> {
-    let mut forecast = policies::threat::Threats::new(phases, leader.side);
+    let mut forecast = policies::threat::Threats::new(phases, phases.view().unit_faction(&leader));
     tiles
         .into_iter()
         .map(|tile| (tile, forecast.at(leader, tile, None)))
@@ -126,13 +126,13 @@ fn intent_command(
     unit: &Unit,
     retreating: Option<bool>,
     rebuilding: Option<bool>,
-    attacked: bool,
+    attack_spent: bool,
 ) -> Command {
     Command::SetUnitIntent {
         unit: UnitId(unit.id),
         retreating,
         rebuilding,
-        attacked,
+        attack_spent,
         record_retreat: false,
     }
 }
@@ -166,207 +166,5 @@ fn advance_command(unit: u32, kind: usize) -> Command {
     Command::Advance {
         unit: UnitId(unit),
         kind: UnitKind(kind),
-    }
-}
-
-#[cfg(test)]
-mod courier_tests {
-    use super::*;
-    use crate::data::Hex;
-    use crate::{ai::recruiter::fixtures, logic::Game};
-    use hex_command_battle::RuntimeCommand as Command;
-
-    #[test]
-    fn required_courier_can_detour_around_stationary_allies() {
-        fn is_command_setunitintent(value: &Command) -> bool {
-            match value {
-                Command::SetUnitIntent { .. } => true,
-                Command::Move { .. }
-                | Command::Attack { .. }
-                | Command::Recruit { .. }
-                | Command::Advance { .. }
-                | Command::EndTurn
-                | Command::DismissDialogue
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::DropItem { .. }
-                | Command::SkipDialogue => false,
-            }
-        }
-        fn is_command_move(value: &Command) -> bool {
-            match value {
-                Command::Move {
-                    unit: UnitId(5), ..
-                } => true,
-                Command::Move { .. }
-                | Command::Attack { .. }
-                | Command::Recruit { .. }
-                | Command::Advance { .. }
-                | Command::EndTurn
-                | Command::DismissDialogue
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::SkipDialogue
-                | Command::DropItem { .. }
-                | Command::SetUnitIntent { .. } => false,
-            }
-        }
-
-        let rules = Rules::load().unwrap();
-        let mut game = Game::start_campaign(
-            &rules,
-            "borrowed-tide",
-            0,
-            vec![],
-            0,
-            vec![],
-            vec![],
-            vec![],
-        );
-        let sites: std::collections::HashMap<_, _> = game
-            .board()
-            .ids
-            .iter()
-            .enumerate()
-            .map(|(i, id)| (id.clone(), i))
-            .collect();
-        let target = game.site(&Hex::new(9, 3));
-        let blocker_tile = game.site(&Hex::new(9, 4));
-        fixtures::units(&mut game, |units| {
-            units.retain(|u| [1, 2, 4, 5].contains(&u.id));
-            for (id, tile) in [
-                (1, Hex::new(8, 5)),
-                (2, Hex::new(7, 3)),
-                (4, Hex::new(8, 3)),
-                (5, Hex::new(8, 4)),
-            ] {
-                let tile = *sites.get(&tile).unwrap();
-                units.iter_mut().find(|u| u.id == id).unwrap().tile = tile;
-            }
-            // Keep allies stationary for this turn: the courier must take a detour.
-            for ally in units.iter_mut().filter(|u| u.id != 5) {
-                ally.moved = true;
-                ally.attacked = true;
-            }
-
-            // Block the other direct approach as well.
-            units.push(Unit {
-                id: 100,
-                kind: rules.types["reefguard"],
-                tile: blocker_tile,
-                side: Side::Player,
-                hp: rules.units[rules.types["reefguard"]].hp,
-                moved: true,
-                attacked: true,
-                experience: Some(0),
-                role: None,
-                retreating: None,
-                rebuilding: None,
-                faction: None,
-                ai_group: None,
-                character: None,
-                inventory: InventoryId::default(),
-            });
-        });
-        let courier = game.unit(5).unwrap();
-        let static_route = game.routes(courier.kind, &[target]);
-        assert!(
-            game.reachable(courier)
-                .iter()
-                .all(|&(tile, _)| static_route[tile] >= static_route[courier.tile])
-        );
-        let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Diplomatic);
-        let command = loop {
-            let command = choose_game_command(&game, Policy::Balanced, &mut workspace).unwrap();
-            if is_command_setunitintent(&command) {
-                game.execute_runtime(command).unwrap();
-            } else {
-                break command;
-            }
-        };
-        assert!(is_command_move(&command), "{command:?}");
-        game.execute_runtime(command).unwrap();
-        assert_ne!(game.board().ids[game.unit(5).unwrap().tile], Hex::new(8, 4));
-    }
-
-    #[test]
-    fn allies_clear_approaches_and_complete_the_escort() {
-        fn is_command_endturn(value: &Command) -> bool {
-            match value {
-                Command::EndTurn => true,
-                Command::Move { .. }
-                | Command::Attack { .. }
-                | Command::Recruit { .. }
-                | Command::Advance { .. }
-                | Command::DismissDialogue
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::SkipDialogue
-                | Command::DropItem { .. }
-                | Command::SetUnitIntent { .. } => false,
-            }
-        }
-
-        let rules = Rules::load().unwrap();
-        for policy in [Policy::Classic, Policy::Balanced] {
-            let mut game = Game::start_campaign(
-                &rules,
-                "borrowed-tide",
-                0,
-                vec![],
-                0,
-                vec![],
-                vec![],
-                vec![],
-            );
-            fixtures::edit(&mut game, |state| {
-                state.units.retain(|u| u.side == Side::Player);
-                for (id, tile) in [
-                    (1, Hex::new(8, 5)),
-                    (2, Hex::new(7, 3)),
-                    (3, Hex::new(9, 4)),
-                    (4, Hex::new(8, 3)),
-                    (5, Hex::new(8, 4)),
-                ] {
-                    let tile = tile.to_owned();
-                    state
-                        .units
-                        .iter_mut()
-                        .find(|u| u.id == format!("u{id}"))
-                        .unwrap()
-                        .tile = tile;
-                }
-                for tile in [Hex::new(6, 2), Hex::new(8, 5)] {
-                    let tile = tile.to_owned();
-                    state
-                        .tiles
-                        .iter_mut()
-                        .find(|t| t.hex() == tile)
-                        .unwrap()
-                        .owner = Some("player".into());
-                }
-            });
-            let mut workspace = PlanningWorkspace::new(1, 0, None, Diplomacy::Diplomatic);
-            for _ in 0..40 {
-                let command = choose_game_command(&game, policy, &mut workspace).unwrap();
-                if is_command_endturn(&command) {
-                    break;
-                }
-                game.execute_runtime(command).unwrap();
-                if game.winner().is_some() {
-                    break;
-                }
-            }
-            assert_eq!(
-                game.winner(),
-                Some(Side::Player),
-                "{policy:?}: {:?}",
-                game.public_units()
-            );
-            assert_eq!(game.board().ids[game.unit(5).unwrap().tile], Hex::new(9, 3));
-        }
     }
 }

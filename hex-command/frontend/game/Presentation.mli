@@ -40,7 +40,7 @@ val unit_panel :
     render revision. *)
 
 type forecast = {
-  side : Domain.Side.t;
+  palette : string;
   remaining_hp : float;
   current_hp : float;
   maximum_hp : float;
@@ -141,7 +141,7 @@ type changes = {
   tile_effects : (string * motion) list;
   captured_tiles : string list;
   turn_changed : bool;
-  new_winner : Domain.Side.t option;
+  new_winner : Domain.Battle_result.t option;
   attacked : bool;
   recruited : bool;
   advanced : bool;

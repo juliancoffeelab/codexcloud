@@ -49,6 +49,7 @@ async function fixture() {
   controlled.json = Json;
   const state = fromJSON("State", {
     combatRng: 17,
+    visionGroups: [],
     factions: [],
     groundItems: [],
     mapId: "mirror",
@@ -71,7 +72,10 @@ async function fixture() {
         tile: { col: 0, row: 0 },
         hp: 30,
         moved: false,
-        attacked: false,
+        attackSpent: false,
+        faction: "player",
+        revealedTo: [],
+        perceptionEffects: [],
       },
     ],
   });
@@ -82,6 +86,8 @@ async function fixture() {
       presentation: Json.of_battlefield_presentation({
         lighting: { time: "day", lights: [] },
         fog: [],
+        visible_units: ["u1"],
+        unit_appearances: [],
       }),
     };
   const requests = [],
@@ -365,7 +371,12 @@ test("Catalog indexes detached metadata supplied through its exported constructo
         description: "One owned tile",
         human: true,
         lighting: { time: "day", lights: [] },
-        presentation: { lighting: { time: "day", lights: [] }, fog: [] },
+        presentation: {
+          lighting: { time: "day", lights: [] },
+          fog: [],
+          visible_units: [],
+          unit_appearances: [],
+        },
         cols: 1,
         rows: 1,
         units: [],

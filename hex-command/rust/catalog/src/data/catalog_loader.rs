@@ -15,6 +15,7 @@ include!(concat!(env!("OUT_DIR"), "/catalog_documents.rs"));
 struct Manifest {
     schema_version: u32,
     terrain: String,
+    concealment_kinds: String,
     races: Vec<String>,
     units: Vec<String>,
     items: Vec<String>,
@@ -40,6 +41,8 @@ impl EnvironmentalModifiers {
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct UnitSpecification {
+    #[serde(default)]
+    perception: UnitPerception,
     id: String,
     name: String,
     hp: i32,
@@ -93,12 +96,13 @@ struct StageFile {
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct InitialUnit {
     #[serde(default)]
+    perception_effects: Vec<PerceptionEffect>,
+    #[serde(default)]
     items: Vec<Item>,
     faction: Option<String>,
     ai_group: Option<String>,
     id: Option<String>,
     r#type: String,
-    side: Option<Side>,
     tile: Hex,
     hp: Option<i32>,
     character: Option<String>,
@@ -107,12 +111,13 @@ struct InitialUnit {
 fn initial_round() -> u32 {
     1
 }
-fn initial_turn() -> Side {
-    Side::Player
+fn initial_turn() -> TurnPhase {
+    TurnPhase::Player
 }
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct InitialState {
+    vision_groups: Vec<VisionGroupState>,
     #[serde(default)]
     factions: Vec<Faction>,
     map_id: String,
@@ -163,18 +168,19 @@ impl InitialState {
                 .ok_or_else(|| ContentError::new(path, "initial unit is outside its board"))?
                 .hex();
             units.push(PublicUnit {
-                faction: unit.faction,
+                revealed_to: vec![],
+                perception_effects: unit.perception_effects,
+                faction: unit
+                    .faction
+                    .ok_or_else(|| ContentError::new(path, "unit requires an explicit faction"))?,
                 items: unit.items,
                 ai_group: unit.ai_group,
                 id,
                 r#type: unit.r#type,
-                side: unit
-                    .side
-                    .ok_or_else(|| ContentError::new(path, "initial unit requires a phase"))?,
                 tile,
                 hp,
                 moved: false,
-                attacked: false,
+                attack_spent: false,
                 experience: Some(0),
                 character: unit.character,
                 role: unit.role,
@@ -182,11 +188,22 @@ impl InitialState {
                 rebuilding: None,
             });
         }
+        validate_perception(&self.vision_groups, &self.factions, &self.tiles, &units)
+            .map_err(|message| ContentError::new(path, message))?;
         validate_factions(&self.factions, &units)
             .map_err(|message| ContentError::new(path, message))?;
+        for faction in &self.factions {
+            if let Some(transfer) = &faction.transfer {
+                transfer
+                    .when
+                    .validate_references(types, &self.factions)
+                    .map_err(|message| ContentError::new(path, message))?;
+            }
+        }
         validate_economy(&self.factions, &self.gold, &self.tiles, types)
             .map_err(|message| ContentError::new(path, message))?;
         Ok(State {
+            vision_groups: self.vision_groups,
             factions: self.factions,
             ground_items: vec![],
             condition_memory: vec![],
@@ -284,6 +301,31 @@ impl Rules {
             return Err(ContentError::new(
                 "manifest.json",
                 "unsupported schemaVersion",
+            ));
+        }
+        let definitions: Vec<ConcealmentKindDefinition> =
+            parse(bundle, &manifest.concealment_kinds)?;
+        let mut seen = ConcealmentMask::default();
+        let mut concealment_visuals = ConcealmentMask::default();
+        for definition in definitions {
+            if seen.contains(definition.id) {
+                return Err(ContentError::new(
+                    &manifest.concealment_kinds,
+                    "duplicate concealment kind",
+                ));
+            }
+            seen.insert(definition.id);
+            if matches!(definition.unit_appearance, ConcealmentVisual::Concealment) {
+                concealment_visuals.insert(definition.id);
+            }
+        }
+        if ConcealmentKind::ALL
+            .into_iter()
+            .any(|kind| !seen.contains(kind))
+        {
+            return Err(ContentError::new(
+                &manifest.concealment_kinds,
+                "missing concealment kind",
             ));
         }
         let terrain: Vec<TerrainDefinition> = parse(bundle, &manifest.terrain)?;
@@ -435,7 +477,10 @@ impl Rules {
                 }
                 environment.push(modifiers);
             }
+            validate_unit_perception(&spec.perception.concealment, &spec.perception.penetrates)
+                .map_err(|e| ContentError::new(&path, e))?;
             units.push(UnitRule {
+                perception: spec.perception,
                 id: spec.id,
                 name: spec.name,
                 ability: spec.ability,
@@ -666,7 +711,7 @@ impl Rules {
             for rule in map
                 .terrain
                 .iter()
-                .filter_map(|tile| tile.fog.as_deref())
+                .filter_map(|_tile| None::<&ConditionRule>)
                 .chain(
                     map.terrain
                         .iter()
@@ -677,14 +722,14 @@ impl Rules {
                 rule.condition
                     .validate_characters(characters)
                     .map_err(|e| ContentError::new(&map.id, e))?;
-                rule.condition
-                    .validate_references(&types, &state.factions)
+                rule.validate_references(&types, &state.factions)
                     .map_err(|message| ContentError::new(&map.id, message))?;
             }
         }
         Ok(Self {
             content_fingerprint: content_fingerprint(bundle),
             recruitment,
+            concealment_visuals,
             items,
             terrain_types: terrain.iter().map(|t| t.id).collect(),
             terrain_roles: terrain.iter().map(|t| t.role).collect(),
@@ -849,6 +894,7 @@ fn validate_speech(
     path: &str,
 ) -> Result<(), ContentError> {
     ScriptEvent {
+        observer: None,
         id: "speech-validation".into(),
         when: When::ChapterStarted(true),
         remembers: true,
@@ -880,6 +926,7 @@ fn validate_character_references(
     placements(&mission.map.units)?;
     for w in mission.story_conditions() {
         let e = ScriptEvent {
+            observer: Some("player".into()),
             id: "story-condition".into(),
             when: w.clone(),
             remembers: true,
@@ -918,9 +965,6 @@ fn validate_character_references(
         }
     }
     for tile in &state.tiles {
-        if let Some(rule) = &tile.fog {
-            condition(&rule.condition)?;
-        }
         if let Some(rule) = tile.light.as_ref().and_then(|l| l.when.as_ref()) {
             condition(&rule.condition)?;
         }
@@ -933,7 +977,7 @@ fn validate_character_references(
     validate_speech(&mission.intro, characters, path)?;
     validate_speech(&mission.victory, characters, path)?;
     for event in &mut mission.events {
-        if let Trigger::Condition { condition: c } = &event.trigger {
+        if let Trigger::Condition { condition: c, .. } = &event.trigger {
             condition(c)?;
         }
         if let Some(effect) = &event.evacuate {
@@ -1099,6 +1143,7 @@ fn validate_mission(
             ));
         }
         let check = ScriptEvent {
+            observer: Some("player".into()),
             id: "story-condition".into(),
             when: condition.clone(),
             remembers: true,
@@ -1109,6 +1154,7 @@ fn validate_mission(
         check.validate(
             &state.tiles,
             &state.factions,
+            &state.vision_groups,
             &std::collections::HashMap::new(),
             path,
         )?;
@@ -1153,8 +1199,7 @@ fn validate_mission(
                             .validate(&state.tiles, &mission.events)
                             .map_err(|e| ContentError::new(path, e))?;
                         if let Some(rule) = &light.when {
-                            rule.condition
-                                .validate_references(types, &state.factions)
+                            rule.validate_references(types, &state.factions)
                                 .map_err(|e| ContentError::new(path, e))?;
                         }
                     }
@@ -1183,6 +1228,9 @@ fn validate_mission(
         }
     }
     for loss in &mission.lose_conditions {
+        loss.condition
+            .validate_observer(loss.observer.as_deref(), &state.factions)
+            .map_err(|e| ContentError::new(path, e))?;
         if loss.label.trim().is_empty() || loss.message.trim().is_empty() {
             return Err(ContentError::new(path, "empty defeat condition text"));
         }
@@ -1212,7 +1260,20 @@ fn validate_mission(
         identifier(&group.id, path)?;
         if let Some(order) = &group.order {
             match order {
-                GroupOrder::Hold { area, when, .. } => {
+                GroupOrder::Hold {
+                    area,
+                    when,
+                    observer,
+                    ..
+                } => {
+                    if let Some(condition) = when {
+                        condition
+                            .validate_observer(observer.as_deref(), &state.factions)
+                            .map_err(|e| ContentError::new(path, e))?;
+                    } else if let Some(id) = observer {
+                        validate_faction_reference(&state.factions, id)
+                            .map_err(|e| ContentError::new(path, e))?;
+                    }
                     if let Some(condition) = when {
                         condition
                             .validate(&state.tiles, &mission.events, false)
@@ -1235,13 +1296,12 @@ fn validate_mission(
             rule.condition
                 .validate(&state.tiles, &mission.events, false)
                 .map_err(|message| ContentError::new(path, message))?;
-            rule.condition
-                .validate_references(types, &state.factions)
+            rule.validate_references(types, &state.factions)
                 .map_err(|message| ContentError::new(path, message))?;
         }
     }
-    let group_ref = |id: &str, side: Side| -> Result<(), ContentError> {
-        if side != Side::Enemy || !mission.enemy_groups.iter().any(|group| group.id == id) {
+    let group_ref = |id: &str| -> Result<(), ContentError> {
+        if !mission.enemy_groups.iter().any(|group| group.id == id) {
             return Err(ContentError::new(
                 path,
                 format!("unknown enemy group: {id}"),
@@ -1251,15 +1311,15 @@ fn validate_mission(
     };
     for unit in &state.units {
         if let Some(id) = &unit.ai_group {
-            group_ref(id, unit.side)?;
+            group_ref(id)?;
         }
     }
     let starting = |placements: &[StartingUnit]| -> Result<(), ContentError> {
         for unit in placements {
-            validate_faction_reference(&state.factions, unit.faction.as_deref(), unit.side)
+            validate_faction_reference(&state.factions, &unit.faction)
                 .map_err(|message| ContentError::new(path, message))?;
             if let Some(id) = &unit.ai_group {
-                group_ref(id, unit.side)?;
+                group_ref(id)?;
             }
             reference(&unit.r#type, types, path)?;
             validate_equipment(&unit.items, &units[types[&unit.r#type]].attacks, path)?;
@@ -1325,7 +1385,7 @@ fn validate_mission(
                 .map
                 .units
                 .iter()
-                .any(|unit| unit.side == Side::Player && unit.character.as_ref() == Some(name))
+                .any(|unit| unit.faction == "player" && unit.character.as_ref() == Some(name))
             {
                 return Err(ContentError::new(
                     path,
@@ -1379,15 +1439,17 @@ fn validate_mission(
             for unit in &group.units {
                 validate_faction_reference(
                     &state.factions,
-                    unit.faction.as_deref().or(group.faction.as_deref()),
-                    unit.side,
+                    unit.faction
+                        .as_deref()
+                        .or(group.faction.as_deref())
+                        .ok_or_else(|| {
+                            ContentError::new(path, "spawn requires an explicit faction")
+                        })?,
                 )
                 .map_err(|message| ContentError::new(path, message))?;
             }
             if let Some(id) = &group.ai_group {
-                for unit in &group.units {
-                    group_ref(id, unit.side)?;
-                }
+                group_ref(id)?;
             }
             if group.area.is_empty() || group.units.is_empty() {
                 return Err(ContentError::new(
@@ -1405,13 +1467,20 @@ fn validate_mission(
                 reference(&unit.r#type, types, path)?;
             }
         }
-        if let Trigger::Condition { condition } = &event.trigger {
+        if let Trigger::Condition {
+            condition,
+            observer,
+        } = &event.trigger
+        {
+            condition
+                .validate_observer(observer.as_deref(), &state.factions)
+                .map_err(|e| ContentError::new(path, e))?;
             condition
                 .validate_references(types, &state.factions)
                 .map_err(|message| ContentError::new(path, message))?;
         }
         match &event.trigger {
-            Trigger::Condition { condition } => condition
+            Trigger::Condition { condition, .. } => condition
                 .validate(&state.tiles, &mission.events, false)
                 .map_err(|message| ContentError::new(path, message))?,
             Trigger::Visit { tile }
@@ -1561,12 +1630,13 @@ fn validate_simulation(
             }
             match variant.forces {
                 ArenaForces::Scenario => {
-                    for side in [Side::Player, Side::Enemy] {
-                        if !map
-                            .units
-                            .iter()
-                            .any(|u| u.side == side && u.role == Some(Role::Leader))
-                        {
+                    for side in [TurnPhase::Player, TurnPhase::Ai] {
+                        if !map.units.iter().any(|u| {
+                            map.factions
+                                .iter()
+                                .any(|f| f.id == u.faction && f.phase == side)
+                                && u.role == Some(Role::Leader)
+                        }) {
                             return Err(ContentError::new(
                                 path,
                                 "scenario forces require leaders in both phases",
@@ -1581,14 +1651,14 @@ fn validate_simulation(
                             "selected forces require a positive budget",
                         ));
                     }
-                    for side in [Side::Player, Side::Enemy] {
+                    for faction in ["player", "enemy"] {
                         if map
                             .tiles
                             .iter()
                             .filter(|tile| {
                                 terrain.iter().any(|t| {
                                     t.id.as_str() == tile.terrain && t.role == TerrainRole::Keep
-                                }) && tile.owner.as_deref() == Some(side.faction_id())
+                                }) && tile.owner.as_deref() == Some(faction)
                             })
                             .count()
                             != 1
@@ -1774,10 +1844,10 @@ mod tests {
     #[test]
     fn invalid_references_and_duplicates_report_source_document() {
         let mut bundle = test_bundle();
-        let units = bundle.get_mut("game/units/warden.json").unwrap();
+        let units = bundle.get_mut("game/units/humans/warden.json").unwrap();
         *units = units.replacen("\"warden\"", "\"adept\"", 1);
         let error = Rules::from_json_bundle(&bundle).unwrap_err();
-        assert_eq!(error.path, "game/units/adept.json");
+        assert_eq!(error.path, "game/units/humans/adept.json");
         assert!(error.message.contains("duplicate"));
         let mut bundle = test_bundle();
         let roster = bundle.get_mut("simulation/rosters.json").unwrap();
@@ -1788,7 +1858,7 @@ mod tests {
     #[test]
     fn missing_required_stats_and_documents_are_errors() {
         let mut bundle = test_bundle();
-        let units = bundle.get_mut("game/units/warden.json").unwrap();
+        let units = bundle.get_mut("game/units/humans/warden.json").unwrap();
         let mut document: serde_json::Value = serde_json::from_str(units).unwrap();
         document.as_object_mut().unwrap().remove("hp");
         *units = serde_json::to_string(&document).unwrap();
@@ -1808,10 +1878,10 @@ mod tests {
     #[test]
     fn roles_are_required_and_race_errors_identify_the_individual_document() {
         let mut bundle = test_bundle();
-        let unit = bundle.get_mut("game/units/scout.json").unwrap();
+        let unit = bundle.get_mut("game/units/humans/scout.json").unwrap();
         *unit = unit.replace("\"role\": \"flank\",", "");
         let error = Rules::from_json_bundle(&bundle).unwrap_err();
-        assert_eq!(error.path, "game/units/scout.json");
+        assert_eq!(error.path, "game/units/humans/scout.json");
         assert!(error.message.contains("role"));
         let mut bundle = test_bundle();
         let race = bundle.get_mut("game/races/human.json").unwrap();
@@ -1846,7 +1916,7 @@ mod tests {
         let bundle = test_bundle();
         let rules = Rules::from_json_bundle(&bundle).unwrap();
         let adept = &rules.units[rules.types["adept"]];
-        let authored: UnitSpecification = parse(&bundle, "game/units/adept.json").unwrap();
+        let authored: UnitSpecification = parse(&bundle, "game/units/humans/adept.json").unwrap();
         assert_eq!(adept.ability, authored.ability);
         assert_eq!(adept.description, authored.description);
         let campaign = &rules.campaigns["lantern-road"];
@@ -1857,7 +1927,7 @@ mod tests {
         assert_eq!(rules.content_fingerprint.len(), 64);
         let mut reformatted = bundle.clone();
         reformatted
-            .get_mut("game/units/warden.json")
+            .get_mut("game/units/humans/warden.json")
             .unwrap()
             .push('\n');
         let changed = Rules::from_json_bundle(&reformatted).unwrap();
@@ -1884,13 +1954,13 @@ mod tests {
             std::fs::write(target, source).unwrap();
         }
         let original = Rules::load_from(&root.0).unwrap();
-        let path = root.0.join("game/units/adept.json");
+        let path = root.0.join("game/units/humans/adept.json");
         let edited =
             std::fs::read_to_string(&path)
                 .unwrap()
                 .replacen("Stone spark", "Revised spark", 1);
         std::fs::write(path, edited).unwrap();
-        let commander = root.0.join("game/units/commander.json");
+        let commander = root.0.join("game/units/humans/commander.json");
         let original_hp = original.units[original.types["commander"]].hp;
         let revised_hp = original_hp + 3;
         let mut edited: serde_json::Value =
@@ -1969,7 +2039,7 @@ mod tests {
         assert_eq!(state.units[0].id, "u1");
         assert_eq!(state.units[0].experience, Some(0));
         assert!(!state.units[0].moved);
-        assert!(!state.units[0].attacked);
+        assert!(!state.units[0].attack_spent);
         let map = bundle
             .get_mut("game/scenario/mirror-v1/roster.json")
             .unwrap();
@@ -1982,7 +2052,7 @@ mod tests {
     #[test]
     fn component_references_report_missing_files_and_reject_traversal() {
         let mut bundle = test_bundle();
-        let path = "game/campaigns/borrowed-tide/stages/tide-wreck/story.json";
+        let path = "game/campaigns/mirror-night/stages/mirror-night/story.json";
         bundle.remove(path);
         assert_eq!(Rules::from_json_bundle(&bundle).unwrap_err().path, path);
         let mut bundle = test_bundle();
@@ -2023,7 +2093,7 @@ mod tests {
     #[test]
     fn attack_counts_default_to_one_and_reject_invalid_values() {
         let mut bundle = test_bundle();
-        let path = "game/units/swordsman.json";
+        let path = "game/units/humans/swordsman.json";
         let mut unit: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
         unit["attacks"][0].as_object_mut().unwrap().remove("count");
         bundle.insert(path.into(), serde_json::to_string(&unit).unwrap());
@@ -2096,7 +2166,10 @@ fn apply_objective_route(
                         format!("objective route references unknown event {id}"),
                     )
                 })?;
-            let Trigger::Condition { condition: current } = &mut event.trigger else {
+            let Trigger::Condition {
+                condition: current, ..
+            } = &mut event.trigger
+            else {
                 return Err(ContentError::new(
                     path,
                     "eventConditions requires a condition-triggered event",

@@ -77,7 +77,7 @@ class RecoveryContracts(unittest.TestCase):
                         if family == "arena"
                         else [
                             "campaign",
-                            "borrowed-tide",
+                            "lantern-road",
                             "authored",
                             "unrestricted",
                             enemy,

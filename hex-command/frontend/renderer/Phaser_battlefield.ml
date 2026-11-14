@@ -22,6 +22,7 @@ type actor = {
   mutable data : Frame.unit_actor;
   root : Phaser.container;
   image : Phaser.image;
+  mutable concealment_outline : Phaser.image option;
   base : Phaser.ellipse;
   indicators : Phaser.graphics;
   mutable transition : transition option;
@@ -507,9 +508,11 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
       with error -> self#fail error
 
     method private queue_refresh =
+      (* Coalesce work, not revisions: another completion may arrive while an
+         earlier refresh is queued or being prepared. *)
+      resource_epoch <- resource_epoch + 1;
       if not refresh_queued then (
         refresh_queued <- true;
-        resource_epoch <- resource_epoch + 1;
         let _ =
           native##events##once "preupdate" (fun[@u] () ->
               refresh_queued <- false;
@@ -703,6 +706,9 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
           | _ -> self#refresh_world frame)
 
     method private refresh_world (frame : Frame.t) =
+      (* Asset admission may synchronously invalidate this pass. Remember the
+         input epoch so the queued pass cannot mistake stale readiness for fresh. *)
+      let preparation_epoch = resource_epoch in
       let fog = Set.create () in
       Array.iter
         (fun hex ->
@@ -946,7 +952,7 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
             tiles = frame.tiles;
             motion = frame.reduced_motion;
             sound = frame.view.sound;
-            epoch = resource_epoch;
+            epoch = preparation_epoch;
           };
       true
 
@@ -1039,7 +1045,17 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
                 let _ = self#upper_indicators##add (Phaser.Upcast.graphics indicators) in
                 Phaser.SceneMethods.add_many root
                   [| Phaser.Upcast.ellipse base; Phaser.Upcast.image image |];
-                let actor = { data = unit; root; image; base; indicators; transition = None } in
+                let actor =
+                  {
+                    data = unit;
+                    root;
+                    image;
+                    concealment_outline = None;
+                    base;
+                    indicators;
+                    transition = None;
+                  }
+                in
                 let _ = Map.set actors unit.id actor in
                 if has_frame && not self#frame.reduced_motion then
                   self#transition actor Spawn 220. (now ());
@@ -1075,7 +1091,27 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
           let _ = Set.add active_actors actor in
           let _ = actor.base##setFillStyle (color unit.color) 0.5 in
           let _ = actor.root##setDepth (20000. +. unit.y +. (unit.x *. 0.00001)) in
-          let _ = actor.image##setAlpha (if unit.spent then 0.65 else 1.) in
+          let concealed = unit.concealment = Domain.Unit_concealment_appearance.Concealed in
+          let marked = unit.concealment <> Domain.Unit_concealment_appearance.Normal in
+          let _ = actor.image##setAlpha (if concealed then 0.38 else 1.) in
+          if marked then (
+            let key = Phaser_unit_outline.texture native##textures (frame_url unit) in
+            let outline =
+              match actor.concealment_outline with
+              | Some image ->
+                  ignore (image##setTexture key);
+                  image
+              | None ->
+                  let outline = native##add##image (-.unit.size /. 2.) (20. -. unit.size) key in
+                  ignore (outline##setOrigin 0. 0.);
+                  ignore (actor.root##add (Phaser.Upcast.image outline));
+                  actor.concealment_outline <- Some outline;
+                  outline
+            in
+            ignore (outline##setDisplaySize unit.size unit.size);
+            ignore (outline##setVisible true);
+            ignore (outline##setTint (if concealed then 0xbed1b5 else 0xe7b45d)))
+          else Option.iter (fun image -> ignore (image##setVisible false)) actor.concealment_outline;
           if self#frame.reduced_motion then (
             Option.iter (Transition_tween.kill native##tweens) actor.transition;
             actor.transition <- None;
@@ -1098,7 +1134,7 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
       let _ = g##clear () in
       let _ = g##fillStyle 0x18211b 1. in
       let _ = g##fillRect (-19.) 27. 38. 4. in
-      let _ = g##fillStyle 0xa9d0a5 1. in
+      let _ = g##fillStyle (if unit.spent then 0x60785e else 0xa9d0a5) 1. in
       let _ =
         g##fillRect (-19.) 27.
           (clamp (Option.value ~default:unit.health (self#playback#health_width unit.id)) 0. 38.)
@@ -1107,9 +1143,9 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
       let _ = g##lineStyle 2. 0xdbe8d7 1. in
       (if unit.spent then
          let _ = g##beginPath () in
-         let _ = g##moveTo 21. (-20.) in
-         let _ = g##lineTo 24. (-17.) in
-         let _ = g##lineTo 30. (-24.) in
+         let _ = g##moveTo 22. 28. in
+         let _ = g##lineTo 25. 31. in
+         let _ = g##lineTo 30. 25. in
          let _ = g##strokePath () in
          ());
       if unit.retreating then

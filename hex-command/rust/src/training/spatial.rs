@@ -85,16 +85,12 @@ pub(super) fn observe_with_duties(
         .map(|&(r, q)| (r - min_r) as usize * width + (q - min_q) as usize)
         .collect();
     let mut values = vec![0.; CHANNELS * cells];
-    let other = if g.turn() == Side::Player {
-        Side::Enemy
-    } else {
-        Side::Player
-    };
     for (tile, &site) in sites.iter().enumerate() {
         values[site] = 1.;
         if let Some(u) = g.at(tile) {
-            let friendly = g.belongs_to_phase(u, g.turn());
-            let hostile = g.hostile_to_phase(u, g.turn());
+            let friendly =
+                g.faction_relation(g.observer_faction(), g.unit_faction(u)) == Relation::Allied;
+            let hostile = g.hostile_to_faction(u, g.observer_faction());
             values[(if friendly {
                 1
             } else if hostile {
@@ -113,8 +109,10 @@ pub(super) fn observe_with_duties(
             passable as u8 as f32,
             g.terrain_healing(tile) as f32 / 10.,
             g.is_keep(tile) as u8 as f32,
-            g.owns(tile, g.turn()) as u8 as f32,
-            g.owns(tile, other) as u8 as f32,
+            g.owns(tile, g.observer_faction()) as u8 as f32,
+            g.owners()[tile].as_deref().is_some_and(|owner| {
+                g.faction_relation(g.observer_faction(), owner) == Relation::Hostile
+            }) as u8 as f32,
             modifiers[0] as f32 / 10.,
             modifiers[1] as f32 / 10.,
             modifiers[2] as f32 / 10.,

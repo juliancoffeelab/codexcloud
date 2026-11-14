@@ -45,6 +45,7 @@
         }
       },
       "objective": {
+        "faction": "player",
         "label": "Defeat the rival when your survey is complete",
         "intent": {
           "defeat": {

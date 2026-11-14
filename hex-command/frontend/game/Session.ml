@@ -42,6 +42,9 @@ type model = {
   revision : int;
   status : string;
   sound : bool;
+  player_ai : Setup.policy option;
+  follow_ai : bool;
+  ai_focus : string array;
   can_undo : bool;
   failure : string option;
   setup : Setup.t;
@@ -143,10 +146,11 @@ let require_session t =
 
 let active t =
   (not (Save.awaiting t.saves))
-  && (not t.battlefield_stopped) && Option.is_none t.enemy
+  && t.latest.player_ai = None && (not t.battlefield_stopped) && Option.is_none t.enemy
   &&
   let s = state t in
-  s.turn = Domain.Side.Player && Option.is_none s.winner && not (Story.dialogue_pending s.campaign)
+  s.turn = Domain.Turn_phase.Player && Option.is_none s.winner
+  && not (Story.dialogue_pending s.campaign)
 
 let require_actor t id =
   alive t;
@@ -247,7 +251,7 @@ let rec publish ?(render = true) ?(winner = true) ?(effects = fun () -> ()) ?(ne
         | Some side ->
             Option.value
               ~default:
-                (if side = Domain.Side.Player then
+                (if side = Domain.Battle_result.Player_victory then
                    "Victory! The enemy commander has fallen. The field is yours."
                  else "Your commander has fallen. Start a new battle and try a different approach.")
               (Option.bind s.campaign (fun campaign -> campaign.outcome))
@@ -292,8 +296,10 @@ let rec publish ?(render = true) ?(winner = true) ?(effects = fun () -> ()) ?(ne
                                 Action_presentation.owner (Action_presentation.token action)
                             | None -> Phaser_sound.combat_owner frame.combat)
                           t.audio
-                          (if (Native.state frame.game).winner = Some Domain.Side.Player then
-                             "victory"
+                          (if
+                             (Native.state frame.game).winner
+                             = Some Domain.Battle_result.Player_victory
+                           then "victory"
                            else "defeat")
                       in
                       ()))
@@ -353,6 +359,7 @@ let rec publish ?(render = true) ?(winner = true) ?(effects = fun () -> ()) ?(ne
         settling = Option.is_some t.enemy;
         status;
         sound = Phaser_sound.enabled t.audio;
+        player_ai = Setup.player_ai t.latest.setup;
         can_undo = t.latest.failure = None && can_undo t;
         completed_turns = Setup.completed_turns t.latest.setup s;
         revision;
@@ -408,7 +415,7 @@ let persist t pending_enemy =
 
 let save t pending_enemy =
   let current = state t in
-  if current.turn = Domain.Side.Player || current.winner <> None then persist t pending_enemy
+  if current.turn = Domain.Turn_phase.Player || current.winner <> None then persist t pending_enemy
 
 let sound_owner t =
   match t.action_task with
@@ -442,7 +449,7 @@ let feedback t before =
     | Some side ->
         let _ =
           Phaser_sound.play ~owner:(sound_owner t) t.audio
-            (if side = Domain.Side.Player then "victory" else "defeat")
+            (if side = Domain.Battle_result.Player_victory then "victory" else "defeat")
         in
         ()
     | None when changes.recruited || changes.advanced ->
@@ -626,8 +633,8 @@ let choose t tile_id =
                            match Native.faction t.latest.interaction_game occupant.id with
                            | Some faction when faction.relation = Domain.Relation.Neutral ->
                                "Neutral unit selected."
-                           | _ -> "Enemy unit selected. Select one of your units to act."
-                         else if occupant.attacked then "This unit has finished its turn."
+                           | _ -> "AI-controlled unit selected. Select one of your units to act."
+                         else if occupant.attack_spent then "This unit has finished its turn."
                          else
                            "Selected "
                            ^ String.lowercase_ascii (Catalog.unit t.catalog occupant.type_).name
@@ -791,10 +798,32 @@ let result_promise work =
 
 (* A phase owns one completion and all pacing. Install its identity before any
    notification; cancellation settles callers and leaves stale clocks harmless. *)
+let ai_phase t = (state t).turn = Domain.Turn_phase.Ai || t.latest.player_ai <> None
+
+let ai_camera_focus before after command =
+  let actors =
+    match command with
+    | Domain.Command.Move { unit; _ }
+    | Domain.Command.Recruit { unit; _ }
+    | Domain.Command.Advance { unit; _ } ->
+        [ unit ]
+    | Domain.Command.Attack { unit; target; _ } -> [ unit; target ]
+    | _ -> []
+  in
+  actors
+  |> List.concat_map (fun unit ->
+      let id = "u" ^ string_of_int (int_of_float unit) in
+      [ before; after ]
+      |> List.filter_map (fun game ->
+          Option.map (fun (u : Domain.public_unit) -> Hex.key u.tile) (Native.unit game id)))
+  |> List.sort_uniq String.compare |> Array.of_list
+
 let ensure_enemy t origin =
   if
     t.disposed || t.latest.failure <> None
-    || (state t).turn <> Domain.Side.Enemy
+    || (not (ai_phase t))
+    || Save.awaiting t.saves || t.battlefield_stopped
+    || Story.dialogue_pending (state t).campaign
     || (state t).winner <> None
   then Js.Promise.resolve (Ok ())
   else
@@ -812,7 +841,18 @@ let ensure_enemy t origin =
         in
         let task = { completion; complete = !complete; fail = !fail } in
         t.enemy <- Some task;
-        let options = Setup.ai_options t.latest.setup in
+        let phase = (state t).turn in
+        let player_control = t.latest.player_ai in
+        let planning_setup =
+          if phase = Domain.Turn_phase.Player then Setup.campaign (Option.get t.latest.player_ai)
+          else t.latest.setup
+        in
+        let options = Setup.ai_options planning_setup in
+        let phase_finished () =
+          (state t).turn <> phase || (state t).winner <> None
+          || (phase = Domain.Turn_phase.Player && t.latest.player_ai <> player_control)
+          || Story.dialogue_pending (state t).campaign
+        in
         let current () =
           (not t.disposed) && t.latest.failure = None
           && match t.enemy with Some owner -> owner == task | None -> false
@@ -827,6 +867,7 @@ let ensure_enemy t origin =
               (fun () ->
                 if current () then (
                   t.enemy <- None;
+                  t.latest <- { t.latest with ai_focus = [||] };
                   if (state t).winner = None then
                     t.latest <-
                       {
@@ -847,8 +888,8 @@ let ensure_enemy t origin =
                 publish_current ();
                 Js.Promise.then_
                   (fun () ->
-                    if current () && (state t).turn = Domain.Side.Enemy && (state t).winner = None
-                    then Engine.prepare_enemy_step t.battle options;
+                    if current () && not (phase_finished ()) then
+                      Engine.prepare_enemy_step t.battle options;
                     Js.Promise.resolve ())
                   (Js.Promise.resolve ()))
           in
@@ -860,13 +901,26 @@ let ensure_enemy t origin =
         in
         let rec step () =
           if not (current ()) then Js.Promise.resolve ()
-          else if (state t).turn <> Domain.Side.Enemy || (state t).winner <> None then
-            finish (state t)
+          else if phase_finished () then finish (state t)
           else
-            let before = state t in
+            let before = state t and observed_before = t.latest.interaction_game in
             let game, command = Engine.enemy_step_recorded t.battle options in
             Option.iter (fun turn -> Debug_report.record turn command) !recording;
             adopt t game;
+            t.history <- [];
+            if
+              phase = Domain.Turn_phase.Player && command = Domain.Command.End_turn
+              && (state t).turn = Domain.Turn_phase.Ai
+              && (state t).winner = None
+            then (
+              (* pendingEnemy records a deferred EndTurn from the completed player
+                 position, exactly as a human EndTurn does. Never attach that
+                 intent to an already-advanced AI-phase checkpoint. *)
+              let saved = Engine.save t.battle in
+              Save.set_undo t.saves [];
+              Save.write ~setup:t.latest.setup t.saves { saved with state = before }
+                ~pending_enemy:true);
+            t.latest <- { t.latest with ai_focus = ai_camera_focus observed_before game command };
             let action = Action_presentation.create (Native.combat game) in
             t.action_task <- Some action;
             publish ~effects:(fun () -> feedback t before) t;
@@ -880,8 +934,7 @@ let ensure_enemy t origin =
                 | Action_presentation.Failed cause -> raise (Failed (Foreign cause))
                 | Action_presentation.Completed ->
                     if not (current ()) then Js.Promise.resolve ()
-                    else if (state t).turn <> Domain.Side.Enemy || (state t).winner <> None then
-                      finish (state t)
+                    else if phase_finished () then finish (state t)
                     else Js.Promise.then_ step (prepare_during_pause 80.))
               (Action_presentation.finished action)
         in
@@ -894,7 +947,13 @@ let ensure_enemy t origin =
               | Restored -> ()
               | Player_checkpoint checkpoint ->
                   Save.write_json ~setup:t.latest.setup t.saves checkpoint ~pending_enemy:true);
-              t.latest <- { t.latest with status = "The enemy is planning its moves…" };
+              t.latest <-
+                {
+                  t.latest with
+                  status =
+                    (if phase = Domain.Turn_phase.Player then "AI is playing your turn…"
+                     else "The enemy is planning its moves…");
+                };
               Js.Promise.then_
                 (fun () ->
                   if current () then
@@ -904,7 +963,7 @@ let ensure_enemy t origin =
                           recording :=
                             Some
                               (Debug_report.begin_turn t.recordings (Engine.save_json t.battle)
-                                 t.latest.setup);
+                                 planning_setup);
                           step ())
                         else Js.Promise.resolve ())
                       (prepare_during_pause 0.)
@@ -925,11 +984,35 @@ let ensure_enemy t origin =
         in
         (* Background phases and explicit end_turn callers share this promise. *) completion
 
-let end_turn t () =
+let continue_ai t =
+  if t.initialized && t.latest.failure = None && not t.disposed then
+    ignore (ensure_enemy t Restored)
+
+let set_player_ai t policy =
+  alive t;
+  if (state t).turn = Domain.Turn_phase.Player then (
+    t.latest <-
+      { t.latest with player_ai = policy; setup = Setup.with_player_ai t.latest.setup policy };
+    if t.initialized && not (Save.awaiting t.saves) then persist t false;
+    publish t)
+
+let set_follow_ai t enabled =
+  alive t;
+  t.latest <- { t.latest with follow_ai = enabled };
+  publish t
+
+let end_turn ?(restored = false) t () =
   let pending =
     result_promise (fun () ->
         alive t;
-        if not (active t) then raise (Failed (Rejected "Wait for your turn."));
+        if
+          (not (active t))
+          && not
+               (restored
+               && (state t).turn = Domain.Turn_phase.Player
+               && t.enemy = None && (state t).winner = None
+               && not (Story.dialogue_pending (state t).campaign))
+        then raise (Failed (Rejected "Wait for your turn."));
         supersede_presentation t;
         let before = state t and checkpoint = Engine.save_json t.battle in
         adopt t (Engine.dispatch t.battle Domain.Command.End_turn);
@@ -945,7 +1028,7 @@ let end_turn t () =
           };
         let after = state t in
         let completion =
-          if after.turn = Domain.Side.Enemy && after.winner = None then
+          if after.turn = Domain.Turn_phase.Ai && after.winner = None then
             ensure_enemy t (Player_checkpoint checkpoint)
           else (
             save t false;
@@ -961,9 +1044,7 @@ let end_turn t () =
 
 let initial_focus game =
   let s = Native.state game in
-  match
-    Array.find_opt (fun (unit : Domain.public_unit) -> unit.side = Domain.Side.Player) s.units
-  with
+  match Array.find_opt (fun (unit : Domain.public_unit) -> unit.faction = "player") s.units with
   | Some unit -> Hex.key unit.tile
   | None -> if Array.length s.tiles = 0 then "" else s.tiles.(0).id
 
@@ -988,6 +1069,8 @@ let replace ?setup ?(new_run = true) ?(persist = true) t replacement game =
     {
       t.latest with
       setup = Option.value ~default:t.latest.setup setup;
+      player_ai = Setup.player_ai (Option.value ~default:t.latest.setup setup);
+      ai_focus = [||];
       details = Battle_details.None_;
       focused = initial_focus game;
       status =
@@ -1080,7 +1163,7 @@ let dialogue t skip =
     adopt t
       (Engine.dispatch t.battle
          (if skip then Domain.Command.Skip_dialogue else Domain.Command.Dismiss_dialogue));
-    if (state t).turn = Domain.Side.Player || not (Option.is_none (state t).winner) then
+    if (state t).turn = Domain.Turn_phase.Player || not (Option.is_none (state t).winner) then
       save t false;
     publish ~render:false t)
 
@@ -1090,7 +1173,7 @@ let previous_dialogue t () =
   | Some campaign when Story.dialogue_pending (Some campaign) && campaign.dialogue_index > 0. ->
       require_settled t;
       adopt t (Engine.dispatch t.battle Domain.Command.Previous_dialogue);
-      if (state t).turn = Domain.Side.Player || not (Option.is_none (state t).winner) then
+      if (state t).turn = Domain.Turn_phase.Player || not (Option.is_none (state t).winner) then
         save t false;
       publish ~render:false t
   | _ -> ()
@@ -1139,6 +1222,9 @@ let from_loaded ?(clock = pause) ~audio factory (loaded : Native.battle Save.loa
                else initial_status)
             loaded.notice;
         sound = Phaser_sound.enabled audio;
+        player_ai = Setup.player_ai loaded.setup;
+        follow_ai = true;
+        ai_focus = [||];
         can_undo = false;
         failure = None;
         persistence = "Not saved yet";
@@ -1229,7 +1315,7 @@ let initialize t =
     t.initialized <- true;
     if t.pending_enemy then (
       t.pending_enemy <- false;
-      let _ = end_turn t () in
+      let _ = end_turn ~restored:true t () in
       ())
     else (
       save t false;
@@ -1360,7 +1446,7 @@ let save_game t =
       alive t;
       if
         Save.awaiting t.saves || Option.is_some t.enemy
-        || ((state t).turn = Domain.Side.Enemy && (state t).winner = None)
+        || ((state t).turn = Domain.Turn_phase.Ai && (state t).winner = None)
       then Save_error.raise_internal "Wait for the enemy turn to finish before saving.";
       let checkpoint = Engine.save_json t.battle in
       let work = Save.manual t.saves t.latest.setup checkpoint in
@@ -1467,7 +1553,7 @@ let install_restored t game setup undo pending =
     };
   publish t;
   if pending then
-    let _ = end_turn t () in
+    let _ = end_turn ~restored:true t () in
     ()
   else
     let _ = ensure_enemy t Restored in
@@ -1488,8 +1574,8 @@ let restore_checkpoint ?(reload = false) t id =
 let restore_progress t id = restore_checkpoint t id
 
 let save_after_cleanup t =
-  if Save.awaiting t.saves || ((state t).turn = Domain.Side.Enemy && (state t).winner = None) then
-    Js.Promise.resolve ()
+  if Save.awaiting t.saves || ((state t).turn = Domain.Turn_phase.Ai && (state t).winner = None)
+  then Js.Promise.resolve ()
   else
     Js.Promise.then_
       (function
@@ -1630,7 +1716,7 @@ let trace_context t =
       ("cols", num (Int32.to_float state.cols));
       ("rows", num (Int32.to_float state.rows));
       ("round", num state.round);
-      ("turn", str (Enum.string_of_side state.turn));
+      ("turn", str (Enum.string_of_phase state.turn));
       ("snapshot", field serialized "state");
       ( "lighting",
         obj

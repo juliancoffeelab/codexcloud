@@ -159,6 +159,8 @@ pub enum Family {
     GiantBat,
     #[serde(rename = "giant-spider")]
     GiantSpider,
+    #[serde(rename = "giant-snake")]
+    GiantSnake,
     Adept,
     Archer,
     Boar,
@@ -203,6 +205,7 @@ impl Family {
             Self::Bear => "bear",
             Self::GiantBat => "giant-bat",
             Self::GiantSpider => "giant-spider",
+            Self::GiantSnake => "giant-snake",
             Self::Adept => "adept",
             Self::Archer => "archer",
             Self::Boar => "boar",

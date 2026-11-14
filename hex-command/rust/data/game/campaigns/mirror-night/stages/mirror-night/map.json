@@ -10,13 +10,15 @@
       "terrain": "water",
       "owner": null,
       "floor": "dark-water",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -25,13 +27,15 @@
       "terrain": "water",
       "owner": null,
       "floor": "dark-water",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -40,13 +44,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -55,13 +61,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -70,13 +78,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -85,13 +95,15 @@
       "terrain": "hill",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -100,13 +112,15 @@
       "terrain": "hill",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -115,13 +129,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -130,13 +146,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -145,13 +163,15 @@
       "terrain": "water",
       "owner": null,
       "floor": "dark-water",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -160,13 +180,15 @@
       "terrain": "water",
       "owner": null,
       "floor": "dark-water",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -175,13 +197,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -190,13 +214,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -205,13 +231,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -221,14 +249,6 @@
       "owner": null,
       "floor": "green-plain",
       "connections": [],
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
-      },
       "light": {
         "dy": 6,
         "radius": 95,
@@ -240,6 +260,16 @@
           },
           "remember": false
         }
+      },
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -248,13 +278,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -263,13 +295,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -278,13 +312,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -294,14 +330,6 @@
       "owner": null,
       "floor": "green-plain",
       "connections": [],
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
-      },
       "light": {
         "dy": 6,
         "radius": 95,
@@ -313,6 +341,16 @@
           },
           "remember": false
         }
+      },
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -321,13 +359,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -336,13 +376,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -351,13 +393,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -366,13 +410,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -381,13 +427,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -396,13 +444,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -411,13 +461,15 @@
       "terrain": "hill",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -426,13 +478,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -441,13 +495,15 @@
       "terrain": "forest",
       "owner": null,
       "floor": "green-forest",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -456,13 +512,15 @@
       "terrain": "forest",
       "owner": null,
       "floor": "green-forest",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -471,13 +529,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -486,13 +546,15 @@
       "terrain": "hill",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -501,13 +563,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -516,13 +580,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -531,17 +597,19 @@
       "terrain": "keep",
       "owner": "player",
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
-      },
       "light": {
         "radius": 110,
         "power": 0.8
+      },
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -550,13 +618,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -565,13 +635,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -580,13 +652,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -595,13 +669,15 @@
       "terrain": "forest",
       "owner": null,
       "floor": "green-forest",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -610,13 +686,15 @@
       "terrain": "forest",
       "owner": null,
       "floor": "green-forest",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -625,13 +703,15 @@
       "terrain": "forest",
       "owner": null,
       "floor": "green-forest",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -640,13 +720,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -655,13 +737,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -670,32 +754,36 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
       "col": 10,
       "row": 3,
       "terrain": "keep",
-      "owner": "enemy",
+      "owner": "night-host",
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
-      },
       "light": {
         "radius": 110,
         "power": 0.8
+      },
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -704,13 +792,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -719,13 +809,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -734,13 +826,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -749,13 +843,15 @@
       "terrain": "hill",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -764,13 +860,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -779,13 +877,15 @@
       "terrain": "forest",
       "owner": null,
       "floor": "green-forest",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -794,13 +894,15 @@
       "terrain": "forest",
       "owner": null,
       "floor": "green-forest",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -809,13 +911,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -824,13 +928,15 @@
       "terrain": "hill",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -839,13 +945,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -854,13 +962,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -869,13 +979,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -884,13 +996,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -899,13 +1013,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -915,14 +1031,6 @@
       "owner": null,
       "floor": "green-plain",
       "connections": [],
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
-      },
       "light": {
         "dy": 6,
         "radius": 95,
@@ -934,6 +1042,16 @@
           },
           "remember": false
         }
+      },
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -942,13 +1060,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -957,13 +1077,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -972,13 +1094,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -988,14 +1112,6 @@
       "owner": null,
       "floor": "green-plain",
       "connections": [],
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
-      },
       "light": {
         "dy": 6,
         "radius": 95,
@@ -1007,6 +1123,16 @@
           },
           "remember": false
         }
+      },
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -1015,13 +1141,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -1030,13 +1158,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -1045,13 +1175,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -1060,13 +1192,15 @@
       "terrain": "water",
       "owner": null,
       "floor": "dark-water",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -1075,13 +1209,15 @@
       "terrain": "water",
       "owner": null,
       "floor": "dark-water",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -1090,13 +1226,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -1105,13 +1243,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -1120,13 +1260,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -1135,13 +1277,15 @@
       "terrain": "hill",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -1150,13 +1294,15 @@
       "terrain": "hill",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -1165,13 +1311,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -1180,13 +1328,15 @@
       "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -1195,13 +1345,15 @@
       "terrain": "water",
       "owner": null,
       "floor": "dark-water",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     },
     {
@@ -1210,13 +1362,15 @@
       "terrain": "water",
       "owner": null,
       "floor": "dark-water",
-      "fog": {
-        "condition": {
-          "kind": "proximity",
-          "side": "player",
-          "radius": 2
-        },
-        "remember": true
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
       }
     }
   ],

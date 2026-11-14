@@ -52,6 +52,10 @@ impl Serialize for Canonical<'_, State> {
         map.serialize_entry("tiles", &Slice(&s.tiles))?;
         map.serialize_entry("turn", &s.turn)?;
         map.serialize_entry("units", &Slice(&s.units))?;
+        map.serialize_entry(
+            "visionGroups",
+            &serde_json::to_value(&s.vision_groups).map_err(serde::ser::Error::custom)?,
+        )?;
         map.serialize_entry("winner", &s.winner)?;
         map.end()
     }
@@ -70,12 +74,6 @@ impl Serialize for Canonical<'_, Tile> {
         if let Some(value) = &t.floor {
             map.serialize_entry("floor", value)?;
         }
-        if let Some(fog) = &t.fog {
-            map.serialize_entry(
-                "fog",
-                &serde_json::to_value(fog).map_err(serde::ser::Error::custom)?,
-            )?;
-        }
         map.serialize_entry("id", &t.id)?;
         if let Some(light) = &t.light {
             map.serialize_entry(
@@ -87,6 +85,10 @@ impl Serialize for Canonical<'_, Tile> {
             map.serialize_entry("location", location)?;
         }
         map.serialize_entry("owner", &t.owner)?;
+        map.serialize_entry(
+            "perception",
+            &serde_json::to_value(&t.perception).map_err(serde::ser::Error::custom)?,
+        )?;
         map.serialize_entry("row", &t.row)?;
         map.serialize_entry("terrain", &t.terrain)?;
         if let Some(walls) = &t.walls {
@@ -102,7 +104,7 @@ impl Serialize for Canonical<'_, PublicUnit> {
         if let Some(group) = &u.ai_group {
             map.serialize_entry("aiGroup", group)?;
         }
-        map.serialize_entry("attacked", &u.attacked)?;
+        map.serialize_entry("attackSpent", &u.attack_spent)?;
         if let Some(value) = &u.character {
             map.serialize_entry("character", value)?;
         }
@@ -110,9 +112,7 @@ impl Serialize for Canonical<'_, PublicUnit> {
         if let Some(value) = &u.experience {
             map.serialize_entry("experience", value)?;
         }
-        if let Some(faction) = &u.faction {
-            map.serialize_entry("faction", faction)?;
-        }
+        map.serialize_entry("faction", &u.faction)?;
         map.serialize_entry("hp", &u.hp)?;
         map.serialize_entry("id", &u.id)?;
         if !u.items.is_empty() {
@@ -122,16 +122,20 @@ impl Serialize for Canonical<'_, PublicUnit> {
             )?;
         }
         map.serialize_entry("moved", &u.moved)?;
+        map.serialize_entry(
+            "perceptionEffects",
+            &serde_json::to_value(&u.perception_effects).map_err(serde::ser::Error::custom)?,
+        )?;
         if let Some(value) = &u.rebuilding {
             map.serialize_entry("rebuilding", value)?;
         }
         if let Some(value) = &u.retreating {
             map.serialize_entry("retreating", value)?;
         }
+        map.serialize_entry("revealedTo", &u.revealed_to)?;
         if let Some(value) = &u.role {
             map.serialize_entry("role", value)?;
         }
-        map.serialize_entry("side", &u.side)?;
         map.serialize_entry("tile", &u.tile)?;
         map.serialize_entry("type", &u.r#type)?;
         map.end()
@@ -171,7 +175,7 @@ mod tests {
         let rules = Catalog::load().unwrap();
         let mut states = vec![
             Game::new(&rules, "mirror").state(),
-            Game::start_campaign(&rules, "green-accord", 0, vec![], 0, vec![], vec![], vec![])
+            Game::start_campaign(&rules, "mirror-night", 0, vec![], 0, vec![], vec![], vec![])
                 .state(),
         ];
         for s in &mut states {

@@ -47,6 +47,7 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
         Self {
             mission: MissionPolicy::new(game.campaign_view(), game.phase_forecasts()),
             input: CampaignInput {
+                seed: config.seed,
                 goals: config.goals,
                 diplomacy: config.diplomacy,
             },
@@ -120,7 +121,7 @@ impl<'catalog> PlanningContext<'catalog> {
         recruitment.recruited.extend(self.recruitment.recruited);
         recruitment.mandatory.extend(self.recruitment.mandatory);
         TurnPlan {
-            commands: self.commands,
+            commands: self.commands.into_iter().map(Into::into).collect(),
             recruitment,
             planning,
         }
@@ -132,14 +133,14 @@ pub(crate) struct RecruitmentContext<'a, 'catalog> {
     seed: u32,
     budget: Option<usize>,
 }
-impl RecruitmentContext<'_, '_> {
+impl<'context, 'catalog> RecruitmentContext<'context, 'catalog> {
     pub(in crate::ai) fn seed(&self) -> u32 {
         self.seed
     }
     pub(in crate::ai) fn budget(&self) -> Option<usize> {
         self.budget
     }
-    pub(in crate::ai) fn battle(&self) -> &BattleView<'_, '_> {
+    pub(in crate::ai) fn battle(&self) -> &BattleView<'_, 'catalog> {
         self.draft
     }
     pub(in crate::ai) fn emit(&mut self, command: Command) -> Result<(), CommandError> {
@@ -158,7 +159,7 @@ pub(crate) struct TacticalContext<'a, 'catalog> {
     commands: &'a mut Vec<Command>,
     workspace: &'a mut PlanningWorkspace,
 }
-impl TacticalContext<'_, '_> {
+impl<'context, 'catalog> TacticalContext<'context, 'catalog> {
     pub(in crate::ai) fn is_boundary(&self) -> bool {
         self.combat_boundary
     }
@@ -169,9 +170,9 @@ impl TacticalContext<'_, '_> {
     pub(in crate::ai) fn classic_parts(
         &mut self,
     ) -> (
-        &BattleView<'_, '_>,
-        PhaseForecasts<'_, '_>,
-        ActionForecastSource<'_, '_>,
+        &BattleView<'_, 'catalog>,
+        PhaseForecasts<'_, 'catalog>,
+        ActionForecastSource<'_, 'catalog>,
         super::PlannerParts<'_, crate::ai::planner::classic::Session>,
     ) {
         (
@@ -184,9 +185,9 @@ impl TacticalContext<'_, '_> {
     pub(in crate::ai) fn full_parts(
         &mut self,
     ) -> (
-        &BattleView<'_, '_>,
-        PhaseForecasts<'_, '_>,
-        ActionForecastSource<'_, '_>,
+        &BattleView<'_, 'catalog>,
+        PhaseForecasts<'_, 'catalog>,
+        ActionForecastSource<'_, 'catalog>,
         super::PlannerParts<'_, crate::ai::planner::search::Session>,
     ) {
         (
@@ -199,9 +200,9 @@ impl TacticalContext<'_, '_> {
     pub(in crate::ai) fn queued_parts(
         &mut self,
     ) -> (
-        &BattleView<'_, '_>,
-        PhaseForecasts<'_, '_>,
-        ActionForecastSource<'_, '_>,
+        &BattleView<'_, 'catalog>,
+        PhaseForecasts<'_, 'catalog>,
+        ActionForecastSource<'_, 'catalog>,
         super::PlannerParts<'_, crate::ai::planner::queued::Session>,
     ) {
         (
@@ -211,7 +212,7 @@ impl TacticalContext<'_, '_> {
             self.workspace.queued_parts(),
         )
     }
-    pub(in crate::ai) fn battle(&self) -> &BattleView<'_, '_> {
+    pub(in crate::ai) fn battle(&self) -> &BattleView<'_, 'catalog> {
         self.draft
     }
     #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
@@ -310,7 +311,7 @@ impl TacticalContext<'_, '_> {
                     &actor,
                     None,
                     actor.rebuilding,
-                    actor.attacked,
+                    actor.attack_spent,
                 ))?;
             }
             self.emit(Command::Attack {

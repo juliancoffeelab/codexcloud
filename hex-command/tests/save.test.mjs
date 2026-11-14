@@ -1,5 +1,10 @@
 import "./storage-fixture.mjs";
 import {
+  migrate_save as migrateSave,
+  migrate_v1_to_v2 as migrateV1ToV2,
+  save_version as SAVE_VERSION,
+} from "@migrations/Migration_api.js";
+import {
   inspect_storage as inspectStorageV1ToV2,
   repair_storage as repairStorageV1ToV2,
   history_key as HISTORY_KEY,
@@ -8,17 +13,12 @@ import {
 import { repairImport } from "./persistence-adapter.mjs";
 import { readSave, storeSave } from "./persistence-adapter.mjs";
 import { historicalCharacters, historicalTiles } from "./legacy-save.mjs";
-import { Game } from "./game-fixture.mjs";
-import { campaigns as CAMPAIGNS } from "@migrations/Migration_api.js";
-import { import_wave_marker as importWaveMarker } from "@migrations/Migration_api.js";
+import { historicalState } from "./historical-fixture.mjs";
 import assert from "node:assert/strict";
 import { beforeEach, test, vi } from "vitest";
 import { LiveGame, nativeValue } from "./persistence-adapter.mjs";
 import { loadBattle } from "./persistence-adapter.mjs";
-import { migrate_save as migrateSave } from "@migrations/Migration_api.js";
 import historicalLeaderTypes from "../packages/save-migrations/src/legacy/data/type-leaders-v5.json";
-import { migrate_v1_to_v2 as migrateV1ToV2 } from "@migrations/Migration_api.js";
-import { save_version as SAVE_VERSION } from "@migrations/Migration_api.js";
 import { saveBattle } from "./persistence-adapter.mjs";
 import { createTestFactory } from "./persistence-adapter.mjs";
 import { TestStorage } from "./helpers.mjs";
@@ -121,14 +121,14 @@ test("Live WASM catalog contains no historical save metadata", async () => {
       }
     }
 });
-function checkpoint(start = { kind: "campaign", id: "borrowed-tide" }) {
+function checkpoint(start = { kind: "campaign", id: "mirror-night" }) {
   const factory = createTestFactory();
   const game = LiveGame.create(factory, start);
   const saved = structuredClone(nativeValue(game.checkpoint()));
   game.dispose();
   return saved;
 }
-function oldSnapshot(input = checkpoint().state) {
+function oldSnapshot(input = historicalState("lantern-road", 0)) {
   const { tiles, cols: _cols, rows: _rows, ...state } = historicalCharacters(input);
   return {
     version: 1,
@@ -234,7 +234,7 @@ test("Pending enemy replay preserves the player checkpoint through both versions
   assert.equal(restored.game.turn, "player");
   assert.equal(JSON.parse(await readSave()).pendingEnemy, true);
   restored.game.dispose();
-  old.state.turn = "enemy";
+  old.state.turn = "ai";
   assert.throws(() => migrateSave(old));
 });
 test("Version-four migration discards AI actions without executing the enemy turn", async () => {
@@ -267,12 +267,11 @@ test("Version-four migration discards AI actions without executing the enemy tur
   const converted = await readSave();
   assert.deepEqual(JSON.parse(converted), migrated.save);
   assert.equal(migrateSave(JSON.parse(converted)).migrated, false);
-  for (let steps = 0; loaded.game.turn === "enemy" && !loaded.game.winner; steps++) {
+  for (let steps = 0; loaded.game.turn === "ai" && !loaded.game.winner; steps++) {
     assert(steps < 100);
     loaded.game.enemyStep();
     await saveBattle(loaded.game);
-    if (loaded.game.turn === "enemy" && !loaded.game.winner)
-      assert.equal(await readSave(), converted);
+    if (loaded.game.turn === "ai" && !loaded.game.winner) assert.equal(await readSave(), converted);
   }
   const latest = JSON.parse(await readSave());
   assert.equal(latest.version, SAVE_VERSION);
@@ -302,110 +301,6 @@ test("Explicit source reset allows saving after rejection", async () => {
   assert.equal(JSON.parse(await readSave()).version, SAVE_VERSION);
   restored.game.dispose();
 });
-for (const [id, chapter, type, tile, numericMarks] of [
-  ["ashen-oath", 2, "boar", "9,4", ["wave:0", "wave:1"]],
-]) {
-  test(`Legacy ${id} delayed waves retain wounded troops and cannot deploy twice`, async () => {
-    const game = Game.startCampaign(id, chapter);
-    game.advanceDialogue(true);
-    game.mapRevision = 1;
-    game.round = 8;
-    game.addUnit(type, "enemy", tile).hp = 1;
-    game.campaign.marks.push(...numericMarks);
-    const { campaignDeploymentFormat: _tag, ...old } = oldSnapshot(game.captureState());
-    old.pendingEnemy = true;
-    const mission = CAMPAIGNS[id].missions[chapter];
-    const converted = migrateSave(old).save;
-    const expectedMarks = [
-      ...numericMarks.map((mark) => importWaveMarker(mark, [...mission.waves].reverse())),
-      ...mission.waves
-        .filter((wave) => wave.previouslyDeployedBeforeRevision === 2)
-        .map((wave) => `wave:${wave.id}`),
-    ];
-    assert.deepEqual(converted.checkpoint.state.units, game.units);
-    assert.deepEqual(converted.checkpoint.state.gold, game.gold);
-    assert.equal(converted.pendingEnemy, true);
-    for (const mark of expectedMarks)
-      assert(!converted.checkpoint.state.campaign.scripts.active.includes(mark.slice(5)));
-    await storeSave(JSON.stringify(old));
-    const loaded = await loadBattle(createTestFactory());
-    assert.equal(loaded.notice, void 0);
-    assert.equal(loaded.game.mapRevision, 2);
-    assert.deepEqual(loaded.game.captureState().units, game.units);
-    loaded.game.endTurn();
-    assert.deepEqual(
-      loaded.game.captureState().units,
-      game.units,
-      "Previously deployed waves cannot respawn",
-    );
-    while (loaded.game.turn === "enemy" && !loaded.game.winner) loaded.game.enemyStep();
-    await saveBattle(loaded.game);
-    const again = await loadBattle(createTestFactory());
-    assert.deepEqual(again.game.captureState(), loaded.game.captureState());
-    again.game.dispose();
-    loaded.game.dispose();
-  });
-}
-test("Tagged wave IDs survive import regardless of authored list ordering", async () => {
-  const game = Game.startCampaign("ashen-oath", 2);
-  game.campaign.marks.push("wave:north-binding-rise");
-  const old = oldSnapshot(game.captureState());
-  const converted = migrateSave(old).save;
-  const waves = [...CAMPAIGNS["ashen-oath"].missions[2].waves].reverse();
-  assert.equal(importWaveMarker("wave:0", waves), "wave:north-binding-rise");
-  assert.equal(importWaveMarker("wave:2", waves), "wave:masters-boar");
-  assert(!converted.checkpoint.state.campaign.scripts.active.includes("north-binding-rise"));
-  const restored = LiveGame.restore(createTestFactory(), converted.checkpoint, converted.setup);
-  assert(!restored.campaign.scripts.active.includes("north-binding-rise"));
-  restored.dispose();
-});
-test("Legacy pre-rescue hold clocks reset, while earned victories stay completed", async () => {
-  const game = Game.startCampaign("borrowed-tide", 1);
-  const old = oldSnapshot(game.captureState());
-  old.state.round = 4;
-  old.state.campaign.holds = historicalTiles({
-    "5,4": { heldTurns: 2, lastCountedRound: 4 },
-  });
-  const converted = migrateSave(old).save;
-  assert.equal(
-    converted.checkpoint.state.campaign.scripts.holds.find((h) => h.event === "goal-1")?.turns ?? 0,
-    0,
-  );
-  assert(!converted.checkpoint.state.campaign.marks.includes("event:rescue"));
-  const restored = LiveGame.restore(createTestFactory(), converted.checkpoint, converted.setup);
-  assert.equal(restored.campaign.scripts.holds.find((h) => h.event === "goal-1")?.turns ?? 0, 0);
-  restored.dispose();
-  old.state.winner = "player";
-  old.state.campaign.outcome = "Mission complete. The company can rest and regroup.";
-  const finished = migrateSave(old).save;
-  assert.equal(finished.checkpoint.state.winner, "player");
-  assert(finished.checkpoint.state.campaign.flags.rescue?.at(-1)?.state);
-  const earned = LiveGame.restore(createTestFactory(), finished.checkpoint, finished.setup);
-  assert.equal(earned.winner, "player");
-  earned.dispose();
-});
-for (const dead of [false, true]) {
-  test(`Version-one truce ${dead ? "keeps Dain dead" : "restores living Dain"}`, async () => {
-    const game = Game.startCampaign("green-accord", 1);
-    const old = oldSnapshot(game.captureState());
-    old.state.mapRevision = 1;
-    old.state.units = old.state.units.filter((unit) => unit.name !== "Captain Dain");
-    Object.assign(old.state.campaign, { choices: dead ? ["green-dain-dead"] : [] });
-    const converted = migrateSave(old).save;
-    assert.equal(converted.checkpoint.state.mapRevision, 2);
-    assert.equal(
-      converted.checkpoint.state.units.some((unit) => unit.character === "dain"),
-      !dead,
-    );
-    assert(!converted.checkpoint.state.campaign.marks.includes("dain-fell"));
-    const restored = LiveGame.restore(createTestFactory(), converted.checkpoint, converted.setup);
-    assert.equal(
-      restored.units.some((unit) => unit.character === "dain"),
-      !dead,
-    );
-    restored.dispose();
-  });
-}
 test("Repair distinguishes a missing history list from present empty or invalid text", () => {
   for (const text of [null, "", "{broken", JSON.stringify({ version: 4, entries: [] })]) {
     for (const hasSnapshot of [false, true]) {

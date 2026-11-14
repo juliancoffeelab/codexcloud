@@ -1,7 +1,7 @@
 //! Equipment moves with its owner, or remains on a tile when dropped.
-use super::battle::Game;
+use super::battle::BattlePosition;
 use crate::data::*;
-impl Game<'_> {
+impl BattlePosition<'_> {
     #[inline]
     pub(crate) fn equipment_modifier(&self, unit: &Unit, damage: DamageType) -> i32 {
         if unit.inventory.0 == 0 {

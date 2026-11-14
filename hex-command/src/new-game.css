@@ -189,6 +189,9 @@
   gap: 2px;
   border-bottom: 1px solid #39413688;
 }
+.ng-segments.ng-player-control {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 .ng-segments.ng-custom {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }

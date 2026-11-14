@@ -1,13 +1,14 @@
 type mode = Skirmish | Campaign
 type policy = Relaxed | Standard | Veteran
 type difficulty_choice = Preset of policy | Custom
-type first_turn = Random | First of Domain.Side.t
+type first_turn = Random | First of Domain.Turn_phase.t
 
 type t = {
-  first : Domain.Side.t;
+  first : Domain.Turn_phase.t;
   policy : policy;
   diplomacy : Domain.Diplomacy.t;
   overrides : (Domain.Planner_kind.t * Domain.Recruiter_kind.t) option;
+  player_ai : policy option;
 }
 
 type difficulty = {
@@ -74,24 +75,39 @@ let difficulty planner recruiter =
   | None -> Custom
 
 let first setup = setup.first
+let player_ai setup = setup.player_ai
+let with_player_ai setup player_ai = { setup with player_ai }
 
 let default =
   {
-    first = Domain.Side.Player;
+    first = Domain.Turn_phase.Player;
     policy = Relaxed;
     diplomacy = Domain.Diplomacy.Diplomatic;
     overrides = None;
+    player_ai = None;
   }
 
 let campaign ?overrides policy =
-  { first = Domain.Side.Player; policy; diplomacy = Domain.Diplomacy.Diplomatic; overrides }
+  {
+    first = Domain.Turn_phase.Player;
+    policy;
+    diplomacy = Domain.Diplomacy.Diplomatic;
+    overrides;
+    player_ai = None;
+  }
 
 let skirmish ~first ~planner ~recruiter =
   let policy =
     match difficulty planner recruiter with Preset policy -> policy | Custom -> Veteran
   in
 
-  { first; policy; diplomacy = Domain.Diplomacy.Diplomatic; overrides = Some (planner, recruiter) }
+  {
+    first;
+    policy;
+    diplomacy = Domain.Diplomacy.Diplomatic;
+    overrides = Some (planner, recruiter);
+    player_ai = None;
+  }
 
 let ai_options setup : Domain.ai_options =
   {
@@ -112,15 +128,16 @@ let ai_options setup : Domain.ai_options =
 let completed_turns setup (state : Domain.state) =
   max 0.
     (((state.round -. 1.) *. 2.)
-    +. (if state.turn = Domain.Side.Enemy then 1. else 0.)
-    -. if setup.first = Domain.Side.Enemy then 1. else 0.)
+    +. (if state.turn = Domain.Turn_phase.Ai then 1. else 0.)
+    -. if setup.first = Domain.Turn_phase.Ai then 1. else 0.)
 
 let invalid () = invalid_arg "Invalid saved setup"
 
 (* The saved browser preference type is narrower than Rust's AI configuration.
    This adapter preserves that distinction rather than accepting simulation-only
    policies which the browser cannot offer or restore. *)
-let of_wire ({ Save_format.first; enemy = { policy; diplomacy; blocks } } : Save_format.setup) =
+let of_wire
+    ({ Save_format.first; enemy = { policy; diplomacy; blocks }; player } : Save_format.setup) =
   let policy =
     match policy with `Classic -> Relaxed | `Situational -> Standard | `Predictor -> Veteran
   in
@@ -130,11 +147,20 @@ let of_wire ({ Save_format.first; enemy = { policy; diplomacy; blocks } } : Save
         (planner, recruiter))
       blocks
   in
-  { first; policy; diplomacy; overrides }
+  let player_ai =
+    Option.map
+      (function `Classic -> Relaxed | `Situational -> Standard | `Predictor -> Veteran)
+      player
+  in
+  { first; policy; diplomacy; overrides; player_ai }
 
 let to_wire setup : Save_format.setup =
   {
     first = setup.first;
+    player =
+      Option.map
+        (function Relaxed -> `Classic | Standard -> `Situational | Veteran -> `Predictor)
+        setup.player_ai;
     enemy =
       {
         policy =

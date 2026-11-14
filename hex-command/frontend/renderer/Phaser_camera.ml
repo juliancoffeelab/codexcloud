@@ -713,8 +713,10 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
           (fun (unit : Domain.public_unit) -> Hex.key unit.tile)
           (Option.bind id (Native.unit view.game))
       in
-      Array_ext.filter_map Fun.id
-        [| unit_tile view.selected; unit_tile view.target; view.inspected_tile |]
+      Array.append
+        (Array_ext.filter_map Fun.id
+           [| unit_tile view.selected; unit_tile view.target; view.inspected_tile |])
+        (if view.follow_ai then view.ai_focus else [||])
 
     method private prepare_layout delta =
       frame_delta <- delta;

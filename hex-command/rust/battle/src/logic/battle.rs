@@ -135,13 +135,18 @@ struct TileGeometry {
     walls: Rc<Vec<Option<Vec<HexDirection>>>>,
     dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
     floors: Rc<Vec<Option<String>>>,
-    fog: Rc<Vec<Option<std::sync::Arc<ConditionRule>>>>,
+    tile_perception: Rc<Vec<TilePerception>>,
     light: Rc<Vec<Option<std::sync::Arc<TileLight>>>>,
 }
 
 /// Immutable planning facts are shared; a mutation detaches only its branch.
 #[derive(Clone, Debug)]
 pub(crate) struct Shared<T: Clone>(Rc<T>);
+impl<T: Clone> Shared<T> {
+    pub(crate) fn into_inner(self) -> T {
+        Rc::unwrap_or_clone(self.0)
+    }
+}
 impl<T: Clone> From<T> for Shared<T> {
     fn from(value: T) -> Self {
         Self(Rc::new(value))
@@ -166,10 +171,23 @@ impl<T: Clone> AsRef<T> for Shared<T> {
     }
 }
 /// Owned live data; no catalog borrows and no wire representation.
-#[derive(Debug)]
-pub struct BattleState {
+#[derive(Clone, Debug)]
+pub(crate) struct PositionState {
     pub(crate) scope: crate::BattleScope,
+    pub(crate) character_names: Rc<HashMap<String, String>>,
+    pub(crate) campaign_battle: bool,
+    pub(crate) tracks_path: bool,
+    pub(crate) traversal: Option<(u32, Vec<usize>)>,
+    pub(crate) mechanical_deaths: Vec<Unit>,
+    pub(crate) resolved_recruitment: Rc<std::collections::BTreeMap<String, Vec<FactionRecruit>>>,
+    pub(crate) terrain_emitters: Rc<Vec<usize>>,
+    pub(crate) fixed_sights: Rc<Vec<(usize, VisionGroupKey, ResolvedSightProfile)>>,
+    pub(crate) perception_sensitive: bool,
+    pub(crate) observed_light: Rc<super::geometry::TileSet>,
+    pub(crate) fixed_lights: Rc<Vec<super::perception::ResolvedFixedLight>>,
     pub(crate) factions: Rc<Vec<Faction>>,
+    pub(crate) vision_groups: Rc<Vec<VisionGroupState>>,
+    pub(crate) unit_perception: Shared<Vec<UnitPerceptionFacts>>,
     /// Turn-local controller scope, never persisted.
     pub(crate) active_faction: Option<String>,
     pub(crate) board: Rc<Board>,
@@ -178,15 +196,11 @@ pub struct BattleState {
     pub(crate) connections: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) walls: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
-    pub(crate) fog: Rc<Vec<Option<std::sync::Arc<ConditionRule>>>>,
+    pub(crate) tile_perception: Rc<Vec<TilePerception>>,
     pub(crate) light: Rc<Vec<Option<std::sync::Arc<TileLight>>>>,
     pub(crate) condition_memory: Rc<Vec<String>>,
     /// Derived tile-indexed remembered fog; never serialized.
-    pub(crate) fog_memory: Vec<u64>,
-    pub(super) traversal: Option<(u32, Vec<usize>)>,
-    pub(crate) event_deaths: Vec<super::events::DeathOccurrence>,
-    pub(super) event_departure: Option<Unit>,
-    pub(super) event_opening: bool,
+    pub(crate) fog_memory: Rc<HashMap<String, Vec<u64>>>,
     pub(crate) floors: Rc<Vec<Option<String>>>,
     pub(crate) units: Vec<Unit>,
     pub(crate) ground_items: Vec<GroundItemState>,
@@ -197,27 +211,22 @@ pub struct BattleState {
     pub(crate) cols: i32,
     pub(crate) rows: i32,
     pub(crate) round: u32,
-    pub(crate) turn: Side,
+    pub(crate) turn: TurnPhase,
     pub(crate) gold: Gold,
-    pub(crate) winner: Option<Side>,
+    pub(crate) winner: Option<BattleResult>,
     pub(crate) next_id: u32,
     pub(crate) combat_rng: u32,
     pub(crate) log: Vec<String>,
-    pub(crate) campaign: Option<Shared<CampaignState>>,
-    pub(crate) scripts: Option<Shared<EventProgress>>,
     pub(crate) last_combat: Option<LastCombat>,
     #[cfg(feature = "wasm")]
     pub(crate) combat_animation: Option<crate::model::CombatAnimation>,
     pub(crate) combat_present: bool,
     pub(crate) armies: Option<[String; 2]>,
     pub(crate) pools: Option<[Vec<usize>; 2]>,
-    pub(crate) arena_first: Option<Side>,
-    pub(crate) mission: Option<Rc<CompiledMission>>,
+    pub(crate) arena_first: Option<TurnPhase>,
     /// The selected immutable definition; absent only for a non-campaign game.
-    pub(super) campaign_definition: Option<CampaignRules>,
-    mission_key: Option<MissionKey>,
     #[cfg(not(target_arch = "wasm32"))]
-    pub(crate) recordings: Option<Records>,
+    pub(crate) recordings: Option<Shared<Records>>,
     pub(super) route_cache: Rc<RefCell<HashMap<super::movement::RouteKey, Rc<Vec<u16>>>>>,
     pub(super) terrain_revision: u64,
     pub(super) attack_geometry: super::geometry::AttackGeometry,
@@ -232,83 +241,63 @@ pub struct BattleState {
     pub(crate) occupied_tiles: super::geometry::TileSet,
     pub(super) unit_indices: HashMap<u32, usize>,
 }
+/// Opaque owned live storage used by native hosts between catalog loans.
 #[derive(Debug)]
-pub(crate) struct Game<'catalog> {
+pub struct BattleState {
+    pub(crate) position: PositionState,
+    pub(crate) story: CampaignRuntime,
+}
+/// Physical state has no campaign interpreter or narrative history.
+#[derive(Debug)]
+pub(crate) struct BattlePosition<'catalog> {
     pub(crate) rules: &'catalog Rules,
     pub(crate) mechanics: &'catalog UnitMechanics,
-    pub(crate) runtime: BattleState,
+    pub(crate) runtime: PositionState,
 }
-impl std::ops::Deref for Game<'_> {
-    type Target = BattleState;
+#[derive(Clone, Debug)]
+pub(crate) struct CampaignRuntime {
+    pub(crate) planning_revision: u64,
+    pub(crate) event_deaths: Vec<super::events::DeathOccurrence>,
+    pub(super) event_departure: Option<Unit>,
+    pub(super) event_opening: bool,
+    pub(crate) campaign: Option<Shared<CampaignState>>,
+    pub(crate) scripts: Option<Shared<EventProgress>>,
+    pub(crate) mission: Option<Rc<CompiledMission>>,
+    pub(super) campaign_definition: Option<CampaignRules>,
+    mission_key: Option<MissionKey>,
+}
+#[derive(Debug)]
+pub(crate) struct Game<'catalog> {
+    pub(crate) position: BattlePosition<'catalog>,
+    pub(crate) story: CampaignRuntime,
+}
+impl<'catalog> std::ops::Deref for Game<'catalog> {
+    type Target = BattlePosition<'catalog>;
+    #[inline]
+    fn deref(&self) -> &Self::Target {
+        &self.position
+    }
+}
+impl std::ops::DerefMut for Game<'_> {
+    #[inline]
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.position
+    }
+}
+impl std::ops::Deref for BattlePosition<'_> {
+    type Target = PositionState;
     #[inline]
     fn deref(&self) -> &Self::Target {
         &self.runtime
     }
 }
-impl std::ops::DerefMut for Game<'_> {
+impl std::ops::DerefMut for BattlePosition<'_> {
     #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.runtime
     }
 }
 impl<'catalog> Game<'catalog> {
-    #[inline]
-    pub(crate) fn name(&self, key: Option<NameKey>) -> Option<&str> {
-        self.runtime.names.resolve(key)
-    }
-    pub(crate) fn intern_name(&mut self, value: &str) -> NameKey {
-        if let Some(key) = self.runtime.names.find(value) {
-            key
-        } else {
-            std::sync::Arc::make_mut(&mut self.runtime.names).intern(value.to_owned())
-        }
-    }
-    #[inline]
-    pub(crate) fn inventory(&self, unit: &Unit) -> impl ExactSizeIterator<Item = &Item> + Clone {
-        self.runtime.inventories.items(unit.inventory)
-    }
-    pub(crate) fn set_inventory(&mut self, id: u32, items: Vec<Item>) {
-        let inventory =
-            std::sync::Arc::make_mut(&mut self.runtime.inventories).load(items, self.mechanics);
-        let index = self.index(id).unwrap();
-        self.runtime.units[index].inventory = inventory;
-    }
-    pub(crate) fn give_item(&mut self, id: u32, item: Item) {
-        let item =
-            std::sync::Arc::make_mut(&mut self.runtime.inventories).add_item(item, self.mechanics);
-        self.give_existing_item(id, item);
-    }
-    pub(crate) fn give_existing_item(&mut self, id: u32, item: ItemId) {
-        let index = self.index(id).unwrap();
-        let old = self.runtime.units[index].inventory;
-        let inventory =
-            std::sync::Arc::make_mut(&mut self.runtime.inventories).edit(old, None, Some(item));
-        self.runtime.units[index].inventory = inventory;
-    }
-    pub(crate) fn drop_item(&mut self, id: u32, slot: usize) -> ItemId {
-        let index = self.index(id).unwrap();
-        let old = self.runtime.units[index].inventory;
-        let item = self.runtime.inventories.item_ids(old)[slot];
-        let inventory =
-            std::sync::Arc::make_mut(&mut self.runtime.inventories).edit(old, Some(slot), None);
-        self.runtime.units[index].inventory = inventory;
-        item
-    }
-    #[inline]
-    pub(crate) fn source_weapon(&self, weapon: &WeaponRules) -> &Weapon {
-        if weapon.source < self.mechanics.weapons.len() {
-            let (kind, slot) = self.mechanics.weapon_sources[weapon.source];
-            &self.rules.units[kind].attacks[slot]
-        } else {
-            self.runtime
-                .inventories
-                .source(weapon.source, self.mechanics)
-        }
-    }
-    #[inline]
-    pub(crate) fn weapon_id(&self, key: WeaponKey) -> String {
-        self.mechanics.weapon_id(key)
-    }
     pub(crate) fn from_state(rules: &'catalog Rules, state: State) -> Self {
         let definition = state
             .campaign
@@ -394,7 +383,7 @@ impl<'catalog> Game<'catalog> {
         let mut walls = Vec::with_capacity(n);
         let mut dead_ends = Vec::with_capacity(n);
         let mut floors = Vec::with_capacity(n);
-        let mut fog = Vec::with_capacity(n);
+        let mut tile_perception = Vec::with_capacity(n);
         let mut light = Vec::with_capacity(n);
         for tile in tiles {
             terrain.push(rules.terrains[&tile.terrain]);
@@ -403,7 +392,7 @@ impl<'catalog> Game<'catalog> {
             walls.push(tile.walls);
             dead_ends.push(tile.dead_ends);
             floors.push(tile.floor);
-            fog.push(tile.fog);
+            tile_perception.push(tile.perception);
             light.push(tile.light);
         }
         let connections = Rc::new(connections);
@@ -415,7 +404,7 @@ impl<'catalog> Game<'catalog> {
             walls,
             dead_ends,
             floors,
-            fog: Rc::new(fog),
+            tile_perception: Rc::new(tile_perception),
             light: Rc::new(light),
         };
         Self::from_parts(rules, state, board, definition, terrain, owners, geometry)
@@ -430,53 +419,99 @@ impl<'catalog> Game<'catalog> {
         owners: Vec<Option<String>>,
         geometry: TileGeometry,
     ) -> Self {
+        let character_names = campaign_definition
+            .map(|c| {
+                c.characters
+                    .iter()
+                    .map(|v| (v.id.clone(), v.name.clone()))
+                    .collect()
+            })
+            .unwrap_or_default();
         let saved_scripts = state
             .campaign
             .as_mut()
             .and_then(|campaign| campaign.scripts.take());
-        let mut fog_memory = if geometry
-            .fog
+        let fog_memory = state
+            .vision_groups
             .iter()
-            .any(|rule| rule.as_ref().is_some_and(|r| r.remember))
-        {
-            vec![0; terrain.len().div_ceil(64)]
-        } else {
-            Vec::new()
-        };
-        if !fog_memory.is_empty() {
-            for key in &state.condition_memory {
-                if let Some(&i) = key
-                    .strip_prefix("fog:")
-                    .and_then(|id| id.split_once(','))
-                    .and_then(|(col, row)| Some(Hex::new(col.parse().ok()?, row.parse().ok()?)))
-                    .and_then(|hex| board.indices.get(&hex))
-                {
-                    fog_memory[i / 64] |= 1u64 << (i % 64);
+            .map(|group| {
+                let mut bits = vec![0; terrain.len().div_ceil(64)];
+                for hex in &group.explored {
+                    let i = board.indices[hex];
+                    bits[i / 64] |= 1u64 << (i % 64);
                 }
-            }
-        }
+                (group.id.clone(), bits)
+            })
+            .collect();
+        let fog_memory = Rc::new(fog_memory);
         let mechanics = rules.units.mechanics();
         let mut names = Names::default();
+        names.intern("player".into());
+        names.intern("enemy".into());
+        for faction in &state.factions {
+            names.intern(faction.id.clone());
+        }
         let mut inventories = Inventories::default();
+        let mut unit_perception = vec![UnitPerceptionFacts::default()];
         let units: Vec<Unit> = state
             .units
             .into_iter()
-            .map(|unit| Unit {
-                id: unit.id.strip_prefix('u').unwrap().parse().unwrap(),
-                kind: rules.types[&unit.r#type],
-                side: unit.side,
-                tile: board.indices[&unit.tile],
-                hp: unit.hp,
-                moved: unit.moved,
-                attacked: unit.attacked,
-                experience: unit.experience,
-                role: unit.role,
-                retreating: unit.retreating,
-                rebuilding: unit.rebuilding,
-                faction: unit.faction.map(|value| names.intern(value)),
-                ai_group: unit.ai_group.map(|value| names.intern(value)),
-                character: unit.character.map(|value| names.intern(value)),
-                inventory: inventories.load(unit.items, mechanics),
+            .map(|unit| {
+                let perception = PerceptionId(unit_perception.len());
+                unit_perception.push(UnitPerceptionFacts {
+                    revealed_to: unit
+                        .revealed_to
+                        .iter()
+                        .map(|id| {
+                            VisionGroupKey(
+                                state
+                                    .vision_groups
+                                    .iter()
+                                    .position(|g| &g.id == id)
+                                    .expect("validated reveal group"),
+                            )
+                        })
+                        .collect(),
+                    effects: unit.perception_effects,
+                });
+                Unit {
+                    field_available: true,
+                    perception,
+                    id: unit.id.strip_prefix('u').unwrap().parse().unwrap(),
+                    kind: rules.types[&unit.r#type],
+                    phase: state
+                        .factions
+                        .iter()
+                        .find(|f| f.id == unit.faction)
+                        .expect("validated unit faction")
+                        .phase,
+                    tile: board.indices[&unit.tile],
+                    hp: unit.hp,
+                    moved: unit.moved,
+                    attack_spent: unit.attack_spent,
+                    experience: unit.experience,
+                    role: unit.role,
+                    retreating: unit.retreating,
+                    rebuilding: unit.rebuilding,
+                    faction: names.intern(unit.faction.clone()),
+                    vision_group: VisionGroupKey(
+                        state
+                            .vision_groups
+                            .iter()
+                            .position(|g| {
+                                g.id == state
+                                    .factions
+                                    .iter()
+                                    .find(|f| f.id == unit.faction)
+                                    .expect("validated unit faction")
+                                    .vision_group
+                            })
+                            .expect("validated faction group"),
+                    ),
+                    ai_group: unit.ai_group.map(|value| names.intern(value)),
+                    character: unit.character.map(|value| names.intern(value)),
+                    inventory: inventories.load(unit.items, mechanics),
+                }
             })
             .collect();
         let ground_items = state
@@ -489,83 +524,114 @@ impl<'catalog> Game<'catalog> {
             .collect();
         let combat_present = state.last_combat.is_some();
         let last_combat = state.last_combat.flatten();
+        let observed_light = Rc::new(super::geometry::TileSet::new(terrain.len()));
+        let terrain_emitters = Rc::new(
+            (0..geometry.light.len())
+                .filter(|&i| {
+                    geometry.light[i].is_some() || geometry.tile_perception[i].sight.is_some()
+                })
+                .collect(),
+        );
         let mut game = Self {
-            rules,
-            mechanics,
-            runtime: BattleState {
-                scope: crate::BattleScope::new(),
-                factions: Rc::new(state.factions),
-                ground_items,
-                names: std::sync::Arc::new(names),
-                inventories: std::sync::Arc::new(inventories),
-                active_faction: None,
-                fog: geometry.fog,
-                light: geometry.light,
-                condition_memory: Rc::new(state.condition_memory),
-                fog_memory,
-                traversal: None,
+            position: BattlePosition {
+                rules,
+                mechanics,
+                runtime: PositionState {
+                    scope: crate::BattleScope::new(),
+                    character_names: Rc::new(character_names),
+                    campaign_battle: state.campaign.is_some(),
+                    tracks_path: false,
+                    traversal: None,
+                    mechanical_deaths: vec![],
+                    terrain_emitters,
+                    fixed_sights: Rc::new(vec![]),
+                    perception_sensitive: true,
+                    observed_light,
+                    fixed_lights: Rc::new(vec![]),
+                    resolved_recruitment: Rc::new(Default::default()),
+                    factions: Rc::new(state.factions),
+                    vision_groups: Rc::new(state.vision_groups),
+                    unit_perception: unit_perception.into(),
+                    ground_items,
+                    names: std::sync::Arc::new(names),
+                    inventories: std::sync::Arc::new(inventories),
+                    active_faction: None,
+                    tile_perception: geometry.tile_perception,
+                    light: geometry.light,
+                    condition_memory: Rc::new(state.condition_memory),
+                    fog_memory,
+                    board,
+                    terrain,
+                    owners: owners.into(),
+                    connections: geometry.connections,
+                    walls: geometry.walls,
+                    dead_ends: geometry.dead_ends,
+                    floors: geometry.floors,
+                    units,
+                    map_id: state.map_id,
+                    map_revision: state.map_revision,
+                    cols: state.cols,
+                    rows: state.rows,
+                    round: state.round,
+                    turn: state.turn,
+                    gold: state.gold,
+                    winner: state.winner,
+                    next_id: state.next_id,
+                    combat_rng: state.combat_rng,
+                    log: state.log,
+                    last_combat,
+                    #[cfg(feature = "wasm")]
+                    combat_animation: None,
+                    combat_present,
+                    armies: state.armies,
+                    pools: None,
+                    arena_first: None,
+                    #[cfg(not(target_arch = "wasm32"))]
+                    recordings: None,
+                    route_cache: Rc::new(RefCell::new(HashMap::default())),
+                    terrain_revision: 0,
+                    attack_geometry: Rc::new(RefCell::new(HashMap::default())),
+                    attack_masks: super::geometry::AttackMasks::default(),
+                    reach_cache: super::movement::ReachCache::default(),
+                    threat_reach_cache: super::movement::ThreatReachCache::default(),
+                    movement_masks: super::movement::MovementMasks::default(),
+                    movement_regions: super::movement::RegionCache::default(),
+                    origin_runs: super::geometry::OriginRunCache::default(),
+                    route_order: Rc::new(RefCell::new(VecDeque::new())),
+                    occupancy: vec![],
+                    occupied_tiles: super::geometry::TileSet::new(0),
+                    unit_indices: HashMap::default(),
+                },
+            },
+            story: CampaignRuntime {
+                planning_revision: 0,
                 event_deaths: vec![],
                 event_departure: None,
                 event_opening: false,
-                board,
-                terrain,
-                owners: owners.into(),
-                connections: geometry.connections,
-                walls: geometry.walls,
-                dead_ends: geometry.dead_ends,
-                floors: geometry.floors,
-                units,
-                map_id: state.map_id,
-                map_revision: state.map_revision,
-                cols: state.cols,
-                rows: state.rows,
-                round: state.round,
-                turn: state.turn,
-                gold: state.gold,
-                winner: state.winner,
-                next_id: state.next_id,
-                combat_rng: state.combat_rng,
-                log: state.log,
                 campaign: state.campaign.map(Into::into),
                 scripts: None,
-                last_combat,
-                #[cfg(feature = "wasm")]
-                combat_animation: None,
-                combat_present,
-                armies: state.armies,
-                pools: None,
-                arena_first: None,
                 mission: None,
                 campaign_definition: campaign_definition.cloned(),
                 mission_key: None,
-                #[cfg(not(target_arch = "wasm32"))]
-                recordings: None,
-                route_cache: Rc::new(RefCell::new(HashMap::default())),
-                terrain_revision: 0,
-                attack_geometry: Rc::new(RefCell::new(HashMap::default())),
-                attack_masks: super::geometry::AttackMasks::default(),
-                reach_cache: super::movement::ReachCache::default(),
-                threat_reach_cache: super::movement::ThreatReachCache::default(),
-                movement_masks: super::movement::MovementMasks::default(),
-                movement_regions: super::movement::RegionCache::default(),
-                origin_runs: super::geometry::OriginRunCache::default(),
-                route_order: Rc::new(RefCell::new(VecDeque::new())),
-                occupancy: vec![],
-                occupied_tiles: super::geometry::TileSet::new(0),
-                unit_indices: HashMap::default(),
             },
         };
         game.roster_changed();
         game.refresh_mission();
         if let Some(saved) = saved_scripts {
-            game.scripts = Some(
+            game.story.scripts = Some(
                 EventProgress::restore(
-                    game.mission.as_ref().expect("restored mission").clone(),
+                    game.story
+                        .mission
+                        .as_ref()
+                        .expect("restored mission")
+                        .clone(),
                     saved,
                 )
                 .into(),
             );
         }
+        game.sync_recruitment();
+        game.refresh_planning_facts();
         game.remember_conditions();
         game
     }
@@ -589,18 +655,14 @@ impl<'catalog> Game<'catalog> {
         Self::from_state_with_campaign(rules, state, definition)
     }
     pub(crate) fn campaign_snapshot(&self) -> Option<CampaignState> {
-        self.runtime
-            .campaign
-            .as_deref()
-            .cloned()
-            .map(|mut campaign| {
-                campaign.scripts = self
-                    .runtime
-                    .scripts
-                    .as_deref()
-                    .map(|state| state.saved().clone());
-                campaign
-            })
+        self.story.campaign.as_deref().cloned().map(|mut campaign| {
+            campaign.scripts = self
+                .story
+                .scripts
+                .as_deref()
+                .map(|state| state.saved().clone());
+            campaign
+        })
     }
     /// Materialize the protocol snapshot without changing battle state.
     pub(crate) fn state(&self) -> State {
@@ -608,6 +670,7 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn state_with_tiles(&self, tiles: Vec<Tile>) -> State {
         State {
+            vision_groups: self.runtime.vision_groups.as_ref().clone(),
             factions: self.runtime.factions.as_ref().clone(),
             ground_items: self
                 .runtime
@@ -642,6 +705,162 @@ impl<'catalog> Game<'catalog> {
     }
 
     /// Patch the authoritative terrain only where current runtime values differ.
+
+    pub(crate) fn character_name(&self, id: &str) -> Option<&str> {
+        self.story
+            .campaign_definition
+            .as_ref()
+            .or_else(|| self.rules.campaign_for_map(&self.runtime.map_id))
+            .and_then(|campaign| campaign.character(id))
+            .map(|c| c.name.as_str())
+    }
+
+    /// Capability is authored once and exported through the catalog for UI discovery too.
+
+    /// Refresh dense lookup tables after an internal roster transformation.
+
+    /// Change terrain and invalidate only terrain-dependent route results.
+
+    pub(crate) fn campaign_definition(&self) -> &CampaignRules {
+        self.story
+            .campaign_definition
+            .as_ref()
+            .expect("campaign game has a definition")
+    }
+    pub(crate) fn refresh_mission(&mut self) {
+        let Some(state) = &self.story.campaign else {
+            self.story.mission = None;
+            self.story.mission_key = None;
+            return;
+        };
+        let definition = self.campaign_definition();
+        if self.story.mission_key.as_ref().is_some_and(|key| {
+            key.mission == state.mission && key.definition.same_definition(definition)
+        }) {
+            return;
+        }
+        let key = MissionKey {
+            definition: definition.clone(),
+            mission: state.mission,
+        };
+        let mission = MISSION_POOL.with_borrow_mut(|pool| {
+            if let Some(mission) = pool.get(&key) {
+                return mission.clone();
+            }
+            let mission = Rc::new(CompiledMission::new(
+                definition.missions[state.mission].clone(),
+            ));
+            if pool.len() >= 128 {
+                pool.clear();
+            }
+            pool.insert(key.clone(), mission.clone());
+            mission
+        });
+        self.story.mission_key = Some(key);
+        self.story.mission = Some(mission);
+    }
+}
+
+impl<'catalog> Game<'catalog> {}
+
+impl<'catalog> Game<'catalog> {
+    pub(crate) fn fork(&self) -> Self {
+        Self {
+            position: self.position.fork(),
+            story: self.story.clone(),
+        }
+    }
+    pub(crate) fn planning_fork(&self) -> Self {
+        let mut copy = self.fork();
+        copy.position.runtime.combat_rng = 0x6d2b79f5;
+        copy
+    }
+}
+impl<'catalog> BattlePosition<'catalog> {
+    pub(crate) fn fork(&self) -> Self {
+        let mut runtime = self.runtime.clone();
+        #[cfg(not(target_arch = "wasm32"))]
+        {
+            runtime.recordings = None;
+        }
+        #[cfg(feature = "wasm")]
+        {
+            runtime.combat_animation = None;
+        }
+        Self {
+            rules: self.rules,
+            mechanics: self.mechanics,
+            runtime,
+        }
+    }
+    pub(crate) fn planning_fork(&self) -> Self {
+        let mut copy = self.fork();
+        copy.runtime.combat_rng = 0x6d2b79f5;
+        copy
+    }
+}
+
+impl<'catalog> BattlePosition<'catalog> {
+    #[inline]
+    pub(crate) fn name(&self, key: Option<NameKey>) -> Option<&str> {
+        self.runtime.names.resolve(key)
+    }
+    pub(crate) fn intern_name(&mut self, value: &str) -> NameKey {
+        if let Some(key) = self.runtime.names.find(value) {
+            key
+        } else {
+            std::sync::Arc::make_mut(&mut self.runtime.names).intern(value.to_owned())
+        }
+    }
+    #[inline]
+    pub(crate) fn inventory(&self, unit: &Unit) -> impl ExactSizeIterator<Item = &Item> + Clone {
+        self.runtime.inventories.items(unit.inventory)
+    }
+    pub(crate) fn set_inventory(&mut self, id: u32, items: Vec<Item>) {
+        self.runtime.perception_sensitive |= items.iter().any(|item| item.perception.is_some());
+        let inventory =
+            std::sync::Arc::make_mut(&mut self.runtime.inventories).load(items, self.mechanics);
+        let index = self.index(id).unwrap();
+        self.runtime.units[index].inventory = inventory;
+    }
+    pub(crate) fn give_item(&mut self, id: u32, item: Item) {
+        let item =
+            std::sync::Arc::make_mut(&mut self.runtime.inventories).add_item(item, self.mechanics);
+        self.give_existing_item(id, item);
+    }
+    pub(crate) fn give_existing_item(&mut self, id: u32, item: ItemId) {
+        self.runtime.perception_sensitive |=
+            self.runtime.inventories.item(item).perception.is_some();
+        let index = self.index(id).unwrap();
+        let old = self.runtime.units[index].inventory;
+        let inventory =
+            std::sync::Arc::make_mut(&mut self.runtime.inventories).edit(old, None, Some(item));
+        self.runtime.units[index].inventory = inventory;
+    }
+    pub(crate) fn drop_item(&mut self, id: u32, slot: usize) -> ItemId {
+        let index = self.index(id).unwrap();
+        let old = self.runtime.units[index].inventory;
+        let item = self.runtime.inventories.item_ids(old)[slot];
+        let inventory =
+            std::sync::Arc::make_mut(&mut self.runtime.inventories).edit(old, Some(slot), None);
+        self.runtime.units[index].inventory = inventory;
+        item
+    }
+    #[inline]
+    pub(crate) fn source_weapon(&self, weapon: &WeaponRules) -> &Weapon {
+        if weapon.source < self.mechanics.weapons.len() {
+            let (kind, slot) = self.mechanics.weapon_sources[weapon.source];
+            &self.rules.units[kind].attacks[slot]
+        } else {
+            self.runtime
+                .inventories
+                .source(weapon.source, self.mechanics)
+        }
+    }
+    #[inline]
+    pub(crate) fn weapon_id(&self, key: WeaponKey) -> String {
+        self.mechanics.weapon_id(key)
+    }
     #[cfg(feature = "wasm")]
     pub(crate) fn patch_tiles(&self, tiles: &mut [Tile]) -> Vec<usize> {
         debug_assert_eq!(tiles.len(), self.runtime.board.ids.len());
@@ -658,7 +877,7 @@ impl<'catalog> Game<'catalog> {
                 dead_ends,
                 walls,
                 floor,
-                fog,
+                perception,
                 light,
             } = tile;
             let position = self.runtime.board.positions[i];
@@ -671,7 +890,7 @@ impl<'catalog> Game<'catalog> {
                 || *dead_ends != self.runtime.dead_ends[i]
                 || *walls != self.runtime.walls[i]
                 || *floor != self.runtime.floors[i]
-                || *fog != self.runtime.fog[i]
+                || *perception != self.runtime.tile_perception[i]
                 || *light != self.runtime.light[i]
             {
                 *col = position.0;
@@ -682,7 +901,7 @@ impl<'catalog> Game<'catalog> {
                 dead_ends.clone_from(&self.runtime.dead_ends[i]);
                 walls.clone_from(&self.runtime.walls[i]);
                 floor.clone_from(&self.runtime.floors[i]);
-                fog.clone_from(&self.runtime.fog[i]);
+                perception.clone_from(&self.runtime.tile_perception[i]);
                 light.clone_from(&self.runtime.light[i]);
                 changed.push(i);
             }
@@ -706,23 +925,28 @@ impl<'catalog> Game<'catalog> {
                 walls: self.runtime.walls[index].clone(),
                 dead_ends: self.runtime.dead_ends[index].clone(),
                 floor: self.runtime.floors[index].clone(),
-                fog: self.runtime.fog[index].clone(),
+                perception: self.runtime.tile_perception[index].clone(),
                 light: self.runtime.light[index].clone(),
             })
             .collect()
     }
     pub(crate) fn public_unit(&self, unit: &Unit) -> PublicUnit {
         PublicUnit {
-            faction: self.name(unit.faction).map(str::to_owned),
+            revealed_to: self.unit_perception[unit.perception.0]
+                .revealed_to
+                .iter()
+                .map(|g| self.vision_groups[g.0].id.clone())
+                .collect(),
+            perception_effects: self.unit_perception[unit.perception.0].effects.clone(),
+            faction: self.runtime.names.get(unit.faction).to_owned(),
             items: self.inventory(unit).cloned().collect(),
             ai_group: self.name(unit.ai_group).map(str::to_owned),
             id: format!("u{}", unit.id),
             r#type: self.rules.units[unit.kind].id.clone(),
-            side: unit.side,
             tile: self.runtime.board.ids[unit.tile].clone(),
             hp: unit.hp,
             moved: unit.moved,
-            attacked: unit.attacked,
+            attack_spent: unit.attack_spent,
             experience: unit.experience,
             character: self.name(unit.character).map(str::to_owned),
             role: unit.role.clone(),
@@ -772,16 +996,9 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn site(&self, id: &Hex) -> usize {
         *self.runtime.board.indices.get(id).expect("validated hex")
     }
-    pub(crate) fn character_name(&self, id: &str) -> Option<&str> {
-        self.campaign_definition
-            .as_ref()
-            .or_else(|| self.rules.campaign_for_map(&self.runtime.map_id))
-            .and_then(|campaign| campaign.character(id))
-            .map(|c| c.name.as_str())
-    }
     pub(crate) fn unit_name<'a>(&'a self, unit: &'a Unit) -> &'a str {
         self.name(unit.character)
-            .and_then(|id| self.character_name(id))
+            .and_then(|id| self.runtime.character_names.get(id).map(String::as_str))
             .unwrap_or(&self.rules.units[unit.kind].name)
     }
     #[inline]
@@ -796,7 +1013,6 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn role_is(&self, tile: usize, role: TerrainRole) -> bool {
         self.terrain_role(tile) == role
     }
-    /// Capability is authored once and exported through the catalog for UI discovery too.
     #[inline]
     pub(crate) fn is_keep(&self, tile: usize) -> bool {
         self.role_is(tile, TerrainRole::Keep)
@@ -805,22 +1021,35 @@ impl<'catalog> Game<'catalog> {
         self.runtime.log.insert(0, message);
         self.runtime.log.truncate(8);
     }
-    pub(crate) fn add(&mut self, kind: usize, side: Side, tile: usize) -> u32 {
+    pub(crate) fn add(&mut self, kind: usize, faction: NameKey, tile: usize) -> u32 {
+        let profile = &self.rules.units[kind].perception;
+        self.runtime.perception_sensitive |=
+            !profile.concealment.is_empty() || matches!(profile.range, SightRange::Range(_));
         let id = self.runtime.next_id;
         self.runtime.next_id += 1;
+        let perception = self.fresh_perception();
+        let faction_id = self.runtime.names.get(faction);
+        let side = self
+            .faction(faction_id)
+            .expect("validated creation faction")
+            .phase;
+        let vision_group = self.vision_group(faction_id);
         self.runtime.units.push(Unit {
+            field_available: true,
+            perception,
+            vision_group,
             id,
             kind,
-            side,
+            phase: side,
             tile,
             hp: self.rules.units[kind].hp,
             moved: false,
-            attacked: false,
+            attack_spent: false,
             experience: Some(0),
             role: None,
             retreating: None,
             rebuilding: None,
-            faction: None,
+            faction,
             ai_group: None,
             character: None,
             inventory: InventoryId(0),
@@ -832,7 +1061,6 @@ impl<'catalog> Game<'catalog> {
         self.runtime.occupied_tiles.insert(tile);
         id
     }
-    /// Refresh dense lookup tables after an internal roster transformation.
     pub(crate) fn roster_changed(&mut self) {
         self.runtime.occupancy = vec![None; self.runtime.terrain.len()];
         self.runtime.occupied_tiles = super::geometry::TileSet::new(self.runtime.terrain.len());
@@ -843,7 +1071,6 @@ impl<'catalog> Game<'catalog> {
             self.runtime.unit_indices.insert(unit.id, index);
         }
     }
-    /// Change terrain and invalidate only terrain-dependent route results.
     pub(crate) fn set_terrain(&mut self, tile: usize, terrain: usize) {
         if self.runtime.terrain[tile] != terrain {
             self.runtime.terrain[tile] = terrain;
@@ -862,120 +1089,6 @@ impl<'catalog> Game<'catalog> {
             self.runtime.route_order = Rc::new(RefCell::new(VecDeque::new()));
         }
     }
-
-    pub(crate) fn campaign_definition(&self) -> &CampaignRules {
-        self.campaign_definition
-            .as_ref()
-            .expect("campaign game has a definition")
-    }
-    pub(crate) fn refresh_mission(&mut self) {
-        let Some(state) = &self.runtime.campaign else {
-            self.runtime.mission = None;
-            self.mission_key = None;
-            return;
-        };
-        let definition = self.campaign_definition();
-        if self.mission_key.as_ref().is_some_and(|key| {
-            key.mission == state.mission && key.definition.same_definition(definition)
-        }) {
-            return;
-        }
-        let key = MissionKey {
-            definition: definition.clone(),
-            mission: state.mission,
-        };
-        let mission = MISSION_POOL.with_borrow_mut(|pool| {
-            if let Some(mission) = pool.get(&key) {
-                return mission.clone();
-            }
-            let mission = Rc::new(CompiledMission::new(
-                definition.missions[state.mission].clone(),
-            ));
-            if pool.len() >= 128 {
-                pool.clear();
-            }
-            pool.insert(key.clone(), mission.clone());
-            mission
-        });
-        self.mission_key = Some(key);
-        self.runtime.mission = Some(mission);
-    }
-}
-
-impl<'catalog> Game<'catalog> {
-    pub(crate) fn planning_fork(&self) -> Self {
-        let mut draft = self.fork();
-        draft.combat_rng = 0x6d2b79f5;
-        draft
-    }
-    pub(crate) fn fork(&self) -> Self {
-        Self {
-            rules: self.rules,
-            mechanics: self.mechanics,
-            runtime: BattleState {
-                scope: self.runtime.scope.clone(),
-                factions: self.runtime.factions.clone(),
-                ground_items: self.runtime.ground_items.clone(),
-                names: self.runtime.names.clone(),
-                inventories: self.runtime.inventories.clone(),
-                active_faction: self.runtime.active_faction.clone(),
-                condition_memory: self.runtime.condition_memory.clone(),
-                fog_memory: self.runtime.fog_memory.clone(),
-                traversal: None,
-                event_deaths: vec![],
-                event_departure: None,
-                event_opening: false,
-                fog: self.runtime.fog.clone(),
-                light: self.runtime.light.clone(),
-                board: self.runtime.board.clone(),
-                terrain: self.runtime.terrain.clone(),
-                owners: self.runtime.owners.clone(),
-                connections: self.runtime.connections.clone(),
-                walls: self.runtime.walls.clone(),
-                dead_ends: self.runtime.dead_ends.clone(),
-                floors: self.runtime.floors.clone(),
-                units: self.runtime.units.clone(),
-                map_id: self.runtime.map_id.clone(),
-                map_revision: self.runtime.map_revision,
-                cols: self.runtime.cols,
-                rows: self.runtime.rows,
-                round: self.runtime.round,
-                turn: self.runtime.turn,
-                gold: self.runtime.gold.clone(),
-                winner: self.runtime.winner,
-                next_id: self.runtime.next_id,
-                combat_rng: self.runtime.combat_rng,
-                log: self.runtime.log.clone(),
-                campaign: self.runtime.campaign.clone(),
-                scripts: self.runtime.scripts.clone(),
-                last_combat: self.runtime.last_combat.clone(),
-                #[cfg(feature = "wasm")]
-                combat_animation: None,
-                combat_present: self.runtime.combat_present,
-                armies: self.runtime.armies.clone(),
-                pools: self.runtime.pools.clone(),
-                arena_first: self.runtime.arena_first,
-                mission: self.runtime.mission.clone(),
-                campaign_definition: self.campaign_definition.clone(),
-                mission_key: self.mission_key.clone(),
-                #[cfg(not(target_arch = "wasm32"))]
-                recordings: None,
-                route_cache: self.runtime.route_cache.clone(),
-                terrain_revision: self.runtime.terrain_revision,
-                attack_geometry: self.runtime.attack_geometry.clone(),
-                attack_masks: self.runtime.attack_masks.clone(),
-                reach_cache: self.runtime.reach_cache.clone(),
-                threat_reach_cache: self.runtime.threat_reach_cache.clone(),
-                movement_masks: self.runtime.movement_masks.clone(),
-                movement_regions: self.runtime.movement_regions.clone(),
-                origin_runs: self.runtime.origin_runs.clone(),
-                route_order: self.runtime.route_order.clone(),
-                occupancy: self.runtime.occupancy.clone(),
-                occupied_tiles: self.runtime.occupied_tiles.clone(),
-                unit_indices: self.runtime.unit_indices.clone(),
-            },
-        }
-    }
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) fn action(&mut self, value: ActionRecord) {
         if let Some(records) = &mut self.runtime.recordings {
@@ -983,11 +1096,7 @@ impl<'catalog> Game<'catalog> {
         }
     }
     pub(crate) fn promotion_options(&self, unit: &Unit) -> Vec<usize> {
-        if self.runtime.winner.is_some()
-            || unit.side != self.runtime.turn
-            || unit.moved
-            || unit.attacked
-        {
+        if self.runtime.winner.is_some() || !self.may_act(unit) || unit.moved || unit.attack_spent {
             return vec![];
         }
         let rule = &self.rules.units[unit.kind];
@@ -1004,6 +1113,9 @@ impl<'catalog> Game<'catalog> {
             .collect()
     }
     pub(crate) fn advance(&mut self, id: u32, kind: usize) {
+        let profile = &self.rules.units[kind].perception;
+        self.runtime.perception_sensitive |=
+            !profile.concealment.is_empty() || matches!(profile.range, SightRange::Range(_));
         let index = self.index(id).unwrap();
         assert!(
             self.promotion_options(&self.runtime.units[index])
@@ -1021,7 +1133,7 @@ impl<'catalog> Game<'catalog> {
         unit.experience = Some(experience);
         unit.hp = (self.rules.units[kind].hp - wounds).max(1);
         unit.moved = true;
-        unit.attacked = true;
+        unit.attack_spent = true;
         self.record(format!(
             "{} advanced to {}.",
             name, self.rules.units[kind].name
@@ -1031,11 +1143,6 @@ impl<'catalog> Game<'catalog> {
             unit: format!("u{id}"),
             unit_type: self.rules.units[kind].id.clone(),
         });
-        self.evaluate_campaign(false, None);
-    }
-
-    pub(crate) fn recruitment_options(&self, side: Side) -> Vec<usize> {
-        self.recruitment_options_for_faction(self.faction_for_phase(side))
     }
     pub(crate) fn recruitment_options_for_faction(&self, id: &str) -> Vec<usize> {
         self.recruitment_pool_for_faction(id).collect()
@@ -1049,22 +1156,8 @@ impl<'catalog> Game<'catalog> {
     }
     fn recruitment_pool_for_faction(&self, id: &str) -> super::recruit_pool::RecruitPool<'_> {
         use super::recruit_pool::{PoolEntries, RecruitPool};
-        let entries = if let Some(pool) = self
-            .runtime
-            .scripts
-            .as_deref()
-            .and_then(|s| s.recruitment.get(id))
-        {
+        let entries = if let Some(pool) = self.runtime.resolved_recruitment.get(id) {
             PoolEntries::Recruits(pool.iter())
-        } else if let Some(mission) = &self.runtime.mission {
-            PoolEntries::Recruits(
-                mission
-                    .recruitment
-                    .get(id)
-                    .map(Vec::as_slice)
-                    .unwrap_or(&[])
-                    .iter(),
-            )
         } else if let Some(pools) = &self.runtime.pools
             && matches!(id, "player" | "enemy")
         {
@@ -1102,25 +1195,12 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn recruit_cost_for_faction(&self, id: &str, kind: usize) -> i32 {
         let unit = &self.rules.units[kind].id;
-        if let Some(mission) = &self.runtime.mission {
-            if let Some(entry) = self
-                .scripts
-                .as_deref()
-                .and_then(|s| s.recruitment.get(id))
-                .and_then(|v| v.iter().find(|r| &r.unit == unit))
-            {
-                return entry.cost.unwrap_or(self.rules.units[kind].cost);
-            }
-            let base = mission
-                .recruitment
-                .get(id)
-                .into_iter()
-                .flatten()
-                .find(|entry| &entry.unit == unit);
-            if let Some(entry) = base {
-                return entry.cost.unwrap_or(self.rules.units[kind].cost);
-            }
-            return self.rules.units[kind].cost;
+        if let Some(pool) = self.runtime.resolved_recruitment.get(id) {
+            return pool
+                .iter()
+                .find(|entry| &entry.unit == unit)
+                .and_then(|entry| entry.cost)
+                .unwrap_or(self.rules.units[kind].cost);
         }
         self.faction(id)
             .and_then(|f| f.recruits.as_ref())
@@ -1158,16 +1238,15 @@ impl<'catalog> Game<'catalog> {
         let faction = self.unit_faction(&leader).to_owned();
         let cost = self.recruit_cost(&leader, kind);
         self.runtime.gold[&faction] -= cost;
-        self.add(kind, leader.side, tile);
+        self.add(kind, leader.faction, tile);
         let unit = self.runtime.units.last_mut().unwrap();
-        if unit.faction != leader.faction {
-            unit.faction = leader.faction.clone();
-        }
+        unit.faction = leader.faction;
+        unit.vision_group = leader.vision_group;
         unit.moved = true;
-        unit.attacked = true;
+        unit.attack_spent = true;
         self.record(format!(
             "{} recruited a {}. It acts next turn.",
-            if leader.side == Side::Player {
+            if self.unit_faction(&leader) == "player" {
                 "You"
             } else {
                 "Enemy"
@@ -1181,6 +1260,5 @@ impl<'catalog> Game<'catalog> {
             tile: self.runtime.board.ids[tile].clone(),
             cost: Some(cost),
         });
-        self.evaluate_campaign(false, None);
     }
 }

@@ -77,6 +77,7 @@ fn authored_tiles<'de, D: serde::Deserializer<'de>>(
 impl MapDocument {
     fn initial(self, roster: InitialRoster) -> InitialState {
         InitialState {
+            vision_groups: roster.vision_groups,
             factions: roster.factions,
             map_id: self.map_id,
             map_revision: self.map_revision,
@@ -92,6 +93,8 @@ impl MapDocument {
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct RosterDocument {
+    #[serde(rename = "visionGroups")]
+    vision_groups: Vec<VisionGroupState>,
     factions: Vec<RosterFaction>,
     #[serde(default)]
     arrivals: Vec<CompanionArrival>,
@@ -111,6 +114,7 @@ struct RosterUnit {
     unit: InitialUnit,
 }
 struct InitialRoster {
+    vision_groups: Vec<VisionGroupState>,
     factions: Vec<Faction>,
     gold: Gold,
     units: Vec<InitialUnit>,
@@ -150,21 +154,18 @@ impl RosterDocument {
                             .ok_or_else(|| ContentError::new(path, format!("unknown item {id}")))
                     })
                     .collect::<Result<_, _>>()?;
-                if unit.side.is_some() || unit.faction.is_some() {
+                if unit.faction.is_some() {
                     return Err(ContentError::new(
                         path,
-                        "roster units inherit side and faction from their army",
+                        "roster units inherit faction from their army",
                     ));
                 }
-                unit.side = Some(faction.phase);
-                unit.faction = (!matches!(faction.id.as_str(), "player" | "enemy"))
-                    .then(|| faction.id.clone());
+                unit.faction = Some(faction.id.clone());
                 placements.push(StartingUnit {
                     items: unit.items.clone(),
-                    faction: unit.faction.clone(),
+                    faction: faction.id.clone(),
                     tile: unit.tile.clone(),
                     r#type: unit.r#type.clone(),
-                    side: faction.phase,
                     ai_group: unit.ai_group.clone(),
                     character: unit.character.clone(),
                     role: unit.role,
@@ -175,6 +176,7 @@ impl RosterDocument {
         }
         Ok((
             InitialRoster {
+                vision_groups: self.vision_groups,
                 factions,
                 gold: Gold(std::sync::Arc::new(gold)),
                 units: initial,
@@ -268,6 +270,7 @@ pub fn collect_bundle(
     }
     for path in [
         &manifest.terrain,
+        &manifest.concealment_kinds,
         &manifest.simulation.rosters,
         &manifest.simulation.arena,
         &manifest.simulation.campaign,
@@ -325,14 +328,6 @@ pub fn scenario(
         if let Some(light) = &tile.light {
             light
                 .validate(&map.tiles, &[])
-                .map_err(|message| ContentError::new(&map_path, message))?;
-        }
-        if let Some(rule) = &tile.fog {
-            rule.condition
-                .validate_presentation()
-                .map_err(|message| ContentError::new(&map_path, message))?;
-            rule.condition
-                .validate(&map.tiles, &[], true)
                 .map_err(|message| ContentError::new(&map_path, message))?;
         }
     }
@@ -393,7 +388,13 @@ pub fn stage(
     scripted_events.sort_by_key(|e| std::cmp::Reverse(e.priority));
     for e in &mut scripted_events {
         e.when.index_holds();
-        e.validate(&map.tiles, &roster.factions, items, &map_path)?;
+        e.validate(
+            &map.tiles,
+            &roster.factions,
+            &roster.vision_groups,
+            items,
+            &map_path,
+        )?;
     }
     map.lighting
         .validate(&map.tiles)
@@ -402,14 +403,6 @@ pub fn stage(
         if let Some(light) = &tile.light {
             light
                 .validate(&map.tiles, &events)
-                .map_err(|message| ContentError::new(&map_path, message))?;
-        }
-        if let Some(rule) = &tile.fog {
-            rule.condition
-                .validate_presentation()
-                .map_err(|message| ContentError::new(&map_path, message))?;
-            rule.condition
-                .validate(&map.tiles, &events, true)
                 .map_err(|message| ContentError::new(&map_path, message))?;
         }
     }
@@ -502,7 +495,6 @@ pub fn map_metadata(
                     faction: unit.faction.clone(),
                     tile: tile.hex(),
                     r#type: unit.r#type.clone(),
-                    side: unit.side,
                     character: unit.character.clone(),
                     role: unit.role,
                 })
@@ -511,6 +503,8 @@ pub fn map_metadata(
     };
     let presentation =
         crate::data::presentation::resolve(&crate::data::presentation::PresentationInput {
+            observer: "player".into(),
+            vision_groups: state.vision_groups.clone(),
             factions: state.factions.clone(),
             pending: vec![],
             tiles: state.tiles.clone(),

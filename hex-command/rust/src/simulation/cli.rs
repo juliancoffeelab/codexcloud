@@ -387,7 +387,7 @@ fn capture_stdio(rules: &Rules) -> Result<(), SimulationError> {
         let request: CaptureRequest = serde_json::from_str(&line)?;
         let config = request.config.clone();
         let rounds = request.rounds.clone();
-        let side = request.side;
+        let side = request.phase;
         definitions.prepare_match(&config)?;
         let mut capture = Capture::new(request)?;
         match config.clone() {
@@ -1115,7 +1115,7 @@ mod tests {
         let rules = Rules::load().unwrap();
         let config: super::super::types::ArenaConfig = serde_json::from_value(json!({
             "seed":7,"maxRounds":2,"recruitLimit":null,"landscape":"open",
-            "first":"enemy","player":"classic","enemy":"classic",
+            "first":"ai","player":"classic","enemy":"classic",
             "armies":{"player":"human","enemy":"skeletons"}
         }))
         .unwrap();
@@ -1123,7 +1123,7 @@ mod tests {
         let mut capture = Capture::new(CaptureRequest {
             config: MatchConfig::Arena(config.clone()),
             rounds: vec![1, 2],
-            side: crate::data::Side::Player,
+            phase: crate::data::TurnPhase::Player,
         })
         .unwrap();
         let actual = matches::run_arena_capturing(&rules, config, Some(&mut capture)).unwrap();
@@ -1139,7 +1139,7 @@ mod tests {
             let phase = actual
                 .phases
                 .iter()
-                .find(|p| p.round == request.state.round && p.side == request.state.turn)
+                .find(|p| p.round == request.state.round && p.phase == request.state.turn)
                 .unwrap();
             assert_eq!(
                 serde_json::to_value(&request.state.units).unwrap(),
@@ -1194,7 +1194,7 @@ mod tests {
         let mut capture = Capture::new(CaptureRequest {
             config: MatchConfig::Campaign(config),
             rounds: vec![1],
-            side: crate::data::Side::Player,
+            phase: crate::data::TurnPhase::Player,
         })
         .unwrap();
         capture.observe(&game, None);

@@ -23,7 +23,10 @@ fn pressure(board: &BattleView<'_, '_>, actor: &Unit, enemy: &Unit, blockers: Ti
     board
         .weapons(enemy)
         .enumerate()
-        .filter(|(weapon, _)| coverage[*weapon].contains(actor.tile))
+        .filter(|(weapon, _)| {
+            coverage[*weapon].contains(actor.tile)
+                && board.can_threaten_from(enemy, actor, *weapon, &reach)
+        })
         .map(|(weapon, _)| board.damage(enemy, actor, weapon))
         .max()
         .unwrap_or(0)
@@ -46,7 +49,8 @@ impl Workspace {
             self.fields.clear();
             return;
         }
-        let same = self.assignments == assignments
+        let same = !game.perception_sensitive()
+            && self.assignments == assignments
             && self.signature.len() == game.units().len()
             && self.terrain == *game.terrain()
             && self.owners == *game.owners()
@@ -57,7 +61,7 @@ impl Workspace {
                     unit.tile,
                     unit.hp,
                     unit.moved,
-                    unit.attacked,
+                    unit.attack_spent,
                 )
             });
         if same {
@@ -67,7 +71,7 @@ impl Workspace {
         self.signature = game
             .units()
             .iter()
-            .map(|u| (u.id, u.kind, u.tile, u.hp, u.moved, u.attacked))
+            .map(|u| (u.id, u.kind, u.tile, u.hp, u.moved, u.attack_spent))
             .collect();
         self.terrain.clone_from(&game.terrain());
         self.owners.clone_from(&game.owners());

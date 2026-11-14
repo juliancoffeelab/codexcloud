@@ -36,9 +36,8 @@ For battlefield rendering changes, preserve the
 - [combat-simulation](.agents/skills/combat-simulation/SKILL.md): Use when asked
   to review, explain, compare or change AI policies; run or analyze combat
   simulations; change simulation harnesses or analyzers; or assess balance, campaign competence or simulation performance.
-- [design-campaign](.agents/skills/design-campaign/SKILL.md): Use to design or
-  revise campaigns and scenarios, including writing, objectives, maps, encounters,
-  progression, and supporting mechanics.
+- [design-campaign](.agents/skills/design-campaign/SKILL.md): Use to design, revise or audit playable
+  campaigns, including writing, objectives, maps, encounters and progression.
 - [design-unit](.agents/skills/design-unit/SKILL.md): Use when creating, revising
   or integrating unit artwork, promotion branches or shared sprite scale, or
   previewing and comparing faction lineups.

@@ -27,18 +27,20 @@ function board(start = { kind: "scenario", map: "mirror" }) {
       Native.replace(battle, checkpoint);
       return fixture.view;
     },
-    add(type, side, tile) {
+    add(type, faction, tile) {
       let unit;
       fixture.edit((state) => {
         unit = {
           experience: 0,
           id: `u${state.nextId++}`,
           type,
-          side,
+          faction,
+          revealedTo: [],
+          perceptionEffects: [],
           tile: hex(tile),
           hp: 1,
           moved: false,
-          attacked: false,
+          attackSpent: false,
         };
         unit.hp = Catalog.unit(catalog, type).hp;
         state.units.push(unit);
@@ -52,7 +54,7 @@ function campaign(id, chapter = 0) {
   const fixture = board({ kind: "campaign", id });
   for (let index = 0; index < chapter; index++) {
     fixture.edit((state) => {
-      state.winner = "player";
+      state.winner = "playerVictory";
       state.gold.player = 0;
       if (state.campaign) state.campaign.dialogueIndex = state.campaign.dialogue.length;
     });

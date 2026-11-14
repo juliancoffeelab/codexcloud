@@ -22,6 +22,7 @@ pub const LEGACY_FEATURE_NAMES: [&str; LEGACY_FEATURES] = [
     "hp",
     "leader",
     "moved",
+    // Stable trained feature label; its value comes from Unit::attack_spent.
     "attacked",
     "cost",
     "movement",
@@ -215,7 +216,7 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
     for unit in game
         .units()
         .iter()
-        .filter(|u| game.belongs_to_phase(u, game.turn()) && game.can_act(u.id))
+        .filter(|u| game.belongs_to_faction(u, game.observer_faction()) && game.can_act(u.id))
     {
         if !unit.moved {
             for &(tile, cost) in game.reachable(unit).iter() {
@@ -231,7 +232,7 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
                 }
             }
         }
-        if !unit.attacked {
+        if !unit.attack_spent {
             for target in game.units().iter().filter(|t| game.hostile(unit, t)) {
                 for weapon in game.attack_options(unit, target, unit.tile) {
                     if !orders.attack_allowed(game, unit, target, weapon, unit.tile) {
@@ -284,7 +285,7 @@ fn encode(
     x[4] = g.round() as f32 / 30.;
     x[5] = allies.len() as f32 / 10.;
     x[6] = enemies.len() as f32 / 10.;
-    x[7] = g.gold_for_phase(g.turn()) as f32 / 100.;
+    x[7] = g.gold_for_faction(g.observer_faction()) as f32 / 100.;
     x[31] = orders.targets.len() as f32 / 10.;
     extra.duties.encode(g, orders, c, &mut x[LEGACY_FEATURES..]);
     let (id, tile, target, weapon) = match c {
@@ -317,7 +318,7 @@ fn encode(
     x[9] = u.hp as f32 / 30.;
     x[10] = u.is_leader() as u8 as f32;
     x[11] = u.moved as u8 as f32;
-    x[12] = u.attacked as u8 as f32;
+    x[12] = u.attack_spent as u8 as f32;
     x[13] = r.cost as f32 / 30.;
     x[14] = r.r#move as f32 / 10.;
     x[15] = orders.protects(id) as u8 as f32;
@@ -344,7 +345,7 @@ fn encode(
         .count() as f32
         / 6.;
     x[20] = enemies.iter().filter(|a| dist(tile, a.tile) == 1.).count() as f32 / 6.;
-    x[21] = g.captures(tile, g.turn()) as u8 as f32;
+    x[21] = g.captures(tile, g.observer_faction()) as u8 as f32;
     if let Some((goal, d)) = orders
         .targets
         .iter()
@@ -413,12 +414,12 @@ impl<'a> Extra<'a> {
         let allies = g
             .units()
             .iter()
-            .filter(|u| g.belongs_to_phase(u, g.turn()))
+            .filter(|u| g.belongs_to_faction(u, g.observer_faction()))
             .collect();
         let enemy_units = g
             .units()
             .iter()
-            .filter(|u| g.hostile_to_phase(u, g.turn()))
+            .filter(|u| g.hostile_to_faction(u, g.observer_faction()))
             .collect();
         let profiles = g
             .units()
@@ -429,7 +430,7 @@ impl<'a> Extra<'a> {
         let mut enemies: Vec<_> = g
             .units()
             .iter()
-            .filter(|u| g.hostile_to_phase(u, g.turn()))
+            .filter(|u| g.hostile_to_faction(u, g.observer_faction()))
             .map(|u| u.tile)
             .collect();
         enemies.sort_unstable();
@@ -437,7 +438,7 @@ impl<'a> Extra<'a> {
         for u in g
             .units()
             .iter()
-            .filter(|u| g.belongs_to_phase(u, g.turn()) && g.can_act(u.id))
+            .filter(|u| g.belongs_to_faction(u, g.observer_faction()) && g.can_act(u.id))
         {
             let mut goals: Vec<_> = orders
                 .targets
@@ -450,7 +451,7 @@ impl<'a> Extra<'a> {
                 })
                 .flat_map(|o| o.tiles.iter().map(move |t| (o, g.site(t))))
                 .filter(|(o, t)| match o.kind {
-                    TargetKind::Capture => g.captures(*t, g.turn()),
+                    TargetKind::Capture => g.captures(*t, g.observer_faction()),
                     TargetKind::Defeat => g.at(*t).is_some_and(|e| g.hostile(u, e)),
                     TargetKind::Visit => true,
                 })
@@ -524,7 +525,7 @@ pub(super) fn unit_features(g: &BattleView<'_, '_>, u: &Unit) -> [f32; 34] {
     }
     x[30] = u.hp as f32 / r.hp.max(1) as f32;
     x[31] = u.moved as u8 as f32;
-    x[32] = u.attacked as u8 as f32;
+    x[32] = u.attack_spent as u8 as f32;
     x[33] = u.is_leader() as u8 as f32;
     x
 }
@@ -545,7 +546,7 @@ fn terrain_features(g: &BattleView<'_, '_>, u: &Unit, tile: usize, x: &mut [f32]
     };
     x[7] = g.terrain_healing(tile) as f32 / 10.;
     x[8] = g.is_keep(tile) as u8 as f32;
-    x[9] = g.owns(tile, u.side) as u8 as f32;
+    x[9] = g.owns(tile, g.unit_faction(&u)) as u8 as f32;
 }
 fn path_features(route: &[u16], from: usize, to: usize, movement: usize, x: &mut [f32]) {
     let cost = route[to];
@@ -568,7 +569,11 @@ mod tests {
     fn observations_follow_current_stats_and_terrain_without_type_ids() {
         let rules = Rules::load().unwrap();
         let game = Game::new(&rules, "mirror");
-        let actor = game.units().iter().find(|u| u.side == game.turn()).unwrap();
+        let actor = game
+            .units()
+            .iter()
+            .find(|u| u.phase == game.turn())
+            .unwrap();
         let baseline = unit_features(&game.view(), actor);
         let mut changed = rules.clone();
         let kind = actor.kind;

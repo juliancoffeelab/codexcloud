@@ -90,6 +90,25 @@ pub fn validate_state_geometry_with_campaign(
     }
 
     validate_factions(&state.factions, &state.units).map_err(StateError)?;
+    for faction in &state.factions {
+        if let Some(transfer) = &faction.transfer {
+            transfer
+                .when
+                .validate_references(&rules.types, &state.factions)
+                .map_err(StateError)?;
+        }
+    }
+    for rule in state
+        .tiles
+        .iter()
+        .filter_map(|t| t.light.as_ref())
+        .filter_map(|l| l.when.as_ref())
+    {
+        rule.validate_references(&rules.types, &state.factions)
+            .map_err(StateError)?;
+        rule.condition.validate_presentation().map_err(StateError)?;
+    }
+
     validate_economy(&state.factions, &state.gold, &state.tiles, &rules.types)
         .map_err(StateError)?;
     for required in &authored.factions {
@@ -137,6 +156,13 @@ pub fn validate_state_geometry_with_campaign(
             )
         })
         .collect();
+    validate_perception(
+        &state.vision_groups,
+        &state.factions,
+        &state.tiles,
+        &state.units,
+    )
+    .map_err(StateError)?;
     let mut tiles = HashSet::new();
     let mut positions = HashSet::new();
     for tile in &state.tiles {
@@ -161,12 +187,7 @@ pub fn validate_state_geometry_with_campaign(
             return Err(fail("unknown terrain"));
         }
     }
-    let mut allowed_memory: HashSet<String> = authored
-        .tiles
-        .iter()
-        .filter(|tile| tile.fog.as_ref().is_some_and(|rule| rule.remember))
-        .map(|tile| format!("fog:{}", tile.id))
-        .collect();
+    let mut allowed_memory: HashSet<String> = HashSet::new();
     for tile in &authored.tiles {
         if tile
             .light
@@ -185,8 +206,7 @@ pub fn validate_state_geometry_with_campaign(
             }
             for unit in &state.units {
                 if let Some(id) = &unit.ai_group {
-                    if unit.side != Side::Enemy || !mission.enemy_groups.iter().any(|g| g.id == *id)
-                    {
+                    if !mission.enemy_groups.iter().any(|g| g.id == *id) {
                         return Err(fail("invalid enemy group"));
                     }
                 }
@@ -306,7 +326,7 @@ pub fn validate_state_geometry_with_campaign(
                     .tiles
                     .iter()
                     .any(|t| t.hex() == unit.tile && t.matches_reference(&effect.tile))
-                || unit.side != effect.units.side
+                || unit.faction != effect.units.faction
                 || effect
                     .units
                     .role
@@ -332,8 +352,7 @@ pub fn validate_state_geometry_with_campaign(
                 "evacuated unit equipment",
             )
             .map_err(|error| StateError(error.to_string()))?;
-            validate_faction_reference(&state.factions, unit.faction.as_deref(), unit.side)
-                .map_err(StateError)?;
+            validate_faction_reference(&state.factions, &unit.faction).map_err(StateError)?;
         }
         if campaign.dialogue_index > campaign.dialogue.len() {
             return Err(fail("invalid dialogue index"));
@@ -402,7 +421,7 @@ pub fn validate_state_geometry_with_campaign(
                             .iter()
                             .any(|arrival| veteran.character.as_ref() == Some(&arrival.character)))
                         && !mission.map.units.iter().any(|unit| {
-                            unit.side == Side::Player
+                            unit.faction == "player"
                                 && (if veteran.role == Some(Role::Leader) {
                                     unit.role == Some(Role::Leader)
                                 } else {

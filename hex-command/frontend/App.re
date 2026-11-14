@@ -52,8 +52,10 @@ module TurnBar = {
     let winner = ready ? state.winner : None;
     let canAct =
       ready
-      && state.turn == Domain.Side.Player
+      && state.turn == Domain.Turn_phase.Player
       && winner == None
+      && view.player_ai == None
+      && !view.settling
       && !view.awaiting_new_game
       && !Story.dialogue_pending(state.campaign)
       && Option.fold(
@@ -88,10 +90,12 @@ module TurnBar = {
       turnLabel={
         !ready
           ? "Loading…"
-          : winner == Some(Domain.Side.Player)
+          : winner == Some(Domain.Battle_result.Player_victory)
               ? "Victory"
-              : winner == Some(Domain.Side.Enemy)
-                  ? "Defeat" : state.turn == Domain.Side.Player ? "End turn" : "Enemy turn"
+              : winner == Some(Domain.Battle_result.Player_defeat)
+                  ? "Defeat"
+                  : state.turn == Domain.Turn_phase.Player && view.player_ai == None
+                      ? "End turn" : "AI turn"
       }
       finished={winner != None}
       canEndTurn=canAct
@@ -200,6 +204,48 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     },
     [|session|],
   );
+  let (showHiddenMaps, setShowHiddenMaps) = React.useState(() => false);
+  let (playtestPreferenceError, setPlaytestPreferenceError) = React.useState(() => "");
+  let savePreference = (key, enabled) => {
+    setPlaytestPreferenceError(_ => "");
+    try(Browser_storage.storage_set(key, string_of_bool(enabled))) {
+    | error => setPlaytestPreferenceError(_ => Foreign_error.exception_(error))
+    };
+  };
+  let changeHiddenMaps = enabled => {
+    setShowHiddenMaps(_ => enabled);
+    savePreference("hex-command-show-hidden-maps", enabled);
+  };
+  let changeFollowAi = enabled => {
+    Session.set_follow_ai(session, enabled);
+    savePreference("hex-command-follow-ai-camera", enabled);
+  };
+  React.useEffect0(() => {
+    try(
+      {
+        setShowHiddenMaps(_ =>
+          Js.Nullable.toOption(Browser_storage.storage_get("hex-command-show-hidden-maps"))
+          == Some("true")
+        );
+        Session.set_follow_ai(
+          session,
+          Js.Nullable.toOption(Browser_storage.storage_get("hex-command-follow-ai-camera"))
+          != Some("false"),
+        );
+      }
+    ) {
+    | error => setPlaytestPreferenceError(_ => Foreign_error.exception_(error))
+    };
+    None;
+  });
+  React.useEffect1(
+    () => {
+      Session.continue_ai(session);
+      None;
+    },
+    [|view|],
+  );
+
   let (showCommanderArrow, setShowCommanderArrow) = React.useState(() => false);
   let (commanderArrowError, setCommanderArrowError) = React.useState(() => "");
   let changeCommanderArrow = enabled => {
@@ -458,7 +504,10 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
            ? <main
                className={
                  "battle-layout"
-                 ++ (ready && state.winner == Some(Domain.Side.Enemy) ? " defeated" : "")
+                 ++ (
+                   ready && state.winner == Some(Domain.Battle_result.Player_defeat)
+                     ? " defeated" : ""
+                 )
                }>
                <TurnBar
                  view
@@ -541,6 +590,10 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
         <Dialogs.Settings
           voiceEnabled
           onVoiceChange=changeVoice
+          showHiddenMaps
+          onHiddenMapsChange=changeHiddenMaps
+          onFollowAiChange=changeFollowAi
+          playtestPreferenceError
           enemyDetailsError
           onEnemyDetailsChange=changeEnemyDetails
           showCommanderArrow
@@ -574,6 +627,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
              />
            : React.null}
         <New_game
+          showHiddenMaps
           session
           view
           actions

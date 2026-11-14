@@ -98,6 +98,8 @@ let make =
         ),
       session_version: view.session_version,
       sound: view.sound,
+      follow_ai: view.follow_ai,
+      ai_focus: view.ai_focus,
       action: view.action,
       combat_playback: view.combat_playback,
     };

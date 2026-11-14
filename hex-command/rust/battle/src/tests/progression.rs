@@ -5,27 +5,19 @@ use super::*;
 fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     let mut rules = Rules::load().unwrap();
     let tile = Hex::new(5, 4);
-    let event:ScriptEvent=serde_json::from_value(serde_json::json!({"id":"hold","when":{"held":{"tile":{"hex":tile},"character":"edda","turns":3,"when":{"own":{"tile":{"hex":tile},"faction":"player"}}}},"objective":{"label":"Defend","visibleWhen":{"always":true},"intent":{"hold":{"tile":{"hex":tile},"character":"edda","turns":3}}},"actions":[{"victory":"Done"}]})).unwrap();
-    rules.campaigns.get_mut("borrowed-tide").unwrap().missions[1].scripted_events =
+    let event:ScriptEvent=serde_json::from_value(serde_json::json!({"id":"hold","when":{"held":{"tile":{"hex":tile},"character":"mirror-captain","turns":3,"when":{"own":{"tile":{"hex":tile},"faction":"player"}}}},"objective":{"faction":"player","label":"Defend","visibleWhen":{"always":true},"intent":{"hold":{"tile":{"hex":tile},"character":"mirror-captain","turns":3}}},"actions":[{"victory":"Done"}]})).unwrap();
+    rules.campaigns.get_mut("mirror-night").unwrap().missions[0].scripted_events =
         vec![event.clone()];
-    let mut game = Game::start_campaign(
-        &rules,
-        "borrowed-tide",
-        1,
-        vec![],
-        0,
-        vec![],
-        vec![],
-        vec![],
-    );
+    let mut game =
+        Game::start_campaign(&rules, "mirror-night", 0, vec![], 0, vec![], vec![], vec![]);
     let wreck = game.site(&tile);
     game.owners[wreck] = Some("player".into());
-    game.units.retain(|u| u.side == Side::Player);
+    game.units.retain(|u| u.phase == TurnPhase::Player);
     game.roster_changed();
     let actor = game
         .units
         .iter()
-        .find(|u| game.name(u.character) == Some("edda"))
+        .find(|u| game.name(u.character) == Some("mirror-captain"))
         .unwrap()
         .id;
     let evaluate = |g: &mut Game<'_>, round| {
@@ -33,7 +25,7 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
         g.evaluate_campaign(true, None);
         let current = g.scripted_objective_status(&event).progress.current;
         if current < 3 {
-            let objectives = g.planning_objectives();
+            let objectives = g.planning_objectives("player");
             let objective = objectives.iter().find(|o| o.id == "hold").unwrap();
             assert_eq!(objective.progress_current, current);
             assert_eq!(objective.progress_total, 3);
@@ -58,29 +50,7 @@ fn named_hold_requires_its_actor_and_resets_without_losing_ownership() {
     for (round, current) in [(9, 1), (10, 2), (11, 3)] {
         assert_eq!(evaluate(&mut game, round), current);
     }
-    assert_eq!(game.winner, Some(Side::Player));
-}
-#[test]
-fn mission_cache_keeps_authored_content_while_story_resolves_from_state() {
-    let mut game =
-        Game::start_campaign(rules(), "ashen-oath", 1, vec![], 0, vec![], vec![], vec![]);
-    let original = game.mission.clone().unwrap();
-    let before = game.resolved_story().unwrap().briefing;
-    game.campaign
-        .as_mut()
-        .unwrap()
-        .set_flag("peace-lost", true, 1);
-    game.refresh_mission();
-    assert!(std::rc::Rc::ptr_eq(
-        &original,
-        game.mission.as_ref().unwrap()
-    ));
-    assert_ne!(before, game.resolved_story().unwrap().briefing);
-    let restored = Game::from_state(rules(), game.state());
-    assert_eq!(
-        game.resolved_story().unwrap().briefing,
-        restored.resolved_story().unwrap().briefing
-    );
+    assert_eq!(game.winner, Some(BattleResult::PlayerVictory));
 }
 use std::collections::HashSet;
 
@@ -106,8 +76,8 @@ fn authored_progression_ladders_are_acyclic_and_preserve_race_and_increase_level
 #[test]
 fn xp_requires_real_damage_and_promotion_preserves_identity_and_wounds() {
     let mut game = flat();
-    let id = add(&mut game, "swordsman", Side::Player, Hex::new(3, 3));
-    let target = add(&mut game, "archer", Side::Enemy, Hex::new(4, 3));
+    let id = add(&mut game, "swordsman", "player", Hex::new(3, 3));
+    let target = add(&mut game, "archer", "enemy", Hex::new(4, 3));
     let index = game.index(id).unwrap();
     game.units[index].hp -= 4;
     let target_index = game.index(target).unwrap();
@@ -119,7 +89,7 @@ fn xp_requires_real_damage_and_promotion_preserves_identity_and_wounds() {
     let index = game.index(id).unwrap();
     game.units[index].experience = needed;
     game.units[index].moved = false;
-    game.units[index].attacked = false;
+    game.units[index].attack_spent = false;
     let before = game.state();
     game.execute(Command::Advance {
         unit: UnitId(id),
@@ -130,7 +100,7 @@ fn xp_requires_real_damage_and_promotion_preserves_identity_and_wounds() {
     assert_eq!(promoted.id, id);
     assert_eq!(promoted.hp, game.rules.units[promoted.kind].hp - 4);
     assert_eq!(promoted.experience, Some(0));
-    assert!(promoted.moved && promoted.attacked);
+    assert!(promoted.moved && promoted.attack_spent);
     assert_eq!(before.units[0].r#type, "swordsman");
     assert_eq!(
         game.execute(Command::Advance {
@@ -144,20 +114,15 @@ fn xp_requires_real_damage_and_promotion_preserves_identity_and_wounds() {
 
 #[test]
 fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds_xp() {
-    let mut game = chapter("borrowed-tide", 0);
+    let mut game = chapter("lantern-road", 0);
     let leader = game
         .units
         .iter()
-        .find(|u| u.side == Side::Player && u.role == Some(Role::Leader))
+        .find(|u| u.phase == TurnPhase::Player && u.role == Some(Role::Leader))
         .unwrap()
         .id;
-    let troop = game
-        .units
-        .iter()
-        .find(|u| u.side == Side::Player && game.rules.units[u.kind].id == "reefguard")
-        .unwrap()
-        .id;
-    for (id, kind) in [(leader, "tideseer"), (troop, "tridentguard")] {
+    let troop = add(&mut game, "scout", "player", Hex::new(1, 1));
+    for (id, kind) in [(leader, "soldier"), (troop, "ranger")] {
         let index = game.index(id).unwrap();
         game.units[index].experience = game.rules.units[game.units[index].kind].experience_needed;
         game.execute(Command::Advance {
@@ -169,10 +134,10 @@ fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds
     let pilot = game
         .units
         .iter()
-        .position(|u| game.name(u.character) == Some("edda"))
+        .position(|u| game.name(u.character) == Some("ivo"))
         .unwrap();
     game.units[pilot].experience = Some(7);
-    game.winner = Some(Side::Player);
+    game.winner = Some(BattleResult::PlayerVictory);
     game.execute(Command::RecallMission {
         units: vec![UnitId(troop)],
     })
@@ -180,24 +145,24 @@ fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds
     assert!(
         game.units
             .iter()
-            .any(|u| u.role == Some(Role::Leader) && game.rules.units[u.kind].id == "tideseer")
+            .any(|u| u.role == Some(Role::Leader) && game.rules.units[u.kind].id == "soldier")
     );
     assert!(
         game.units
             .iter()
-            .any(|u| game.rules.units[u.kind].id == "tridentguard" && u.experience == Some(0))
+            .any(|u| game.rules.units[u.kind].id == "ranger" && u.experience == Some(0))
     );
     assert_eq!(
         game.units
             .iter()
-            .filter(|u| game.name(u.character) == Some("edda"))
+            .filter(|u| game.name(u.character) == Some("ivo"))
             .count(),
         1
     );
     let pilot = game
         .units
         .iter()
-        .position(|u| game.name(u.character) == Some("edda"))
+        .position(|u| game.name(u.character) == Some("ivo"))
         .unwrap();
     assert_eq!(game.units[pilot].experience, Some(7));
     game.units[pilot].experience = Some(10);
@@ -205,7 +170,7 @@ fn promoted_leader_veterans_and_named_companions_carry_forward_and_retry_rewinds
     assert_eq!(
         game.units
             .iter()
-            .find(|u| game.name(u.character) == Some("edda"))
+            .find(|u| game.name(u.character) == Some("ivo"))
             .unwrap()
             .experience,
         Some(7)
@@ -226,16 +191,51 @@ fn planning_deadline_reports_only_unconditional_defeat_clocks() {
         {"id":"earlier","when":{"turn":20},"actions":[{"defeat":"Too late"}]},
         {"id":"reinforcement","when":{"turn":3},"actions":[{"log":"Not a deadline"}]}
     ])).unwrap();
-    rules.campaigns.get_mut("borrowed-tide").unwrap().missions[1].scripted_events = events;
-    let game = Game::start_campaign(
-        &rules,
-        "borrowed-tide",
-        1,
-        vec![],
-        0,
-        vec![],
-        vec![],
-        vec![],
-    );
+    rules.campaigns.get_mut("mirror-night").unwrap().missions[0].scripted_events = events;
+    let game = Game::start_campaign(&rules, "mirror-night", 0, vec![], 0, vec![], vec![], vec![]);
     assert_eq!(game.planning_deadline_round(), Some(20));
+}
+
+#[test]
+fn objective_progress_and_disclosure_use_the_assigned_faction() {
+    let mut rules = Rules::load().unwrap();
+    let tile = Hex::new(2, 1);
+    let events: Vec<ScriptEvent> = serde_json::from_value(serde_json::json!([
+        {"id":"enemy-control", "when":{"always":false}, "objective":{
+            "faction":"toll-skeletons", "label":"Control", "visibleWhen":{"always":true},
+            "intent":{"capture":[{"hex":tile}]}}, "actions":[]},
+        {"id":"hidden-enemy-duty", "when":{"always":false}, "objective":{
+            "faction":"toll-skeletons", "label":"Secret", "visibleWhen":{"stand":{"tile":{"hex":tile},"side":"observer","role":"leader"}},
+            "intent":{"goTo":{"tile":{"hex":tile},"side":"observer","role":"leader"}}}, "actions":[]}
+    ])).unwrap();
+    rules.campaigns.get_mut("lantern-road").unwrap().missions[1].scripted_events = events.clone();
+    let mut game =
+        Game::start_campaign(&rules, "lantern-road", 1, vec![], 0, vec![], vec![], vec![]);
+    let site = game.site(&tile);
+    game.owners[site] = Some("toll-skeletons".into());
+    assert_eq!(
+        game.scripted_objective_status(&events[0]).progress.current,
+        1
+    );
+    assert!(game.planning_objectives("player").is_empty());
+    assert_eq!(game.planning_objectives("toll-skeletons").len(), 1);
+    assert!(game.requirements_disclosed("player"));
+    assert!(!game.requirements_disclosed("toll-skeletons"));
+    let revision = game.story.planning_revision;
+    let leader = game
+        .units
+        .iter()
+        .position(|u| game.unit_faction(u) == "toll-skeletons" && u.is_leader())
+        .unwrap();
+    game.units[leader].tile = site;
+    game.roster_changed();
+    game.evaluate_campaign(false, None);
+    assert!(game.story.planning_revision > revision);
+    assert_eq!(game.planning_objectives("toll-skeletons").len(), 2);
+    let restored = Game::try_from_state(&rules, game.state()).unwrap();
+    assert_eq!(
+        restored.planning_objectives("toll-skeletons")[0].progress_current,
+        1
+    );
+    assert!(restored.planning_objectives("player").is_empty());
 }

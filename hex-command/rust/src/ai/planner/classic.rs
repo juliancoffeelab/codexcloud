@@ -49,20 +49,20 @@ impl<'game, 'catalog> ClassicRules<'game, 'catalog> {
         opportunity: Option<crate::ai::policies::recruitment::EstimateInput<'_>>,
     ) -> Self {
         let important = orders.important(g, u);
-        let threats = important.then(|| Threats::protected(phases, u.side, orders));
+        let threats =
+            important.then(|| Threats::protected(phases, phases.view().unit_faction(&u), orders));
         // Classic owns this budget estimate and its movement penalties; no recruit previews.
         let mut recruitment = HashMap::default();
         if let Some(opportunity) = opportunity.filter(|r| r.remaining_budget != Some(0)) {
-            if u.is_leader() && !u.moved && !u.attacked {
+            if u.is_leader() && !u.moved && !u.attack_spent {
                 let destinations = orders.authored_destinations(
                     g,
                     u,
                     g.reachable(u).iter().map(|&(tile, _)| tile).collect(),
                 );
-                for tile in destinations
-                    .into_iter()
-                    .filter(|&tile| tile != u.tile && g.is_keep(tile) && g.owns(tile, u.side))
-                {
+                for tile in destinations.into_iter().filter(|&tile| {
+                    tile != u.tile && g.is_keep(tile) && g.owns(tile, g.unit_faction(&u))
+                }) {
                     if let Some(value) =
                         crate::ai::policies::recruitment::estimate_capacity(g, u, tile, opportunity)
                     {
@@ -249,7 +249,9 @@ impl ClassicEvaluation<'_, '_, '_> {
 
     fn movement_goals(&self, u: &Unit, orders: &crate::ai::orders::TacticalOrders) -> Vec<usize> {
         let villages: Vec<_> = (0..self.terrain().len())
-            .filter(|&t| self.role_is(t, TerrainRole::Village) && self.captures(t, u.side))
+            .filter(|&t| {
+                self.role_is(t, TerrainRole::Village) && self.captures(t, self.unit_faction(&u))
+            })
             .collect();
         let goals = if self.rules().units[u.kind].family == Family::Scout && !villages.is_empty() {
             villages
@@ -270,7 +272,7 @@ impl ClassicEvaluation<'_, '_, '_> {
                 .movement_tiles
                 .iter()
                 .map(|tile| self.site(&tile.0))
-                .filter(|&tile| self.captures(tile, u.side))
+                .filter(|&tile| self.captures(tile, self.unit_faction(&u)))
                 .collect();
             if !contested.is_empty() {
                 return contested;
@@ -290,7 +292,7 @@ impl ClassicEvaluation<'_, '_, '_> {
         let mut ids: Vec<_> = self
             .units()
             .iter()
-            .filter(|u| self.belongs_to_phase(&u, self.turn()) && self.can_act(u.id))
+            .filter(|u| self.belongs_to_faction(&u, self.observer_faction()) && self.can_act(u.id))
             .map(|u| u.id)
             .collect();
         let clearing = self.classic_lanes(objectives);
@@ -299,14 +301,18 @@ impl ClassicEvaluation<'_, '_, '_> {
                 return ClassicOrder::Leader;
             }
             let r = &self.rules().units[u.kind];
+            // Classic intentionally retains its legacy ID/family-based ordering.
+            // This planner policy must not define shared unit or perception mechanics.
             match r.id.as_str() {
                 "scout" | "wolf" => ClassicOrder::Scout,
                 "archer" | "thorncaller" | "bonearcher" | "adept" => ClassicOrder::Ranged,
                 "soldier" | "skeleton" | "warden" | "boar" => ClassicOrder::Frontline,
                 _ => match r.family {
-                    Family::Captives | Family::Scout | Family::Wolf | Family::Ghost => {
-                        ClassicOrder::Scout
-                    }
+                    Family::Captives
+                    | Family::Scout
+                    | Family::Wolf
+                    | Family::Ghost
+                    | Family::GiantSnake => ClassicOrder::Scout,
                     Family::Archer | Family::Thorncaller | Family::Bonearcher | Family::Adept => {
                         ClassicOrder::Ranged
                     }
@@ -368,11 +374,11 @@ impl std::ops::DerefMut for ClassicProjection<'_, '_> {
 }
 impl ClassicProjection<'_, '_> {
     fn clear_projection_retreat(&mut self, id: u32) {
-        let (rebuilding, attacked) = {
+        let (rebuilding, attack_spent) = {
             let actor = self.unit(id).unwrap();
-            (actor.rebuilding, actor.attacked)
+            (actor.rebuilding, actor.attack_spent)
         };
-        self.project_intent(id, None, rebuilding, attacked);
+        self.project_intent(id, None, rebuilding, attack_spent);
     }
     fn mark_projection_attacked(&mut self, id: u32) {
         let (retreating, rebuilding) = {
@@ -453,7 +459,7 @@ impl ClassicProjection<'_, '_> {
         let villages: Vec<_> = (0..self.terrain().len())
             .filter(|&t| {
                 self.role_is(t, TerrainRole::Village)
-                    && self.owns(t, u.side)
+                    && self.owns(t, self.unit_faction(&u))
                     && self.at(t).is_none_or(|o| o.id == id)
                     && ClassicEvaluation(self).enemy_danger(&u, t) == 0
             })
@@ -530,7 +536,7 @@ impl ClassicProjection<'_, '_> {
         let Some(mut u) = self.unit(id).cloned() else {
             return;
         };
-        if !self.belongs_to_phase(&u, self.turn()) || u.attacked {
+        if !self.belongs_to_faction(&u, self.observer_faction()) || u.attack_spent {
             return;
         }
         if let Some(promotion) = rules.orders.promotion(self, &u) {
@@ -538,11 +544,11 @@ impl ClassicProjection<'_, '_> {
             return;
         }
         let (rebuild, intent) = rules.orders.rebuild_plan(self, id, required);
-        let (retreating, attacked) = {
+        let (retreating, attack_spent) = {
             let actor = self.unit(id).unwrap();
-            (actor.retreating, actor.attacked)
+            (actor.retreating, actor.attack_spent)
         };
-        self.project_intent(id, retreating, intent, attacked);
+        self.project_intent(id, retreating, intent, attack_spent);
         u = self.unit(id).unwrap().clone();
         let retreat = self.retreat(id, &mut rules, recorder);
         if retreat == Retreat::Retreated {
@@ -576,7 +582,7 @@ impl ClassicProjection<'_, '_> {
             .then(|| self.routes(u.kind, &goals))
         };
         let recruiting = self
-            .recruitment_options(u.side)
+            .recruitment_options_for_faction(self.unit_faction(&u))
             .iter()
             .any(|&k| !self.placement_tiles(&u, k, true).is_empty());
         let campaign = rules.orders.campaign;
@@ -633,7 +639,9 @@ impl ClassicProjection<'_, '_> {
                     }
                 }
             }
-            let capture = if self.role_is(t, TerrainRole::Village) && self.captures(t, u.side) {
+            let capture = if self.role_is(t, TerrainRole::Village)
+                && self.captures(t, self.unit_faction(&u))
+            {
                 if self.rules().units[u.kind].family == Family::Scout {
                     8.0
                 } else {
@@ -642,7 +650,9 @@ impl ClassicProjection<'_, '_> {
             } else {
                 0.0
             };
-            let heal = if u.hp <= 4 && self.role_is(t, TerrainRole::Village) && self.owns(t, u.side)
+            let heal = if u.hp <= 4
+                && self.role_is(t, TerrainRole::Village)
+                && self.owns(t, self.unit_faction(&u))
             {
                 9.0
             } else {
@@ -677,10 +687,10 @@ impl ClassicProjection<'_, '_> {
             }
         }
     }
-    pub(in crate::ai) fn classic_choose(
+    pub(in crate::ai) fn classic_choose<'a, 'catalog>(
         &mut self,
-        source: &BattleView<'_, '_>,
-        phases: hex_command_battle::PhaseForecasts<'_, '_>,
+        source: &'a BattleView<'a, 'catalog>,
+        phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
         id: u32,
         objectives: &[Objective],
         orders: &crate::ai::orders::TacticalOrders,
@@ -718,7 +728,9 @@ impl ClassicProjection<'_, '_> {
                 crate::ai::policies::objectives::can_pursue(self, &u, g)
                     && (g.kind != ObjectiveKind::Capture
                         || g.hold == Some(true)
-                        || g.tiles.iter().any(|t| self.captures(self.site(t), u.side)))
+                        || g.tiles
+                            .iter()
+                            .any(|t| self.captures(self.site(t), self.unit_faction(&u))))
             })
             .collect();
         if eligible
@@ -821,9 +833,9 @@ pub(super) fn prepare(
     session.escort.prepare(phases, turn.report);
 }
 
-pub(super) fn choose(
-    game: &BattleView<'_, '_>,
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+pub(super) fn choose<'a, 'catalog>(
+    game: &'a BattleView<'a, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     session: &mut Session,
     turn: &mut crate::ai::runtime::PlannerTurn<'_>,
     source: &ActionForecastSource<'_, '_>,
@@ -849,10 +861,15 @@ pub(super) fn choose(
             .collect();
         session.objectives.extend(orders.rebuild_objectives(game));
         session.revision = turn.coordination.revision();
-        if turn.goals.is_none() && (!orders.campaign || game.turn() == Side::Enemy) {
-            session
-                .objectives
-                .retain(|g| g.id.starts_with("rebuild:") || g.id.starts_with("group:"));
+        if turn.goals.is_none() && (!orders.campaign || game.turn() == TurnPhase::Ai) {
+            session.objectives.retain(|g| {
+                // Explicit actor/family travel is a Campaigner order on every
+                // phase, including patrols. Anonymous arena targets retain
+                // Classic's own movement policy.
+                crate::ai::policies::objectives::actor_route(g)
+                    || g.id.starts_with("rebuild:")
+                    || g.id.starts_with("group:")
+            });
         }
         session.ids = ClassicEvaluation(game)
             .classic_order(&session.objectives)
@@ -863,7 +880,9 @@ pub(super) fn choose(
             .order_by_key(|id| session.escort.bound(*id) == 0.0);
         session.remaining = Some(session.ids.len());
         for unit in game.units().iter().filter(|u| {
-            game.belongs_to_phase(u, game.turn()) && game.can_act(u.id) && u.is_leader()
+            game.belongs_to_faction(u, game.observer_faction())
+                && game.can_act(u.id)
+                && u.is_leader()
         }) {
             let required = orders.moving_actor(unit.id);
             let (_, intent) = orders.rebuild_plan(game, unit.id, required);
@@ -872,7 +891,7 @@ pub(super) fn choose(
                     unit,
                     unit.retreating,
                     intent,
-                    unit.attacked,
+                    unit.attack_spent,
                 ));
             }
         }
@@ -926,7 +945,7 @@ impl ClassicEvaluation<'_, '_, '_> {
                 .units()
                 .iter()
                 .filter(|u| {
-                    self.belongs_to_phase(u, self.turn())
+                    self.belongs_to_faction(u, self.observer_faction())
                         && (goal.actor.is_some()
                             || goal.family.is_some()
                             || !u.is_leader() && !u.role.is_some_and(Role::is_escort))
@@ -1073,20 +1092,20 @@ impl Recorder {
             intents: game
                 .units()
                 .iter()
-                .map(|u| (u.id, (u.retreating, u.rebuilding, u.attacked)))
+                .map(|u| (u.id, (u.retreating, u.rebuilding, u.attack_spent)))
                 .collect(),
         }
     }
     fn flush_intents(&mut self, game: &BattleView<'_, '_>) {
         for u in game.units() {
-            let intent = (u.retreating, u.rebuilding, u.attacked);
+            let intent = (u.retreating, u.rebuilding, u.attack_spent);
             let record_retreat = self.retreat_logs.remove(&u.id);
             if record_retreat || self.intents.get(&u.id).is_some_and(|old| *old != intent) {
                 self.commands.push_back(Command::SetUnitIntent {
                     unit: UnitId(u.id),
                     retreating: u.retreating,
                     rebuilding: u.rebuilding,
-                    attacked: u.attacked,
+                    attack_spent: u.attack_spent,
                     record_retreat,
                 });
             }
@@ -1106,7 +1125,7 @@ impl Recorder {
         self.intents = game
             .units()
             .iter()
-            .map(|u| (u.id, (u.retreating, u.rebuilding, u.attacked)))
+            .map(|u| (u.id, (u.retreating, u.rebuilding, u.attack_spent)))
             .collect();
     }
     fn move_unit(

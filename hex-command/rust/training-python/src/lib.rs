@@ -45,7 +45,7 @@ fn learned(config: &mut MatchConfig) {
 fn summary(r: &MatchResult) -> serde_json::Value {
     match r {
         MatchResult::Arena(r) => {
-            serde_json::json!({"winner":r.winner,"reason":r.reason,"rounds":r.rounds,"success":r.winner==Some(Side::Player),"truncated":r.winner.is_none()})
+            serde_json::json!({"winner":r.winner,"reason":r.reason,"rounds":r.rounds,"success":r.winner==Some(BattleResult::PlayerVictory),"truncated":r.winner.is_none()})
         }
         MatchResult::Campaign(r) => {
             serde_json::json!({"success":r.completed,"missions":r.missions.iter().map(|m|serde_json::json!({"id":m.id,"round":m.round,"winner":m.winner})).collect::<Vec<_>>(),"truncated":r.missions.last().is_some_and(|m|m.winner.is_none())})
@@ -75,8 +75,8 @@ fn collect_data(
 ) -> PyResult<Dataset> {
     let side = match side.as_deref() {
         None => None,
-        Some("player") => Some(Side::Player),
-        Some("enemy") => Some(Side::Enemy),
+        Some("player") => Some(TurnPhase::Player),
+        Some("enemy") => Some(TurnPhase::Ai),
         _ => return Err(err("side must be player, enemy, or None")),
     };
     if max_samples == 0 {
@@ -88,7 +88,7 @@ fn collect_data(
         let (result, data) = scoped(
             Some(Dataset {
                 limit: max_samples,
-                side,
+                phase: side,
                 spatial,
                 ..Default::default()
             }),

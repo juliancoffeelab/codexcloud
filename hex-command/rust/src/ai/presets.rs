@@ -65,7 +65,6 @@ mod tests {
     use super::*;
     use crate::ai::campaigner::mission::{CampaignInput, MissionPolicy};
     use crate::ai::recruiter::fixtures;
-    use crate::data::Hex;
     use crate::{
         ai::{Diplomacy, PlanningWorkspace, choose_game_command},
         data::*,
@@ -98,14 +97,22 @@ mod tests {
         let rules = Rules::load().unwrap();
         let mut game = Game::new(&rules, "mirror");
         fixtures::units(&mut game, |units| units.retain(|u| u.is_leader()));
-        for side in [Side::Player, Side::Enemy] {
-            game.begin_turn(side);
-            fixtures::edit(&mut game, |state| state.gold[side.faction_id()] = 100);
-            let leader = game.units().iter().find(|u| u.side == side).unwrap().id;
+        for faction in ["player", "enemy"] {
+            let phase = game.faction(faction).unwrap().phase;
+            game.begin_turn(phase);
+            fixtures::edit(&mut game, |state| state.gold[faction] = 100);
+            game.set_active_faction(Some(faction.into()));
+            let leader = game
+                .units()
+                .iter()
+                .find(|u| game.belongs_to_faction(u, faction))
+                .unwrap()
+                .id;
             let mission = MissionPolicy::new(game.campaign_view(), game.phase_forecasts());
             let orders = CampaignBlock::Mission.campaign_orders(
                 &mission,
                 CampaignInput {
+                    seed: 0,
                     goals: None,
                     diplomacy: Diplomacy::Diplomatic,
                 },
@@ -151,56 +158,5 @@ mod tests {
             game.execute_runtime(command).unwrap();
         }
         panic!("queued phase failed to finish");
-    }
-
-    #[test]
-    fn escalated_refuge_targets_patrol_and_terminal_attack_requires_its_last_enemy() {
-        let rules = Rules::load().unwrap();
-        let mut game =
-            Game::start_campaign(&rules, "ashen-oath", 1, vec![], 0, vec![], vec![], vec![]);
-        fixtures::edit(&mut game, |state| {
-            let campaign = state.campaign.as_mut().unwrap();
-            campaign.set_flag("peace-lost", true, 1);
-            let scripts = campaign.scripts.as_mut().unwrap();
-            scripts.active.retain(|id| id != "refuge-peace");
-            scripts.failed.push("refuge-peace".into());
-        });
-        // Let campaign runtime reveal the escalation objective before planning.
-        game.begin_turn(Side::Player);
-        let mission = MissionPolicy::new(game.campaign_view(), game.phase_forecasts());
-        let required = mission
-            .objectives(Side::Player)
-            .into_iter()
-            .find(|g| g.id == "required:refuge-war")
-            .unwrap();
-        assert!(!required.tiles.contains(&Hex::new(6, 4).to_owned()));
-        assert!(
-            required
-                .tiles
-                .iter()
-                .all(|t| game.at(game.site(t)).is_some_and(|u| u.side == Side::Enemy))
-        );
-        let actor = game
-            .units()
-            .iter()
-            .find(|u| u.side == Side::Player)
-            .unwrap()
-            .clone();
-        let target = game
-            .units()
-            .iter()
-            .find(|u| u.side == Side::Enemy && u.is_leader())
-            .unwrap()
-            .clone();
-        assert!(!crate::ai::campaigner::mission::terminal_attack(
-            &mission, &actor, &target
-        ));
-        fixtures::units(&mut game, |units| {
-            units.retain(|u| u.side == Side::Player || u.id == target.id)
-        });
-        let mission = MissionPolicy::new(game.campaign_view(), game.phase_forecasts());
-        assert!(crate::ai::campaigner::mission::terminal_attack(
-            &mission, &actor, &target
-        ));
     }
 }

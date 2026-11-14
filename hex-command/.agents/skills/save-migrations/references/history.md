@@ -393,3 +393,105 @@ the same typed conversion before producing new backward differences. This covers
 single-field patches, whole records and removals without guessing types from paths. Text,
 cell presentation keys, IDs, flag histories and all other resolved facts retain
 their meaning. IndexedDB storage and history-index versions are unchanged.
+
+## Version-forty migration
+
+The v39-to-v40 step makes explored terrain a faction fact. It moves recognized
+`fog:col,row` entries from shared condition memory into each formerly viewing
+human faction's `vision.explored` on maps with fog, and replaces player selectors inside terrain
+fog predicates with the exact `observer` selector. Lights, faction transfers and
+other conditions keep their previous selector meanings. Mirror Night's AI
+factions gain independent fog with no invented exploration history. Other enemy
+factions retain their authored absence of fog. Exploration is never shared just
+because factions act in the same phase or are allied.
+
+The conversion preserves units, inventories, economy, campaign outcomes, PRNG and
+seed. It reconstructs and converts every undo state before generating replacement
+patches, so undo does not restore shared fog or erase unrelated facts. Both the
+frozen transition and the independent native/browser output contracts are typed.
+Frozen type names are pinned in the reader metadata so a new, shorter reference
+path cannot rename declarations used by earlier conversions.
+
+## Version 41: shared perception and turn phases
+
+The 40→41 conversion makes vision-group membership explicit on factions, moves
+exploration into those groups, and converts tile fog into bounded concealment
+facts. Each formerly independent faction starts in its own group; the conversion
+does not infer sharing from diplomacy or scheduling. Recognized observer
+proximity predicates retain their reveal radius. The authored monastery's
+`fog-cleared OR proximity` expression resolves already-cleared fog immediately;
+unsupported historical custom fog expressions fail conversion explicitly rather
+than silently changing their meaning.
+
+Units retain an explicit faction and gain saved combat/contact reveals and
+perception effects. Scheduling values become `player`/`ai`, battle results become
+`playerVictory`/`playerDefeat`, and the action-budget field becomes `attackSpent`.
+Inventories, identities, HP, ownership, treasuries, combat RNG, campaign flags and
+checkpoint metadata retain their resolved facts. The same typed conversion
+reconstructs and converts every undo state before regenerating backward patches.
+The full v41 wire schema and readers are frozen inside the migration package;
+independent application/native compile-time contracts check its output.
+
+## Version 42: battle-owned player AI selection
+
+The 41→42 conversion adds required `setup.player`: `null` for manual control, or
+one of the three browser policy identifiers. Existing battles migrate to manual
+control. AI control belongs to each saved battle's setup, survives reload and
+campaign chapter transitions, and is independent of the camera preference.
+Native checkpoint types remain the frozen v41 graph; checkpoint and undo data
+pass through unchanged. The browser contract comparison also checks this field.
+
+## Version 43: cave terrain roles
+
+The 42→43 step extends the frozen terrain-role enum with `cave-wall`, introduced
+by the cave terrain integration. Older role values widen without changing their
+wire values. Typed conversion visits affected unit effects, carried and ground
+items, evacuated units and veteran inventories. All other resolved facts,
+including undo patches and saved control settings, pass through unchanged.
+The independent native contract is frozen as v43; v41/v42 inputs remain frozen.
+
+### Version 44
+
+Concealment rules carry explicit physical requirements, shared by terrain and
+personal sources. The isolated v43 conversion records the old illumination
+condition on darkness rules and moves personal terrain eligibility into
+`requires.terrains`. Undo states pass through the same typed conversion and are
+re-diffed. Other battlefield facts and browser preferences are retained. Unit
+appearance is derived and is not part of the save.
+
+### Version 45
+
+Campaign opponents use named faction IDs. The frozen 44→45 conversion renames
+the former `enemy` faction according to its saved map, including unit membership,
+treasuries, diplomacy, settlement ownership, transfer targets, pending spawns,
+recruitment overrides, evacuated units and exact ownership conditions. Vision
+groups, palettes, phases and relation selectors retain their previous meanings.
+Undo states receive the same conversion and are re-diffed. The native wire layout
+is unchanged and reuses the frozen v44 checkpoint graph.
+
+### Version 46
+
+Unit snapshots retain faction membership without a redundant `side` turn phase.
+The isolated 45→46 conversion validates each old unit phase against its declared
+faction, removes the redundant field from live and evacuated units, and applies
+the same conversion to reconstructed undo states before re-diffing them. Other
+resolved facts and browser settings are preserved. The native checkpoint graph
+is frozen separately as v46; prior schemas and conversions remain unchanged.
+
+### Version 47
+
+World condition rules carry an explicit optional observer faction. The isolated
+46→47 conversion writes the historical `player` observer only for rules that
+query visibility or use an observer selector, including nested predicates.
+Observer-free rules remain unscoped. Faction transfers, tile lights, event marks,
+and reconstructed undo states receive the same conversion. Prior schemas remain
+frozen, and native restoration does not supply an observer fallback.
+
+## IndexedDB v2 → v3: removed campaigns
+
+Retire Green Accord, Ashen Oath and Borrowed Tide saves and saved turns. Frozen
+numbered-save conversions establish ownership before the storage migration
+deletes their payloads and history rows atomically. Retiring the current save
+opens the campaign chooser; no replacement battle is saved or restored. Other
+campaigns and malformed records retain their existing load/repair behavior.
+LocalStorage import composes the same retirement before committing IndexedDB v3.

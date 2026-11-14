@@ -232,7 +232,7 @@
           {
             "hasUnits": {
               "side": "player",
-              "character": "oren"
+              "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
             }
           },
           {
@@ -246,14 +246,26 @@
         {
           "say": [
             {
-              "portrait": "adept",
-              "text": "The monastery is on the hill to the north. Get me there, and I can use its wards to clear this fog.",
-              "character": "oren"
+              "with": "oren",
+              "dialogue": [
+                {
+                  "portrait": "adept",
+                  "text": "The monastery is on the hill to the north. Get me there, and I can use its wards to clear this fog.",
+                  "character": "oren"
+                }
+              ],
+              "alternative": [
+                {
+                  "speaker": "Storm mage",
+                  "portrait": "mage",
+                  "text": "The monastery is on the hill to the north. Its wards can help us clear this fog. Get one of us there."
+                }
+              ]
             }
           ]
         },
         {
-          "log": "Oren can clear the fog from the northern hill monastery."
+          "log": "A mage identifies the northern hill monastery as a way to clear the fog."
         },
         {
           "setFlag": "monastery-lead"
@@ -275,7 +287,7 @@
       "actions": [
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "bell-host",
             "area": [
               {
                 "hex": {
@@ -324,12 +336,24 @@
             {
               "speaker": "The company",
               "portrait": "adept",
-              "text": "The stones answer the mage\u2019s touch. The mist is bound here; three uninterrupted turns in the circle can break it. Shapes stir among the trees below."
+              "text": "The stones answer the mage’s touch. The mist is bound here; three uninterrupted turns in the circle can break it. Shapes stir among the trees below."
             },
             {
-              "portrait": "adept",
-              "text": "Keep them back. I need three turns here to break the veil.",
-              "character": "oren"
+              "with": "oren",
+              "dialogue": [
+                {
+                  "portrait": "adept",
+                  "text": "Keep them back. I need three turns here to break the veil.",
+                  "character": "oren"
+                }
+              ],
+              "alternative": [
+                {
+                  "speaker": "Storm mage",
+                  "portrait": "mage",
+                  "text": "Keep them back. I need three turns here to break the veil."
+                }
+              ]
             }
           ]
         },
@@ -371,13 +395,20 @@
           ]
         },
         {
-          "log": "The hill ritual clears the valley\u2019s fog."
+          "log": "The hill ritual clears the valley’s fog."
         },
         {
           "setFlag": "fog-cleared"
+        },
+        {
+          "removeConcealment": {
+            "area": "map",
+            "kind": "fog"
+          }
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Hold the monastery with a mage for three turns",
         "optional": true,
         "intent": {
@@ -415,6 +446,7 @@
     },
     {
       "id": "bell-sighted",
+      "observer": "player",
       "when": {
         "all": [
           {
@@ -447,7 +479,7 @@
             },
             {
               "portrait": "swordsman",
-              "text": "You\u2019ll have no more of them.",
+              "text": "You’ll have no more of them.",
               "character": "nera"
             }
           ]
@@ -463,30 +495,72 @@
     {
       "id": "toll-warning",
       "when": {
-        "turn": 4
+        "any": [
+          {
+            "proximity": {
+              "tile": {
+                "location": "northern-ritual-mark"
+              },
+              "faction": "player",
+              "radius": 3
+            }
+          },
+          {
+            "proximity": {
+              "tile": {
+                "location": "eastern-ritual-mark"
+              },
+              "faction": "player",
+              "radius": 3
+            }
+          },
+          {
+            "proximity": {
+              "tile": {
+                "location": "southern-ritual-mark"
+              },
+              "faction": "player",
+              "radius": 3
+            }
+          },
+          {
+            "visibleUnits": {
+              "faction": "bell-host",
+              "character": "bellwarden"
+            }
+          }
+        ]
       },
       "actions": [
         {
           "say": [
             {
-              "speaker": "The company",
-              "portrait": "captives",
-              "text": "A low note builds beneath the mist. The marked stones begin to glow."
-            },
-            {
-              "portrait": "adept",
-              "text": "The bell is gathering strength. Get the prisoners off those marks\u2014cutting their bonds won\u2019t be enough.",
-              "character": "oren"
+              "with": "oren",
+              "dialogue": [
+                {
+                  "character": "oren",
+                  "portrait": "adept",
+                  "text": "It's a raising rite. The bell is bound to the marked stones. Anyone left on them when it tolls will be killed and raised for its master. Get the prisoners clear\u2014cutting their bonds won't be enough."
+                }
+              ],
+              "alternative": [
+                {
+                  "character": "nera",
+                  "portrait": "swordsman",
+                  "text": "Those marks are part of whatever that bell is doing. Get the prisoners clear of them. I'm not leaving anyone there to find out what happens when it rings."
+                }
+              ]
             }
           ]
         },
         {
-          "log": "The next toll is close."
+          "log": "The company recognizes the danger of the ritual marks."
         },
         {
           "setFlag": "toll-warning"
         }
-      ]
+      ],
+      "observer": "player"
     },
     {
       "id": "church-sighted",
@@ -639,6 +713,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Free the northern captives",
         "optional": true,
         "intent": {
@@ -737,6 +812,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Free the eastern captives",
         "optional": true,
         "intent": {
@@ -835,6 +911,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Free the southern captives",
         "optional": true,
         "intent": {
@@ -893,7 +970,7 @@
           "say": [
             {
               "portrait": "lich",
-              "text": "Bring them back. Alive or dead\u2014their blood will serve the ritual just the same.",
+              "text": "Bring them back. Alive or dead—their blood will serve the ritual just the same.",
               "character": "bellwarden"
             }
           ]
@@ -920,7 +997,7 @@
       "actions": [
         {
           "spawn": {
-            "faction": "enemy",
+            "faction": "bell-host",
             "area": [
               {
                 "hex": {
@@ -970,14 +1047,14 @@
         {
           "say": [
             {
-              "portrait": "scout",
-              "text": "The dead from the pass\u2014they\u2019ve followed us!",
-              "character": "ivo"
+              "character": "tollkeeper",
+              "portrait": "necromancer",
+              "text": "Did you think the mist would hide you from me? My toll is still unpaid. I'll have it in bones."
             },
             {
+              "character": "nera",
               "portrait": "swordsman",
-              "text": "Hold them at the tree line. The rest of you, keep moving.",
-              "character": "nera"
+              "text": "Behind us. Keep the company together\u2014we're not turning back."
             }
           ]
         },
@@ -1071,7 +1148,7 @@
               },
               {
                 "spawn": {
-                  "faction": "enemy",
+                  "faction": "bell-host",
                   "aiGroup": "bell-raised",
                   "tile": {
                     "location": "northern-ritual-mark"
@@ -1091,7 +1168,7 @@
             "actions": [
               {
                 "spawn": {
-                  "faction": "enemy",
+                  "faction": "bell-host",
                   "aiGroup": "bell-raised",
                   "tile": {
                     "binding": "mark"
@@ -1162,7 +1239,7 @@
               },
               {
                 "spawn": {
-                  "faction": "enemy",
+                  "faction": "bell-host",
                   "aiGroup": "bell-raised",
                   "tile": {
                     "location": "eastern-ritual-mark"
@@ -1182,7 +1259,7 @@
             "actions": [
               {
                 "spawn": {
-                  "faction": "enemy",
+                  "faction": "bell-host",
                   "aiGroup": "bell-raised",
                   "tile": {
                     "binding": "mark"
@@ -1248,7 +1325,7 @@
               },
               {
                 "spawn": {
-                  "faction": "enemy",
+                  "faction": "bell-host",
                   "aiGroup": "bell-raised",
                   "tile": {
                     "location": "southern-ritual-mark"
@@ -1268,7 +1345,7 @@
             "actions": [
               {
                 "spawn": {
-                  "faction": "enemy",
+                  "faction": "bell-host",
                   "aiGroup": "bell-raised",
                   "tile": {
                     "binding": "mark"
@@ -1312,6 +1389,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Silence the bell",
         "optional": false,
         "intent": {
@@ -1406,7 +1484,7 @@
             },
             {
               "portrait": "swordsman",
-              "text": "Good timing. Join the company\u2014we need to silence that bell.",
+              "text": "Good timing. Join the company—we need to silence that bell.",
               "character": "nera"
             }
           ]
@@ -1445,13 +1523,13 @@
               "dialogue": [
                 {
                   "character": "oren",
-                  "text": "The connection broke. I\u2019ll have to start again."
+                  "text": "The connection broke. I’ll have to start again."
                 }
               ],
               "alternative": [
                 {
                   "character": "nera",
-                  "text": "We\u2019ll have to try again."
+                  "text": "We’ll have to try again."
                 }
               ]
             }

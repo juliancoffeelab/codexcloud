@@ -1,7 +1,7 @@
 use hex_command_core::data::Hex;
 use hex_command_core::{
     ai::Policy,
-    data::{ArenaForces, ArenaScenario, ArenaVariant, Rules, Side},
+    data::{ArenaForces, ArenaScenario, ArenaVariant, Rules, TurnPhase},
     simulation::{ArenaConfig, Armies, run_arena},
 };
 
@@ -41,7 +41,7 @@ fn authored_arena_uses_its_board_keeps_and_capture_targets() {
             enemy: Policy::Balanced,
             player_blocks: None,
             enemy_blocks: None,
-            first: Side::Player,
+            first: TurnPhase::Player,
             max_rounds: 1,
             recruit_limit: Some(0),
         },
@@ -58,7 +58,7 @@ fn authored_arena_uses_its_board_keeps_and_capture_targets() {
         let keep = source
             .tiles
             .iter()
-            .find(|t| t.terrain == "keep" && t.owner.as_deref() == Some(unit.side.faction_id()))
+            .find(|t| t.terrain == "keep" && t.owner.as_deref() == Some(unit.faction.as_str()))
             .unwrap();
         assert_eq!(unit.tile, keep.hex());
     }
@@ -133,7 +133,7 @@ fn authored_combat_preserves_starting_forces_and_faction_gold() {
             enemy: Policy::Classic,
             player_blocks: None,
             enemy_blocks: None,
-            first: Side::Enemy,
+            first: TurnPhase::Ai,
             max_rounds: 1,
             recruit_limit: Some(0),
         },
@@ -148,5 +148,5 @@ fn authored_combat_preserves_starting_forces_and_faction_gold() {
         serde_json::to_value(&source.gold).unwrap()
     );
     assert!(result.initial.campaign.is_none());
-    assert_eq!(result.initial.turn, Side::Enemy);
+    assert_eq!(result.initial.turn, TurnPhase::Ai);
 }

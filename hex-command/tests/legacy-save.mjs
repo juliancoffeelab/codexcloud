@@ -47,6 +47,49 @@ import { campaigns as CAMPAIGNS } from "@migrations/Migration_api.js";
 import tileHistory from "../packages/save-migrations/src/legacy/data/tiles-v26.json";
 import historical from "../packages/save-migrations/src/legacy/data/characters-v25.json";
 import locationHistory from "../packages/save-migrations/src/legacy/data/locations-v37.json";
+// Test-only down-conversion: old fixture formats predate named campaign opponents.
+const namedOpponents = new Set([
+  "masters-host",
+  "quarry-guards",
+  "charter-patrol",
+  "bell-host",
+  "factors-guards",
+  "sluice-guards",
+  "wreck-guards",
+  "crypt-hunters",
+  "crypt-defenders",
+  "charter-guards",
+  "rootbinders-host",
+  "road-skeletons",
+  "toll-skeletons",
+  "night-host",
+  "forest-hunters",
+  "forest-defenders",
+]);
+function historicalFactions(value, parent) {
+  if (Array.isArray(value)) {
+    for (const entry of value) historicalFactions(entry, parent);
+  } else if (value && typeof value === "object") {
+    for (const key of Object.keys(value)) {
+      if (
+        (key === "id" && parent === "factions") ||
+        ["faction", "owner", "to"].includes(key) ||
+        (key === "side" && value.kind === "owner")
+      ) {
+        if (namedOpponents.has(value[key])) value[key] = "enemy";
+      }
+      if (["gold", "relations", "recruitment"].includes(key)) {
+        for (const id of Object.keys(value[key] ?? {})) {
+          if (namedOpponents.has(id)) {
+            value[key].enemy = value[key][id];
+            delete value[key][id];
+          }
+        }
+      }
+      historicalFactions(value[key], key);
+    }
+  }
+}
 function historicalTiles(input) {
   const reverse = new Map(
     Object.values(tileHistory).flatMap((board) =>
@@ -91,7 +134,48 @@ function historicalTiles(input) {
     }
     return v;
   };
-  const converted = convert(input);
+  // Explicit test-only writer for pre-perception histories. Do not stamp an
+  // old version onto the current phase, outcome or action representation.
+  const historicalInput = structuredClone(input);
+  const current = historicalInput.state ?? historicalInput;
+  historicalFactions(current);
+  if (current.visionGroups || current.units?.some((unit) => Object.hasOwn(unit, "attackSpent"))) {
+    const phase = (value) => (value === "ai" ? "enemy" : value);
+    current.turn = phase(current.turn);
+    current.winner =
+      current.winner === "playerVictory"
+        ? "player"
+        : current.winner === "playerDefeat"
+          ? "enemy"
+          : current.winner;
+    delete current.visionGroups;
+    for (const faction of current.factions ?? []) {
+      faction.phase = phase(faction.phase);
+      delete faction.visionGroup;
+    }
+    for (const unit of current.units ?? []) {
+      unit.side = phase(unit.side ?? current.factions.find((f) => f.id === unit.faction).phase);
+      unit.attacked = unit.attackSpent;
+      delete unit.attackSpent;
+      delete unit.revealedTo;
+      delete unit.perceptionEffects;
+    }
+    for (const tile of current.tiles ?? []) {
+      const fog = tile.perception?.concealment.find((rule) => rule.kind === "fog");
+      if (fog)
+        tile.fog = {
+          condition: { kind: "proximity", side: "observer", radius: fog.revealWithin },
+          remember: tile.perception.remember,
+        };
+      delete tile.perception;
+      if (tile.light) delete tile.light.emission;
+    }
+    for (const mark of current.campaign?.scripts?.marks ?? []) {
+      delete mark.sight;
+      if (mark.light) delete mark.light.emission;
+    }
+  }
+  const converted = convert(historicalInput);
   const old = converted.state ?? converted;
   // These callers construct pre-v16 fixtures. Recreate their declared castle shape.
   for (const tile of old.tiles ?? [])

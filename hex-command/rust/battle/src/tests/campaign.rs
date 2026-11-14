@@ -1,103 +1,6 @@
 //! Objective timing, legal authored missions and native checkpoint validation.
 use super::*;
 
-fn advance_to(game: &mut Game<'_>, round: u32) {
-    while game.round < round {
-        game.end_turn();
-        game.end_turn();
-    }
-}
-fn reach_wreck(game: &mut Game<'_>) {
-    let index = game
-        .units
-        .iter()
-        .position(|u| game.name(u.character) == Some("edda"))
-        .unwrap();
-    game.units[index].tile = game.site(&Hex::new(4, 4));
-    game.roster_changed();
-    game.move_unit(game.units[index].id, game.site(&Hex::new(5, 4)));
-}
-
-#[test]
-fn late_rescue_arrivals_start_immediately_then_require_three_defended_rounds() {
-    for arrival in [6, 8] {
-        let mut game = chapter("borrowed-tide", 1);
-        advance_to(&mut game, arrival);
-        assert!(game.campaign.as_ref().unwrap().chosen("tide-arrived"));
-        assert!(!game.campaign.as_ref().unwrap().chosen("rescue"));
-        reach_wreck(&mut game);
-        assert!(game.campaign.as_ref().unwrap().chosen("rescue"));
-        assert!(!game.campaign.as_ref().unwrap().chosen("await-tide"));
-        advance_to(&mut game, arrival + 2);
-        assert_eq!(game.winner, None);
-        advance_to(&mut game, arrival + 3);
-        assert_eq!(game.winner, Some(Side::Player));
-    }
-}
-
-#[test]
-fn enemy_recapture_resets_defense_and_pre_tide_loss_postpones_rescue() {
-    for before_tide in [false, true] {
-        let mut game = chapter("borrowed-tide", 1);
-        if !before_tide {
-            game.round = 6;
-        }
-        reach_wreck(&mut game);
-        game.end_turn();
-        game.end_turn();
-        if !before_tide {
-            assert_eq!(
-                game.scripts
-                    .as_ref()
-                    .unwrap()
-                    .holds
-                    .iter()
-                    .find(|h| h.event == "goal-1")
-                    .unwrap()
-                    .turns,
-                1
-            );
-        }
-        let edda = game
-            .units
-            .iter()
-            .find(|u| game.name(u.character) == Some("edda"))
-            .unwrap()
-            .id;
-        game.move_unit(edda, game.site(&Hex::new(5, 3)));
-        let raider = add(&mut game, "swordsman", Side::Enemy, Hex::new(6, 4));
-        game.end_turn();
-        game.move_unit(raider, game.site(&Hex::new(5, 4)));
-        game.end_turn();
-        assert_eq!(
-            game.scripts
-                .as_ref()
-                .unwrap()
-                .holds
-                .iter()
-                .find(|h| h.event == "goal-1")
-                .map(|clock| clock.turns)
-                .unwrap_or(0),
-            0
-        );
-        assert_eq!(game.winner, None);
-        let restored = Game::try_from_state(rules(), game.state()).unwrap();
-        assert_eq!(
-            serde_json::to_value(restored.state()).unwrap(),
-            serde_json::to_value(game.state()).unwrap()
-        );
-        if before_tide {
-            advance_to(&mut game, 6);
-            assert!(!game.campaign.as_ref().unwrap().chosen("rescue"));
-            let index = game.index(raider).unwrap();
-            game.units[index].tile = game.site(&Hex::new(6, 4));
-            game.roster_changed();
-            game.move_unit(edda, game.site(&Hex::new(5, 4)));
-            assert!(game.campaign.as_ref().unwrap().chosen("rescue"));
-        }
-    }
-}
-
 #[test]
 fn authored_missions_have_valid_positions_and_restore_cleanly() {
     for campaign in rules().campaigns.values() {
@@ -114,32 +17,15 @@ fn authored_missions_have_valid_positions_and_restore_cleanly() {
 }
 
 #[test]
-fn any_death_escalates_mediation() {
-    let mut game = chapter("ashen-oath", 1);
-    let defender = game.at(game.site(&Hex::new(5, 4))).unwrap().id;
-    let index = game
-        .units
-        .iter()
-        .position(|u| u.side == Side::Enemy && game.rules.units[u.kind].id == "soldier")
-        .unwrap();
-    let target = game.units[index].id;
-    game.units[index].tile = game.site(&Hex::new(6, 4));
-    game.units[index].hp = 1;
-    game.roster_changed();
-    hit(&mut game, defender, target, "shieldbash");
-    assert!(game.campaign.as_ref().unwrap().chosen("peace-lost"));
-}
-
-#[test]
 fn story_companions_are_not_eligible_for_explicit_recall() {
-    let mut game = chapter("green-accord", 1);
+    let mut game = chapter("lantern-road", 0);
     let dain = game
         .units
         .iter()
-        .find(|u| game.name(u.character) == Some("dain"))
+        .find(|u| game.name(u.character) == Some("ivo"))
         .unwrap()
         .id;
-    game.winner = Some(Side::Player);
+    game.winner = Some(BattleResult::PlayerVictory);
     assert_eq!(
         game.execute(Command::RecallMission {
             units: vec![UnitId(dain)]
@@ -147,7 +33,7 @@ fn story_companions_are_not_eligible_for_explicit_recall() {
         .unwrap_err(),
         CommandError::NoNextMission
     );
-    let ordinary = add(&mut game, "warden", Side::Player, Hex::new(1, 1));
+    let ordinary = add(&mut game, "swordsman", "player", Hex::new(1, 1));
     game.execute(Command::RecallMission {
         units: vec![UnitId(ordinary)],
     })
@@ -155,7 +41,7 @@ fn story_companions_are_not_eligible_for_explicit_recall() {
     assert_eq!(
         game.units
             .iter()
-            .filter(|u| game.name(u.character) == Some("dain"))
+            .filter(|u| game.name(u.character) == Some("ivo"))
             .count(),
         1
     );
@@ -171,6 +57,6 @@ fn native_restore_rejects_invalid_positions_hit_points_and_wrong_campaign_map() 
     hp.units[0].hp = 0;
     assert!(Game::try_from_state(rules(), hp).is_err());
     let mut attached = state.clone();
-    attached.campaign = chapter("green-accord", 0).state().campaign.map(Into::into);
+    attached.campaign = chapter("mirror-night", 0).state().campaign.map(Into::into);
     assert!(Game::try_from_state(rules(), attached).is_err());
 }

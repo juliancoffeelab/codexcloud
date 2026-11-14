@@ -116,8 +116,8 @@ test("Developer map supports normal actions and persistence", async () => {
     observed = observe(session),
     commands = Session.commands(session);
   const opening = snapshot(session),
-    player = required(opening.units.find((unit) => unit.side === "player")),
-    enemy = required(opening.units.find((unit) => unit.side === "enemy"));
+    player = required(opening.units.find((unit) => unit.faction === "player")),
+    enemy = required(opening.units.find((unit) => unit.faction === "enemy"));
   commands.choose(cellKey(player.tile));
   const details = panel(observed.view);
   assert(details !== 0 && details.TAG === 1);
@@ -149,8 +149,8 @@ test("Inspection switches tiles and closes when the inspected unit or terrain is
     observed = observe(session),
     commands = Session.commands(session);
   const opening = snapshot(session);
-  const player = required(opening.units.find((unit) => unit.side === "player"));
-  const enemy = required(opening.units.find((unit) => unit.side === "enemy"));
+  const player = required(opening.units.find((unit) => unit.faction === "player"));
+  const enemy = required(opening.units.find((unit) => unit.faction === "enemy"));
   const empty = required(
     opening.tiles.find((tile) => !opening.units.some((unit) => cellKey(unit.tile) === tile.id)),
   );
@@ -195,7 +195,7 @@ test("Click-away dismissal preserves movement, attack targeting and undo", async
     observed = observe(session),
     commands = Session.commands(session);
   const opening = snapshot(session),
-    player = required(opening.units.find((unit) => unit.side === "player"));
+    player = required(opening.units.find((unit) => unit.faction === "player"));
   const destination = required(Object.keys(Native.reachable(observed.view.game, player.id))[0]);
   commands.choose(cellKey(player.tile));
   commands.choose(destination);
@@ -222,7 +222,7 @@ test("Dialogue navigation persists its cursor without advancing gameplay", async
   const session = await createController(),
     observed = observe(session),
     commands = Session.commands(session);
-  commands.start_campaign(undefined, "green-accord");
+  commands.start_campaign(undefined, "lantern-road");
   const opening = observed.view,
     campaign = required(Native.state(opening.game).campaign);
   assert(campaign.dialogue.length > 1);
@@ -286,44 +286,16 @@ test("Stray dialogue cannot overwrite a paused turn checkpoint", async () => {
   await pending;
   observed.unsubscribe();
 });
-test("Completed vigil publishes and persists its outcome", async () => {
-  const fixture = Game.startCampaign("green-accord", 1);
-  fixture.advanceDialogue(true);
-  fixture.units = fixture.units.filter((unit) => unit.side === "player");
-  const goal = { tile: { col: 6, row: 4 } };
-  const lark = required(fixture.units.find((unit) => unit.character === "lark")),
-    occupant = fixture.at(cellKey(goal.tile));
-  if (occupant && occupant.id !== lark.id) occupant.tile = { col: 5, row: 4 };
-  lark.tile = goal.tile;
-  required(fixture.tile(cellKey(goal.tile))).owner = "player";
-  fixture.round = 3;
-  required(fixture.campaign).vigil = { heldTurns: 2, lastCountedRound: 3 };
-  await saveLegacyBattle(fixture);
-  assert.equal((await loadBattle()).game.mapId, fixture.mapId);
-  const session = await createController(),
-    observed = observe(session);
-  await Session.commands(session).end_turn();
-  assert.equal(state(session).winner, "player");
-  assert.equal(observed.view.status, state(session).campaign?.outcome);
-  assert(Story.dialogue_pending(state(session).campaign));
-  Session.commands(session).dialogue(false);
-  assert.equal(
-    required((await loadBattle()).game.campaign).dialogueIndex,
-    required(state(session).campaign).dialogueIndex,
-  );
-  Session.close(session);
-  observed.unsubscribe();
-});
 test("Finished enemy-turn battles persist outcome dialogue", async () => {
-  const fixture = Game.startCampaign("green-accord");
+  const fixture = Game.startCampaign("lantern-road", 1);
   fixture.advanceDialogue(true);
   fixture.units = fixture.units.filter(
-    (unit) => unit.role === "leader" || unit.character === "lark",
+    (unit) => unit.role === "leader" || unit.character === "ivo",
   );
   const leader = required(
-      fixture.units.find((unit) => unit.side === "player" && unit.role === "leader"),
+      fixture.units.find((unit) => unit.faction === "player" && unit.role === "leader"),
     ),
-    enemy = fixture.addUnit("soldier", "enemy", "4,4");
+    enemy = fixture.addUnit("soldier", "toll-skeletons", "4,4");
   leader.tile = { col: 3, row: 4 };
   leader.hp = 1;
   enemy.tile = { col: 4, row: 4 };
@@ -331,8 +303,8 @@ test("Finished enemy-turn battles persist outcome dialogue", async () => {
   const session = await createController(),
     commands = Session.commands(session);
   await commands.end_turn();
-  assert.equal(state(session).turn, "enemy");
-  assert.equal(state(session).winner, "enemy");
+  assert.equal(state(session).turn, "ai");
+  assert.equal(state(session).winner, "playerDefeat");
   assert(Story.dialogue_pending(state(session).campaign));
   commands.dialogue(false);
   assert.deepEqual((await loadBattle()).game.captureState(), snapshot(session));
@@ -436,7 +408,7 @@ test("Browser commands are player-only and previews cannot mutate rules", async 
   assert.equal(Session.view(session).map_focus.inspected, "2,2");
   const pending = commands.end_turn(),
     enemyTurn = snapshot(session);
-  assert.equal(state(session).turn, "enemy");
+  assert.equal(state(session).turn, "ai");
   assert.equal(Session.view(session).can_undo, false);
   move(session, enemy.id, "2,2");
   const recovery = await readSave();
@@ -547,7 +519,7 @@ test("Replay is consumed once and replacement discards pending initialization", 
     replay = await createController(paused.pause);
   Session.initialize(replay);
   Session.initialize(replay);
-  assert.equal(state(replay).turn, "enemy");
+  assert.equal(state(replay).turn, "ai");
   const checkpoint = await readSave();
   Session.commands(replay).dialogue(false);
   Session.commands(replay).previous_dialogue();
@@ -767,7 +739,7 @@ test("Optional browser tools share player commands and return detached JSON", as
     targetId: enemy.id,
     attackId: target.recommendedAttackId,
   });
-  assert.equal(attacked.units.find((unit) => unit.id === "u2").attacked, true);
+  assert.equal(attacked.units.find((unit) => unit.id === "u2").attackSpent, true);
   assert.equal(
     (await execute("start_new_battle", { mapId: "river-valley" })).mapId,
     "river-valley",
@@ -944,7 +916,8 @@ afterEach(() => {
 
 test("Enemy-first setup persists its untouched opening and survives reload until a cancellable replacement", async () => {
   const input = {
-    first: "enemy",
+    player: null,
+    first: "ai",
     enemy: {
       policy: "predictor",
       diplomacy: "diplomatic",
@@ -957,7 +930,7 @@ test("Enemy-first setup persists its untouched opening and survives reload until
   Session.commands(session).reset(Setup.of_json(input), ["woodland", "coastal"], "mirror");
   await paused.reached;
   const opening = snapshot(session);
-  assert.equal(opening.turn, "enemy");
+  assert.equal(opening.turn, "ai");
   assert.deepEqual(opening.armies, ["woodland", "coastal"]);
   assert.equal(Session.view(session).completed_turns, 0);
   const saved = JSON.parse(await readSave());
@@ -971,7 +944,7 @@ test("Enemy-first setup persists its untouched opening and survives reload until
   assert.deepEqual(state(restored), opening);
   assert.deepEqual(Setup.to_json(Session.view(restored).setup), input);
   const restoredBattle = restoreBattle(saved.checkpoint);
-  for (const side of ["player", "enemy"])
+  for (const side of ["player", "ai"])
     assert.deepEqual(
       Native.recruitment_options(Native.view(restoredBattle), side),
       Native.recruitment_options(Session.view(restored).game, side),
@@ -1003,7 +976,8 @@ test.each([
     if (phase === "replacement") Session.initialize(session);
     const commands = Session.commands(session);
     const setup = Setup.of_json({
-      first: action === "end-turn" ? "player" : "enemy",
+      player: null,
+      first: action === "end-turn" ? "player" : "ai",
       enemy: { policy: "classic", diplomacy: "diplomatic" },
     });
     let pending, pendingError;
@@ -1013,9 +987,7 @@ test.each([
       if (
         armed &&
         !handled &&
-        (phase === "initialize" ||
-          action === "end-turn" ||
-          Native.state(view.game).turn === "enemy")
+        (phase === "initialize" || action === "end-turn" || Native.state(view.game).turn === "ai")
       ) {
         handled = true;
         if (action === "close") Session.close(session);
@@ -1056,7 +1028,8 @@ test("Reset before initialize reuses its phase and never saves a partially execu
   );
   const commands = Session.commands(session);
   const setup = Setup.of_json({
-    first: "enemy",
+    player: null,
+    first: "ai",
     enemy: { policy: "classic", diplomacy: "diplomatic" },
   });
   commands.reset(setup, undefined, "mirror");
@@ -1125,7 +1098,7 @@ test("A completed enemy phase releases ownership before a subscriber starts the 
   assert(second, "The first phase must reach its player publication");
   assert.notEqual(first, second);
   await settleCallbacks();
-  assert.equal(state(session).turn, "enemy");
+  assert.equal(state(session).turn, "ai");
   assertPhaseError(await commands.end_turn(), /Wait for your turn/);
   assert.equal(required(waits[0]).milliseconds, 0);
   const revision = Native.revision(Session.view(session).interaction_game);
@@ -1166,20 +1139,16 @@ test("An enemy task reports an ordinary planning failure once and retains the fl
 });
 
 test("EndTurn that resolves the campaign persists the accepted result without starting AI", async () => {
-  const fixture = Game.startCampaign("green-accord");
+  const fixture = Game.startCampaign("lantern-road", 1);
   fixture.advanceDialogue(true);
-  const capture = required(
-    mission(fixture).scriptedEvents.find((event) => event.objective?.intent.capture),
-  ).objective.intent.capture;
-  for (const tile of capture)
-    required(fixture.tile(tile.hex ?? tile.location ?? tile)).owner = "player";
-  fixture.campaign.flags["lost-tools"] = [{ state: true, stage: 0, turn: 1 }];
+  for (const flag of ["foothold-established", "village-safe", "eastern-departure"])
+    fixture.campaign.flags[flag] = [{ state: true, stage: 0, turn: 1 }];
   await Save.write(Save.create(), fixture.checkpoint(), false);
   const clock = vi.fn(() => Promise.resolve());
   const session = await createController(clock);
   assert.equal(state(session).winner, null);
   await Session.commands(session).end_turn();
-  assert.equal(state(session).winner, "player");
+  assert.equal(state(session).winner, "playerVictory");
   assert.equal(clock.mock.calls.length, 0);
   const saved = JSON.parse(await readSave());
   assert.equal(saved.pendingEnemy, false);
@@ -1188,7 +1157,11 @@ test("EndTurn that resolves the campaign persists the accepted result without st
 
 test("An active enemy phase retains player flash save regardless of first-side preferences", async () => {
   const fixture = new Game();
-  const setup = { first: "enemy", enemy: { policy: "classic", diplomacy: "diplomatic" } };
+  const setup = {
+    player: null,
+    first: "ai",
+    enemy: { policy: "classic", diplomacy: "diplomatic" },
+  };
   await Save.write(Save.create(), fixture.checkpoint(), false, Setup.of_json(setup));
   const paused = pauseTurn();
   const session = await createController(paused.pause);
@@ -1207,7 +1180,7 @@ test("An active enemy phase retains player flash save regardless of first-side p
 test("Dropping carried equipment preserves the unit turn and atomically persists the ground pile", async () => {
   const game = new Game();
   const actor = required(
-    game.units.find((unit) => unit.side === "player" && unit.role !== "leader"),
+    game.units.find((unit) => unit.faction === "player" && unit.role !== "leader"),
   );
   actor.items = [
     {
@@ -1227,7 +1200,7 @@ test("Dropping carried equipment preserves the unit turn and atomically persists
   const after = required(Native.unit(Session.view(session).interaction_game, actor.id));
   assert.deepEqual(after.items ?? [], []);
   assert.equal(after.moved, before.moved);
-  assert.equal(after.attacked, before.attacked);
+  assert.equal(after.attackSpent, before.attackSpent);
   assert.deepEqual(
     state(session).groundItems.map(({ tile, item }) => [tile, item.id]),
     [[actor.tile, "fixture-token"]],

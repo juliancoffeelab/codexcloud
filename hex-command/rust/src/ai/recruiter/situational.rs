@@ -56,7 +56,7 @@ pub(super) fn choose_with_weights(
     for leader in game
         .units()
         .iter()
-        .filter(|u| game.belongs_to_phase(u, side) && u.is_leader())
+        .filter(|u| game.belongs_to_faction(u, game.observer_faction()) && u.is_leader())
     {
         let gold = game.gold_for_unit(leader);
         for kind in game.recruitment_options_for(leader) {
@@ -82,11 +82,11 @@ pub(super) fn choose_with_weights(
     {
         return None;
     }
-    let income = game.income(side);
+    let income = game.income(game.observer_faction());
     let company: Vec<_> = game
         .units()
         .iter()
-        .filter(|u| game.belongs_to_phase(u, side) && !u.is_leader())
+        .filter(|u| game.belongs_to_faction(u, game.observer_faction()) && !u.is_leader())
         .collect();
     let mut forecast_leader = None;
     let mut forecasts = None;
@@ -98,13 +98,16 @@ pub(super) fn choose_with_weights(
             continue;
         }
         let mut recruit = Unit {
+            field_available: true,
+            perception: PerceptionId(0),
+            vision_group: leader.vision_group,
             id: 0,
             kind,
-            side,
+            phase: side,
             tile,
             hp: rule.hp,
             moved: true,
-            attacked: true,
+            attack_spent: true,
             experience: None,
             role: None,
             retreating: None,
@@ -226,7 +229,7 @@ mod tests {
         let enemy = battle(&rules, a, b)
             .units()
             .iter()
-            .find(|u| u.side == Side::Enemy)
+            .find(|u| u.phase == TurnPhase::Ai)
             .unwrap()
             .kind;
         rules.units[enemy].hp = 100;
@@ -249,7 +252,7 @@ mod tests {
             let enemy = battle(&rules, a, b)
                 .units()
                 .iter()
-                .find(|u| u.side == Side::Enemy)
+                .find(|u| u.phase == TurnPhase::Ai)
                 .unwrap()
                 .kind;
             rules.units[enemy].attacks.truncate(1);
@@ -285,7 +288,7 @@ mod tests {
         fixtures::edit(&mut game, |state| state.gold["player"] = 10);
         assert_eq!(selected(&game, &RecruitmentOrders::default()), None);
         fixtures::edit(&mut game, |state| state.round += 1);
-        let income = game.income(Side::Player);
+        let income = game.income("player");
         fixtures::edit(&mut game, |state| state.gold["player"] += income);
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(b));
         fixtures::edit(&mut game, |state| state.gold["player"] = 10);
@@ -329,7 +332,7 @@ mod tests {
         let enemy = battle(&rules, a, b)
             .units()
             .iter()
-            .find(|u| u.side == Side::Enemy)
+            .find(|u| u.phase == TurnPhase::Ai)
             .unwrap()
             .kind;
         let damage_type = rules.units[a].attacks[0].damage_type;
@@ -353,7 +356,7 @@ mod tests {
         let enemy = battle(&rules, a, b)
             .units()
             .iter()
-            .find(|u| u.side == Side::Enemy)
+            .find(|u| u.phase == TurnPhase::Ai)
             .unwrap()
             .kind;
         for (blade, pierce, expected) in [(-10, 0, b), (0, -10, a)] {
@@ -379,13 +382,13 @@ mod tests {
         let leader = game
             .units()
             .iter()
-            .find(|u| u.side == Side::Player)
+            .find(|u| u.phase == TurnPhase::Player)
             .unwrap()
             .clone();
         let enemy = game
             .units()
             .iter()
-            .find(|u| u.side == Side::Enemy)
+            .find(|u| u.phase == TurnPhase::Ai)
             .unwrap()
             .clone();
         fixtures::edit(&mut game, |state| {
@@ -427,11 +430,11 @@ mod tests {
         let leader = game
             .units()
             .iter()
-            .find(|u| u.side == Side::Player)
+            .find(|u| u.phase == TurnPhase::Player)
             .unwrap()
             .clone();
         let tile = game.placement_tiles(&leader, a, true)[0];
-        let id = fixtures::add(&mut game, a, Side::Player, tile);
+        let id = fixtures::add(&mut game, a, "player", tile);
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(a));
         let mut healer = leader.clone();
         healer.id = 0;

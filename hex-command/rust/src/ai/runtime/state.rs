@@ -13,7 +13,13 @@ pub struct PlanningWorkspace {
 
 pub(super) struct TurnState {
     scope: Option<hex_command_battle::BattleScope>,
-    pub(super) control_roster: Option<Vec<(u32, Side, Option<NameKey>, Option<Role>)>>,
+    planning_revision: Option<u64>,
+    observed_roster: Vec<(u32, NameKey)>,
+    acting_faction: Option<String>,
+    #[cfg(any(feature = "wasm", test))]
+    pub(super) proposal_faction: Option<String>,
+    phase: Option<TurnPhase>,
+    pub(super) control_roster: Option<Vec<(u32, TurnPhase, Option<NameKey>, Option<Role>)>>,
     #[cfg(any(feature = "wasm", test))]
     pub(super) controller_index: usize,
     #[cfg(any(feature = "wasm", test))]
@@ -46,6 +52,7 @@ pub(super) struct TurnState {
 
 #[derive(Clone, Copy)]
 pub(crate) struct TurnConfig<'a> {
+    pub seed: u32,
     pub goals: Option<&'a [Objective]>,
     pub diplomacy: Diplomacy,
 }
@@ -100,7 +107,13 @@ impl PlanningWorkspace {
         Self {
             state: TurnState {
                 scope: None,
+                acting_faction: None,
+                #[cfg(any(feature = "wasm", test))]
+                proposal_faction: None,
+                phase: None,
                 control_roster: None,
+                planning_revision: None,
+                observed_roster: vec![],
                 #[cfg(any(feature = "wasm", test))]
                 controller_index: 0,
                 #[cfg(any(feature = "wasm", test))]
@@ -137,6 +150,7 @@ impl PlanningWorkspace {
     }
     pub(crate) fn config(&self) -> TurnConfig<'_> {
         TurnConfig {
+            seed: self.state.seed,
             goals: self.state.goals.as_deref(),
             diplomacy: self.state.diplomacy,
         }
@@ -184,11 +198,11 @@ impl PlanningWorkspace {
         }
     }
     pub(super) fn refresh_scope(&mut self, game: &crate::logic::Game<'_>) {
-        let changed = self
-            .state
-            .scope
-            .as_ref()
-            .is_some_and(|scope| !game.in_scope(scope));
+        let changed = self.state.scope.as_ref().is_some_and(|scope| {
+            !game.in_scope(scope)
+                || self.state.acting_faction.as_deref() != game.active_faction()
+                || self.state.phase != Some(game.turn())
+        });
         if changed {
             self.reset_planning();
             self.state.recruitment_opportunity = None;
@@ -202,10 +216,26 @@ impl PlanningWorkspace {
         }
         if self.state.scope.is_none() || changed {
             self.state.scope = Some(game.scope());
+            self.state.acting_faction = game.active_faction().map(str::to_owned);
+            self.state.phase = Some(game.turn());
         }
     }
-    pub(super) fn refresh_control(&mut self, game: &crate::logic::Game<'_>) {
+    pub(super) fn refresh_control(&mut self, game: &crate::logic::Game<'_>) -> bool {
         self.refresh_scope(game);
+        let revision = game.planning_revision();
+        let observed: Vec<_> = game
+            .units()
+            .iter()
+            .filter(|unit| game.unit_faction(&unit) != game.observer_faction())
+            .map(|unit| (unit.id, unit.faction))
+            .collect();
+        let observation_changed = self
+            .state
+            .planning_revision
+            .is_some_and(|old| old != revision)
+            || (self.state.planning_revision.is_some() && self.state.observed_roster != observed);
+        self.state.planning_revision = Some(revision);
+        self.state.observed_roster = observed;
         let roster = game.control_roster();
         let changed = self.state.control_roster.as_ref().is_some_and(|before| {
             before.iter().any(|old| {
@@ -218,9 +248,10 @@ impl PlanningWorkspace {
             })
         });
         self.state.control_roster = Some(roster);
-        if changed {
+        if changed || observation_changed {
             self.reset_planning();
         }
+        changed || observation_changed
     }
     fn reset_planning(&mut self) {
         let state = &mut self.state;
@@ -240,6 +271,10 @@ impl PlanningWorkspace {
         {
             state.turn_plan_ready = false;
         }
+    }
+    #[cfg(any(feature = "wasm", test))]
+    pub(crate) fn proposal_faction(&self) -> Option<&str> {
+        self.state.proposal_faction.as_deref()
     }
     #[cfg(any(feature = "wasm", test))]
     pub fn with_blocks(mut self, blocks: Blocks) -> Self {

@@ -2,7 +2,7 @@
 use super::{SimulationError, types::*};
 use crate::{
     ai::{Blocks, Diplomacy, Policy},
-    data::{Objective, Side, State},
+    data::{Objective, State, TurnPhase},
     logic::Game,
 };
 use serde::{Deserialize, Serialize};
@@ -42,7 +42,8 @@ pub(crate) struct PhaseRequest {
 pub(crate) struct CaptureRequest {
     pub config: MatchConfig,
     pub rounds: Vec<u32>,
-    pub side: Side,
+    #[serde(rename = "side")]
+    pub phase: TurnPhase,
 }
 #[derive(Serialize)]
 pub(crate) struct Position {
@@ -53,7 +54,7 @@ pub(crate) struct Position {
 pub(crate) struct Capture {
     config: MatchConfig,
     rounds: Vec<u32>,
-    side: Side,
+    phase: TurnPhase,
     pub positions: Vec<Position>,
 }
 impl Capture {
@@ -77,24 +78,24 @@ impl Capture {
         Ok(Self {
             config: request.config,
             rounds,
-            side: request.side,
+            phase: request.phase,
             positions: vec![],
         })
     }
     /// Called after all turn transitions and before the phase's first planner.
     pub fn observe(&mut self, game: &Game<'_>, goals: Option<&[Objective]>) {
-        if game.turn() != self.side || !self.rounds.contains(&game.round()) {
+        if game.turn() != self.phase || !self.rounds.contains(&game.round()) {
             return;
         }
         let (policy, blocks, seed, limit, diplomacy, objective, arena, campaign) =
             match &self.config {
                 MatchConfig::Arena(c) => (
-                    if game.turn() == Side::Player {
+                    if game.turn() == TurnPhase::Player {
                         c.player
                     } else {
                         c.enemy
                     },
-                    if game.turn() == Side::Player {
+                    if game.turn() == TurnPhase::Player {
                         c.player_blocks
                     } else {
                         c.enemy_blocks
@@ -107,12 +108,12 @@ impl Capture {
                     false,
                 ),
                 MatchConfig::Campaign(c) => (
-                    if game.turn() == Side::Player {
+                    if game.turn() == TurnPhase::Player {
                         c.player
                     } else {
                         c.enemy
                     },
-                    if game.turn() == Side::Player {
+                    if game.turn() == TurnPhase::Player {
                         c.player_blocks
                     } else {
                         c.enemy_blocks

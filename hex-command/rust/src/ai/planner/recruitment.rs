@@ -15,7 +15,7 @@ pub(super) fn plan(
     let opportunity = opportunity?;
     if !unit.is_leader()
         || unit.moved
-        || unit.attacked
+        || unit.attack_spent
         || !game.can_act(unit.id)
         || opportunity.remaining_budget == Some(0)
     {
@@ -30,7 +30,7 @@ pub(super) fn plan(
         unit,
         game.reachable(unit).iter().map(|&(tile, _)| tile).collect(),
     );
-    let mut threats = Threats::protected(phases, unit.side, orders);
+    let mut threats = Threats::protected(phases, phases.view().unit_faction(&unit), orders);
     let before = cap_exposure(unit, threats.at(unit, unit.tile, None), true);
     let danger = if orders.protects(unit.id) {
         40.0 / unit.hp.max(1) as f64

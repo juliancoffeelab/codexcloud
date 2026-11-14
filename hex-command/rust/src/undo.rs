@@ -53,7 +53,7 @@ fn apply(state: &mut Value, change: UndoChange) -> Result<(), EngineError> {
 pub(crate) fn validate(rules: &Rules, request: UndoValidation) -> Result<(), EngineError> {
     let round = request.state.round;
     let map = request.state.map_id.clone();
-    if request.state.turn != Side::Player || request.state.winner.is_some() {
+    if request.state.turn != TurnPhase::Player || request.state.winner.is_some() {
         return Err(invalid("undo requires an active player turn"));
     }
     let mut value = serde_json::to_value(request.state).map_err(invalid)?;
@@ -67,7 +67,7 @@ pub(crate) fn validate(rules: &Rules, request: UndoValidation) -> Result<(), Eng
         let state: State = serde_json::from_value(value.clone()).map_err(invalid)?;
         if state.round != round
             || state.map_id != map
-            || state.turn != Side::Player
+            || state.turn != TurnPhase::Player
             || state.winner.is_some()
             || !state.units.iter().any(|unit| unit.id == step.unit_id)
         {

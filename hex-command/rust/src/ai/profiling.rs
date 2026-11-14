@@ -1,6 +1,6 @@
 //! Opt-in native decision measurements. Disabled runs only test a cached flag.
 use super::Policy;
-use crate::data::Side;
+use crate::data::TurnPhase;
 use std::sync::{
     OnceLock,
     atomic::{AtomicU64, Ordering},
@@ -32,7 +32,7 @@ pub(crate) struct Recruitment {
 }
 impl Recruitment {
     #[inline]
-    pub(crate) fn start(kind: super::Recruiter, side: Side) -> Option<Self> {
+    pub(crate) fn start(kind: super::Recruiter, side: TurnPhase) -> Option<Self> {
         if !enabled() {
             return None;
         }
@@ -93,7 +93,7 @@ pub(crate) struct Decision {
 }
 impl Decision {
     #[inline]
-    pub fn start(policy: Policy, side: Side) -> Option<Self> {
+    pub fn start(policy: Policy, side: TurnPhase) -> Option<Self> {
         if !enabled() {
             return None;
         }
@@ -116,7 +116,7 @@ pub(crate) struct Turn {
     index: usize,
 }
 impl Turn {
-    pub(crate) fn start(policy: Policy, side: Side) -> Option<Self> {
+    pub(crate) fn start(policy: Policy, side: TurnPhase) -> Option<Self> {
         if !enabled() {
             return None;
         }
@@ -131,7 +131,7 @@ impl Turn {
         TURNS[self.index].fetch_add(1, Ordering::Relaxed);
     }
 }
-fn measurement(policy: Policy, side: Option<Side>) -> serde_json::Value {
+fn measurement(policy: Policy, side: Option<TurnPhase>) -> serde_json::Value {
     let index = Policy::ALL.iter().position(|p| *p == policy).unwrap() * 2;
     let slots: Vec<_> = match side {
         Some(side) => vec![index + side.index()],
@@ -171,7 +171,7 @@ pub fn snapshot() -> Option<serde_json::Value> {
     let rows: Vec<_> = Policy::ALL
         .into_iter()
         .flat_map(|p| {
-            [Side::Player, Side::Enemy]
+            [TurnPhase::Player, TurnPhase::Ai]
                 .into_iter()
                 .map(move |s| measurement(p, Some(s)))
         })
@@ -181,7 +181,7 @@ pub fn snapshot() -> Option<serde_json::Value> {
         .into_iter()
         .enumerate()
         .flat_map(|(kind, recruiter)| {
-            [Side::Player, Side::Enemy]
+            [TurnPhase::Player, TurnPhase::Ai]
                 .into_iter()
                 .filter_map(move |side| {
                     let index = kind * 2 + side.index();

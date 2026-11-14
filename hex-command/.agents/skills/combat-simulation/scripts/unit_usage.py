@@ -8,6 +8,10 @@ from pathlib import Path
 
 
 # The legacy arena "race" column identifies a faction from config.armies.
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[4] / 'scripts'))
+from simulation_journal import analysis_view
+
 DIMS = ('race', 'policy', 'opponentPolicy', 'map')
 UNIT_KINDS = {'warrior': 'infantry', 'flank': 'flank', 'ranger': 'ranger', 'healer': 'support'}
 
@@ -35,7 +39,7 @@ def journals(inputs, kinds=('arena',)):
         if path.is_dir():
             path = path / ('report.json' if (path / 'report.json').exists() else 'report.json.gz')
         with gzip.open(path, 'rt') if path.suffix == '.gz' else path.open() as stream:
-            report = json.load(stream)
+            report = analysis_view(json.load(stream))
         if report.get('status') != 'complete':
             raise ValueError('Unit usage requires a completed run')
         readers = {}
@@ -65,6 +69,7 @@ def journals(inputs, kinds=('arena',)):
                     result = decoder.decode_detail(raw, name)
                 else:
                     result = json.loads(raw)
+                result = analysis_view(result)
                 if result['config'] != saved['config']:
                     raise ValueError('Unit usage journal configuration mismatch')
                 yield report, result

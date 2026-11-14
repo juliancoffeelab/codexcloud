@@ -7,6 +7,10 @@ module Settings: {
   let make:
     (
       ~session: Session.t,
+      ~showHiddenMaps: bool,
+      ~onHiddenMapsChange: bool => unit,
+      ~onFollowAiChange: bool => unit,
+      ~playtestPreferenceError: string,
       ~view: Session.model,
       ~voiceEnabled: bool,
       ~onVoiceChange: bool => unit,

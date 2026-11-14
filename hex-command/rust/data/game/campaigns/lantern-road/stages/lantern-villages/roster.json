@@ -1,4 +1,38 @@
 {
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": []
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    },
+    {
+      "id": "prisoners",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    },
+    {
+      "id": "swamp-dead",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    }
+  ],
   "factions": [
     {
       "id": "player",
@@ -37,12 +71,13 @@
         }
       ],
       "relations": {
-        "enemy": "hostile"
-      }
+        "toll-skeletons": "hostile"
+      },
+      "visionGroup": "player"
     },
     {
-      "id": "enemy",
-      "phase": "enemy",
+      "id": "toll-skeletons",
+      "phase": "ai",
       "controller": {
         "kind": "ai"
       },
@@ -74,25 +109,26 @@
           "aiGroup": "tollkeeper",
           "character": "tollkeeper",
           "tile": {
-            "col": 15,
+            "col": 14,
             "row": 7
           }
         }
       ],
       "relations": {
         "player": "hostile"
-      }
+      },
+      "visionGroup": "enemy"
     },
     {
       "id": "prisoners",
-      "phase": "enemy",
+      "phase": "ai",
       "controller": {
-        "kind": "passive"
+        "kind": "ai"
       },
       "palette": "passive",
       "relations": {
         "player": "neutral",
-        "enemy": "allied",
+        "toll-skeletons": "allied",
         "swamp-dead": "neutral"
       },
       "gold": 0,
@@ -105,20 +141,22 @@
           "tile": {
             "col": 8,
             "row": 6
-          }
+          },
+          "aiGroup": "prisoner-column"
         }
-      ]
+      ],
+      "visionGroup": "prisoners"
     },
     {
       "id": "swamp-dead",
-      "phase": "enemy",
+      "phase": "ai",
       "controller": {
         "kind": "ai"
       },
       "palette": "green",
       "relations": {
         "player": "hostile",
-        "enemy": "neutral"
+        "toll-skeletons": "neutral"
       },
       "name": "Marsh dead",
       "recruits": [
@@ -144,7 +182,8 @@
             "row": 12
           }
         }
-      ]
+      ],
+      "visionGroup": "swamp-dead"
     }
   ]
 }

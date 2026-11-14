@@ -43,7 +43,7 @@ class cache =
       Performance_trace.measure "frame.prepare" (fun () ->
           let state = Native.state view.game in
           let recruit =
-            if state.turn = Domain.Side.Player && view.recruitment then view.inspected_tile
+            if state.turn = Domain.Turn_phase.Player && view.recruitment then view.inspected_tile
             else None
           in
           let artwork_same =
@@ -135,6 +135,7 @@ type unit_actor = {
   hp : int32;
   spent : bool;
   retreating : bool;
+  concealment : Domain.Unit_concealment_appearance.t;
 }
 
 type ground_item = { key : string; x : float; y : float; url : string }
@@ -147,7 +148,12 @@ external item_identity : Domain.item -> string = "stringify" [@@mel.scope "JSON"
 let scene_data frame =
   let ongoing = (Native.state frame.view.game).winner = None in
   let fog = Set.create () in
-  let fog_ids = Array.map Hex.key (Native.presentation frame.view.game).fog in
+  let presentation = Native.presentation frame.view.game in
+  let appearances = Map.create () in
+  Array.iter
+    (fun (a : Domain.unit_appearance) -> ignore (Map.set appearances a.unit a.concealment))
+    presentation.unit_appearances;
+  let fog_ids = Array.map Hex.key presentation.fog in
   Array.iter
     (fun id ->
       let _ = Set.add fog id in
@@ -194,7 +200,10 @@ let scene_data frame =
                 color = occupant.team_color;
                 health = occupant.health_width;
                 hp = occupant.unit.hp;
-                spent = ongoing && occupant.unit.attacked;
+                concealment =
+                  Option.value ~default:Domain.Unit_concealment_appearance.Normal
+                    (Map.get appearances occupant.unit.id);
+                spent = ongoing && occupant.unit.attack_spent;
                 retreating = ongoing && occupant.unit.retreating = Some true;
               })
       frame.tiles

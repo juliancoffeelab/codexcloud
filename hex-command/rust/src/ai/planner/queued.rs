@@ -41,14 +41,16 @@ impl PriorityEvaluation<'_, '_, '_> {
         let foes: Vec<_> = self
             .units()
             .iter()
-            .filter(|u| self.hostile_to_phase(u, self.turn()))
+            .filter(|u| self.hostile_to_faction(u, self.observer_faction()))
             .collect();
         let mut ranked: Vec<_> = self
             .units()
             .iter()
             .enumerate()
             .filter(|(_, u)| {
-                self.belongs_to_phase(u, self.turn()) && !u.attacked && self.can_act(u.id)
+                self.belongs_to_faction(u, self.observer_faction())
+                    && !u.attack_spent
+                    && self.can_act(u.id)
             })
             .map(|(index, unit)| {
                 let rule = &self.rules().units[unit.kind];
@@ -143,11 +145,9 @@ impl PriorityEvaluation<'_, '_, '_> {
                     score += 4.0;
                 }
                 if role(self, unit.kind) == TacticalRole::Healer {
-                    for ally in self
-                        .units()
-                        .iter()
-                        .filter(|u| self.belongs_to_phase(u, self.turn()) && u.id != unit.id)
-                    {
+                    for ally in self.units().iter().filter(|u| {
+                        self.belongs_to_faction(u, self.observer_faction()) && u.id != unit.id
+                    }) {
                         if self.board().distance(unit.tile, ally.tile) as usize > movement + 1 {
                             continue;
                         }
@@ -167,7 +167,7 @@ impl PriorityEvaluation<'_, '_, '_> {
                     score -= 8.0;
                 }
                 if cache.orders().campaign
-                    && unit.side == Side::Player
+                    && self.unit_faction(unit) == "player"
                     && cache.orders().important(self, unit)
                     && !personal
                 {
@@ -192,9 +192,9 @@ impl Session {
     }
 }
 
-pub(in crate::ai) fn next_plan(
-    game: &BattleView<'_, '_>,
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+pub(in crate::ai) fn next_plan<'a, 'catalog>(
+    game: &'a BattleView<'a, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     session: &mut Session,
     turn: &crate::ai::runtime::PlannerTurn<'_>,
     intents: &mut Vec<(u32, Option<bool>)>,
@@ -227,9 +227,9 @@ pub(in crate::ai) fn next_plan(
     session.queue = Some(queue);
     result
 }
-fn next_plan_inner(
-    game: &BattleView<'_, '_>,
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+fn next_plan_inner<'a, 'catalog>(
+    game: &'a BattleView<'a, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     policy: QueueMode,
     session: &mut Session,
     turn: &crate::ai::runtime::PlannerTurn<'_>,
@@ -274,10 +274,11 @@ fn next_plan_inner(
         } else {
             return finish_intents(&session.candidates, intents);
         };
-        let Some(unit) = game
-            .unit(id.0)
-            .filter(|u| game.belongs_to_phase(u, game.turn()) && !u.attacked && game.can_act(u.id))
-        else {
+        let Some(unit) = game.unit(id.0).filter(|u| {
+            game.belongs_to_faction(u, game.observer_faction())
+                && !u.attack_spent
+                && game.can_act(u.id)
+        }) else {
             continue;
         };
         if queue.attempts.iter().filter(|tried| **tried == id).count() >= 3 {
@@ -287,7 +288,7 @@ fn next_plan_inner(
             && !game
                 .units()
                 .iter()
-                .filter(|u| game.hostile_to_phase(u, game.turn()))
+                .filter(|u| game.hostile_to_faction(u, game.observer_faction()))
                 .any(|target| {
                     game.weapons(unit)
                         .enumerate()
@@ -314,7 +315,11 @@ fn next_plan_inner(
         if plan.is_none()
             && turn.orders.tactics.important(game, unit)
             && (policy == QueueMode::CampaignBlock
-                || crate::ai::policies::objectives::proximity(game, unit.side, unit.tile) <= 6)
+                || crate::ai::policies::objectives::proximity(
+                    game,
+                    game.unit_faction(unit),
+                    unit.tile,
+                ) <= 6)
         {
             plan = session.search.focused(game, phases, turn, id.0);
         }
@@ -347,16 +352,8 @@ mod tests {
     #[test]
     fn campaign_rejects_arena_campaigner() {
         let rules = Rules::load().unwrap();
-        let campaign = Game::start_campaign(
-            &rules,
-            "borrowed-tide",
-            0,
-            vec![],
-            0,
-            vec![],
-            vec![],
-            vec![],
-        );
+        let campaign =
+            Game::start_campaign(&rules, "mirror-night", 0, vec![], 0, vec![], vec![], vec![]);
         let mut blocks = Policy::Balanced.blocks();
         blocks.campaign = crate::ai::CampaignBlock::Arena;
         let mut workspace = PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Unrestricted)
@@ -393,9 +390,9 @@ pub(super) fn prepare(
 ) {
     super::search::prepare(phases, &mut session.search, turn);
 }
-pub(super) fn choose(
-    game: &BattleView<'_, '_>,
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+pub(super) fn choose<'a, 'catalog>(
+    game: &'a BattleView<'a, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     session: &mut Session,
     turn: &mut crate::ai::runtime::PlannerTurn<'_>,
 ) -> Result<(), CommandError> {

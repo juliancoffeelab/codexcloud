@@ -42,8 +42,16 @@ module UnitCard = {
         | _ => "Max"
         }
       );
+    let hostile =
+      Option.fold(
+        ~none=false,
+        ~some=(f: Domain.unit_faction) => f.relation == Domain.Relation.Hostile,
+        faction,
+      );
+    let controllable =
+      Option.fold(~none=false, ~some=(f: Domain.unit_faction) => f.controllable, faction);
     <div
-      className={"combatant " ++ side(unit.side)}
+      className={"combatant " ++ (hostile ? "enemy" : "player")}
       role="group"
       ariaLabel={Utf8.to_js(
         Option.fold(
@@ -51,19 +59,19 @@ module UnitCard = {
           ~some=(faction: Domain.unit_faction) => faction.relation == Domain.Relation.Neutral,
           faction,
         )
-          ? "Neutral unit" : unit.side == Domain.Side.Player ? "Your unit" : "Enemy unit",
+          ? "Neutral unit" : controllable ? "Your unit" : hostile ? "Enemy unit" : "Allied unit",
       )}>
       <Sprite
         artwork={view.artwork}
         name={unit.type_}
         side={Option.fold(
-          ~none=side(unit.side),
+          ~none="passive",
           ~some=(faction: Domain.unit_faction) => faction.palette,
           faction,
         )}
         width=72.
         height=90.
-        className={"portrait " ++ (unit.side == Domain.Side.Enemy ? "enemy-unit" : "")}
+        className={"portrait " ++ (hostile ? "enemy-unit" : "")}
       />
       <div className="unit-heading">
         <h2>
@@ -228,6 +236,18 @@ module Details = {
             <span> {text(details.action_status)} </span>
           </p>
         </div>
+        {switch (
+           Array.find_opt(
+             (a: Domain.unit_appearance) => a.unit == details.unit.id,
+             Native.presentation(view.game).unit_appearances,
+           )
+         ) {
+         | Some({ concealment: Domain.Unit_concealment_appearance.Concealed, _ }) =>
+           <p className="concealment-status"> {text("Concealment active")} </p>
+         | Some({ concealment: Domain.Unit_concealment_appearance.Exposed, _ }) =>
+           <p className="concealment-status revealed"> {text("Exposed")} </p>
+         | _ => React.null
+         }}
         <p className="ability"> {text(details.ability.name)} </p>
         {eachList(details.ability.facts, fact =>
            <p key=fact className="ability-fact"> {text(fact)} </p>
@@ -252,7 +272,7 @@ module Details = {
           unit={details.unit}
           onDrop=?{
             Native.controllable(view.game, details.unit.id)
-            && Native.state(view.game).turn == Domain.Side.Player
+            && Native.state(view.game).turn == Domain.Turn_phase.Player
             && Native.state(view.game).winner == None
               ? Some(item => actions.drop(details.unit.id, item)) : None
           }
@@ -308,8 +328,8 @@ module Details = {
 module Forecast = {
   [@react.component]
   let make = (~forecast: Presentation.forecast) => {
-    let props = ReactDOM.domProps(~className="attack-health " ++ side(forecast.side), ());
-    dataForecast(props, side(forecast.side));
+    let props = ReactDOM.domProps(~className="attack-health " ++ forecast.palette, ());
+    dataForecast(props, forecast.palette);
     ReactDOM.createElement(
       "span",
       ~props,
@@ -454,7 +474,7 @@ module CombatResult = {
       ) => {
     let (expanded, setExpanded) = React.useState(() => None);
     let units = combat.units;
-    let player = units[0].side == Domain.Side.Player ? 0 : 1;
+    let player = units[0].faction == "player" ? 0 : 1;
     let opponent = 1 - player;
     let finalHealth =
       Array.map(Int32.to_float, combat.strikes[Array.length(combat.strikes) - 1].Domain.health);
@@ -774,7 +794,7 @@ module Campaign = {
            let survivors =
              filterList(
                (unit: Domain.public_unit) => {
-                 unit.side == Domain.Side.Player
+                 unit.faction == "player"
                  && unit.role != Some(Domain.Role.Leader)
                  && unit.role != Some(Domain.Role.Courier)
                  && !
@@ -898,7 +918,7 @@ module Campaign = {
                     </>}
              </section>
              {showResult
-              && state.winner == Some(Domain.Side.Player)
+              && state.winner == Some(Domain.Battle_result.Player_victory)
               && !Story.dialogue_pending(state.campaign)
                 ? <section
                     id="mission-result"
@@ -1059,7 +1079,7 @@ module Defeat = {
         ~some=(frame: Combat_playback.frame) => !frame.complete,
         view.combat_playback,
       );
-    state.winner != Some(Domain.Side.Enemy)
+    state.winner != Some(Domain.Battle_result.Player_defeat)
     || Story.dialogue_pending(state.campaign)
     || resolving
       ? React.null

@@ -1,5 +1,5 @@
 //! Terrain-dependent attack geometry shared by forecasts of the same battle.
-use super::Game;
+use super::BattlePosition;
 use crate::data::Category;
 use rustc_hash::FxHashMap as HashMap;
 use std::{cell::RefCell, rc::Rc};
@@ -117,7 +117,7 @@ pub struct AttackOriginRun {
 }
 pub(super) type OriginRunCache =
     Rc<RefCell<HashMap<(usize, usize, usize, u8, usize), Rc<Vec<AttackOriginRun>>>>>;
-impl Game<'_> {
+impl BattlePosition<'_> {
     pub(crate) fn attack_origin_runs(
         &self,
         kind: usize,
@@ -264,7 +264,7 @@ mod tests {
     #[test]
     fn terrain_changes_detach_forecast_geometry_and_preserve_the_parent() {
         let rules = crate::data::Catalog::load().unwrap();
-        let mut game = Game::new(&rules, "mirror");
+        let mut game = super::super::Game::new(&rules, "mirror").position;
         for tile in 0..game.terrain.len() {
             game.set_terrain(tile, rules.terrains["plains"]);
         }
@@ -290,7 +290,7 @@ mod tests {
     #[test]
     fn attack_geometry_is_reciprocal_including_blocked_ranged_paths() {
         let rules = crate::data::Catalog::load().unwrap();
-        let mut game = Game::new(&rules, "mirror");
+        let mut game = super::super::Game::new(&rules, "mirror").position;
         for terrain in ["plains", "forest", "hill", "grove"] {
             for tile in (0..game.terrain.len()).step_by(3) {
                 game.set_terrain(tile, rules.terrains[terrain]);

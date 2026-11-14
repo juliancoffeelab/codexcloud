@@ -38,20 +38,21 @@ fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
         state.units.clear();
         state.combat_rng = seed;
         state.gold = Gold::two(0, 0);
-        let mut add = |side, tile: Hex, hp| {
+        let mut add = |faction: &str, tile: Hex, hp| {
             let id = state.next_id;
             state.next_id += 1;
             state.units.push(PublicUnit {
-                faction: None,
+                faction: faction.into(),
+                revealed_to: vec![],
+                perception_effects: vec![],
                 items: vec![],
                 ai_group: None,
                 id: format!("u{id}"),
                 r#type: "archer".into(),
-                side,
                 tile: tile.into(),
                 hp,
                 moved: false,
-                attacked: false,
+                attack_spent: false,
                 experience: Some(0),
                 character: None,
                 role: None,
@@ -60,8 +61,8 @@ fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
             });
             id
         };
-        let a = add(Side::Player, Hex::new(2, 3), rules.units[kind].hp);
-        let b = add(Side::Enemy, Hex::new(3, 3), 4);
+        let a = add("player", Hex::new(2, 3), rules.units[kind].hp);
+        let b = add("enemy", Hex::new(3, 3), 4);
         let mut game = Game::try_from_state(&rules, state).unwrap();
         let actor = game.unit(a).unwrap();
         let target = game.unit(b).unwrap();
@@ -112,20 +113,21 @@ fn best_attack_avoids_lethal_reply_and_melee_cannot_repeat() {
         tile.terrain = "plains".into();
         tile.owner = None;
     }
-    let mut add = |kind: &str, side, tile: Hex, hp| {
+    let mut add = |kind: &str, faction: &str, tile: Hex, hp| {
         let id = state.next_id;
         state.next_id += 1;
         state.units.push(PublicUnit {
-            faction: None,
+            faction: faction.into(),
+            revealed_to: vec![],
+            perception_effects: vec![],
             items: vec![],
             ai_group: None,
             id: format!("u{id}"),
             r#type: kind.into(),
-            side,
             tile: tile.into(),
             hp,
             moved: false,
-            attacked: false,
+            attack_spent: false,
             experience: Some(0),
             character: None,
             role: None,
@@ -134,10 +136,10 @@ fn best_attack_avoids_lethal_reply_and_melee_cannot_repeat() {
         });
         id
     };
-    let scout = add("scout", Side::Player, Hex::new(2, 3), 5);
+    let scout = add("scout", "player", Hex::new(2, 3), 5);
     let bow = add(
         "archer",
-        Side::Enemy,
+        "enemy",
         Hex::new(3, 3),
         rules.units[rules.types["archer"]].hp,
     );

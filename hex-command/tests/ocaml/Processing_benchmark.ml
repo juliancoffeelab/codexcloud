@@ -24,7 +24,7 @@ let phase battle options =
   let steps = ref 0 in
   let enemy () =
     let state = Native.state (Native.view battle) in
-    state.turn = Domain.Side.Enemy && state.winner = None
+    state.turn = Domain.Turn_phase.Ai && state.winner = None
   in
   while enemy () do
     if !steps >= 1000 then failwith "Benchmark phase exceeded 1000 commands";

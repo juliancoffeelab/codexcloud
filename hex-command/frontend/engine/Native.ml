@@ -291,7 +291,7 @@ let publication ?previous ?inspection ?tiles ?indices ?(combat = None) factory i
               then previous.presentation.lighting
               else incoming.lighting
             in
-            { Domain.fog; lighting }
+            { incoming with Domain.fog; lighting }
       in
       let fog_index =
         match previous with
@@ -328,12 +328,7 @@ let publication ?previous ?inspection ?tiles ?indices ?(combat = None) factory i
       let visible_units =
         Array_ext.filter_map
           (fun (unit : Domain.public_unit) ->
-            let visible =
-              Option.fold ~none:false
-                ~some:(fun (actions : Domain.unit_actions) -> actions.faction.controllable)
-                (Js.Dict.get choices unit.id)
-              || Js.Dict.get fog_index (Hex.key unit.tile) <> Some true
-            in
+            let visible = Array.exists (( = ) unit.id) presentation.visible_units in
             if not visible then None
             else
               Some
@@ -369,7 +364,8 @@ let publication ?previous ?inspection ?tiles ?indices ?(combat = None) factory i
 
 let frame_state (frame : Domain.state_frame) tiles : Domain.state =
   let {
-    Domain.factions;
+    Domain.vision_groups;
+    factions;
     ground_items;
     armies;
     condition_memory;
@@ -391,7 +387,8 @@ let frame_state (frame : Domain.state_frame) tiles : Domain.state =
     frame
   in
   {
-    Domain.factions;
+    Domain.vision_groups;
+    factions;
     ground_items;
     armies;
     condition_memory;
@@ -619,7 +616,7 @@ let controllable view id =
 let fogged view id = Js.Dict.get view.fog_index id = Some true
 
 let visible view (unit : Domain.public_unit) =
-  controllable view unit.id || not (fogged view (Hex.key unit.tile))
+  Array.exists (( = ) unit.id) view.presentation.visible_units
 
 let units view = view.visible_units
 let ground_items view = view.visible_ground_items
@@ -674,7 +671,7 @@ let attack_options view id target =
 let targets view id =
   match unit view id with
   | None -> [||]
-  | Some actor when actor.Domain.attacked || view.state.Domain.winner <> None -> [||]
+  | Some actor when actor.Domain.attack_spent || view.state.Domain.winner <> None -> [||]
   | Some _ ->
       let ids = create_dictionary Js.Nullable.null in
       (match actions view id with

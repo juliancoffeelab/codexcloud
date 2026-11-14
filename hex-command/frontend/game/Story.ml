@@ -1,4 +1,3 @@
-module Side = Domain.Side
 open Domain
 
 let dictionary : unit -> 'a Js.Dict.t = [%mel.raw "() => Object.create(null)"]
@@ -67,6 +66,6 @@ let returns_with_story catalog (state : campaign_state) (unit : public_unit) =
            mission.arrivals
          || Array.exists
               (fun (incoming : starting_unit) ->
-                incoming.side = Side.Player && incoming.character = Some character)
+                incoming.faction = "player" && incoming.character = Some character)
               mission.map.units)
        unit.character

@@ -2,7 +2,7 @@
   "defaultMaxRounds": 100,
   "diplomacy": ["unrestricted", "diplomatic"],
   "policies": ["classic", "rush", "balanced", "rotated", "situational"],
-  "defaultCampaigns": ["lantern-road", "green-accord", "ashen-oath", "borrowed-tide"],
+  "defaultCampaigns": ["lantern-road"],
   "campaigns": {
     "lantern-road": {
       "diplomacy": ["unrestricted"],
@@ -27,6 +27,7 @@
                     "flag": "road-cleared"
                   },
                   "objective": {
+                    "faction": "player",
                     "label": "Defeat all enemies before leaving",
                     "optional": false,
                     "visibleWhen": {
@@ -77,18 +78,6 @@
         }
       }
     },
-    "green-accord": {
-      "diplomacy": ["unrestricted"],
-      "routes": {}
-    },
-    "ashen-oath": {
-      "diplomacy": ["unrestricted", "diplomatic"],
-      "routes": {}
-    },
-    "borrowed-tide": {
-      "diplomacy": ["unrestricted"],
-      "routes": {}
-    },
     "mirror-night": {
       "diplomacy": ["unrestricted"],
       "routes": {}
@@ -96,9 +85,23 @@
     "bell-night": {
       "diplomacy": ["unrestricted"],
       "routes": {}
+    },
+    "snake-village-raid": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "snake-hunt": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "ghost-village-raid": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "ghost-hunt": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
     }
   },
-  "escalationFlags": {
-    "ashen-refuge": "peace-lost"
-  }
+  "escalationFlags": {}
 }

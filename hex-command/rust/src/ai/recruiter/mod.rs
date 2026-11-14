@@ -154,7 +154,7 @@ fn recruit_from_orders(
     }
     game.units()
         .iter()
-        .filter(|u| game.belongs_to_phase(u, game.turn()) && u.is_leader())
+        .filter(|u| game.belongs_to_faction(u, game.observer_faction()) && u.is_leader())
         .find_map(|leader| recruit_for_leader(game, recruiter, seed, orders, leader))
 }
 fn recruit_for_leader(
@@ -216,7 +216,9 @@ fn recruit_for_leader(
                 let allies: Vec<_> = game
                     .units()
                     .iter()
-                    .filter(|u| game.belongs_to_phase(u, side) && !u.is_leader())
+                    .filter(|u| {
+                        game.belongs_to_faction(u, game.observer_faction()) && !u.is_leader()
+                    })
                     .collect();
                 pool.iter()
                     .enumerate()
@@ -241,7 +243,8 @@ fn recruit_for_leader(
                     .unwrap_or(0)
             }]
         } else if game.units().iter().any(|u| {
-            game.belongs_to_phase(u, side) && game.rules().units[u.kind].family == Family::Archer
+            game.belongs_to_faction(u, game.observer_faction())
+                && game.rules().units[u.kind].family == Family::Archer
         }) {
             swordsman
         } else {
@@ -262,12 +265,12 @@ fn recruit_for_leader(
     let allies: Vec<_> = game
         .units()
         .iter()
-        .filter(|u| game.belongs_to_phase(u, side) && !u.is_leader())
+        .filter(|u| game.belongs_to_faction(u, game.observer_faction()) && !u.is_leader())
         .collect();
     let opponents: Vec<_> = game
         .units()
         .iter()
-        .filter(|u| game.hostile_to_phase(u, side))
+        .filter(|u| game.hostile_to_faction(u, game.observer_faction()))
         .collect();
     let mut counts = [0; 4];
     for ally in &allies {
@@ -307,13 +310,16 @@ fn recruit_for_leader(
             continue;
         }
         let recruit = Unit {
+            field_available: true,
+            perception: PerceptionId(0),
+            vision_group: leader.vision_group,
             id: 0,
             kind,
-            side,
+            phase: side,
             tile: leader.tile,
             hp: r.hp,
             moved: true,
-            attacked: true,
+            attack_spent: true,
             experience: None,
             role: None,
             retreating: None,
@@ -403,7 +409,7 @@ fn recruit_for_leader(
     // its gold instead of continuously replacing it with cheap recruits.
     let kind = if game.recruit_cost(&leader, preferred) <= game.gold_for_unit(&leader) {
         preferred
-    } else if game.income(side) > 0 {
+    } else if game.income(game.observer_faction()) > 0 {
         return None;
     } else {
         choices
@@ -444,7 +450,7 @@ pub(crate) fn diagnostics(
     for unit in view
         .units()
         .iter()
-        .filter(|u| view.belongs_to_phase(u, view.turn()))
+        .filter(|u| view.belongs_to_faction(u, view.observer_faction()))
     {
         let recruit = unit.is_leader();
         let options = if recruit {
@@ -511,7 +517,7 @@ pub(crate) fn diagnostics(
                     * (1.0 + copies as f64 * weights.duplicate_penalty)
                     * (1.0
                         + f64::from((price - view.gold_for_unit(unit)).max(0))
-                            / f64::from(view.income(unit.side).max(1))
+                            / f64::from(view.income(view.unit_faction(&unit)).max(1))
                             * weights.wait_penalty)
             } else {
                 1.0
@@ -608,17 +614,17 @@ mod tests {
         let leader = game
             .units()
             .iter()
-            .find(|u| u.side == Side::Player)
+            .find(|u| u.phase == TurnPhase::Player)
             .unwrap()
             .clone();
         let tile = game.placement_tiles(&leader, a, false)[0];
-        fixtures::add(&mut game, a, Side::Player, tile);
+        fixtures::add(&mut game, a, "player", tile);
         // Both roles are under target, even though their deficits differ.
         let outcomes: std::collections::BTreeSet<_> =
             (0..64).map(|seed| draw(&game, seed)).collect();
         assert_eq!(outcomes.len(), 2);
         let tile = game.placement_tiles(&leader, a, false)[0];
-        fixtures::add(&mut game, a, Side::Player, tile);
+        fixtures::add(&mut game, a, "player", tile);
         // Infantry is now over target, so every draw must be a flanker.
         for seed in 0..16 {
             assert_eq!(draw(&game, seed), b);
@@ -665,7 +671,7 @@ mod tests {
                 let leader = game
                     .units()
                     .iter()
-                    .find(|u| u.side == Side::Player && u.is_leader())
+                    .find(|u| u.phase == TurnPhase::Player && u.is_leader())
                     .unwrap()
                     .clone();
                 let deployment = game.placement_tiles(&leader, expected, false);
@@ -697,12 +703,12 @@ mod tests {
         let leader = game
             .units()
             .iter()
-            .find(|u| u.side == Side::Player)
+            .find(|u| u.phase == TurnPhase::Player)
             .unwrap()
             .clone();
         let sites = game.placement_tiles(&leader, rules.types["swordsman"], false);
-        fixtures::add(&mut game, rules.types["swordsman"], Side::Player, sites[0]);
-        fixtures::add(&mut game, rules.types["archer"], Side::Player, sites[1]);
+        fixtures::add(&mut game, rules.types["swordsman"], "player", sites[0]);
+        fixtures::add(&mut game, rules.types["archer"], "player", sites[1]);
         fixtures::edit(&mut game, |state| state.round = 3);
         fixtures::edit(&mut game, |state| {
             state.gold["player"] = rules.units[rules.types["rider"]].cost
@@ -712,6 +718,7 @@ mod tests {
         let orders = crate::ai::CampaignBlock::Arena.campaign_orders(
             &mission,
             CampaignInput {
+                seed: 0,
                 goals: None,
                 diplomacy: crate::ai::Diplomacy::Unrestricted,
             },

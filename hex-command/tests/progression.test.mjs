@@ -4,11 +4,10 @@ import assert from "node:assert/strict";
 import * as Presentation from "./presentation-adapter.mjs";
 import * as Catalog from "./catalog-adapter.mjs";
 import { catalog, Native } from "./native-fixture.mjs";
-import history from "../packages/save-migrations/src/legacy/data/stages.json";
 import { Game } from "./game-fixture.mjs";
 import { createGameView } from "./fixture-view.mjs";
 import * as Store from "./storage-adapter.mjs";
-import { saveBattle, loadBattle, SAVE_KEY } from "./legacy-save.mjs";
+import { saveBattle, loadBattle, createTestFactory } from "./persistence-adapter.mjs";
 import { required, TestStorage } from "./helpers.mjs";
 test("Resolved native promotions reference existing authored units", async () => {
   for (const rule of Catalog.units(catalog)) {
@@ -27,7 +26,7 @@ test("Combat XP and promotion preserve wounds, identity and immutable publicatio
   assert.equal(attacker.experience, 6);
   assert.deepEqual(game.promotionOptions(attacker.id), []);
   attacker.experience = 10;
-  attacker.moved = attacker.attacked = false;
+  attacker.moved = attacker.attackSpent = false;
   const before = createGameView(game);
   const beforePromotion = game.captureState();
   assert.deepEqual(
@@ -45,7 +44,7 @@ test("Combat XP and promotion preserve wounds, identity and immutable publicatio
   );
   assert.equal(attacker.id, beforePromotion.units[0].id);
   assert.equal(attacker.experience, 0);
-  assert(attacker.moved && attacker.attacked);
+  assert(attacker.moved && attacker.attackSpent);
   assert.equal(
     Native.unit(before, attacker.id)?.type,
     "swordsman",
@@ -54,29 +53,27 @@ test("Combat XP and promotion preserve wounds, identity and immutable publicatio
   assert.throws(() => game.advanceUnit(attacker.id, "soldier"), /IllegalAdvance/);
 });
 test("Progressed campaign units persist and invalid XP is rejected", async () => {
-  const campaign = Game.startCampaign("borrowed-tide");
+  const campaign = Game.startCampaign("lantern-road");
   campaign.advanceDialogue(true);
   const leader = required(
-    campaign.units.find((unit) => unit.role === "leader" && unit.side === "player"),
+    campaign.units.find((unit) => unit.role === "leader" && unit.faction === "player"),
   );
-  const recruit = required(
-    campaign.units.find((unit) => unit.type === "reefguard" && unit.side === "player"),
-  );
+  const recruit = campaign.addUnit("swordsman", "player", "1,1");
   recruit.experience = Catalog.unit(catalog, recruit.type).experienceNeeded;
-  campaign.advanceUnit(recruit.id, "tridentguard");
+  campaign.advanceUnit(recruit.id, "soldier");
   leader.experience = Catalog.unit(catalog, leader.type).experienceNeeded;
-  campaign.advanceUnit(leader.id, "tideseer");
-  const pilot = required(campaign.units.find((unit) => unit.character === "edda"));
+  campaign.advanceUnit(leader.id, "soldier");
+  const pilot = required(campaign.units.find((unit) => unit.character === "ivo"));
   pilot.experience = 7;
-  campaign.winner = "player";
+  campaign.winner = "playerVictory";
   const next = campaign.nextCampaignMission([recruit.id]);
   await saveBattle(next);
-  assert.equal((await loadBattle()).game.campaign?.id, "borrowed-tide");
-  assert.deepEqual((await loadBattle()).game.units, next.units);
+  assert.equal((await loadBattle(createTestFactory())).game.campaign?.id, "lantern-road");
+  assert.deepEqual((await loadBattle(createTestFactory())).game.units, next.units);
   const saved = JSON.parse(required((await Store.read_session())[0]));
-  saved.state.units[0].experience = -1;
+  saved.checkpoint.state.units[0].experience = -1;
   await Store.store_save(JSON.stringify(saved));
-  assert.equal((await loadBattle()).game.mapId, "mirror");
+  assert.equal((await loadBattle(createTestFactory())).game.mapId, "mirror");
 });
 test("Promoted skirmish leaders survive reload", async () => {
   const classic = new Game();
@@ -85,42 +82,11 @@ test("Promoted skirmish leaders survive reload", async () => {
   classic.advanceUnit(commander.id, "marshal");
   await saveBattle(classic);
   assert.equal(
-    (await loadBattle()).game.unit("u1")?.type,
+    (await loadBattle(createTestFactory())).game.unit("u1")?.type,
     "marshal",
     "Promoted leaders survive reload outside campaigns",
   );
 });
-for (const [chapter, oldName, officerName] of [
-  [0, "Captain Vale", "Postmaster Harl"],
-  [1, "Factor Senn", "Foreman Cale"],
-]) {
-  test(
-    "Legacy coastal officers migrate names without resetting progress \u2014 " +
-      JSON.stringify([chapter, oldName, officerName]),
-    async () => {
-      const oldCoast = Game.startCampaign("borrowed-tide", chapter);
-      const officer = required(
-        oldCoast.units.find((unit) => unit.side === "enemy" && unit.role === "leader"),
-      );
-      officer.name = oldName;
-      officer.hp = 5;
-      officer.experience = 7;
-      officer.moved = officer.attacked = true;
-      oldCoast.campaign.dialogue = [
-        required(
-          required(history[Catalog.campaign(catalog, "borrowed-tide").missions[chapter].map.id])
-            .dialogue[0],
-        ),
-      ];
-      await saveBattle(oldCoast);
-      const migrated = (await loadBattle()).game;
-      assert.equal(migrated.campaign?.id, "borrowed-tide");
-      const { name: _oldName, ...expectedOfficer } = officer;
-      assert.deepEqual(migrated.unit(officer.id), expectedOfficer);
-      assert.equal(Native.campaign(migrated.publishedView()).dialogue[0]?.speaker, officerName);
-    },
-  );
-}
 beforeEach(() => {
   vi.stubGlobal("localStorage", new TestStorage());
 });

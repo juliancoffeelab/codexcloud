@@ -14,6 +14,7 @@ pub(crate) struct DeathOccurrence {
 
 #[derive(Clone, Default)]
 struct Bindings {
+    observer: Option<String>,
     unit: Option<Unit>,
     mark: Option<MapMark>,
     death: Option<DeathOccurrence>,
@@ -23,10 +24,11 @@ impl Game<'_> {
     /// Unconditional timed defeats are explicit mission limits. Conditional
     /// events remain unknown rather than guessing whether their guards will hold.
     pub(crate) fn planning_deadline_round(&self) -> Option<u32> {
-        if self.campaign.is_none() {
+        if self.story.campaign.is_none() {
             return None;
         }
-        self.mission
+        self.story
+            .mission
             .as_ref()
             .into_iter()
             .flat_map(|m| &m.scripted_events)
@@ -45,34 +47,59 @@ impl Game<'_> {
     }
 
     #[inline]
-    pub(crate) fn script_unit_matches(&self, select: &UnitMatch, unit: &Unit) -> bool {
-        super::event_queries::unit_matches(
-            self.rules,
-            &self.runtime.factions,
-            &self.runtime.names,
+    pub(crate) fn script_unit_matches(
+        &self,
+        select: &UnitMatch,
+        unit: &Unit,
+        observer: Option<&str>,
+    ) -> bool {
+        super::event_queries::unit_matches_for_faction(
+            self.position.rules,
+            &self.position.runtime.factions,
+            &self.position.runtime.names,
             select,
             unit,
+            observer,
         )
     }
-    pub(crate) fn script_condition(&self, when: &When) -> bool {
-        let state = self.runtime.scripts.as_deref();
+    pub(crate) fn objective_unit_matches(
+        &self,
+        faction: &str,
+        select: &UnitMatch,
+        unit: &Unit,
+    ) -> bool {
+        super::event_queries::unit_matches_for_faction(
+            self.rules,
+            &self.factions,
+            &self.names,
+            select,
+            unit,
+            Some(faction),
+        )
+    }
+    pub(crate) fn script_condition(&self, when: &When, observer: Option<&str>) -> bool {
+        let state = self.story.scripts.as_deref();
         assert!(
-            state.is_some() || self.runtime.campaign.is_none(),
+            state.is_some() || self.story.campaign.is_none(),
             "event evaluation requires explicit current progress"
         );
-        EventFacts::new(self).when_matches(when, state, None, false, None)
+        EventFacts::for_context(self, observer).when_matches(when, state, None, false, None)
     }
     pub(crate) fn resolve_text(&self, text: &ConditionalText) -> Option<String> {
         match text {
             ConditionalText::Text(text) => Some(text.clone()),
             ConditionalText::Variants(v) => v
                 .iter()
-                .find(|v| v.when.as_ref().is_none_or(|w| self.script_condition(w)))
+                .find(|v| {
+                    v.when
+                        .as_ref()
+                        .is_none_or(|w| self.script_condition(w, Some("player")))
+                })
                 .map(|v| v.text.clone()),
         }
     }
     pub(crate) fn resolved_story(&self) -> Option<ResolvedStory> {
-        let mission = self.runtime.mission.as_ref()?;
+        let mission = self.story.mission.as_ref()?;
         Some(ResolvedStory {
             briefing: self.resolve_text(&mission.briefing).unwrap_or_default(),
             debrief: mission.debrief.as_ref().and_then(|t| self.resolve_text(t)),
@@ -84,7 +111,7 @@ impl Game<'_> {
                     ConditionalHint::Variant(v) => v
                         .when
                         .as_ref()
-                        .is_none_or(|w| self.script_condition(w))
+                        .is_none_or(|w| self.script_condition(w, Some("player")))
                         .then(|| v.text.clone()),
                 })
                 .collect(),
@@ -102,17 +129,18 @@ impl Game<'_> {
                 bindings.mark.as_ref().expect("validated mark binding").tile
             }
             TileRef::Binding(TileBinding::Unit) => {
-                self.runtime.board.ids[bindings.unit.as_ref().expect("validated unit binding").tile]
+                self.position.runtime.board.ids
+                    [bindings.unit.as_ref().expect("validated unit binding").tile]
             }
             TileRef::Binding(TileBinding::Death) => {
-                self.runtime.board.ids[bindings
+                self.position.runtime.board.ids[bindings
                     .death
                     .as_ref()
                     .expect("validated death binding")
                     .unit
                     .tile]
             }
-            _ => self.runtime.board.ids[self.reference_site(value)],
+            _ => self.position.runtime.board.ids[self.reference_site(value)],
         }
     }
     pub(crate) fn script_speech(&self, nodes: &[Speech], out: &mut Vec<Dialogue>) {
@@ -143,7 +171,7 @@ impl Game<'_> {
                         let party =
                             self.campaign_definition().missions.iter().any(|m| {
                                 m.map.units.iter().any(|u| {
-                                    u.side == Side::Player && u.character.as_ref() == Some(id)
+                                    u.faction == "player" && u.character.as_ref() == Some(id)
                                 }) || m.arrivals.iter().any(|a| &a.character == id)
                             });
                         if party && present.is_none() {
@@ -153,7 +181,7 @@ impl Game<'_> {
                     let portrait = line
                         .portrait
                         .clone()
-                        .or_else(|| present.map(|u| self.rules.units[u.kind].id.clone()))
+                        .or_else(|| present.map(|u| self.position.rules.units[u.kind].id.clone()))
                         .unwrap_or_else(|| "worker".into());
                     out.push(Dialogue {
                         character: line.character.clone(),
@@ -166,15 +194,22 @@ impl Game<'_> {
             }
         }
     }
-    fn reveal_objectives(&self, state: &mut Shared<EventProgress>) {
+    fn reveal_objectives(&mut self, state: &mut Shared<EventProgress>) {
         let plan = state.plan();
         let unrevealed = state.unrevealed();
         for &index in unrevealed.iter() {
             let objective = plan.scripted_events[index].objective.as_ref().unwrap();
             if objective.visible_when.as_ref().is_some_and(|when| {
-                EventFacts::new(self).when_matches(when, Some(state), None, false, None)
+                EventFacts::for_faction(self, &objective.faction).when_matches(
+                    when,
+                    Some(state),
+                    None,
+                    false,
+                    None,
+                )
             }) {
                 state.reveal(index);
+                self.story.planning_revision = self.story.planning_revision.wrapping_add(1);
             }
         }
     }
@@ -201,13 +236,10 @@ impl Game<'_> {
                     .map(|id| self.site(id))
                     .find(|&t| self.at(t).is_none() && self.cost(kind, t) != u16::MAX);
                 if let Some(tile) = tile {
-                    let phase = self
-                        .faction(&group.faction)
-                        .expect("validated spawn faction")
-                        .phase;
-                    let id = self.add(kind, phase, tile);
+                    let faction = self.intern_name(&group.faction);
+                    let id = self.position.add(kind, faction, tile);
                     let index = self.index(id).unwrap();
-                    let faction = Some(self.intern_name(&group.faction));
+                    let vision_group = self.vision_group(&group.faction);
                     let ai_group = group
                         .ai_group
                         .as_deref()
@@ -219,11 +251,12 @@ impl Game<'_> {
                     let items = member
                         .items
                         .iter()
-                        .map(|id| self.rules.items[id].clone())
+                        .map(|id| self.position.rules.items[id].clone())
                         .collect();
                     self.set_inventory(id, items);
-                    let unit = &mut self.runtime.units[index];
+                    let unit = &mut self.position.runtime.units[index];
                     unit.faction = faction;
+                    unit.vision_group = vision_group;
                     unit.ai_group = ai_group;
                     unit.character = character;
                     unit.role = member.role;
@@ -242,21 +275,22 @@ impl Game<'_> {
         bindings: &Bindings,
     ) {
         for action in actions {
+            self.story.planning_revision = self.story.planning_revision.wrapping_add(1);
             match action {
                 EventAction::SetFlag(update) => {
-                    self.runtime.campaign.as_mut().unwrap().set_flag(
+                    self.story.campaign.as_mut().unwrap().set_flag(
                         update.id(),
                         update.state(),
-                        self.runtime.round,
+                        self.position.runtime.round,
                     );
                 }
                 EventAction::Say(nodes) => {
                     let mut lines = vec![];
                     self.script_speech(nodes, &mut lines);
-                    self.runtime.campaign.as_mut().unwrap().say(lines);
+                    self.story.campaign.as_mut().unwrap().say(lines);
                 }
                 EventAction::Sound(sound) => {
-                    self.runtime.campaign.as_mut().unwrap().say([Dialogue {
+                    self.story.campaign.as_mut().unwrap().say([Dialogue {
                         character: None,
                         speaker: String::new(),
                         portrait: "worker".into(),
@@ -268,13 +302,16 @@ impl Game<'_> {
                     let area = if let Some(value) = &spec.tile {
                         let tile = self.bound_tile(value, bindings);
                         let origin = self.site(&tile);
-                        let mut slots: Vec<_> = (0..self.runtime.terrain.len())
-                            .filter(|&t| self.runtime.board.distance(origin, t) <= spec.radius)
+                        let mut slots: Vec<_> = (0..self.position.runtime.terrain.len())
+                            .filter(|&t| {
+                                self.position.runtime.board.distance(origin, t) <= spec.radius
+                            })
                             .collect();
-                        slots.sort_by_key(|&t| (self.runtime.board.distance(origin, t), t));
+                        slots
+                            .sort_by_key(|&t| (self.position.runtime.board.distance(origin, t), t));
                         slots
                             .into_iter()
-                            .map(|t| self.runtime.board.ids[t].clone())
+                            .map(|t| self.position.runtime.board.ids[t].clone())
                             .collect()
                     } else {
                         spec.area
@@ -296,30 +333,32 @@ impl Game<'_> {
                         .units
                         .iter()
                         .filter(|u| {
-                            self.script_unit_matches(&spec.units, u)
+                            self.script_unit_matches(&spec.units, u, bindings.observer.as_deref())
                                 && tile
                                     .as_ref()
-                                    .is_none_or(|t| &self.runtime.board.ids[u.tile] == t)
+                                    .is_none_or(|t| &self.position.runtime.board.ids[u.tile] == t)
                         })
                         .map(|u| u.id)
                         .collect();
                     for id in selected {
                         let index = self.index(id).unwrap();
-                        let item = &self.rules.items[&spec.item];
+                        let item = &self.position.rules.items[&spec.item];
                         if validate_equipment(
-                            self.inventory(&self.runtime.units[index])
+                            self.inventory(&self.position.runtime.units[index])
                                 .chain(std::iter::once(item)),
-                            &self.rules.units[self.runtime.units[index].kind].attacks,
+                            &self.position.rules.units[self.position.runtime.units[index].kind]
+                                .attacks,
                             "event gift",
                         )
                         .is_ok()
                         {
                             self.give_item(id, item.clone());
                         } else {
-                            let item = std::sync::Arc::make_mut(&mut self.runtime.inventories)
-                                .add_item(item.clone(), self.mechanics);
-                            self.runtime.ground_items.push(GroundItemState {
-                                tile: self.runtime.units[index].tile,
+                            let item =
+                                std::sync::Arc::make_mut(&mut self.position.runtime.inventories)
+                                    .add_item(item.clone(), self.position.mechanics);
+                            self.position.runtime.ground_items.push(GroundItemState {
+                                tile: self.position.runtime.units[index].tile,
                                 item,
                             });
                         }
@@ -327,9 +366,12 @@ impl Game<'_> {
                 }
                 EventAction::PlaceItem(spec) => {
                     let tile = self.bound_tile(&spec.tile, bindings);
-                    let item = std::sync::Arc::make_mut(&mut self.runtime.inventories)
-                        .add_item(self.rules.items[&spec.item].clone(), self.mechanics);
-                    self.runtime.ground_items.push(GroundItemState {
+                    let item = std::sync::Arc::make_mut(&mut self.position.runtime.inventories)
+                        .add_item(
+                            self.position.rules.items[&spec.item].clone(),
+                            self.position.mechanics,
+                        );
+                    self.position.runtime.ground_items.push(GroundItemState {
                         tile: self.site(&tile),
                         item,
                     });
@@ -345,15 +387,26 @@ impl Game<'_> {
                     let ids: Vec<_> = self
                         .units
                         .iter()
-                        .filter(|u| self.script_unit_matches(&spec.units, u))
+                        .filter(|u| {
+                            self.script_unit_matches(&spec.units, u, bindings.observer.as_deref())
+                        })
                         .map(|u| u.id)
                         .collect();
                     let faction = self.intern_name(&spec.faction);
+                    let vision_group = self.vision_group(&spec.faction);
                     for id in ids {
+                        if self
+                            .traversal
+                            .as_ref()
+                            .is_some_and(|(actor, _)| *actor == id)
+                        {
+                            self.position.runtime.traversal = None;
+                        }
                         let index = self.index(id).unwrap();
-                        let unit = &mut self.runtime.units[index];
-                        unit.side = phase;
-                        unit.faction = Some(faction);
+                        let unit = &mut self.position.runtime.units[index];
+                        unit.phase = phase;
+                        unit.faction = faction;
+                        unit.vision_group = vision_group;
                         unit.ai_group = None;
                         unit.retreating = None;
                         unit.rebuilding = None;
@@ -368,16 +421,19 @@ impl Game<'_> {
                         UnitReference::Selection(s) => self
                             .units
                             .iter()
-                            .filter(|u| self.script_unit_matches(s, u))
+                            .filter(|u| {
+                                self.script_unit_matches(s, u, bindings.observer.as_deref())
+                            })
                             .map(|u| u.id)
                             .collect(),
                     };
-                    self.runtime.units.retain(|u| !ids.contains(&u.id));
+                    self.position.runtime.units.retain(|u| !ids.contains(&u.id));
                     self.roster_changed();
                 }
                 EventAction::CreateMark(spec) => {
                     let id = state.allocate_mark();
                     state.marks_mut().push(MapMark {
+                        sight: spec.sight.clone(),
                         id,
                         kind: spec.kind.clone(),
                         light_remembered: false,
@@ -399,10 +455,13 @@ impl Game<'_> {
                         .units
                         .iter()
                         .filter(|u| {
-                            self.script_unit_matches(&spec.select.units, u)
-                                && tile
-                                    .as_ref()
-                                    .is_none_or(|t| &self.runtime.board.ids[u.tile] == t)
+                            self.script_unit_matches(
+                                &spec.select.units,
+                                u,
+                                bindings.observer.as_deref(),
+                            ) && tile
+                                .as_ref()
+                                .is_none_or(|t| &self.position.runtime.board.ids[u.tile] == t)
                         })
                         .cloned()
                         .collect();
@@ -425,18 +484,60 @@ impl Game<'_> {
                         self.event_actions(&spec.actions, state, &b);
                     }
                 }
+                EventAction::AddConcealment(spec) => self.add_concealment(&spec.area, &spec.rule),
+                EventAction::RemoveConcealment(spec) => {
+                    self.remove_concealment(&spec.area, spec.kind)
+                }
+                EventAction::GrantPerception(spec) => {
+                    let selected: Vec<_> = self
+                        .units
+                        .iter()
+                        .filter(|u| {
+                            self.script_unit_matches(&spec.units, u, bindings.observer.as_deref())
+                        })
+                        .map(|u| u.id)
+                        .collect();
+                    for id in selected {
+                        self.grant_perception(id, spec.effect.clone());
+                    }
+                }
+                EventAction::RemovePerception(spec) => {
+                    let selected: Vec<_> = self
+                        .units
+                        .iter()
+                        .filter(|u| {
+                            self.script_unit_matches(&spec.units, u, bindings.observer.as_deref())
+                        })
+                        .map(|u| u.id)
+                        .collect();
+                    for id in selected {
+                        let slot = self.unit(id).unwrap().perception.0;
+                        self.position.runtime.unit_perception[slot]
+                            .effects
+                            .retain(|e| e.id != spec.effect);
+                    }
+                }
+                EventAction::RevealTerrain(spec) => self.reveal_terrain(&spec.group, &spec.area),
+                EventAction::SetVisionGroup(spec) => {
+                    self.assign_vision_group(&spec.faction, &spec.group)
+                }
                 EventAction::SetTerrain(spec) => {
                     let tile = self.bound_tile(&spec.tile, bindings);
-                    self.set_terrain(self.site(&tile), self.rules.terrains[&spec.terrain]);
+                    let site = self.site(&tile);
+                    let terrain = self.position.rules.terrains[&spec.terrain];
+                    self.set_terrain(site, terrain);
                 }
-                EventAction::Gold(spec) => self.runtime.gold[&spec.faction] += spec.amount,
+                EventAction::Gold(spec) => self.position.runtime.gold[&spec.faction] += spec.amount,
                 EventAction::Recruits(spec) => {
+                    std::rc::Rc::make_mut(&mut self.position.runtime.resolved_recruitment)
+                        .insert(spec.faction.clone(), spec.units.clone());
                     state
                         .recruitment_mut()
                         .insert(spec.faction.clone(), spec.units.clone());
                 }
                 EventAction::FailObjective(id) | EventAction::CompleteObjective(id) => {
                     let (index, event) = self
+                        .story
                         .mission
                         .as_ref()
                         .unwrap()
@@ -481,39 +582,42 @@ impl Game<'_> {
                             pool.push(unit.clone());
                         }
                     }
+                    if let Some(pool) = state.recruitment.get(&spec.faction) {
+                        std::rc::Rc::make_mut(&mut self.position.runtime.resolved_recruitment)
+                            .insert(spec.faction.clone(), pool.clone());
+                    }
                 }
                 EventAction::Log(message) => self.record(message.clone()),
                 EventAction::Victory(message) => self.finish_scripted_campaign(true, message),
                 EventAction::Defeat(message) => self.finish_scripted_campaign(false, message),
             }
+            self.refresh_perception_sources_with_marks(&state.marks);
         }
     }
     fn finish_scripted_campaign(&mut self, victory: bool, message: &str) {
         if victory
-            && (!self
-                .units
-                .iter()
-                .any(|u| u.side == Side::Player && u.is_leader())
+            && (!self.campaign_leader_survives("player")
                 || self
+                    .story
                     .mission
                     .as_ref()
                     .unwrap()
                     .required_companions
                     .iter()
-                    .any(|id| {
-                        !self.units.iter().any(|u| {
-                            u.side == Side::Player && self.name(u.character) == Some(id.as_str())
-                        })
-                    }))
+                    .any(|id| !self.campaign_companion_survives("player", id)))
         {
             return;
         }
         let definition = self.campaign_definition();
         let ending = definition.ending.clone();
         let last = definition.missions.len() - 1;
-        let mission = self.runtime.mission.as_ref().unwrap().clone();
-        self.runtime.winner = Some(if victory { Side::Player } else { Side::Enemy });
-        let campaign = self.runtime.campaign.as_mut().unwrap();
+        let mission = self.story.mission.as_ref().unwrap().clone();
+        self.position.runtime.winner = Some(if victory {
+            BattleResult::PlayerVictory
+        } else {
+            BattleResult::PlayerDefeat
+        });
+        let campaign = self.story.campaign.as_mut().unwrap();
         campaign.outcome = Some(message.into());
         campaign.completed = victory && campaign.mission == last;
         if victory {
@@ -523,7 +627,7 @@ impl Game<'_> {
             if complete {
                 self.script_speech(&ending, &mut lines);
             }
-            self.runtime.campaign.as_mut().unwrap().say(lines);
+            self.story.campaign.as_mut().unwrap().say(lines);
         } else {
             campaign.say([Dialogue {
                 character: None,
@@ -537,14 +641,15 @@ impl Game<'_> {
     }
     pub(crate) fn evaluate_scripted_events(&mut self, tick: bool) {
         let mut state = self
+            .story
             .scripts
             .take()
             .expect("scripted chapter has event state");
         let mission = state.plan();
         let events = &mission.scripted_events;
-        let deaths = std::mem::take(&mut self.runtime.event_deaths);
+        let deaths = std::mem::take(&mut self.story.event_deaths);
         self.release_event_spawns(&mut state);
-        EventProgress::update_holds(&mut state, &EventFacts::new(self), tick);
+        EventProgress::update_holds(&mut state, self, tick);
         let mut fired = HashSet::new();
         loop {
             self.reveal_objectives(&mut state);
@@ -555,7 +660,7 @@ impl Game<'_> {
                     continue;
                 }
                 let event = &events[index];
-                let ordinary = EventFacts::new(self).when_matches(
+                let ordinary = EventFacts::for_event(self, event).when_matches(
                     &event.when,
                     Some(&state),
                     Some(index),
@@ -568,7 +673,7 @@ impl Game<'_> {
                     deaths
                         .iter()
                         .filter(|u| {
-                            EventFacts::new(self).when_matches(
+                            EventFacts::for_event(self, event).when_matches(
                                 &event.when,
                                 Some(&state),
                                 Some(index),
@@ -592,6 +697,7 @@ impl Game<'_> {
                         &event.actions,
                         &mut state,
                         &Bindings {
+                            observer: event.condition_observer().map(str::to_owned),
                             death,
                             ..Default::default()
                         },
@@ -603,11 +709,11 @@ impl Game<'_> {
                         }
                     }
                     changed = true;
-                    if self.runtime.winner.is_some() || event.remembers {
+                    if self.position.runtime.winner.is_some() || event.remembers {
                         break;
                     }
                 }
-                if self.runtime.winner.is_some() {
+                if self.position.runtime.winner.is_some() {
                     break;
                 }
             }
@@ -615,8 +721,8 @@ impl Game<'_> {
             if changed && state.needs_compaction() {
                 state.compact();
             }
-            EventProgress::update_holds(&mut state, &EventFacts::new(self), false);
-            if !changed || self.runtime.winner.is_some() {
+            EventProgress::update_holds(&mut state, self, false);
+            if !changed || self.position.runtime.winner.is_some() {
                 break;
             }
         }
@@ -633,8 +739,8 @@ impl Game<'_> {
                         .and_then(|light| light.when.as_ref())
                         .is_some_and(|rule| {
                             rule.remember
-                                && crate::data::presentation::matches(
-                                    &rule.condition,
+                                && crate::data::presentation::rule_matches(
+                                    rule,
                                     &self.condition_context(),
                                     Some(&TileRef::Hex(mark.tile)),
                                 )
@@ -646,80 +752,70 @@ impl Game<'_> {
             state.marks_mut()[index].light_remembered = true;
         }
         self.reveal_objectives(&mut state);
-        self.runtime.scripts = Some(state);
-        self.runtime.event_departure = None;
-        self.runtime.event_opening = false;
+        self.story.scripts = Some(state);
+        self.story.event_departure = None;
+        self.story.event_opening = false;
     }
-    pub(crate) fn script_mark_lights(&self) -> Vec<BattlefieldLight> {
-        self.runtime
-            .scripts
-            .as_deref()
-            .into_iter()
-            .flat_map(|s| &s.marks)
-            .filter_map(|m| {
-                m.light
-                    .as_ref()
-                    .filter(|l| {
-                        m.light_remembered
-                            || l.when.as_ref().is_none_or(|rule| {
-                                crate::data::presentation::matches(
-                                    &rule.condition,
-                                    &self.condition_context(),
-                                    Some(&TileRef::Hex(m.tile)),
-                                )
-                            })
-                    })
-                    .map(|l| {
-                        let (c, r) = self.runtime.board.positions[self.site(&m.tile)];
-                        l.at(c, r)
-                    })
-            })
-            .collect()
-    }
-    pub(crate) fn approach_tiles(&self, selection: &ProximitySelection) -> Vec<Hex> {
+    pub(crate) fn approach_tiles<'unit>(
+        &self,
+        selection: &ProximitySelection,
+        faction: &str,
+        units: impl Iterator<Item = &'unit Unit>,
+    ) -> Vec<Hex> {
         let origins: Vec<_> = if let Some(t) = &selection.tile {
             vec![self.reference_site(t)]
         } else {
-            self.runtime
-                .units
-                .iter()
-                .filter(|u| self.script_unit_matches(selection.target.as_ref().unwrap(), u))
+            units
+                .filter(|u| {
+                    self.objective_unit_matches(faction, selection.target.as_ref().unwrap(), u)
+                })
                 .map(|u| u.tile)
                 .collect()
         };
-        (0..self.runtime.terrain.len())
+        (0..self.position.runtime.terrain.len())
             .filter(|&t| {
                 origins
                     .iter()
-                    .any(|&o| self.runtime.board.distance(t, o) <= selection.radius)
+                    .any(|&o| self.position.runtime.board.distance(t, o) <= selection.radius)
             })
-            .map(|t| self.runtime.board.ids[t].clone())
+            .map(|t| self.position.runtime.board.ids[t].clone())
             .collect()
     }
     fn objective_available(&self, event: &ScriptEvent) -> bool {
-        let state = self.runtime.scripts.as_deref().unwrap();
+        let state = self.story.scripts.as_deref().unwrap();
         let objective = event.objective.as_ref().unwrap();
         !state.failed.iter().any(|id| id == event.objective_id())
             && (objective.satisfied_when.is_some()
                 || !state.completed.iter().any(|id| id == event.objective_id()))
-            && objective
-                .available_when
-                .as_ref()
-                .is_none_or(|when| self.script_condition(when))
+            && objective.available_when.as_ref().is_none_or(|when| {
+                EventFacts::for_faction(self, &objective.faction).when_matches(
+                    when,
+                    Some(state),
+                    None,
+                    false,
+                    None,
+                )
+            })
     }
-    pub(crate) fn planning_objectives(&self) -> Vec<crate::view::CampaignObjective<'_>> {
+    pub(crate) fn planning_objectives(
+        &self,
+        faction: &str,
+    ) -> Vec<crate::view::CampaignObjective<'_>> {
         use crate::view::{CampaignIntent as Kind, CampaignObjective};
-        let Some(state) = self.runtime.scripts.as_deref() else {
+        let Some(state) = self.story.scripts.as_deref() else {
             return vec![];
         };
         let facts = EventFacts::new(self);
-        self.runtime
+        self.story
             .mission
             .as_ref()
             .into_iter()
             .flat_map(|m| &m.scripted_events)
             .filter_map(|event| {
                 let objective = event.objective.as_ref()?;
+                if objective.faction != faction {
+                    return None;
+                }
                 let id = event.objective_id();
                 if !state.revealed.iter().any(|known| known == id)
                     || !self.objective_available(event)
@@ -731,36 +827,46 @@ impl Game<'_> {
                     EventIntent::Hold(v) => (
                         Kind::Hold,
                         Some(&v.units),
-                        vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
+                        vec![self.position.runtime.board.ids[self.reference_site(&v.tile)]],
                     ),
                     EventIntent::Escort(v) => (
                         Kind::Escort,
                         Some(&v.units),
-                        vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
+                        vec![self.position.runtime.board.ids[self.reference_site(&v.tile)]],
                     ),
                     EventIntent::GoTo(v) => (
                         Kind::GoTo,
                         Some(&v.units),
-                        vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
+                        vec![self.position.runtime.board.ids[self.reference_site(&v.tile)]],
                     ),
                     EventIntent::Escape(v) => (
                         Kind::Escape,
                         Some(&v.units),
-                        vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
+                        vec![self.position.runtime.board.ids[self.reference_site(&v.tile)]],
                     ),
                     EventIntent::Approach(v) => {
-                        (Kind::Approach, Some(&v.units), self.approach_tiles(v))
+                        let tiles = self.approach_tiles(
+                            v,
+                            faction,
+                            self.units
+                                .iter()
+                                .filter(|unit| self.unit_visible_to(faction, unit, None)),
+                        );
+                        if tiles.is_empty() {
+                            return None;
+                        }
+                        (Kind::Approach, Some(&v.units), tiles)
                     }
                     EventIntent::Own(v) => (
                         Kind::Own,
                         None,
-                        vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
+                        vec![self.position.runtime.board.ids[self.reference_site(&v.tile)]],
                     ),
                     EventIntent::Capture(v) => (
                         Kind::Capture,
                         None,
                         v.iter()
-                            .map(|t| self.runtime.board.ids[self.reference_site(t)])
+                            .map(|t| self.position.runtime.board.ids[self.reference_site(t)])
                             .collect(),
                     ),
                     EventIntent::Defeat(v) => (
@@ -769,8 +875,8 @@ impl Game<'_> {
                         self.runtime
                             .units
                             .iter()
-                            .filter(|unit| self.script_unit_matches(v, unit))
-                            .map(|unit| self.runtime.board.ids[unit.tile].clone())
+                            .filter(|unit| self.objective_unit_matches(&objective.faction, v, unit))
+                            .map(|unit| self.position.runtime.board.ids[unit.tile].clone())
                             .collect(),
                     ),
                 };
@@ -795,39 +901,46 @@ impl Game<'_> {
             .collect()
     }
     /// Aggregate readiness blocks terminal shortcuts without revealing hidden requirements.
-    pub(crate) fn requirements_disclosed(&self) -> bool {
-        let Some(state) = self.runtime.scripts.as_deref() else {
+    pub(crate) fn requirements_disclosed(&self, faction: &str) -> bool {
+        let Some(state) = self.story.scripts.as_deref() else {
             return true;
         };
         let facts = EventFacts::new(self);
-        self.runtime
+        self.story
             .mission
             .as_ref()
             .into_iter()
             .flat_map(|m| &m.scripted_events)
             .all(|event| {
                 event.objective.as_ref().is_none_or(|objective| {
-                    objective.optional
+                    objective.faction != faction
+                        || objective.optional
                         || facts.objective_satisfied(state, event.objective_id())
                         || (state.revealed.iter().any(|id| id == event.objective_id())
-                            && objective
-                                .available_when
-                                .as_ref()
-                                .is_none_or(|when| self.script_condition(when)))
+                            && objective.available_when.as_ref().is_none_or(|when| {
+                                EventFacts::for_faction(self, faction).when_matches(
+                                    when,
+                                    Some(state),
+                                    None,
+                                    false,
+                                    None,
+                                )
+                            }))
                 })
             })
     }
     pub(crate) fn script_pending_arrivals(&self) -> bool {
-        if self.runtime.turn != Side::Player {
+        if self.position.runtime.turn != TurnPhase::Player {
             return false;
         }
-        let Some(state) = self.runtime.scripts.as_deref() else {
+        let Some(state) = self.story.scripts.as_deref() else {
             return false;
         };
         state.pending.iter().any(|pending| {
             self.faction(&pending.faction)
-                .is_some_and(|f| f.phase == Side::Enemy)
+                .is_some_and(|f| f.phase == TurnPhase::Ai)
         }) || self
+            .story
             .mission
             .as_ref()
             .into_iter()
@@ -835,10 +948,10 @@ impl Game<'_> {
             .any(|event| {
                 let due = match &event.when {
                     When::Turn(TurnSelection::Faction { number, faction }) => {
-                        *number <= self.runtime.round
+                        *number <= self.position.runtime.round
                             && self
                                 .faction(faction)
-                                .is_some_and(|f| f.phase == Side::Enemy)
+                                .is_some_and(|f| f.phase == TurnPhase::Ai)
                     }
                     _ => false,
                 };
@@ -851,10 +964,14 @@ impl Game<'_> {
     }
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) fn event_goal_progress(&self) -> Vec<Progress> {
-        self.runtime.mission.as_ref().map_or_else(Vec::new, |m| {
+        self.story.mission.as_ref().map_or_else(Vec::new, |m| {
             m.scripted_events
                 .iter()
-                .filter(|e| e.objective.as_ref().is_some_and(|o| !o.optional))
+                .filter(|e| {
+                    e.objective
+                        .as_ref()
+                        .is_some_and(|o| o.faction == "player" && !o.optional)
+                })
                 .map(|e| self.scripted_objective_status(e).progress)
                 .collect()
         })
@@ -862,27 +979,31 @@ impl Game<'_> {
 
     pub(crate) fn scripted_objective_status(&self, event: &ScriptEvent) -> ObjectiveStatus {
         let objective = event.objective.as_ref().unwrap();
-        let state = self.runtime.scripts.as_deref().unwrap();
+        let state = self.story.scripts.as_deref().unwrap();
         let failed = state.failed.iter().any(|id| id == event.objective_id());
-        let done = EventFacts::new(self).objective_satisfied(state, event.objective_id());
+        let done = EventFacts::for_faction(self, &objective.faction)
+            .objective_satisfied(state, event.objective_id());
         let available = self.objective_available(event);
         let (tiles, total) = match &objective.intent {
             EventIntent::Hold(v) => (
-                vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
+                vec![self.position.runtime.board.ids[self.reference_site(&v.tile)]],
                 v.turns,
             ),
             EventIntent::Escort(v) | EventIntent::GoTo(v) | EventIntent::Escape(v) => (
-                vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
+                vec![self.position.runtime.board.ids[self.reference_site(&v.tile)]],
                 1,
             ),
-            EventIntent::Approach(v) => (self.approach_tiles(v), 1),
+            EventIntent::Approach(v) => (
+                self.approach_tiles(v, &objective.faction, self.units.iter()),
+                1,
+            ),
             EventIntent::Own(v) => (
-                vec![self.runtime.board.ids[self.reference_site(&v.tile)]],
+                vec![self.position.runtime.board.ids[self.reference_site(&v.tile)]],
                 v.turns.unwrap_or(1),
             ),
             EventIntent::Capture(v) => (
                 v.iter()
-                    .map(|t| self.runtime.board.ids[self.reference_site(t)])
+                    .map(|t| self.position.runtime.board.ids[self.reference_site(t)])
                     .collect(),
                 v.len() as u32,
             ),
@@ -890,8 +1011,8 @@ impl Game<'_> {
                 self.runtime
                     .units
                     .iter()
-                    .filter(|u| self.script_unit_matches(v, u))
-                    .map(|u| self.runtime.board.ids[u.tile].clone())
+                    .filter(|u| self.objective_unit_matches(&objective.faction, v, u))
+                    .map(|u| self.position.runtime.board.ids[u.tile].clone())
                     .collect(),
                 1,
             ),
@@ -902,7 +1023,8 @@ impl Game<'_> {
             tiles
                 .iter()
                 .filter(|t| {
-                    self.runtime.owners[self.reference_site(t)].as_deref() == Some("player")
+                    self.position.runtime.owners[self.reference_site(t)].as_deref()
+                        == Some(objective.faction.as_str())
                 })
                 .count() as u32
         } else if matches!(
@@ -930,23 +1052,37 @@ impl Game<'_> {
                     self.runtime
                         .units
                         .iter()
-                        .filter(|unit| self.script_unit_matches(select, unit))
-                        .map(|unit| self.runtime.board.ids[unit.tile].clone())
+                        .filter(|unit| {
+                            self.objective_unit_matches(&objective.faction, select, unit)
+                        })
+                        .filter(|unit| {
+                            marker.visible_in_fog
+                                || self.unit_visible_to(&objective.faction, unit, None)
+                        })
+                        .map(|unit| self.position.runtime.board.ids[unit.tile].clone())
                         .collect()
                 } else {
                     marker
                         .tiles
                         .iter()
-                        .map(|name| self.runtime.board.ids[self.reference_site(name)].clone())
+                        .map(|name| {
+                            self.position.runtime.board.ids[self.reference_site(name)].clone()
+                        })
                         .collect()
                 };
                 destinations
                     .into_iter()
                     .filter(|tile| {
                         marker.visible_in_fog
-                            || self
-                                .condition_context()
-                                .visible_at(self.runtime.board.positions[self.site(tile)])
+                            || super::conditions::LiveContext::for_faction(
+                                self,
+                                &objective.faction,
+                                None,
+                            )
+                            .visible_at(
+                                self.position.runtime.board.positions[self.site(tile)],
+                                &objective.faction,
+                            )
                     })
                     .collect()
             });
@@ -955,7 +1091,7 @@ impl Game<'_> {
                 && !failed
                 && visible
                 && available
-                && self.runtime.winner.is_none()
+                && self.position.runtime.winner.is_none()
             {
                 markers
             } else {
@@ -1076,8 +1212,21 @@ pub(super) fn validate_event_state(
             return Err("invalid map mark".into());
         }
         crate::data::catalog::identifier(&mark.kind, "saved mark").map_err(|e| e.message)?;
+        if let Some(sight) = &mark.sight {
+            if !battle
+                .vision_groups
+                .iter()
+                .any(|group| group.id == sight.group)
+            {
+                return Err("unknown saved mark sight group".into());
+            }
+            validate_unit_perception(&[], &sight.profile.penetrates)?;
+        }
         if let Some(light) = &mark.light {
             light.validate(&battle.tiles, &[])?;
+            if let Some(rule) = &light.when {
+                rule.validate_references(&rules.types, &battle.factions)?;
+            }
         }
     }
     for pending in &state.pending {

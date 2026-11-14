@@ -12,7 +12,12 @@ let option = (value, render) =>
   | Some(value) => render(value)
   };
 let percent = value => ReactDOM.Style.make(~width=number(value) ++ "%", ());
-let side = (value: Domain.Side.t) => Enum.string_of_side(value);
+/* Existing palette/CSS labels are presentation, not phase serialization. */
+let side = (value: Domain.Turn_phase.t) =>
+  switch (value) {
+  | Player => "player"
+  | Ai => "enemy"
+  };
 let ignorePromise = work => {
   let _ = work |> Js.Promise.catch(_ => Js.Promise.resolve());
   ();

@@ -23,7 +23,7 @@ pub struct Dataset {
     pub labels: Vec<i64>,
     pub missing: usize,
     pub limit: usize,
-    pub side: Option<Side>,
+    pub phase: Option<TurnPhase>,
     pub spatial: bool,
     pub boards: Vec<spatial::Board>,
     pub indices: Vec<[i64; 3]>,
@@ -303,10 +303,9 @@ pub fn scoped<T>(
 }
 pub(crate) fn record(g: &BattleView<'_, '_>, orders: &TacticalOrders, command: &Command) {
     let enabled = SESSION.with(|s| {
-        s.borrow()
-            .data
-            .as_ref()
-            .is_some_and(|d| d.labels.len() < d.limit && d.side.is_none_or(|side| side == g.turn()))
+        s.borrow().data.as_ref().is_some_and(|d| {
+            d.labels.len() < d.limit && d.phase.is_none_or(|side| side == g.turn())
+        })
     });
     if !enabled
         || !matches!(
@@ -446,7 +445,7 @@ mod tests {
             enemy: crate::ai::Policy::Balanced,
             player_blocks: None,
             enemy_blocks: None,
-            first: Side::Player,
+            first: TurnPhase::Player,
             max_rounds: 30,
             recruit_limit: None,
         };

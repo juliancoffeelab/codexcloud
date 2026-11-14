@@ -1,6 +1,6 @@
 //! Faction allegiance is independent of the two input/turn phases and AI policy.
 use super::FactionPolicy;
-use super::{ConditionRule, ConditionSide, Side};
+use super::{ConditionRule, ConditionSide, TurnPhase};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -46,7 +46,7 @@ pub struct FactionTransfer {
     pub when: ConditionRule,
 }
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 #[cfg_attr(
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
@@ -66,9 +66,10 @@ pub struct FactionRecruit {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Faction {
+    pub vision_group: String,
     pub id: String,
     /// Phase in which this controller acts; this is not its diplomatic relation.
-    pub phase: Side,
+    pub phase: TurnPhase,
     pub controller: Controller,
     pub palette: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -82,15 +83,6 @@ pub struct Faction {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub transfer: Option<FactionTransfer>,
 }
-impl Side {
-    #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn faction_id(self) -> &'static str {
-        match self {
-            Self::Player => "player",
-            Self::Enemy => "enemy",
-        }
-    }
-}
 
 pub fn validate_economy(
     factions: &[Faction],
@@ -98,10 +90,8 @@ pub fn validate_economy(
     tiles: &[super::Tile],
     types: &std::collections::HashMap<String, usize>,
 ) -> Result<(), String> {
-    let known = |id: &str| matches!(id, "player" | "enemy") || factions.iter().any(|f| f.id == id);
+    let known = |id: &str| factions.iter().any(|f| f.id == id);
     if gold.iter().any(|(id, amount)| !known(id) || *amount < 0)
-        || !gold.contains_key("player")
-        || !gold.contains_key("enemy")
         || factions.iter().any(|f| !gold.contains_key(&f.id))
     {
         return Err("invalid or missing faction treasury".into());
@@ -125,7 +115,7 @@ pub fn validate_economy(
 }
 
 pub fn validate_factions(factions: &[Faction], units: &[super::PublicUnit]) -> Result<(), String> {
-    let known = |id: &str| matches!(id, "player" | "enemy") || factions.iter().any(|f| f.id == id);
+    let known = |id: &str| factions.iter().any(|f| f.id == id);
     let mut ids = std::collections::HashSet::new();
     for faction in factions {
         if let Some(pool) = &faction.recruits {
@@ -156,10 +146,7 @@ pub fn validate_factions(factions: &[Faction], units: &[super::PublicUnit]) -> R
         {
             return Err("invalid or duplicate faction identifier".into());
         }
-        if faction.id == "player" && faction.phase != Side::Player
-            || faction.id == "enemy" && faction.phase != Side::Enemy
-            || matches!(faction.controller, Controller::Human) && faction.phase != Side::Player
-        {
+        if matches!(faction.controller, Controller::Human) && faction.phase != TurnPhase::Player {
             return Err("invalid faction controller phase".into());
         }
         for (other, relation) in &faction.relations {
@@ -182,7 +169,7 @@ pub fn validate_factions(factions: &[Faction], units: &[super::PublicUnit]) -> R
         }
     }
     for unit in units {
-        validate_faction_reference(factions, unit.faction.as_deref(), unit.side)?;
+        validate_faction_reference(factions, &unit.faction)?;
     }
     Ok(())
 }
@@ -199,31 +186,17 @@ pub struct UnitFaction {
     pub palette: String,
     pub relation: Relation,
     pub controllable: bool,
+    pub phase: TurnPhase,
 }
 
 #[cfg_attr(not(target_arch = "wasm32"), inline)]
 
-pub fn validate_faction_reference(
-    factions: &[Faction],
-    id: Option<&str>,
-    phase: Side,
-) -> Result<(), String> {
-    let Some(id) = id else {
-        return Ok(());
-    };
-    let faction = factions.iter().find(|f| f.id == id);
-    if faction.is_none() && !matches!(id, "player" | "enemy") {
-        return Err("unknown unit faction".into());
-    }
-    let expected = faction.map(|f| f.phase).unwrap_or(if id == "player" {
-        Side::Player
+pub fn validate_faction_reference(factions: &[Faction], id: &str) -> Result<(), String> {
+    if factions.iter().any(|faction| faction.id == id) {
+        Ok(())
     } else {
-        Side::Enemy
-    });
-    if phase != expected {
-        return Err("unit phase differs from its faction".into());
+        Err("unknown unit faction".to_owned())
     }
-    Ok(())
 }
 
 #[cfg_attr(not(target_arch = "wasm32"), inline)]
@@ -250,21 +223,16 @@ pub fn faction_relation(factions: &[Faction], first: &str, second: &str) -> Rela
 /// Match an explicit unit selector, not the phase in which it happens to act.
 /// Keep this exhaustive: new allegiance selectors must define their semantics.
 #[cfg_attr(not(target_arch = "wasm32"), inline)]
-pub fn faction_matches_side(
-    factions: &[Faction],
-    id: Option<&str>,
-    phase: Side,
-    side: ConditionSide,
-) -> bool {
-    let id = id.unwrap_or(phase.faction_id());
+pub fn faction_matches_side(factions: &[Faction], id: &str, side: ConditionSide) -> bool {
     match side {
         ConditionSide::Enemy => faction_relation(factions, "player", id) == Relation::Hostile,
         ConditionSide::Neutral => faction_relation(factions, "player", id) == Relation::Neutral,
         ConditionSide::Any => true,
+        ConditionSide::Observer => id == "player",
         ConditionSide::Player => factions
             .iter()
             .find(|f| f.id == id)
-            .map_or(phase == Side::Player, |f| f.controller == Controller::Human),
+            .is_some_and(|f| f.controller == Controller::Human),
     }
 }
 
@@ -284,10 +252,7 @@ pub fn validate_faction_conditions(
         }
         if let Some(transfer) = &faction.transfer {
             transfer.when.condition.validate(tiles, events, true)?;
-            transfer
-                .when
-                .condition
-                .validate_references(types, factions)?;
+            transfer.when.validate_references(types, factions)?;
         }
     }
     Ok(())

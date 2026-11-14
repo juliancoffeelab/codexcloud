@@ -33,9 +33,9 @@ impl ScoreBound for f64 {
         if self == 0.0 { self } else { self.next_down() }
     }
 }
-pub(super) fn best_plan<const BOUNDED: bool, const FOCUSED: bool>(
-    game: &BattleView<'_, '_>,
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+pub(super) fn best_plan<'a, 'catalog, const BOUNDED: bool, const FOCUSED: bool>(
+    game: &'a BattleView<'a, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     orders: &crate::ai::orders::TacticalOrders,
     escort: &crate::ai::policies::escort::travel::Workspace,
     seed: u32,
@@ -137,7 +137,6 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
         let focused = _focused;
         #[cfg(not(target_arch = "wasm32"))]
         let focused = FOCUSED;
-        let side = self.turn();
         let objectives: Cow<'_, [Objective]> = if let Some(prepared) = prepared_goals {
             let rebuilding = orders.rebuild_objectives(self);
             if rebuilding.is_empty() {
@@ -158,7 +157,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
         let rebuilds: HashMap<_, _> = self
             .units()
             .iter()
-            .filter(|u| self.belongs_to_phase(u, side) && u.is_leader())
+            .filter(|u| self.belongs_to_faction(u, self.observer_faction()) && u.is_leader())
             .map(|u| (u.id, orders.moving_actor(u.id)))
             .map(|(id, required)| {
                 (
@@ -178,24 +177,25 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
         let allies: Vec<_> = self
             .units()
             .iter()
-            .filter(|u| self.belongs_to_phase(u, side) && self.can_act(u.id))
+            .filter(|u| self.belongs_to_faction(u, self.observer_faction()) && self.can_act(u.id))
             .collect();
-        if allies.iter().all(|u| u.attacked) {
+        if allies.iter().all(|u| u.attack_spent) {
             return None;
         }
         let foes: Vec<_> = self
             .units()
             .iter()
-            .filter(|u| self.hostile_to_phase(u, side))
+            .filter(|u| self.hostile_to_faction(u, self.observer_faction()))
             .collect();
         let lanes = orders.lanes(self);
         let mut threats =
-            Threats::with_workspace(self.1, side, threat_workspace).with_orders(orders);
+            Threats::with_workspace(self.1, self.observer_faction(), threat_workspace)
+                .with_orders(orders);
         let screens: Vec<_> = allies
             .iter()
             .filter(|u| role(self, u.kind) == TacticalRole::Frontline && !u.is_leader())
             .collect();
-        let movable_screens = screens.iter().any(|u| !u.moved && !u.attacked);
+        let movable_screens = screens.iter().any(|u| !u.moved && !u.attack_spent);
         let board = &self.board();
         // These distances and possible targets depend only on this planning
         // snapshot, not on the unit or candidate move currently being scored.
@@ -238,7 +238,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 })
                 .collect()
         };
-        let tile_order_context = TileOrder::context(self, side, true);
+        let tile_order_context = TileOrder::context(self, self.observer_faction(), true);
         let mut best: Option<Plan> = None;
         let mut best_order = (usize::MAX, usize::MAX, usize::MAX);
         // Score units with the strongest immediate opportunities first. This
@@ -247,7 +247,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
         let mut roster: Vec<_> = allies
             .iter()
             .enumerate()
-            .filter(|(_, u)| !u.attacked && (!focused || Some(u.id) == focus))
+            .filter(|(_, u)| !u.attack_spent && (!focused || Some(u.id) == focus))
             .map(|(index, &unit)| {
                 let before_risk = crate::ai::policies::threat::cap_exposure(
                     unit,
@@ -383,7 +383,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
             let unit = &planned_unit;
             let recruiting = unit.is_leader()
                 && self
-                    .recruitment_options(side)
+                    .recruitment_options_for_faction(self.observer_faction())
                     .iter()
                     .any(|&k| !self.placement_tiles(&unit, k, true).is_empty());
             let mut rebuild_goals = vec![];
@@ -421,10 +421,11 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                     && original.actor.is_none()
                     && original.tiles.iter().all(|t| {
                         let tile = self.site(t);
-                        self.owns(tile, side)
+                        self.owns(tile, self.observer_faction())
                             && (original.hold != Some(true)
                                 || self.at(tile).is_some_and(|o| {
-                                    self.belongs_to_phase(o, side) && o.id != unit.id
+                                    self.belongs_to_faction(o, self.observer_faction())
+                                        && o.id != unit.id
                                 }))
                     })
                 {
@@ -718,11 +719,13 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 }
                 let healing_tile = (self.role_is(tile, TerrainRole::Village)
                     || self.role_is(tile, TerrainRole::Grove))
-                    && (self.owns(tile, side) || self.at(tile).is_none());
+                    && (self.owns(tile, self.observer_faction()) || self.at(tile).is_none());
                 if healing_tile {
                     positioning += (self.rules().units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0;
                 }
-                if self.role_is(tile, TerrainRole::Village) && self.captures(tile, side) {
+                if self.role_is(tile, TerrainRole::Village)
+                    && self.captures(tile, self.observer_faction())
+                {
                     positioning += 3.0;
                 }
                 {
@@ -933,7 +936,8 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                             self.board().positions[tile],
                             target.map(|target| target.id),
                         );
-                    let withdrawing = unit.side == Side::Enemy
+                    let withdrawing = self.faction_relation("player", self.unit_faction(&unit))
+                        == Relation::Hostile
                         && target.is_none()
                         && unit.hp < self.rules().units[unit.kind].hp
                         && range_to_foe(tile) > range_to_foe(unit.tile)
@@ -962,11 +966,9 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 }
             }
         }
-        for unit in self
-            .units()
-            .iter()
-            .filter(|u| self.belongs_to_phase(u, side) && focus.is_none_or(|id| id == u.id))
-        {
+        for unit in self.units().iter().filter(|u| {
+            self.belongs_to_faction(u, self.observer_faction()) && focus.is_none_or(|id| id == u.id)
+        }) {
             if let Some(recruiting) =
                 super::recruitment::plan(self, self.1, unit, orders, recruitment)
             {
@@ -1007,16 +1009,7 @@ mod tests {
         let rules = Rules::load().unwrap();
         for mut game in [
             Game::new(&rules, "mirror"),
-            Game::start_campaign(
-                &rules,
-                "borrowed-tide",
-                0,
-                vec![],
-                0,
-                vec![],
-                vec![],
-                vec![],
-            ),
+            Game::start_campaign(&rules, "mirror-night", 0, vec![], 0, vec![], vec![], vec![]),
         ] {
             let workspace = || {
                 crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Unrestricted)
@@ -1039,6 +1032,7 @@ mod tests {
                         game.phase_forecasts(),
                     );
                     let input = crate::ai::campaigner::mission::CampaignInput {
+                        seed: 0,
                         goals: None,
                         diplomacy: crate::ai::Diplomacy::Unrestricted,
                     };
@@ -1145,10 +1139,10 @@ impl Session {
     pub(super) fn escort(&self) -> &crate::ai::policies::escort::travel::Workspace {
         &self.escort
     }
-    pub(super) fn focused(
+    pub(super) fn focused<'a, 'catalog>(
         &mut self,
-        game: &BattleView<'_, '_>,
-        phases: hex_command_battle::PhaseForecasts<'_, '_>,
+        game: &'a BattleView<'a, 'catalog>,
+        phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
         turn: &crate::ai::runtime::PlannerTurn<'_>,
         id: u32,
     ) -> Option<Plan> {
@@ -1187,7 +1181,9 @@ pub(super) fn initialize(
     session.remaining.get_or_insert_with(|| {
         game.units()
             .iter()
-            .filter(|unit| game.belongs_to_phase(unit, game.turn()) && game.can_act(unit.id))
+            .filter(|unit| {
+                game.belongs_to_faction(unit, game.observer_faction()) && game.can_act(unit.id)
+            })
             .count()
             * 3
     });
@@ -1204,9 +1200,9 @@ pub(super) fn initialize(
     }
 }
 
-pub(super) fn choose(
-    game: &BattleView<'_, '_>,
-    phases: hex_command_battle::PhaseForecasts<'_, '_>,
+pub(super) fn choose<'a, 'catalog>(
+    game: &'a BattleView<'a, 'catalog>,
+    phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     session: &mut Session,
     turn: &mut crate::ai::runtime::PlannerTurn<'_>,
 ) -> Result<(), CommandError> {
@@ -1246,7 +1242,7 @@ pub(super) fn publish_plan(
             actor,
             actor.retreating,
             *intent,
-            actor.attacked,
+            actor.attack_spent,
         ));
     }
     if let Some(plan) = plan {
@@ -1266,7 +1262,7 @@ pub(super) fn publish_plan(
                         actor,
                         retreating,
                         rebuilding,
-                        actor.attacked,
+                        actor.attack_spent,
                     ));
                 }
             }

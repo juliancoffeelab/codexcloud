@@ -4,7 +4,7 @@ pub mod data {
 }
 mod command;
 mod logic;
-pub use command::RuntimeCommand;
+pub use command::{ActionProposal, ProposalOutcome, RuntimeCommand};
 pub mod model;
 mod sort;
 mod view;

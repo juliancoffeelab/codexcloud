@@ -9,7 +9,7 @@ from pathlib import Path
 import json,re,hashlib
 root=Path(__file__).resolve().parents[1]
 from historical_shapes import shapes,entries,name,part,union_tags as tags,field,snake,ctor
-schema=json.loads((root/'packages/save-migrations/ocaml/native-v39.json').read_text())
+schema=json.loads((root/'packages/save-migrations/ocaml/native-v47.json').read_text())
 def attr(text,key):
  m=re.search(r'(?:^|[ (,])'+key+r'\s*=\s*"([^"]+)"',text)
  return m.group(1) if m else None
@@ -122,7 +122,72 @@ def present(t,i,x):
   if len(live)==1:
    j,tag,p=live[0];return '`'+tag+(' ('+convert(t,j,x,False)+')' if p else '')
  return convert(t,i,x,False)
+def flattened_record(e,b,i,d,parent):
+ # Keep every native record pattern exhaustive, including the nested record
+ # flattened on the wire. A missing optional field must still fail compilation.
+ props=shapes[i].get('properties',{}); assigned={}
+ def pattern(node,body,prefix,attrs):
+  patterns=[]
+  for f in body['fields']:
+   nf=nfield(f['name']); key=wire_name(f,attrs)
+   if re.search(r'\bskip\b',f['serde']):patterns.append(nf+' = _');continue
+   if 'flatten' in f['serde']:
+    t=unwrap(f['ty']);child=schema[t['name']]
+    assert child['kind']=='struct' and child['body']['style']=='named',('unsupported flattened native type',t)
+    nested=pattern(child,child['body'],prefix+nf+'_',child['serde'])
+    patterns.append(nf+' = ({ N.'+'; '.join(nested)+' } : '+native_name(child)+')')
+   else:
+    assert key not in assigned,('overlapping flattened field',key)
+    var='flat_'+prefix+nf;assigned[key]=(f,var)
+    patterns.append(nf+' = '+var)
+  return patterns
+ np=pattern(e,b,'',parent or e['serde'])
+ assert set(props)==set(assigned),('flattened field mismatch',e['name'],set(props)^set(assigned))
+ def construct(node,body,attrs):
+  result=[]
+  for f in body['fields']:
+   nf=nfield(f['name']);key=wire_name(f,attrs)
+   if re.search(r'\bskip\b',f['serde']):value=default(f['ty'])
+   elif 'flatten' in f['serde']:
+    child=schema[unwrap(f['ty'])['name']]
+    value='({ N.'+'; '.join(construct(child,child['body'],child['serde']))+' } : '+native_name(child)+')'
+   else:value=convert_field(f,props[key],field(key),True)
+   result.append(nf+' = '+value)
+  return result
+ hp=['wire = _']+list(field(k) for k in props)
+ hs=['wire = H.empty_wire']+[field(k)+' = '+convert_field(f,props[k],var,False) for k,(f,var) in assigned.items()]
+ return hp,np,hs,construct(e,b,parent or e['serde'])
+
+def compatible_untagged(t,i):
+ t=unwrap(t);n=t.get('name');shape=shapes[i];kind=shape['kind']
+ if n in ['u8','u16','u32','u64','usize','i8','i16','i32','i64','isize','f32','f64']:return kind=='number'
+ if n in ['String','str']:return kind=='string'
+ if n=='bool':return kind=='boolean'
+ if n in schema and schema[n]['kind']=='enum':
+  e=schema[n]
+  if all(v['body']['style']=='unit' for v in e['variants']):
+   values={v['serde_name'] for v in e['variants']}
+   return kind=='union' and {shapes[j].get('value') for j in shape['members']}==values
+ raise ValueError(('unsupported untagged native variant',t,i))
+
+def untagged_body(e,i,d):
+ members=tags(i);cases=[];matched=set()
+ for variant in e['variants']:
+  assert variant['body']['style']=='tuple' and len(variant['body']['fields'])==1,('unsupported untagged variant',e['name'])
+  t=variant['body']['fields'][0]['ty']
+  choices=[(j,tag,payload) for j,tag,payload in members if compatible_untagged(t,j)]
+  assert len(choices)==1,('ambiguous untagged contract',e['name'],choices)
+  j,tag,payload=choices[0];assert j not in matched;matched.add(j)
+  nc=native_ctor(e,variant)
+  if d:cases.append('  | `'+tag+' v -> '+nc+' ('+convert(t,j,'v',True)+')')
+  else:cases.append('  | '+nc+' v -> `'+tag+' ('+convert(t,j,'v',False)+')')
+ assert len(matched)==len(members),('unmatched untagged contract',e['name'])
+ return 'match value with\n'+'\n'.join(cases)
+
 def record_body(e,b,i,d,parent=None,disc=None):
+ if any('flatten' in f['serde'] for f in b['fields']):
+  assert disc is None,'flattened tagged variants need an explicit contract implementation'
+  return flattened_record(e,b,i,d,parent)
  s=shapes[i];assert s['kind']=='object',(e['name'],i,s)
  props=s.get('properties',{});fs=[f for f in b['fields'] if not re.search(r'\bskip\b',f['serde'])]
  assigned={wire_name(f,parent or e['serde']):f for f in fs}
@@ -141,6 +206,8 @@ def record_body(e,b,i,d,parent=None,disc=None):
 
 def body(n,i,d):
  e=schema[n]
+ if e['kind']=='alias':return convert(e['ty'],i,'value',d)
+ if e['kind']=='enum' and 'untagged' in e['serde']:return untagged_body(e,i,d)
  if e.get('transparent'):return convert(e['body']['fields'][0]['ty'],i,'value',d)
  if e['kind']=='struct':
   hp,np,hs,ns=record_body(e,e['body'],i,d)
@@ -184,7 +251,7 @@ def body(n,i,d):
  assert len(cases)==len(hi)-(0 if d else len(absent)),('unmatched historical variant',n,i,len(cases),len(hi))
  return 'match value with\n'+'\n'.join(cases)
 
-checkpoint=shapes[entries['Save39']]['members'][0]
+checkpoint=shapes[entries['Save47']]['members'][0]
 checkpoint=shapes[checkpoint]['properties']['checkpoint']['type']
 for d in [True,False]:named('SavedGame',checkpoint,d)
 functions=[];cursor=0
@@ -193,7 +260,7 @@ while cursor<len(queue):
  b=body(n,i,d);src='H.'+name(i) if d else native_name(schema[n]);dst=native_name(schema[n]) if d else 'H.'+name(i)
  functions.append((fn,src,dst,b))
 contract_inputs = [
- 'packages/save-migrations/ocaml/native-v39.json',
+ 'packages/save-migrations/ocaml/native-v47.json',
  'packages/save-migrations/src/formats/readers.json',
  'scripts/generate-migration-native-contract.py',
  'scripts/historical_shapes.py',
@@ -203,7 +270,7 @@ for relative in sorted(contract_inputs):
  digest.update(relative.encode() + b'\0')
  digest.update((root/relative).read_bytes())
  digest.update(b'\0')
-out=['(* Generated by scripts/generate-migration-native-contract.py. *)', '(* Sources SHA256: '+digest.hexdigest()+' *)','[@@@warning "+8+9-30-39"]','[@@@warnerror "+8+9"]','module H = Historical_types','module Make (N : module type of Native_v39) = struct','']
+out=['(* Generated by scripts/generate-migration-native-contract.py. *)', '(* Sources SHA256: '+digest.hexdigest()+' *)','[@@@warning "+8+9-30-39"]','[@@@warnerror "+8+9"]','module H = Historical_types','module Make (N : module type of Native_v47) = struct','']
 for k,(fn,src,dst,b) in enumerate(functions):out.append(('let rec 'if k==0 else'and ')+fn+' (value : '+src+') : '+dst+' =\n  '+b)
 out += ['','let to_native = '+seen[('SavedGame',part[checkpoint],True)],'let of_native = '+seen[('SavedGame',part[checkpoint],False)],'end','']
 target=root/'frontend/persistence/Migration_native_contract.ml';target.write_text('\n\n'.join(out))

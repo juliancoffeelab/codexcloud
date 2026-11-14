@@ -106,7 +106,7 @@ pub(in crate::ai) fn assign(
                     .units()
                     .iter()
                     .filter(|u| {
-                        game.belongs_to_phase(u, game.turn())
+                        game.belongs_to_faction(u, game.observer_faction())
                             && game.can_act(u.id)
                             && u.id != actor.0
                             && !allocated.contains(&u.id)
@@ -214,7 +214,7 @@ fn safest(
     let game = phases.view();
     let unit = game.unit(id)?;
     let target = destination(game, orders, id);
-    let mut threats = Threats::protected(phases, unit.side, orders);
+    let mut threats = Threats::protected(phases, phases.view().unit_faction(&unit), orders);
     std::iter::once(unit.tile)
         .chain(game.reachable(unit).iter().map(|&(tile, _)| tile))
         .map(|tile| (tile, threats.at(unit, tile, None)))
@@ -245,7 +245,7 @@ pub(in crate::ai) fn rescue(
         }
         let Some(unit) = game
             .unit(actor.0)
-            .filter(|u| !u.attacked && game.can_act(u.id))
+            .filter(|u| !u.attack_spent && game.can_act(u.id))
         else {
             continue;
         };
@@ -263,9 +263,9 @@ pub(in crate::ai) fn rescue(
             .units()
             .iter()
             .filter(|u| {
-                game.belongs_to_phase(u, game.turn())
+                game.belongs_to_faction(u, game.observer_faction())
                     && game.can_act(u.id)
-                    && !u.attacked
+                    && !u.attack_spent
                     && u.id != actor.0
                     && !u.is_leader()
                     && !orders.protects(u.id)
@@ -284,7 +284,12 @@ pub(in crate::ai) fn rescue(
         while let Some((board, commands, used)) = pending.pop_front() {
             if !commands.is_empty() {
                 if let Some((tile, incoming)) = safest(board.phase_forecasts(), orders, actor.0) {
-                    if board.winner() == Some(game.turn())
+                    if board.winner()
+                        == Some(if game.turn() == TurnPhase::Player {
+                            BattleResult::PlayerVictory
+                        } else {
+                            BattleResult::PlayerDefeat
+                        })
                         || incoming < board.unit(actor.0).unwrap().hp
                     {
                         queued.extend(commands);
@@ -322,7 +327,7 @@ pub(in crate::ai) fn rescue(
                     for enemy in board
                         .units()
                         .iter()
-                        .filter(|u| board.hostile_to_phase(u, game.turn()))
+                        .filter(|u| board.hostile_to_faction(u, board.observer_faction()))
                     {
                         for weapon in board.attack_options(ally, enemy, tile) {
                             let response = board.maximum_retaliation(ally, enemy, weapon, tile);
@@ -394,7 +399,7 @@ pub(in crate::ai) fn fallback(
             continue;
         };
         if let Some((tile, incoming)) = safest(phases, orders, actor.0) {
-            if tile != unit.tile && !unit.moved && !unit.attacked {
+            if tile != unit.tile && !unit.moved && !unit.attack_spent {
                 queued.push_back(move_command(actor.0, tile));
                 // Drain before choosing another fallback so legality uses updated occupancy.
                 return Ok(true);
@@ -436,7 +441,7 @@ fn passage_clear(
     if route[unit.tile] == u16::MAX {
         return false;
     }
-    let mut threats = Threats::protected(phases, unit.side, orders);
+    let mut threats = Threats::protected(phases, phases.view().unit_faction(&unit), orders);
     let mut visited = vec![false; game.terrain().len()];
     visited[unit.tile] = true;
     let mut pending =
@@ -478,7 +483,7 @@ pub(in crate::ai) fn report(
     for constraint in &orders.tactics.constraints {
         let TacticalConstraint::Survive { actor } = constraint;
         let (status, reason, incoming) = if let Some(unit) = game.unit(actor.0) {
-            let mut threats = Threats::protected(phases, game.turn(), &orders.tactics);
+            let mut threats = Threats::protected(phases, game.unit_faction(unit), &orders.tactics);
             let incoming = threats.at(unit, unit.tile, None);
             (
                 if incoming < unit.hp {
@@ -534,7 +539,7 @@ pub(in crate::ai) fn report(
                 None
             } else if unit.is_none() {
                 Some(PlanningReason::ActorLost)
-            } else if unit.is_some_and(|u| u.attacked) {
+            } else if unit.is_some_and(|u| u.attack_spent) {
                 Some(PlanningReason::InactiveActor)
             } else {
                 Some(if passage {
@@ -577,7 +582,7 @@ mod tests {
         let actor = state
             .units
             .iter_mut()
-            .find(|u| u.side == Side::Player)
+            .find(|u| u.faction == "player")
             .unwrap();
         actor.tile = Hex::new(1, 3).into();
         actor.hp = 1;
@@ -585,7 +590,7 @@ mod tests {
         let mut threat = actor.clone();
         threat.id = format!("u{}", state.next_id);
         state.next_id += 1;
-        threat.side = Side::Enemy;
+        threat.faction = "enemy".into();
         threat.r#type = "swordsman".into();
         threat.tile = Hex::new(2, 3).into();
         threat.hp = 1;
@@ -596,12 +601,11 @@ mod tests {
         let mut helper = state.units[0].clone();
         helper.id = format!("u{}", state.next_id);
         state.next_id += 1;
-        helper.side = Side::Player;
         helper.r#type = "archer".into();
         helper.tile = Hex::new(3, 3).into();
         helper.hp = rules.units[rules.types["archer"]].hp;
         helper.moved = false;
-        helper.attacked = false;
+        helper.attack_spent = false;
         helper.character = None;
         helper.role = None;
         state.units.push(helper);
@@ -617,7 +621,7 @@ mod tests {
         let actor = game
             .units()
             .iter()
-            .find(|u| u.side == Side::Player && u.is_leader())
+            .find(|u| game.unit_faction(u) == "player" && u.is_leader())
             .unwrap()
             .id;
         Harness {
@@ -643,7 +647,7 @@ mod tests {
         let actor = game
             .units()
             .iter()
-            .find(|u| u.side == Side::Player && u.is_leader())
+            .find(|u| game.unit_faction(u) == "player" && u.is_leader())
             .unwrap()
             .id;
         let orders = &workspace.orders.tactics;

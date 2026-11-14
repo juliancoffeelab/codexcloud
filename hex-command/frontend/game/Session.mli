@@ -27,6 +27,9 @@ type model = private {
   revision : int;
   status : string;
   sound : bool;
+  player_ai : Setup.policy option;
+  follow_ai : bool;
+  ai_focus : string array;
   can_undo : bool;
   failure : string option;
   setup : Setup.t;
@@ -121,3 +124,6 @@ val renderer_failed : t -> string -> unit
 val prepare_reload : t -> string -> unit Js.Promise.t
 val trace_context : t -> Js.Json.t
 val set_enemy_combat_details : t -> bool -> unit
+val set_player_ai : t -> Setup.policy option -> unit
+val set_follow_ai : t -> bool -> unit
+val continue_ai : t -> unit

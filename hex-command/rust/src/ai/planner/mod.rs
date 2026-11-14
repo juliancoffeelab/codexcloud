@@ -73,7 +73,7 @@ fn prepare_priorities_and_recovery(
         .filter(|unit| {
             context
                 .battle()
-                .belongs_to_phase(unit, context.battle().turn())
+                .belongs_to_faction(unit, context.battle().observer_faction())
                 && context.battle().can_act(unit.id)
                 && unit.retreating == Some(true)
                 && unit.hp == context.battle().rules().units[unit.kind].hp
@@ -85,7 +85,7 @@ fn prepare_priorities_and_recovery(
             &unit,
             None,
             unit.rebuilding,
-            unit.attacked,
+            unit.attack_spent,
         ))?;
     }
     Ok(())

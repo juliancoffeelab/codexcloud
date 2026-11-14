@@ -155,8 +155,8 @@ mod tests {
                 .filter(|unit| unit.id >= self.first_new_id)
                 .collect();
             assert_eq!(recruits.len(), 2);
-            assert!(recruits.iter().all(|unit| unit.moved && unit.attacked));
-            assert!(view.gold_for_phase(view.turn()) < self.initial_gold);
+            assert!(recruits.iter().all(|unit| unit.moved && unit.attack_spent));
+            assert!(view.gold_for_faction(view.observer_faction()) < self.initial_gold);
             self.calls.set(self.calls.get() + 1);
             Ok(PlanningReport::default())
         }
@@ -171,9 +171,9 @@ mod tests {
                 .iter()
                 .any(|u| format!("u{}", u.id) == unit.id && u.is_leader())
         });
-        checkpoint.gold[game.turn().faction_id()] = 1000;
+        checkpoint.gold["player"] = 1000;
         game = Game::try_from_state(&rules, checkpoint).unwrap();
-        let kind = game.recruitment_options(game.turn())[0];
+        let kind = game.recruitment_options_for_faction(game.observer_faction())[0];
         let calls = Rc::new(Cell::new(0));
         let mut tactic = Tactic::new(
             Recruiter::Rotation,
@@ -202,10 +202,10 @@ mod tests {
             assert_eq!(plan.recruitment.recruited.len(), 2);
             assert_eq!(plan.recruitment.mandatory.len(), 1);
             assert!(plan.recruitment.requirements.is_empty());
-            assert_eq!(game.gold_for_phase(game.turn()), 1000);
+            assert_eq!(game.gold_for_faction(game.observer_faction()), 1000);
             let mut replay = game.fork();
             for command in plan.commands {
-                replay.execute_runtime(command).unwrap();
+                replay.execute_proposal(command).unwrap();
             }
             assert_eq!(replay.units().len(), game.units().len() + 2);
         }

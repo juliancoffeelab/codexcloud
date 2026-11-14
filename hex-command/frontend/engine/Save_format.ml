@@ -1,6 +1,6 @@
 (* Current application wire types. These are maintained independently of the frozen
    migrations. JSON appears only at the persistence boundary and in opaque undo values. *)
-type version = [ `V39 ]
+type version = [ `V47 ]
 type history_version = [ `V4 ]
 
 (* Browser preferences deliberately describe saved UI choices, not every engine
@@ -15,7 +15,7 @@ type blocks = {
 }
 
 type enemy = { policy : policy; diplomacy : Domain.Diplomacy.t; blocks : blocks option }
-type setup = { first : Domain.Side.t; enemy : enemy }
+type setup = { first : Domain.Turn_phase.t; enemy : enemy; player : policy option }
 
 type current_entry = {
   kind : [ `Flash ];
@@ -79,9 +79,9 @@ type 'checkpoint save = Current of 'checkpoint current_save | Turn of 'checkpoin
 type t = Domain.saved_game save
 type history = { version : history_version; entries : turn_entry array }
 
-let version_tag : version = `V39
+let version_tag : version = `V47
 let history_version_tag : history_version = `V4
-let version = match version_tag with `V39 -> 39
+let version = match version_tag with `V47 -> 47
 let history_version = match history_version_tag with `V4 -> 4
 let invalid () = invalid_arg "Invalid current save envelope"
 let object_ value = match Js.Json.decodeObject value with Some x -> x | None -> invalid ()
@@ -114,8 +114,8 @@ let json_string x = Js.Json.string (Utf8.to_js x)
 let json_object xs = Js.Json.object_ (Js.Dict.fromArray (Array.of_list xs))
 
 let setup_of_json value : setup =
-  keys value [ "first"; "enemy" ];
-  let first = parse Enum.side_of_string (field value "first") in
+  keys value [ "first"; "enemy"; "player" ];
+  let first = parse Enum.phase_of_string (field value "first") in
   let source = field value "enemy" in
   keys source [ "policy"; "diplomacy"; "blocks" ];
   let policy =
@@ -147,13 +147,33 @@ let setup_of_json value : setup =
           : blocks))
       source "blocks"
   in
-  { first; enemy = { policy; diplomacy; blocks } }
+  let player =
+    match field value "player" with
+    | v when v = Js.Json.null -> None
+    | v ->
+        Some
+          (match text v with
+          | "classic" -> `Classic
+          | "situational" -> `Situational
+          | "predictor" -> `Predictor
+          | _ -> invalid ())
+  in
+  { first; enemy = { policy; diplomacy; blocks }; player }
 
-let setup_to_json ({ first; enemy } : setup) =
+let setup_to_json ({ first; enemy; player } : setup) =
   let { policy; diplomacy; blocks } = enemy in
   json_object
     [
-      ("first", json_string (Enum.string_of_side first));
+      ("first", json_string (Enum.string_of_phase first));
+      ( "player",
+        Option.fold ~none:Js.Json.null
+          ~some:(fun p ->
+            json_string
+              (match p with
+              | `Classic -> "classic"
+              | `Situational -> "situational"
+              | `Predictor -> "predictor"))
+          player );
       ( "enemy",
         json_object
           ([

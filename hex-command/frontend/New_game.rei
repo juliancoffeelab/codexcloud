@@ -4,6 +4,7 @@
 let make:
   (
     ~session: Session.t,
+    ~showHiddenMaps: bool,
     ~view: Session.model,
     ~actions: Session.actions,
     ~request: option((int, Setup.mode)),

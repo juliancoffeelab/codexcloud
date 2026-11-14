@@ -12,7 +12,7 @@ function developerFixture(types = []) {
       ["player", "enemy"].map(
         (side) =>
           checkpoint.state.units.find(
-            (unit) => unit.side === side && TYPES[unit.type]?.family === "commander",
+            (unit) => unit.faction === side && TYPES[unit.type]?.family === "commander",
           ).id,
       ),
     );
@@ -45,7 +45,7 @@ class Game {
     fixture.restoreData(structuredClone(Native.state(Native.view(fixture.#battle))));
     for (let chapter = 0; chapter < mission; chapter++) {
       fixture.gold.player = 0;
-      fixture.winner = "player";
+      fixture.winner = "playerVictory";
       fixture.nextCampaignMission([]);
     }
     return fixture;
@@ -95,16 +95,18 @@ class Game {
   at(id) {
     return this.units.find((unit) => cellKey(unit.tile) === cellKey(id));
   }
-  addUnit(type, side, tile) {
+  addUnit(type, faction, tile) {
     const unit = {
       id: `u${this.nextId++}`,
       type,
-      side,
+      faction,
+      revealedTo: [],
+      perceptionEffects: [],
       tile: hex(this.tile(tile) ?? tile),
       hp: Catalog.unit(catalog, type).hp,
       experience: 0,
       moved: false,
-      attacked: false,
+      attackSpent: false,
     };
     this.units.push(unit);
     return unit;
@@ -157,8 +159,8 @@ class Game {
   recruitTiles(id, type) {
     return Native.recruit_tiles(this.publishedView(), id, type).map((tile) => this.tile(tile.id));
   }
-  recruitmentOptions(side) {
-    return Native.recruitment_options(this.publishedView(), side);
+  recruitmentOptions(faction) {
+    return Native.recruitment_options(this.publishedView(), faction);
   }
   promotionOptions(id) {
     return Native.promotion_options(this.publishedView(), id);
@@ -195,8 +197,8 @@ class Game {
       )
     );
   }
-  income(side) {
-    return Native.income(this.publishedView(), side);
+  income(faction) {
+    return Native.income(this.publishedView(), faction);
   }
   move(id, tile) {
     this.apply({ kind: "move", unit: Native.unit_id(id), tile });

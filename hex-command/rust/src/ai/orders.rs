@@ -1,6 +1,5 @@
 //! Explicit, turn-local contracts between the three fixed AI blocks.
 use crate::{ai::context::BattleView, data::*};
-use hex_command_battle::RuntimeCommand as Command;
 use serde::{Deserialize, Serialize};
 
 /// Generic heuristic hints supplement typed duties without exposing mission kinds.
@@ -93,7 +92,8 @@ impl RecruitRequirement {
                 game.units()
                     .iter()
                     .filter(|u| {
-                        game.belongs_to_phase(u, game.turn()) && selector.accepts(game, u.kind)
+                        game.belongs_to_faction(u, game.observer_faction())
+                            && selector.accepts(game, u.kind)
                     })
                     .count(),
             ),
@@ -322,7 +322,7 @@ impl TacticalOrders {
             .filter(|goal| {
                 goal.id.starts_with("rebuild:")
                     && game.units().iter().any(|unit| {
-                        game.belongs_to_phase(unit, game.turn())
+                        game.belongs_to_faction(unit, game.observer_faction())
                             && crate::ai::policies::objectives::actor_matches(&goal.actor, unit.id)
                     })
             })
@@ -468,7 +468,7 @@ pub struct RecruitmentShortfall {
     pub reason: PlanningReason,
 }
 pub struct TurnPlan {
-    pub commands: Vec<Command>,
+    pub commands: Vec<hex_command_battle::ActionProposal>,
     pub recruitment: RecruitmentReport,
     pub planning: PlanningReport,
 }

@@ -10,3 +10,13 @@ val v35 : Historical_types.V35.t -> Historical_types.V36.t
 val v36 : Historical_types.V36.t -> Historical_types.V37.t
 val v37 : Historical_types.V37.t -> Historical_types.V38.t
 val v38 : Historical_types.V38.t -> Historical_types.V39.t
+
+val convert_state_and_undo :
+  encode_old:('a -> Js.Json.t) ->
+  decode_old:(Js.Json.t -> 'a) ->
+  encode_new:('b -> Js.Json.t) ->
+  ('a -> 'b) ->
+  'a ->
+  Historical_types.V39.current_undo array option ->
+  'b * Historical_types.V39.current_undo array option
+(** Reconstruct each historical undo state before applying a typed state conversion. *)

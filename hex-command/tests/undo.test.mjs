@@ -31,7 +31,7 @@ async function create(saved = checkpoint()) {
 }
 const state = (session) => Native.state(Session.view(session).interaction_game);
 const player = (session, type) =>
-  required(state(session).units.find((unit) => unit.side === "player" && unit.type === type));
+  required(state(session).units.find((unit) => unit.faction === "player" && unit.type === type));
 function move(session, type, destination) {
   const unit = player(session, type);
   const actions = Session.commands(session);
@@ -44,8 +44,9 @@ for (const owner of [null, "enemy", "player"])
     const saved = checkpoint();
     required(saved.state.tiles.find((tile) => tile.id === "3,1")).owner = owner;
     saved.state.log = Array.from({ length: 8 }, (_, index) => `Earlier event ${index}`);
-    required(saved.state.units.find((unit) => unit.side === "player" && unit.type === "scout")).hp =
-      5;
+    required(
+      saved.state.units.find((unit) => unit.faction === "player" && unit.type === "scout"),
+    ).hp = 5;
     const session = await create(saved);
     const before = structuredClone(state(session));
     const scout = move(session, "scout", "3,1");
@@ -86,11 +87,14 @@ for (const action of ["attack", "recruit", "endTurn", "reset"])
       saved.state.units.push({
         id: `u${saved.state.nextId++}`,
         type: "soldier",
-        side: "enemy",
+        side: "ai",
         tile: { col: 4, row: 1 },
         hp: Catalog.unit(catalog, "soldier").hp,
         moved: false,
-        attacked: false,
+        attackSpent: false,
+        faction: "enemy",
+        revealedTo: [],
+        perceptionEffects: [],
         experience: 0,
       });
     const session = await create(saved);
@@ -99,7 +103,7 @@ for (const action of ["attack", "recruit", "endTurn", "reset"])
     if (action === "attack") {
       commands.choose("4,1");
       commands.attack("knife");
-      assert(Native.at(Session.view(session).interaction_game, "3,1").attacked);
+      assert(Native.at(Session.view(session).interaction_game, "3,1").attackSpent);
     }
     if (action === "recruit") {
       commands.recruit("swordsman", "0,2");
@@ -129,7 +133,7 @@ test("A victorious attack clears move history", async () => {
   const saved = checkpoint();
   const commander = required(
     saved.state.units.find(
-      (unit) => unit.side === "enemy" && Catalog.unit(catalog, unit.type).family === "commander",
+      (unit) => unit.faction === "enemy" && Catalog.unit(catalog, unit.type).family === "commander",
     ),
   );
   commander.tile = { col: 4, row: 1 };
@@ -138,7 +142,7 @@ test("A victorious attack clears move history", async () => {
   move(session, "scout", "3,1");
   Session.commands(session).choose("4,1");
   Session.commands(session).attack("knife");
-  assert.equal(state(session).winner, "player");
+  assert.equal(state(session).winner, "playerVictory");
   assert.equal(Session.view(session).can_undo, false);
   const after = structuredClone(state(session));
   Session.commands(session).undo();
@@ -146,11 +150,11 @@ test("A victorious attack clears move history", async () => {
 });
 test("Enemy inspection cannot create player move history", async () => {
   const saved = checkpoint();
-  saved.state.turn = "enemy";
+  saved.state.turn = "ai";
   const session = await create(saved);
   const before = structuredClone(state(session));
   const scout = required(
-    before.units.find((unit) => unit.side === "enemy" && unit.type === "scout"),
+    before.units.find((unit) => unit.faction === "enemy" && unit.type === "scout"),
   );
   Session.commands(session).choose(cellKey(scout.tile));
   Session.commands(session).choose("7,1");

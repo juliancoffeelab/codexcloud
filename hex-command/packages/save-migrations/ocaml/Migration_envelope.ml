@@ -1,6 +1,6 @@
 open Migration_json
 
-let version = 39
+let version = 47
 let history_version = 4
 let only value allowed = List.for_all (fun k -> List.mem k allowed) (keys value)
 
@@ -11,10 +11,12 @@ let texts value names =
     names
 
 let valid_setup value =
-  if not (is_record value && only value [ "first"; "enemy" ]) then false
+  if not (is_record value && only value [ "first"; "enemy"; "player" ]) then false
   else
     let enemy = default value "enemy" Js.Json.null in
-    List.mem (default value "first" Js.Json.null) [ s "player"; s "enemy" ]
+    List.mem (default value "first" Js.Json.null) [ s "player"; s "ai" ]
+    && List.mem (field value "player") [ Js.Json.null; s "classic"; s "situational"; s "predictor" ]
+    && get value "player" <> None
     && is_record enemy
     && only enemy [ "policy"; "diplomacy"; "blocks" ]
     && List.mem
@@ -108,7 +110,7 @@ let valid_undo value =
 let current_save value =
   require
     (is_record value
-    && get value "version" = Some (n 39.)
+    && get value "version" = Some (n 47.)
     && only value [ "version"; "checkpoint"; "pendingEnemy"; "setup"; "undo"; "progress" ])
     "Invalid current save envelope";
   let checkpoint = field value "checkpoint" and progress = field value "progress" in

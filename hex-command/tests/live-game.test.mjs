@@ -43,7 +43,7 @@ test("Live controller uses native movement/undo and preserves previous UI querie
     commands = Session.commands(session);
   const opening = capture(session),
     previous = Session.view(session).game;
-  const actor = required(opening.units.find((unit) => unit.side === "player"));
+  const actor = required(opening.units.find((unit) => unit.faction === "player"));
   const moves = Native.reachable(previous, actor.id),
     tile = required(Object.keys(moves)[0]);
   commands.choose(cellKey(actor.tile));
@@ -130,7 +130,7 @@ test("Native combat inspection feeds UI damage breakdowns and old saves migrate 
   );
   Native.dispose(opening);
   const previous = Native.view(game),
-    actor = required(Native.state(previous).units.find((unit) => unit.side === "player"));
+    actor = required(Native.state(previous).units.find((unit) => unit.faction === "player"));
   const target = required(Native.targets(previous, actor.id)[0]),
     forecast = required(Native.best_attack(previous, actor.id, target.id));
   Native.dispatch(game, {
@@ -152,7 +152,7 @@ test("Native combat inspection feeds UI damage breakdowns and old saves migrate 
   Native.dispose(game);
 });
 test("All campaign dialogue and retry controls dispatch through native hooks", async () => {
-  for (const id of ["lantern-road", "green-accord", "ashen-oath", "borrowed-tide"]) {
+  for (const id of ["lantern-road"]) {
     const game = createBattle({ kind: "campaign", id }),
       opening = structuredClone(Native.state(Native.view(game)));
     Native.dispatch(game, { kind: "dismissDialogue" });
@@ -165,25 +165,6 @@ test("All campaign dialogue and retry controls dispatch through native hooks", a
     assert.deepEqual(Native.state(Native.view(game)), opening);
     Native.dispose(game);
   }
-});
-test("Supported legacy woodland revisions migrate without losing campaign progress", async () => {
-  const old = Game.startCampaign("green-accord");
-  old.mapRevision = 1;
-  old.round = 3;
-  old.gold.player = 19;
-  await saveBattle(old);
-  const restored = await load(),
-    current = Native.state(Native.view(restored.game));
-  assert.equal(restored.notice, void 0);
-  assert.equal(current.mapRevision, 2);
-  assert.equal(current.round, 3);
-  assert.equal(current.gold.player, 19);
-  assert.deepEqual(current.units, old.units);
-  await write(restored.game);
-  const reloaded = await load();
-  assert.deepEqual(Native.state(Native.view(reloaded.game)), current);
-  Native.dispose(reloaded.game);
-  Native.dispose(restored.game);
 });
 test("A failed saved battle remains available for repair while fresh play is available", async () => {
   await saveBattle(new Game("mirror"));
@@ -258,16 +239,17 @@ test("Reloading an enemy-phase checkpoint rebuilds planning once from the saved 
     Native.save(game),
     false,
     Setup.of_json({
-      first: "enemy",
+      player: null,
+      first: "ai",
       enemy: { policy: options.policy, diplomacy: options.diplomacy },
     }),
   );
   const phase = structuredClone(Native.state(Native.view(game)));
-  assert.equal(phase.turn, "enemy");
+  assert.equal(phase.turn, "ai");
   const checkpoint = Native.save(game);
   Native.dispose(game);
   game = restoreBattle(checkpoint);
-  for (let steps = 0; Native.state(Native.view(game)).turn === "enemy"; steps++) {
+  for (let steps = 0; Native.state(Native.view(game)).turn === "ai"; steps++) {
     assert(steps < 100);
     Native.enemy_step(game, options);
   }

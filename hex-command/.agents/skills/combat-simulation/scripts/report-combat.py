@@ -11,6 +11,34 @@ from collections import Counter, defaultdict
 from pathlib import Path
 import time
 
+# Keep this small presentation adapter self-contained: this report is also
+# distributed as a single standalone script, without repository imports.
+def analysis_view(value, factions=None):
+    """Present current phases/results as the analyzer's stable two-seat labels.
+
+    This is an analysis-only copy. Lossless decoding, exports, checksums and
+    replay inputs retain their original engine representation unchanged.
+    """
+    if isinstance(value, list):
+        return [analysis_view(item, factions) for item in value]
+    if not isinstance(value, dict):
+        return value
+    declared = value.get('factions') or value.get('initial', {}).get('factions')
+    if declared:
+        factions = {f['id']: f for f in declared}
+    result = {key: analysis_view(item, factions) for key, item in value.items()}
+    # Unit ownership is faction-only. These legacy two-phase report labels are
+    # derived in the analysis copy, never written back into replay checkpoints.
+    if 'faction' in value and 'hp' in value and 'tile' in value and 'side' not in value:
+        result['side'] = factions[value['faction']]['phase']
+    for key in ("side", "turn", "first"):
+        if result.get(key) == "ai":
+            result[key] = "enemy"
+    if result.get("winner") in ("playerVictory", "playerDefeat"):
+        result["winner"] = "player" if result["winner"] == "playerVictory" else "enemy"
+    return result
+
+
 DISPLAY_NAMES = {'human': 'Humans', 'skeletons': 'Skeletons', 'woodland': 'Woodland', 'coastal': 'Merfolk', 'open': 'Plains', 'wooded': 'Forests',
                  'crossings': 'Crossing', 'islands': 'Islands', 'wood-edge': 'Wood Edge'}
 MAP_ORDER = ('open', 'wooded', 'crossings', 'islands', 'wood-edge')
@@ -169,11 +197,12 @@ def load_run(paths):
             if journal.exists():
                 with gzip.open(journal, 'rt') as stream:
                     for line in stream:
-                        raw = json.loads(line)
+                        raw = analysis_view(json.loads(line))
                         raw.setdefault('kind', 'campaign' if 'missions' in raw else 'arena')
                         diagnostics[identity(raw)] = recorded_analysis(raw)
         else:
             report = json.loads(gzip.open(path, 'rt').read() if path.suffix == '.gz' else path.read_text())
+        report = analysis_view(report)
         source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat', 'turnTiming', 'recruitmentLimits', 'recruitmentProfiles', 'unitFamilies', 'unitProfiles', 'supportTelemetryVersion', 'combatTelemetryVersion', 'leaderAuditVersion')}
         source['fingerprint'] = report.get('fingerprint', report.get('fingerprints'))
         source['file'] = str(path.resolve())
@@ -217,9 +246,9 @@ def load_run(paths):
                             spec = importlib.util.spec_from_file_location('simulation_journal', decoder_path)
                             decoder = importlib.util.module_from_spec(spec)
                             spec.loader.exec_module(decoder)
-                            result = decoder.decode_detail(raw, name)
+                            result = analysis_view(decoder.decode_detail(raw, name))
                         else:
-                            result = json.loads(raw)
+                            result = analysis_view(json.loads(raw))
                         result.setdefault('kind', 'campaign')
                         if identity(result) != key:
                             raise ValueError('Gameplay journal configuration mismatch')

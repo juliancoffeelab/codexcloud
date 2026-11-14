@@ -1,6 +1,6 @@
 //! Stable movement discovery and cached reverse route distance fields.
 
-use super::battle::Game;
+use super::battle::BattlePosition;
 use super::geometry::TileSet;
 use crate::data::*;
 use rustc_hash::FxHashMap;
@@ -59,7 +59,13 @@ impl Reachability {
     }
 }
 
-impl<'catalog> Game<'catalog> {
+pub(super) struct ValidatedMove {
+    id: u32,
+    destination: usize,
+    path: Option<Vec<usize>>,
+}
+
+impl<'catalog> BattlePosition<'catalog> {
     pub(crate) fn reachability(&self, kind: usize, start: usize) -> Reachability {
         let kind = self.rules.route_classes[kind];
         let cached = self.runtime.movement_regions.borrow().get(&kind).cloned();
@@ -122,11 +128,11 @@ impl<'catalog> Game<'catalog> {
 
     /// Threat forecasts need membership, not movement discovery order. Advance
     /// all origins at each movement cost together on maps fitting one mask.
-    pub(crate) fn threat_reach(&self, unit: &Unit, occupancy: Option<&[Option<Side>]>) -> TileSet {
+    pub(crate) fn threat_reach(&self, unit: &Unit, occupancy: Option<&[Option<u32>]>) -> TileSet {
         let occupied = if let Some(occupancy) = occupancy {
             let mut occupied = TileSet::new(self.runtime.terrain.len());
-            for (tile, side) in occupancy.iter().enumerate() {
-                if side.is_some() {
+            for (tile, occupant) in occupancy.iter().enumerate() {
+                if occupant.is_some() {
                     occupied.insert(tile);
                 }
             }
@@ -139,7 +145,7 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn threat_reach_blocked(&self, unit: &Unit, occupied: TileSet) -> TileSet {
         let mut positions = TileSet::new(self.runtime.terrain.len());
         positions.insert(unit.tile);
-        if unit.moved || unit.attacked || self.runtime.winner.is_some() {
+        if unit.moved || unit.attack_spent || self.runtime.winner.is_some() {
             return positions;
         }
         let limit = self.mechanics.units[unit.kind].r#move;
@@ -222,21 +228,21 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn reachable_with_occupancy(
         &self,
         unit: &Unit,
-        occupancy: &[Option<Side>],
+        occupancy: &[Option<u32>],
     ) -> Rc<Vec<(usize, u16)>> {
-        if unit.moved || unit.attacked || self.runtime.winner.is_some() {
+        if unit.moved || unit.attack_spent || self.runtime.winner.is_some() {
             return EMPTY_REACH.with(Clone::clone);
         }
         let mut occupied = TileSet::new(self.runtime.terrain.len());
-        for (tile, side) in occupancy.iter().enumerate() {
-            if side.is_some() {
+        for (tile, occupant) in occupancy.iter().enumerate() {
+            if occupant.is_some() {
                 occupied.insert(tile);
             }
         }
         self.reach_filtered(unit.kind, unit.tile, occupied)
     }
     pub(crate) fn reachable(&self, unit: &Unit) -> Rc<Vec<(usize, u16)>> {
-        if unit.moved || unit.attacked || self.runtime.winner.is_some() {
+        if unit.moved || unit.attack_spent || self.runtime.winner.is_some() {
             return EMPTY_REACH.with(Clone::clone);
         }
         self.reach_filtered(unit.kind, unit.tile, self.runtime.occupied_tiles.clone())
@@ -418,52 +424,149 @@ impl<'catalog> Game<'catalog> {
         }
         costs
     }
-    pub(crate) fn move_unit(&mut self, id: u32, tile: usize) {
-        let index = self.index(id).unwrap();
-        let actor = self.runtime.units[index].clone();
-        self.runtime.event_departure = Some(actor.clone());
-        assert!(
-            actor.side == self.runtime.turn
-                && self.runtime.winner.is_none()
-                && actor.tile != tile
-                && self.reachable(&actor).iter().any(|&(site, _)| site == tile)
-        );
-        // Conditions observe the legal route traversed by this atomic move.
-        let observes_path = self.runtime.fog.iter().any(Option::is_some)
-            || self.runtime.mission.as_ref().is_some_and(|mission| {
-                mission
-                    .scripted_events
-                    .iter()
-                    .any(|event| event.when.uses_path())
-                    || mission.events.iter().any(|event| match &event.trigger {
-                        Trigger::Condition { condition } => condition.uses_proximity(),
-                        _ => false,
-                    })
-            });
-        if observes_path {
-            let mut costs = vec![u16::MAX; self.runtime.terrain.len()];
-            costs[actor.tile] = 0;
-            for &(site, cost) in self.reachable(&actor).iter() {
-                costs[site] = cost;
-            }
-            let mut path = vec![tile];
-            let mut cursor = tile;
-            while cursor != actor.tile {
-                let previous = self.runtime.board.adjacent[cursor]
-                    .iter()
-                    .copied()
-                    .find(|&previous| {
-                        costs[previous] != u16::MAX
-                            && costs[previous].checked_add(self.cost(actor.kind, cursor))
-                                == Some(costs[cursor])
-                    })
-                    .expect("reachable tile has a movement predecessor");
-                path.push(previous);
-                cursor = previous;
-            }
-            path.reverse();
-            self.runtime.traversal = Some((id, path));
+    /// Human previews and live proposal admission use the acting group's
+    /// observation, never the occupancy of concealed units.
+    pub(crate) fn observed_reachable(&self, unit: &Unit) -> Rc<Vec<(usize, u16)>> {
+        if unit.moved || unit.attack_spent || self.winner.is_some() {
+            return EMPTY_REACH.with(Clone::clone);
         }
+        self.reach_filtered(unit.kind, unit.tile, self.observed_occupancy(unit))
+    }
+    fn observed_occupancy(&self, unit: &Unit) -> TileSet {
+        if !self.perception_sensitive() {
+            return self.occupied_tiles.clone();
+        }
+        let mut occupied = TileSet::new(self.terrain.len());
+        let perception = self.perception(None);
+        for other in &self.units {
+            if perception.sees_unit(unit.vision_group, other) {
+                occupied.insert(other.tile);
+            }
+        }
+        occupied
+    }
+    /// Admission creates a different type from a request. The route is selected
+    /// from known occupancy; only execution examines hidden blockers on it.
+    pub(super) fn validate_observed_move(
+        &self,
+        id: u32,
+        tile: usize,
+    ) -> Result<ValidatedMove, CommandError> {
+        let actor = self.unit(id).ok_or(CommandError::UnknownUnit(UnitId(id)))?;
+        if !self.may_act(actor) {
+            return Err(CommandError::WrongTurn);
+        }
+        let reachable = self.observed_reachable(actor);
+        if actor.tile == tile || !reachable.iter().any(|&(t, _)| t == tile) {
+            return Err(CommandError::IllegalMove);
+        }
+        let hidden = self.observed_occupancy(actor) != self.occupied_tiles;
+        let path = (hidden || self.tracks_movement_path())
+            .then(|| self.movement_path(actor, tile, &reachable));
+        Ok(ValidatedMove {
+            id,
+            destination: tile,
+            path,
+        })
+    }
+    fn tracks_movement_path(&self) -> bool {
+        self.tracks_path || self.tile_perception.iter().any(|p| p.remember) || {
+            #[cfg(not(target_arch = "wasm32"))]
+            {
+                self.recordings.is_some()
+            }
+            #[cfg(target_arch = "wasm32")]
+            {
+                false
+            }
+        }
+    }
+    fn movement_path(
+        &self,
+        actor: &Unit,
+        destination: usize,
+        reachable: &[(usize, u16)],
+    ) -> Vec<usize> {
+        let mut costs = vec![u16::MAX; self.terrain.len()];
+        costs[actor.tile] = 0;
+        for &(site, cost) in reachable {
+            costs[site] = cost;
+        }
+        // A visited predecessor search also handles zero-cost terrain without
+        // cycling. It uses exactly the admitted observation's distance field.
+        let mut next = vec![usize::MAX; self.terrain.len()];
+        let mut queue = std::collections::VecDeque::from([destination]);
+        next[destination] = destination;
+        while let Some(cursor) = queue.pop_front() {
+            if cursor == actor.tile {
+                break;
+            }
+            for &previous in &self.board.adjacent[cursor] {
+                if next[previous] == usize::MAX
+                    && costs[previous] != u16::MAX
+                    && costs[previous].checked_add(self.cost(actor.kind, cursor))
+                        == Some(costs[cursor])
+                {
+                    next[previous] = cursor;
+                    queue.push_back(previous);
+                }
+            }
+        }
+        let mut path = vec![actor.tile];
+        while *path.last().unwrap() != destination {
+            let tile = next[*path.last().unwrap()];
+            assert_ne!(tile, usize::MAX, "admitted movement has a route");
+            path.push(tile);
+        }
+        path
+    }
+    pub(super) fn execute_observed_move(&mut self, mut movement: ValidatedMove) -> bool {
+        let actor = *self.unit(movement.id).expect("admitted actor");
+        let requested = movement.destination;
+        let mut contact = None;
+        if let Some(path) = &mut movement.path {
+            if let Some((step, blocker)) = path
+                .iter()
+                .enumerate()
+                .skip(1)
+                .find_map(|(step, &tile)| self.at(tile).map(|unit| (step, unit.id)))
+            {
+                contact = Some(blocker);
+                path.truncate(step);
+                movement.destination = *path.last().unwrap();
+            }
+        }
+        if let Some(blocker) = contact {
+            self.reveal_contact(blocker, actor.vision_group);
+        }
+        self.apply_movement(
+            movement.id,
+            movement.destination,
+            movement.path,
+            contact.map(|_| requested),
+        );
+        contact.is_some()
+    }
+    pub(crate) fn move_unit(&mut self, id: u32, tile: usize) {
+        let actor = *self.unit(id).unwrap();
+        assert!(self.may_act(&actor) && actor.tile != tile && self.winner.is_none());
+        let reachable = self.reachable(&actor);
+        assert!(reachable.iter().any(|&(site, _)| site == tile));
+        let path = self
+            .tracks_movement_path()
+            .then(|| self.movement_path(&actor, tile, &reachable));
+        self.apply_movement(id, tile, path, None);
+    }
+    fn apply_movement(
+        &mut self,
+        id: u32,
+        tile: usize,
+        path: Option<Vec<usize>>,
+        requested: Option<usize>,
+    ) {
+        let index = self.index(id).unwrap();
+        let actor = self.units[index];
+        self.runtime.traversal = path.map(|path| (id, path));
         self.runtime.occupancy[actor.tile] = None;
         self.runtime.occupancy[tile] = Some(index);
         self.runtime.occupied_tiles.remove(actor.tile);
@@ -487,7 +590,7 @@ impl<'catalog> Game<'catalog> {
             };
             self.record(format!(
                 "{} {unit_name} {capture}.",
-                if actor.side == Side::Player {
+                if self.unit_faction(&actor) == "player" {
                     "Your"
                 } else {
                     "Enemy"
@@ -495,32 +598,20 @@ impl<'catalog> Game<'catalog> {
             ));
         }
         self.collect_items(id);
-        self.apply_faction_transfers();
-        self.evaluate_campaign(
-            false,
-            if actor.side == Side::Player {
-                Some(tile)
-            } else {
-                None
-            },
-        );
-        self.remember_conditions();
         #[cfg(not(target_arch = "wasm32"))]
         let path = self
             .traversal
-            .take()
+            .as_ref()
             .map(|(_, path)| {
-                path.into_iter()
+                path.iter()
+                    .copied()
                     .map(|site| self.runtime.board.ids[site].clone())
                     .collect()
             })
             .unwrap_or_default();
-        #[cfg(target_arch = "wasm32")]
-        {
-            self.runtime.traversal = None;
-        }
         #[cfg(not(target_arch = "wasm32"))]
         self.action(ActionRecord::Move {
+            requested: requested.map(|site| self.board.ids[site]),
             path,
             unit: format!("u{id}"),
             tile: self.runtime.board.ids[tile].clone(),
@@ -534,19 +625,19 @@ mod occupancy_tests {
     #[test]
     fn occupancy_mask_follows_moves_roster_changes_and_independent_forks() {
         let rules = Rules::load().unwrap();
-        let mut game = Game::new(&rules, "mirror");
+        let mut game = crate::logic::Game::new(&rules, "mirror");
         let forecast = game.fork();
         let (actor, destination) = game
             .units
             .iter()
-            .filter(|u| u.side == game.turn)
+            .filter(|u| u.phase == game.turn)
             .find_map(|u| game.reachable(u).first().map(|&(tile, _)| (u.id, tile)))
             .unwrap();
         game.move_unit(actor, destination);
         let free = (0..game.terrain.len())
             .find(|&tile| game.at(tile).is_none())
             .unwrap();
-        game.add(game.units[0].kind, game.turn, free);
+        game.add(game.units[0].kind, "player", free);
         game.units.remove(0);
         game.roster_changed();
         for board in [&game, &forecast] {

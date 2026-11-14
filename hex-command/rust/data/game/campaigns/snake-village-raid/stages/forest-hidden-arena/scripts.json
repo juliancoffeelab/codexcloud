@@ -1,0 +1,240 @@
+{
+  "events": [
+    {
+      "id": "leader-lost",
+      "priority": 100,
+      "when": {
+        "killed": {
+          "character": "night-mayor"
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Your leader has fallen."
+        }
+      ]
+    },
+    {
+      "id": "control-pine-hamlet",
+      "when": {
+        "own": {
+          "tile": {
+            "location": "pine-hamlet"
+          },
+          "faction": "player"
+        }
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Control Pine Hamlet",
+        "visibleWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "own": {
+            "tile": {
+              "location": "pine-hamlet"
+            },
+            "faction": "player"
+          }
+        },
+        "intent": {
+          "own": {
+            "tile": {
+              "location": "pine-hamlet"
+            },
+            "faction": "player"
+          }
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "pine-hamlet"
+            }
+          ]
+        }
+      },
+      "actions": [
+        {
+          "log": "Pine Hamlet first captured."
+        }
+      ]
+    },
+    {
+      "id": "control-moss-hamlet",
+      "when": {
+        "own": {
+          "tile": {
+            "location": "moss-hamlet"
+          },
+          "faction": "player"
+        }
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Control Moss Hamlet",
+        "visibleWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "own": {
+            "tile": {
+              "location": "moss-hamlet"
+            },
+            "faction": "player"
+          }
+        },
+        "intent": {
+          "own": {
+            "tile": {
+              "location": "moss-hamlet"
+            },
+            "faction": "player"
+          }
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "moss-hamlet"
+            }
+          ]
+        }
+      },
+      "actions": [
+        {
+          "log": "Moss Hamlet first captured."
+        }
+      ]
+    },
+    {
+      "id": "control-fern-hamlet",
+      "when": {
+        "own": {
+          "tile": {
+            "location": "fern-hamlet"
+          },
+          "faction": "player"
+        }
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Control Fern Hamlet",
+        "visibleWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "own": {
+            "tile": {
+              "location": "fern-hamlet"
+            },
+            "faction": "player"
+          }
+        },
+        "intent": {
+          "own": {
+            "tile": {
+              "location": "fern-hamlet"
+            },
+            "faction": "player"
+          }
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "fern-hamlet"
+            }
+          ]
+        }
+      },
+      "actions": [
+        {
+          "log": "Fern Hamlet first captured."
+        }
+      ]
+    },
+    {
+      "id": "villages-won",
+      "when": {
+        "all": [
+          {
+            "objectiveSatisfied": "control-pine-hamlet"
+          },
+          {
+            "objectiveSatisfied": "control-moss-hamlet"
+          },
+          {
+            "objectiveSatisfied": "control-fern-hamlet"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "All three villages are under your control."
+        }
+      ]
+    },
+    {
+      "id": "villages-lost",
+      "when": {
+        "all": [
+          {
+            "own": {
+              "tile": {
+                "location": "pine-hamlet"
+              },
+              "faction": "forest-defenders"
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "location": "moss-hamlet"
+              },
+              "faction": "forest-defenders"
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "location": "fern-hamlet"
+              },
+              "faction": "forest-defenders"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The opposing army controls all three villages."
+        }
+      ]
+    },
+    {
+      "id": "rival-defeated",
+      "when": {
+        "killed": {
+          "character": "captain-boots"
+        }
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Alternatively, defeat the opposing leader",
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "intent": {
+          "defeat": {
+            "character": "captain-boots"
+          }
+        },
+        "playerMarker": null
+      },
+      "actions": [
+        {
+          "victory": "The opposing leader has fallen."
+        }
+      ]
+    }
+  ]
+}

@@ -1,10 +1,7 @@
 {
   "subtitle": "The Toll Road",
   "briefing": "The road climbs between wooded ridges. Beyond the trees lie the settlements taken by the dead. The patrol needs a foothold before it can follow the trail farther east. Scout the woods and find somewhere to gather your people.",
-  "hints": [
-    "Keep the patrol together while you scout.",
-    "Claim the camp so there’s somewhere to muster."
-  ],
+  "hints": ["Keep the patrol together while you scout."],
   "intro": [
     {
       "portrait": "scout",

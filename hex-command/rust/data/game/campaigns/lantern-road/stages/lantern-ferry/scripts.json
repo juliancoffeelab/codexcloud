@@ -118,6 +118,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Contact the route scout",
         "optional": true,
         "intent": {
@@ -215,6 +216,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Contact the western scout",
         "optional": true,
         "intent": {
@@ -312,6 +314,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Contact the northern scout",
         "optional": true,
         "intent": {
@@ -378,6 +381,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Investigate the quarry cave",
         "optional": true,
         "intent": {
@@ -506,6 +510,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Reach the ferryman\u2019s house",
         "optional": false,
         "intent": {
@@ -577,6 +582,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Reach the ferryman by turn 15",
         "optional": true,
         "intent": {
@@ -959,6 +965,7 @@
         }
       ],
       "objective": {
+        "faction": "player",
         "label": "Light and secure the eastern villages",
         "optional": false,
         "intent": {
@@ -1094,6 +1101,7 @@
         ]
       },
       "objective": {
+        "faction": "player",
         "label": "Defeat the cellar spiders",
         "visibleWhen": {
           "flag": "first-spiders"
