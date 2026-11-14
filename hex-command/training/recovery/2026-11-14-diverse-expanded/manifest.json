@@ -3,64 +3,68 @@
   "run": "/workspace/native-planner-replay/hex-command/tmp/rl-v2/expanded",
   "workload_sha256": "2e64b8791cf5696fc35c6c7373faf60baa0de779657e6debae8d954aa1d32d64",
   "latest": {
-    "label": "update-00001478",
+    "label": "update-00002762",
     "files": {
       "planner.json": {
-        "bytes": 1018646,
-        "sha256": "66f24d23821e03d1e57937a02aaf964d97f3efdb60dec2313988e2da1dcb703e"
+        "bytes": 1018488,
+        "sha256": "d07d926969cd07dec06e0e852b77b63ba85d11c54b5576250588cccf2c863856"
       },
       "resume.pt": {
         "bytes": 750274,
-        "sha256": "33d63f00a61dd4a35fdcdd8509d408a2a4bd3063a88de908b728c12de9207e03"
+        "sha256": "50cc5d1a8f761cfcd20aa2ec5c32e777ee7e29199947e257b03aa252b02fdc62"
       }
     }
   },
   "best": {
-    "label": "initial",
+    "label": "update-00002583",
     "files": {
       "planner.json": {
-        "bytes": 1018436,
-        "sha256": "73d439390e8926d4a696269f358e89ea158d37f9c3199c2dc6c81c383fb96080"
+        "bytes": 1018399,
+        "sha256": "c6e3a1c2c2600f42dc93a70e410dec9f610cba41c6eac1ed92e37eab61b9659b"
       },
       "resume.pt": {
-        "bytes": 355200,
-        "sha256": "0383a1f0a0b7d0c1ef663736c36b83f82f33346cdf329c5562c9fbf70b74c4dc"
+        "bytes": 750274,
+        "sha256": "885e4ac3c3ca2367dd019174ba4bbb9615e7ccd0dc527851631baf98ff9fedf0"
       }
     }
   },
-  "backup_utc": "2026-11-14T03:58:36Z",
+  "backup_utc": "2026-11-14T04:28:40Z",
   "files": {
+    "catalog-intern.patch": {
+      "bytes": 3784,
+      "sha256": "32b39747d4f23764f47a5902cf2a1fb72ea4a066285c0ba21454b01ed8cc1055"
+    },
     "latest.pt": {
       "bytes": 750274,
-      "sha256": "33d63f00a61dd4a35fdcdd8509d408a2a4bd3063a88de908b728c12de9207e03"
+      "sha256": "50cc5d1a8f761cfcd20aa2ec5c32e777ee7e29199947e257b03aa252b02fdc62"
     },
     "catalog.tar.gz": {
       "bytes": 132361,
       "sha256": "2b102d049f696f8b831bd8f073e60891684c389403d38cabdc4c0f87ea9c56e1"
     },
     "rl-metrics.jsonl.gz": {
-      "bytes": 456430,
-      "sha256": "360b9f02ed89b39e7896f4a8fdc9493e1af412043f4b02116dc906c4efb8c33a"
+      "bytes": 845974,
+      "sha256": "2298011a20dd59b9e556f32e8c66e73475df531005f24c183eb2f6001335b35f"
     },
     "workload.json": {
       "bytes": 8346575,
       "sha256": "ad9698118953ca9f0dc48afd5a30097cf950be7fcb7e374445d895eb5e5aeacd"
     },
     "latest-planner.json": {
-      "bytes": 1018646,
-      "sha256": "66f24d23821e03d1e57937a02aaf964d97f3efdb60dec2313988e2da1dcb703e"
+      "bytes": 1018488,
+      "sha256": "d07d926969cd07dec06e0e852b77b63ba85d11c54b5576250588cccf2c863856"
     },
     "best-planner.json": {
-      "bytes": 1018436,
-      "sha256": "73d439390e8926d4a696269f358e89ea158d37f9c3199c2dc6c81c383fb96080"
+      "bytes": 1018399,
+      "sha256": "c6e3a1c2c2600f42dc93a70e410dec9f610cba41c6eac1ed92e37eab61b9659b"
     },
     "rl-curves.png": {
-      "bytes": 273332,
-      "sha256": "12a0d5d0cf9fe1a926e46d79424313e00b76dc5404be3332beb1701727752114"
+      "bytes": 240292,
+      "sha256": "b0e669c4e4592fc957a7db71a1b265f6c8acca089c297a68d700e91018d2c8ef"
     },
     "best.pt": {
-      "bytes": 355200,
-      "sha256": "0383a1f0a0b7d0c1ef663736c36b83f82f33346cdf329c5562c9fbf70b74c4dc"
+      "bytes": 750274,
+      "sha256": "885e4ac3c3ca2367dd019174ba4bbb9615e7ccd0dc527851631baf98ff9fedf0"
     },
     "rl-parameters.json": {
       "bytes": 539,
