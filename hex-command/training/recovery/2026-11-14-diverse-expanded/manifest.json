@@ -16,19 +16,19 @@
     }
   },
   "best": {
-    "label": "update-00003437",
+    "label": "update-00017035",
     "files": {
       "planner.json": {
-        "bytes": 1018602,
-        "sha256": "5edaf91fe1be9240a5643da1c63a59a124758e49c154c0b5b00ab660290d5d56"
+        "bytes": 1018846,
+        "sha256": "c799b8d50a4baa86b09daab0ab48dfc7615e1445e33f322abe6bffa57d76933c"
       },
       "resume.pt": {
-        "bytes": 750274,
-        "sha256": "55fcfffdff071d9f49cfb6fe153095fe4265036392a59f18061b78a615f359e6"
+        "bytes": 750402,
+        "sha256": "e54d0ab6f6108d9137f8ee539d86f7454899402842236a45c171ddc27faf6523"
       }
     }
   },
-  "backup_utc": "2026-11-14T11:03:16Z",
+  "backup_utc": "2026-11-14T11:08:40Z",
   "files": {
     "catalog-intern.patch": {
       "bytes": 3784,
@@ -55,20 +55,24 @@
       "sha256": "7bb2c2279c62d29905e14057d0b82c8a44dba07870c9da63fa78d7882bffa9f3"
     },
     "best-planner.json": {
-      "bytes": 1018602,
-      "sha256": "5edaf91fe1be9240a5643da1c63a59a124758e49c154c0b5b00ab660290d5d56"
+      "bytes": 1018846,
+      "sha256": "c799b8d50a4baa86b09daab0ab48dfc7615e1445e33f322abe6bffa57d76933c"
     },
     "rl-curves.png": {
       "bytes": 232972,
       "sha256": "0a21d4042d53e87aa71ce068376eb368b84fae5299c6b24b8d25025c7f966b65"
     },
     "best.pt": {
-      "bytes": 750274,
-      "sha256": "55fcfffdff071d9f49cfb6fe153095fe4265036392a59f18061b78a615f359e6"
+      "bytes": 750402,
+      "sha256": "e54d0ab6f6108d9137f8ee539d86f7454899402842236a45c171ddc27faf6523"
     },
     "rl-parameters.json": {
       "bytes": 539,
       "sha256": "9a69ebb619d34c9b54ce80b329ba8e82d7074be33245da2527b4d38efd58b822"
+    },
+    "rl-selection.json": {
+      "bytes": 860,
+      "sha256": "c6e58739e473b88863fc55f36e12ec8aac751da63e8766d9ec11c1109353bf7c"
     }
   }
 }

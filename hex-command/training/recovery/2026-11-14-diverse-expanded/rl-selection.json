@@ -1,0 +1,38 @@
+{
+  "checkpoint": "checkpoints/update-00017035-1794649436809828253",
+  "reliability_key": [
+    0.38888888888888884,
+    0.5891927083333335,
+    -0.0475260416666667
+  ],
+  "strata": {
+    "arena/classic": {
+      "score": 0.85546875,
+      "wins": 219,
+      "runs": 256,
+      "caps": 1
+    },
+    "arena/predictor": {
+      "score": 0.66796875,
+      "wins": 171,
+      "runs": 256,
+      "caps": 5
+    },
+    "campaign/classic": {
+      "score": 0.4444444444444444,
+      "wins": 32,
+      "runs": 72,
+      "caps": 6
+    },
+    "campaign/predictor": {
+      "score": 0.38888888888888884,
+      "wins": 28,
+      "runs": 72,
+      "caps": 6
+    }
+  },
+  "candidates": 10,
+  "validation_runs": 656,
+  "test_seeds_used": false,
+  "criterion": "Worst stratum within 2.5 percentage points of best; then overall score and fewer caps; starting policy eligible"
+}
