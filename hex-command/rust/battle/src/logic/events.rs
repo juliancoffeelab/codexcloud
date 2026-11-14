@@ -236,6 +236,9 @@ impl Game<'_> {
                     .map(|id| self.site(id))
                     .find(|&t| self.at(t).is_none() && self.cost(kind, t) != u16::MAX);
                 if let Some(tile) = tile {
+                    // A deferred arrival can obstruct an already-built move
+                    // sequence even when it belongs to the acting faction.
+                    self.story.planning_revision = self.story.planning_revision.wrapping_add(1);
                     let faction = self.intern_name(&group.faction);
                     let id = self.position.add(kind, faction, tile);
                     let index = self.index(id).unwrap();

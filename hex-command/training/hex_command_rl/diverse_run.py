@@ -16,6 +16,7 @@ def main():
     p.add_argument("--root", type=Path, required=True)
     p.add_argument("--seconds", type=int, default=32400)
     p.add_argument("--warm-start", type=Path, required=True)
+    p.add_argument("--seed-start", type=int)
     p.add_argument("--campaign-cap", type=float, choices=[-1.0, -1.5, -2.0], default=-2)
     a = p.parse_args()
     if not 0 < a.seconds <= 43200:
@@ -78,6 +79,8 @@ def main():
                 if (run / "latest.json").exists()
                 else ["--warm-start", str(a.warm_start.resolve())]
             )
+            if not (run / "latest.json").exists() and a.seed_start is not None:
+                args += ["--seed-start", str(a.seed_start)]
             launch("hex_command_rl.mixed_ppo", "rl.log", args)
             failures += 1
         if not evaluator and not (run / "evaluation-complete.json").exists():

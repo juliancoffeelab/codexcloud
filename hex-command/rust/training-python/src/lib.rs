@@ -431,6 +431,7 @@ impl Worker {
         let (tx, actions) = mpsc::channel();
         let (events, rx) = mpsc::channel();
         let join = std::thread::spawn(move || {
+            let trace = std::rc::Rc::new(std::cell::RefCell::new(Vec::new()));
             let result = (|| -> Result<String, String> {
                 let rules = Rules::load().map_err(|e| e.to_string())?;
                 let mut c = parse(&config)?;
@@ -438,11 +439,14 @@ impl Worker {
                 let mut definitions = CampaignDefinitions::new(&rules);
                 definitions.prepare_match(&c).map_err(|e| e.to_string())?;
                 let emit = events.clone();
+                let chosen = trace.clone();
                 let controller: hex_command_core::training::Controller = Box::new(move |choices| {
                     if emit.send(Event::Decision(choices.clone())).is_err() {
                         return None;
                     }
-                    actions.recv().ok()
+                    let action = actions.recv().ok()?;
+                    chosen.borrow_mut().push(action);
+                    Some(action)
                 });
                 let (result, _) = scoped(
                     spatial.then(|| Dataset {
@@ -457,6 +461,9 @@ impl Worker {
                     .map(|r| summary(&r, &definitions).to_string())
                     .map_err(|e| e.to_string())
             })();
+            let result = result.map_err(|error| {
+                serde_json::json!({"error":error,"config":serde_json::from_str::<serde_json::Value>(&config).ok(),"actions":*trace.borrow()}).to_string()
+            });
             let _ = events.send(Event::Done(result));
         });
         Self {
