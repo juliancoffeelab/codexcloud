@@ -1,0 +1,839 @@
+{
+  "mapId": "rl-reinforcements-1",
+  "mapRevision": 1,
+  "name": "rl-reinforcements-1",
+  "description": "RL ruins fixture.",
+  "cols": 15,
+  "rows": 9,
+  "tiles": [
+    {
+      "col": 0,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 0,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 0,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 0,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 0,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 0,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 0,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 1,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 1,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 1,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "terrain": "village",
+      "owner": null,
+      "connections": []
+    },
+    {
+      "col": 6,
+      "row": 2,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 7,
+      "row": 2,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 8,
+      "row": 2,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 9,
+      "row": 2,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 10,
+      "row": 2,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 11,
+      "row": 2,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 12,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 3,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 3,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 3,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 3,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 3,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 3,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 3,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "terrain": "keep",
+      "owner": "player"
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 4,
+      "row": 4,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 5,
+      "row": 4,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 6,
+      "row": 4,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 7,
+      "row": 4,
+      "terrain": "village",
+      "owner": null,
+      "connections": []
+    },
+    {
+      "col": 8,
+      "row": 4,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 9,
+      "row": 4,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 10,
+      "row": 4,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 11,
+      "row": 4,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"]
+    },
+    {
+      "col": 12,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 4,
+      "terrain": "keep",
+      "owner": "enemy"
+    },
+    {
+      "col": 14,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 5,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 5,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 5,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 5,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 5,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 5,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 5,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 6,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 6,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 6,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 6,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 6,
+      "terrain": "village",
+      "owner": null,
+      "connections": []
+    },
+    {
+      "col": 10,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 6,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 7,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 7,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 7,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 7,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 7,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 7,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 7,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 7,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 7,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 7,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 8,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 8,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 8,
+      "terrain": "hill",
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 8,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 8,
+      "terrain": "ruins",
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 8,
+      "terrain": "forest",
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 8,
+      "terrain": "plains",
+      "owner": null
+    }
+  ]
+}

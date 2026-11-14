@@ -141,7 +141,15 @@
     "game/scenario/arena-islands-4/scenario.json",
     "game/scenario/combat-villages/scenario.json",
     "game/scenario/combat-sluice/scenario.json",
-    "game/scenario/underground-lair-v1/scenario.json"
+    "game/scenario/underground-lair-v1/scenario.json",
+    "game/scenario/rl-meadow/scenario.json",
+    "game/scenario/rl-woodland/scenario.json",
+    "game/scenario/rl-ridge/scenario.json",
+    "game/scenario/rl-wetland/scenario.json",
+    "game/scenario/rl-river/scenario.json",
+    "game/scenario/rl-islands/scenario.json",
+    "game/scenario/rl-cavern/scenario.json",
+    "game/scenario/rl-ruins/scenario.json"
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",
@@ -150,7 +158,17 @@
     "game/campaigns/snake-village-raid/campaign.json",
     "game/campaigns/snake-hunt/campaign.json",
     "game/campaigns/ghost-village-raid/campaign.json",
-    "game/campaigns/ghost-hunt/campaign.json"
+    "game/campaigns/ghost-hunt/campaign.json",
+    "game/campaigns/rl-escort/campaign.json",
+    "game/campaigns/rl-courier/campaign.json",
+    "game/campaigns/rl-protect/campaign.json",
+    "game/campaigns/rl-reach/campaign.json",
+    "game/campaigns/rl-hold/campaign.json",
+    "game/campaigns/rl-capture/campaign.json",
+    "game/campaigns/rl-survive/campaign.json",
+    "game/campaigns/rl-reinforcements/campaign.json",
+    "game/campaigns/rl-fog/campaign.json",
+    "game/campaigns/rl-relay/campaign.json"
   ],
   "simulation": {
     "rosters": "simulation/rosters.json",

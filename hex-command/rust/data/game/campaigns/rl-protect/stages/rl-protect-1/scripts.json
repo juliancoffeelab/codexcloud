@@ -1,0 +1,45 @@
+{
+  "requiredCompanions": ["charge"],
+  "events": [
+    {
+      "id": "battle",
+      "when": {
+        "noUnits": {
+          "faction": "enemy",
+          "role": "leader"
+        }
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Defeat the opposing leader",
+        "visibleWhen": {
+          "always": true
+        },
+        "intent": {
+          "defeat": {
+            "faction": "enemy",
+            "role": "leader"
+          }
+        },
+        "playerMarker": null
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ]
+    },
+    {
+      "id": "deadline",
+      "priority": -100,
+      "when": {
+        "turn": 30
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ]
+    }
+  ]
+}

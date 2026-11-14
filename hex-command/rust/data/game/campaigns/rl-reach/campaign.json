@@ -1,0 +1,26 @@
+{
+  "id": "rl-reach",
+  "name": "rl-reach",
+  "tagline": "RL tactical fixtures",
+  "description": "Training only.",
+  "shortDescription": "Training only.",
+  "race": "merfolk",
+  "leader": "tidekeeper",
+  "human": false,
+  "characters": [
+    {
+      "id": "player-leader",
+      "name": "player-leader"
+    },
+    {
+      "id": "enemy-leader",
+      "name": "enemy-leader"
+    },
+    {
+      "id": "charge",
+      "name": "charge"
+    }
+  ],
+  "ending": [],
+  "stages": ["stages/rl-reach-1/stage.json"]
+}

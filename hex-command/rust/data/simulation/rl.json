@@ -1,15 +1,39 @@
 {
   "arenas": [
     {
-      "id": "open",
+      "id": "rl-meadow",
       "pairs": [
         {
           "player": "human",
           "enemy": "skeletons"
         },
         {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
           "player": "skeletons",
           "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
         },
         {
           "player": "woodland",
@@ -18,19 +42,51 @@
         {
           "player": "coastal",
           "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
         }
       ]
     },
     {
-      "id": "river-valley",
+      "id": "rl-woodland",
       "pairs": [
         {
           "player": "human",
           "enemy": "skeletons"
         },
         {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
           "player": "skeletons",
           "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
         },
         {
           "player": "woodland",
@@ -39,37 +95,51 @@
         {
           "player": "coastal",
           "enemy": "human"
-        }
-      ]
-    },
-    {
-      "id": "villages",
-      "pairs": [
-        {
-          "player": "human",
-          "enemy": "skeletons"
-        }
-      ]
-    },
-    {
-      "id": "sluice",
-      "pairs": [
+        },
         {
           "player": "coastal",
-          "enemy": "human"
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
         }
       ]
     },
     {
-      "id": "crossings",
+      "id": "rl-ridge",
       "pairs": [
         {
           "player": "human",
           "enemy": "skeletons"
         },
         {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
           "player": "skeletons",
           "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
         },
         {
           "player": "woodland",
@@ -78,20 +148,339 @@
         {
           "player": "coastal",
           "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ]
+    },
+    {
+      "id": "rl-wetland",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ]
+    },
+    {
+      "id": "rl-river",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ]
+    },
+    {
+      "id": "rl-islands",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ]
+    },
+    {
+      "id": "rl-cavern",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ]
+    },
+    {
+      "id": "rl-ruins",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
         }
       ]
     }
   ],
   "campaigns": {
-    "lantern-road": [
+    "rl-escort": [
       {
-        "objective": "flight",
+        "objective": "authored",
         "diplomacy": "unrestricted"
-      },
+      }
+    ],
+    "rl-courier": [
       {
-        "objective": "fight",
+        "objective": "authored",
         "diplomacy": "unrestricted"
-      },
+      }
+    ],
+    "rl-protect": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-reach": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-hold": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-capture": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-survive": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-reinforcements": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-relay": [
       {
         "objective": "authored",
         "diplomacy": "unrestricted"

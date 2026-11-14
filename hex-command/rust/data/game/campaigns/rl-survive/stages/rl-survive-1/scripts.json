@@ -1,0 +1,46 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "relief",
+      "when": {
+        "turn": 10
+      },
+      "actions": [
+        {
+          "victory": "Relief arrived."
+        }
+      ]
+    },
+    {
+      "id": "stay",
+      "when": {
+        "always": false
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Survive until turn 10",
+        "visibleWhen": {
+          "always": true
+        },
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 2,
+                "row": 1
+              }
+            },
+            "character": "player-leader"
+          }
+        },
+        "playerMarker": null
+      },
+      "actions": [
+        {
+          "log": "Defend until relief."
+        }
+      ]
+    }
+  ]
+}

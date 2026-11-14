@@ -1,0 +1,26 @@
+{
+  "id": "rl-escort",
+  "name": "rl-escort",
+  "tagline": "RL tactical fixtures",
+  "description": "Training only.",
+  "shortDescription": "Training only.",
+  "race": "human",
+  "leader": "commander",
+  "human": false,
+  "characters": [
+    {
+      "id": "player-leader",
+      "name": "player-leader"
+    },
+    {
+      "id": "enemy-leader",
+      "name": "enemy-leader"
+    },
+    {
+      "id": "charge",
+      "name": "charge"
+    }
+  ],
+  "ending": [],
+  "stages": ["stages/rl-escort-1/stage.json"]
+}

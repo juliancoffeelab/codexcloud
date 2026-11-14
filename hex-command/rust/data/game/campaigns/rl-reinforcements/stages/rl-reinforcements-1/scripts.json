@@ -1,0 +1,89 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "battle",
+      "when": {
+        "noUnits": {
+          "faction": "enemy",
+          "role": "leader"
+        }
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Defeat the opposing leader",
+        "visibleWhen": {
+          "always": true
+        },
+        "intent": {
+          "defeat": {
+            "faction": "enemy",
+            "role": "leader"
+          }
+        },
+        "playerMarker": null
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ]
+    },
+    {
+      "id": "ambush",
+      "when": {
+        "proximity": {
+          "tile": {
+            "hex": {
+              "col": 11,
+              "row": 2
+            }
+          },
+          "radius": 2,
+          "faction": "player"
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "area": [
+              {
+                "hex": {
+                  "col": 12,
+                  "row": 2
+                }
+              },
+              {
+                "hex": {
+                  "col": 12,
+                  "row": 6
+                }
+              }
+            ],
+            "units": [
+              {
+                "type": "skeleton"
+              },
+              {
+                "type": "bonearcher"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "deadline",
+      "priority": -100,
+      "when": {
+        "turn": 30
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ]
+    }
+  ]
+}
