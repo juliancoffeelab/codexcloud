@@ -125,7 +125,7 @@ let terrain_portrait artwork terrain =
     | "ferry" -> ("ferry_1_layout_0", "dark-water")
     | "house" -> ("house_layout_0", "green-plain")
     | "mountain" -> ("mountain_layout_0", "mountain-rock")
-    | "cave" -> ("cave_layout_0", "mountain-rock")
+    | "mountain-mine" -> ("mountain-mine_layout_0", "mountain-rock")
     | "cave-passage" -> ("cave-passage_9", "cave-stone")
     | "cave-wall" -> ("cave-wall", "mountain-rock")
     | "burned-village" -> ("burned-village_layout_0", "green-plain")

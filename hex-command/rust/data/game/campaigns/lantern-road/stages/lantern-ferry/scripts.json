@@ -302,7 +302,7 @@
             {
               "speaker": "Scout",
               "portrait": "scout",
-              "text": "The mountain path is quiet. The old quarry cave isn\u2019t. We heard something breathing in there. Leave it alone if you\u2019re in a hurry."
+              "text": "The mountain path is quiet. The abandoned mountain mine isn\u2019t. We heard something breathing in there. Leave it alone if you\u2019re in a hurry."
             }
           ]
         },
@@ -382,7 +382,7 @@
       ],
       "objective": {
         "faction": "player",
-        "label": "Investigate the quarry cave",
+        "label": "Investigate the mountain mine",
         "optional": true,
         "intent": {
           "approach": {

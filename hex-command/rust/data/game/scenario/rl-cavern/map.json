@@ -1,492 +1,586 @@
 {
   "mapId": "rl-cavern",
-  "mapRevision": 1,
+  "mapRevision": 2,
   "name": "rl-cavern",
-  "description": "RL cavern fixture.",
+  "description": "Two underground chambers and a central passage, joined at two chokepoints.",
   "cols": 11,
   "rows": 7,
   "tiles": [
     {
       "col": 0,
       "row": 0,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 1,
       "row": 0,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 2,
       "row": 0,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 3,
       "row": 0,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 4,
       "row": 0,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 5,
       "row": 0,
       "terrain": "cave-wall",
-      "owner": null
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 6,
       "row": 0,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 7,
       "row": 0,
-      "terrain": "cave-passage",
+      "terrain": "cave-wall",
       "owner": null,
-      "connections": []
+      "floor": "cave-stone"
     },
     {
       "col": 8,
       "row": 0,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 9,
       "row": 0,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 10,
       "row": 0,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 0,
       "row": 1,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 1,
       "row": 1,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "sw"],
+      "floor": "cave-stone"
     },
     {
       "col": 2,
       "row": 1,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "sw", "w"],
+      "floor": "cave-stone"
     },
     {
       "col": 3,
       "row": 1,
       "terrain": "village",
       "owner": null,
-      "connections": []
+      "connections": [],
+      "floor": "cave-stone"
     },
     {
       "col": 4,
       "row": 1,
-      "terrain": "road",
+      "terrain": "cave-wall",
       "owner": null,
-      "connections": ["e", "w"]
+      "floor": "cave-stone"
     },
     {
       "col": 5,
       "row": 1,
-      "terrain": "road",
+      "terrain": "cave-passage",
       "owner": null,
-      "connections": ["e", "w"]
+      "connections": ["se", "sw"],
+      "floor": "cave-stone"
     },
     {
       "col": 6,
       "row": 1,
-      "terrain": "road",
+      "terrain": "cave-wall",
       "owner": null,
-      "connections": ["e", "w"]
+      "floor": "cave-stone"
     },
     {
       "col": 7,
       "row": 1,
-      "terrain": "road",
+      "terrain": "cave-passage",
       "owner": null,
-      "connections": ["e", "w"]
+      "connections": ["e", "se", "sw"],
+      "floor": "cave-stone"
     },
     {
       "col": 8,
       "row": 1,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "sw", "w"],
+      "floor": "cave-stone"
     },
     {
       "col": 9,
       "row": 1,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["sw", "w"],
+      "floor": "cave-stone"
     },
     {
       "col": 10,
       "row": 1,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 0,
       "row": 2,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 1,
       "row": 2,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 2,
       "row": 2,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "sw", "w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 3,
       "row": 2,
-      "terrain": "cave-wall",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "sw", "w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 4,
       "row": 2,
-      "terrain": "cave-wall",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "sw", "w", "nw"],
+      "floor": "cave-stone"
     },
     {
       "col": 5,
       "row": 2,
       "terrain": "cave-passage",
       "owner": null,
-      "connections": []
+      "connections": ["e", "se", "w", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 6,
       "row": 2,
       "terrain": "cave-passage",
       "owner": null,
-      "connections": []
+      "connections": ["e", "sw", "w", "nw"],
+      "floor": "cave-stone"
     },
     {
       "col": 7,
       "row": 2,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "w", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 8,
       "row": 2,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "sw", "w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 9,
       "row": 2,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["se", "sw", "w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 10,
       "row": 2,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 0,
       "row": 3,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 1,
       "row": 3,
       "terrain": "keep",
-      "owner": "player"
+      "owner": "player",
+      "floor": "cave-stone"
     },
     {
       "col": 2,
       "row": 3,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "sw", "w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 3,
       "row": 3,
-      "terrain": "road",
+      "terrain": "cave-passage",
       "owner": null,
-      "connections": ["e", "w"]
+      "connections": ["se", "sw", "w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 4,
       "row": 3,
-      "terrain": "road",
+      "terrain": "cave-wall",
       "owner": null,
-      "connections": ["e", "w"]
+      "floor": "cave-stone"
     },
     {
       "col": 5,
       "row": 3,
       "terrain": "village",
       "owner": null,
-      "connections": []
+      "connections": [],
+      "floor": "cave-stone"
     },
     {
       "col": 6,
       "row": 3,
-      "terrain": "road",
+      "terrain": "cave-wall",
       "owner": null,
-      "connections": ["e", "w"]
+      "floor": "cave-stone"
     },
     {
       "col": 7,
       "row": 3,
-      "terrain": "road",
+      "terrain": "cave-passage",
       "owner": null,
-      "connections": ["e", "w"]
+      "connections": ["e", "se", "sw", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 8,
       "row": 3,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "sw", "w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 9,
       "row": 3,
       "terrain": "keep",
-      "owner": "enemy"
+      "owner": "enemy",
+      "floor": "cave-stone"
     },
     {
       "col": 10,
       "row": 3,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 0,
       "row": 4,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 1,
       "row": 4,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 2,
       "row": 4,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "sw", "w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 3,
       "row": 4,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "sw", "w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 4,
       "row": 4,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "sw", "w", "nw"],
+      "floor": "cave-stone"
     },
     {
       "col": 5,
       "row": 4,
       "terrain": "cave-passage",
       "owner": null,
-      "connections": []
+      "connections": ["e", "se", "w", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 6,
       "row": 4,
       "terrain": "cave-passage",
       "owner": null,
-      "connections": []
+      "connections": ["e", "sw", "w", "nw"],
+      "floor": "cave-stone"
     },
     {
       "col": 7,
       "row": 4,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "w", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 8,
       "row": 4,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "se", "sw", "w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 9,
       "row": 4,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["se", "sw", "w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 10,
       "row": 4,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 0,
       "row": 5,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 1,
       "row": 5,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 2,
       "row": 5,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 3,
       "row": 5,
       "terrain": "cave-passage",
       "owner": null,
-      "connections": []
+      "connections": ["w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 4,
       "row": 5,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 5,
       "row": 5,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 6,
       "row": 5,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 7,
       "row": 5,
       "terrain": "village",
       "owner": null,
-      "connections": []
+      "connections": [],
+      "floor": "cave-stone"
     },
     {
       "col": 8,
       "row": 5,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["e", "w", "nw", "ne"],
+      "floor": "cave-stone"
     },
     {
       "col": 9,
       "row": 5,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-passage",
+      "owner": null,
+      "connections": ["w", "nw"],
+      "floor": "cave-stone"
     },
     {
       "col": 10,
       "row": 5,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 0,
       "row": 6,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 1,
       "row": 6,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 2,
       "row": 6,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 3,
       "row": 6,
-      "terrain": "cave-passage",
+      "terrain": "cave-wall",
       "owner": null,
-      "connections": []
+      "floor": "cave-stone"
     },
     {
       "col": 4,
       "row": 6,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 5,
       "row": 6,
-      "terrain": "cave-passage",
+      "terrain": "cave-wall",
       "owner": null,
-      "connections": []
+      "floor": "cave-stone"
     },
     {
       "col": 6,
       "row": 6,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 7,
       "row": 6,
-      "terrain": "cave-passage",
+      "terrain": "cave-wall",
       "owner": null,
-      "connections": []
+      "floor": "cave-stone"
     },
     {
       "col": 8,
       "row": 6,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 9,
       "row": 6,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     },
     {
       "col": 10,
       "row": 6,
-      "terrain": "cave",
-      "owner": null
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone"
     }
   ]
 }

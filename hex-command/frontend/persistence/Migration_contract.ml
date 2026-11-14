@@ -5,17 +5,17 @@
 [@@@warning "+8+9"]
 [@@@warnerror "+8+9"]
 
-module Native_checked : module type of Native_v47 = Domain
+module Native_checked : module type of Native_v48 = Domain
 module Native_bridge = Migration_native_contract.Make (Domain)
 module H = Historical_types
 module V = Current_save
 module A = Save_format
 
-let side_from : H.V47.current_first -> Domain.Turn_phase.t = function
+let side_from : H.V48.current_first -> Domain.Turn_phase.t = function
   | `Player -> Player
   | `Ai -> Ai
 
-let side_to : Domain.Turn_phase.t -> H.V47.current_first = function Player -> `Player | Ai -> `Ai
+let side_to : Domain.Turn_phase.t -> H.V48.current_first = function Player -> `Player | Ai -> `Ai
 
 let policy_from : V.policy -> A.policy = function
   | `Classic -> `Classic

@@ -495,3 +495,18 @@ deletes their payloads and history rows atomically. Retiring the current save
 opens the campaign chooser; no replacement battle is saved or restored. Other
 campaigns and malformed records retain their existing load/repair behavior.
 LocalStorage import composes the same retirement before committing IndexedDB v3.
+
+## Version-forty-seven migration
+
+The v47-to-v48 step renames the terrain ID and perception terrain role `cave` to
+`mountain-mine`. This landmark represents a mine dug into a mountainside; ordinary
+cave floor remains `cave-passage`. Resolved tiles and scoped perception rules are
+converted, including reconstructed undo states.
+
+Revision-one Underground Lair saves advance to revision two and replace the mine
+at (16, 23) with cave-stone passage floor, opening east, southeast, southwest and
+northwest. All other resolved facts stay intact. Revision-one `rl-cavern` and
+`rl-survive-1` saves advance to revision two with their existing resolved terrain;
+only new battles use the replacement chamber layout. Board dimensions and starting
+positions remain unchanged. No units, ownership, treasury, campaign progress or
+random seeds are reset. Archived training catalogs remain frozen.

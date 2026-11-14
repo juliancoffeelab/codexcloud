@@ -136,6 +136,11 @@ They are absent from default simulation schedules. The offline authoring utility
 `python -m hex_command_rl.environments` reproduces them; no runtime terrain
 generator or frontend loader is involved. Arena layouts cover meadow, woodland,
 ridge, wetlands, river crossings, islands, caverns and ruins, from 9×7 to 21×13.
+The current cavern revision uses two cave-stone chambers, rock walls and two
+connecting routes, with explicit passage openings. It replaces revision one's
+repeated mine landmarks; the archived v2 experiment and selected checkpoint used
+that earlier layout and have not been retrained on the replacement. The survival
+fixture that shares this biome uses the corrected geometry too.
 All twelve ordered race pairings are available in training. Campaign fixtures
 exercise escort/courier movement, protected fighters, deadlines, holding,
 simultaneous ownership, survival, reinforcements, fog and stage progression.

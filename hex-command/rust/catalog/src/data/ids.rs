@@ -252,7 +252,7 @@ impl std::fmt::Display for Family {
 pub enum TerrainRole {
     Bridge,
     BurnedVillage,
-    Cave,
+    MountainMine,
     CaveWall,
     Church,
     Ferry,
@@ -291,7 +291,7 @@ impl TerrainRole {
             | Self::Village => true,
             Self::Bridge
             | Self::BurnedVillage
-            | Self::Cave
+            | Self::MountainMine
             | Self::CaveWall
             | Self::Church
             | Self::Ferry
@@ -315,7 +315,7 @@ impl TerrainRole {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
     pub fn blocks_shots(self) -> bool {
         match self {
-            Self::Cave
+            Self::MountainMine
             | Self::CaveWall
             | Self::Forest
             | Self::Grove
@@ -350,7 +350,7 @@ impl TerrainRole {
             Self::Village => 2,
             Self::Bridge
             | Self::BurnedVillage
-            | Self::Cave
+            | Self::MountainMine
             | Self::CaveWall
             | Self::Church
             | Self::Ferry
@@ -382,7 +382,7 @@ impl TerrainRole {
             Self::Grove | Self::Village => 4,
             Self::Bridge
             | Self::BurnedVillage
-            | Self::Cave
+            | Self::MountainMine
             | Self::CaveWall
             | Self::Church
             | Self::Ferry
@@ -450,7 +450,8 @@ pub enum Terrain {
     Ferry,
     House,
     Mountain,
-    Cave,
+    #[serde(rename = "mountain-mine")]
+    MountainMine,
     #[serde(rename = "burned-village")]
     BurnedVillage,
     Signpost,
@@ -484,7 +485,7 @@ impl Terrain {
             Self::Ferry => "ferry",
             Self::House => "house",
             Self::Mountain => "mountain",
-            Self::Cave => "cave",
+            Self::MountainMine => "mountain-mine",
             Self::CavePassage => "cave-passage",
             Self::CaveWall => "cave-wall",
             Self::BurnedVillage => "burned-village",

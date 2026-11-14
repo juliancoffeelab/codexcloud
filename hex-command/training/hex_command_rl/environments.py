@@ -16,7 +16,7 @@ CORE_BIOMES = (
     ("wetland", 11, 9, ("marsh", "marsh", "plains", "water")),
     ("river", 13, 9, ("plains", "forest", "hill", "plains")),
     ("islands", 15, 11, ("water", "water", "plains", "forest")),
-    ("cavern", 11, 7, ("cave", "cave", "cave-wall", "cave-passage")),
+    ("cavern", 11, 7, ("cave-passage",)),
     ("ruins", 15, 9, ("ruins", "plains", "forest", "hill")),
 )
 BIOMES = CORE_BIOMES + (
@@ -42,17 +42,24 @@ def board(identifier, biome, seed):
     for row in range(rows):
         for col in range(cols):
             kind = rng.choice(terrain)
+            if name == "cavern":
+                # Two chambers and a central passage, with two separated links.
+                # Mine entrances are landmarks, never underground ground cover.
+                chamber = 1 <= row <= 5 and (1 <= col <= 3 or 7 <= col <= 9)
+                passage = col == 5 and 1 <= row <= 5
+                link = row in (2, 4) and 3 <= col <= 7
+                kind = "cave-passage" if chamber or passage or link else "cave-wall"
             if name == "river" and col == cols // 2:
                 kind = "water"
             # Two guaranteed land routes keep every faction's army mobile.
-            if row in (mid, mid - 2):
+            if name != "cavern" and row in (mid, mid - 2):
                 kind = (
                     "ford"
                     if name in ("river", "islands", "wetland", "floodplain")
                     else "road"
                 )
-            if col in (0, 1, 2, cols - 3, cols - 2, cols - 1):
-                kind = "plains" if name != "cavern" else "cave"
+            if name != "cavern" and col in (0, 1, 2, cols - 3, cols - 2, cols - 1):
+                kind = "plains"
             if row == mid and col in (1, cols - 2):
                 kind = "keep"
             if (col, row) in (
@@ -69,11 +76,36 @@ def board(identifier, biome, seed):
             elif kind in ("village", "cave-passage"):
                 tile["connections"] = []
             tiles.append(tile)
+    if name == "cavern":
+        by_cell = {(t["col"], t["row"]): t for t in tiles}
+        for tile in tiles:
+            tile["floor"] = "cave-stone"
+            if tile["terrain"] != "cave-passage":
+                continue
+            col, row = tile["col"], tile["row"]
+            shift = row % 2
+            neighbors = (
+                ("e", col + 1, row),
+                ("se", col + shift, row + 1),
+                ("sw", col + shift - 1, row + 1),
+                ("w", col - 1, row),
+                ("nw", col + shift - 1, row - 1),
+                ("ne", col + shift, row - 1),
+            )
+            tile["connections"] = [
+                direction
+                for direction, x, y in neighbors
+                if (x, y) in by_cell and by_cell[x, y]["terrain"] != "cave-wall"
+            ]
     return dict(
         mapId=identifier,
-        mapRevision=1,
+        mapRevision=2 if name == "cavern" else 1,
         name=identifier,
-        description=f"RL {name} fixture.",
+        description=(
+            "Two underground chambers and a central passage, joined at two chokepoints."
+            if name == "cavern"
+            else f"RL {name} fixture."
+        ),
         cols=cols,
         rows=rows,
         tiles=tiles,

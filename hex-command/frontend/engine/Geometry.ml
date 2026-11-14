@@ -37,7 +37,7 @@ let preview_dimensions ~cols ~rows =
 let preview_color = function
   | "monastery" | "church" | "castle-wall" | "castle-bell" -> "#b9b597"
   | "graveyard" | "ritual-star" | "ritual-spent" | "burned-village" -> "#8d9f4f"
-  | "mountain" | "cave" -> "#727063"
+  | "mountain" | "mountain-mine" -> "#727063"
   | "cave-passage" -> "#505358"
   | "cave-wall" -> "#2c3037"
   | "house" -> "#d4b476"
