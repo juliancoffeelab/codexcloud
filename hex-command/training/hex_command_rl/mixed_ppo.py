@@ -13,14 +13,22 @@ import numpy as np
 import torch
 from torch.nn import functional as F
 import hex_command_training as native
-from .mixed_workload import group, mass
+from .mixed_workload import group, weights
 from .ppo import ActorCritic, pack, unpack, advantages, categorical, categorical_kl
 from .spatial import SpatialPlanner
 from .recovery import save_bundle, atomic_json, load_resume, read_jsonl
 
 
-def terminal_reward(config, reward, truncated):
-    return -1.0 if truncated and "campaign" in config else float(reward)
+def terminal_reward(config, reward, truncated, result=None, campaign_cap=-2.0):
+    if "campaign" not in config:
+        return -1.0 if truncated else float(reward)
+    if truncated:
+        return campaign_cap
+    if reward < 0 and result:
+        return {"escort_loss": -2.0, "protected_loss": -1.5, "leader_loss": -1.0}.get(
+            result.get("failure"), -1.0
+        )
+    return float(reward)
 
 
 class Sampler:
@@ -31,6 +39,7 @@ class Sampler:
         self.templates = defaultdict(list)
         self.weights = {}
         seen = set()
+        masses = weights(configs)
         for c in configs:
             k = json.dumps(group(c))
             base = dict(c)
@@ -40,7 +49,7 @@ class Sampler:
             if identity not in seen:
                 self.templates[k].append(base)
                 seen.add(identity)
-            self.weights[k] = mass(c)
+            self.weights[k] = masses[group(c)]
         self.counts = {k: 0 for k in self.templates}
         self.average = {
             k: 90.0 if json.loads(k)[0] == "arena" else 300.0 for k in self.templates
@@ -106,10 +115,18 @@ def main():
     p.add_argument("--seconds", type=float, default=21600)
     p.add_argument("--warm-start", type=Path)
     p.add_argument("--resume", type=Path)
+    p.add_argument(
+        "--seed-start",
+        type=int,
+        help="fresh rollout seeds for a warm start (at least 7000001)",
+    )
     p.add_argument("--envs", type=int, default=4)
     p.add_argument("--critic-warmup-episodes", type=int, default=24)
     p.add_argument("--horizon", type=int, default=64)
     p.add_argument("--temperature", type=float)
+    p.add_argument(
+        "--campaign-cap", type=float, choices=[-1.0, -1.5, -2.0], default=-2.0
+    )
     a = p.parse_args()
     if (
         not 0 < a.seconds <= 43200
@@ -132,6 +149,11 @@ def main():
     rng = np.random.default_rng(271)
     policy = SpatialPlanner().eval()
     old = load_resume(a.resume) if a.resume else None
+    if a.seed_start is not None and (old or not 7000001 <= a.seed_start <= 4000000000):
+        p.error(
+            "seed-start is only for warm starts and must avoid held-out seed ranges"
+        )
+    seed_start = old.get("seed_start", 7000001) if old else a.seed_start or 7000001
     if old and a.temperature is not None and a.temperature != old["temperature"]:
         p.error("resume temperature must match the saved policy")
     a.temperature = (
@@ -142,6 +164,7 @@ def main():
             old["kind"] == "mixed_ppo"
             and old["workload_sha256"] == spec["workload_sha256"]
             and old["fingerprints"] == spec["fingerprints"]
+            and old.get("campaign_cap", -1.0) == a.campaign_cap
         )
         policy.load_state_dict(old["policy"])
     else:
@@ -160,6 +183,8 @@ def main():
         rng.bit_generator.state = old["numpy_rng"]
         random.setstate(old["python_rng"])
     sampler = Sampler(spec["train"], rng, old["sampler"] if old else None)
+    if not old:
+        sampler.next_seed = seed_start
     update = old["update"] if old else 0
     episodes = old["episodes"] if old else 0
     decisions = old["decisions"] if old else 0
@@ -207,6 +232,8 @@ def main():
             fingerprints=spec["fingerprints"],
             workload_sha256=spec["workload_sha256"],
             temperature=a.temperature,
+            campaign_cap=a.campaign_cap,
+            seed_start=seed_start,
             action_counts=dict(action_counts),
         )
         save_bundle(run, state, policy, label)
@@ -215,6 +242,7 @@ def main():
         run / "parameters.json",
         dict(
             seconds=a.seconds,
+            seed_start=seed_start,
             temperature=a.temperature,
             envs=a.envs,
             horizon=a.horizon,
@@ -229,10 +257,13 @@ def main():
             rewards=dict(
                 campaign_success=1,
                 campaign_defeat=-1,
-                campaign_cap=-1,
+                campaign_cap=a.campaign_cap,
+                escort_loss=-2,
+                protected_loss=-1.5,
+                leader_loss=-1,
                 arena_win=1,
                 arena_defeat=-1,
-                arena_cap=0,
+                arena_cap=-1,
             ),
         ),
     )
@@ -295,7 +326,8 @@ def main():
                         terminal = nxt[3][0] or nxt[4][0]
                         r = float(nxt[2][0])
                         c = cases[i]
-                        r = terminal_reward(c, r, nxt[4][0])
+                        result = json.loads(envs[i].results()[0]) if terminal else None
+                        r = terminal_reward(c, r, nxt[4][0], result, a.campaign_cap)
                         rewards[i] = r
                         values[i] = float(v[j])
                         dones[i] = terminal
@@ -325,6 +357,7 @@ def main():
                                 reward=r,
                                 success=r > 0,
                                 truncated=bool(nxt[4][0]),
+                                result=result,
                                 length=lengths[i],
                             )
                             sampler.finish(i, lengths[i])

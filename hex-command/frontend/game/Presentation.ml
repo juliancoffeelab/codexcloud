@@ -519,7 +519,7 @@ let terrain_facts (terrain : terrain_definition) =
            Terrain_role.Hill;
            Terrain_role.Grove;
            Terrain_role.Mountain;
-           Terrain_role.Cave;
+           Terrain_role.Mountain_mine;
            Terrain_role.Keep;
          ]
      then [ "Blocks ranged shots through this hex" ]

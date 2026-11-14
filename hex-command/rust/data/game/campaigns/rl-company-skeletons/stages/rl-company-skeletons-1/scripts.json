@@ -1,0 +1,190 @@
+{
+  "requiredCompanions": ["charge"],
+  "events": [
+    {
+      "id": "route-open",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 11,
+              "row": 6
+            }
+          },
+          "faction": "player"
+        }
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Secure the crossing",
+        "visibleWhen": {
+          "always": true
+        },
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 11,
+                "row": 6
+              }
+            }
+          ]
+        },
+        "playerMarker": null,
+        "satisfiedWhen": {
+          "flag": "route-open"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "route-open"
+        }
+      ]
+    },
+    {
+      "id": "arrival",
+      "when": {
+        "all": [
+          {
+            "flag": "route-open"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 4,
+                  "row": 4
+                }
+              },
+              "character": "charge",
+              "through": true
+            }
+          }
+        ]
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Escort the company beyond the crossing",
+        "visibleWhen": {
+          "flag": "route-open"
+        },
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 4,
+                "row": 4
+              }
+            },
+            "character": "charge",
+            "through": true
+          }
+        },
+        "playerMarker": null
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ]
+    },
+    {
+      "id": "reserve",
+      "when": {
+        "all": [
+          {
+            "flag": "route-open"
+          },
+          {
+            "turnAtLeast": 9
+          }
+        ]
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "area": [
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 4
+                }
+              },
+              {
+                "hex": {
+                  "col": 3,
+                  "row": 8
+                }
+              }
+            ],
+            "units": [
+              {
+                "type": "wolf"
+              },
+              {
+                "type": "thorncaller"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "supplies",
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 13,
+              "row": 4
+            }
+          },
+          "faction": "player",
+          "through": true
+        }
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Collect optional supplies",
+        "visibleWhen": {
+          "always": true
+        },
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 13,
+                "row": 4
+              }
+            },
+            "faction": "player",
+            "through": true
+          }
+        },
+        "playerMarker": null,
+        "optional": true
+      },
+      "actions": [
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 12
+          }
+        }
+      ]
+    },
+    {
+      "id": "deadline",
+      "priority": -100,
+      "when": {
+        "turn": 38
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ]
+    }
+  ]
+}

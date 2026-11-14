@@ -1,0 +1,57 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "arrival",
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 7,
+              "row": 2
+            }
+          },
+          "character": "player-leader",
+          "through": true
+        }
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Reach the exit before turn 16",
+        "visibleWhen": {
+          "always": true
+        },
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 7,
+                "row": 2
+              }
+            },
+            "character": "player-leader",
+            "through": true
+          }
+        },
+        "playerMarker": null
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ]
+    },
+    {
+      "id": "deadline",
+      "priority": -100,
+      "when": {
+        "turn": 16
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ]
+    }
+  ]
+}

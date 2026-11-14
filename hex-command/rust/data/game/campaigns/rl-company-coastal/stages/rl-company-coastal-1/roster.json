@@ -1,0 +1,158 @@
+{
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "visionGroup": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "relations": {
+        "enemy": "hostile"
+      },
+      "gold": 36,
+      "recruits": [
+        {
+          "unit": "harpooner"
+        },
+        {
+          "unit": "reefguard"
+        },
+        {
+          "unit": "wavemender"
+        },
+        {
+          "unit": "merfolk-maceguard"
+        }
+      ],
+      "units": [
+        {
+          "type": "tidekeeper",
+          "tile": {
+            "col": 20,
+            "row": 6
+          },
+          "role": "leader",
+          "character": "player-leader"
+        },
+        {
+          "type": "harpooner",
+          "tile": {
+            "col": 18,
+            "row": 5
+          }
+        },
+        {
+          "type": "reefguard",
+          "tile": {
+            "col": 19,
+            "row": 6
+          }
+        },
+        {
+          "type": "wavemender",
+          "tile": {
+            "col": 18,
+            "row": 7
+          }
+        },
+        {
+          "type": "captives",
+          "tile": {
+            "col": 19,
+            "row": 7
+          },
+          "role": "captive",
+          "character": "charge"
+        }
+      ]
+    },
+    {
+      "id": "enemy",
+      "phase": "ai",
+      "visionGroup": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "relations": {
+        "player": "hostile"
+      },
+      "gold": 18,
+      "recruits": [
+        {
+          "unit": "swordsman"
+        },
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "scout"
+        },
+        {
+          "unit": "archer"
+        },
+        {
+          "unit": "adept"
+        },
+        {
+          "unit": "rider"
+        },
+        {
+          "unit": "horse-archer"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "tile": {
+            "col": 2,
+            "row": 6
+          },
+          "role": "leader",
+          "character": "enemy-leader"
+        },
+        {
+          "type": "swordsman",
+          "tile": {
+            "col": 2,
+            "row": 5
+          }
+        },
+        {
+          "type": "spearman",
+          "tile": {
+            "col": 3,
+            "row": 6
+          }
+        },
+        {
+          "type": "scout",
+          "tile": {
+            "col": 2,
+            "row": 7
+          }
+        }
+      ]
+    }
+  ]
+}

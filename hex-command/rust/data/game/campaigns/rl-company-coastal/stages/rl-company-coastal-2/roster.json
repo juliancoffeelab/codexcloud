@@ -1,0 +1,156 @@
+{
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "visionGroup": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "relations": {
+        "enemy": "hostile"
+      },
+      "gold": 36,
+      "recruits": [
+        {
+          "unit": "harpooner"
+        },
+        {
+          "unit": "reefguard"
+        },
+        {
+          "unit": "wavemender"
+        },
+        {
+          "unit": "merfolk-maceguard"
+        }
+      ],
+      "units": [
+        {
+          "type": "tidekeeper",
+          "tile": {
+            "col": 17,
+            "row": 5
+          },
+          "role": "leader",
+          "character": "player-leader"
+        },
+        {
+          "type": "harpooner",
+          "tile": {
+            "col": 17,
+            "row": 6
+          }
+        },
+        {
+          "type": "reefguard",
+          "tile": {
+            "col": 16,
+            "row": 5
+          },
+          "character": "guard"
+        },
+        {
+          "type": "wavemender",
+          "tile": {
+            "col": 17,
+            "row": 4
+          }
+        },
+        {
+          "type": "captives",
+          "tile": {
+            "col": 18,
+            "row": 4
+          },
+          "role": "captive",
+          "character": "charge"
+        }
+      ]
+    },
+    {
+      "id": "enemy",
+      "phase": "ai",
+      "visionGroup": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "relations": {
+        "player": "hostile"
+      },
+      "gold": 18,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        },
+        {
+          "unit": "skeleton-rider"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-axeman"
+        },
+        {
+          "unit": "ghost"
+        }
+      ],
+      "units": [
+        {
+          "type": "necromancer",
+          "tile": {
+            "col": 1,
+            "row": 5
+          },
+          "role": "leader",
+          "character": "enemy-leader"
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 3,
+            "row": 6
+          }
+        },
+        {
+          "type": "skeleton-impact-caster",
+          "tile": {
+            "col": 2,
+            "row": 5
+          }
+        },
+        {
+          "type": "skeleton-rider",
+          "tile": {
+            "col": 3,
+            "row": 4
+          }
+        }
+      ]
+    }
+  ]
+}

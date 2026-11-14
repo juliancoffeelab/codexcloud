@@ -172,6 +172,9 @@ def refine_rl_selection(root):
     ]
     cache = run / "selection-validation"
     cache.mkdir(exist_ok=True)
+    # Extending a smoke run must not discard a candidate already validated on
+    # the larger panel merely because newer small-panel scores crowd it out.
+    paths += [json.loads(p.read_text())["checkpoint"] for p in cache.glob("*.json")]
     records = []
     seen = set()
     import hashlib

@@ -1,0 +1,63 @@
+{
+  "kind": "native-planner-checkpoint",
+  "id": "campaign-cnn-ppo-v2",
+  "architecture": "hex-cnn",
+  "parameters": 32145,
+  "feature_count": 229,
+  "spatial_channels": 65,
+  "spatial_schema": 9,
+  "training_fingerprints": {
+    "content": "9e3842a18008485d75f790ee93621552f7ec90b19370b6b543f8883e33ebf073",
+    "engine": "8e01495b4af918fff0f0b055edddd478eab6b8da2bb4b5ef7014b94fd2eccc27"
+  },
+  "training_workload_sha256": "2e64b8791cf5696fc35c6c7373faf60baa0de779657e6debae8d954aa1d32d64",
+  "source_revision": "210f7e83f02cc247186e16bac5c610bf78297fb8",
+  "selected_after_seconds": 22701.415004169,
+  "selection": {
+    "checkpoint": "checkpoints/update-00017035-1794649436809828253",
+    "reliability_key": [0.38888888888888884, 0.5891927083333335, -0.0475260416666667],
+    "strata": {
+      "arena/classic": {
+        "score": 0.85546875,
+        "wins": 219,
+        "runs": 256,
+        "caps": 1
+      },
+      "arena/predictor": {
+        "score": 0.66796875,
+        "wins": 171,
+        "runs": 256,
+        "caps": 5
+      },
+      "campaign/classic": {
+        "score": 0.4444444444444444,
+        "wins": 32,
+        "runs": 72,
+        "caps": 6
+      },
+      "campaign/predictor": {
+        "score": 0.38888888888888884,
+        "wins": 28,
+        "runs": 72,
+        "caps": 6
+      }
+    },
+    "candidates": 10,
+    "validation_runs": 656,
+    "test_seeds_used": false,
+    "criterion": "Worst stratum within 2.5 percentage points of best; then overall score and fewer caps; starting policy eligible"
+  },
+  "training_export_sha256": "c799b8d50a4baa86b09daab0ab48dfc7615e1445e33f322abe6bffa57d76933c",
+  "experiment": "../../experiments/2026-11-14-diverse/experiment.json",
+  "files": {
+    "planner.json": {
+      "bytes": 777793,
+      "sha256": "25c5286bb10366d3faa2a1d79a15b4a1c14eaf9a52b971305f2f5ee4bc5acdb5"
+    },
+    "resume.pt": {
+      "bytes": 750402,
+      "sha256": "e54d0ab6f6108d9137f8ee539d86f7454899402842236a45c171ddc27faf6523"
+    }
+  },
+  "usage": "Experimental native policy selected on validation. Original v1 remains available. Exact resume requires the archived workload/catalog and training engine; use a fresh warm start after engine changes."
+}

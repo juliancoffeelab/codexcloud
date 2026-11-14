@@ -1,0 +1,57 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "hold",
+      "when": {
+        "held": {
+          "tile": {
+            "hex": {
+              "col": 6,
+              "row": 4
+            }
+          },
+          "side": "player",
+          "turns": 3
+        }
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Hold the central village for three turns",
+        "visibleWhen": {
+          "always": true
+        },
+        "intent": {
+          "hold": {
+            "tile": {
+              "hex": {
+                "col": 6,
+                "row": 4
+              }
+            },
+            "side": "player",
+            "turns": 3
+          }
+        },
+        "playerMarker": null
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ]
+    },
+    {
+      "id": "deadline",
+      "priority": -100,
+      "when": {
+        "turn": 30
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ]
+    }
+  ]
+}

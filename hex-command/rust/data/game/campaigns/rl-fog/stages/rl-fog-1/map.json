@@ -1,0 +1,1026 @@
+{
+  "mapId": "rl-fog-1",
+  "mapRevision": 1,
+  "name": "rl-fog-1",
+  "description": "RL meadow fixture.",
+  "cols": 9,
+  "rows": 7,
+  "tiles": [
+    {
+      "col": 0,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 0,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "terrain": "village",
+      "owner": null,
+      "connections": [],
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"],
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"],
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"],
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 1,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 2,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "terrain": "keep",
+      "owner": "player",
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"],
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 3,
+      "terrain": "village",
+      "owner": null,
+      "connections": [],
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 3,
+      "terrain": "road",
+      "owner": null,
+      "connections": ["e", "w"],
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 3,
+      "terrain": "keep",
+      "owner": "enemy",
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 0,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "terrain": "forest",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 4,
+      "terrain": "forest",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 4,
+      "terrain": "hill",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 4,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 0,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 5,
+      "terrain": "hill",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 5,
+      "terrain": "forest",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 5,
+      "terrain": "hill",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 5,
+      "terrain": "village",
+      "owner": null,
+      "connections": [],
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 5,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 0,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 1,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 2,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 3,
+      "row": 6,
+      "terrain": "hill",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 4,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 5,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 6,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 7,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    },
+    {
+      "col": 8,
+      "row": 6,
+      "terrain": "plains",
+      "owner": null,
+      "perception": {
+        "remember": true,
+        "concealment": [
+          {
+            "kind": "fog",
+            "revealWithin": 2,
+            "requires": {}
+          }
+        ]
+      }
+    }
+  ]
+}

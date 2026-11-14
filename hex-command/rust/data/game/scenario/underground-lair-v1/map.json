@@ -8843,8 +8843,8 @@
     {
       "col": 16,
       "row": 23,
-      "terrain": "cave",
-      "floor": "mountain-rock",
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
       "perception": {
         "remember": true,
         "concealment": [
@@ -8854,7 +8854,8 @@
             "requires": {}
           }
         ]
-      }
+      },
+      "connections": ["e", "se", "sw", "nw"]
     },
     {
       "col": 17,
@@ -11555,6 +11556,6 @@
       }
     ]
   },
-  "mapRevision": 1,
+  "mapRevision": 2,
   "description": "A forest entrance, squared cave chambers, and a central castle chamber. Solid rock blocks movement; proximity fog remembers explored tiles."
 }

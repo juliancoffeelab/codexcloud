@@ -103,7 +103,7 @@ let string_of_terrain (value : Terrain.t) =
   | Terrain.Ferry -> "ferry"
   | Terrain.House -> "house"
   | Terrain.Mountain -> "mountain"
-  | Terrain.Cave -> "cave"
+  | Terrain.Mountain_mine -> "mountain-mine"
   | Terrain.Burned_village -> "burned-village"
   | Terrain.Signpost -> "signpost"
 

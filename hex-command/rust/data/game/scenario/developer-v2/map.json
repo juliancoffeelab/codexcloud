@@ -160,7 +160,7 @@
     {
       "col": 21,
       "row": 0,
-      "terrain": "cave",
+      "terrain": "mountain-mine",
       "owner": null,
       "floor": "mountain-rock"
     },

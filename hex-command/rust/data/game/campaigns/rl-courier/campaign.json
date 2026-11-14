@@ -1,0 +1,26 @@
+{
+  "id": "rl-courier",
+  "name": "rl-courier",
+  "tagline": "RL tactical fixtures",
+  "description": "Training only.",
+  "shortDescription": "Training only.",
+  "race": "skeletons",
+  "leader": "necromancer",
+  "human": false,
+  "characters": [
+    {
+      "id": "player-leader",
+      "name": "player-leader"
+    },
+    {
+      "id": "enemy-leader",
+      "name": "enemy-leader"
+    },
+    {
+      "id": "charge",
+      "name": "charge"
+    }
+  ],
+  "ending": [],
+  "stages": ["stages/rl-courier-1/stage.json"]
+}

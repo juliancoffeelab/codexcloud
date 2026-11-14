@@ -42,13 +42,68 @@ fn learned(config: &mut MatchConfig) {
         }
     }
 }
-fn summary(r: &MatchResult) -> serde_json::Value {
+fn summary(r: &MatchResult, definitions: &CampaignDefinitions<'_>) -> serde_json::Value {
     match r {
         MatchResult::Arena(r) => {
             serde_json::json!({"winner":r.winner,"reason":r.reason,"rounds":r.rounds,"success":r.winner==Some(BattleResult::PlayerVictory),"truncated":r.winner.is_none()})
         }
         MatchResult::Campaign(r) => {
-            serde_json::json!({"success":r.completed,"missions":r.missions.iter().map(|m|serde_json::json!({"id":m.id,"round":m.round,"winner":m.winner})).collect::<Vec<_>>(),"truncated":r.missions.last().is_some_and(|m|m.winner.is_none())})
+            let definition = definitions
+                .get(&r.config.campaign, &r.config.objective)
+                .expect("prepared campaign");
+            let failure = r.missions.last().and_then(|m| {
+                if m.winner != Some(BattleResult::PlayerDefeat) {
+                    return None;
+                }
+                let mission = definition
+                    .missions
+                    .iter()
+                    .find(|v| v.map.id == m.id)
+                    .expect("reached mission");
+                let evacuated = m
+                    .r#final
+                    .campaign
+                    .as_ref()
+                    .map(|c| c.evacuated.as_slice())
+                    .unwrap_or_default();
+                let alive = |u: &hex_command_core::data::PublicUnit| {
+                    m.r#final.units.iter().any(|v| v.id == u.id)
+                        || evacuated.iter().any(|v| v.unit.id == u.id)
+                };
+                // Inspect all reached rosters, including characters spawned by events.
+                // This is terminal telemetry, never an input revealing hidden units.
+                let seen = m.initial.units.iter().chain(
+                    m.phases
+                        .iter()
+                        .flat_map(|p| p.before.iter().map(|u| u.as_ref())),
+                );
+                let lost: Vec<_> = seen
+                    .filter(|u| {
+                        !alive(u)
+                            && u.character
+                                .as_ref()
+                                .is_some_and(|id| mission.required_companions.contains(id))
+                    })
+                    .collect();
+                if lost.iter().any(|u| u.role.is_some_and(Role::is_escort)) {
+                    Some("escort_loss")
+                } else if !lost.is_empty() {
+                    Some("protected_loss")
+                } else if !m
+                    .r#final
+                    .units
+                    .iter()
+                    .any(|u| u.faction == "player" && u.role == Some(Role::Leader))
+                    && !evacuated
+                        .iter()
+                        .any(|v| v.unit.faction == "player" && v.unit.role == Some(Role::Leader))
+                {
+                    Some("leader_loss")
+                } else {
+                    Some("defeat")
+                }
+            });
+            serde_json::json!({"success":r.completed,"failure":failure,"missions":r.missions.iter().map(|m|serde_json::json!({"id":m.id,"round":m.round,"winner":m.winner})).collect::<Vec<_>>(),"truncated":r.missions.last().is_some_and(|m|m.winner.is_none()),"outcome":r.missions.last().and_then(|m|m.r#final.campaign.as_ref()).and_then(|c|c.outcome.as_ref())})
         }
     }
 }
@@ -200,7 +255,7 @@ fn evaluate(py: Python<'_>, configs: Vec<String>, model: Option<String>) -> PyRe
                     }
                     definitions.prepare_match(&c).map_err(|e| e.to_string())?;
                     run(&rules, c, &definitions)
-                        .map(|r| summary(&r).to_string())
+                        .map(|r| summary(&r, &definitions).to_string())
                         .map_err(|e| e.to_string())
                 })
                 .collect::<Result<Vec<_>, String>>()
@@ -376,6 +431,7 @@ impl Worker {
         let (tx, actions) = mpsc::channel();
         let (events, rx) = mpsc::channel();
         let join = std::thread::spawn(move || {
+            let trace = std::rc::Rc::new(std::cell::RefCell::new(Vec::new()));
             let result = (|| -> Result<String, String> {
                 let rules = Rules::load().map_err(|e| e.to_string())?;
                 let mut c = parse(&config)?;
@@ -383,11 +439,14 @@ impl Worker {
                 let mut definitions = CampaignDefinitions::new(&rules);
                 definitions.prepare_match(&c).map_err(|e| e.to_string())?;
                 let emit = events.clone();
+                let chosen = trace.clone();
                 let controller: hex_command_core::training::Controller = Box::new(move |choices| {
                     if emit.send(Event::Decision(choices.clone())).is_err() {
                         return None;
                     }
-                    actions.recv().ok()
+                    let action = actions.recv().ok()?;
+                    chosen.borrow_mut().push(action);
+                    Some(action)
                 });
                 let (result, _) = scoped(
                     spatial.then(|| Dataset {
@@ -399,9 +458,12 @@ impl Worker {
                     || run(&rules, c, &definitions),
                 );
                 result
-                    .map(|r| summary(&r).to_string())
+                    .map(|r| summary(&r, &definitions).to_string())
                     .map_err(|e| e.to_string())
             })();
+            let result = result.map_err(|error| {
+                serde_json::json!({"error":error,"config":serde_json::from_str::<serde_json::Value>(&config).ok(),"actions":*trace.borrow()}).to_string()
+            });
             let _ = events.send(Event::Done(result));
         });
         Self {
@@ -490,6 +552,16 @@ impl BatchEnv {
             workers: vec![],
             spatial,
         }
+    }
+    /// Final summaries only; live slots expose no privileged state.
+    fn results(&self) -> Vec<Option<String>> {
+        self.workers
+            .iter()
+            .map(|w| match &w.event {
+                Some(Event::Done(Ok(s))) => Some(s.clone()),
+                _ => None,
+            })
+            .collect()
     }
     fn spatial_observation(&self, py: Python<'_>) -> PyResult<SpatialResult> {
         if !self.spatial {

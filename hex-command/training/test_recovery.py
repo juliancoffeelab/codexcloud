@@ -58,11 +58,25 @@ class RecoveryContracts(unittest.TestCase):
         }
         self.assertLess(abs(totals["campaign"] / sum(totals.values()) - 0.5), 0.08)
 
-    def test_campaign_cap_is_failure_and_arena_cap_remains_draw(self):
+    def test_caps_are_failures_with_family_specific_penalties(self):
         from hex_command_rl.mixed_ppo import terminal_reward
 
-        self.assertEqual(terminal_reward({"campaign": "test"}, 0.0, True), -1.0)
-        self.assertEqual(terminal_reward({"landscape": "test"}, 0.0, True), 0.0)
+        self.assertEqual(terminal_reward({"campaign": "test"}, 0.0, True), -2.0)
+        for reason, value in (
+            ("escort_loss", -2.0),
+            ("protected_loss", -1.5),
+            ("leader_loss", -1.0),
+            ("defeat", -1.0),
+        ):
+            self.assertEqual(
+                terminal_reward({"campaign": "test"}, -1.0, False, {"failure": reason}),
+                value,
+            )
+            self.assertEqual(
+                terminal_reward({"campaign": "test"}, 1.0, False, {"failure": reason}),
+                1.0,
+            )
+        self.assertEqual(terminal_reward({"landscape": "test"}, 0.0, True), -1.0)
         self.assertEqual(terminal_reward({"campaign": "test"}, 1.0, False), 1.0)
 
     def test_selection_rejects_predictor_collapse_despite_high_pooled_score(self):

@@ -1,0 +1,75 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "capture",
+      "when": {
+        "all": [
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 5,
+                  "row": 3
+                }
+              },
+              "faction": "player"
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 9,
+                  "row": 7
+                }
+              },
+              "faction": "player"
+            }
+          }
+        ]
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Control both outer villages",
+        "visibleWhen": {
+          "always": true
+        },
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 5,
+                "row": 3
+              }
+            },
+            {
+              "hex": {
+                "col": 9,
+                "row": 7
+              }
+            }
+          ]
+        },
+        "playerMarker": null
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ]
+    },
+    {
+      "id": "deadline",
+      "priority": -100,
+      "when": {
+        "turn": 30
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ]
+    }
+  ]
+}

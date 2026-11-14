@@ -1,6 +1,6 @@
 open Migration_json
 
-let version = 47
+let version = 48
 let history_version = 4
 let only value allowed = List.for_all (fun k -> List.mem k allowed) (keys value)
 
@@ -110,7 +110,7 @@ let valid_undo value =
 let current_save value =
   require
     (is_record value
-    && get value "version" = Some (n 47.)
+    && get value "version" = Some (n 48.)
     && only value [ "version"; "checkpoint"; "pendingEnemy"; "setup"; "undo"; "progress" ])
     "Invalid current save envelope";
   let checkpoint = field value "checkpoint" and progress = field value "progress" in

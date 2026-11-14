@@ -315,6 +315,196 @@
         }
       ],
       "holdTurns": 4
+    },
+    {
+      "id": "rl-meadow",
+      "variants": [
+        {
+          "map": "rl-meadow",
+          "forces": {
+            "kind": "selected",
+            "budget": 36
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 4,
+          "row": 3
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-woodland",
+      "variants": [
+        {
+          "map": "rl-woodland",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 5,
+          "row": 4
+        }
+      ],
+      "holdTurns": 4
+    },
+    {
+      "id": "rl-ridge",
+      "variants": [
+        {
+          "map": "rl-ridge",
+          "forces": {
+            "kind": "selected",
+            "budget": 42
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 6,
+          "row": 3
+        }
+      ],
+      "holdTurns": 5
+    },
+    {
+      "id": "rl-wetland",
+      "variants": [
+        {
+          "map": "rl-wetland",
+          "forces": {
+            "kind": "selected",
+            "budget": 36
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 5,
+          "row": 4
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-river",
+      "variants": [
+        {
+          "map": "rl-river",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 6,
+          "row": 4
+        }
+      ],
+      "holdTurns": 4
+    },
+    {
+      "id": "rl-islands",
+      "variants": [
+        {
+          "map": "rl-islands",
+          "forces": {
+            "kind": "selected",
+            "budget": 42
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 7,
+          "row": 5
+        }
+      ],
+      "holdTurns": 5
+    },
+    {
+      "id": "rl-cavern",
+      "variants": [
+        {
+          "map": "rl-cavern",
+          "forces": {
+            "kind": "selected",
+            "budget": 36
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 5,
+          "row": 3
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-ruins",
+      "variants": [
+        {
+          "map": "rl-ruins",
+          "forces": {
+            "kind": "selected",
+            "budget": 39
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 7,
+          "row": 4
+        }
+      ],
+      "holdTurns": 4
+    },
+    {
+      "id": "rl-broadfield",
+      "variants": [
+        {
+          "map": "rl-broadfield",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 9,
+          "row": 5
+        }
+      ],
+      "holdTurns": 5
+    },
+    {
+      "id": "rl-floodplain",
+      "variants": [
+        {
+          "map": "rl-floodplain",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 10,
+          "row": 6
+        }
+      ],
+      "holdTurns": 3
     }
   ],
   "defaultScenarios": ["open", "wooded", "crossings", "islands", "wood-edge"],

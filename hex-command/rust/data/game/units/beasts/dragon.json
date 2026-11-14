@@ -121,7 +121,7 @@
       "passable": true,
       "cost": -2
     },
-    "cave": {
+    "mountain-mine": {
       "passable": true,
       "cost": -1
     },

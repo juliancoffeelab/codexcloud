@@ -161,12 +161,12 @@
     "role": "mountain"
   },
   {
-    "id": "cave",
-    "name": "Quarry cave",
+    "id": "mountain-mine",
+    "name": "Mountain mine",
     "cost": 2,
     "passable": true,
-    "description": "A sheltered entrance at the foot of a mountain. Costs 2 movement; no protection. The mountain blocks ranged attacks through the tile. Scenario objectives specify what can be found inside.",
-    "role": "cave"
+    "description": "A mine dug into a mountainside. Costs 2 movement; no protection. The surrounding rock blocks ranged attacks through the tile. Scenario objectives specify what can be found inside.",
+    "role": "mountain-mine"
   },
   {
     "id": "cave-passage",

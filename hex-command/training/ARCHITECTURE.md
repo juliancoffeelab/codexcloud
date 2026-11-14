@@ -74,19 +74,21 @@ scores. Preserve old model files and write new versions separately.
 Each trainer's `--help` is the authority for its options. Run these from the game
 root and place mutable runs under ignored `tmp/rl/`.
 
-| Module under `hex_command_rl` | Purpose |
-| --- | --- |
-| `train` | Dense linear/MLP imitation over disk-backed teacher decisions |
-| `trees` | Time-bounded LightGBM candidate ranker; install the trees extra |
-| `spatial_train` | CNN imitation and compatible policy fine-tuning |
-| `evaluate`, `compare` | Native evaluation of saved policies |
-| `benchmark` | Frozen-position planner timing, including existing orchestration |
-| `mixed_workload` | Isolated authored catalog and disjoint hierarchical seed panels |
-| `mixed_imitation` | Weighted imitation over losslessly compressed shards |
-| `mixed_ppo` | Independent native slots and decision-budgeted multi-task PPO |
-| `mixed_evaluate`, `handoff` | Greedy validation and robust checkpoint selection |
-| `overnight` | Restartable imitation → PPO → held-out evaluation supervisor |
-| `remote_backup` | Local recovery export with explicit optional Git publication |
+| Module under `hex_command_rl`     | Purpose                                                          |
+| --------------------------------- | ---------------------------------------------------------------- |
+| `train`                           | Dense linear/MLP imitation over disk-backed teacher decisions    |
+| `trees`                           | Time-bounded LightGBM candidate ranker; install the trees extra  |
+| `spatial_train`                   | CNN imitation and compatible policy fine-tuning                  |
+| `evaluate`, `compare`             | Native evaluation of saved policies                              |
+| `benchmark`                       | Frozen-position planner timing, including existing orchestration |
+| `mixed_workload`                  | Isolated authored catalog and disjoint hierarchical seed panels  |
+| `environments`                    | Offline authoring of fixed training-only tactical fixtures       |
+| `diverse_workload`, `diverse_run` | Held-out validation and supervised PPO-only continuation         |
+| `mixed_imitation`                 | Weighted imitation over losslessly compressed shards             |
+| `mixed_ppo`                       | Independent native slots and decision-budgeted multi-task PPO    |
+| `mixed_evaluate`, `handoff`       | Greedy validation and robust checkpoint selection                |
+| `overnight`                       | Restartable imitation → PPO → held-out evaluation supervisor     |
+| `remote_backup`                   | Local recovery export with explicit optional Git publication     |
 
 For example, prepare a mixed workload and launch its supervisor:
 
@@ -116,9 +118,9 @@ set; authored rosters, diplomacy and objective routes remain part of the case.
 
 Imitation learns a teacher's candidate selection. PPO uses fresh stochastic
 rollouts, a critic, GAE, clipping, entropy regularization and a frozen-reference
-KL anchor. Campaign completion/wins give +1, defeat gives -1, campaign caps give
--1 and arena caps give 0. The native step API itself returns 0 for truncation;
-the campaign PPO trainers apply the campaign-failure rule.
+KL anchor. The native step API returns 0 for truncation. The mixed PPO trainer
+applies the family-specific terminal penalties documented below; historical
+experiments retain their original reward parameters in their manifests.
 
 The mixed handoff and final RL selection evaluate larger validation panels.
 Candidates within 2.5 percentage points of the best minimum arena/campaign ×
@@ -126,6 +128,68 @@ opponent score compete on overall score and caps. Positive minimum scores take
 precedence over a zero stratum. The starting policy remains eligible. Final test
 seeds never select checkpoints. Other trainer entry points document their own
 selection metric; teacher agreement alone does not establish game strength.
+
+## Diverse tactical continuation
+
+The `rl-` maps and campaigns are fixed, engine-owned JSON with `human: false`.
+They are absent from default simulation schedules. The offline authoring utility
+`python -m hex_command_rl.environments` reproduces them; no runtime terrain
+generator or frontend loader is involved. Arena layouts cover meadow, woodland,
+ridge, wetlands, river crossings, islands, caverns and ruins, from 9×7 to 21×13.
+The current cavern revision uses two cave-stone chambers, rock walls and two
+connecting routes, with explicit passage openings. It replaces revision one's
+repeated mine landmarks; the archived v2 experiment and selected checkpoint used
+that earlier layout and have not been retrained on the replacement. The survival
+fixture that shares this biome uses the corrected geometry too.
+All twelve ordered race pairings are available in training. Campaign fixtures
+exercise escort/courier movement, protected fighters, deadlines, holding,
+simultaneous ownership, survival, reinforcements, fog and stage progression.
+Four longer company campaigns chain opening a crossing, escorting, holding and
+fighting across two chapters, with optional supplies and persistent survivors.
+Mirrored hex layouts also teach movement in the other direction (their bounding
+box has one extra staggered column). Some campaigns omit authored deadlines so
+the harness-cap penalty can actually occur alongside scripted deadline defeats.
+
+Prepare a new workload with:
+
+```sh
+.venv/bin/python -m hex_command_rl.diverse_workload --root tmp/rl/new-run
+.venv/bin/python -m hex_command_rl.mixed_ppo --root tmp/rl/new-run \
+  --warm-start training/checkpoints/campaign-cnn-ppo-v1/resume.pt \
+  --seconds 600 --campaign-cap -2
+```
+
+Run `mixed_evaluate --root tmp/rl/new-run --phase rl` in a second process during
+training. Training uses only the new fixtures, evenly splitting arena/campaign
+decision budgets, tasks and Classic/Predictor opponents. Existing arena maps and
+Lantern Road routes are held out; separate validation and test seeds prevent
+checkpoint selection on final test outcomes. The starting policy stays eligible.
+PPO uses a 100-round harness cap per arena or campaign stage; authored defeat
+deadlines can end a stage earlier.
+The full panel uses twelve campaign seeds per route; the small periodic panel
+is only a progress indicator. A PPO-only supervisor can manage restarts and
+evaluation with `diverse_run --root tmp/rl/new-run --warm-start <resume.pt>
+--seconds 32400`. For a new warm-start phase, `--seed-start 9000001` supplies a
+fresh rollout range; exact resumes restore their own seed cursor. Worker errors
+include their configuration and action indices for replay through `BatchEnv`.
+
+Wins/completions receive +1. Missing required escortees receive −2; losses of
+other required companions receive −1.5; other defeats, including leader-only
+losses, receive −1.
+Campaign caps receive −2 by default; arena defeats and caps receive −1. These are
+terminal outcomes, not per-casualty penalties, and do not accumulate. Terminal
+summaries report required-character losses and reached stages without adding
+privileged observations to live decisions. Optional losses do not automatically
+become campaign-failure penalties. A configurable −1.5 campaign-cap experiment
+requires a fresh warm start; exact recovery rejects changed reward settings.
+Scripted defeats outside `requiredCompanions` retain their raw outcome text and
+use the ordinary defeat penalty. This includes Lantern Road's scripted captive
+failures; Lantern Road is held out in this continuation, so those rewards are
+not used for optimization.
+
+Visibility uses the current engine's permitted knowledge. This continuation adds
+neither neural fog-memory features nor exceptions granting hidden information;
+the limitations tracked in issue #141 remain separate.
 
 ## Recovery and publication
 
@@ -163,6 +227,15 @@ relaunching processes; persisted optimizer/RNG state does not keep a process ali
 - `checkpoints/campaign-cnn-imitation-v1/` is the original frozen CNN baseline.
 - `checkpoints/campaign-cnn-ppo-v1/` contains the selected native policy,
   full recovery state and a manifest pointing to its experiment.
+- `checkpoints/campaign-cnn-ppo-v2/` contains the diverse-environment continuation,
+  selected on validation rather than the final update. It retains the same input
+  schemas and network architecture. V1 remains available for comparisons.
+- `experiments/2026-11-14-diverse/experiment.json` inventories nine accounted PPO
+  hours across three phases, including the changed curriculum and recovery
+  boundaries. The broader phase warm-started from V1. Its archive contains frozen
+  catalogs/workloads, raw metrics, selected/last recovery states, validation
+  selection and matched final tests. Exact recovery uses the recorded training
+  source; compatible engine changes use a new warm start.
 - `experiments/2026-11-09-mixed/experiment.json` inventories the completed run.
   Its recovery directory losslessly preserves every formerly committed recovery
   file, including supervised/final policies, logs, figures and original manifests.
@@ -178,6 +251,27 @@ Inspect `evaluation.json` for balanced results and the archived CSVs for exact
 campaign/route/opponent counts. Trace outcomes distinguish protected-character
 deaths, leader deaths, scripted deadlines and harness caps. Forecasts and one-turn
 counterfactuals establish only their recorded scope.
+
+The diverse continuation's final held-out results were:
+
+| Test stratum                 | V1 wins/completions | Selected V2 wins/completions |
+| ---------------------------- | ------------------: | ---------------------------: |
+| Existing arenas vs Classic   |             620/768 |                      642/768 |
+| Existing arenas vs Predictor |             444/768 |                      439/768 |
+| Lantern Road vs Classic      |              64/150 |                       72/150 |
+| Lantern Road vs Predictor    |              40/150 |                       64/150 |
+
+Both policies use Situational/Predictor recruiters. Campaign tests use 25 seeds
+across authored/flight/fight routes. V2 capped six campaign runs against Classic;
+V1 capped none. The final update fell to 24/150 against Predictor, so it is
+archived rather than selected. These results describe the frozen catalog, not a
+guarantee on future campaign or unit revisions.
+
+The archive's `training-curves.png` shows stochastic training outcomes in
+15-minute bins (the final bin is partial). `validation-curves.png` uses full
+selection panels; `test-comparison.png` compares V1, selected/last V2 and written
+bots. `evaluation.json` retains task/route/recruiter counts, terminal messages and
+stage funnels; the compressed reports retain each exact case and outcome.
 
 Verify the committed archive, or restore its original recovery layout into a new
 ignored directory:

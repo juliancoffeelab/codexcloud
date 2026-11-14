@@ -1,0 +1,57 @@
+{
+  "requiredCompanions": ["charge"],
+  "events": [
+    {
+      "id": "arrival",
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 9,
+              "row": 1
+            }
+          },
+          "character": "charge",
+          "through": true
+        }
+      },
+      "objective": {
+        "faction": "player",
+        "label": "Bring the charge to the exit",
+        "visibleWhen": {
+          "always": true
+        },
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 9,
+                "row": 1
+              }
+            },
+            "character": "charge",
+            "through": true
+          }
+        },
+        "playerMarker": null
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ]
+    },
+    {
+      "id": "deadline",
+      "priority": -100,
+      "when": {
+        "turn": 30
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ]
+    }
+  ]
+}
