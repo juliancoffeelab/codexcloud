@@ -146,11 +146,11 @@ pub(in crate::ai) fn prepare(
             }
         }
         cache.rebuild_intents.clear();
-        for unit in game
-            .units()
-            .iter()
-            .filter(|u| game.belongs_to_faction(u, game.observer_faction()) && u.is_leader())
-        {
+        for unit in game.units().iter().filter(|u| {
+            game.belongs_to_faction(u, game.observer_faction())
+                && game.can_act(u.id)
+                && u.is_leader()
+        }) {
             let required = orders.moving_actor(unit.id);
             let (_, intent) = orders.rebuild_plan(game, unit.id, required);
             if unit.rebuilding != intent {

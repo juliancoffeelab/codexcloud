@@ -157,7 +157,11 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
         let rebuilds: HashMap<_, _> = self
             .units()
             .iter()
-            .filter(|u| self.belongs_to_faction(u, self.observer_faction()) && u.is_leader())
+            .filter(|u| {
+                self.belongs_to_faction(u, self.observer_faction())
+                    && self.can_act(u.id)
+                    && u.is_leader()
+            })
             .map(|u| (u.id, orders.moving_actor(u.id)))
             .map(|(id, required)| {
                 (
