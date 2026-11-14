@@ -1,0 +1,36 @@
+{
+  "source_commit": "eac5d4f49c345362ef5a804131a794c952841281",
+  "checks": [
+    {
+      "command": "make full-verify",
+      "exit_code": 0,
+      "rust_tests": 162,
+      "frontend_tests": 263
+    },
+    {
+      "command": ".venv/bin/python -m unittest discover -s training -p 'test_*.py'",
+      "exit_code": 0,
+      "tests": 24
+    },
+    {
+      "command": ".venv/bin/python -m ruff check training --select F",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m ruff format --check training",
+      "exit_code": 0
+    }
+  ],
+  "simulation_probes": {
+    "fixture_trials": 564,
+    "reinforcement_trials": 120,
+    "reinforcement_seeds": 20,
+    "compound_campaign_trials": 480,
+    "compound_campaign_seeds": 20,
+    "remaining_engine_errors": 0
+  },
+  "legality_fixes": [
+    "Inactive leaders no longer receive rebuilding intents.",
+    "Deferred arrivals invalidate move plans; the recorded IllegalMove replay passes all 41 actions after the fix."
+  ]
+}

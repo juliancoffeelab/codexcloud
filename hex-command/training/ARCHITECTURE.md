@@ -159,6 +159,8 @@ training. Training uses only the new fixtures, evenly splitting arena/campaign
 decision budgets, tasks and Classic/Predictor opponents. Existing arena maps and
 Lantern Road routes are held out; separate validation and test seeds prevent
 checkpoint selection on final test outcomes. The starting policy stays eligible.
+PPO uses a 100-round harness cap per arena or campaign stage; authored defeat
+deadlines can end a stage earlier.
 The full panel uses twelve campaign seeds per route; the small periodic panel
 is only a progress indicator. A PPO-only supervisor can manage restarts and
 evaluation with `diverse_run --root tmp/rl/new-run --warm-start <resume.pt>
@@ -166,14 +168,19 @@ evaluation with `diverse_run --root tmp/rl/new-run --warm-start <resume.pt>
 fresh rollout range; exact resumes restore their own seed cursor. Worker errors
 include their configuration and action indices for replay through `BatchEnv`.
 
-Wins/completions receive +1. Campaign escort losses receive −2; losses of required
-companions receive −1.5; other defeats, including leader-only losses, receive −1.
+Wins/completions receive +1. Missing required escortees receive −2; losses of
+other required companions receive −1.5; other defeats, including leader-only
+losses, receive −1.
 Campaign caps receive −2 by default; arena defeats and caps receive −1. These are
 terminal outcomes, not per-casualty penalties, and do not accumulate. Terminal
 summaries report required-character losses and reached stages without adding
 privileged observations to live decisions. Optional losses do not automatically
 become campaign-failure penalties. A configurable −1.5 campaign-cap experiment
 requires a fresh warm start; exact recovery rejects changed reward settings.
+Scripted defeats outside `requiredCompanions` retain their raw outcome text and
+use the ordinary defeat penalty. This includes Lantern Road's scripted captive
+failures; Lantern Road is held out in this continuation, so those rewards are
+not used for optimization.
 
 Visibility uses the current engine's permitted knowledge. This continuation adds
 neither neural fog-memory features nor exceptions granting hidden information;
@@ -215,6 +222,15 @@ relaunching processes; persisted optimizer/RNG state does not keep a process ali
 - `checkpoints/campaign-cnn-imitation-v1/` is the original frozen CNN baseline.
 - `checkpoints/campaign-cnn-ppo-v1/` contains the selected native policy,
   full recovery state and a manifest pointing to its experiment.
+- `checkpoints/campaign-cnn-ppo-v2/` contains the diverse-environment continuation,
+  selected on validation rather than the final update. It retains the same input
+  schemas and network architecture. V1 remains available for comparisons.
+- `experiments/2026-11-14-diverse/experiment.json` inventories nine accounted PPO
+  hours across three phases, including the changed curriculum and recovery
+  boundaries. The broader phase warm-started from V1. Its archive contains frozen
+  catalogs/workloads, raw metrics, selected/last recovery states, validation
+  selection and matched final tests. Exact recovery uses the recorded training
+  source; compatible engine changes use a new warm start.
 - `experiments/2026-11-09-mixed/experiment.json` inventories the completed run.
   Its recovery directory losslessly preserves every formerly committed recovery
   file, including supervised/final policies, logs, figures and original manifests.
@@ -230,6 +246,27 @@ Inspect `evaluation.json` for balanced results and the archived CSVs for exact
 campaign/route/opponent counts. Trace outcomes distinguish protected-character
 deaths, leader deaths, scripted deadlines and harness caps. Forecasts and one-turn
 counterfactuals establish only their recorded scope.
+
+The diverse continuation's final held-out results were:
+
+| Test stratum                 | V1 wins/completions | Selected V2 wins/completions |
+| ---------------------------- | ------------------: | ---------------------------: |
+| Existing arenas vs Classic   |             620/768 |                      642/768 |
+| Existing arenas vs Predictor |             444/768 |                      439/768 |
+| Lantern Road vs Classic      |              64/150 |                       72/150 |
+| Lantern Road vs Predictor    |              40/150 |                       64/150 |
+
+Both policies use Situational/Predictor recruiters. Campaign tests use 25 seeds
+across authored/flight/fight routes. V2 capped six campaign runs against Classic;
+V1 capped none. The final update fell to 24/150 against Predictor, so it is
+archived rather than selected. These results describe the frozen catalog, not a
+guarantee on future campaign or unit revisions.
+
+The archive's `training-curves.png` shows stochastic training outcomes in
+15-minute bins (the final bin is partial). `validation-curves.png` uses full
+selection panels; `test-comparison.png` compares V1, selected/last V2 and written
+bots. `evaluation.json` retains task/route/recruiter counts, terminal messages and
+stage funnels; the compressed reports retain each exact case and outcome.
 
 Verify the committed archive, or restore its original recovery layout into a new
 ignored directory:
