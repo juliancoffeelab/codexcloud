@@ -1,0 +1,30 @@
+{
+  "id": "rl-company-coastal",
+  "name": "rl-company-coastal",
+  "tagline": "RL tactical fixtures",
+  "description": "Training only.",
+  "shortDescription": "Training only.",
+  "race": "merfolk",
+  "leader": "tidekeeper",
+  "human": false,
+  "characters": [
+    {
+      "id": "player-leader",
+      "name": "player-leader"
+    },
+    {
+      "id": "enemy-leader",
+      "name": "enemy-leader"
+    },
+    {
+      "id": "charge",
+      "name": "charge"
+    },
+    {
+      "id": "guard",
+      "name": "guard"
+    }
+  ],
+  "ending": [],
+  "stages": ["stages/rl-company-coastal-1/stage.json", "stages/rl-company-coastal-2/stage.json"]
+}

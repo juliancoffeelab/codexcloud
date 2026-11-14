@@ -141,6 +141,22 @@
     "rl-relay": {
       "diplomacy": ["unrestricted"],
       "routes": {}
+    },
+    "rl-company-human": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-company-skeletons": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-company-woodland": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-company-coastal": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
     }
   },
   "escalationFlags": {}

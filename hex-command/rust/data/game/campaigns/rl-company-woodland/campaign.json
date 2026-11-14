@@ -1,0 +1,30 @@
+{
+  "id": "rl-company-woodland",
+  "name": "rl-company-woodland",
+  "tagline": "RL tactical fixtures",
+  "description": "Training only.",
+  "shortDescription": "Training only.",
+  "race": "human",
+  "leader": "wildkeeper",
+  "human": false,
+  "characters": [
+    {
+      "id": "player-leader",
+      "name": "player-leader"
+    },
+    {
+      "id": "enemy-leader",
+      "name": "enemy-leader"
+    },
+    {
+      "id": "charge",
+      "name": "charge"
+    },
+    {
+      "id": "guard",
+      "name": "guard"
+    }
+  ],
+  "ending": [],
+  "stages": ["stages/rl-company-woodland-1/stage.json", "stages/rl-company-woodland-2/stage.json"]
+}

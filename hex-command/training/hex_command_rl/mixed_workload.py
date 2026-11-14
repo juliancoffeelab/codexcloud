@@ -51,7 +51,7 @@ def weights(cases):
     }
 
 
-def configs(split, spec=None):
+def configs(split, spec=None, campaign_seeds=None):
     result = []
     arena_start = {"train": 1000001, "validation": 3000001, "test": 5000001}[split]
     campaign_start = {"train": 2000001, "validation": 4000001, "test": 6000001}[split]
@@ -87,7 +87,7 @@ def configs(split, spec=None):
                                     )
                                 )
     for campaign, variants in spec["campaigns"].items():
-        n = {"train": 24, "validation": 4, "test": 25}[split]
+        n = campaign_seeds or {"train": 24, "validation": 4, "test": 25}[split]
         for variant in variants:
             objective, diplomacy = variant["objective"], variant["diplomacy"]
             for enemy in spec["opponents"]:

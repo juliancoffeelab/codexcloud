@@ -58,7 +58,9 @@ def prepare(root):
         recruiters=training["recruiters"],
         objectives=training["objectives"],
     )
-    validation = configs("validation", held_out)
+    # Campaigns are a small number of correlated routes; use more independent
+    # combat seeds before choosing between apparent gains on the tiny panel.
+    validation = configs("validation", held_out, campaign_seeds=12)
     periodic, seen = [], set()
     for c in validation:
         key = group(c)

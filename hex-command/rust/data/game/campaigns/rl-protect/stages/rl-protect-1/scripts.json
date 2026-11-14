@@ -28,18 +28,6 @@
           "victory": "Task completed."
         }
       ]
-    },
-    {
-      "id": "deadline",
-      "priority": -100,
-      "when": {
-        "turn": 30
-      },
-      "actions": [
-        {
-          "defeat": "The deadline expired."
-        }
-      ]
     }
   ]
 }
