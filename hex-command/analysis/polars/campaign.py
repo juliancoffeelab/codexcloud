@@ -144,16 +144,17 @@ def tables(outcomes):
     campaigns = group(
         attempts, FIELDS, ["attempts", "completed", "defeats", "caps", "unclassified"]
     )
-    campaigns = campaigns.with_columns((100 * pl.col("completed") / pl.col("attempts")).alias("completionRate"))
+    campaigns = campaigns.with_columns(
+        (100 * pl.col("completed") / pl.col("attempts")).alias("completionRate")
+    )
     stage_rows = group(stages, STAGES, COUNTS)
     if not stage_rows.is_empty():
         joined = (
-            stage_rows
-            .lazy()
+            stage_rows.lazy()
             .join(
-                campaigns
-                .lazy()
-                .select(*FIELDS, pl.col("attempts").alias("campaignAttempts")),
+                campaigns.lazy().select(
+                    *FIELDS, pl.col("attempts").alias("campaignAttempts")
+                ),
                 on=FIELDS,
                 how="left",
                 nulls_equal=True,

@@ -3,7 +3,7 @@
 import polars as pl
 import arena
 import campaign
-import telemetry_tables as telemetry
+import telemetry
 import metrics
 from journal import identity
 from frames import empty
@@ -11,14 +11,13 @@ from frames import empty
 
 def changes(rows, before, keys, fields):
     if rows.is_empty() or before.is_empty():
-        return empty(keys, fields+[k+"Before" for k in fields])
+        return empty(keys, fields + [k + "Before" for k in fields])
     return (
-        rows
-        .lazy()
+        rows.lazy()
         .join(
-            before
-            .lazy()
-            .select(*keys, *[pl.col(k).alias(k + "Before") for k in fields]),
+            before.lazy().select(
+                *keys, *[pl.col(k).alias(k + "Before") for k in fields]
+            ),
             on=keys,
             how="inner",
             nulls_equal=True,
@@ -104,18 +103,30 @@ def build(
     matchup_changes = changes(
         rows, before, arena.KEYS, ["wins", "losses", "caps", "winRate"]
     )
-    matchup_changes = matchup_changes.with_columns((pl.col("winRate") - pl.col("winRateBefore")).alias("winRateDelta"))
+    matchup_changes = matchup_changes.with_columns(
+        (pl.col("winRate") - pl.col("winRateBefore")).alias("winRateDelta")
+    )
     campaign_changes = changes(
         tables["campaign_summary"],
         old_campaigns["campaign_summary"],
         campaign.FIELDS,
         ["completed", "completionRate"],
     )
-    campaign_changes = campaign_changes.with_columns((pl.col("completionRate") - pl.col("completionRateBefore")).alias("completionRateDelta"))
+    campaign_changes = campaign_changes.with_columns(
+        (pl.col("completionRate") - pl.col("completionRateBefore")).alias(
+            "completionRateDelta"
+        )
+    )
 
     def race_map(opponent):
         return arena.combine(
-            rows.filter((pl.col("opponentPolicy") == opponent) & ((pl.col("policy") != opponent) | (pl.col("race") != pl.col("opponentRace")))),
+            rows.filter(
+                (pl.col("opponentPolicy") == opponent)
+                & (
+                    (pl.col("policy") != opponent)
+                    | (pl.col("race") != pl.col("opponentRace"))
+                )
+            ),
             ["race", "map", "policy"],
         )
 
@@ -168,8 +179,15 @@ def build(
     leaders = leaders or (
         unit_usage and all(s.get("leaderAuditVersion") == 1 for s in current["sources"])
     )
-    tables.update(telemetry.analyze(current["dataset"], presence_=unit_usage or presence,
-        support_=unit_usage or support, value_=value, leaders_=leaders))
+    tables.update(
+        telemetry.analyze(
+            current["dataset"],
+            presence_=unit_usage or presence,
+            support_=unit_usage or support,
+            value_=value,
+            leaders_=leaders,
+        )
+    )
     if unit_usage or presence:
         nonleaders = tables["nonleader_unit_events"]
         tables["army_usage"] = metrics.army_usage(
@@ -181,8 +199,15 @@ def build(
         }
         old = {}
         if previous["outcomes"]:
-            old.update(telemetry.analyze(previous["dataset"], presence_=True, value_=True))
-        membership = pl.concat([tables["battlefield_units"], old.get("battlefield_units", tables["battlefield_units"].head(0))])
+            old.update(
+                telemetry.analyze(previous["dataset"], presence_=True, value_=True)
+            )
+        membership = pl.concat(
+            [
+                tables["battlefield_units"],
+                old.get("battlefield_units", tables["battlefield_units"].head(0)),
+            ]
+        )
         tables["unit_damage"] = metrics.unit_damage(
             tables["battlefield_units"],
             tables["battlefield_unit_value"],

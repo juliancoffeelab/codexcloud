@@ -105,40 +105,44 @@ let record_batches raw =
   in
   loop 0 0
 
+let arrow raw =
+  let buffer = Rig.Buffer.of_string raw in
+  let format = Talon_arrow.sniff buffer |> Talon.Error.get_ok in
+  let metadata = Talon_arrow.metadata format in
+  let version =
+    Option.value ~default:""
+      (List.assoc_opt "hex-command.detail-format" metadata)
+  in
+  require
+    (List.mem version
+       (List.init 5 (fun i ->
+            "arrow-ipc-snapshot-dictionaries-v" ^ string_of_int (i + 1))))
+    "Unknown Arrow gameplay format";
+  require (record_batches raw = 1) "Invalid Arrow gameplay batch count";
+  let table =
+    Talon.Query.of_source (Talon_arrow.source format buffer)
+    |> Talon.Query.run |> Talon.Error.get_ok
+  in
+  require (Talon.rows table > 0) "Empty Arrow gameplay batch";
+  require
+    (List.map fst (Talon.Schema.columns (Talon.schema table))
+    = [
+        "header_json";
+        "chapter";
+        "phase_json";
+        "before";
+        "units";
+        "ownership";
+        "unit_snapshots";
+        "ownership_snapshots";
+      ])
+    "Unexpected Arrow gameplay columns";
+  (version, table)
+
 let decode raw name =
   if not (Filename.check_suffix name ".arrow") then parse raw
   else
-    let buffer = Rig.Buffer.of_string raw in
-    let format = Talon_arrow.sniff buffer |> Talon.Error.get_ok in
-    let metadata = Talon_arrow.metadata format in
-    let version =
-      Option.value ~default:""
-        (List.assoc_opt "hex-command.detail-format" metadata)
-    in
-    require
-      (List.mem version
-         (List.init 5 (fun i ->
-              "arrow-ipc-snapshot-dictionaries-v" ^ string_of_int (i + 1))))
-      "Unknown Arrow gameplay format";
-    require (record_batches raw = 1) "Invalid Arrow gameplay batch count";
-    let table =
-      Talon.Query.of_source (Talon_arrow.source format buffer)
-      |> Talon.Query.run |> Talon.Error.get_ok
-    in
-    require (Talon.rows table > 0) "Empty Arrow gameplay batch";
-    require
-      (List.map fst (Talon.Schema.columns (Talon.schema table))
-      = [
-          "header_json";
-          "chapter";
-          "phase_json";
-          "before";
-          "units";
-          "ownership";
-          "unit_snapshots";
-          "ownership_snapshots";
-        ])
-      "Unexpected Arrow gameplay columns";
+    let version, table = arrow raw in
     let strings name =
       Talon.Column.options Talon.Kind.string (Talon.column table name)
     in

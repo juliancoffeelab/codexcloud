@@ -24,6 +24,7 @@ type t = {
   outcomes : Json.t list;
   sources : Json.t list;
   reports : (string * Json.t) list;
+  dataset : Dataset.t;
 }
 
 let with_kind result =
@@ -52,7 +53,7 @@ let files paths =
   in
   List.concat_map expand paths
 
-let load paths =
+let load ?(telemetry = false) paths =
   let filenames = files paths in
   Journal.require
     (paths = [] || filenames <> [])
@@ -68,114 +69,33 @@ let load paths =
           let parent =
             Filename.concat (Filename.dirname directory) "metadata.json"
           in
-          let meta = if Sys.file_exists parent then read parent else obj [] in
-          merge meta [ ("outcomes", raw); ("mode", str "campaign") ]
+          merge
+            (if Sys.file_exists parent then read parent else obj [])
+            [ ("outcomes", raw); ("mode", str "campaign") ]
         else raw
       in
       let report = normalize raw in
-      let declared = list (get report "outcomes") in
-      let legacy = Hashtbl.create 16 in
-      let journal = Filename.concat directory "details.jsonl.gz" in
-      (if Filename.basename path = "outcomes.json" && Sys.file_exists journal
-       then
-         let channel =
-           Unix.open_process_in ("gzip -dc -- " ^ Filename.quote journal)
-         in
-         Fun.protect
-           ~finally:(fun () -> ignore (Unix.close_process_in channel))
-           (fun () ->
-             try
-               while true do
-                 let o = normalize (parse (input_line channel)) in
-                 let o =
-                   if has o "kind" then o
-                   else
-                     set o "kind"
-                       (str (if has o "missions" then "campaign" else "arena"))
-                 in
-                 Hashtbl.replace legacy (identity o)
-                   (arr
-                      (List.map Campaign.diagnostics (list (get o "missions"))))
-               done
-             with End_of_file -> ()));
-      let completed = Hashtbl.create (List.length declared) in
-      let physical_order =
-        List.sort
-          (fun a b ->
-            compare
-              ( text (get (get a "detail") "file"),
-                integer (get (get a "detail") "offset") )
-              ( text (get (get b "detail") "file"),
-                integer (get (get b "detail") "offset") ))
-          declared
-      in
+      let declared = List.map with_kind (list (get report "outcomes")) in
+      let report = set report "outcomes" (arr declared) in
       List.iter
         (fun o ->
-          let o =
-            if has o "kind" then o
-            else
-              set o "kind"
-                (str
-                   (if has (get o "config") "campaign" then "campaign"
-                    else "arena"))
-          in
           let key = identity o in
           Journal.require
             (not (Hashtbl.mem seen key))
             ("Duplicate match configuration: " ^ key);
           Hashtbl.add seen key ();
-          let o =
-            if get o "kind" = str "arena" then (
-              Journal.require
-                (List.mem (get o "winner") [ `Null; str "player"; str "enemy" ])
-                ("Invalid winner: " ^ key);
-              Journal.require
-                (get o "winner" = `Null = (get o "reason" = str "cap"))
-                ("Winner/cap inconsistency: " ^ key);
-              o)
-            else
-              let analysis =
-                match Hashtbl.find_opt legacy key with
-                | Some a -> a
-                | None ->
-                    let ref_ = get o "detail" in
-                    let detail =
-                      if
-                        List.for_all (has ref_)
-                          [ "file"; "offset"; "bytes"; "sha256" ]
-                      then (
-                        let result =
-                          with_kind (normalize (Journal.read directory ref_))
-                        in
-                        Journal.require
-                          (identity result = key)
-                          "Gameplay journal configuration mismatch";
-                        result)
-                      else o
-                    in
-                    arr
-                      (List.map Campaign.diagnostics
-                         (list (get detail "missions")))
-              in
-              set o "analysis" analysis
-          in
-          Hashtbl.add completed key o)
-        physical_order;
-      List.iter
-        (fun saved ->
-          let saved =
-            if has saved "kind" then saved
-            else
-              set saved "kind"
-                (str
-                   (if has (get saved "config") "campaign" then "campaign"
-                    else "arena"))
-          in
-          outcomes := Hashtbl.find completed (identity saved) :: !outcomes)
+          if get o "kind" = str "arena" then (
+            Journal.require
+              (List.mem (get o "winner") [ `Null; str "player"; str "enemy" ])
+              ("Invalid winner: " ^ key);
+            Journal.require
+              (get o "winner" = `Null = (get o "reason" = str "cap"))
+              ("Winner/cap inconsistency: " ^ key));
+          outcomes := o :: !outcomes)
         declared;
-      let source =
-        obj (List.map (fun k -> (k, get report k)) source_fields) |> fun s ->
-        merge s
+      let source = obj (List.map (fun k -> (k, get report k)) source_fields) in
+      sources :=
+        merge source
           [
             ( "fingerprint",
               default report "fingerprint" (get report "fingerprints") );
@@ -186,36 +106,20 @@ let load paths =
                     else path)) );
             ("matches", int (List.length declared));
           ]
-      in
-      sources := source :: !sources;
+        :: !sources;
       reports := (path, report) :: !reports)
     filenames;
-  {
-    outcomes = List.rev !outcomes;
-    sources = List.rev !sources;
-    reports = List.rev !reports;
-  }
-
-let journals store f =
-  List.iter
-    (fun (path, report) ->
-      Journal.require
-        (get report "status" = str "complete")
-        "Unit usage requires a completed run";
-      list (get report "outcomes")
-      |> List.sort (fun a b ->
-          compare
-            ( text (get (get a "detail") "file"),
-              integer (get (get a "detail") "offset") )
-            ( text (get (get b "detail") "file"),
-              integer (get (get b "detail") "offset") ))
-      |> List.iter (fun saved ->
-          let result =
-            normalize
-              (Journal.read (Filename.dirname path) (get saved "detail"))
-          in
-          Journal.require
-            (sorted (get result "config") = sorted (get saved "config"))
-            "Unit usage journal configuration mismatch";
-          f report result))
-    store.reports
+  let reports = List.rev !reports in
+  let dataset = Dataset.load reports ~telemetry in
+  let observations = Campaign_observations.build dataset in
+  let outcomes =
+    List.rev !outcomes
+    |> List.map (fun o ->
+        if get o "kind" = str "campaign" then
+          set o "analysis"
+            (arr
+               (Option.value ~default:[]
+                  (Hashtbl.find_opt observations (identity o))))
+        else o)
+  in
+  { outcomes; sources = List.rev !sources; reports; dataset }

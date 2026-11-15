@@ -1,24 +1,14 @@
 open Json
-(** Recorded state/event interpretation. Bounded batches are reduced by Talon.
-*)
+(** Telemetry joins and reductions over the once-decoded dataset. *)
+
+module R = Rel
+module E = Talon.Expr
+module Q = Talon.Query
 
 let dims = [ "race"; "policy"; "opponentPolicy"; "map" ]
+let value_dims = Dataset.value_dims
 
-let value_dims =
-  [
-    "kind";
-    "campaign";
-    "diplomacy";
-    "objective";
-    "mission";
-    "race";
-    "policy";
-    "opponentPolicy";
-    "map";
-    "family";
-  ]
-
-let value_fields =
+let fields =
   [
     "unitTurns";
     "hpDamageDealt";
@@ -51,6 +41,9 @@ let nonleader_fields =
     "nonleaderThornHPDamageDealt";
   ]
 
+let events =
+  [ "recruited"; "promoted"; "lost"; "attacks"; "retaliations"; "damage" ]
+
 let effect_fields =
   [
     "providerTurns";
@@ -64,918 +57,1063 @@ let effect_fields =
     "effectiveReflectedDamage";
   ]
 
-let capturable x = List.mem (text x) [ "village"; "grove"; "fort"; "ruins" ]
+let overlap_fields =
+  [
+    "opportunities";
+    "eligiblePairs";
+    "contacts";
+    "coveredRecipients";
+    "overlappingRecipients";
+  ]
 
-let analyze store ~presence ~support ~value ~leaders =
-  let role_events = Frame.accumulator (dims @ [ "unit" ]) Arena.event_counts in
-  let census = Frame.accumulator (dims @ [ "unit" ]) [ "unitTurns" ] in
-  let totals = Frame.accumulator dims [ "battles"; "phases"; "unitTurns" ] in
-  let present =
-    Frame.accumulator (dims @ [ "grouping"; "member" ]) [ "battlesPresent" ]
+let capturable = [ "village"; "grove"; "fort"; "ruins" ]
+let without_family = List.filter (( <> ) "family") value_dims
+
+let join_unit ?(id = "unit") lookup event =
+  event
+  |> R.join ~kind:Talon.Join.Left ~one:true [ "p"; id ]
+       (R.rename [ ("id", id) ] lookup)
+
+let own_phases (d : Dataset.t) =
+  R.select [ "p"; "side" ] d.phases |> R.rename [ ("side", "actingSide") ]
+
+let recruits (d : Dataset.t) =
+  let newborns =
+    d.units
+    |> R.join ~kind:Talon.Join.Anti [ "p"; "id" ]
+         (R.select [ "p"; "id" ] d.before)
+    |> R.rename [ ("cell", "destination") ]
   in
-  let effects =
-    Frame.accumulator (dims @ [ "unit"; "ability" ]) effect_fields
+  let actions =
+    d.actions
+    |> R.filter E.(R.s "kind" = string "recruit")
+    |> R.drop [ "kind"; "unit" ]
+    |> R.join [ "p" ] (R.select [ "p"; "side" ] d.phases)
   in
-  let overlaps =
-    Frame.accumulator
-      (dims @ [ "ability"; "providerCount"; "recipientsPerProvider" ])
+  let result =
+    actions
+    |> R.join ~kind:Talon.Join.Left ~one:true
+         [ "p"; "side"; "type"; "destination" ]
+         newborns
+  in
+  Journal.require
+    (Talon.rows (R.filter E.(is_null (R.s "id")) result) = 0
+    && Talon.rows result = Talon.rows actions)
+    "Cannot identify recorded recruit role";
+  result |> R.rename [ ("destination", "cell") ]
+
+let presence (d : Dataset.t) ending lookup recruited =
+  let arena = E.(R.s "kind" = string "arena") in
+  let own =
+    ending |> R.filter E.(arena && R.s "side" = R.s "actingSide" && R.nonleader)
+  in
+  let sides =
+    List.map
+      (fun (side, other) ->
+        d.meta |> R.filter arena
+        |> R.project
+             E.
+               [
+                 keep (Talon.Sel.names [ "m" ]);
+                 "side" := string side;
+                 "race" := R.s (side ^ "Race");
+                 "policy" := R.s side;
+                 "opponentPolicy" := R.s other;
+                 "map" := R.s "landscape";
+               ])
+      [ ("player", "enemy"); ("enemy", "player") ]
+    |> R.concat
+  in
+  let battles = sides |> R.all_maps |> R.count dims "battles" in
+  let phases =
+    d.phases
+    |> R.select [ "p"; "m"; "side" ]
+    |> R.join [ "m"; "side" ] sides
+    |> R.all_maps
+    |> R.count dims "observedPhases"
+  in
+  let totals = own |> R.all_maps |> R.count dims "totalUnitTurns" in
+  let seen =
+    R.concat
+      (List.map
+         (fun units ->
+           Dataset.describe d units
+           |> R.select (("m" :: dims) @ [ "type"; "family"; "role"; "kind" ]))
+         [ d.initial; d.before; d.losses; d.units ])
+    |> R.filter E.(arena && R.nonleader)
+  in
+  let presence =
+    List.map
+      (fun (member, name, output) ->
+        let p =
+          seen
+          |> R.select (("m" :: dims) @ [ member ])
+          |> R.unique (("m" :: dims) @ [ member ])
+          |> R.all_maps
+          |> R.count (dims @ [ member ]) "battlesPresent"
+        in
+        let turns =
+          own |> R.all_maps |> R.count (dims @ [ member ]) "unitTurns"
+        in
+        let result =
+          p
+          |> R.join ~kind:Talon.Join.Left (dims @ [ member ]) turns
+          |> R.join ~kind:Talon.Join.Left dims battles
+          |> R.join ~kind:Talon.Join.Left dims phases
+          |> R.join ~kind:Talon.Join.Left dims totals
+          |> R.derive
+               (List.map
+                  (fun n -> R.out n (R.numeric n))
+                  [ "unitTurns"; "observedPhases"; "totalUnitTurns" ])
+          |> R.derive
+               E.
+                 [
+                   "sharePercent" :=
+                     float 100. *. R.f "unitTurns"
+                     /. R.maximum (R.f "totalUnitTurns") (float 1.);
+                   "meanUnitsPerPhase" :=
+                     R.f "unitTurns"
+                     /. R.maximum (R.f "observedPhases") (float 1.);
+                   "battlePresencePercent" :=
+                     float 100. *. R.f "battlesPresent"
+                     /. R.maximum (R.f "battles") (float 1.);
+                 ]
+          |> R.rename [ (member, output) ]
+          |> R.sort (dims @ [ output ])
+        in
+        (name, result))
       [
-        "opportunities";
-        "eligiblePairs";
-        "contacts";
-        "coveredRecipients";
-        "overlappingRecipients";
+        ("type", "battlefield_units", "unit");
+        ("family", "battlefield_presence", "family");
       ]
   in
-  let values = Frame.accumulator value_dims value_fields
-  and unit_values =
-    Frame.accumulator
-      (List.filter (( <> ) "family") value_dims @ [ "unit" ])
-      (value_fields @ nonleader_fields)
+  let event stats table =
+    table
+    |> R.filter E.(arena && R.nonleader)
+    |> R.rename [ ("type", "unitType") ]
+    |> R.facts (dims @ [ "unitType" ]) events stats
+    |> R.rename [ ("unitType", "unit") ]
   in
-  let leader_rows = ref []
-  and catalogs = ref `Null
-  and family_catalog = ref `Null in
-  let add_zero cols r =
-    merge r (List.map (fun k -> (k, default r k (int 0))) cols)
+  let role =
+    R.concat
+      [
+        Dataset.describe d d.losses |> event [ ("lost", R.one) ];
+        Dataset.describe d recruited |> event [ ("recruited", R.one) ];
+        d.actions
+        |> R.filter E.(R.s "kind" = string "advance")
+        |> R.select [ "p"; "unit" ]
+        |> join_unit lookup
+        |> event [ ("promoted", R.one) ];
+        d.combats
+        |> R.select [ "p"; "unit"; "damage" ]
+        |> R.rename [ ("damage", "rawDamage") ]
+        |> join_unit lookup
+        |> event [ ("attacks", R.one); ("damage", R.f "rawDamage") ];
+        d.combats
+        |> R.filter
+             E.(
+               R.numeric "retaliationCount" > float 0.
+               || R.numeric "retaliation" > float 0.)
+        |> R.select [ "p"; "target"; "retaliationCount"; "retaliation" ]
+        |> R.rename [ ("target", "unit") ]
+        |> join_unit lookup
+        |> event
+             [
+               ("retaliations", R.flag E.(R.f "retaliationCount" > float 0.));
+               ("damage", R.f "retaliation");
+             ];
+      ]
+    |> R.group (dims @ [ "unit" ]) events
   in
-  let isleader u = get u "role" = str "leader" in
-  let family unit =
-    default (get !catalogs unit) "family"
-      (default !family_catalog unit (str unit))
+  ("nonleader_unit_events", role) :: presence
+
+let support (d : Dataset.t) before lookup =
+  let arena_ids =
+    d.phases
+    |> R.select [ "p"; "m" ]
+    |> R.join [ "m" ]
+         (d.meta |> R.filter E.(R.s "kind" = string "arena") |> R.select [ "m" ])
+    |> R.select [ "p" ]
   in
-  let matches = ref 0 in
-  Store.journals store (fun report result ->
-      let kind = text (get result "kind") and config = get result "config" in
-      let arena = kind = "arena" in
-      let mirror =
-        arena
-        && get (get config "armies") "player"
-           = get (get config "armies") "enemy"
+  let friends =
+    before
+    |> R.filter E.(R.s "kind" = string "arena")
+    |> R.derive
+         E.
+           [
+             "q" := R.i "col" - ((R.i "row" - (R.i "row" mod int 2)) / int 2);
+             "r" := R.i "row";
+           ]
+  in
+  let effect_rows ability stats table =
+    table
+    |> R.derive [ R.out "ability" (E.string ability) ]
+    |> R.rename [ ("type", "providerType") ]
+    |> R.facts
+         (dims @ [ "providerType"; "family"; "ability" ])
+         effect_fields stats
+    |> R.rename [ ("providerType", "unit") ]
+  in
+  let effects = ref [] and overlaps = ref [] in
+  List.iter
+    (fun ability ->
+      let opportunities =
+        friends
+        |> R.filter
+             (if ability = "healing" then E.(R.s "side" = R.s "actingSide")
+              else E.(R.s "side" <> R.s "actingSide"))
       in
-      if not mirror then (
-        let profiles = default report "unitProfiles" (obj []) in
-        if truth !catalogs then
-          Journal.require
-            (sorted !catalogs = sorted profiles)
-            "Cannot pool different recorded unit catalogs";
-        catalogs := profiles;
-        family_catalog := default report "unitFamilies" (obj []);
-        if arena && support then
-          Journal.require
-            (get report "supportTelemetryVersion" = int 1 && truth profiles)
-            "Support effects require current telemetry and unitProfiles";
-        if value then
-          Journal.require
-            (get report "combatTelemetryVersion" = int 1)
-            "Battlefield value requires combat telemetry";
-        if leaders then
-          Journal.require
-            (get report "leaderAuditVersion" = int 1)
-            "Leader audit requires leader-risk telemetry";
-        let group side map =
-          obj
-            [
-              ("race", get (get config "armies") side);
-              ("policy", str (label config side));
-              ("opponentPolicy", str (label config (other side)));
-              ("map", map);
-            ]
+      let providers = opportunities |> R.filter E.(R.f ability > float 0.) in
+      effects :=
+        effect_rows ability [ ("providerTurns", R.one) ] providers :: !effects;
+      if ability <> "thorns" then (
+        let sizes = opportunities |> R.count [ "p"; "side" ] "friends" in
+        let counts =
+          providers
+          |> R.count ([ "p"; "side" ] @ dims) "providerCount"
+          |> R.join [ "p"; "side" ] sizes
         in
-        let landscape = get config "landscape" in
-        let seen = Hashtbl.create 32 in
-        let record_seen u =
-          if not (isleader u) then
-            Hashtbl.replace seen (text (get u "side"), text (get u "type")) ()
+        let recipients =
+          opportunities
+          |> R.select [ "p"; "side"; "id"; "q"; "r" ]
+          |> R.rename [ ("id", "recipient"); ("q", "rq"); ("r", "rr") ]
         in
-        if arena && (presence || support) then (
-          incr matches;
-          List.iter record_seen (list (get (get result "initial") "units"));
-          List.iter
-            (fun side ->
-              List.iter
-                (fun map ->
-                  Frame.add totals (set (group side map) "battles" (int 1)))
-                [ landscape; str "all" ])
-            [ "player"; "enemy" ]);
-        let add_effect unit ability stats =
-          List.iter
-            (fun map ->
-              List.iter
-                (fun name ->
-                  Frame.add effects
-                    (merge
-                       (group (text (get unit "side")) map)
-                       ([ ("unit", name); ("ability", str ability) ] @ stats)))
-                [ get unit "type"; str "all" ])
-            [ landscape; str "all" ]
+        let touching =
+          providers
+          |> R.join [ "p"; "side" ] recipients
+          |> R.filter E.(R.s "id" <> R.s "recipient")
+          |> R.derive
+               E.[ "dq" := R.i "q" - R.i "rq"; "dr" := R.i "r" - R.i "rr" ]
+          |> R.filter
+               E.(
+                 nx { f = Nx.abs } (R.i "dq")
+                 + nx { f = Nx.abs } (R.i "dr")
+                 + nx { f = Nx.abs } (R.i "dq" + R.i "dr")
+                 = int 2)
+          |> R.derive
+               [
+                 R.out "touching"
+                   E.(
+                     cast Talon.Type.float64
+                       (over ~by:[ "p"; "recipient" ] rows));
+               ]
         in
-        let chapters =
-          if arena then [ result ] else list (get result "missions")
+        effects :=
+          effect_rows ability
+            E.
+              [
+                ("adjacentContacts", float 1.);
+                ("coveredRecipients", float 1. /. R.f "touching");
+                ( "overlappingRecipients",
+                  if_
+                    (R.f "touching" > float 1.)
+                    (float 1. /. R.f "touching")
+                    (float 0.) );
+              ]
+            touching
+          :: !effects;
+        let contacts = touching |> R.count [ "p"; "side" ] "contacts" in
+        let covered =
+          touching
+          |> R.unique [ "p"; "side"; "recipient" ]
+          |> R.count [ "p"; "side" ] "coveredRecipients"
         in
-        List.iter
-          (fun chapter ->
-            let mission = if arena then str "" else get chapter "id" in
-            let phases = list (get chapter "phases")
-            and initial = get chapter "initial" in
-            let tiles = Hashtbl.create 128 in
-            List.iter
-              (fun t -> Hashtbl.replace tiles (text (get t "id")) t)
-              (list (get initial "tiles"));
-            let positions = Hashtbl.create 128 in
+        let overlapping =
+          touching
+          |> R.filter E.(R.f "touching" > float 1.)
+          |> R.unique [ "p"; "side"; "recipient" ]
+          |> R.count [ "p"; "side" ] "overlappingRecipients"
+        in
+        let measured =
+          counts
+          |> R.join ~kind:Talon.Join.Left [ "p"; "side" ] contacts
+          |> R.join ~kind:Talon.Join.Left [ "p"; "side" ] covered
+          |> R.join ~kind:Talon.Join.Left [ "p"; "side" ] overlapping
+          |> R.derive
+               [
+                 R.out "ability" (E.string ability);
+                 R.out "recipientsPerProvider"
+                   E.(R.maximum (R.f "friends" -. float 1.) (float 0.));
+               ]
+          |> R.facts
+               (dims @ [ "ability"; "providerCount"; "recipientsPerProvider" ])
+               overlap_fields
+               E.
+                 [
+                   ("opportunities", float 1.);
+                   ( "eligiblePairs",
+                     R.f "providerCount"
+                     *. R.maximum (R.f "friends" -. float 1.) (float 0.) );
+                   ("contacts", R.numeric "contacts");
+                   ("coveredRecipients", R.numeric "coveredRecipients");
+                   ("overlappingRecipients", R.numeric "overlappingRecipients");
+                 ]
+        in
+        overlaps := measured :: !overlaps))
+    [ "healing"; "thornAura"; "thorns" ];
+  let list_size name =
+    E.(
+      cast Talon.Type.float64
+        (per_list
+           [
+             "__element" := Talon.Col.v (Talon.Kind.list Talon.Kind.string) name;
+           ]
+           rows))
+  in
+  let healing =
+    d.healing
+    |> R.join ~kind:Talon.Join.Semi [ "p" ] arena_ids
+    |> R.derive [ R.out "n" (list_size "providers") ]
+  in
+  Journal.require
+    (Talon.rows (R.filter E.(R.f "n" = float 0.) healing) = 0)
+    "Healing event has no provider";
+  let healing =
+    Q.of_table healing
+    |> Q.unnest
+         [
+           E.(
+             "unit" :=
+               Talon.Col.v (Talon.Kind.list Talon.Kind.string) "providers");
+         ]
+    |> Q.select [ E.keep (Talon.Sel.names [ "p"; "unit"; "amount"; "n" ]) ]
+    |> R.run |> join_unit lookup
+  in
+  effects :=
+    effect_rows "healing"
+      E.
+        [
+          ("healedHP", R.f "amount" /. R.f "n");
+          ("healedRecipients", float 1. /. R.f "n");
+        ]
+      healing
+    :: !effects;
+  let combats = d.combats |> R.join ~kind:Talon.Join.Semi [ "p" ] arena_ids in
+  Journal.require
+    (Talon.rows (R.filter E.(not (R.b "hasThorns")) combats) = 0)
+    "Support telemetry missing from combat record";
+  let thorns =
+    combats
+    |> R.filter E.(R.f "raw" > float 0.)
+    |> R.derive
+         [
+           R.out "n" (list_size "sources");
+           R.out "own" E.(R.f "raw" -. R.f "aura");
+         ]
+  in
+  Journal.require
+    (Talon.rows
+       (R.filter E.(R.f "aura" <> float 0. && R.f "n" = float 0.) thorns)
+    = 0)
+    "Thorn aura event has no provider";
+  let own =
+    thorns
+    |> R.filter E.(R.f "own" <> float 0.)
+    |> R.select [ "p"; "target"; "own"; "raw"; "effective" ]
+    |> R.rename [ ("target", "unit") ]
+    |> join_unit lookup
+  in
+  effects :=
+    effect_rows "thorns"
+      E.
+        [
+          ("triggeredCombats", float 1.);
+          ("reflectedDamage", R.f "own");
+          ("effectiveReflectedDamage", R.f "effective" *. R.f "own" /. R.f "raw");
+        ]
+      own
+    :: !effects;
+  let aura =
+    Q.of_table thorns
+    |> Q.unnest
+         [
+           E.(
+             "provider" :=
+               Talon.Col.v (Talon.Kind.list Talon.Kind.string) "sources");
+         ]
+    |> Q.select
+         [
+           E.keep
+             (Talon.Sel.names
+                [ "p"; "provider"; "aura"; "raw"; "effective"; "n" ]);
+         ]
+    |> R.run
+    |> R.rename [ ("provider", "unit") ]
+    |> join_unit lookup
+  in
+  effects :=
+    effect_rows "thornAura"
+      E.
+        [
+          ("triggeredCombats", float 1. /. R.f "n");
+          ("reflectedDamage", R.f "aura" /. R.f "n");
+          ( "effectiveReflectedDamage",
+            R.f "effective" *. R.f "aura" /. R.f "n" /. R.f "raw" );
+        ]
+      aura
+    :: !effects;
+  let effects = R.concat !effects in
+  let effects =
+    R.append effects
+      (R.derive E.[ "unit" := string "all"; "family" := string "all" ] effects)
+    |> R.all_maps
+    |> R.group (dims @ [ "unit"; "family"; "ability" ]) effect_fields
+  in
+  let rate field_name condition =
+    E.(
+      if_
+        (R.f "providerTurns" > float 0. && condition)
+        (R.f field_name /. R.f "providerTurns")
+        (store Talon.Type.float64 null))
+  in
+  let effects =
+    effects
+    |> R.derive
+         E.
+           [
+             "adjacentAlliesPerTurn" :=
+               rate "adjacentContacts" (R.s "ability" <> string "thorns");
+             "usefulRecipientsPerTurn" :=
+               rate "healedRecipients" (R.s "ability" = string "healing");
+             "healedHPPerTurn" :=
+               rate "healedHP" (R.s "ability" = string "healing");
+             "reflectedDamagePerTurn" :=
+               rate "reflectedDamage" (R.s "ability" <> string "healing");
+             "overlapPercent" :=
+               if_
+                 (R.f "coveredRecipients" > float 0.)
+                 (float 100.
+                 *. R.f "overlappingRecipients"
+                 /. R.f "coveredRecipients")
+                 (float 0.);
+           ]
+  in
+  let overlaps =
+    R.concat !overlaps |> R.all_maps
+    |> R.group
+         (dims @ [ "ability"; "providerCount"; "recipientsPerProvider" ])
+         overlap_fields
+    |> R.derive
+         E.
+           [
+             "pairCoverageProbability" :=
+               R.f "contacts" /. R.maximum (R.f "eligiblePairs") (float 1.);
+             "overlapPercent" :=
+               float 100.
+               *. R.f "overlappingRecipients"
+               /. R.maximum (R.f "coveredRecipients") (float 1.);
+             "redundantContactPercent" :=
+               float 100.
+               *. (R.f "contacts" -. R.f "coveredRecipients")
+               /. R.maximum (R.f "contacts") (float 1.);
+           ]
+  in
+  [ ("support_effects", effects); ("support_overlap", overlaps) ]
+
+let capture_facts (d : Dataset.t) lookup =
+  (* Only capture ownership is stateful. Iterate projected move/ownership
+     columns; the roster, combat and numeric calculations remain relational. *)
+  let moves =
+    d.actions
+    |> R.filter E.(R.s "kind" = string "move")
+    |> R.select [ "p"; "action"; "unit"; "destination" ]
+    |> join_unit lookup
+    |> R.sort [ "p"; "action" ]
+    |> Frame.rows
+  in
+  let by_phase = Hashtbl.create 2048 in
+  List.iter
+    (fun r ->
+      let p = integer (get r "p") in
+      Hashtbl.replace by_phase p
+        (r :: Option.value ~default:[] (Hashtbl.find_opt by_phase p)))
+    moves;
+  let objectives = Hashtbl.create (Talon.rows d.objectives) in
+  Frame.rows d.objectives
+  |> List.iter (fun r ->
+      Hashtbl.replace objectives
+        ( integer (get r "m"),
+          integer (get r "ch"),
+          text (get r "side"),
+          text (get r "cell") )
+        ());
+  let is_objective m ch side tile =
+    Hashtbl.mem objectives (m, ch, side, tile)
+  in
+  let states = Hashtbl.create 128 in
+  let output =
+    R.Builder.create
+      (Dataset.strings (value_dims @ [ "type"; "role" ])
+      @ Dataset.floats
+          [
+            "captures";
+            "objectiveCaptures";
+            "ownedTileTurns";
+            "objectiveControlTurns";
+          ])
+  in
+  let emit row stats =
+    R.Builder.add output (fun n ->
+        match List.assoc_opt n stats with
+        | Some v -> float v
+        | None ->
+            if
+              List.mem n
+                [
+                  "captures";
+                  "objectiveCaptures";
+                  "ownedTileTurns";
+                  "objectiveControlTurns";
+                ]
+            then int 0
+            else get row n)
+  in
+  d.phases
+  |> R.select [ "p"; "m"; "ch"; "side"; "ownership" ]
+  |> Frame.rows
+  |> List.iter (fun phase ->
+      let p = integer (get phase "p")
+      and m = integer (get phase "m")
+      and ch = integer (get phase "ch")
+      and acting = text (get phase "side") in
+      let owners, terrain, captors, factions, tiles =
+        match Hashtbl.find_opt states (m, ch) with
+        | Some state -> state
+        | None ->
+            let h = List.find (fun (h : Dataset.header) -> h.m = m) d.headers in
+            let chapter =
+              if get h.result "kind" = str "arena" then h.result
+              else List.nth (list (get h.result "missions")) ch
+            in
+            let initial = get chapter "initial" in
+            let tiles = list (get initial "tiles") in
+            let owners = Hashtbl.create 64
+            and terrain = Hashtbl.create 64
+            and captors = Hashtbl.create 16 in
             List.iter
               (fun t ->
-                Hashtbl.replace positions
-                  (text (get t "id"))
-                  (integer (get t "col"), integer (get t "row")))
-              (list (get initial "tiles"));
-            let adjacent a b =
-              let x, y = Hashtbl.find positions (cell a)
-              and u, v = Hashtbl.find positions (cell b) in
-              let q = x - (y / 2) - u + (v / 2) and r = y - v in
-              abs q + abs r + abs (q + r) = 2
-            in
-            let factions = index_by "id" (list (get initial "factions")) in
-            let owners = Hashtbl.create 128 in
-            Hashtbl.iter
-              (fun id t -> Hashtbl.replace owners id (get t "owner"))
+                Hashtbl.add owners (text (get t "id")) (get t "owner");
+                Hashtbl.add terrain (text (get t "id")) (text (get t "terrain")))
               tiles;
-            let faction u =
-              if truth (get u "faction") then get u "faction" else get u "side"
+            let state =
+              (owners, terrain, captors, list (get initial "factions"), tiles)
             in
-            let hostile a b =
-              if a = b then false
-              else
-                let relation =
-                  get (get (lookup factions (text a)) "relations") (text b)
-                in
-                let relation =
-                  if relation = `Null then
-                    get (get (lookup factions (text b)) "relations") (text a)
-                  else relation
-                in
-                if relation <> `Null then relation = str "hostile"
-                else List.sort compare [ a; b ] = [ str "enemy"; str "player" ]
-            in
-            let cost u =
-              let profile = get profiles (text (get u "type")) in
-              let recruits =
-                list (get (lookup factions (text (faction u))) "recruits")
-              in
-              match
-                List.find_opt (fun r -> get r "unit" = get u "type") recruits
-              with
-              | Some r -> default r "cost" (get profile "cost")
-              | None -> get profile "cost"
-            in
-            let captors = Hashtbl.create 128
-            and investments = Hashtbl.create 128
-            and objectives = Hashtbl.create 128 in
-            List.iter
-              (fun phase ->
-                List.iter
-                  (fun o ->
-                    if get o "kind" = str "capture" then
-                      List.iter
-                        (fun tile ->
-                          Hashtbl.replace objectives
-                            (text (get phase "side"), cell tile)
-                            ())
-                        (list (get o "tiles")))
-                  (list (get phase "objectives")))
-              phases;
-            let objective side tile = Hashtbl.mem objectives (side, tile) in
-            let identity u map =
-              let side = text (get u "side") in
-              obj
-                [
-                  ("kind", str kind);
-                  ("campaign", default config "campaign" (str ""));
-                  ("diplomacy", default config "diplomacy" (str ""));
-                  ("objective", default config "objective" (str "authored"));
-                  ("mission", mission);
-                  ( "race",
-                    if arena then get (get config "armies") side
-                    else get (get profiles (text (get u "type"))) "race" );
-                  ("policy", str (label config side));
-                  ("opponentPolicy", str (label config (other side)));
-                  ("map", map);
-                  ("family", family (text (get u "type")));
-                ]
-            in
-            let add_value u stats =
-              let map = if arena then landscape else mission in
-              List.iter
-                (fun map ->
-                  let d = identity u map in
-                  Frame.add values (merge d stats);
-                  let nonleader = not (isleader u) in
-                  let pairs =
-                    List.map2
-                      (fun source target ->
-                        ( target,
-                          if nonleader then default (obj stats) source (int 0)
-                          else int 0 ))
-                      [
-                        "unitTurns"; "weaponHPDamageDealt"; "thornHPDamageDealt";
-                      ]
-                      nonleader_fields
-                  in
-                  Frame.add unit_values
-                    (merge (remove d [ "family" ])
-                       ([ ("unit", get u "type") ] @ stats @ pairs)))
-                [ map; str "all" ]
-            in
-            List.iteri
-              (fun phase_index phase ->
-                let side = text (get phase "side") in
-                let before = list (get phase "before")
-                and units = list (get phase "units")
-                and losses = list (get phase "losses") in
-                let lookup_ = index_by "id" (before @ losses @ units) in
-                let lookup_support = index_by "id" (losses @ units @ before) in
-                if arena && presence then (
-                  let own =
-                    List.filter
-                      (fun u -> get u "side" = str side && not (isleader u))
-                      units
-                  in
-                  List.iter
-                    (fun map ->
-                      Frame.add totals
-                        (merge (group side map)
-                           [
-                             ("phases", int 1);
-                             ("unitTurns", int (List.length own));
-                           ]);
-                      List.iter
-                        (fun u ->
-                          Frame.add census
-                            (merge (group side map)
-                               [ ("unit", get u "type"); ("unitTurns", int 1) ]))
-                        own)
-                    [ landscape; str "all" ];
-                  List.iter record_seen (before @ units @ losses));
-                if arena && presence then (
-                  let add u stats =
-                    if not (isleader u) then
-                      Frame.add role_events
-                        (merge
-                           (group (text (get u "side")) landscape)
-                           ([ ("unit", get u "type") ] @ stats))
-                  in
-                  List.iter (fun u -> add u [ ("lost", int 1) ]) losses;
-                  List.iter
-                    (fun action ->
-                      if get action "kind" = str "advance" then
-                        add
-                          (lookup lookup_ (text (get action "unit")))
-                          [ ("promoted", int 1) ]
-                      else if get action "kind" = str "recruit" then (
-                        let previous = List.map (fun u -> get u "id") before in
-                        let spawned =
-                          List.filter
-                            (fun u ->
-                              (not (List.mem (get u "id") previous))
-                              && get u "type" = get action "type"
-                              && get u "tile" = get action "tile"
-                              && get u "side" = str side)
-                            units
-                        in
-                        Journal.require
-                          (List.length spawned = 1)
-                          "Cannot identify recorded recruit role";
-                        add (List.hd spawned) [ ("recruited", int 1) ]))
-                    (list (get phase "actions"));
-                  List.iter
-                    (fun c ->
-                      add
-                        (lookup lookup_ (text (get c "unit")))
-                        [
-                          ("attacks", int 1);
-                          ("damage", default c "damage" (int 0));
-                        ];
-                      if
-                        integer (get c "retaliationCount") > 0
-                        || number (get c "retaliation") <> 0.
-                      then
-                        add
-                          (lookup lookup_ (text (get c "target")))
-                          [
-                            ( "retaliations",
-                              int
-                                (if integer (get c "retaliationCount") > 0 then
-                                   1
-                                 else 0) );
-                            ("damage", default c "retaliation" (int 0));
-                          ])
-                    (list (get phase "combats")));
-                if arena && support then (
-                  List.iter
-                    (fun ability ->
-                      let provider_side =
-                        if ability = "healing" then side else other side
-                      in
-                      let friends =
-                        List.filter
-                          (fun u -> get u "side" = str provider_side)
-                          before
-                      in
-                      let providers =
-                        List.filter
-                          (fun u ->
-                            number
-                              (get (get profiles (text (get u "type"))) ability)
-                            > 0.)
-                          friends
-                      in
-                      List.iter
-                        (fun p ->
-                          add_effect p ability [ ("providerTurns", int 1) ])
-                        providers;
-                      if ability <> "thorns" then (
-                        let contacts = ref 0
-                        and covered = ref 0
-                        and overlapping = ref 0 in
-                        List.iter
-                          (fun ally ->
-                            let touching =
-                              List.filter
-                                (fun p ->
-                                  get p "id" <> get ally "id"
-                                  && adjacent (get p "tile") (get ally "tile"))
-                                providers
-                            in
-                            let n = List.length touching in
-                            contacts := !contacts + n;
-                            if n > 0 then incr covered;
-                            if n > 1 then incr overlapping;
-                            List.iter
-                              (fun p ->
-                                add_effect p ability
-                                  [
-                                    ("adjacentContacts", int 1);
-                                    ( "coveredRecipients",
-                                      float (1. /. Float.of_int n) );
-                                    ( "overlappingRecipients",
-                                      float
-                                        (if n > 1 then 1. /. Float.of_int n
-                                         else 0.) );
-                                  ])
-                              touching)
-                          friends;
-                        if providers <> [] then
-                          List.iter
-                            (fun map ->
-                              Frame.add overlaps
-                                (merge (group provider_side map)
-                                   [
-                                     ("ability", str ability);
-                                     ( "providerCount",
-                                       int (List.length providers) );
-                                     ( "recipientsPerProvider",
-                                       int (max 0 (List.length friends - 1)) );
-                                     ("opportunities", int 1);
-                                     ( "eligiblePairs",
-                                       int
-                                         (List.length providers
-                                         * max 0 (List.length friends - 1)) );
-                                     ("contacts", int !contacts);
-                                     ("coveredRecipients", int !covered);
-                                     ("overlappingRecipients", int !overlapping);
-                                   ]))
-                            [ landscape; str "all" ]))
-                    [ "healing"; "thornAura"; "thorns" ];
-                  List.iter
-                    (fun event ->
-                      let providers = list (get event "providers") in
-                      Journal.require (providers <> [])
-                        "Healing event has no provider";
-                      List.iter
-                        (fun p ->
-                          add_effect
-                            (lookup lookup_support (text p))
-                            "healing"
-                            [
-                              ( "healedHP",
-                                float
-                                  (number (get event "amount")
-                                  /. Float.of_int (List.length providers)) );
-                              ( "healedRecipients",
-                                float
-                                  (1. /. Float.of_int (List.length providers))
-                              );
-                            ])
-                        providers)
-                    (list (get phase "healing"));
-                  List.iter
-                    (fun combat ->
-                      let thorns = get combat "thorns" in
-                      Journal.require (thorns <> `Null)
-                        "Support telemetry missing";
-                      let raw = number (get thorns "damage") in
-                      if raw > 0. then (
-                        let own = raw -. number (get thorns "auraDamage")
-                        and effective = number (get thorns "effectiveDamage") in
-                        if own <> 0. then
-                          add_effect
-                            (lookup lookup_support (text (get combat "target")))
-                            "thorns"
-                            [
-                              ("triggeredCombats", int 1);
-                              ("reflectedDamage", float own);
-                              ( "effectiveReflectedDamage",
-                                float (effective *. own /. raw) );
-                            ];
-                        let sources = list (get thorns "auraSources") in
-                        Journal.require
-                          (number (get thorns "auraDamage") = 0.
-                          || sources <> [])
-                          "Thorn aura has no provider";
-                        List.iter
-                          (fun source ->
-                            let damage =
-                              number (get thorns "auraDamage")
-                              /. Float.of_int (List.length sources)
-                            in
-                            add_effect
-                              (lookup lookup_support (text source))
-                              "thornAura"
-                              [
-                                ( "triggeredCombats",
-                                  float
-                                    (1. /. Float.of_int (List.length sources))
-                                );
-                                ("reflectedDamage", float damage);
-                                ( "effectiveReflectedDamage",
-                                  float (effective *. damage /. raw) );
-                              ])
-                          sources))
-                    (list (get phase "combats")));
-                if value then (
-                  List.iter
-                    (fun u ->
-                      if get u "side" = str side then (
-                        add_value u [ ("unitTurns", int 1) ];
-                        let tile = cell (get u "tile") in
-                        if capturable (get (lookup tiles tile) "terrain") then
-                          add_value u [ ("capturableOccupationTurns", int 1) ];
-                        if objective side tile then
-                          add_value u [ ("objectiveOccupationTurns", int 1) ]))
-                    units;
-                  List.iter
-                    (fun action ->
-                      if get action "kind" = str "recruit" then (
-                        let previous = List.map (fun u -> get u "id") before in
-                        let recruits =
-                          Hashtbl.fold
-                            (fun _ u acc ->
-                              if
-                                (not (List.mem (get u "id") previous))
-                                && get u "side" = str side
-                                && get u "tile" = get action "tile"
-                                && get u "type" = get action "type"
-                                && not
-                                     (Hashtbl.mem investments
-                                        (text (get u "id")))
-                              then u :: acc
-                              else acc)
-                            lookup_ []
-                        in
-                        Journal.require
-                          (List.length recruits = 1)
-                          "Cannot identify recorded new recruit";
-                        let unit = List.hd recruits in
-                        Hashtbl.replace investments
-                          (text (get unit "id"))
-                          (if get action "cost" <> `Null then get action "cost"
-                           else cost unit))
-                      else if get action "kind" = str "move" then
-                        let u = lookup lookup_ (text (get action "unit")) in
-                        let tile = cell (get action "tile") in
-                        let owner = lookup owners tile in
-                        if
-                          capturable (get (lookup tiles tile) "terrain")
-                          && (owner = `Null || hostile (faction u) owner)
-                        then (
-                          Hashtbl.replace owners tile (faction u);
-                          Hashtbl.replace captors tile u;
-                          add_value u
-                            [
-                              ("captures", int 1);
-                              ( "objectiveCaptures",
-                                int
-                                  (if objective (text (get u "side")) tile then
-                                     1
-                                   else 0) );
-                            ]))
-                    (list (get phase "actions"));
-                  List.iter
-                    (fun loss ->
-                      let id = text (get loss "id") in
-                      let paid =
-                        default
-                          (obj [ ("paid", lookup investments id) ])
-                          "paid" (int 0)
-                      in
-                      add_value loss
-                        [
-                          ("casualties", int 1);
-                          ( "recruitGoldLost",
-                            if paid = `Null then int 0 else paid );
-                          ("casualtyReplacementValue", cost loss);
-                        ];
-                      Hashtbl.remove investments id)
-                    losses;
-                  List.iter
-                    (fun combat ->
-                      let mitigation = get combat "mitigation" in
-                      Journal.require (mitigation <> `Null)
-                        "Combat mitigation telemetry missing";
-                      let attacker = lookup lookup_ (text (get combat "unit"))
-                      and target =
-                        lookup lookup_ (text (get combat "target"))
-                      in
-                      List.iter
-                        (fun (event, actor, defender, response) ->
-                          if event <> `Null then (
-                            let actual =
-                              if get event "effectiveDamage" <> `Null then
-                                get event "effectiveDamage"
-                              else
-                                float
-                                  (min
-                                     (number (get event "afterTerrainDamage"))
-                                     (number (get event "availableHp")))
-                            in
-                            add_value actor
-                              [
-                                ("hpDamageDealt", actual);
-                                ("weaponHPDamageDealt", actual);
-                              ];
-                            add_value defender
-                              [
-                                ("hpDamageTaken", actual);
-                                ("weaponHPDamageTaken", actual);
-                                ( "armourDamagePrevented",
-                                  get event "effectiveArmourPrevented" );
-                                ( "terrainDamagePrevented",
-                                  get event "effectiveTerrainPrevented" );
-                                ( "rawArmourDelta",
-                                  float
-                                    (number (get event "rawDamage")
-                                    -. number (get event "afterArmourDamage"))
-                                );
-                                ( "rawTerrainDelta",
-                                  float
-                                    (number (get event "afterArmourDamage")
-                                    -. number (get event "afterTerrainDamage"))
-                                );
-                                ("attacksTaken", int (if response then 0 else 1));
-                                ( "retaliationsTaken",
-                                  int (if response then 1 else 0) );
-                              ]))
-                        [
-                          (get mitigation "attack", attacker, target, false);
-                          (get mitigation "retaliation", target, attacker, true);
-                        ];
-                      let thorns = get combat "thorns" in
-                      let effective = number (get thorns "effectiveDamage") in
-                      if effective <> 0. then (
-                        let raw = number (get thorns "damage") in
-                        let own = raw -. number (get thorns "auraDamage") in
-                        add_value attacker
-                          [
-                            ("hpDamageTaken", float effective);
-                            ("thornHPDamageTaken", float effective);
-                          ];
-                        if own <> 0. then
-                          add_value target
-                            [
-                              ("hpDamageDealt", float (effective *. own /. raw));
-                              ( "thornHPDamageDealt",
-                                float (effective *. own /. raw) );
-                            ];
-                        let sources = list (get thorns "auraSources") in
-                        Journal.require
-                          (number (get thorns "auraDamage") = 0.
-                          || sources <> [])
-                          "Thorn aura has no provider";
-                        List.iter
-                          (fun source ->
-                            let reflected =
-                              effective
-                              *. number (get thorns "auraDamage")
-                              /. raw
-                              /. Float.of_int (List.length sources)
-                            in
-                            add_value
-                              (lookup lookup_ (text source))
-                              [
-                                ("hpDamageDealt", float reflected);
-                                ("thornHPDamageDealt", float reflected);
-                              ])
-                          sources))
-                    (list (get phase "combats"));
-                  let observed = Hashtbl.create 128 in
-                  List.iter
-                    (fun o ->
-                      Hashtbl.replace observed
-                        (cell (get o "tile"))
-                        (get o "owner"))
-                    (list (get phase "ownership"));
-                  Hashtbl.iter
-                    (fun tile captor ->
-                      if
-                        lookup observed tile = faction captor
-                        && get captor "side" = str side
-                      then
-                        add_value captor
-                          [
-                            ("ownedTileTurns", int 1);
-                            ( "objectiveControlTurns",
-                              int (if objective side tile then 1 else 0) );
-                          ])
-                    captors;
-                  Hashtbl.iter (Hashtbl.replace owners) observed);
-                if leaders then
-                  List.iter
-                    (fun audit ->
-                      let leader = lookup lookup_ (text (get audit "leader")) in
-                      let d =
-                        remove
-                          (identity leader
-                             (if arena then landscape else mission))
-                          [ "family" ]
-                      in
-                      let before = get audit "armyBefore"
-                      and after = get audit "armyAfter"
-                      and foe = get audit "opponentBefore"
-                      and exposure = get audit "exposure" in
-                      let last_combat =
-                        List.rev (list (get phase "combats"))
-                        |> List.find_opt (fun c ->
-                            List.mem (get audit "leader")
-                              [ get c "unit"; get c "target" ])
-                        |> Option.value ~default:`Null
-                      in
-                      let died = get audit "after" = `Null in
-                      let ratio a b =
-                        if number b <> 0. then float (number a /. number b)
-                        else `Null
-                      in
-                      let row =
-                        merge d
-                          ([
-                             ("matchId", str (Json.identity result));
-                             ("seed", get config "seed");
-                             ("first", default config "first" (str ""));
-                             ("phase", int phase_index);
-                             ("round", get phase "round");
-                             ("actingSide", str side);
-                             ("side", get audit "side");
-                             ("leader", get audit "leader");
-                             ("unit", get leader "type");
-                             ("died", bool died);
-                             ("beforeHP", get (get audit "before") "hp");
-                             ( "afterHP",
-                               default (get audit "after") "hp" (int 0) );
-                             ("beforeTile", get (get audit "before") "tile");
-                             ("afterTile", get (get audit "after") "tile");
-                             ("ownDecision", bool (str side = get audit "side"));
-                             ("armyUnitsBefore", get before "units");
-                             ("armyUnitsAfter", get after "units");
-                             ("armyHPValueBefore", get before "hpValue");
-                             ("armyHPValueAfter", get after "hpValue");
-                             ("opponentHPValueBefore", get foe "hpValue");
-                             ( "opponentHPValueAfter",
-                               get (get audit "opponentAfter") "hpValue" );
-                             ( "armyValueRatioBefore",
-                               ratio (get before "hpValue") (get foe "hpValue")
-                             );
-                             ( "armyRetainedFraction",
-                               ratio (get after "hpValue")
-                                 (get before "hpValue") );
-                             ("armyHPBefore", get before "hp");
-                             ("armyHPAfter", get after "hp");
-                             ( "deathDuringOwnAttack",
-                               bool
-                                 (died
-                                 && get last_combat "unit" = get audit "leader"
-                                 ) );
-                             ( "forecastLethalWithSafeAlternative",
-                               if
-                                 get exposure "chosenTileDamage" <> `Null
-                                 && get exposure "minDamage" <> `Null
-                               then
-                                 bool
-                                   (number (get exposure "chosenTileDamage")
-                                    >= number (get (get audit "before") "hp")
-                                   && number (get exposure "minDamage")
-                                      < number (get (get audit "before") "hp"))
-                               else `Null );
-                             ( "endForecastLethal",
-                               if
-                                 get exposure "afterDamage" <> `Null && not died
-                               then
-                                 bool
-                                   (number (get exposure "afterDamage")
-                                   >= number (get (get audit "after") "hp"))
-                               else `Null );
-                           ]
-                          @ fields (get audit "recruitmentBefore")
-                          @ fields exposure)
-                      in
-                      leader_rows := row :: !leader_rows)
-                    (list (get phase "leaderAudit")))
-              phases)
-          chapters;
-        if arena && presence then (
-          let memberships = Hashtbl.create 32 in
-          Hashtbl.iter
-            (fun (side, unit) () ->
-              Hashtbl.replace memberships (side, "unit", unit) ();
-              Hashtbl.replace memberships
-                (side, "family", text (family unit))
-                ())
-            seen;
-          Hashtbl.iter
-            (fun (side, grouping, member) () ->
-              List.iter
-                (fun map ->
-                  Frame.add present
-                    (merge (group side map)
-                       [
-                         ("grouping", str grouping);
-                         ("member", str member);
-                         ("battlesPresent", int 1);
-                       ]))
-                [ landscape; str "all" ])
-            memberships)));
-  let output = ref [] in
-  let put k v = output := !output @ [ (k, v) ] in
-  if presence then (
-    put "nonleader_unit_events" (Frame.finish role_events);
-    let census = Frame.finish census
-    and totals = Frame.finish totals
-    and present = Frame.finish present in
-    let match_dims a b = List.for_all (fun k -> get a k = get b k) dims in
-    List.iter
-      (fun grouping ->
-        let rows =
-          List.filter (fun r -> get r "grouping" = str grouping) present
-          |> List.map (fun r ->
-              let total = List.find (fun t -> match_dims t r) totals in
-              let turns =
-                census
-                |> List.filter (fun c ->
-                    match_dims c r
-                    && (if grouping = "unit" then get c "unit"
-                        else family (text (get c "unit")))
-                       = get r "member")
-                |> List.map (fun c -> get c "unitTurns")
-                |> sum
-              in
-              let denominator = max 1. (number (get total "unitTurns"))
-              and phases = max 1. (number (get total "phases"))
-              and battles = max 1. (number (get total "battles")) in
-              merge
-                (remove r [ "grouping"; "member" ])
-                [
-                  (grouping, get r "member");
-                  ("unitTurns", int (int_of_float turns));
-                  ("totalUnitTurns", get total "unitTurns");
-                  ("sharePercent", float (100. *. turns /. denominator));
-                  ("observedPhases", get total "phases");
-                  ("meanUnitsPerPhase", float (turns /. phases));
-                  ("battles", get total "battles");
-                  ( "battlePresencePercent",
-                    float (100. *. number (get r "battlesPresent") /. battles)
-                  );
-                ])
-        in
-        put
-          (if grouping = "unit" then "battlefield_units"
-           else "battlefield_presence")
-          rows)
-      [ "unit"; "family" ]);
-  if support then (
-    let rows =
-      Frame.finish effects
-      |> List.map (fun r ->
-          let turns = number (get r "providerTurns")
-          and ability = text (get r "ability") in
-          let rate field applies =
-            if turns > 0. && applies then float (number (get r field) /. turns)
-            else `Null
+            Hashtbl.add states (m, ch) state;
+            state
+      in
+      let faction row =
+        let f = get row "faction" in
+        if truth f then f else get row "side"
+      in
+      let relation a b =
+        match List.find_opt (fun f -> get f "id" = a) factions with
+        | Some f -> get (get f "relations") (text b)
+        | None -> `Null
+      in
+      let hostile a b =
+        if a = b then false
+        else
+          let r = relation a b in
+          let r = if r = `Null then relation b a else r in
+          if r <> `Null then r = str "hostile"
+          else
+            List.sort compare [ a; b ]
+            = List.sort compare [ str "player"; str "enemy" ]
+      in
+      Option.value ~default:[] (Hashtbl.find_opt by_phase p)
+      |> List.rev
+      |> List.iter (fun r ->
+          let tile = text (get r "destination") in
+          let owner =
+            Option.value ~default:`Null (Hashtbl.find_opt owners tile)
           in
-          merge r
-            [
-              ( "family",
-                if get r "unit" = str "all" then str "all"
-                else family (text (get r "unit")) );
-              ( "adjacentAlliesPerTurn",
-                rate "adjacentContacts" (ability <> "thorns") );
-              ( "usefulRecipientsPerTurn",
-                rate "healedRecipients" (ability = "healing") );
-              ("healedHPPerTurn", rate "healedHP" (ability = "healing"));
-              ( "reflectedDamagePerTurn",
-                rate "reflectedDamage" (ability <> "healing") );
-              ( "overlapPercent",
-                float
-                  (if number (get r "coveredRecipients") = 0. then 0.
-                   else
-                     100.
-                     *. number (get r "overlappingRecipients")
-                     /. number (get r "coveredRecipients")) );
-            ])
-    in
-    put "support_effects" rows;
-    put "support_overlap"
-      (Frame.finish overlaps
-      |> List.map (fun r ->
-          merge r
-            [
-              ( "pairCoverageProbability",
-                float
-                  (number (get r "contacts")
-                  /. max 1. (number (get r "eligiblePairs"))) );
-              ( "overlapPercent",
-                float
-                  (100.
-                  *. number (get r "overlappingRecipients")
-                  /. max 1. (number (get r "coveredRecipients"))) );
-              ( "redundantContactPercent",
-                float
-                  (100.
-                  *. (number (get r "contacts")
-                     -. number (get r "coveredRecipients"))
-                  /. max 1. (number (get r "contacts"))) );
-            ])));
-  if value then (
-    put "battlefield_value" (Frame.finish values);
-    put "battlefield_unit_value"
-      (Frame.finish unit_values
-      |> List.map (fun r -> set r "family" (family (text (get r "unit"))))));
-  if leaders then (
-    let decisions = Hashtbl.create 128
-    and peaks = Hashtbl.create 128
-    and deaths = ref [] in
-    let rows =
-      List.rev !leader_rows
-      |> List.map (fun row ->
-          let key =
-            canonical
-              (arr
-                 (List.map (get row) [ "matchId"; "mission"; "side"; "leader" ]))
-          in
-          let peak =
-            max
-              (Option.value ~default:0. (Hashtbl.find_opt peaks key))
-              (max
-                 (number (get row "armyHPValueBefore"))
-                 (number (get row "armyHPValueAfter")))
-          in
-          Hashtbl.replace peaks key peak;
-          let row =
-            merge row
+          if
+            List.mem (Hashtbl.find terrain tile) capturable
+            && (owner = `Null || hostile (faction r) owner)
+          then (
+            Hashtbl.replace owners tile (faction r);
+            Hashtbl.replace captors tile r;
+            emit r
               [
-                ("armyPeakHPValue", float peak);
-                ( "armyFractionOfPeakAfter",
-                  if peak <> 0. then
-                    float (number (get row "armyHPValueAfter") /. peak)
-                  else `Null );
-              ]
-          in
-          if truth (get row "ownDecision") then
-            Hashtbl.replace decisions key row;
-          (if truth (get row "died") then
-             let previous = lookup decisions key in
-             deaths :=
-               merge row
-                 (List.map
-                    (fun k ->
-                      ( "lastDecision" ^ String.capitalize_ascii k,
-                        get previous k ))
-                    [
-                      "round";
-                      "beforeHP";
-                      "armyUnitsBefore";
-                      "armyHPValueBefore";
-                      "armyValueRatioBefore";
-                      "beforeDamage";
-                      "chosenTileDamage";
-                      "minDamage";
-                      "safeTiles";
-                      "forecastLethalWithSafeAlternative";
-                      "afterHP";
-                      "afterDamage";
-                      "endForecastLethal";
-                    ])
-               :: !deaths);
-          row)
-    in
-    put "leader_audit" rows;
-    put "leader_deaths" (List.rev !deaths));
-  ignore add_zero;
-  (!output, !matches)
+                ("captures", 1.);
+                ( "objectiveCaptures",
+                  if is_objective m ch (text (get r "side")) tile then 1.
+                  else 0. );
+              ]));
+      let saved = (Hashtbl.find d.owners m).(integer (get phase "ownership")) in
+      let values = list saved in
+      Journal.require
+        (List.length values = List.length tiles)
+        "Invalid Arrow ownership snapshot";
+      let observed = Hashtbl.create 64 in
+      List.iter2
+        (fun tile value ->
+          let owner = if has value "owner" then get value "owner" else value in
+          Hashtbl.add observed (text (get tile "id")) owner)
+        tiles values;
+      Hashtbl.iter
+        (fun tile r ->
+          if
+            Hashtbl.find_opt observed tile = Some (faction r)
+            && text (get r "side") = acting
+          then
+            emit r
+              [
+                ("ownedTileTurns", 1.);
+                ( "objectiveControlTurns",
+                  if is_objective m ch acting tile then 1. else 0. );
+              ])
+        captors;
+      Hashtbl.iter (Hashtbl.replace owners) observed);
+  R.Builder.finish output
+
+let value (d : Dataset.t) ending lookup recruited =
+  let part stats table =
+    R.facts (value_dims @ [ "type"; "role" ]) fields stats table
+  in
+  let own =
+    ending
+    |> R.filter E.(R.s "side" = R.s "actingSide")
+    |> R.join ~kind:Talon.Join.Left [ "m"; "ch"; "cell" ]
+         (R.select [ "m"; "ch"; "cell"; "terrain" ] d.tiles)
+    |> R.join ~kind:Talon.Join.Left
+         [ "m"; "ch"; "side"; "cell" ]
+         (R.derive [ R.out "isObjective" (E.bool true) ] d.objectives)
+  in
+  let parts =
+    ref
+      [
+        part
+          [
+            ("unitTurns", R.one);
+            ( "capturableOccupationTurns",
+              R.flag (E.is_in capturable (R.s "terrain")) );
+            ("objectiveOccupationTurns", R.flag (R.b "isObjective"));
+          ]
+          own;
+      ]
+  in
+  let costs =
+    R.Builder.create
+      (Dataset.ints [ "m"; "ch" ]
+      @ Dataset.strings [ "faction"; "type" ]
+      @ Dataset.floats [ "replacement" ])
+  in
+  List.iter
+    (fun (h : Dataset.header) ->
+      let chapters =
+        if get h.result "kind" = str "arena" then [ h.result ]
+        else list (get h.result "missions")
+      in
+      List.iteri
+        (fun ch chapter ->
+          List.iter
+            (fun faction ->
+              List.iter
+                (fun recruit ->
+                  R.Builder.add costs (fun n ->
+                      match n with
+                      | "m" -> int h.m
+                      | "ch" -> int ch
+                      | "faction" -> get faction "id"
+                      | "type" -> get recruit "unit"
+                      | _ -> get recruit "cost"))
+                (list (get faction "recruits")))
+            (list (get (get chapter "initial") "factions")))
+        chapters)
+    d.headers;
+  let costs = R.Builder.finish costs in
+  let bought =
+    Dataset.describe d recruited
+    |> R.join ~kind:Talon.Join.Left [ "m"; "ch"; "faction"; "type" ] costs
+    |> R.project
+         E.
+           [
+             keep (Talon.Sel.names [ "m"; "ch"; "id" ]);
+             "invested" :=
+               coalesce [ R.f "paid"; R.f "replacement"; R.f "cost" ];
+           ]
+  in
+  let losses =
+    Dataset.describe d d.losses
+    |> R.join ~kind:Talon.Join.Left [ "m"; "ch"; "faction"; "type" ] costs
+    |> R.join ~kind:Talon.Join.Left ~one:true [ "m"; "ch"; "id" ] bought
+  in
+  parts :=
+    part
+      E.
+        [
+          ("casualties", float 1.);
+          ("recruitGoldLost", R.numeric "invested");
+          ( "casualtyReplacementValue",
+            coalesce [ R.f "replacement"; R.f "cost" ] );
+        ]
+      losses
+    :: !parts;
+  Journal.require
+    (Talon.rows (R.filter E.(not (R.b "hasMitigation")) d.combats) = 0)
+    "Combat mitigation telemetry missing from combat record";
+  List.iter
+    (fun (response, prefix, actor, defender) ->
+      let event =
+        d.combats
+        |> (if response then R.filter (R.b "hasResponse") else Fun.id)
+        |> R.select
+             ([ "p"; actor; defender ]
+             @ List.map (fun n -> prefix ^ n) Dataset.damage_fields)
+        |> R.rename
+             ([ (actor, "actor"); (defender, "defender") ]
+             @ List.map (fun n -> (prefix ^ n, n)) Dataset.damage_fields)
+        |> R.derive
+             [
+               R.out "actual"
+                 E.(
+                   coalesce
+                     [
+                       R.f "effectiveDamage";
+                       if_
+                         (R.f "afterTerrainDamage" < R.f "availableHp")
+                         (R.f "afterTerrainDamage") (R.f "availableHp");
+                     ]);
+             ]
+      in
+      let attack =
+        event |> R.rename [ ("actor", "unit") ] |> join_unit lookup
+      in
+      parts :=
+        part
+          [
+            ("hpDamageDealt", R.f "actual");
+            ("weaponHPDamageDealt", R.f "actual");
+          ]
+          attack
+        :: !parts;
+      let defense =
+        event |> R.rename [ ("defender", "unit") ] |> join_unit lookup
+      in
+      parts :=
+        part
+          E.
+            [
+              ("hpDamageTaken", R.f "actual");
+              ("weaponHPDamageTaken", R.f "actual");
+              ("armourDamagePrevented", R.f "effectiveArmourPrevented");
+              ("terrainDamagePrevented", R.f "effectiveTerrainPrevented");
+              ("rawArmourDelta", R.f "rawDamage" -. R.f "afterArmourDamage");
+              ( "rawTerrainDelta",
+                R.f "afterArmourDamage" -. R.f "afterTerrainDamage" );
+              ("attacksTaken", float (if response then 0. else 1.));
+              ("retaliationsTaken", float (if response then 1. else 0.));
+            ]
+          defense
+        :: !parts)
+    [
+      (false, "attack", "unit", "target"); (true, "response", "target", "unit");
+    ];
+  let list_size name =
+    E.(
+      cast Talon.Type.float64
+        (per_list
+           [
+             "__source" := Talon.Col.v (Talon.Kind.list Talon.Kind.string) name;
+           ]
+           rows))
+  in
+  let thorns =
+    d.combats
+    |> R.filter E.(R.f "effective" > float 0.)
+    |> R.derive
+         [
+           R.out "own" E.(R.f "raw" -. R.f "aura");
+           R.out "n" (list_size "sources");
+         ]
+  in
+  Journal.require
+    (Talon.rows
+       (R.filter E.(R.f "aura" <> float 0. && R.f "n" = float 0.) thorns)
+    = 0)
+    "Thorn aura event has no provider";
+  parts :=
+    part
+      [
+        ("hpDamageTaken", R.f "effective");
+        ("thornHPDamageTaken", R.f "effective");
+      ]
+      (thorns |> R.select [ "p"; "unit"; "effective" ] |> join_unit lookup)
+    :: !parts;
+  let reflected =
+    thorns
+    |> R.filter E.(R.f "own" <> float 0.)
+    |> R.select [ "p"; "target"; "raw"; "effective"; "own" ]
+    |> R.rename [ ("target", "unit") ]
+    |> join_unit lookup
+  in
+  parts :=
+    part
+      E.
+        [
+          ("hpDamageDealt", R.f "effective" *. R.f "own" /. R.f "raw");
+          ("thornHPDamageDealt", R.f "effective" *. R.f "own" /. R.f "raw");
+        ]
+      reflected
+    :: !parts;
+  let aura =
+    Q.of_table thorns
+    |> Q.unnest
+         [
+           E.(
+             "provider" :=
+               Talon.Col.v (Talon.Kind.list Talon.Kind.string) "sources");
+         ]
+    |> Q.select
+         [
+           E.keep
+             (Talon.Sel.names
+                [ "p"; "provider"; "raw"; "effective"; "aura"; "n" ]);
+         ]
+    |> R.run
+    |> R.rename [ ("provider", "unit") ]
+    |> join_unit lookup
+  in
+  parts :=
+    part
+      E.
+        [
+          ( "hpDamageDealt",
+            R.f "effective" *. R.f "aura" /. R.f "raw" /. R.f "n" );
+          ( "thornHPDamageDealt",
+            R.f "effective" *. R.f "aura" /. R.f "raw" /. R.f "n" );
+        ]
+      aura
+    :: !parts;
+  let captures = capture_facts d lookup in
+  parts :=
+    part
+      (List.map
+         (fun n -> (n, R.f n))
+         [
+           "captures";
+           "objectiveCaptures";
+           "ownedTileTurns";
+           "objectiveControlTurns";
+         ])
+      captures
+    :: !parts;
+  let facts = R.concat !parts |> R.all_maps in
+  let families = R.group value_dims fields facts in
+  let units =
+    facts
+    |> R.derive
+         (List.map2
+            (fun source target ->
+              R.out target E.(if_ R.nonleader (R.f source) (float 0.)))
+            [ "unitTurns"; "weaponHPDamageDealt"; "thornHPDamageDealt" ]
+            nonleader_fields)
+    |> R.group (without_family @ [ "type" ]) (fields @ nonleader_fields)
+    |> R.join ~kind:Talon.Join.Left [ "type" ]
+         (R.select [ "type"; "family" ] d.profiles)
+    |> R.rename [ ("type", "unit") ]
+  in
+  [ ("battlefield_value", families); ("battlefield_unit_value", units) ]
+
+let leaders (d : Dataset.t) lookup =
+  let phase =
+    d.phases
+    |> R.select [ "p"; "phase"; "round"; "side" ]
+    |> R.rename [ ("side", "actingSide") ]
+  in
+  let audits =
+    d.audits |> join_unit ~id:"leader" lookup |> R.join [ "p" ] phase
+  in
+  let last =
+    R.concat
+      [
+        d.combats
+        |> R.project
+             E.
+               [
+                 keep (Talon.Sel.names [ "p"; "combat" ]);
+                 "leader" := R.s "unit";
+                 "lastOwnAttack" := bool true;
+               ];
+        d.combats
+        |> R.project
+             E.
+               [
+                 keep (Talon.Sel.names [ "p"; "combat" ]);
+                 "leader" := R.s "target";
+                 "lastOwnAttack" := bool false;
+               ];
+      ]
+    |> R.sort [ "combat" ]
+    |> R.unique_last [ "p"; "leader" ]
+    |> R.drop [ "combat" ]
+  in
+  let rows =
+    audits
+    |> R.join ~kind:Talon.Join.Left [ "p"; "leader" ] last
+    |> R.derive
+         E.
+           [
+             "side" := R.s "auditSide";
+             "ownDecision" := R.s "actingSide" = R.s "auditSide";
+             "armyValueRatioBefore" :=
+               R.rate (R.f "armyHPValueBefore") (R.f "opponentHPValueBefore");
+             "armyRetainedFraction" :=
+               R.rate (R.f "armyHPValueAfter") (R.f "armyHPValueBefore");
+             "deathDuringOwnAttack" :=
+               R.b "died" && coalesce [ R.b "lastOwnAttack"; bool false ];
+             "forecastLethalWithSafeAlternative" :=
+               if_
+                 ((not (is_null (R.f "chosenTileDamage")))
+                 && not (is_null (R.f "minDamage")))
+                 (R.f "chosenTileDamage" >= R.f "beforeHP"
+                 && R.f "minDamage" < R.f "beforeHP")
+                 (store Talon.Type.bool null);
+             "endForecastLethal" :=
+               if_
+                 (not (R.b "died"))
+                 (R.f "afterDamage" >= R.f "afterHP")
+                 (store Talon.Type.bool null);
+           ]
+    |> R.rename [ ("type", "unit") ]
+  in
+  let keys = [ "matchId"; "mission"; "side"; "leader" ] in
+  let rows =
+    rows
+    |> R.derive
+         [
+           R.out "armyPeakHPValue"
+             E.(
+               over ~by:keys
+                 ~order:[ Talon.Order.asc "p" ]
+                 (window
+                    (max
+                       (R.maximum (R.f "armyHPValueBefore")
+                          (R.f "armyHPValueAfter")))));
+         ]
+    |> R.derive
+         [
+           R.out "armyFractionOfPeakAfter"
+             (R.rate (R.f "armyHPValueAfter") (R.f "armyPeakHPValue"));
+         ]
+  in
+  let keep =
+    without_family
+    @ [
+        "matchId";
+        "seed";
+        "first";
+        "phase";
+        "round";
+        "actingSide";
+        "side";
+        "leader";
+        "unit";
+        "died";
+        "beforeHP";
+        "afterHP";
+        "beforeTile";
+        "afterTile";
+        "ownDecision";
+        "armyUnitsBefore";
+        "armyUnitsAfter";
+        "armyHPValueBefore";
+        "armyHPValueAfter";
+        "opponentHPValueBefore";
+        "opponentHPValueAfter";
+        "armyValueRatioBefore";
+        "armyRetainedFraction";
+        "armyHPBefore";
+        "armyHPAfter";
+        "gold";
+        "onOwnedKeep";
+        "legalOptions";
+        "affordableOptions";
+      ]
+    @ Dataset.exposure_fields
+    @ [
+        "minTile";
+        "chosenTileReachable";
+        "deathDuringOwnAttack";
+        "forecastLethalWithSafeAlternative";
+        "endForecastLethal";
+        "armyPeakHPValue";
+        "armyFractionOfPeakAfter";
+      ]
+  in
+  let rows = rows |> R.select ("p" :: keep) in
+  let decision_fields =
+    [
+      "round";
+      "beforeHP";
+      "armyUnitsBefore";
+      "armyHPValueBefore";
+      "armyValueRatioBefore";
+      "beforeDamage";
+      "chosenTileDamage";
+      "minDamage";
+      "safeTiles";
+      "forecastLethalWithSafeAlternative";
+      "afterHP";
+      "afterDamage";
+      "endForecastLethal";
+    ]
+  in
+  let title n =
+    "lastDecision"
+    ^ String.uppercase_ascii (String.sub n 0 1)
+    ^ String.sub n 1 (String.length n - 1)
+  in
+  let decisions =
+    rows
+    |> R.filter (R.b "ownDecision")
+    |> R.select (keys @ [ "p" ] @ decision_fields)
+    |> R.rename
+         (("p", "__decision")
+         :: List.map (fun n -> (n, title n)) decision_fields)
+  in
+  let deaths =
+    Q.of_table (R.filter (R.b "died") rows)
+    |> Talon.Kit.join_asof ~by:keys ~on:("p", "__decision")
+         (Q.of_table decisions)
+    |> R.run
+    |> R.drop [ "p"; "__decision" ]
+  in
+  let deaths =
+    if Talon.rows (R.filter E.(R.b "died" && R.b "hasExposure") audits) = 0 then
+      R.drop
+        (Dataset.exposure_fields @ [ "minTile"; "chosenTileReachable" ])
+        deaths
+    else deaths
+  in
+  [ ("leader_audit", R.drop [ "p" ] rows); ("leader_deaths", deaths) ]
+
+let analyze (d : Dataset.t) ~presence:want_presence ~support:want_support
+    ~value:want_value ~leaders:want_leaders =
+  List.iter
+    (fun (h : Dataset.header) ->
+      if want_support && get h.result "kind" = str "arena" then
+        Journal.require
+          (get h.report "supportTelemetryVersion" = int 1
+          && truth (get h.report "unitProfiles"))
+          "Support effects require fresh support telemetry and recorded \
+           unitProfiles";
+      if want_value then
+        Journal.require
+          (get h.report "combatTelemetryVersion" = int 1)
+          "Battlefield value requires fresh combat telemetry";
+      if want_leaders then
+        Journal.require
+          (get h.report "leaderAuditVersion" = int 1)
+          "Leader audit requires fresh leader-risk telemetry")
+    d.headers;
+  let ending = Dataset.describe d d.units |> R.join [ "p" ] (own_phases d) in
+  let before = Dataset.describe d d.before |> R.join [ "p" ] (own_phases d) in
+  let lookup = Dataset.describe d d.lookup
+  and support_lookup = Dataset.describe d d.support_lookup in
+  let recruited = recruits d in
+  (if want_presence then presence d ending lookup recruited else [])
+  @ (if want_support then support d before support_lookup else [])
+  @ (if want_value then value d ending lookup recruited else [])
+  @ if want_leaders then leaders d lookup else []

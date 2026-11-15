@@ -1,47 +1,31 @@
 open Json
+(** Compact outcomes enter typed columns once; aggregates remain Talon tables.
+*)
+
+module R = Rel
+module E = Talon.Expr
+module B = R.Builder
 
 let keys = [ "race"; "opponentRace"; "policy"; "opponentPolicy"; "map" ]
 
-let counts_ =
+let counts =
   [ "games"; "wins"; "losses"; "caps"; "leaderWins"; "territoryWins"; "rounds" ]
 
-let event_counts =
-  [ "recruited"; "promoted"; "lost"; "attacks"; "retaliations"; "damage" ]
-
-let dims c side =
-  let other = other side in
-  obj
-    [
-      ("race", get (get c "armies") side);
-      ("opponentRace", get (get c "armies") other);
-      ("policy", str (label c side));
-      ("opponentPolicy", str (label c other));
-      ("map", get c "landscape");
-    ]
-
-let rates row =
-  let ratio key =
-    float (100. *. number (get row key) /. number (get row "games"))
-  in
-  merge row
-    [
-      ("winRate", ratio "wins");
-      ("lossRate", ratio "losses");
-      ("capRate", ratio "caps");
-      ( "meanRounds",
-        float (number (get row "rounds") /. number (get row "games")) );
-    ]
+let events = Telemetry.events
 
 let tally outcomes =
-  let games = ref []
-  and events = ref []
-  and ledger = ref []
-  and campaigns = ref [] in
+  let games = R.Builder.create (Dataset.strings keys @ Dataset.floats counts) in
+  let units =
+    R.Builder.create
+      (Dataset.strings (keys @ [ "unit" ]) @ Dataset.floats events)
+  in
+  let ledger = ref [] and campaigns = ref [] in
   List.iter
     (fun o ->
-      let c = get o "config" in
+      let config = get o "config" in
       let row =
-        merge (remove c [ "armies" ])
+        merge
+          (remove config [ "armies" ])
           ([
              ("matchId", str (identity o));
              ("kind", get o "kind");
@@ -67,116 +51,117 @@ let tally outcomes =
         in
         ledger := row :: !ledger;
         campaigns := row :: !campaigns)
-      else (
+      else
+        let dim side n =
+          match n with
+          | "race" -> get (get config "armies") side
+          | "opponentRace" -> get (get config "armies") (other side)
+          | "policy" -> str (label config side)
+          | "opponentPolicy" -> str (label config (other side))
+          | "map" -> get config "landscape"
+          | _ -> `Null
+        in
         ledger :=
           merge row
             ([
-               ("playerRace", get (get c "armies") "player");
-               ("enemyRace", get (get c "armies") "enemy");
+               ("playerRace", get (get config "armies") "player");
+               ("enemyRace", get (get config "armies") "enemy");
              ]
-            @ fields (dims c "player"))
+            @ List.map (fun n -> (n, dim "player" n)) keys)
           :: !ledger;
         List.iter
           (fun side ->
-            let d = dims c side in
             let winner = get o "winner" in
-            let flag x = int (if x then 1 else 0) in
-            games :=
-              merge d
-                [
-                  ("games", int 1);
-                  ("wins", flag (winner = str side));
-                  ("losses", flag (winner = str (other side)));
-                  ("caps", flag (winner = `Null));
-                  ( "leaderWins",
-                    flag (winner = str side && get o "reason" = str "leader") );
-                  ( "territoryWins",
-                    flag (winner = str side && get o "reason" = str "territory")
-                  );
-                  ("rounds", get o "rounds");
-                ]
-              :: !games;
+            B.add games (fun n ->
+                if List.mem n keys then dim side n
+                else
+                  let flag b = int (if b then 1 else 0) in
+                  match n with
+                  | "games" -> int 1
+                  | "wins" -> flag (winner = str side)
+                  | "losses" -> flag (winner = str (other side))
+                  | "caps" -> flag (winner = `Null)
+                  | "leaderWins" ->
+                      flag (winner = str side && get o "reason" = str "leader")
+                  | "territoryWins" ->
+                      flag
+                        (winner = str side && get o "reason" = str "territory")
+                  | _ -> get o n);
             List.iter
-              (fun (field, count) ->
+              (fun (source, event) ->
                 List.iter
                   (fun u ->
                     if get u "side" = str side then
-                      events :=
-                        merge d [ ("unit", get u "type"); (count, int 1) ]
-                        :: !events)
-                  (list (get o field)))
+                      B.add units (fun n ->
+                          if List.mem n keys then dim side n
+                          else if n = "unit" then get u "type"
+                          else if source = "combatUsage" then
+                            default u n (int 0)
+                          else int (if n = event then 1 else 0)))
+                  (list (get o source)))
               [
                 ("recruits", "recruited");
                 ("promotions", "promoted");
                 ("casualties", "lost");
-              ];
-            List.iter
-              (fun u ->
-                if get u "side" = str side then
-                  events :=
-                    merge d
-                      ([ ("unit", get u "type") ]
-                      @ List.map
-                          (fun k -> (k, get u k))
-                          [ "attacks"; "retaliations"; "damage" ])
-                    :: !events)
-              (list (get o "combatUsage")))
-          [ "player"; "enemy" ]))
+                ("combatUsage", "");
+              ])
+          [ "player"; "enemy" ])
     outcomes;
-  ( Frame.group !games keys counts_ |> List.map rates,
-    Frame.group !events (keys @ [ "unit" ]) event_counts,
+  let games =
+    B.finish games |> R.group keys counts
+    |> R.derive
+         E.
+           [
+             "winRate" := float 100. *. R.f "wins" /. R.f "games";
+             "lossRate" := float 100. *. R.f "losses" /. R.f "games";
+             "capRate" := float 100. *. R.f "caps" /. R.f "games";
+             "meanRounds" := R.f "rounds" /. R.f "games";
+           ]
+  in
+  ( games,
+    B.finish units |> R.group (keys @ [ "unit" ]) events,
     List.rev !ledger,
     List.rev !campaigns )
 
 let combine ?(equal = false) ?(cross = true) rows keys =
-  let rows =
-    List.filter
-      (fun r ->
-        ((not equal) || get r "policy" = get r "opponentPolicy")
-        && ((not cross) || get r "race" <> get r "opponentRace"))
-      rows
-  in
-  Frame.group rows keys counts_
-  |> List.map (fun r ->
-      set r "winRate"
-        (float (100. *. number (get r "wins") /. number (get r "games"))))
+  rows
+  |> (if equal then R.filter E.(R.s "policy" = R.s "opponentPolicy") else Fun.id)
+  |> (if cross then R.filter E.(R.s "race" <> R.s "opponentRace") else Fun.id)
+  |> R.group keys counts
+  |> R.derive [ R.out "winRate" E.(float 100. *. R.f "wins" /. R.f "games") ]
+
+let family_table families =
+  let builder = B.create (Dataset.strings [ "unit"; "family" ]) in
+  List.iter
+    (fun (unit, family) ->
+      B.add builder (fun n -> if n = "unit" then str unit else family))
+    (fields families);
+  B.finish builder
 
 let purchase_shares events families =
-  let facts =
-    events
-    |> List.filter (fun r -> get r "race" <> get r "opponentRace")
-    |> List.concat_map (fun r ->
-        List.map
-          (fun map ->
-            obj
-              [
-                ("race", get r "race");
-                ("policy", get r "policy");
-                ("opponentPolicy", get r "opponentPolicy");
-                ("map", map);
-                ("family", default families (text (get r "unit")) (get r "unit"));
-                ("purchased", get r "recruited");
-              ])
-          [ get r "map"; str "all" ])
-  in
   let keys = [ "race"; "policy"; "opponentPolicy"; "map" ] in
-  let rows = Frame.group facts (keys @ [ "family" ]) [ "purchased" ] in
-  let totals = Frame.group rows keys [ "purchased" ] in
-  List.filter_map
-    (fun r ->
-      let total =
-        List.find
-          (fun t -> List.for_all (fun k -> get r k = get t k) keys)
-          totals
-        |> fun t -> get t "purchased"
-      in
-      if number (get r "purchased") = 0. then None
-      else
-        Some
-          (merge r
-             [
-               ("totalPurchases", total);
-               ( "sharePercent",
-                 float (100. *. number (get r "purchased") /. number total) );
-             ]))
+  let rows =
+    events
+    |> R.filter E.(R.s "race" <> R.s "opponentRace")
+    |> R.join ~kind:Talon.Join.Left ~one:true [ "unit" ] (family_table families)
+    |> R.derive [ R.out "family" E.(coalesce [ R.s "family"; R.s "unit" ]) ]
+    |> R.all_maps
+    |> R.project
+         E.
+           [
+             keep (Talon.Sel.names (keys @ [ "family" ]));
+             "purchased" := R.f "recruited";
+           ]
+    |> R.group (keys @ [ "family" ]) [ "purchased" ]
+  in
+  let totals =
     rows
+    |> R.aggregate keys [ R.out "totalPurchases" E.(sum (R.f "purchased")) ]
+  in
+  rows |> R.join keys totals
+  |> R.filter E.(R.f "purchased" > float 0.)
+  |> R.derive
+       [
+         R.out "sharePercent"
+           E.(float 100. *. R.f "purchased" /. R.f "totalPurchases");
+       ]

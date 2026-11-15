@@ -31,7 +31,11 @@ def load(inputs, *, telemetry=False):
         raw = read_json(path)
         if path.name == "outcomes.json":
             metadata = path.parent.parent / "metadata.json"
-            raw = dict(read_json(metadata) if metadata.exists() else {}, outcomes=raw, mode="campaign")
+            raw = dict(
+                read_json(metadata) if metadata.exists() else {},
+                outcomes=raw,
+                mode="campaign",
+            )
         report = normalize(raw)
         reports.append((path, report))
         source = {k: report.get(k) for k in SOURCE_FIELDS}
@@ -57,4 +61,9 @@ def load(inputs, *, telemetry=False):
     for key, outcome in outcomes.items():
         if outcome["kind"] == "campaign":
             outcome["analysis"] = diagnostics.get(key, [])
-    return dict(outcomes=list(outcomes.values()), sources=sources, reports=reports, dataset=dataset)
+    return dict(
+        outcomes=list(outcomes.values()),
+        sources=sources,
+        reports=reports,
+        dataset=dataset,
+    )

@@ -4,7 +4,9 @@ import polars as pl
 
 
 def empty(keys, measures=()):
-    return pl.DataFrame(schema={**{k: pl.String for k in keys}, **{k: pl.Float64 for k in measures}})
+    return pl.DataFrame(
+        schema={**{k: pl.String for k in keys}, **{k: pl.Float64 for k in measures}}
+    )
 
 
 def aggregate(rows, keys, measures):
@@ -15,9 +17,12 @@ def aggregate(rows, keys, measures):
     else:
         return empty(keys, measures)
     missing = [pl.lit(0).alias(k) for k in measures if k not in frame.columns]
-    return (frame.with_columns(missing).group_by(keys)
+    return (
+        frame.with_columns(missing)
+        .group_by(keys)
         .agg(pl.col(k).fill_null(0).sum().alias(k) for k in measures)
-        .sort(keys, nulls_last=True))
+        .sort(keys, nulls_last=True)
+    )
 
 
 def group(rows, keys, measures):

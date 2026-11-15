@@ -2,16 +2,16 @@ open Json
 
 let table tables name = Option.value ~default:[] (List.assoc_opt name tables)
 
-let changes current previous keys fields_ =
-  let index = Hashtbl.create 128 in
-  List.iter (fun r -> Hashtbl.replace index (Metrics.key r keys) r) previous;
-  List.filter_map
-    (fun r ->
-      match Hashtbl.find_opt index (Metrics.key r keys) with
-      | None -> None
-      | Some old ->
-          Some (merge r (List.map (fun k -> (k ^ "Before", get old k)) fields_)))
-    current
+module R = Rel
+module E = Talon.Expr
+
+let changes current previous keys fields =
+  let before =
+    previous
+    |> R.select (keys @ fields)
+    |> R.rename (List.map (fun n -> (n, n ^ "Before")) fields)
+  in
+  current |> R.join ~one:true keys before
 
 let match_changes current previous =
   if previous = [] then []
@@ -88,65 +88,72 @@ let build current previous ~unit_usage ~presence ~support ~value ~leaders =
       (obj []) current.sources
   in
   let purchases = Arena.purchase_shares units families in
-  let campaigns_ = Campaign.tables current.outcomes in
-  let old_campaigns = Campaign.tables previous.outcomes in
+  let campaign_tables, presentation = Campaign.tables current.outcomes in
+  let old_campaigns, _ = Campaign.tables previous.outcomes in
+  let tab name tables = List.assoc name tables in
   let matchup_changes =
     changes rows before Arena.keys [ "wins"; "losses"; "caps"; "winRate" ]
-    |> List.map (fun r ->
-        set r "winRateDelta"
-          (float (number (get r "winRate") -. number (get r "winRateBefore"))))
+    |> R.derive
+         [ R.out "winRateDelta" E.(R.f "winRate" -. R.f "winRateBefore") ]
+  in
+  (* Empty baselines retain the current key types rather than inventing a
+     different empty schema for optional numeric campaign configuration. *)
+  let old_summary = tab "campaign_summary" old_campaigns in
+  let old_summary =
+    if Talon.rows old_summary = 0 then
+      R.Q.of_table (tab "campaign_summary" campaign_tables)
+      |> R.Q.slice ~offset:0 ~length:0
+      |> R.run
+    else old_summary
   in
   let campaign_changes =
     changes
-      (table campaigns_ "campaign_summary")
-      (table old_campaigns "campaign_summary")
-      Campaign.fields_
+      (tab "campaign_summary" campaign_tables)
+      old_summary Campaign.fields_
       [ "completed"; "completionRate" ]
-    |> List.map (fun r ->
-        set r "completionRateDelta"
-          (float
-             (number (get r "completionRate")
-             -. number (get r "completionRateBefore"))))
+    |> R.derive
+         [
+           R.out "completionRateDelta"
+             E.(R.f "completionRate" -. R.f "completionRateBefore");
+         ]
   in
   let race_map opponent =
-    Arena.combine
-      (List.filter
-         (fun r ->
-           get r "opponentPolicy" = str opponent
-           && (get r "policy" <> str opponent
-              || get r "race" <> get r "opponentRace"))
-         rows)
-      [ "race"; "map"; "policy" ]
+    rows
+    |> R.filter
+         E.(
+           R.s "opponentPolicy" = string opponent
+           && (R.s "policy" <> string opponent
+              || R.s "race" <> R.s "opponentRace"))
+    |> fun rows -> Arena.combine rows [ "race"; "map"; "policy" ]
   in
   let policy_timings =
     List.concat_map
       (fun (label, sources) ->
         List.concat_map
-          (fun s ->
-            let timing = get s "turnTiming" in
-            list (get timing "policies")
-            |> List.map (fun r ->
+          (fun source ->
+            let timing = get source "turnTiming" in
+            List.map
+              (fun r ->
                 merge r
                   [
                     ("run", str label);
                     ("clock", get timing "clock");
-                    ("source", get s "file");
-                  ]))
+                    ("source", get source "file");
+                  ])
+              (list (get timing "policies")))
           sources)
       [ ("current", current.sources); ("baseline", previous.sources) ]
   in
   let tables =
-    campaigns_
+    campaign_tables
     @ [
         ("matchups", rows);
         ("unit_events", units);
-        ("matches", ledger);
-        ("campaigns", campaigns);
+        ("baseline_matchups", before);
+        ("baseline_unit_events", before_units);
         ( "policy_matchups",
           Arena.combine ~cross:false
-            (List.filter
-               (fun r -> get r "policy" <> get r "opponentPolicy")
-               rows)
+            (R.filter E.(R.s "policy" <> R.s "opponentPolicy") rows)
             [ "policy"; "opponentPolicy" ] );
         ("race_map_vs_classic", race_map "classic");
         ("race_map_vs_balanced", race_map "balanced");
@@ -157,84 +164,118 @@ let build current previous ~unit_usage ~presence ~support ~value ~leaders =
         ( "race_map_policy",
           Arena.combine ~equal:true rows [ "race"; "map"; "policy" ] );
         ("race_all_policies", Arena.combine rows [ "race" ]);
-        ("baseline_matchups", before);
         ("matchup_changes", matchup_changes);
-        ("match_changes", transitions);
-        ("baseline_unit_events", before_units);
         ("campaign_changes", campaign_changes);
+      ]
+  in
+  let presentation =
+    presentation
+    @ [
+        ("matches", ledger);
+        ("campaigns", campaigns);
+        ("match_changes", transitions);
         ("policy_timings", policy_timings);
       ]
   in
-  if not (unit_usage || presence || support || value || leaders) then tables
-  else (
-    if unit_usage then
-      List.iter
-        (fun s ->
-          Journal.require
-            (get s "combatTelemetryVersion" = int 1)
-            "Damage tables require fresh combat telemetry")
-        (current.sources @ previous.sources);
-    let value =
-      value
-      || unit_usage
-         && List.for_all
-              (fun s -> get s "combatTelemetryVersion" = int 1)
-              current.sources
-    in
-    let leaders =
-      leaders
-      || unit_usage
-         && List.for_all
-              (fun s -> get s "leaderAuditVersion" = int 1)
-              current.sources
-    in
-    let extra, _ =
-      Telemetry.analyze current ~presence:(presence || unit_usage)
-        ~support:(support || unit_usage) ~value ~leaders
-    in
-    let tables = tables @ extra in
-    let tables =
-      if unit_usage || presence then
-        let nonleaders = table tables "nonleader_unit_events" in
-        tables
-        @ [
-            ( "army_usage",
-              Metrics.army_usage nonleaders purchases
-                (table tables "battlefield_presence")
-                families );
-          ]
-      else tables
-    in
-    if not unit_usage then tables
-    else
-      let profiles = get (List.hd current.sources) "unitProfiles" in
-      let old_extra =
-        if previous.outcomes = [] then []
-        else
-          fst
-            (Telemetry.analyze previous ~presence:true ~support:false
-               ~value:true ~leaders:false)
+  let tables =
+    if not (unit_usage || presence || support || value || leaders) then tables
+    else (
+      if unit_usage then
+        List.iter
+          (fun source ->
+            Journal.require
+              (get source "combatTelemetryVersion" = int 1)
+              "Damage tables require fresh combat telemetry")
+          (current.sources @ previous.sources);
+      let value =
+        value
+        || unit_usage
+           && List.for_all
+                (fun source -> get source "combatTelemetryVersion" = int 1)
+                current.sources
       in
-      let membership =
-        table tables "battlefield_units" @ table old_extra "battlefield_units"
+      let leaders =
+        leaders
+        || unit_usage
+           && List.for_all
+                (fun source -> get source "leaderAuditVersion" = int 1)
+                current.sources
       in
-      let damage =
-        Metrics.unit_damage
-          (table tables "battlefield_units")
-          (table tables "battlefield_unit_value")
-          profiles membership
+      let extra =
+        Telemetry.analyze current.dataset ~presence:(presence || unit_usage)
+          ~support:(support || unit_usage) ~value ~leaders
       in
-      let tables = tables @ [ ("unit_damage", damage) ] in
-      if previous.outcomes = [] then tables
+      let tables = tables @ extra in
+      let tables =
+        if unit_usage || presence then
+          tables
+          @ [
+              ( "army_usage",
+                Metrics.army_usage
+                  (tab "nonleader_unit_events" tables)
+                  purchases
+                  (tab "battlefield_presence" tables)
+                  families );
+            ]
+        else tables
+      in
+      if not unit_usage then tables
       else
-        let old_damage =
-          Metrics.unit_damage
-            (table old_extra "battlefield_units")
-            (table old_extra "battlefield_unit_value")
-            profiles membership
+        let old_extra =
+          if previous.outcomes = [] then []
+          else
+            Telemetry.analyze previous.dataset ~presence:true ~support:false
+              ~value:true ~leaders:false
         in
-        tables
-        @ [
-            ("baseline_unit_damage", old_damage);
-            ("unit_damage_changes", Metrics.compare_damage damage old_damage);
-          ])
+        let membership =
+          if previous.outcomes = [] then tab "battlefield_units" tables
+          else
+            R.append
+              (tab "battlefield_units" tables)
+              (tab "battlefield_units" old_extra)
+        in
+        let damage =
+          Metrics.unit_damage
+            (tab "battlefield_units" tables)
+            (tab "battlefield_unit_value" tables)
+            current.dataset.profiles membership
+        in
+        let tables = tables @ [ ("unit_damage", damage) ] in
+        if previous.outcomes = [] then tables
+        else
+          let old_damage =
+            Metrics.unit_damage
+              (tab "battlefield_units" old_extra)
+              (tab "battlefield_unit_value" old_extra)
+              current.dataset.profiles membership
+          in
+          tables
+          @ [
+              ("baseline_unit_damage", old_damage);
+              ("unit_damage_changes", Metrics.compare_damage damage old_damage);
+            ])
+  in
+  (* This is the single analysis-table to presentation-object boundary. *)
+  List.map
+    (fun (name, table) ->
+      let rows = Frame.rows table in
+      let rows =
+        if List.mem name [ "leader_audit"; "leader_deaths" ] then
+          List.map
+            (fun row ->
+              obj
+                (List.map
+                   (fun (k, v) ->
+                     ( k,
+                       if
+                         List.mem k [ "beforeTile"; "afterTile"; "minTile" ]
+                         && v <> `Null
+                       then parse (text v)
+                       else v ))
+                   (fields row)))
+            rows
+        else rows
+      in
+      (name, rows))
+    tables
+  @ presentation

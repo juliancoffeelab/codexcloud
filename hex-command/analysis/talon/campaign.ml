@@ -1,272 +1,6 @@
 open Json
-
-let diagnostics chapter =
-  let phases = list (get chapter "phases") in
-  let own = List.filter (fun p -> get p "side" = str "player") phases in
-  let final = get chapter "final" in
-  let units = list (get final "units") in
-  let winner = get chapter "winner" in
-  let reason = get (get final "campaign") "outcome" in
-  let reason =
-    if winner = `Null && not (truth reason) then
-      str "Round limit reached with unfinished objectives"
-    else reason
-  in
-  let goals = list (get chapter "goals") in
-  let named =
-    List.filter
-      (fun u ->
-        truth (get u "name")
-        && get u "side" = str "player"
-        && List.exists
-             (fun g -> contains (text (get g "label")) (text (get u "name")))
-             goals)
-      (list (get (get chapter "initial") "units"))
-  in
-  let arrivals =
-    List.map
-      (fun actor ->
-        let name = text (get actor "name") in
-        let arrived =
-          List.exists
-            (fun p ->
-              List.exists
-                (fun u ->
-                  get u "name" = str name
-                  && List.exists
-                       (fun g ->
-                         contains (text (get g "label")) name
-                         && List.mem (get u "tile") (list (get g "tiles")))
-                       goals)
-                (list (get p "units")))
-            phases
-        in
-        (name, bool arrived))
-      named
-  in
-  let losses =
-    List.concat_map
-      (fun p ->
-        list (get p "losses")
-        |> List.filter (fun u -> get u "side" = str "player"))
-      phases
-  in
-  let rec idle = function
-    | p :: rest when not (truth (get p "actions")) -> 1 + idle rest
-    | _ -> 0
-  in
-  let last_own = match List.rev own with x :: _ -> x | _ -> `Null in
-  let signatures =
-    let rev = List.rev own in
-    List.mapi (fun i x -> (i, x)) rev
-    |> List.filter (fun (i, _) -> i < 10)
-    |> List.map (fun (_, p) ->
-        canonical
-          (arr
-             [
-               arr
-                 (List.map
-                    (fun u ->
-                      arr (List.map (get u) [ "id"; "type"; "tile"; "hp" ]))
-                    (list (get p "units")));
-               get p "ownership";
-               get p "goals";
-             ]))
-  in
-  let repeats =
-    fields (counts signatures)
-    |> List.fold_left (fun n (_, v) -> max n (integer v)) 0
-  in
-  let named_names = List.map (fun u -> get u "name") named in
-  let category =
-    if winner = str "player" then "victory"
-    else if winner = `Null then "round cap"
-    else if
-      has final "units"
-      && not (List.exists (fun u -> get u "side" = str "player") units)
-    then "all player units lost"
-    else if List.exists (fun u -> get u "role" = str "leader") losses then
-      "leader lost"
-    else if
-      List.exists
-        (fun u ->
-          List.mem (get u "name") named_names || get u "role" = str "courier")
-        losses
-      || truth reason
-         && List.exists
-              (contains (String.lowercase_ascii (text reason)))
-              [ "courier"; "companion" ]
-    then "required actor lost"
-    else if truth reason then "defeat; see recorded reason"
-    else "defeat; cause not recorded"
-  in
-  let stalled =
-    if winner <> `Null || not (truth (get last_own "planning")) then []
-    else
-      let planning = get last_own "planning" in
-      let roster = index_by "id" (list (get last_own "units")) in
-      let duties =
-        index_by "id" (list (get (get planning "report") "duties"))
-      in
-      list (get (get (get planning "orders") "tactics") "objectives")
-      |> List.filter_map (fun order ->
-          let objective = get order "objective" in
-          let body =
-            if truth (get objective "GoTo") then get objective "GoTo"
-            else get objective "Occupy"
-          in
-          if not (truth body) then None
-          else
-            let actor_id = "u" ^ text (get body "actor") in
-            let actor = lookup roster actor_id in
-            let name =
-              if truth (get actor "name") then get actor "name"
-              else if truth (get actor "type") then get actor "type"
-              else str actor_id
-            in
-            Some
-              (obj
-                 [
-                   ("actor", name);
-                   ("tile", get actor "tile");
-                   ("hp", get actor "hp");
-                   ("target", default body "destination" (get body "location"));
-                   ( "reason",
-                     get (lookup duties (text (get order "id"))) "reason" );
-                   ( "allies",
-                     arr
-                       (List.filter
-                          (fun u -> get u "side" = str "player")
-                          (list (get last_own "units"))
-                       |> List.map (fun u ->
-                           obj
-                             (List.map
-                                (fun k -> (k, get u k))
-                                [ "id"; "type"; "tile"; "rebuilding" ]))) );
-                 ]))
-  in
-  let recruits = ref []
-  and casualties = ref []
-  and unmet = ref []
-  and deferred = ref [] in
-  let player_damage = ref 0
-  and enemy_damage = ref 0
-  and rescue = ref 0
-  and retaliation = ref 0 in
-  List.iter
-    (fun p ->
-      let side = text (get p "side") in
-      let roster =
-        index_by "id"
-          (List.concat_map
-             (fun k -> list (get p k))
-             [ "before"; "units"; "losses" ])
-      in
-      List.iter
-        (fun a ->
-          if get a "kind" = str "recruit" && side = "player" then
-            recruits := text (get a "type") :: !recruits)
-        (list (get p "actions"));
-      List.iter
-        (fun u ->
-          if get u "side" = str "player" then
-            casualties := text (get u "type") :: !casualties)
-        (list (get p "losses"));
-      List.iter
-        (fun c ->
-          let attacker = lookup roster (text (get c "unit")) in
-          let own = default attacker "side" (get p "side") = str "player" in
-          player_damage :=
-            !player_damage
-            + integer (get c (if own then "damage" else "retaliation"));
-          enemy_damage :=
-            !enemy_damage
-            + integer (get c (if own then "retaliation" else "damage")))
-        (list (get p "combats"));
-      if side = "player" && truth (get p "planning") then (
-        let planning = get p "planning" in
-        let report = get planning "report" in
-        List.iter
-          (fun d ->
-            let reason =
-              if truth (get d "reason") then text (get d "reason")
-              else "unspecified"
-            in
-            if get d "status" = str "Unmet" then unmet := reason :: !unmet
-            else if get d "status" = str "Deferred" then
-              deferred := reason :: !deferred)
-          (list (get report "duties"));
-        rescue := !rescue + integer (get report "candidates");
-        let protected =
-          list (get (get (get planning "orders") "tactics") "constraints")
-          |> List.filter_map (fun c ->
-              if has c "Survive" then
-                Some (str ("u" ^ text (get (get c "Survive") "actor")))
-              else None)
-        in
-        List.iter
-          (fun c ->
-            if
-              List.mem (get c "unit") protected
-              && integer (get c "retaliation") > 0
-            then incr retaliation)
-          (list (get p "combats"))))
-    phases;
-  obj
-    [
-      ("id", get chapter "id");
-      ("round", get chapter "round");
-      ("winner", winner);
-      ("category", str category);
-      ("reason", reason);
-      ("idleTail", int (idle (List.rev own)));
-      ("repeatedTail", int repeats);
-      ( "finalPlayerUnits",
-        int
-          (List.length
-             (List.filter (fun u -> get u "side" = str "player") units)) );
-      ( "finalEnemyUnits",
-        int
-          (List.length
-             (List.filter (fun u -> get u "side" = str "enemy") units)) );
-      ( "maxGoalProgress",
-        arr
-          (List.mapi
-             (fun i g ->
-               let seen =
-                 List.filter_map
-                   (fun p ->
-                     List.nth_opt (list (get p "goals")) i
-                     |> Option.map (fun x -> integer (get x "current")))
-                   phases
-               in
-               int
-                 (match seen with
-                 | [] -> integer (get g "current")
-                 | x :: xs -> List.fold_left max x xs))
-             goals) );
-      ("goals", arr goals);
-      ( "namedLosses",
-        counts
-          (List.filter_map
-             (fun u ->
-               if truth (get u "name") then Some (text (get u "name")) else None)
-             losses) );
-      ("recruits", counts !recruits);
-      ("casualties", counts !casualties);
-      ("playerDamage", int !player_damage);
-      ("enemyDamage", int !enemy_damage);
-      ("namedGoalActors", arr named_names);
-      ("actorArrivals", obj arrivals);
-      ("stalledActors", arr stalled);
-      ("recordedPhases", bool (phases <> []));
-      ("unmetOrders", counts !unmet);
-      ("deferredOrders", counts !deferred);
-      ("rescueCandidates", int !rescue);
-      ("protectedRetaliationExchanges", int !retaliation);
-      ( "recordedPlanning",
-        bool (List.exists (fun p -> truth (get p "planning")) own) );
-    ]
+module R = Rel
+module E = Talon.Expr
 
 let fields_ =
   [
@@ -430,13 +164,17 @@ let tables outcomes =
               ])
           ms))
     outcomes;
+  let attempt_fields =
+    [ "attempts"; "completed"; "defeats"; "caps"; "unclassified" ]
+  in
   let campaigns =
-    Frame.group !attempts fields_
-      [ "attempts"; "completed"; "defeats"; "caps"; "unclassified" ]
-    |> List.map (fun r ->
-        set r "completionRate"
-          (float
-             (100. *. number (get r "completed") /. number (get r "attempts"))))
+    Frame.ingest !attempts fields_ attempt_fields
+    |> R.group fields_ attempt_fields
+    |> R.derive
+         [
+           R.out "completionRate"
+             E.(float 100. *. R.f "completed" /. R.f "attempts");
+         ]
   in
   let stage_keys = fields_ @ [ "stage"; "map" ] in
   let sums =
@@ -459,44 +197,44 @@ let tables outcomes =
       "enemyDamage";
     ]
   in
-  let group_key r keys = canonical (arr (List.map (get r) keys)) in
-  let lookup = Hashtbl.create 16 in
-  List.iter
-    (fun r -> Hashtbl.replace lookup (group_key r fields_) (get r "attempts"))
-    campaigns;
+  let attempts =
+    campaigns
+    |> R.select (fields_ @ [ "attempts" ])
+    |> R.rename [ ("attempts", "campaignAttempts") ]
+  in
   let stages =
-    Frame.group !chapters stage_keys sums
-    |> List.map (fun r ->
-        merge r
-          [
-            ( "victoryRate",
-              float
-                (100. *. number (get r "victories") /. number (get r "reached"))
-            );
-            ("campaignAttempts", Hashtbl.find lookup (group_key r fields_));
-            ( "meanRounds",
-              float (number (get r "rounds") /. number (get r "reached")) );
-          ])
+    Frame.ingest !chapters stage_keys sums
+    |> R.group stage_keys sums |> R.join fields_ attempts
+    |> R.derive
+         E.
+           [
+             "victoryRate" := float 100. *. R.f "victories" /. R.f "reached";
+             "meanRounds" := R.f "rounds" /. R.f "reached";
+           ]
   in
   let failure_keys = stage_keys @ [ "category"; "reason" ] in
-  let failures =
-    Frame.group !failures failure_keys [ "attempts" ]
-    |> List.map (fun r ->
-        let seeds =
-          List.filter
-            (fun x -> group_key x failure_keys = group_key r failure_keys)
-            !failures
-          |> List.map (fun x -> get x "seed")
-          |> List.filter (( <> ) `Null)
-          |> List.sort_uniq compare
-        in
-        set r "exampleSeeds" (arr (List.filteri (fun i _ -> i < 3) seeds)))
+  let failures = Frame.ingest !failures failure_keys [ "seed"; "attempts" ] in
+  let seeds =
+    failures
+    |> R.filter E.(not (is_null (R.f "seed")))
+    |> R.unique (failure_keys @ [ "seed" ])
+    |> R.sort (failure_keys @ [ "seed" ])
+    |> R.derive [ R.out "__rank" E.(over ~by:failure_keys (window rows)) ]
+    |> R.filter E.(R.i "__rank" <= int 3)
+    |> R.aggregate failure_keys
+         [ R.out "exampleSeeds" E.(collect (R.f "seed")) ]
   in
-  [
-    ("campaign_summary", campaigns);
-    ("campaign_stages", stages);
-    ("campaign_failures", failures);
-    ( "campaign_unit_events",
-      Frame.group !events (stage_keys @ [ "event"; "unit" ]) [ "count" ] );
-    ("campaign_runs", List.rev !runs);
-  ]
+  let failures =
+    failures
+    |> R.group failure_keys [ "attempts" ]
+    |> R.join ~kind:Talon.Join.Left failure_keys seeds
+  in
+  ( [
+      ("campaign_summary", campaigns);
+      ("campaign_stages", stages);
+      ("campaign_failures", failures);
+      ( "campaign_unit_events",
+        Frame.ingest !events (stage_keys @ [ "event"; "unit" ]) [ "count" ]
+        |> R.group (stage_keys @ [ "event"; "unit" ]) [ "count" ] );
+    ],
+    [ ("campaign_runs", List.rev !runs) ] )

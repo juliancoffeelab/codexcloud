@@ -23,7 +23,7 @@ let integer x = int_of_float (number x)
 
 let truth = function
   | `Null | `Bool false -> false
-  | `Int 0 -> false
+  | `Int 0 | `Float 0. -> false
   | `String "" | `List [] | `Assoc [] -> false
   | _ -> true
 

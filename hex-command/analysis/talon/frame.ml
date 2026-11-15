@@ -28,28 +28,55 @@ let column ?(default_value = `Null) name rows =
   in
   (name, c)
 
-let table rows =
-  let names =
-    List.fold_left
-      (fun a r ->
-        List.fold_left
-          (fun a (k, _) -> if List.mem k a then a else a @ [ k ])
-          a (fields r))
-      [] rows
+(* Presentation/strict-decoder boundary: read cells directly. Serializing a
+   table to JSON merely to parse it again doubles the work and allocations. *)
+let rec json_column col =
+  let open Talon in
+  let (Type.Any ty) = Column.type_ col in
+  let scalar kind encode =
+    Array.map
+      (function None -> `Null | Some v -> encode v)
+      (Column.options kind col)
   in
-  Talon.v (List.map (fun n -> column n rows) names)
+  let values =
+    match ty with
+    | Type.Bool -> scalar Kind.bool Json.bool
+    | Type.Int8 | Type.Int16 | Type.Int32 | Type.Int64 | Type.Uint8
+    | Type.Uint16 | Type.Uint32 | Type.Uint64 ->
+        scalar Kind.int Json.int
+    | Type.Float16 | Type.Float32 | Type.Float64 -> scalar Kind.float Json.float
+    | Type.String | Type.Categorical _ -> scalar Kind.string Json.str
+    | Type.List _ -> (
+        match Column.layout col with
+        | Column.Varsize { offsets; child; _ } ->
+            let child = json_column child in
+            Array.init (Column.length col) (fun i ->
+                let first = Int64.to_int (Nx.item [ i ] offsets) in
+                let stop = Int64.to_int (Nx.item [ i + 1 ] offsets) in
+                Json.arr (Array.to_list (Array.sub child first (stop - first))))
+        | _ -> failwith "Invalid list layout")
+    | Type.Record _ -> (
+        match Column.layout col with
+        | Column.Children { fields; length; _ } ->
+            let fields = List.map (fun (k, c) -> (k, json_column c)) fields in
+            Array.init length (fun i ->
+                Json.obj (List.map (fun (k, v) -> (k, v.(i))) fields))
+        | _ -> failwith "Invalid record layout")
+    | _ -> failwith "Unsupported analysis output type"
+  in
+  match Column.validity col with
+  | None -> values
+  | Some mask ->
+      Array.mapi (fun i v -> if Nx.item [ i ] mask then v else `Null) values
 
 let rows table =
-  let buffer = Buffer.create 4096 in
-  let format =
-    Talon_json.format ~framing:Talon_json.Array
+  let columns =
+    List.map
+      (fun (name, _) -> (name, json_column (Talon.column table name)))
       (Talon.Schema.columns (Talon.schema table))
   in
-  Talon.Error.get_ok
-    (Talon_json.encode format
-       (Talon.Query.of_table table)
-       (Bytesrw.Bytes.Writer.of_buffer buffer));
-  list (parse (Buffer.contents buffer))
+  List.init (Talon.rows table) (fun i ->
+      obj (List.map (fun (k, v) -> (k, v.(i))) columns))
 
 let group facts keys measures =
   if facts = [] then []
@@ -77,28 +104,19 @@ let group facts keys measures =
     |> Talon.Query.sort (List.map Talon.Order.asc keys)
     |> Talon.Query.run |> Talon.Error.get_ok |> rows
 
-type accumulator = {
-  keys : string list;
-  measures : string list;
-  mutable pending : Json.t list;
-  mutable size : int;
-  mutable chunks : Json.t list list;
-}
-
-let accumulator keys measures =
-  { keys; measures; pending = []; size = 0; chunks = [] }
-
-let flush a =
-  if a.size > 0 then (
-    a.chunks <- group a.pending a.keys a.measures :: a.chunks;
-    a.pending <- [];
-    a.size <- 0)
-
-let add a row =
-  a.pending <- row :: a.pending;
-  a.size <- a.size + 1;
-  if a.size >= 8192 then flush a
-
-let finish a =
-  flush a;
-  group (List.concat a.chunks) a.keys a.measures
+(* Boundary adapter for compact chapter observations; never used for journal
+   event batches. Measures have a fixed numeric schema, including empty input. *)
+let ingest rows keys measures =
+  Talon.v
+    (List.map (fun n -> column n rows) keys
+    @ List.map
+        (fun n ->
+          ( n,
+            Talon.Column.of_options Talon.Type.float64
+              (Array.of_list
+                 (List.map
+                    (fun r ->
+                      let v = get r n in
+                      if v = `Null then None else Some (number v))
+                    rows)) ))
+        measures)

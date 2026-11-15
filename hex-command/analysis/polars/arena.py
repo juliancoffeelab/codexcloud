@@ -156,7 +156,12 @@ def tally(outcomes):
             records.append(rec)
         ledger.append(row)
     if not records:
-        return empty(KEYS, COUNTS+["winRate","lossRate","capRate","meanRounds"]), empty(KEYS+["unit"], EVENTS), ledger, campaigns
+        return (
+            empty(KEYS, COUNTS + ["winRate", "lossRate", "capRate", "meanRounds"]),
+            empty(KEYS + ["unit"], EVENTS),
+            ledger,
+            campaigns,
+        )
     df = pl.from_dicts(
         records,
         infer_schema_length=None,
@@ -176,7 +181,7 @@ def tally(outcomes):
 
 def combine(rows, keys, equal=False, cross=True):
     if rows.is_empty():
-        return empty(keys, COUNTS+["winRate"])
+        return empty(keys, COUNTS + ["winRate"])
     q = rows.lazy()
     if equal:
         q = q.filter(pl.col("policy") == pl.col("opponentPolicy"))
@@ -193,10 +198,12 @@ def combine(rows, keys, equal=False, cross=True):
 
 def purchase_shares(events, families):
     if events.is_empty():
-        return empty(["race","policy","opponentPolicy","map","family"], ["purchased","totalPurchases","sharePercent"])
+        return empty(
+            ["race", "policy", "opponentPolicy", "map", "family"],
+            ["purchased", "totalPurchases", "sharePercent"],
+        )
     q = (
-        events
-        .lazy()
+        events.lazy()
         .filter(pl.col("race") != pl.col("opponentRace"))
         .with_columns(pl.col("unit").replace(families).alias("family"))
     )

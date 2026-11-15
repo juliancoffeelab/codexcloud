@@ -45,8 +45,7 @@ def army_usage(events, purchases, presence, families):
         *DIMS, "family", pl.col("sharePercent").alias("purchaseSharePercent")
     )
     q = (
-        presence
-        .lazy()
+        presence.lazy()
         .join(counts, on=DIMS + ["family"], how="left", validate="1:1")
         .join(buys, on=DIMS + ["family"], how="left", validate="1:1")
         .with_columns(
@@ -79,10 +78,20 @@ def unit_damage(presence, values, profiles, membership=()):
         return pl.DataFrame()
     modern = "nonleaderUnitTurns" in values.columns
     if modern:
-        values = values.with_columns(pl.col(source).alias(target) for source, target in zip(
-            ["nonleaderUnitTurns", "nonleaderWeaponHPDamageDealt", "nonleaderThornHPDamageDealt"],
-            ["unitTurns", "weaponHPDamageDealt", "thornHPDamageDealt"]))
-    missing = pl.concat([presence.select("unit"), values.select("unit")]).filter(~pl.col("unit").is_in(list(profiles)))
+        values = values.with_columns(
+            pl.col(source).alias(target)
+            for source, target in zip(
+                [
+                    "nonleaderUnitTurns",
+                    "nonleaderWeaponHPDamageDealt",
+                    "nonleaderThornHPDamageDealt",
+                ],
+                ["unitTurns", "weaponHPDamageDealt", "thornHPDamageDealt"],
+            )
+        )
+    missing = pl.concat([presence.select("unit"), values.select("unit")]).filter(
+        ~pl.col("unit").is_in(list(profiles))
+    )
     if missing.height:
         raise ValueError("Missing recorded unit profile: " + missing["unit"][0])
     profile_rows = [
@@ -243,17 +252,12 @@ def compare_damage(current, baseline):
     ]
     q = current.lazy()
     if not baseline.is_empty():
-        old = (
-            baseline
-            .lazy()
-            .select(*DIMS, "unit", *[pl.col(k).alias(k + "Before") for k in fields])
+        old = baseline.lazy().select(
+            *DIMS, "unit", *[pl.col(k).alias(k + "Before") for k in fields]
         )
         q = q.join(old, on=DIMS + ["unit"], how="left", validate="1:1")
     else:
         q = q.with_columns(pl.lit(None).alias(k + "Before") for k in fields)
-    return (
-        q.with_columns(
-            (pl.col(k) - pl.col(k + "Before")).alias(k + "Delta") for k in fields
-        )
-        .collect()
-    )
+    return q.with_columns(
+        (pl.col(k) - pl.col(k + "Before")).alias(k + "Delta") for k in fields
+    ).collect()
