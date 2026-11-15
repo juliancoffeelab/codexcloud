@@ -8,6 +8,7 @@ import json
 
 
 CAPTURABLE = {'village', 'grove', 'fort', 'ruins'}
+NONLEADER_FIELDS = ('nonleaderUnitTurns', 'nonleaderWeaponHPDamageDealt', 'nonleaderThornHPDamageDealt')
 FIELDS = ('unitTurns', 'hpDamageDealt', 'hpDamageTaken', 'weaponHPDamageDealt', 'weaponHPDamageTaken',
           'thornHPDamageDealt', 'thornHPDamageTaken', 'armourDamagePrevented',
           'terrainDamagePrevented', 'rawArmourDelta', 'rawTerrainDelta',
@@ -19,8 +20,8 @@ DIMS = ('kind', 'campaign', 'diplomacy', 'objective', 'mission', 'race', 'policy
 
 
 def cell_key(tile):
-    """Hashable analysis key for current structured hexes and historical journals."""
-    return f"{tile['col']},{tile['row']}" if isinstance(tile, dict) else tile
+    """Hashable analysis key for a current structured hex."""
+    return f"{tile['col']},{tile['row']}"
 
 
 def analyze(inputs, journals, value=True, leaders=True):
@@ -29,7 +30,7 @@ def analyze(inputs, journals, value=True, leaders=True):
     leader_rows = []
     catalogs = None
     for report, result in journals(inputs, kinds=('arena', 'campaign')):
-        kind = result.get('kind', 'campaign' if 'missions' in result else 'arena')
+        kind = result['kind']
         config = result['config']
         if kind == 'arena' and config['armies']['player'] == config['armies']['enemy']:
             continue
@@ -49,14 +50,14 @@ def analyze(inputs, journals, value=True, leaders=True):
             owners = {t: u.get('owner') for t, u in tiles.items()}
             factions = {f['id']: f for f in initial.get('factions', [])}
             def faction_id(unit):
-                return unit.get('faction') or unit['side']
+                return unit['faction']
             def hostile(first, second):
                 if first == second:
                     return False
                 relation = factions.get(first, {}).get('relations', {}).get(second)
                 if relation is None:
                     relation = factions.get(second, {}).get('relations', {}).get(first)
-                return relation == 'hostile' if relation is not None else {first, second} == {'player', 'enemy'}
+                return relation == 'hostile'
             def replacement_cost(unit):
                 pool = factions.get(faction_id(unit), {}).get('recruits') or []
                 return next((entry.get('cost', profiles[unit['type']]['cost']) for entry in pool if entry['unit'] == unit['type']), profiles[unit['type']]['cost'])
@@ -83,7 +84,11 @@ def analyze(inputs, journals, value=True, leaders=True):
                 for label in (landscape, 'all'):
                     key = identity(unit, label)
                     counts[key].update(stats)
-                    unit_counts[(*key[:-1], unit['type'])].update(stats)
+                    unit_stats = dict(stats)
+                    nonleader = unit.get('role') != 'leader'
+                    for source, target in zip(('unitTurns', 'weaponHPDamageDealt', 'thornHPDamageDealt'), NONLEADER_FIELDS):
+                        unit_stats[target] = stats.get(source, 0) if nonleader else 0
+                    unit_counts[(*key[:-1], unit['type'])].update(unit_stats)
 
             for phase_index, phase in enumerate(chapter['phases']):
                 side = phase['side']
@@ -200,7 +205,7 @@ def analyze(inputs, journals, value=True, leaders=True):
     if value:
         tables['battlefield_value'] = rows
         tables['battlefield_unit_value'] = [dict(zip((*DIMS[:-1], 'unit'), key),
-            family=catalogs[key[-1]]['family'], **{f: stats[f] for f in FIELDS})
+            family=catalogs[key[-1]]['family'], **{f: stats[f] for f in (*FIELDS, *NONLEADER_FIELDS)})
             for key, stats in sorted(unit_counts.items())]
     if leaders:
         tables['leader_audit'] = leader_rows

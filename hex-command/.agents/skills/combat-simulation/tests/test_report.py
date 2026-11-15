@@ -1,16 +1,16 @@
 import importlib.util
-import csv
 import gzip
 import hashlib
 import contextlib
 import io
 import json
 from pathlib import Path
-import subprocess
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[4] / 'scripts'))
+from journal_test_fixture import arrow_detail
 
 spec = importlib.util.spec_from_file_location('report_combat', Path(__file__).parents[1] / 'scripts/report-combat.py')
 report = importlib.util.module_from_spec(spec)
@@ -22,7 +22,7 @@ def match(seed, player='a', enemy='b', winner='player', reason='leader'):
     return {'kind': 'arena', 'config': {'seed': seed, 'armies': {'player': player, 'enemy': enemy},
             'player': 'mixed', 'enemy': 'mixed', 'landscape': 'open', 'first': 'player',
             'maxRounds': 30, 'recruitLimit': 1}, 'winner': winner, 'reason': reason, 'rounds': 10,
-            'recruits': [], 'casualties': [], 'promotions': [], 'stateHash': str(seed)}
+            'recruits': [], 'casualties': [], 'promotions': [], 'stateHash': str(seed), 'detail': dict(file='details.arrow',offset=0,bytes=1,sha256='unused')}
 
 
 class CompleteDataTests(unittest.TestCase):
@@ -31,17 +31,18 @@ class CompleteDataTests(unittest.TestCase):
             path = Path(tmp)/'report.json.gz'
             profiles = {'standard': {'speed': 0}, 'aggressivePredictor': {'speed': 0.5}}
             with gzip.open(path, 'wt') as stream:
-                json.dump({'outcomes': [match(1)], 'recruitmentProfiles': profiles}, stream)
+                json.dump({'detailFormat':'arrow-ipc-snapshot-dictionaries-v5', 'unitProfiles':{}, 'unitFamilies':{}, 'outcomes': [match(1)], 'recruitmentProfiles': profiles}, stream)
             outcomes, metadata = report.load_run([path])
             self.assertEqual(len(outcomes), 1)
             self.assertEqual(metadata[0]['recruitmentProfiles'], profiles)
 
+    @unittest.skipUnless(importlib.util.find_spec("pyarrow"), "Arrow boundary tests need pyarrow")
     def test_unit_usage_writes_damage_presence_comparison(self):
-        profiles = {u: dict(name=u.title(), family=u, race=race, level=level)
+        profiles = {u: dict(role='warrior',name=u.title(), family=u, race=race, level=level)
                     for u, race, level in [('foot', 'a', 1), ('unused', 'a', 2), ('foe', 'b', 1)]}
-        roster = [dict(id='f', type='foot', side='player', tile='0,0', hp=10),
-                  dict(id='e', type='foe', side='enemy', tile='1,0', hp=10)]
-        initial = dict(units=roster, tiles=[dict(id=u['tile'], col=int(u['tile'].split(',')[0]), row=int(u['tile'].split(',')[1]), terrain='plains') for u in roster])
+        roster = [dict(id='f', type='foot', faction='player', tile=dict(col=0,row=0), hp=10),
+                  dict(id='e', type='foe', faction='enemy', tile=dict(col=1,row=0), hp=10)]
+        initial = dict(units=roster, tiles=[dict(id=f"{u['tile']['col']},0", **u['tile'], terrain='plains') for u in roster], factions=[dict(id=s,phase='player' if s=='player' else 'ai') for s in ('player','enemy')])
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             paths = []
@@ -52,16 +53,16 @@ class CompleteDataTests(unittest.TestCase):
                 saved['config'].update(player='situational', enemy='situational')
                 stage = dict(rawDamage=damage, afterArmourDamage=damage, afterTerrainDamage=damage,
                     availableHp=10, effectiveArmourPrevented=0, effectiveTerrainPrevented=0)
-                raw = json.dumps(dict(kind='arena', config=saved['config'], initial=initial,
+                raw = arrow_detail(dict(kind='arena', config=saved['config'], initial=initial, final=dict(units=roster),
                     phases=[dict(side='player', before=roster, units=roster, losses=[], actions=[],
-                        ownership=[], combats=[dict(unit='f', target='e', damage=damage, retaliation=0,
+                        ownership=[dict(tile=u['tile'],owner=None) for u in roster], combats=[dict(unit='f', target='e', damage=damage, retaliation=0,
                             thorns=dict(damage=0, auraDamage=0, effectiveDamage=0, auraSources=[]),
-                            mitigation=dict(attack=stage, retaliation=None))])])).encode()
-                (directory/'details.jsonl').write_bytes(raw)
-                saved['detail'] = dict(file='details.jsonl', offset=0, bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
+                            mitigation=dict(attack=stage, retaliation=None))])]))
+                (directory/'details.arrow').write_bytes(raw)
+                saved['detail'] = dict(file='details.arrow', offset=0, bytes=len(raw), sha256=hashlib.sha256(raw).hexdigest())
                 path = directory/('report.json.gz' if label == 'after' else 'report.json')
                 with gzip.open(path, 'wt') if path.suffix == '.gz' else path.open('w') as stream:
-                    json.dump(dict(status='complete', outcomes=[saved], unitProfiles=profiles,
+                    json.dump(dict(status='complete',detailFormat='arrow-ipc-snapshot-dictionaries-v5',unitFamilies={u:u for u in profiles},outcomes=[saved],unitProfiles=profiles,
                         supportTelemetryVersion=1, combatTelemetryVersion=1), stream)
                 paths.append(path)
             with contextlib.redirect_stdout(io.StringIO()):
@@ -70,7 +71,7 @@ class CompleteDataTests(unittest.TestCase):
             self.assertEqual((row['damagePerUnitTurnBefore'], row['damagePerUnitTurn']), (2, 4))
             self.assertEqual((row['presenceSharePercent'], row['damagePresenceRatio']), (100, 1))
             text = (root/'out/findings.md').read_text()
-            self.assertIn('| Foot (L1) | unknown | 100.00% → 100.00% | 2.00 → 4.00 | 1.00× → 1.00× |', text)
+            self.assertIn('| Foot (L1) | infantry | 100.00% → 100.00% | 2.00 → 4.00 | 1.00× → 1.00× |', text)
             paired = text.split('## Battlefield presence and recruitment flow', 1)[1].split('## Purchase shares', 1)[0]
             self.assertIn('| a | situational | situational | Plains | foot |', paired)
             self.assertLess(paired.index('sharePercent'), paired.index('purchaseSharePercent'))
@@ -79,48 +80,6 @@ class CompleteDataTests(unittest.TestCase):
             self.assertTrue((root/'out/unit_damage_changes.csv').is_file())
             self.assertTrue((root/'out/baseline_unit_damage.csv').is_file())
 
-    def test_standalone_report_compares_campaigns_without_git_or_catalogs(self):
-        def campaign(seed, completed, missions):
-            return {'kind': 'campaign', 'config': {'seed': seed, 'campaign': 'example'},
-                    'completed': completed, 'missions': missions}
-        def mission(winner, state_hash, round=10, id='chapter-one'):
-            return {'id': id, 'winner': winner, 'stateHash': state_hash, 'round': round}
-        before = [campaign(1, False, [mission('enemy', 'defeat')]),
-                  campaign(2, True, [mission('player', 'old')]),
-                  campaign(3, True, [mission('player', 'same')]),
-                  campaign(4, False, [mission('player', 'same')]), match(5)]
-        after = [campaign(1, True, [mission('player', 'victory')]),
-                 campaign(2, True, [mission('player', 'new')]),
-                 {**before[2], 'elapsedMs': 99, 'detail': {'file': 'different.jsonl'}},
-                 campaign(4, False, [mission('player', 'same'), mission(None, 'cap', id='chapter-two')]),
-                 {**match(5), 'winner': 'enemy', 'stateHash': 'changed'}]
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            for name, outcomes in [('before', before), ('after', after)]:
-                saved = {'outcomes': outcomes}
-                if name == 'after':
-                    saved['sourceCommit'] = 'unavailable-commit'
-                (root / (name + '.json')).write_text(json.dumps(saved))
-            (root/'out').mkdir()
-            (root/'out/unit_stats.csv').write_text('stale catalog export')
-            (root/'analyze.py').write_text(Path(report.__file__).read_text())
-            result = subprocess.run([sys.executable, 'analyze.py', 'after.json',
-                                     '--baseline', 'before.json', '--out', 'out'],
-                                    cwd=root, env={'PATH': ''}, capture_output=True, text=True)
-            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            with (root/'out/match_changes.csv').open() as f:
-                changes = list(csv.DictReader(f))
-            self.assertEqual([(r['resultChanged'] == 'True', r['gameplayChanged'] == 'True') for r in changes],
-                             [(True, True), (False, True), (False, False), (True, True), (True, True)])
-            self.assertEqual((changes[0]['beforeCompleted'], changes[0]['completed']), ('False', 'True'))
-            self.assertEqual(json.loads(changes[0]['beforeMissions']), before[0]['missions'])
-            self.assertEqual(json.loads(changes[0]['missions']), after[0]['missions'])
-            metadata = json.loads((root/'out/metadata.json').read_text())
-            self.assertEqual(metadata['sources'][0]['sourceCommit'], 'unavailable-commit')
-            self.assertIsNone(metadata['baselineSources'][0]['sourceCommit'])
-            self.assertNotIn('catalogs', metadata)
-            self.assertTrue((root/'out/summary.md').is_file())
-            self.assertIn('Field composition unavailable', (root/'out/findings.md').read_text())
 
     def test_swapped_seats_caps_and_selfplay_do_not_inflate_physical_matches(self):
         items = [match(1), match(2, 'b', 'a'), match(3, winner=None, reason='cap'), match(4, 'a', 'a')]
@@ -335,26 +294,27 @@ class CompleteDataTests(unittest.TestCase):
         self.assertEqual({(r['race'], r['unit']): (r['attacks'], r['retaliations'], r['damage']) for r in units},
                          {('b', 'mounted'): (3, 1, 25), ('a', 'guard'): (1, 2, 9)})
 
+    @unittest.skipUnless(importlib.util.find_spec("pyarrow"), "Arrow boundary tests need pyarrow")
     def test_campaign_journals_explain_conditional_stages_deaths_and_active_caps(self):
         def chapter(winner, failure=None, id='grove'):
-            leader = dict(id='u1', type='leader', side='player', name='Captain', role='leader', tile='0,0', hp=20)
-            actor = dict(id='u2', type='caster', side='player', name='Moss', tile='1,1', hp=5)
-            enemy = dict(id='u3', type='guard', side='enemy', tile='3,3', hp=10)
+            leader = dict(id='u1', type='leader', faction='player', character='captain', role='leader', tile=dict(col=0,row=0), hp=20)
+            actor = dict(id='u2', type='caster', faction='player', character='moss', tile=dict(col=1,row=1), hp=5)
+            enemy = dict(id='u3', type='guard', faction='enemy', tile=dict(col=3,row=3), hp=10)
             initial = [leader, actor, enemy]
             losses = [actor] if failure == 'actor' else [leader] if failure == 'leader' else [leader, actor] if failure == 'all' else []
             final = [u for u in initial if u not in losses]
             if winner == 'player':
-                final = [dict(u, tile='5,5') if u['id']=='u2' else u for u in final]
-            goals = [dict(label='Keep Moss in the grove', tiles=['5,5'], current=int(winner=='player'), total=1)]
-            phases = [dict(side='player', round=i, before=initial, units=final, ownership=[], goals=goals,
+                final = [dict(u, tile=dict(col=5,row=5)) if u['id']=='u2' else u for u in final]
+            goals = [dict(label='Keep Moss in the grove', tiles=[dict(col=5,row=5)], current=int(winner=='player'), total=1)]
+            phases = [dict(side='player', round=i, before=initial, units=final, ownership=[], goals=goals, objectives=[dict(id='required:escort',actor='u2',tiles=[dict(col=5,row=5)],kind='escape')],
                            actions=[dict(kind='setUnitIntent')], losses=[], combats=[])
                       for i in range(1, 11 if winner is None else 2)]
             if losses:
-                phases.append(dict(side='enemy', round=1, before=initial, units=final, ownership=[], goals=goals,
+                phases.append(dict(side='enemy', round=1, before=initial, units=final, ownership=[], goals=goals, objectives=[dict(id='required:escort',actor='u2',tiles=[dict(col=5,row=5)],kind='escape')],
                                    actions=[], losses=losses,
                                    combats=[dict(unit='u3', target='u2', damage=7, retaliation=2)]))
             reason = 'Moss fell. The company cannot continue.' if failure=='actor' else 'Your leader fell.' if failure=='leader' else None
-            return dict(id=id, winner=winner, round=len(phases), initial=dict(units=initial),
+            return dict(id=id, winner=winner, round=len(phases), initial=dict(units=initial,tiles=[],factions=[dict(id=s,phase='player' if s=='player' else 'ai') for s in ('player','enemy')]),
                         final=dict(units=final, campaign=dict(outcome=reason)), goals=goals, phases=phases)
         histories = [[chapter('player', id='entry'), chapter('player')],
                      [chapter(None, id='entry')],
@@ -367,13 +327,13 @@ class CompleteDataTests(unittest.TestCase):
             for seed, missions in enumerate(histories):
                 config = dict(seed=seed, campaign='sample', player='mixed', enemy='classic', diplomacy='restrained', maxRounds=10, recruitLimit=1)
                 raw = dict(kind='campaign', config=config, completed=seed==0, missions=missions)
-                line = (json.dumps(raw)+'\n').encode()
+                line = arrow_detail(raw)
                 outcomes.append(dict(kind='campaign', config=config, completed=seed==0,
                                      missions=[{k: m[k] for k in ('id','winner','round')} for m in missions],
-                                     detail=dict(file='report.details.jsonl', offset=offset, bytes=len(line), sha256=hashlib.sha256(line).hexdigest())))
+                                     detail=dict(file='report.details.arrow', offset=offset, bytes=len(line), sha256=hashlib.sha256(line).hexdigest())))
                 records.append(line);offset += len(line)
-            (root/'report.details.jsonl').write_bytes(b''.join(records))
-            path = root/'report.json';path.write_text(json.dumps(dict(outcomes=outcomes)))
+            (root/'report.details.arrow').write_bytes(b''.join(records))
+            path = root/'report.json';path.write_text(json.dumps(dict(detailFormat='arrow-ipc-snapshot-dictionaries-v5',unitProfiles={},unitFamilies={},outcomes=outcomes)))
             with contextlib.redirect_stdout(io.StringIO()) as output:
                 tables = report.build_report([path], [], root/'analytics')
             row = tables['campaign_summary'][0]
@@ -388,24 +348,17 @@ class CompleteDataTests(unittest.TestCase):
             self.assertEqual(next(r for r in tables['campaign_failures'] if r['category']=='required actor lost')['exampleSeeds'], [2])
             self.assertIn('| sample (restrained) | 1/5 |', output.getvalue())
             self.assertIn('grove', (root/'analytics/findings.md').read_text())
-            with gzip.open(root/'report.details.jsonl.gz', 'wb') as compressed:
-                compressed.write((root/'report.details.jsonl').read_bytes())
-            (root/'report.details.jsonl').unlink()
+            with gzip.open(root/'report.details.arrow.gz', 'wb') as compressed:
+                compressed.write((root/'report.details.arrow').read_bytes())
+            (root/'report.details.arrow').unlink()
             with contextlib.redirect_stdout(io.StringIO()):
                 compressed_tables = report.build_report([path], [], root/'compressed')
             self.assertEqual(tables['campaign_summary'], compressed_tables['campaign_summary'])
 
             outcomes[0]['detail']['sha256']='wrong'
-            path.write_text(json.dumps(dict(outcomes=outcomes)))
+            path.write_text(json.dumps(dict(detailFormat='arrow-ipc-snapshot-dictionaries-v5',unitProfiles={},unitFamilies={},outcomes=outcomes)))
             with self.assertRaisesRegex(ValueError, 'checksum'):
                 report.load_run([path])
-            legacy = root/'legacy';legacy.mkdir()
-            (legacy/'outcomes.json').write_text(json.dumps(outcomes[1:]))
-            with gzip.open(legacy/'details.jsonl.gz','wb') as stream:
-                stream.write(b''.join(records[1:]))
-            loaded, _ = report.load_run([legacy])
-            self.assertEqual(len(loaded),4)
-            self.assertTrue(all(o['analysis'] for o in loaded.values()))
 
     def test_planner_diagnostics_and_cpu_are_reported_without_extra_queries(self):
         phase = dict(side='player', before=[], units=[], actions=[], losses=[], goals=[], combats=[dict(unit='u2', target='u3', damage=4, retaliation=2)],
@@ -416,7 +369,7 @@ class CompleteDataTests(unittest.TestCase):
         self.assertEqual((diagnostic['protectedRetaliationExchanges'], diagnostic['rescueCandidates']), (1, 7))
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp)/'report.json'
-            path.write_text(json.dumps(dict(outcomes=[match(1)], turnTiming=dict(clock='thread_cpu', policies=[dict(policy='mixed', turns=10, meanDecisionMicrosPerTurn=12, meanTurnMicros=15)]))))
+            path.write_text(json.dumps(dict(detailFormat='arrow-ipc-snapshot-dictionaries-v5',unitProfiles={},unitFamilies={},outcomes=[match(1)], turnTiming=dict(clock='thread_cpu', policies=[dict(policy='mixed', turns=10, meanDecisionMicrosPerTurn=12, meanTurnMicros=15)]))))
             with contextlib.redirect_stdout(io.StringIO()) as output:
                 tables = report.build_report([path], [path], Path(tmp)/'analytics')
             self.assertEqual(len(tables['policy_timings']), 2)
@@ -425,14 +378,14 @@ class CompleteDataTests(unittest.TestCase):
     def test_invalid_and_duplicate_outcomes_and_unpaired_baselines_fail(self):
         with tempfile.TemporaryDirectory() as tmp:
             path, baseline = Path(tmp)/'report.json', Path(tmp)/'baseline.json'
-            path.write_text(json.dumps({'outcomes': [match(1), match(1)]}))
+            path.write_text(json.dumps({'detailFormat':'arrow-ipc-snapshot-dictionaries-v5', 'unitProfiles':{}, 'unitFamilies':{}, 'outcomes': [match(1), match(1)]}))
             with self.assertRaisesRegex(ValueError, 'Duplicate'):
                 report.load_run([path])
-            path.write_text(json.dumps({'outcomes': [match(1, winner=None)]}))
+            path.write_text(json.dumps({'detailFormat':'arrow-ipc-snapshot-dictionaries-v5', 'unitProfiles':{}, 'unitFamilies':{}, 'outcomes': [match(1, winner=None)]}))
             with self.assertRaisesRegex(ValueError, 'inconsistency'):
                 report.load_run([path])
-            path.write_text(json.dumps({'outcomes': [match(1)]}))
-            baseline.write_text(json.dumps({'outcomes': [match(2)]}))
+            path.write_text(json.dumps({'detailFormat':'arrow-ipc-snapshot-dictionaries-v5', 'unitProfiles':{}, 'unitFamilies':{}, 'outcomes': [match(1)]}))
+            baseline.write_text(json.dumps({'detailFormat':'arrow-ipc-snapshot-dictionaries-v5', 'unitProfiles':{}, 'unitFamilies':{}, 'outcomes': [match(2)]}))
             with self.assertRaisesRegex(ValueError, 'Unmatched configurations'):
                 report.build_report([path], [baseline], Path(tmp)/'out')
 

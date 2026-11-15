@@ -27,7 +27,7 @@ def analysis_view(value, factions=None):
     if declared:
         factions = {f['id']: f for f in declared}
     result = {key: analysis_view(item, factions) for key, item in value.items()}
-    # Unit ownership is faction-only. These legacy two-phase report labels are
+    # Unit ownership is faction-only. The two-seat report labels are
     # derived in the analysis copy, never written back into replay checkpoints.
     if 'faction' in value and 'hp' in value and 'tile' in value and 'side' not in value:
         result['side'] = factions[value['faction']]['phase']
@@ -75,12 +75,19 @@ def chapter_diagnostics(chapter):
     if chapter['winner'] is None and not reason:
         reason = 'Round limit reached with unfinished objectives'
     initial = chapter.get('initial', {}).get('units', [])
-    named_actors = {u['name']: u for u in initial if u.get('name') and u['side'] == 'player'
-                    and any(u['name'] in g.get('label', '') for g in chapter.get('goals', []))}
-    arrivals = {name: any(u.get('name') == name and u['tile'] in g.get('tiles', [])
-                         for p in phases for u in p.get('units', [])
-                         for g in chapter.get('goals', []) if name in g.get('label', ''))
-                for name in named_actors}
+    targets, arrivals = {}, {}
+    friendly = {u['id'] for p in phases for field in ('before','units','losses')
+                for u in p.get(field, []) if u['side']=='player'}
+    for phase in phases:
+        for goal in phase.get('objectives', []):
+            actor = goal.get('actor')
+            if actor in friendly and goal['id'].startswith('required:') and goal['tiles']:
+                targets.setdefault(actor, set()).update((t['col'],t['row']) for t in goal['tiles'])
+                arrivals.setdefault(actor, False)
+        for unit in phase.get('units', []):
+            if unit['side']=='player' and unit['id'] in targets:
+                arrivals[unit['id']] |= (unit['tile']['col'],unit['tile']['row']) in targets[unit['id']]
+    named_actors = sorted(targets)
     stalled = []
     if chapter['winner'] is None and own and own[-1].get('planning'):
         last = own[-1]
@@ -92,7 +99,7 @@ def chapter_diagnostics(chapter):
             if not body:
                 continue
             actor = roster.get(f"u{body['actor']}", {})
-            stalled.append(dict(actor=actor.get('name') or actor.get('type') or f"u{body['actor']}",
+            stalled.append(dict(actor=actor.get('character') or actor.get('type') or f"u{body['actor']}",
                                 tile=actor.get('tile'), hp=actor.get('hp'), target=body.get('destination', body.get('location')),
                                 reason=statuses.get(order['id'], {}).get('reason'),
                                 allies=[dict(id=u['id'], type=u['type'], tile=u['tile'], rebuilding=u.get('rebuilding')) for u in roster.values() if u['side']=='player']))
@@ -114,7 +121,7 @@ def chapter_diagnostics(chapter):
         category = 'all player units lost'
     elif any(u.get('role') == 'leader' for u in losses):
         category = 'leader lost'
-    elif any(u.get('name') in named_actors or u.get('role') == 'courier' for u in losses) or (reason and any(word in reason.lower() for word in ('courier', 'companion'))):
+    elif any(u['id'] in named_actors or u.get('role') == 'courier' for u in losses) or (reason and any(word in reason.lower() for word in ('courier', 'companion'))):
         category = 'required actor lost'
     else:
         category = 'defeat; see recorded reason' if reason else 'defeat; cause not recorded'
@@ -155,7 +162,7 @@ def chapter_diagnostics(chapter):
                                      if len(p.get('goals', [])) > i), default=g.get('current', 0))
                                  for i, g in enumerate(chapter.get('goals', []))],
                 goals=chapter.get('goals', []),
-                namedLosses=dict(Counter(u['name'] for u in losses if u.get('name'))),
+                namedLosses=dict(Counter(u['character'] for u in losses if u.get('character'))),
                 recruits=dict(recruits), casualties=dict(casualties),
                 playerDamage=player_damage, enemyDamage=enemy_damage,
                 namedGoalActors=list(named_actors), actorArrivals=arrivals, stalledActors=stalled,
@@ -173,11 +180,10 @@ def recorded_analysis(result):
 def load_run(paths):
     outcomes, sources = {}, []
     for path in paths:
-        if path.is_dir() and not (path / 'outcomes.json').exists():
+        if path.is_dir():
             report_path = next((path / name for name in ('report.json', 'report.json.gz')
                                 if (path / name).exists()), None)
-            children = [report_path] if report_path else sorted(
-                p for p in path.iterdir() if p.is_dir() and (p / 'outcomes.json').exists())
+            children = [report_path] if report_path else sorted(p for p in path.iterdir() if p.is_dir())
             if not children:
                 raise ValueError('No recorded reports in ' + str(path))
             loaded, metadata = load_run(children)
@@ -187,24 +193,15 @@ def load_run(paths):
                 outcomes[key] = item
             sources.extend(metadata)
             continue
-        diagnostics = {}
-        if path.is_dir():
-            report = {'outcomes': json.loads((path / 'outcomes.json').read_text()), 'mode': 'campaign'}
-            metadata = path.parent / 'metadata.json'
-            if metadata.exists():
-                report.update(json.loads(metadata.read_text()))
-            journal = path / 'details.jsonl.gz'
-            if journal.exists():
-                with gzip.open(journal, 'rt') as stream:
-                    for line in stream:
-                        raw = analysis_view(json.loads(line))
-                        raw.setdefault('kind', 'campaign' if 'missions' in raw else 'arena')
-                        diagnostics[identity(raw)] = recorded_analysis(raw)
-        else:
-            report = json.loads(gzip.open(path, 'rt').read() if path.suffix == '.gz' else path.read_text())
+        if path.name == 'outcomes.json' or not (path.name.endswith('.json') or path.name.endswith('.json.gz')):
+            raise ValueError('Expected a current report.json index')
+        report = json.loads(gzip.open(path, 'rt').read() if path.suffix == '.gz' else path.read_text())
+        sys.path.insert(0, str(Path(__file__).resolve().parents[4] / "scripts"))
+        from simulation_journal import validate_report
+        validate_report(report)
         report = analysis_view(report)
         source = {k: report.get(k) for k in ('sourceCommit', 'fingerprint', 'status', 'mode', 'schedule', 'seeds', 'elapsedSeconds', 'detailFormat', 'turnTiming', 'recruitmentLimits', 'recruitmentProfiles', 'unitFamilies', 'unitProfiles', 'supportTelemetryVersion', 'combatTelemetryVersion', 'leaderAuditVersion')}
-        source['fingerprint'] = report.get('fingerprint', report.get('fingerprints'))
+        source['fingerprint'] = report.get('fingerprint')
         source['file'] = str(path.resolve())
         source['matches'] = len(report['outcomes'])
         sources.append(source)
@@ -215,7 +212,6 @@ def load_run(paths):
             ordered = sorted(report['outcomes'], key=lambda item: (item.get('detail', {}).get('file', ''), item.get('detail', {}).get('offset', 0)))
             for saved in ordered:
                 item = dict(saved)
-                item.setdefault('kind', 'campaign' if 'campaign' in item['config'] else 'arena')
                 key = identity(item)
                 if key in outcomes:
                     raise ValueError('Duplicate match configuration: ' + key)
@@ -225,40 +221,32 @@ def load_run(paths):
                     if (item.get('winner') is None) != (item.get('reason') == 'cap'):
                         raise ValueError('Winner/cap inconsistency: ' + key)
                 else:
-                    item['analysis'] = diagnostics.get(key)
-                    reference = item.get('detail', {})
-                    if item['analysis'] is None and all(k in reference for k in ('file', 'offset', 'bytes', 'sha256')):
-                        name = reference['file']
-                        if Path(name).name != name or reference['offset'] < 0 or reference['bytes'] <= 0:
-                            raise ValueError('Invalid gameplay journal reference')
-                        reader = readers.setdefault(name, None)
-                        if reader is None:
-                            journal = path.parent / name
-                            reader = readers[name] = journal.open('rb') if journal.exists() else gzip.open(str(journal) + '.gz', 'rb')
-                        reader.seek(reference['offset'])
-                        raw = reader.read(reference['bytes'])
-                        if len(raw) != reference['bytes'] or hashlib.sha256(raw).hexdigest() != reference['sha256']:
-                            raise ValueError('Invalid gameplay journal checksum')
-                        if name.endswith('.arrow'):
-                            if importlib.util.find_spec('pyarrow') is None:
-                                raise ModuleNotFoundError('pyarrow')
-                            decoder_path = Path(__file__).resolve().parents[4] / 'scripts/simulation_journal.py'
-                            spec = importlib.util.spec_from_file_location('simulation_journal', decoder_path)
-                            decoder = importlib.util.module_from_spec(spec)
-                            spec.loader.exec_module(decoder)
-                            result = analysis_view(decoder.decode_detail(raw, name))
-                        else:
-                            result = analysis_view(json.loads(raw))
-                        result.setdefault('kind', 'campaign')
-                        if identity(result) != key:
-                            raise ValueError('Gameplay journal configuration mismatch')
-                        item['analysis'] = recorded_analysis(result)
-                    if item['analysis'] is None:
-                        item['analysis'] = recorded_analysis(item)
+                    reference = item['detail']
+                    name = reference['file']
+                    if Path(name).name != name or reference['offset'] < 0 or reference['bytes'] <= 0:
+                        raise ValueError('Invalid gameplay journal reference')
+                    reader = readers.setdefault(name, None)
+                    if reader is None:
+                        journal = path.parent / name
+                        reader = readers[name] = journal.open('rb') if journal.exists() else gzip.open(str(journal) + '.gz', 'rb')
+                    reader.seek(reference['offset'])
+                    raw = reader.read(reference['bytes'])
+                    if len(raw) != reference['bytes'] or hashlib.sha256(raw).hexdigest() != reference['sha256']:
+                        raise ValueError('Invalid gameplay journal checksum')
+                    if not name.endswith('.arrow'):
+                        raise ValueError('Gameplay journals must use the current Arrow format')
+                    decoder_path = Path(__file__).resolve().parents[4] / 'scripts/simulation_journal.py'
+                    spec = importlib.util.spec_from_file_location('simulation_journal', decoder_path)
+                    decoder = importlib.util.module_from_spec(spec)
+                    spec.loader.exec_module(decoder)
+                    result = analysis_view(decoder.decode_detail(raw, name))
+                    if identity(result) != key:
+                        raise ValueError('Gameplay journal configuration mismatch')
+                    item['analysis'] = recorded_analysis(result)
                 outcomes[key] = item
             # Keep public tables in source order even though journal I/O is sorted.
             for saved in report['outcomes']:
-                key = identity({**saved, 'kind': saved.get('kind', 'campaign' if 'campaign' in saved['config'] else 'arena')})
+                key = identity(saved)
                 outcomes[key] = outcomes.pop(key)
         finally:
             for reader in readers.values():
@@ -784,7 +772,7 @@ def build_report(inputs, baseline_inputs, out, unit_usage=False, support_effects
             extra, measured = usage.analyze(inputs, presence=unit_usage or battlefield_presence, support=unit_usage or support_effects)
             tables.update(extra)
         if unit_usage or battlefield_presence:
-            nonleaders = [e for e in units if not any((source.get('unitProfiles') or {}).get(e['unit'], {}).get('leader', False) for source in sources)]
+            nonleaders = tables['nonleader_unit_events']
             tables['army_usage'] = usage.army_usage(nonleaders, tables['purchase_shares'], tables['battlefield_presence'], families)
         value_enabled = battlefield_value or (unit_usage and all(s.get('combatTelemetryVersion') == 1 for s in sources))
         leaders_enabled = leader_audit or (unit_usage and all(s.get('leaderAuditVersion') == 1 for s in sources))
@@ -806,13 +794,15 @@ def build_report(inputs, baseline_inputs, out, unit_usage=False, support_effects
                     old_value['battlefield_unit_value'], previous_sources[0]['unitProfiles'], membership)
                 tables['unit_damage_changes'] = usage.compare_unit_damage(
                     tables['unit_damage'], tables['baseline_unit_damage'])
-    out.mkdir(parents=True, exist_ok=True)
+    from report_exports import remove_obsolete_csv
+    remove_obsolete_csv(out, tables)
     for name, table in tables.items():
         write_csv(out / (name + '.csv'), table)
     metadata = {'sources': sources, 'baselineSources': previous_sources,
                 'physicalMatches': len(current), 'arenaMatches': sum(o['kind'] == 'arena' for o in current.values()),
                 'campaignAttempts': len(campaigns), 'factions': factions, 'maps': sorted(set(maps) | {r['map'] for r in stage_rows}), 'policies': sorted(set(policies) | {r['player'] for r in campaign_rows}),
                 'participantRows': sum(r['games'] for r in rows)}
+    (out / 'tables.json').write_text(json.dumps(tables, separators=(',', ':'))+'\n')
     (out / 'metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
     findings = overview(campaign_rows, stage_rows, failure_rows, campaign_events, rows, opponent, physical_outcomes=current.values())
     findings[2:2] = [f"Coverage: {len(current):,} physical matches; {metadata['arenaMatches']:,} arena games and {metadata['campaignAttempts']:,} campaign attempts.", '']
@@ -845,7 +835,7 @@ def build_report(inputs, baseline_inputs, out, unit_usage=False, support_effects
                               ['race','policy','opponentPolicy','family','unitTurns','hpDamageDealt','hpDamageTaken','armourDamagePrevented','terrainDamagePrevented','captures','objectiveOccupationTurns','casualties','recruitGoldLost','casualtyReplacementValue']), '']
     if 'army_usage' not in tables:
         findings += ['**Field composition unavailable:** this report has no battlefield presence. Purchase flow includes replacement churn; do not infer field composition, survival or unit strength from purchases. For balance investigations, regenerate with `--unit-usage` or battlefield presence and relevant value telemetry.', '']
-    findings += ['## Purchase shares', '', 'New purchases / all new purchases for the same faction, tactic, opponent tactic and map. Starting units, promotions and same-faction games are excluded. Opposing factions are pooled. The all-map rows sum purchases across maps; they do not average map percentages. Families come from the recorded catalog; older reports without family metadata use individual unit identifiers.', '', markdown([r for r in tables['purchase_shares'] if r['map'] == 'all'], ['race','policy','opponentPolicy','family','purchased','totalPurchases','sharePercent']), '']
+    findings += ['## Purchase shares', '', 'New purchases / all new purchases for the same faction, tactic, opponent tactic and map. Starting units, promotions and same-faction games are excluded. Opposing factions are pooled. The all-map rows sum purchases across maps; they do not average map percentages. Families come from the recorded catalog; all inputs require their recorded family metadata.', '', markdown([r for r in tables['purchase_shares'] if r['map'] == 'all'], ['race','policy','opponentPolicy','family','purchased','totalPurchases','sharePercent']), '']
     if 'leader_deaths' in tables:
         deaths = tables['leader_deaths']
         findings += ['## Leader death evidence', '',
@@ -943,7 +933,7 @@ if __name__ == '__main__':
                 raise SystemExit(subprocess.call(['uv', 'run', '--no-project', '--with', 'pyarrow', 'python',
                                                   str(Path(__file__).resolve()), *sys.argv[1:]]))
             except FileNotFoundError:
-                parser.exit(1, 'Arrow diagnostics require pyarrow or uv. Install pyarrow, or use JSONL journals.\n')
+                parser.exit(1, 'Arrow diagnostics require pyarrow or uv. Install pyarrow.\n')
         raise
     except (ValueError, KeyError, OSError) as error:
         parser.exit(1, f'Cannot report combat data: {error}\n')

@@ -6,14 +6,23 @@ unknown rather than zero. Match faction, unit/tier, policy, opponent and map sco
 For opponent-specific presence claims, use a restricted two-army run or an equivalent
 scoped census; pooled presence cannot support an exact-opponent conclusion.
 
+The analyzer accepts current `report.json` indexes with v5 Arrow gameplay
+journals and recorded unit catalogs. Historical Arrow versions, JSON/JSONL
+gameplay imports and older report layouts are rejected at the input boundary.
+
+Campaign `namedGoalActors` and `actorArrivals` use recorded unit IDs from required
+actor-specific objectives. An arrival counts only at or after its target was
+recorded. Character IDs label losses and stalled actors; goal text is presentation,
+not actor identity.
+
 ## Purchase shares
 
 The analyzer exports `purchase_shares.csv`, using only recorded new recruits:
 family purchases / all purchases for the same faction, tactic, opposing tactic
 and map. Starting units, earned promotions and same-faction games are excluded;
 opposing factions are pooled. The `all` map rows sum purchase counts across maps.
-Families come from report metadata, never the current checkout. Older reports
-without family metadata retain individual unit identifiers. Purchase share is
+Families come from the required recorded catalog, never the current checkout.
+Purchase share is
 not field composition, survival rate, damage efficiency or a unit win rate.
 Purchases measure recruitment flow and can be driven by replacement churn.
 Present presence and actual contributions first, then interpret purchases
@@ -52,8 +61,7 @@ Exports:
   profiles; promotion tiers remain separate.
   Rows sort by recorded unit role: infantry, flank, ranger, support, then family
   and tier. The `unitKind` column maps warrior to infantry and healer to support.
-  Older profiles without a role appear last as unknown; never infer their role
-  from current checkout data.
+  Use the recorded catalog role; never infer it from current checkout data.
 - `unit_damage_changes.csv` and `baseline_unit_damage.csv`: matching per-unit
   damage tables when `--baseline` is supplied. Comparison cells in findings show
   baseline → current; missing rates remain undefined. Each map/tactic/opponent
@@ -69,6 +77,16 @@ Exports:
   separated by the recorded unit race.
 - `battlefield_unit_value.csv`: the same contributions separated by exact unit
   and promotion, so shield and heavy branches are not hidden in family totals.
+  Recorded instance `role == leader` controls exclusion from presence and damage
+  rates; a unit type or its catalog role is not a leader identity. The additional
+  `nonleaderUnitTurns`, `nonleaderWeaponHPDamageDealt` and
+  `nonleaderThornHPDamageDealt` totals preserve that distinction when a type is
+  used by both leaders and ordinary troops.
+- `nonleader_unit_events.csv`: recruitment, promotion, casualty and combat-use
+  totals derived from recorded nonleader rosters. These supply army-use shares,
+  so leader attacks cannot inflate their denominators. Opposing factions are
+  pooled; faction, tactic, opposing tactic, map and exact unit stay separate.
+
 - `leader_audit.csv`: phase-boundary leader HP/tile, nonleader army strength,
   recruitment availability and reachable-tile exposure forecasts.
 - `leader_deaths.csv`: death-boundary evidence linked to that leader's last

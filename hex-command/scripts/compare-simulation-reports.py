@@ -12,9 +12,15 @@ import hashlib
 import json
 from pathlib import Path
 from time import perf_counter
-from simulation_journal import decode_detail
+from simulation_journal import decode_detail, validate_report
 
-RUN_METADATA = ("fingerprint", "sourceCommit", "elapsedSeconds", "detailFormat", "turnTiming")
+RUN_METADATA = (
+    "fingerprint",
+    "sourceCommit",
+    "elapsedSeconds",
+    "detailFormat",
+    "turnTiming",
+)
 OUTCOME_METADATA = ("elapsedMs", "detail")
 
 
@@ -38,6 +44,8 @@ def outcomes(report):
 
 def read_detail(directory, reference, readers):
     name = reference["file"]
+    if not name.endswith(".arrow"):
+        raise ValueError("Gameplay journals must use the current Arrow format")
     if Path(name).name != name or name in ("", ".", ".."):
         raise ValueError("Detail reference must name an adjacent journal")
     if reference["offset"] < 0 or reference["bytes"] <= 0:
@@ -48,7 +56,10 @@ def read_detail(directory, reference, readers):
     reader = readers[path]
     reader.seek(reference["offset"])
     data = reader.read(reference["bytes"])
-    if len(data) != reference["bytes"] or hashlib.sha256(data).hexdigest() != reference["sha256"]:
+    if (
+        len(data) != reference["bytes"]
+        or hashlib.sha256(data).hexdigest() != reference["sha256"]
+    ):
         raise ValueError(f"Invalid detail checksum or byte range: {path}")
     return data
 
@@ -56,6 +67,8 @@ def read_detail(directory, reference, readers):
 def compare(baseline, current):
     started = perf_counter()
     a, b = (json.loads(path.read_text()) for path in (baseline, current))
+    validate_report(a)
+    validate_report(b)
     if a.get("status") != "complete" or b.get("status") != "complete":
         raise ValueError("Both reports must be complete")
     left, right = outcomes(a), outcomes(b)
@@ -63,30 +76,41 @@ def compare(baseline, current):
         raise ValueError("Match configurations differ")
     if list(left) != list(right):
         raise ValueError("Outcome array order differs")
-    if canonical(without(a, (*RUN_METADATA, "outcomes"))) != canonical(without(b, (*RUN_METADATA, "outcomes"))):
+    if canonical(without(a, (*RUN_METADATA, "outcomes"))) != canonical(
+        without(b, (*RUN_METADATA, "outcomes"))
+    ):
         raise ValueError("Report aggregates or configuration differ")
     readers = {}
     byte_identical = 0
     try:
         for key, outcome in left.items():
             other = right[key]
-            if canonical(without(outcome, OUTCOME_METADATA)) != canonical(without(other, OUTCOME_METADATA)):
+            if canonical(without(outcome, OUTCOME_METADATA)) != canonical(
+                without(other, OUTCOME_METADATA)
+            ):
                 raise ValueError(f"Compact gameplay differs: {key}")
             old = read_detail(baseline.parent, outcome["detail"], readers)
             new = read_detail(current.parent, other["detail"], readers)
+            old_detail = decode_detail(old, outcome["detail"]["file"])
             if old == new:
                 byte_identical += 1
-            elif canonical(decode_detail(old, outcome["detail"]["file"])) != canonical(decode_detail(new, other["detail"]["file"])):
+            elif canonical(old_detail) != canonical(
+                decode_detail(new, other["detail"]["file"])
+            ):
                 raise ValueError(f"Detailed gameplay differs: {key}")
     finally:
         for reader in readers.values():
             reader.close()
     return {
-        "equal": True, "matches": len(left), "byteIdenticalDetails": byte_identical,
+        "equal": True,
+        "matches": len(left),
+        "byteIdenticalDetails": byte_identical,
         "outcomeOrderEqual": True,
         "comparison": "all gameplay fields and ordered arrays; JSON object key order ignored",
-        "excludedRunMetadata": RUN_METADATA, "excludedOutcomeMetadata": OUTCOME_METADATA,
-        "baselineWallSeconds": a["elapsedSeconds"], "currentWallSeconds": b["elapsedSeconds"],
+        "excludedRunMetadata": RUN_METADATA,
+        "excludedOutcomeMetadata": OUTCOME_METADATA,
+        "baselineWallSeconds": a["elapsedSeconds"],
+        "currentWallSeconds": b["elapsedSeconds"],
         "comparisonWallSeconds": perf_counter() - started,
     }
 

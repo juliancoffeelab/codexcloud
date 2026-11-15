@@ -13,11 +13,11 @@ SPEC.loader.exec_module(audit)
 
 class ThornDeterrenceTests(unittest.TestCase):
     def test_before_state_restores_spending_and_ownership_without_turn_start(self):
-        actor = dict(id='u8', type='foot', side='enemy', tile='0,0', hp=7, moved=False)
+        actor = dict(id='u8', type='foot', side='enemy', tile=dict(col=0,row=0), hp=7, moved=False)
         phase = dict(side='enemy', round=3, before=[actor], gold=dict(player=4, enemy=2),
                      actions=[dict(kind='recruit', type='foot'), dict(kind='advance', type='aura')],
-                     ownership=[dict(tile='0,0', owner='enemy')], combats=[])
-        previous = dict(ownership=[dict(tile='0,0', owner='player')],
+                     ownership=[dict(tile=dict(col=0,row=0), owner='enemy')], combats=[])
+        previous = dict(ownership=[dict(tile=dict(col=0,row=0), owner='player')],
                         before=[dict(id='u12')], units=[], losses=[dict(id='u15')], combats=[])
         detail = dict(initial=dict(nextId=3, tiles=[dict(id='0,0', owner=None)], combatRng=7),
                       final=dict(combatRng=7), phases=[previous, phase])
@@ -59,16 +59,16 @@ class ThornDeterrenceTests(unittest.TestCase):
 
     def test_aura_covers_intrinsic_thorns_but_not_itself(self):
         state = dict(turn='enemy', units=[
-            dict(id='u1', type='aura', side='player', tile='0,0'),
-            dict(id='u2', type='shield', side='player', tile='1,0'),
-            dict(id='u3', type='foot', side='enemy', tile='0,1')])
-        state['tiles'] = [dict(id=u['tile'], col=int(u['tile'].split(',')[0]), row=int(u['tile'].split(',')[1])) for u in state['units']]
+            dict(id='u1', type='aura', side='player', tile=dict(col=0,row=0)),
+            dict(id='u2', type='shield', side='player', tile=dict(col=1,row=0)),
+            dict(id='u3', type='foot', side='enemy', tile=dict(col=0,row=1))])
+        state['tiles'] = [dict(id=f"{u['tile']['col']},{u['tile']['row']}", **u['tile']) for u in state['units']]
         providers, covered = audit.coverage(state, {'aura': dict(thornAura=2), 'shield': dict(thorns=1), 'foot': {}})
         self.assertEqual(len(providers), 1)
         self.assertEqual(covered, {'u2'})
 
     def test_unchanged_replay_must_reproduce_recorded_phase(self):
-        phase = dict(actions=[dict(kind='move', unit='u1', tile='1,0')],
+        phase = dict(actions=[dict(kind='move', unit='u1', tile=dict(col=1,row=0))],
                      units=[dict(id='u1', hp=7)], gold=dict(player=2, enemy=0))
         response = dict(records=dict(actions=phase['actions']),
                         final=dict(units=phase['units'], gold=phase['gold']))
@@ -88,11 +88,11 @@ class ThornDeterrenceTests(unittest.TestCase):
     def test_effect_selection_preserves_other_thorns_and_selects_affected_recipients(self):
         rules = {'both': dict(thorns=2, thornAura=4), 'shield': dict(thorns=1), 'foot': {}}
         state = dict(turn='enemy', units=[
-            dict(id='a', type='both', side='player', tile='0,0'),
-            dict(id='b', type='foot', side='player', tile='1,0'),
-            dict(id='c', type='shield', side='player', tile='4,0'),
-            dict(id='d', type='shield', side='enemy', tile='0,1')])
-        state['tiles'] = [dict(id=u['tile'], col=int(u['tile'].split(',')[0]), row=int(u['tile'].split(',')[1])) for u in state['units']]
+            dict(id='a', type='both', side='player', tile=dict(col=0,row=0)),
+            dict(id='b', type='foot', side='player', tile=dict(col=1,row=0)),
+            dict(id='c', type='shield', side='player', tile=dict(col=4,row=0)),
+            dict(id='d', type='shield', side='enemy', tile=dict(col=0,row=1))])
+        state['tiles'] = [dict(id=f"{u['tile']['col']},{u['tile']['row']}", **u['tile']) for u in state['units']]
         providers, covered = audit.coverage(state, rules, 'intrinsic')
         self.assertEqual({u['id'] for u in providers}, {'a', 'c'})
         self.assertEqual(covered, {'a', 'c'})
@@ -105,16 +105,16 @@ class ThornDeterrenceTests(unittest.TestCase):
     def test_threat_filter_uses_melee_reach_and_offset_hex_coordinates(self):
         rules = {'foot': dict(move=1, attacks=[dict(category='melee')]),
                  'bow': dict(move=5, attacks=[dict(category='ranged')])}
-        target = dict(id='a', type='foot', side='player', tile='1,1')
-        enemy = dict(id='b', type='foot', side='enemy', tile='2,2')
+        target = dict(id='a', type='foot', side='player', tile=dict(col=1,row=1))
+        enemy = dict(id='b', type='foot', side='enemy', tile=dict(col=2,row=2))
         state = dict(turn='enemy', units=[target, enemy])
-        state['tiles'] = [dict(id=u['tile'], col=int(u['tile'].split(',')[0]), row=int(u['tile'].split(',')[1])) for u in state['units']]
+        state['tiles'] = [dict(id=f"{u['tile']['col']},{u['tile']['row']}", **u['tile']) for u in state['units']]
         self.assertTrue(audit.threatened(state, rules, {'a'}))
         self.assertFalse(audit.threatened(state, rules, set()))
         state['tiles'].append(dict(id='9,9', col=9, row=9))
-        enemy['tile'] = '9,9'
+        enemy['tile'] = dict(col=9,row=9)
         self.assertFalse(audit.threatened(state, rules, {'a'}))
-        enemy.update(type='bow', tile='2,2')
+        enemy.update(type='bow', tile=dict(col=2,row=2))
         self.assertFalse(audit.threatened(state, rules, {'a'}))
 
     def test_profile_mismatch_is_rejected(self):

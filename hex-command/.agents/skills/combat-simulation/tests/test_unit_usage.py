@@ -1,9 +1,6 @@
 """Small recorded fixtures for presence denominators and support attribution."""
-import hashlib
 import importlib.util
-import json
 from pathlib import Path
-import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -12,24 +9,26 @@ usage = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(usage)
 
 
-def unit(id, kind, side='player', tile='0,0'):
-    return dict(id=id, type=kind, side=side, tile=tile, hp=10)
+def unit(id, kind, side='player', tile=(0,0)):
+    return dict(id=id, type=kind, side=side, tile=dict(col=tile[0],row=tile[1]), hp=10)
 
 
 class UsageTests(unittest.TestCase):
     def test_damage_presence_ratio_weights_faction_totals_and_separates_thorns_and_tiers(self):
         profiles = {
-            'boss': dict(family='boss', race='forest', leader=True),
-            'tree': dict(name='Tree', level=1, family='tree', race='forest'),
-            'sapling': dict(name='Sapling', level=2, family='tree', race='forest'),
-            'unused': dict(name='Unused', level=3, family='tree', race='forest'),
-            'foe': dict(family='foe', race='other'),
+            'boss': dict(role='warrior',family='boss', race='forest', leader=True),
+            'tree': dict(role='warrior',name='Tree', level=1, family='tree', race='forest'),
+            'sapling': dict(role='warrior',name='Sapling', level=2, family='tree', race='forest'),
+            'unused': dict(role='warrior',name='Unused', level=3, family='tree', race='forest'),
+            'foe': dict(role='warrior',family='foe', race='other'),
         }
         dims = dict(race='woodland', policy='balanced', opponentPolicy='balanced', map='all')
         presence = [dict(dims, unit='tree', unitTurns=10), dict(dims, unit='sapling', unitTurns=90),
                     dict(dims, unit='unused', unitTurns=0)]
         values = [dict(dims, kind='arena', unit=u, unitTurns=t, weaponHPDamageDealt=d,
-                       thornHPDamageDealt=thorns) for u, t, d, thorns in
+                       thornHPDamageDealt=thorns, nonleaderUnitTurns=0 if u=='boss' else t,
+                       nonleaderWeaponHPDamageDealt=0 if u=='boss' else d,
+                       nonleaderThornHPDamageDealt=0 if u=='boss' else thorns) for u, t, d, thorns in
                   [('tree', 10, 500, 900), ('sapling', 90, 500, 0), ('boss', 999, 100000, 100000)]]
         rows = {r['unit']: r for r in usage.unit_damage(presence, values, profiles)}
         tree = rows['tree']
@@ -55,7 +54,7 @@ class UsageTests(unittest.TestCase):
         self.assertIn('10.00% → 10.00%', text)
         self.assertIn('5.00× → 5.00×', text)
         self.assertIn('90.00 → 90.00', text)
-        self.assertIn('Unused (L3) | unknown | 0.00% → 0.00% | — → — | — → —', text)
+        self.assertIn('Unused (L3) | infantry | 0.00% → 0.00% | — → — | — → —', text)
         ordered = usage.unit_damage(presence, values, {
             k: dict(v, role='healer' if k == 'tree' else 'warrior') for k, v in profiles.items()})
         self.assertEqual([r['unitKind'] for r in ordered], ['infantry', 'infantry', 'support'])
@@ -66,7 +65,7 @@ class UsageTests(unittest.TestCase):
                          ['infantry', 'flank', 'ranger', 'support', 'unknown'])
 
     def test_damage_rates_keep_zero_damage_and_zero_exposure_distinct_and_do_not_pool_scopes(self):
-        profiles = {u: dict(family=u, race='a') for u in ['foot', 'idle', 'unseen']}
+        profiles = {u: dict(role='warrior',family=u, race='a') for u in ['foot', 'idle', 'unseen']}
         presence, values = [], []
         for landscape, policy, dealt in [('open', 'balanced', 20), ('wooded', 'balanced', 0),
                                           ('open', 'situational', 80)]:
@@ -74,7 +73,9 @@ class UsageTests(unittest.TestCase):
             for unit, turns in [('foot', 2), ('idle', 8), ('unseen', 0)]:
                 presence.append(dict(dims, unit=unit, unitTurns=turns))
                 values.append(dict(dims, kind='arena', unit=unit, unitTurns=turns,
-                    weaponHPDamageDealt=dealt if unit=='foot' else 0, thornHPDamageDealt=0))
+                    weaponHPDamageDealt=dealt if unit=='foot' else 0, thornHPDamageDealt=0,
+                    nonleaderUnitTurns=turns, nonleaderWeaponHPDamageDealt=dealt if unit=='foot' else 0,
+                    nonleaderThornHPDamageDealt=0))
         rows = usage.unit_damage(presence, values, profiles)
         def row(unit, landscape='open', policy='balanced'):
             return next(r for r in rows if r['unit']==unit and r['map']==landscape and r['policy']==policy)
@@ -90,7 +91,7 @@ class UsageTests(unittest.TestCase):
         self.assertEqual(first['damagePresenceRatioDelta'], 3)
         self.assertEqual(first['damagePerUnitTurnDelta'], 6)
         self.assertIsNone(next(r for r in comparison if r['unit']=='idle')['damagePresenceRatioBefore'])
-        values[0]['unitTurns'] += 1
+        values[0]['nonleaderUnitTurns'] += 1
         with self.assertRaisesRegex(ValueError, 'census mismatch'):
             usage.unit_damage(presence, values, profiles)
 
@@ -98,6 +99,7 @@ class UsageTests(unittest.TestCase):
         profiles = {'boss':dict(family='boss',leader=True), 'foot':dict(family='foot'),
                     'heavy':dict(family='foot'), 'scout':dict(family='scout'), 'early':dict(family='early')}
         boss, foot, scout = unit('b','boss'), unit('f','foot'), unit('s','scout')
+        boss['role'] = 'leader'
         heavy = unit('f','heavy')
         result = dict(config=dict(armies=dict(player='a',enemy='b'),player='situational',enemy='balanced',landscape='open'),
                       initial=dict(units=[boss,foot,scout,unit('d','early')]), phases=[
@@ -116,10 +118,10 @@ class UsageTests(unittest.TestCase):
     def test_support_ties_split_credit_and_count_incoming_turns_for_thorns(self):
         profiles = {'medic':dict(family='mage',healing=3), 'aura':dict(family='mage',thornAura=2),
                     'foot':dict(family='foot',thorns=1),'enemy':dict(family='enemy')}
-        m1,m2 = unit('m1','medic',tile='0,0'),unit('m2','medic',tile='2,0')
-        target = unit('t','foot',tile='1,0')
-        aura = unit('a','aura',tile='1,1')
-        foe = unit('e','enemy',side='enemy',tile='3,0')
+        m1,m2 = unit('m1','medic',tile=(0,0)),unit('m2','medic',tile=(2,0))
+        target = unit('t','foot',tile=(1,0))
+        aura = unit('a','aura',tile=(1,1))
+        foe = unit('e','enemy',side='enemy',tile=(3,0))
         roster=[m1,m2,target,aura,foe]
         phases=[dict(side='player',before=roster,units=roster,losses=[],combats=[],
                      healing=[dict(target='t',providers=['m1','m2'],amount=3)]),
@@ -147,30 +149,16 @@ class UsageTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'fresh run'):
             self.run_record({},result)
 
-    def test_arrow_usage_requests_existing_pyarrow_fallback_when_dependency_is_missing(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            raw = b'{}'
-            (root/'details.arrow').write_bytes(raw)
-            path = root/'report.json'
-            path.write_text(json.dumps(dict(status='complete',outcomes=[dict(kind='arena',config={},detail=dict(file='details.arrow',offset=0,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()))])))
-            with patch.object(usage.importlib.util,'find_spec',return_value=None):
-                with self.assertRaisesRegex(ModuleNotFoundError,'pyarrow'):
-                    list(usage.journals([path]))
-
     def run_record(self,profiles,result,**options):
-        tiles = {u['tile'] for u in result['initial']['units']}
+        tiles = {(u['tile']['col'], u['tile']['row']) for u in result['initial']['units']}
         for phase in result['phases']:
-            tiles.update(u['tile'] for key in ('before', 'units', 'losses') for u in phase.get(key, []))
-        result['initial']['tiles'] = [dict(id=t, col=int(t.split(',')[0]), row=int(t.split(',')[1])) for t in tiles]
-        with tempfile.TemporaryDirectory() as tmp:
-            root=Path(tmp)
-            raw=(json.dumps(result)+'\n').encode()
-            (root/'details.jsonl').write_bytes(raw)
-            report=dict(status='complete',unitProfiles=profiles,supportTelemetryVersion=1,outcomes=[dict(kind='arena',config=result['config'],detail=dict(file='details.jsonl',offset=0,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()))])
-            path=root/'report.json';path.write_text(json.dumps(report))
-            tables,_=usage.analyze([path],**options)
-            return tables
+            tiles.update((u['tile']['col'], u['tile']['row']) for key in ('before', 'units', 'losses') for u in phase.get(key, []))
+        result['initial']['tiles'] = [dict(id=f'{col},{row}', col=col, row=row) for col,row in tiles]
+        metadata=dict(status='complete',unitProfiles=profiles,supportTelemetryVersion=1)
+        with patch.object(usage, 'journals', return_value=iter([(metadata,result)])):
+            tables,_=usage.analyze([],**options)
+        return tables
+
 
 
 if __name__ == '__main__':
