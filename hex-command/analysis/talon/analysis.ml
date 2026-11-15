@@ -187,24 +187,7 @@ let build current previous ~unit_usage ~presence ~support ~value ~leaders =
               (get source "combatTelemetryVersion" = int 1)
               "Damage tables require fresh combat telemetry")
           (current.sources @ previous.sources);
-      let value =
-        value
-        || unit_usage
-           && List.for_all
-                (fun source -> get source "combatTelemetryVersion" = int 1)
-                current.sources
-      in
-      let leaders =
-        leaders
-        || unit_usage
-           && List.for_all
-                (fun source -> get source "leaderAuditVersion" = int 1)
-                current.sources
-      in
-      let extra =
-        Telemetry.analyze current.dataset ~presence:(presence || unit_usage)
-          ~support:(support || unit_usage) ~value ~leaders
-      in
+      let extra = current.telemetry in
       let tables = tables @ extra in
       let tables =
         if unit_usage || presence then
@@ -221,12 +204,7 @@ let build current previous ~unit_usage ~presence ~support ~value ~leaders =
       in
       if not unit_usage then tables
       else
-        let old_extra =
-          if previous.outcomes = [] then []
-          else
-            Telemetry.analyze previous.dataset ~presence:true ~support:false
-              ~value:true ~leaders:false
-        in
+        let old_extra = previous.telemetry in
         let membership =
           if previous.outcomes = [] then tab "battlefield_units" tables
           else
@@ -238,7 +216,7 @@ let build current previous ~unit_usage ~presence ~support ~value ~leaders =
           Metrics.unit_damage
             (tab "battlefield_units" tables)
             (tab "battlefield_unit_value" tables)
-            current.dataset.profiles membership
+            current.profiles membership
         in
         let tables = tables @ [ ("unit_damage", damage) ] in
         if previous.outcomes = [] then tables
@@ -247,7 +225,7 @@ let build current previous ~unit_usage ~presence ~support ~value ~leaders =
             Metrics.unit_damage
               (tab "battlefield_units" old_extra)
               (tab "battlefield_unit_value" old_extra)
-              current.dataset.profiles membership
+              current.profiles membership
           in
           tables
           @ [

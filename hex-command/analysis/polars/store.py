@@ -1,4 +1,5 @@
-from journal import paths, read_json, normalize, identity
+from journal import paths, read_json, normalize, identity, Readers
+import telemetry
 from dataset import Dataset
 from campaign_tables import observations
 
@@ -22,7 +23,15 @@ SOURCE_FIELDS = [
 ]
 
 
-def load(inputs, *, telemetry=False):
+def load(
+    inputs,
+    *,
+    unit_usage=False,
+    presence=False,
+    support=False,
+    value=False,
+    leaders=False,
+):
     filenames = paths(inputs)
     if inputs and not filenames:
         raise ValueError("No recorded reports in the selected inputs")
@@ -56,8 +65,50 @@ def load(inputs, *, telemetry=False):
                 ):
                     raise ValueError("Invalid winner/cap consistency: " + key)
             outcomes[key] = o
-    dataset = Dataset(reports, telemetry=telemetry)
-    diagnostics = observations(dataset)
+    flags = dict(
+        presence_=unit_usage or presence,
+        support_=unit_usage or support,
+        value_=value
+        or (unit_usage and all(s.get("combatTelemetryVersion") == 1 for s in sources)),
+        leaders_=leaders
+        or (unit_usage and all(s.get("leaderAuditVersion") == 1 for s in sources)),
+    )
+    detailed = any(flags.values())
+    if unit_usage and any(s.get("combatTelemetryVersion") != 1 for s in sources):
+        raise ValueError("Damage tables require fresh combat telemetry")
+    catalogs = [s.get("unitProfiles") or {} for s in sources]
+    if detailed and any(p != catalogs[0] for p in catalogs):
+        raise ValueError("Cannot pool telemetry across different recorded catalogs")
+    diagnostics, partials = {}, []
+    with Readers() as readers:
+        for path, report in reports:
+            if detailed and report.get("status") != "complete":
+                raise ValueError("Telemetry requires a completed run")
+            selected = sorted(
+                (
+                    o
+                    for o in report["outcomes"]
+                    if o["kind"] == "campaign"
+                    or detailed
+                    and o["config"]["armies"]["player"]
+                    != o["config"]["armies"]["enemy"]
+                ),
+                key=lambda o: (
+                    o.get("detail", {}).get("file", ""),
+                    o.get("detail", {}).get("offset", 0),
+                ),
+            )
+            # Unindexed historical JSONL is decoded once as a whole source.
+            size = max(1, len(selected)) if path.name == "outcomes.json" else 32
+            for offset in range(0, max(1, len(selected)), size):
+                batch = dict(report, outcomes=selected[offset : offset + size])
+                data = Dataset([(path, batch)], telemetry=detailed, readers=readers)
+                diagnostics.update(observations(data))
+                if detailed:
+                    partials.append(telemetry.analyze(data, **flags))
+                del data
+        if detailed and not partials:
+            partials.append(telemetry.analyze(Dataset([], readers=readers), **flags))
     for key, outcome in outcomes.items():
         if outcome["kind"] == "campaign":
             outcome["analysis"] = diagnostics.get(key, [])
@@ -65,5 +116,5 @@ def load(inputs, *, telemetry=False):
         outcomes=list(outcomes.values()),
         sources=sources,
         reports=reports,
-        dataset=dataset,
+        telemetry=telemetry.merge(partials) if detailed else {},
     )

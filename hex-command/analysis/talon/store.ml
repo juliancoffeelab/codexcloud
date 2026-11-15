@@ -24,7 +24,8 @@ type t = {
   outcomes : Json.t list;
   sources : Json.t list;
   reports : (string * Json.t) list;
-  dataset : Dataset.t;
+  telemetry : (string * Talon.t) list;
+  profiles : Talon.t;
 }
 
 let with_kind result =
@@ -53,7 +54,8 @@ let files paths =
   in
   List.concat_map expand paths
 
-let load ?(telemetry = false) paths =
+let load ?(unit_usage = false) ?(presence = false) ?(support = false)
+    ?(value = false) ?(leaders = false) paths =
   let filenames = files paths in
   Journal.require
     (paths = [] || filenames <> [])
@@ -110,8 +112,95 @@ let load ?(telemetry = false) paths =
       reports := (path, report) :: !reports)
     filenames;
   let reports = List.rev !reports in
-  let dataset = Dataset.load reports ~telemetry in
-  let observations = Campaign_observations.build dataset in
+  let sources = List.rev !sources in
+  if unit_usage then
+    List.iter
+      (fun source ->
+        Journal.require
+          (get source "combatTelemetryVersion" = int 1)
+          "Damage tables require fresh combat telemetry")
+      sources;
+  let presence = unit_usage || presence and support = unit_usage || support in
+  let value =
+    value
+    || unit_usage
+       && List.for_all
+            (fun source -> get source "combatTelemetryVersion" = int 1)
+            sources
+  in
+  let leaders =
+    leaders
+    || unit_usage
+       && List.for_all
+            (fun source -> get source "leaderAuditVersion" = int 1)
+            sources
+  in
+  let detailed = presence || support || value || leaders in
+  (match sources with
+  | first :: rest when detailed ->
+      List.iter
+        (fun source ->
+          Journal.require
+            (sorted (get source "unitProfiles")
+            = sorted (get first "unitProfiles"))
+            "Cannot pool telemetry across different recorded catalogs")
+        rest
+  | _ -> ());
+  let observations = Hashtbl.create 128
+  and partials = ref []
+  and profiles = ref None in
+  Journal.with_readers (fun readers ->
+      let batch reports =
+        let dataset = Dataset.load ~readers reports ~telemetry:detailed in
+        if Option.is_none !profiles then profiles := Some dataset.profiles;
+        Hashtbl.iter
+          (Hashtbl.replace observations)
+          (Campaign_observations.build dataset);
+        if detailed then
+          partials :=
+            Telemetry.analyze dataset ~presence ~support ~value ~leaders
+            :: !partials
+      in
+      List.iter
+        (fun (path, report) ->
+          if detailed then
+            Journal.require
+              (get report "status" = str "complete")
+              "Telemetry requires a completed run";
+          let selected =
+            list (get report "outcomes")
+            |> List.filter (fun o ->
+                get o "kind" = str "campaign"
+                || detailed
+                   && get (get (get o "config") "armies") "player"
+                      <> get (get (get o "config") "armies") "enemy")
+            |> List.sort (fun a b ->
+                compare
+                  ( text (get (get a "detail") "file"),
+                    integer (get (get a "detail") "offset") )
+                  ( text (get (get b "detail") "file"),
+                    integer (get (get b "detail") "offset") ))
+          in
+          let size =
+            if Filename.basename path = "outcomes.json" then
+              max 1 (List.length selected)
+            else 32
+          in
+          let rec chunks remaining =
+            let rec take n rest acc =
+              if n = 0 then (List.rev acc, rest)
+              else
+                match rest with
+                | [] -> (List.rev acc, [])
+                | x :: xs -> take (n - 1) xs (x :: acc)
+            in
+            let current, rest = take size remaining [] in
+            batch [ (path, set report "outcomes" (arr current)) ];
+            if rest <> [] then chunks rest
+          in
+          chunks selected)
+        reports;
+      if reports = [] then batch []);
   let outcomes =
     List.rev !outcomes
     |> List.map (fun o ->
@@ -122,4 +211,10 @@ let load ?(telemetry = false) paths =
                   (Hashtbl.find_opt observations (identity o))))
         else o)
   in
-  { outcomes; sources = List.rev !sources; reports; dataset }
+  {
+    outcomes;
+    sources;
+    reports;
+    profiles = Option.get !profiles;
+    telemetry = (if detailed then Telemetry.merge (List.rev !partials) else []);
+  }

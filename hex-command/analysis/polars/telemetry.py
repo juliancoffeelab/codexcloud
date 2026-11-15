@@ -180,23 +180,7 @@ def presence(d, end, lookup, recruits):
         )
         tables[name] = (
             p.join(exposure, on=DIMS + ["member"], how="left")
-            .join(battles, on=DIMS, how="left")
-            .join(phases, on=DIMS, how="left")
-            .join(totals, on=DIMS, how="left")
-            .with_columns(
-                c("unitTurns", "observedPhases", "totalUnitTurns").fill_null(0)
-            )
-            .with_columns(
-                (100 * c("unitTurns") / c("totalUnitTurns").clip(lower_bound=1)).alias(
-                    "sharePercent"
-                ),
-                (c("unitTurns") / c("observedPhases").clip(lower_bound=1)).alias(
-                    "meanUnitsPerPhase"
-                ),
-                (100 * c("battlesPresent") / c("battles").clip(lower_bound=1)).alias(
-                    "battlePresencePercent"
-                ),
-            )
+            .with_columns(c("unitTurns").fill_null(0))
             .rename({"member": "unit" if member == "type" else member})
             .sort(DIMS + ["unit" if member == "type" else member])
         )
@@ -244,6 +228,11 @@ def presence(d, end, lookup, recruits):
     )
     # facts expressions need the event columns until projection.
     tables["nonleader_unit_events"] = reduce(concat(role), DIMS + ["unit"], EVENTS)
+    tables["_presence_totals"] = (
+        battles.join(phases, on=DIMS, how="left")
+        .join(totals, on=DIMS, how="left")
+        .with_columns(c("observedPhases", "totalUnitTurns").fill_null(0))
+    )
     return tables
 
 
@@ -286,15 +275,18 @@ def support(d, before, lookup):
             c("r").alias("rr"),
         )
         pairs = (
-            providers.join(recipients, on=["p", "side"])
+            providers.lazy()
+            .join(recipients.lazy(), on=["p", "side"])
             .filter(c("id") != c("recipient"))
             .with_columns(
                 (c("q") - c("rq")).alias("dq"), (c("r") - c("rr")).alias("dr")
             )
         )
-        touching = pairs.filter(
-            c("dq").abs() + c("dr").abs() + (c("dq") + c("dr")).abs() == 2
-        ).with_columns(pl.len().over(["p", "recipient"]).alias("touching"))
+        touching = (
+            pairs.filter(c("dq").abs() + c("dr").abs() + (c("dq") + c("dr")).abs() == 2)
+            .with_columns(pl.len().over(["p", "recipient"]).alias("touching"))
+            .collect()
+        )
         effect(
             touching,
             ability,
@@ -397,39 +389,10 @@ def support(d, before, lookup):
         ]
     )
     effects = reduce(all_maps(effects), DIMS + ["unit", "family", "ability"], EFFECTS)
-    turns, ability = c("providerTurns"), c("ability")
-
-    def rate(field, condition):
-        return pl.when((turns > 0) & condition).then(c(field) / turns).otherwise(None)
-
-    effects = effects.with_columns(
-        rate("adjacentContacts", ability != "thorns").alias("adjacentAlliesPerTurn"),
-        rate("healedRecipients", ability == "healing").alias("usefulRecipientsPerTurn"),
-        rate("healedHP", ability == "healing").alias("healedHPPerTurn"),
-        rate("reflectedDamage", ability != "healing").alias("reflectedDamagePerTurn"),
-        pl.when(c("coveredRecipients") > 0)
-        .then(100 * c("overlappingRecipients") / c("coveredRecipients"))
-        .otherwise(0)
-        .alias("overlapPercent"),
-    )
     overlaps = reduce(
         all_maps(concat(overlap_parts)),
         DIMS + ["ability", "providerCount", "recipientsPerProvider"],
         OVERLAPS,
-    ).with_columns(
-        (c("contacts") / c("eligiblePairs").clip(lower_bound=1)).alias(
-            "pairCoverageProbability"
-        ),
-        (
-            100
-            * c("overlappingRecipients")
-            / c("coveredRecipients").clip(lower_bound=1)
-        ).alias("overlapPercent"),
-        (
-            100
-            * (c("contacts") - c("coveredRecipients"))
-            / c("contacts").clip(lower_bound=1)
-        ).alias("redundantContactPercent"),
     )
     return dict(support_effects=effects, support_overlap=overlaps)
 
@@ -769,7 +732,9 @@ def value(d, end, lookup, recruits):
 def leader_tables(d, lookup):
     a = join_unit(
         d.audits.rename({"leader": "unit", "side": "auditSide"}), lookup
-    ).join(d.phases.select("p", c("side").alias("actingSide"), "round"), on="p")
+    ).join(
+        d.phases.select("p", c("side").alias("actingSide"), "round", "phase"), on="p"
+    )
     before = c("before")
     after = c("after")
     army = c("armyBefore")
@@ -807,10 +772,12 @@ def leader_tables(d, lookup):
         "seed",
         "first",
         c("p").alias("__order"),
+        c("exposure").is_not_null().alias("__hasExposure"),
         "m",
         "ch",
         "p",
         "round",
+        "phase",
         "actingSide",
         c("auditSide").alias("side"),
         "leader",
@@ -854,9 +821,7 @@ def leader_tables(d, lookup):
         ],
         *[exposure.struct.field(k).alias(k) for k in EXPOSURE_FIELDS],
     )
-    q = q.with_columns(
-        (c("p").rank("dense").over(["m", "ch"]) - 1).cast(pl.Int64).alias("phase")
-    ).drop("m", "ch", "p")
+    q = q.drop("m", "ch", "p")
     keys = ["matchId", "mission", "side", "leader"]
     q = (
         q.sort("__order", "leader")
@@ -903,9 +868,7 @@ def leader_tables(d, lookup):
         )
         .drop("__order", "__decision")
     )
-    if a.filter(c("after").is_null() & c("exposure").is_not_null()).is_empty():
-        deaths = deaths.drop(EXPOSURE_FIELDS)
-    return dict(leader_audit=q.drop("__order"), leader_deaths=deaths)
+    return dict(leader_audit=q.drop("__order", "__hasExposure"), leader_deaths=deaths)
 
 
 EXPOSURE_FIELDS = [
@@ -948,9 +911,16 @@ def analyze(d, *, presence_=False, support_=False, value_=False, leaders_=False)
             from frames import empty
 
             tables.update(
-                battlefield_units=empty(DIMS + ["unit"], ["unitTurns"]),
-                battlefield_presence=empty(DIMS + ["family"], ["unitTurns"]),
+                battlefield_units=empty(
+                    DIMS + ["unit"], ["unitTurns", "battlesPresent"]
+                ),
+                battlefield_presence=empty(
+                    DIMS + ["family"], ["unitTurns", "battlesPresent"]
+                ),
                 nonleader_unit_events=empty(DIMS + ["unit"], EVENTS),
+                _presence_totals=empty(
+                    DIMS, ["battles", "observedPhases", "totalUnitTurns"]
+                ),
             )
         if support_:
             tables.update(
@@ -963,21 +933,168 @@ def analyze(d, *, presence_=False, support_=False, value_=False, leaders_=False)
         if leaders_:
             tables.update(leader_audit=pl.DataFrame(), leader_deaths=pl.DataFrame())
         return tables
-    end = d.describe(d.rosters["units"]).join(
-        d.phases.select("p", c("side").alias("actingSide")), on="p"
+    core = list(
+        dict.fromkeys(
+            VALUE_DIMS
+            + [
+                "p",
+                "m",
+                "ch",
+                "id",
+                "type",
+                "role",
+                "side",
+                "faction",
+                "seed",
+                "first",
+                "matchId",
+                "cell",
+            ]
+        )
     )
-    before = d.describe(d.rosters["before"]).join(
-        d.phases.select("p", c("side").alias("actingSide")), on="p"
+    end = (
+        d.describe(d.rosters["units"], columns=core).join(
+            d.phases.select("p", c("side").alias("actingSide")), on="p"
+        )
+        if presence_ or value_
+        else None
     )
-    lookup = d.describe(d.lookup)
-    recruits = recruit_rows(d)
+    before = (
+        d.describe(
+            d.rosters["before"],
+            columns=DIMS
+            + [
+                "p",
+                "id",
+                "type",
+                "family",
+                "side",
+                "kind",
+                "tile",
+                "healing",
+                "thornAura",
+                "thorns",
+            ],
+        ).join(d.phases.select("p", c("side").alias("actingSide")), on="p")
+        if support_
+        else None
+    )
+    lookup = (
+        d.describe(d.lookup, columns=core) if presence_ or value_ or leaders_ else None
+    )
+    recruits = recruit_rows(d) if presence_ or value_ else None
     tables = {}
     if presence_:
         tables.update(presence(d, end, lookup, recruits))
     if support_:
-        tables.update(support(d, before, d.describe(d.support_lookup)))
+        support_lookup = d.describe(
+            d.support_lookup, columns=DIMS + ["p", "id", "type", "family", "m"]
+        )
+        tables.update(support(d, before, support_lookup))
     if value_:
         tables.update(value(d, end, lookup, recruits))
     if leaders_:
         tables.update(leader_tables(d, lookup))
     return tables
+
+
+def merge(parts):
+    """Merge bounded, complete-game batches without averaging any rates."""
+    names = set().union(*(p.keys() for p in parts))
+    joined = {name: concat([p[name] for p in parts if name in p]) for name in names}
+    out = {}
+    if "_presence_totals" in joined:
+        total_fields = ["battles", "observedPhases", "totalUnitTurns"]
+        totals = reduce(joined["_presence_totals"], DIMS, total_fields)
+        for name, member in [
+            ("battlefield_units", "unit"),
+            ("battlefield_presence", "family"),
+        ]:
+            q = reduce(joined[name], DIMS + [member], ["unitTurns", "battlesPresent"])
+            out[name] = q.join(
+                totals, on=DIMS, how="left", validate="m:1"
+            ).with_columns(
+                (100 * c("unitTurns") / c("totalUnitTurns").clip(lower_bound=1)).alias(
+                    "sharePercent"
+                ),
+                (c("unitTurns") / c("observedPhases").clip(lower_bound=1)).alias(
+                    "meanUnitsPerPhase"
+                ),
+                (100 * c("battlesPresent") / c("battles").clip(lower_bound=1)).alias(
+                    "battlePresencePercent"
+                ),
+            )
+        out["nonleader_unit_events"] = reduce(
+            joined["nonleader_unit_events"], DIMS + ["unit"], EVENTS
+        )
+    if "support_effects" in joined:
+        q = joined["support_effects"]
+        if q.is_empty():
+            out.update(support_effects=q, support_overlap=joined["support_overlap"])
+        else:
+            q = reduce(q, DIMS + ["unit", "family", "ability"], EFFECTS)
+            turns, ability = c("providerTurns"), c("ability")
+
+            def rate(field, condition):
+                return (
+                    pl.when((turns > 0) & condition)
+                    .then(c(field) / turns)
+                    .otherwise(None)
+                )
+
+            out["support_effects"] = q.with_columns(
+                rate("adjacentContacts", ability != "thorns").alias(
+                    "adjacentAlliesPerTurn"
+                ),
+                rate("healedRecipients", ability == "healing").alias(
+                    "usefulRecipientsPerTurn"
+                ),
+                rate("healedHP", ability == "healing").alias("healedHPPerTurn"),
+                rate("reflectedDamage", ability != "healing").alias(
+                    "reflectedDamagePerTurn"
+                ),
+                pl.when(c("coveredRecipients") > 0)
+                .then(100 * c("overlappingRecipients") / c("coveredRecipients"))
+                .otherwise(0)
+                .alias("overlapPercent"),
+            )
+            o = reduce(
+                joined["support_overlap"],
+                DIMS + ["ability", "providerCount", "recipientsPerProvider"],
+                OVERLAPS,
+            )
+            out["support_overlap"] = o.with_columns(
+                (c("contacts") / c("eligiblePairs").clip(lower_bound=1)).alias(
+                    "pairCoverageProbability"
+                ),
+                (
+                    100
+                    * c("overlappingRecipients")
+                    / c("coveredRecipients").clip(lower_bound=1)
+                ).alias("overlapPercent"),
+                (
+                    100
+                    * (c("contacts") - c("coveredRecipients"))
+                    / c("contacts").clip(lower_bound=1)
+                ).alias("redundantContactPercent"),
+            )
+    if "battlefield_value" in joined:
+        for name, keys, fields in [
+            ("battlefield_value", VALUE_DIMS, FIELDS),
+            (
+                "battlefield_unit_value",
+                VALUE_DIMS[:-1] + ["unit", "family"],
+                FIELDS + NONLEADER,
+            ),
+        ]:
+            q = joined[name]
+            out[name] = reduce(q, keys, fields) if not q.is_empty() else q
+    if "leader_audit" in joined:
+        out["leader_audit"] = joined["leader_audit"]
+        deaths = joined["leader_deaths"]
+        if "__hasExposure" in deaths.columns:
+            if not deaths["__hasExposure"].any():
+                deaths = deaths.drop(EXPOSURE_FIELDS)
+            deaths = deaths.drop("__hasExposure")
+        out["leader_deaths"] = deaths
+    return out

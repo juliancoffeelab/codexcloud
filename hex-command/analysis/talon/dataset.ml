@@ -103,8 +103,13 @@ let unit_value factions u name =
            match f with Some f -> get f "phase" | None -> `Null)
   | _ -> get u name
 
-let load reports ~telemetry =
-  Journal.with_readers (fun readers ->
+let load ?readers reports ~telemetry =
+  let with_readers f =
+    match readers with
+    | Some readers -> f readers
+    | None -> Journal.with_readers f
+  in
+  with_readers (fun readers ->
       let meta =
         B.create
           (ints [ "m"; "seed" ]
@@ -844,16 +849,15 @@ let load reports ~telemetry =
       let factions = B.finish faction_rows in
       let roster which =
         let result =
-          refs
-          |> R.filter E.(R.s "which" = string which)
-          |> R.drop [ "which" ]
-          |> R.join ~one:true [ "m"; "snapshot" ] snapshots
-          |> R.drop [ "snapshot" ]
-          |> R.join ~kind:Talon.Join.Left ~one:true [ "m"; "ch"; "faction" ]
+          Q.of_table refs
+          |> Q.filter E.(R.s "which" = string which)
+          |> R.qselect [ "p"; "m"; "ch"; "snapshot" ]
+          |> R.qjoin ~required:true [ "m"; "snapshot" ] snapshots
+          |> R.qjoin ~kind:Talon.Join.Left ~one:true [ "m"; "ch"; "faction" ]
                factions
-          |> R.derive
+          |> Q.derive
                [ R.out "side" E.(coalesce [ R.s "side"; R.s "factionSide" ]) ]
-          |> R.select unit_keys
+          |> R.qselect unit_keys |> R.run
         in
         Journal.require
           (Talon.rows (R.filter E.(is_null (R.s "side")) result) = 0)
@@ -868,11 +872,23 @@ let load reports ~telemetry =
         |> R.derive
              [ R.out "phase" E.(over ~by:[ "m"; "ch" ] (window rows) - int 1) ]
       in
+      let identity_columns =
+        [ "p"; "m"; "ch"; "id"; "type"; "side"; "faction"; "role"; "cell" ]
+      in
+      let before_keys = R.select identity_columns before
+      and after_keys = R.select identity_columns units
+      and loss_keys = R.select identity_columns losses in
       let lookup =
-        R.concat [ before; losses; units ] |> R.unique_last [ "p"; "id" ]
+        if telemetry then
+          R.concat [ before_keys; loss_keys; after_keys ]
+          |> R.unique_last [ "p"; "id" ]
+        else R.Q.of_table after_keys |> R.Q.slice ~offset:0 ~length:0 |> R.run
       in
       let support_lookup =
-        R.concat [ losses; units; before ] |> R.unique_last [ "p"; "id" ]
+        if telemetry then
+          R.concat [ loss_keys; after_keys; before_keys ]
+          |> R.unique_last [ "p"; "id" ]
+        else R.Q.of_table before_keys |> R.Q.slice ~offset:0 ~length:0 |> R.run
       in
       {
         meta;
@@ -900,13 +916,13 @@ let load reports ~telemetry =
         owners;
       })
 
-let describe d units =
-  units
-  |> R.join ~kind:Talon.Join.Left ~one:true [ "m" ] d.meta
-  |> R.join ~kind:Talon.Join.Left ~one:true [ "m"; "ch" ] d.chapters
-  |> R.join ~kind:Talon.Join.Left ~one:true [ "type" ] d.profiles
-  |> R.derive [ R.out "family" E.(coalesce [ R.s "family"; R.s "type" ]) ]
-  |> R.derive
+let describe ?columns d units =
+  Q.of_table units
+  |> R.qjoin ~kind:Talon.Join.Left ~one:true [ "m" ] d.meta
+  |> R.qjoin ~kind:Talon.Join.Left ~one:true [ "m"; "ch" ] d.chapters
+  |> R.qjoin ~kind:Talon.Join.Left ~one:true [ "type" ] d.profiles
+  |> Q.derive [ R.out "family" E.(coalesce [ R.s "family"; R.s "type" ]) ]
+  |> Q.derive
        E.
          [
            "race" :=
@@ -923,3 +939,6 @@ let describe d units =
            "map" :=
              if_ (R.s "kind" = string "arena") (R.s "landscape") (R.s "mission");
          ]
+  |> (fun q ->
+  match columns with None -> q | Some columns -> R.qselect columns q)
+  |> R.run

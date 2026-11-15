@@ -3,7 +3,6 @@
 import polars as pl
 import arena
 import campaign
-import telemetry
 import metrics
 from journal import identity
 from frames import empty
@@ -179,15 +178,7 @@ def build(
     leaders = leaders or (
         unit_usage and all(s.get("leaderAuditVersion") == 1 for s in current["sources"])
     )
-    tables.update(
-        telemetry.analyze(
-            current["dataset"],
-            presence_=unit_usage or presence,
-            support_=unit_usage or support,
-            value_=value,
-            leaders_=leaders,
-        )
-    )
+    tables.update(current["telemetry"])
     if unit_usage or presence:
         nonleaders = tables["nonleader_unit_events"]
         tables["army_usage"] = metrics.army_usage(
@@ -197,16 +188,13 @@ def build(
         profiles = {
             u: dict(p) for u, p in current["sources"][0]["unitProfiles"].items()
         }
-        old = {}
-        if previous["outcomes"]:
-            old.update(
-                telemetry.analyze(previous["dataset"], presence_=True, value_=True)
-            )
+        old = previous["telemetry"]
         membership = pl.concat(
             [
                 tables["battlefield_units"],
                 old.get("battlefield_units", tables["battlefield_units"].head(0)),
-            ]
+            ],
+            how="vertical_relaxed",
         )
         tables["unit_damage"] = metrics.unit_damage(
             tables["battlefield_units"],

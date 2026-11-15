@@ -233,9 +233,12 @@ def legacy_tiles(result):
 
 
 class Dataset:
-    def __init__(self, reports, *, telemetry=False):
-        with Readers() as readers:
+    def __init__(self, reports, *, telemetry=False, readers=None):
+        if readers is not None:
             self._load(reports, telemetry=telemetry, readers=readers)
+        else:
+            with Readers() as streams:
+                self._load(reports, telemetry=telemetry, readers=streams)
 
     def _load(self, reports, *, telemetry, readers):
         snapshots, refs, phase_parts = [], [], []
@@ -601,7 +604,12 @@ class Dataset:
         self.phases = (
             self.refs.select("p", "m", "ch")
             .hstack(payload)
-            .with_columns(side(pl.col("side")))
+            .with_columns(
+                side(pl.col("side")),
+                (pl.col("p").rank("ordinal").over(["m", "ch"]) - 1)
+                .cast(pl.Int64)
+                .alias("phase"),
+            )
         )
         self.snapshots = concat(
             snapshots, schema={"m": pl.Int64, "snapshot": pl.Int64, **UNIT_SCHEMA}
@@ -629,12 +637,34 @@ class Dataset:
         self.audits = expand(self.phases, "leaderAudit").with_columns(
             side(pl.col("side"))
         )
-        self.lookup = concat(
-            [self.rosters["before"], self.losses, self.rosters["units"]]
-        ).unique(["p", "id"], keep="last", maintain_order=True)
-        self.support_lookup = concat(
-            [self.losses, self.rosters["units"], self.rosters["before"]]
-        ).unique(["p", "id"], keep="last", maintain_order=True)
+        identity_columns = [
+            "p",
+            "m",
+            "ch",
+            "id",
+            "type",
+            "side",
+            "faction",
+            "role",
+            "cell",
+        ]
+        before = self.rosters["before"].select(identity_columns)
+        after = self.rosters["units"].select(identity_columns)
+        losses = self.losses.select(identity_columns)
+        self.lookup = (
+            concat([before, losses, after]).unique(
+                ["p", "id"], keep="last", maintain_order=True
+            )
+            if telemetry
+            else after.head(0)
+        )
+        self.support_lookup = (
+            concat([losses, after, before]).unique(
+                ["p", "id"], keep="last", maintain_order=True
+            )
+            if telemetry
+            else before.head(0)
+        )
 
     def unit_sides(self, units):
         result = (
@@ -650,10 +680,12 @@ class Dataset:
             raise ValueError("Unit snapshot has no recorded faction/side mapping")
         return result
 
-    def describe(self, units):
+    def describe(self, units, *, columns=None):
         """Attach dimensions by foreign keys, preserving instance roles."""
-        q = units.join(self.meta, on="m", how="left", validate="m:1").join(
-            self.chapters, on=["m", "ch"], how="left", validate="m:1"
+        q = (
+            units.lazy()
+            .join(self.meta.lazy(), on="m", how="left", validate="m:1")
+            .join(self.chapters.lazy(), on=["m", "ch"], how="left", validate="m:1")
         )
         profiles = (
             self.profiles.drop("leader")
@@ -661,16 +693,14 @@ class Dataset:
             else self.profiles
         )
         q = q.join(
-            profiles.rename({"race": "profileRace"}),
+            profiles.lazy().rename({"race": "profileRace"}),
             on=["source", "type"],
             how="left",
             validate="m:1",
             suffix="_profile",
         )
         own = pl.col("side") == "player"
-        return q.with_columns(
-            pl.coalesce("family", "type").alias("family")
-        ).with_columns(
+        q = q.with_columns(pl.coalesce("family", "type").alias("family")).with_columns(
             pl.when(pl.col("kind") == "arena")
             .then(pl.when(own).then("playerRace").otherwise("enemyRace"))
             .otherwise("profileRace")
@@ -682,3 +712,5 @@ class Dataset:
             .otherwise("mission")
             .alias("map"),
         )
+
+        return (q.select(columns) if columns is not None else q).collect()

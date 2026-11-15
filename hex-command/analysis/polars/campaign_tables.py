@@ -15,16 +15,24 @@ def observations(d):
     if not d.headers:
         return {}
     c = pl.col
-    phases = d.phases
+    campaign_ids = d.meta.filter(c("kind") == "campaign").select("m")
+    if campaign_ids.is_empty():
+        return {}
+    campaign_matches = set(campaign_ids["m"].to_list())
+    phases = d.phases.join(campaign_ids, on="m", how="semi")
+    before = d.rosters["before"].join(campaign_ids, on="m", how="semi")
+    casualties = d.losses.join(campaign_ids, on="m", how="semi")
     own = phases.filter(c("side") == "player")
-    end = d.rosters["units"]
-    losses = d.losses.filter(c("side") == "player")
+    end = d.rosters["units"].join(campaign_ids, on="m", how="semi")
+    losses = casualties.filter(c("side") == "player")
 
     def index(df, columns=K):
         return {tuple(row[k] for k in columns): row for row in df.iter_rows(named=True)}
 
     final = index(
-        d.final.group_by(K).agg(
+        d.final.join(campaign_ids, on="m", how="semi")
+        .group_by(K)
+        .agg(
             (c("side") == "player").sum().alias("player"),
             (c("side") == "enemy").sum().alias("enemy"),
         )
@@ -50,6 +58,8 @@ def observations(d):
     # values are compared, rather than assuming dictionary indices are unique.
     owner_parts = []
     for m, values in d.owners.items():
+        if m not in campaign_matches:
+            continue
         owner_parts.append(
             pl.from_arrow(values)
             .rename("owners")
@@ -86,9 +96,7 @@ def observations(d):
         .group_by(K)
         .agg(c("len").max().alias("repeated"))
     )
-    diag_lookup = concat([d.rosters["before"], end, d.losses]).unique(
-        ["p", "id"], keep="last"
-    )
+    diag_lookup = concat([before, end, casualties]).unique(["p", "id"], keep="last")
     combat = d.combats.join(
         diag_lookup.select("p", c("id").alias("unit"), c("side").alias("actorSide")),
         on=["p", "unit"],

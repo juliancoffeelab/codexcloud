@@ -24,17 +24,17 @@ def main():
         parser.add_argument("--" + flag, action="store_true")
     args = parser.parse_args()
     start = perf_counter()
-    telemetry = any(
-        (
-            args.unit_usage,
-            args.battlefield_presence,
-            args.support_effects,
-            args.battlefield_value,
-            args.leader_audit,
-        )
+    current = store.load(
+        args.inputs,
+        unit_usage=args.unit_usage,
+        presence=args.battlefield_presence,
+        support=args.support_effects,
+        value=args.battlefield_value,
+        leaders=args.leader_audit,
     )
-    current = store.load(args.inputs, telemetry=telemetry)
-    previous = store.load(args.baseline, telemetry=args.unit_usage)
+    previous = store.load(
+        args.baseline, presence=args.unit_usage, value=args.unit_usage
+    )
     tables = analysis.build(
         current,
         previous,

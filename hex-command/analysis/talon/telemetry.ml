@@ -158,26 +158,7 @@ let presence (d : Dataset.t) ending lookup recruited =
         let result =
           p
           |> R.join ~kind:Talon.Join.Left (dims @ [ member ]) turns
-          |> R.join ~kind:Talon.Join.Left dims battles
-          |> R.join ~kind:Talon.Join.Left dims phases
-          |> R.join ~kind:Talon.Join.Left dims totals
-          |> R.derive
-               (List.map
-                  (fun n -> R.out n (R.numeric n))
-                  [ "unitTurns"; "observedPhases"; "totalUnitTurns" ])
-          |> R.derive
-               E.
-                 [
-                   "sharePercent" :=
-                     float 100. *. R.f "unitTurns"
-                     /. R.maximum (R.f "totalUnitTurns") (float 1.);
-                   "meanUnitsPerPhase" :=
-                     R.f "unitTurns"
-                     /. R.maximum (R.f "observedPhases") (float 1.);
-                   "battlePresencePercent" :=
-                     float 100. *. R.f "battlesPresent"
-                     /. R.maximum (R.f "battles") (float 1.);
-                 ]
+          |> R.derive [ R.out "unitTurns" (R.numeric "unitTurns") ]
           |> R.rename [ (member, output) ]
           |> R.sort (dims @ [ output ])
         in
@@ -225,7 +206,16 @@ let presence (d : Dataset.t) ending lookup recruited =
       ]
     |> R.group (dims @ [ "unit" ]) events
   in
-  ("nonleader_unit_events", role) :: presence
+  let totals =
+    battles
+    |> R.join ~kind:Talon.Join.Left dims phases
+    |> R.join ~kind:Talon.Join.Left dims totals
+    |> R.derive
+         (List.map
+            (fun n -> R.out n (R.numeric n))
+            [ "observedPhases"; "totalUnitTurns" ])
+  in
+  ("_presence_totals", totals) :: ("nonleader_unit_events", role) :: presence
 
 let support (d : Dataset.t) before lookup =
   let arena_ids =
@@ -279,24 +269,25 @@ let support (d : Dataset.t) before lookup =
           |> R.rename [ ("id", "recipient"); ("q", "rq"); ("r", "rr") ]
         in
         let touching =
-          providers
-          |> R.join [ "p"; "side" ] recipients
-          |> R.filter E.(R.s "id" <> R.s "recipient")
-          |> R.derive
+          Q.of_table providers
+          |> R.qjoin [ "p"; "side" ] recipients
+          |> Q.filter E.(R.s "id" <> R.s "recipient")
+          |> Q.derive
                E.[ "dq" := R.i "q" - R.i "rq"; "dr" := R.i "r" - R.i "rr" ]
-          |> R.filter
+          |> Q.filter
                E.(
                  nx { f = Nx.abs } (R.i "dq")
                  + nx { f = Nx.abs } (R.i "dr")
                  + nx { f = Nx.abs } (R.i "dq" + R.i "dr")
                  = int 2)
-          |> R.derive
+          |> Q.derive
                [
                  R.out "touching"
                    E.(
                      cast Talon.Type.float64
                        (over ~by:[ "p"; "recipient" ] rows));
                ]
+          |> R.run
         in
         effects :=
           effect_rows ability
@@ -459,54 +450,11 @@ let support (d : Dataset.t) before lookup =
     |> R.all_maps
     |> R.group (dims @ [ "unit"; "family"; "ability" ]) effect_fields
   in
-  let rate field_name condition =
-    E.(
-      if_
-        (R.f "providerTurns" > float 0. && condition)
-        (R.f field_name /. R.f "providerTurns")
-        (store Talon.Type.float64 null))
-  in
-  let effects =
-    effects
-    |> R.derive
-         E.
-           [
-             "adjacentAlliesPerTurn" :=
-               rate "adjacentContacts" (R.s "ability" <> string "thorns");
-             "usefulRecipientsPerTurn" :=
-               rate "healedRecipients" (R.s "ability" = string "healing");
-             "healedHPPerTurn" :=
-               rate "healedHP" (R.s "ability" = string "healing");
-             "reflectedDamagePerTurn" :=
-               rate "reflectedDamage" (R.s "ability" <> string "healing");
-             "overlapPercent" :=
-               if_
-                 (R.f "coveredRecipients" > float 0.)
-                 (float 100.
-                 *. R.f "overlappingRecipients"
-                 /. R.f "coveredRecipients")
-                 (float 0.);
-           ]
-  in
   let overlaps =
     R.concat !overlaps |> R.all_maps
     |> R.group
          (dims @ [ "ability"; "providerCount"; "recipientsPerProvider" ])
          overlap_fields
-    |> R.derive
-         E.
-           [
-             "pairCoverageProbability" :=
-               R.f "contacts" /. R.maximum (R.f "eligiblePairs") (float 1.);
-             "overlapPercent" :=
-               float 100.
-               *. R.f "overlappingRecipients"
-               /. R.maximum (R.f "coveredRecipients") (float 1.);
-             "redundantContactPercent" :=
-               float 100.
-               *. (R.f "contacts" -. R.f "coveredRecipients")
-               /. R.maximum (R.f "contacts") (float 1.);
-           ]
   in
   [ ("support_effects", effects); ("support_overlap", overlaps) ]
 
@@ -999,7 +947,7 @@ let leaders (d : Dataset.t) lookup =
          ]
   in
   let keep =
-    without_family
+    without_family @ [ "hasExposure" ]
     @ [
         "matchId";
         "seed";
@@ -1080,14 +1028,10 @@ let leaders (d : Dataset.t) lookup =
     |> R.run
     |> R.drop [ "p"; "__decision" ]
   in
-  let deaths =
-    if Talon.rows (R.filter E.(R.b "died" && R.b "hasExposure") audits) = 0 then
-      R.drop
-        (Dataset.exposure_fields @ [ "minTile"; "chosenTileReachable" ])
-        deaths
-    else deaths
-  in
-  [ ("leader_audit", R.drop [ "p" ] rows); ("leader_deaths", deaths) ]
+  [
+    ("leader_audit", R.drop [ "p"; "hasExposure" ] rows);
+    ("leader_deaths", deaths);
+  ]
 
 let analyze (d : Dataset.t) ~presence:want_presence ~support:want_support
     ~value:want_value ~leaders:want_leaders =
@@ -1108,12 +1052,181 @@ let analyze (d : Dataset.t) ~presence:want_presence ~support:want_support
           (get h.report "leaderAuditVersion" = int 1)
           "Leader audit requires fresh leader-risk telemetry")
     d.headers;
-  let ending = Dataset.describe d d.units |> R.join [ "p" ] (own_phases d) in
-  let before = Dataset.describe d d.before |> R.join [ "p" ] (own_phases d) in
-  let lookup = Dataset.describe d d.lookup
-  and support_lookup = Dataset.describe d d.support_lookup in
-  let recruited = recruits d in
+  let core_columns =
+    List.sort_uniq String.compare
+      (value_dims
+      @ [
+          "p";
+          "m";
+          "ch";
+          "id";
+          "type";
+          "role";
+          "side";
+          "faction";
+          "seed";
+          "first";
+          "matchId";
+          "cell";
+        ])
+  in
+  let ending =
+    if want_presence || want_value then
+      Dataset.describe ~columns:core_columns d d.units
+      |> R.join [ "p" ] (own_phases d)
+    else d.units
+  in
+  let before =
+    if want_support then
+      Dataset.describe
+        ~columns:
+          (dims
+          @ [
+              "p";
+              "id";
+              "type";
+              "family";
+              "side";
+              "kind";
+              "col";
+              "row";
+              "healing";
+              "thornAura";
+              "thorns";
+            ])
+        d d.before
+      |> R.join [ "p" ] (own_phases d)
+    else d.before
+  in
+  let lookup =
+    if want_presence || want_value || want_leaders then
+      Dataset.describe ~columns:core_columns d d.lookup
+    else d.lookup
+  in
+  let support_lookup =
+    if want_support then
+      Dataset.describe
+        ~columns:(dims @ [ "p"; "id"; "type"; "family" ])
+        d d.support_lookup
+    else d.support_lookup
+  in
+  let recruited = if want_presence || want_value then recruits d else d.units in
   (if want_presence then presence d ending lookup recruited else [])
   @ (if want_support then support d before support_lookup else [])
   @ (if want_value then value d ending lookup recruited else [])
   @ if want_leaders then leaders d lookup else []
+
+let merge parts =
+  let all =
+    List.sort_uniq String.compare
+      (List.concat_map (fun tables -> List.map fst tables) parts)
+  in
+  let joined =
+    List.map
+      (fun name ->
+        (name, R.concat (List.filter_map (List.assoc_opt name) parts)))
+      all
+  in
+  let get name = List.assoc name joined in
+  let output = ref [] in
+  let add name table = output := (name, table) :: !output in
+  if List.mem_assoc "_presence_totals" joined then (
+    let totals =
+      get "_presence_totals"
+      |> R.group dims [ "battles"; "observedPhases"; "totalUnitTurns" ]
+    in
+    List.iter
+      (fun (name, member) ->
+        get name
+        |> R.group (dims @ [ member ]) [ "unitTurns"; "battlesPresent" ]
+        |> R.join ~kind:Talon.Join.Left ~one:true dims totals
+        |> R.derive
+             E.
+               [
+                 "sharePercent" :=
+                   float 100. *. R.f "unitTurns"
+                   /. R.maximum (R.f "totalUnitTurns") (float 1.);
+                 "meanUnitsPerPhase" :=
+                   R.f "unitTurns"
+                   /. R.maximum (R.f "observedPhases") (float 1.);
+                 "battlePresencePercent" :=
+                   float 100. *. R.f "battlesPresent"
+                   /. R.maximum (R.f "battles") (float 1.);
+               ]
+        |> add name)
+      [ ("battlefield_units", "unit"); ("battlefield_presence", "family") ];
+    get "nonleader_unit_events"
+    |> R.group (dims @ [ "unit" ]) events
+    |> add "nonleader_unit_events");
+  if List.mem_assoc "support_effects" joined then (
+    let q =
+      get "support_effects"
+      |> R.group (dims @ [ "unit"; "family"; "ability" ]) effect_fields
+    in
+    let rate field_name condition =
+      E.(
+        if_
+          (R.f "providerTurns" > float 0. && condition)
+          (R.f field_name /. R.f "providerTurns")
+          (store Talon.Type.float64 null))
+    in
+    q
+    |> R.derive
+         E.
+           [
+             "adjacentAlliesPerTurn" :=
+               rate "adjacentContacts" (R.s "ability" <> string "thorns");
+             "usefulRecipientsPerTurn" :=
+               rate "healedRecipients" (R.s "ability" = string "healing");
+             "healedHPPerTurn" :=
+               rate "healedHP" (R.s "ability" = string "healing");
+             "reflectedDamagePerTurn" :=
+               rate "reflectedDamage" (R.s "ability" <> string "healing");
+             "overlapPercent" :=
+               if_
+                 (R.f "coveredRecipients" > float 0.)
+                 (float 100.
+                 *. R.f "overlappingRecipients"
+                 /. R.f "coveredRecipients")
+                 (float 0.);
+           ]
+    |> add "support_effects";
+    get "support_overlap"
+    |> R.group
+         (dims @ [ "ability"; "providerCount"; "recipientsPerProvider" ])
+         overlap_fields
+    |> R.derive
+         E.
+           [
+             "pairCoverageProbability" :=
+               R.f "contacts" /. R.maximum (R.f "eligiblePairs") (float 1.);
+             "overlapPercent" :=
+               float 100.
+               *. R.f "overlappingRecipients"
+               /. R.maximum (R.f "coveredRecipients") (float 1.);
+             "redundantContactPercent" :=
+               float 100.
+               *. (R.f "contacts" -. R.f "coveredRecipients")
+               /. R.maximum (R.f "contacts") (float 1.);
+           ]
+    |> add "support_overlap");
+  if List.mem_assoc "battlefield_value" joined then (
+    get "battlefield_value" |> R.group value_dims fields
+    |> add "battlefield_value";
+    get "battlefield_unit_value"
+    |> R.group
+         (without_family @ [ "unit"; "family" ])
+         (fields @ nonleader_fields)
+    |> add "battlefield_unit_value");
+  if List.mem_assoc "leader_audit" joined then (
+    add "leader_audit" (get "leader_audit");
+    let deaths = get "leader_deaths" in
+    let deaths =
+      if Talon.rows (R.filter (R.b "hasExposure") deaths) = 0 then
+        R.drop
+          (Dataset.exposure_fields @ [ "minTile"; "chosenTileReachable" ])
+          deaths
+      else deaths
+    in
+    add "leader_deaths" (R.drop [ "hasExposure" ] deaths));
+  List.rev !output

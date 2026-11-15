@@ -60,10 +60,11 @@ let () =
         "Reports and --out are required";
       let start = Unix.gettimeofday () in
       let current =
-        Store.load
-          ~telemetry:(!unit_usage || !presence || !support || !value || !leaders)
-          !inputs
-      and previous = Store.load ~telemetry:!unit_usage !baseline in
+        Store.load ~unit_usage:!unit_usage ~presence:!presence ~support:!support
+          ~value:!value ~leaders:!leaders !inputs
+      and previous =
+        Store.load ~presence:!unit_usage ~value:!unit_usage !baseline
+      in
       let tables =
         Analysis.build current previous ~unit_usage:!unit_usage
           ~presence:!presence ~support:!support ~value:!value ~leaders:!leaders

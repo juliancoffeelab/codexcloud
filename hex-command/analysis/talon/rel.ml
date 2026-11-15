@@ -35,16 +35,19 @@ let rename pairs t =
        ]
   |> run
 
-let join ?(kind = Talon.Join.Inner) ?(one = false) ?(required = false) keys
+let qselect ns q = Q.select [ E.keep (Talon.Sel.names ns) ] q
+
+let qjoin ?(kind = Talon.Join.Inner) ?(one = false) ?(required = false) keys
     right left =
-  Q.of_table left
-  |> Q.join ~kind
-       ~each_left:
-         (if required then Talon.Join.One
-          else if one then Talon.Join.At_most_one
-          else Talon.Join.Any)
-       ~on:(Talon.Join.keys keys) (Q.of_table right)
-  |> run
+  Q.join ~kind
+    ~each_left:
+      (if required then Talon.Join.One
+       else if one then Talon.Join.At_most_one
+       else Talon.Join.Any)
+    ~on:(Talon.Join.keys keys) (Q.of_table right) left
+
+let join ?kind ?one ?required keys right left =
+  Q.of_table left |> qjoin ?kind ?one ?required keys right |> run
 
 let join_on ?(kind = Talon.Join.Inner) on right left =
   Q.of_table left |> Q.join ~kind ~on (Q.of_table right) |> run
@@ -66,11 +69,19 @@ let count keys name t =
 let unique keys t = aggregate keys [] t
 
 let unique_last keys t =
-  let t = derive [ out "__row" E.(window rows) ] t in
-  let latest = aggregate keys [ out "__row" E.(max (i "__row")) ] t in
-  join (keys @ [ "__row" ]) latest t |> drop [ "__row" ]
+  let source = Q.of_table t |> Q.derive [ out "__row" E.(window rows) ] in
+  let latest =
+    source |> Q.aggregate ~by:keys [ out "__row" E.(max (i "__row")) ]
+  in
+  source
+  |> Q.join ~on:(Talon.Join.keys (keys @ [ "__row" ])) latest
+  |> qselect (names t)
+  |> run
 
-let all_maps t = append t (derive [ out "map" (E.string "all") ] t)
+let all_maps t =
+  let source = Q.of_table t in
+  source |> Q.append (Q.derive [ out "map" (E.string "all") ] source) |> run
+
 let zero = E.float 0.
 let one = E.float 1.
 let numeric n = E.coalesce [ f n; zero ]

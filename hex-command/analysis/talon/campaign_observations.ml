@@ -18,11 +18,23 @@ let number_at h key name = get (row h key) name
 
 let build (d : Dataset.t) =
   let result = Hashtbl.create 64 in
-  let own = d.phases |> R.filter E.(R.s "side" = string "player") in
+  let campaign_ids =
+    d.meta |> R.filter E.(R.s "kind" = string "campaign") |> R.select [ "m" ]
+  in
+  let campaign table =
+    R.join ~kind:Talon.Join.Semi [ "m" ] campaign_ids table
+  in
+  let phases = campaign d.phases
+  and units = campaign d.units
+  and before = campaign d.before
+  and casualties = campaign d.losses
+  and final_units = campaign d.final
+  and goal_rows = campaign d.goals in
+  let own = phases |> R.filter E.(R.s "side" = string "player") in
   let own_keys = R.select [ "p"; "m"; "ch" ] own in
-  let losses = d.losses |> R.filter E.(R.s "side" = string "player") in
+  let losses = casualties |> R.filter E.(R.s "side" = string "player") in
   let final =
-    d.final
+    final_units
     |> R.aggregate keys
          [
            R.out "player" E.(sum (R.flag (R.s "side" = string "player")));
@@ -30,7 +42,7 @@ let build (d : Dataset.t) =
          ]
     |> Frame.rows |> index
   in
-  let counts = d.phases |> R.count keys "n" |> Frame.rows |> index in
+  let counts = phases |> R.count keys "n" |> Frame.rows |> index in
   let last = own |> R.unique_last keys |> Frame.rows |> index in
   let empty_tail =
     own |> R.Q.of_table
@@ -47,7 +59,7 @@ let build (d : Dataset.t) =
     |> R.run |> Frame.rows |> index
   in
   let roster =
-    d.units
+    units
     |> R.aggregate [ "p" ]
          [
            R.out "roster"
@@ -73,7 +85,7 @@ let build (d : Dataset.t) =
     |> Frame.rows |> index
   in
   let diag_lookup =
-    R.concat [ d.before; d.units; d.losses ] |> R.unique_last [ "p"; "id" ]
+    R.concat [ before; units; casualties ] |> R.unique_last [ "p"; "id" ]
   in
   let combats =
     d.combats
@@ -81,7 +93,7 @@ let build (d : Dataset.t) =
          (diag_lookup
          |> R.select [ "p"; "id"; "side" ]
          |> R.rename [ ("id", "unit"); ("side", "actorSide") ])
-    |> R.join [ "p" ] (R.select [ "p"; "m"; "ch"; "side" ] d.phases)
+    |> R.join [ "p" ] (R.select [ "p"; "m"; "ch"; "side" ] phases)
   in
   let damage =
     combats
@@ -102,7 +114,7 @@ let build (d : Dataset.t) =
     |> Frame.rows |> index
   in
   let maxima =
-    d.goals
+    goal_rows
     |> R.aggregate (keys @ [ "goal" ])
          [ R.out "current" E.(max (R.f "current")) ]
     |> Frame.rows
@@ -183,7 +195,7 @@ let build (d : Dataset.t) =
           (list (get h.result "missions")))
     d.headers;
   let arrivals =
-    d.units
+    units
     |> R.select [ "m"; "ch"; "name"; "cell" ]
     |> R.join [ "m"; "ch"; "name"; "cell" ] (R.Builder.finish actor_tiles)
     |> R.unique [ "m"; "ch"; "name" ]
@@ -203,7 +215,7 @@ let build (d : Dataset.t) =
   let last_ids = R.Builder.create (Dataset.ints [ "p" ]) in
   Hashtbl.iter (fun _ r -> R.Builder.add last_ids (fun _ -> get r "p")) last;
   let final_rosters =
-    d.units
+    units
     |> R.join ~kind:Talon.Join.Semi [ "p" ] (R.Builder.finish last_ids)
     |> Frame.rows
   in
