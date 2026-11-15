@@ -27,7 +27,7 @@ Commit and push completed requested changes by default through the current
 feature branch and pull request. Honor explicit requests to keep changes local
 or hold a push. For unfinished work, commit and push after more than 10 minutes
 unless the user requests otherwise; report check status and remaining work.
-Continue on the current branch and PR unless asked to change branches. New
+Continue on the branch and PR you have created unless asked to make a new PR. New
 branches start from the freshly fetched upstream default branch (`main`), never
 a stale local copy.
 
