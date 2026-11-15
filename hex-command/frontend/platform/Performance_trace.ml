@@ -204,6 +204,8 @@ let supported_entries () =
 
 let start get_context =
   if !status <> Recording && !status <> Stopping then (
+    (* A failed snapshot must leave the previous recording and controls intact. *)
+    let starting_context = get_context () in
     events := [||];
     context := Some get_context;
     stopping := None;
@@ -238,7 +240,7 @@ let start get_context =
                 ("height", int inner_height);
                 ("pixelRatio", number pixel_ratio);
               ] );
-          ("start", get_context ());
+          ("start", starting_context);
         |];
     receive current.id
       [|
@@ -329,7 +331,16 @@ let stop ?(reason = "Stopped by user") () =
             Js.Promise.then_
               (fun results ->
                 Js.Dict.set !metadata "stoppedAt" (string (timestamp ()));
-                Option.iter (fun context -> Js.Dict.set !metadata "end" (context ())) !context;
+                Option.iter
+                  (fun context ->
+                    try Js.Dict.set !metadata "end" (context ())
+                    with error ->
+                      (* Preserve the collected events and make them exportable
+                         even when the final game snapshot cannot be obtained. *)
+                      Js.Dict.set !metadata "endSnapshotError"
+                        (string (Utf8.to_js (Foreign_error.exception_ error)));
+                      reason_ := Some "Final snapshot failed; trace data retained")
+                  !context;
                 Js.Dict.set !metadata "workerFlushFailures"
                   (int
                      (Array.fold_left

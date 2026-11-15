@@ -1690,7 +1690,9 @@ let prepare_reload t source =
 let trace_context t =
   let open Save_json in
   let state = state t and presentation = Native.presentation t.latest.game in
-  let serialized = Engine.save_json t.battle |> Utf8.to_js |> Js.Json.parseExn in
+  (* save_json already returns host JSON text; decoding it as native bytes
+     corrupts Unicode checkpoints. *)
+  let serialized = Engine.save_json t.battle |> Js.Json.parseExn in
   let hex (hex : Domain.tile_id) =
     obj [ ("col", num (Int32.to_float hex.col)); ("row", num (Int32.to_float hex.row)) ]
   in

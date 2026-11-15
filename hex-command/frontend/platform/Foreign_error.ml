@@ -31,7 +31,12 @@ let message_raw value =
   match string_field message_value value with Some text -> text | None -> printable value
 
 let detail_raw value =
-  match string_field stack_value value with Some text -> text | None -> message_raw value
+  let message = message_raw value in
+  match string_field stack_value value with
+  | Some stack when stack <> "" ->
+      if message = "" || Js.String.includes ~search:message stack then stack
+      else message ^ "\n" ^ stack
+  | _ -> message
 
 let next_cause value =
   Option.bind (read cause_value value) (fun cause -> if truthy cause then Some cause else None)
