@@ -35,10 +35,14 @@ let rename pairs t =
        ]
   |> run
 
-let join ?(kind = Talon.Join.Inner) ?(one = false) keys right left =
+let join ?(kind = Talon.Join.Inner) ?(one = false) ?(required = false) keys
+    right left =
   Q.of_table left
   |> Q.join ~kind
-       ~each_left:(if one then Talon.Join.At_most_one else Talon.Join.Any)
+       ~each_left:
+         (if required then Talon.Join.One
+          else if one then Talon.Join.At_most_one
+          else Talon.Join.Any)
        ~on:(Talon.Join.keys keys) (Q.of_table right)
   |> run
 

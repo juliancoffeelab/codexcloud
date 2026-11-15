@@ -88,13 +88,16 @@ def facts(q, fields, **stats):
 
 
 def join_unit(events, lookup, id="unit"):
-    return events.join(
+    result = events.join(
         lookup.rename({"id": id}),
         on=["p", id],
         how="left",
         validate="m:1",
         suffix="_unit",
     )
+    if result["m"].null_count():
+        raise ValueError("Recorded event references an unknown unit")
+    return result
 
 
 def recruit_rows(d):

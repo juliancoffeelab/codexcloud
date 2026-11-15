@@ -71,7 +71,7 @@ let without_family = List.filter (( <> ) "family") value_dims
 
 let join_unit ?(id = "unit") lookup event =
   event
-  |> R.join ~kind:Talon.Join.Left ~one:true [ "p"; id ]
+  |> R.join ~kind:Talon.Join.Left ~required:true [ "p"; id ]
        (R.rename [ ("id", id) ] lookup)
 
 let own_phases (d : Dataset.t) =

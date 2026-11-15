@@ -6,9 +6,10 @@ The object decoder is used only at the boundary for historical JSON/v1-v3 input.
 """
 
 import json
+import gzip
 import polars as pl
 import pyarrow as pa
-from journal import FORMATS, decode, identity, label, normalize, read_bytes
+from journal import FORMATS, Readers, decode, identity, label, normalize, read_bytes
 
 TILE = pl.Struct({"col": pl.Int64, "row": pl.Int64})
 UNIT = pl.Struct(
@@ -218,6 +219,13 @@ def legacy_tiles(result):
             for a in state.get("actions", []):
                 if "tile" in a:
                     a["tile"] = tile(a["tile"])
+            for audit in state.get("leaderAudit", []):
+                for key in ("before", "after"):
+                    if audit.get(key) is not None:
+                        audit[key]["tile"] = tile(audit[key]["tile"])
+                exposure = audit.get("exposure") or {}
+                if "minTile" in exposure:
+                    exposure["minTile"] = tile(exposure["minTile"])
             for field in ("goals", "objectives"):
                 for g in state.get(field, []):
                     g["tiles"] = [tile(t) for t in g.get("tiles", [])]
@@ -226,6 +234,10 @@ def legacy_tiles(result):
 
 class Dataset:
     def __init__(self, reports, *, telemetry=False):
+        with Readers() as readers:
+            self._load(reports, telemetry=telemetry, readers=readers)
+
+    def _load(self, reports, *, telemetry, readers):
         snapshots, refs, phase_parts = [], [], []
         self.headers = []
         meta, chapters, tiles, factions, initial, final, owners = (
@@ -240,7 +252,25 @@ class Dataset:
         profile_rows = []
         phase_base = 0
         for source, (path, report) in enumerate(reports):
-            for unit, profile in (report.get("unitProfiles") or {}).items():
+            if telemetry and report.get("status") != "complete":
+                raise ValueError("Telemetry requires a completed run")
+            legacy = {}
+            legacy_path = path.parent / "details.jsonl.gz"
+            if path.name == "outcomes.json" and legacy_path.exists():
+                with gzip.open(legacy_path, "rt") as stream:
+                    for line in stream:
+                        value = normalize(json.loads(line))
+                        value.setdefault(
+                            "kind", "campaign" if "missions" in value else "arena"
+                        )
+                        legacy[identity(value)] = value
+            for unit, profile in (
+                report.get("unitProfiles")
+                or {
+                    u: {"family": family}
+                    for u, family in (report.get("unitFamilies") or {}).items()
+                }
+            ).items():
                 profile_rows.append(dict(source=source, type=unit, **profile))
             for saved in sorted(
                 report["outcomes"],
@@ -264,9 +294,12 @@ class Dataset:
                         raise ValueError(
                             "Telemetry requires recorded gameplay journals"
                         )
-                    result, batch = saved, None
+                    result, batch = (
+                        legacy_tiles(legacy.get(identity(saved), saved)),
+                        None,
+                    )
                 else:
-                    raw = read_bytes(path.parent, ref)
+                    raw = read_bytes(path.parent, ref, readers=readers)
                     batch = None
                     if ref["file"].endswith(".arrow"):
                         reader = pa.ipc.open_stream(raw)
@@ -387,7 +420,9 @@ class Dataset:
                         .with_columns(pl.lit(m).alias("m"))
                     )
                     if r.filter(
-                        pl.col("ch").is_null() | (pl.col("ch") >= len(missions))
+                        pl.col("ch").is_null()
+                        | (pl.col("ch") < 0)
+                        | (pl.col("ch") >= len(missions))
                     ).height:
                         raise ValueError("Invalid Arrow chapter")
                     for field in ("before", "units"):
@@ -397,6 +432,7 @@ class Dataset:
                                 pl.col(field)
                                 .list.eval(
                                     pl.element().is_null()
+                                    | (pl.element() < 0)
                                     | (pl.element() >= units.height)
                                 )
                                 .list.any()
@@ -406,9 +442,24 @@ class Dataset:
                             raise ValueError("Invalid Arrow roster index")
                     if (
                         r["ownership"].null_count()
-                        or r.filter(pl.col("ownership") >= len(ownership.values)).height
+                        or r.filter(
+                            (pl.col("ownership") < 0)
+                            | (pl.col("ownership") >= len(ownership.values))
+                        ).height
                     ):
                         raise ValueError("Invalid Arrow ownership index")
+                    owner_values = ownership.values
+                    if owner_values.null_count or not (
+                        pa.types.is_string(owner_values.values.type)
+                        or pa.types.is_null(owner_values.values.type)
+                    ):
+                        raise ValueError("Invalid Arrow owner")
+                    lengths = pl.from_arrow(owner_values).list.len()
+                    for ch, owner in r.select("ch", "ownership").unique().iter_rows():
+                        if lengths[owner] != len(
+                            missions[ch].get("initial", {}).get("tiles", [])
+                        ):
+                            raise ValueError("Invalid Arrow ownership snapshot")
                     # Ownership is needed only by the sequential capture pass and
                     # campaign repetition signatures. Keep dictionary indices.
                     owners.append((m, ownership.values))
@@ -499,6 +550,21 @@ class Dataset:
             if profile_rows
             else pl.DataFrame(schema={"source": pl.Int64, "type": pl.String})
         )
+        required_profiles = {
+            "source": pl.Int64,
+            "type": pl.String,
+            "family": pl.String,
+            "race": pl.String,
+            "cost": pl.Float64,
+            "healing": pl.Float64,
+            "thornAura": pl.Float64,
+            "thorns": pl.Float64,
+        }
+        self.profiles = self.profiles.with_columns(
+            pl.lit(None, dtype=ty).alias(k)
+            for k, ty in required_profiles.items()
+            if k not in self.profiles.columns
+        )
         self.initial = self.unit_sides(
             pl.from_dicts(
                 initial,
@@ -514,29 +580,32 @@ class Dataset:
             )
         )
         self.owners = dict(owners)
-        if not refs:
-            self.phases = pl.DataFrame(
-                schema={
-                    "p": pl.Int64,
-                    "m": pl.Int64,
-                    "ch": pl.Int64,
-                    "side": pl.String,
-                    "round": pl.Int64,
-                }
-            )
-            return
-        self.refs = concat(refs)
+        self.refs = concat(
+            refs,
+            schema={
+                "p": pl.Int64,
+                "m": pl.Int64,
+                "ch": pl.Int64,
+                "before": pl.List(pl.Int64),
+                "units": pl.List(pl.Int64),
+                "ownership": pl.Int64,
+            },
+        )
         payload = (
             concat(phase_parts)
             .select(pl.col("json").str.json_decode(PHASE).alias("phase"))
             .unnest("phase")
+            if phase_parts
+            else pl.DataFrame(schema=PHASE.to_schema())
         )
         self.phases = (
             self.refs.select("p", "m", "ch")
             .hstack(payload)
             .with_columns(side(pl.col("side")))
         )
-        self.snapshots = concat(snapshots)
+        self.snapshots = concat(
+            snapshots, schema={"m": pl.Int64, "snapshot": pl.Int64, **UNIT_SCHEMA}
+        )
         self.rosters = {}
         for name in ("before", "units"):
             indices = (
@@ -568,7 +637,7 @@ class Dataset:
         ).unique(["p", "id"], keep="last", maintain_order=True)
 
     def unit_sides(self, units):
-        return (
+        result = (
             units.join(
                 self.factions, on=["m", "ch", "faction"], how="left", validate="m:1"
             )
@@ -576,6 +645,10 @@ class Dataset:
             .drop("factionSide")
             .with_columns(cell(pl.col("tile")).alias("cell"))
         )
+
+        if result["side"].null_count():
+            raise ValueError("Unit snapshot has no recorded faction/side mapping")
+        return result
 
     def describe(self, units):
         """Attach dimensions by foreign keys, preserving instance roles."""
@@ -596,6 +669,8 @@ class Dataset:
         )
         own = pl.col("side") == "player"
         return q.with_columns(
+            pl.coalesce("family", "type").alias("family")
+        ).with_columns(
             pl.when(pl.col("kind") == "arena")
             .then(pl.when(own).then("playerRace").otherwise("enemyRace"))
             .otherwise("profileRace")

@@ -16,8 +16,6 @@ def observations(d):
         return {}
     c = pl.col
     phases = d.phases
-    if not phases.height:
-        return {identity(saved): [] for saved, _, _ in d.headers}
     own = phases.filter(c("side") == "player")
     end = d.rosters["units"]
     losses = d.losses.filter(c("side") == "player")
@@ -64,7 +62,9 @@ def observations(d):
                 pl.struct("owners").struct.json_encode().alias("owners"),
             )
         )
-    owners = concat(owner_parts)
+    owners = concat(
+        owner_parts, schema={"m": pl.Int64, "ownership": pl.Int64, "owners": pl.String}
+    )
     rosters = end.group_by("p", maintain_order=True).agg(
         pl.struct("id", "type", "tile", "hp").alias("roster")
     )

@@ -7,41 +7,75 @@ let require yes message = if not yes then failwith message
 let adjacent name =
   name <> "" && name <> "." && name <> ".." && Filename.basename name = name
 
-let bytes directory reference =
-  let name = text (get reference "file") in
-  require (adjacent name) "Detail reference must name an adjacent journal";
-  let offset = integer (get reference "offset")
-  and length = integer (get reference "bytes") in
-  require (offset >= 0 && length > 0) "Invalid detail byte range";
-  let path = Filename.concat directory name in
-  let channel, close =
-    if Sys.file_exists path then
-      let c = open_in_bin path in
-      (c, fun () -> close_in c)
-    else
-      let c =
-        Unix.open_process_in ("gzip -dc -- " ^ Filename.quote (path ^ ".gz"))
-      in
-      (c, fun () -> ignore (Unix.close_process_in c))
-  in
-  Fun.protect ~finally:close (fun () ->
-      (if Sys.file_exists path then seek_in channel offset
-       else
-         let buffer = Bytes.create 65536 in
-         let rec skip n =
-           if n > 0 then (
-             let size = min n 65536 in
-             really_input channel buffer 0 size;
-             skip (n - size))
-         in
-         skip offset);
-      let raw = really_input_string channel length in
-      require
-        (sha256 raw = text (get reference "sha256"))
-        ("Invalid gameplay checksum: " ^ path);
-      raw)
+type reader = {
+  channel : in_channel;
+  close : unit -> unit;
+  seekable : bool;
+  mutable position : int;
+}
 
-let json_table table = Frame.rows table
+let open_reader path =
+  if Sys.file_exists path then
+    let channel = open_in_bin path in
+    {
+      channel;
+      close = (fun () -> close_in_noerr channel);
+      seekable = true;
+      position = 0;
+    }
+  else
+    let channel =
+      Unix.open_process_in ("gzip -dc -- " ^ Filename.quote (path ^ ".gz"))
+    in
+    {
+      channel;
+      close = (fun () -> ignore (Unix.close_process_in channel));
+      seekable = false;
+      position = 0;
+    }
+
+let with_readers f =
+  let readers = Hashtbl.create 4 in
+  Fun.protect
+    ~finally:(fun () ->
+      Hashtbl.iter (fun _ reader -> try reader.close () with _ -> ()) readers)
+    (fun () -> f readers)
+
+let bytes ?readers directory reference =
+  let read readers =
+    let name = text (get reference "file") in
+    require (adjacent name) "Detail reference must name an adjacent journal";
+    let offset = integer (get reference "offset")
+    and length = integer (get reference "bytes") in
+    require (offset >= 0 && length > 0) "Invalid detail byte range";
+    let path = Filename.concat directory name in
+    let reader =
+      match Hashtbl.find_opt readers path with
+      | Some reader when reader.seekable || offset >= reader.position -> reader
+      | previous ->
+          Option.iter (fun r -> r.close ()) previous;
+          let reader = open_reader path in
+          Hashtbl.replace readers path reader;
+          reader
+    in
+    (if reader.seekable then seek_in reader.channel offset
+     else
+       let buffer = Bytes.create 65536 in
+       let rec skip n =
+         if n > 0 then (
+           let size = min n 65536 in
+           really_input reader.channel buffer 0 size;
+           skip (n - size))
+       in
+       skip (offset - reader.position));
+    let raw = really_input_string reader.channel length in
+    reader.position <- offset + length;
+    require
+      (sha256 raw = text (get reference "sha256"))
+      ("Invalid gameplay checksum: " ^ path);
+    raw
+  in
+  match readers with Some readers -> read readers | None -> with_readers read
 
 (* The gameplay contract is exactly one IPC stream record batch. Query.run
    canonicalizes batches, so count the validated message envelopes before

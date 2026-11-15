@@ -37,26 +37,46 @@ def read_json(path):
         return json.load(stream)
 
 
-def read_bytes(directory, reference):
-    name = reference["file"]
-    if not name or Path(name).name != name or name in (".", ".."):
-        raise ValueError("Detail reference must name an adjacent journal")
-    if reference["offset"] < 0 or reference["bytes"] <= 0:
-        raise ValueError("Invalid detail byte range")
-    path = directory / name
-    with (
-        path.open("rb")
-        if path.exists()
-        else gzip.open(str(path) + ".gz", "rb") as reader
-    ):
+class Readers:
+    """Keep physical journal streams open for one ordered ingestion pass."""
+
+    def __init__(self):
+        self.streams = {}
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        for stream in self.streams.values():
+            stream.close()
+
+    def read(self, directory, reference):
+        name = reference["file"]
+        if not name or Path(name).name != name or name in (".", ".."):
+            raise ValueError("Detail reference must name an adjacent journal")
+        if reference["offset"] < 0 or reference["bytes"] <= 0:
+            raise ValueError("Invalid detail byte range")
+        path = directory / name
+        if path not in self.streams:
+            self.streams[path] = (
+                path.open("rb") if path.exists() else gzip.open(str(path) + ".gz", "rb")
+            )
+        reader = self.streams[path]
         reader.seek(reference["offset"])
         raw = reader.read(reference["bytes"])
-    if (
-        len(raw) != reference["bytes"]
-        or hashlib.sha256(raw).hexdigest() != reference["sha256"]
-    ):
-        raise ValueError("Invalid gameplay checksum or byte range: " + str(path))
-    return raw
+        if (
+            len(raw) != reference["bytes"]
+            or hashlib.sha256(raw).hexdigest() != reference["sha256"]
+        ):
+            raise ValueError("Invalid gameplay checksum or byte range: " + str(path))
+        return raw
+
+
+def read_bytes(directory, reference, *, readers=None):
+    if readers is not None:
+        return readers.read(directory, reference)
+    with Readers() as streams:
+        return streams.read(directory, reference)
 
 
 def decode(raw, name):

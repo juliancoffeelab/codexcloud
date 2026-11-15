@@ -285,7 +285,8 @@ def army_usage(events, purchases, presence, families):
     for row in presence:
         key = tuple(row[k] for k in DIMS)
         own = (*key, row['family'])
-        stats, total = counts[own], totals[key]
+        stats = {field: counts[own][field] for field in ('recruited','promoted','lost','attacks','retaliations','damage')}
+        total = totals[key]
         rows.append(dict(row, purchaseSharePercent=buys.get(own, {}).get('sharePercent', 0),
                          attackSharePercent=100 * stats['attacks'] / max(1, total['attacks']),
                          damageSharePercent=100 * stats['damage'] / max(1, total['damage']),
