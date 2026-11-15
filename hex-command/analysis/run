@@ -31,7 +31,7 @@ case "$backend:$mode" in
     ;;
   polars:report) exec uv run --project "$root/analysis/polars" python "$root/analysis/polars/main.py" "$@" ;;
   polars:compare-report) exec uv run --project "$root/analysis/polars" python "$root/analysis/polars/compare.py" "$@" ;;
-  polars:compare-dump) exec uv run --project "$root/analysis/polars" python "$root/scripts/compare-simulation-dumps.py" "$@" ;;
+  polars:compare-dump|legacy:compare-dump) exec uv run --project "$root/analysis/polars" python "$root/scripts/compare-simulation-dumps.py" "$@" ;;
   legacy:report) exec python3 "$root/.agents/skills/combat-simulation/scripts/report-combat.py" "$@" ;;
   legacy:compare-report) exec python3 "$root/scripts/compare-simulation-reports.py" "$@" ;;
   *) printf 'Unknown backend/mode: %s/%s\n' "$backend" "$mode" >&2; exit 2 ;;

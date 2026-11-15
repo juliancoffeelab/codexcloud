@@ -192,10 +192,35 @@ class BackendContracts(unittest.TestCase):
         )
         return result
 
+    def test_empty_report_directory_is_not_a_successful_zero_game_run(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            for command, name in commands("report"):
+                self.run_command(
+                    command + [str(directory), "--out", str(directory / name)],
+                    succeeds=False,
+                )
+
     def test_instance_roles_survive_type_aggregation(self):
         with tempfile.TemporaryDirectory() as temporary:
             directory = Path(temporary)
             role_fixture(directory)
+            other = directory / "other"
+            other.mkdir()
+            second, detail = role_fixture(other)
+            detail["config"]["landscape"] = "wooded"
+            detail["initial"]["units"] = [
+                u for u in detail["initial"]["units"] if u["id"] != "t"
+            ]
+            for phase in detail["phases"]:
+                phase["before"] = detail["initial"]["units"]
+                phase["units"] = detail["initial"]["units"]
+                phase["combats"] = [c for c in phase["combats"] if c["unit"] != "t"]
+            second["outcomes"][0]["detail"] = reference(other / "details.jsonl", detail)
+            second["outcomes"][0]["combatUsage"] = [
+                dict(side="player", type="shared", attacks=1, retaliations=0, damage=5)
+            ]
+            dump(other / "report.json", second)
             backends = commands("report") + [
                 (
                     [
@@ -214,6 +239,7 @@ class BackendContracts(unittest.TestCase):
                     command
                     + [
                         str(directory / "report.json"),
+                        str(other / "report.json"),
                         "--out",
                         str(output),
                         "--unit-usage",
@@ -227,6 +253,11 @@ class BackendContracts(unittest.TestCase):
                 self.assertEqual(float(own["unitTurns"]), 1)
                 self.assertEqual(float(own["weaponDamage"]), 2)
                 self.assertEqual(float(own["damagePerUnitTurn"]), 2)
+                empty_scope = next(
+                    r for r in rows if r["race"] == "human" and r["map"] == "wooded"
+                )
+                self.assertEqual(float(empty_scope["unitTurns"]), 0)
+                self.assertEqual(empty_scope["damagePerUnitTurn"], "")
                 with (output / "nonleader_unit_events.csv").open() as stream:
                     events = list(csv.DictReader(stream))
                 own = next(r for r in events if r["race"] == "human")
@@ -258,6 +289,85 @@ class BackendContracts(unittest.TestCase):
                 self.run_command(args, succeeds=False)
                 b["outcomes"][0]["detail"] = reference(right / "details.jsonl", detail)
                 dump(right / "report.json", b)
+
+    @unittest.skipUnless(
+        NATIVE, "Set HEX_ANALYSIS_TALON_BINARY to test native journal framing"
+    )
+    def test_journal_decoder_rejects_extra_batches_and_columns(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            schema = pa.schema(
+                [
+                    ("header_json", pa.string()),
+                    ("chapter", pa.int32()),
+                    ("phase_json", pa.string()),
+                    ("before", pa.list_(pa.uint32())),
+                    ("units", pa.list_(pa.uint32())),
+                    ("ownership", pa.uint32()),
+                    ("unit_snapshots", pa.list_(pa.string())),
+                    ("ownership_snapshots", pa.list_(pa.string())),
+                ],
+                metadata={
+                    b"hex-command.detail-format": b"arrow-ipc-snapshot-dictionaries-v1"
+                },
+            )
+            header = dict(
+                kind="arena", config=dict(seed=1), initial=dict(tiles=[]), phases=[]
+            )
+            first = pa.RecordBatch.from_pylist(
+                [
+                    dict(
+                        header_json=json.dumps(header),
+                        chapter=0,
+                        phase_json=None,
+                        before=None,
+                        units=None,
+                        ownership=None,
+                        unit_snapshots=[],
+                        ownership_snapshots=["[]"],
+                    )
+                ],
+                schema=schema,
+            )
+            second = pa.RecordBatch.from_pylist(
+                [
+                    dict(
+                        header_json=None,
+                        chapter=0,
+                        phase_json=json.dumps(dict(side="player")),
+                        before=[],
+                        units=[],
+                        ownership=0,
+                        unit_snapshots=None,
+                        ownership_snapshots=None,
+                    )
+                ],
+                schema=schema,
+            )
+
+            def write(batches):
+                sink = pa.BufferOutputStream()
+                with pa.ipc.new_stream(sink, batches[0].schema) as writer:
+                    for batch in batches:
+                        writer.write_batch(batch)
+                raw = sink.getvalue().to_pybytes()
+                (directory / "record.arrow").write_bytes(raw)
+                ref = dict(
+                    file="record.arrow",
+                    offset=0,
+                    bytes=len(raw),
+                    sha256=hashlib.sha256(raw).hexdigest(),
+                )
+                dump(directory / "report.json", dict(outcomes=[dict(detail=ref)]))
+
+            args = [NATIVE, "decode", str(directory / "report.json"), "0"]
+            write([first])
+            result = self.run_command(args)
+            self.assertEqual(json.loads(result.stdout), header)
+            write([first, second])
+            self.run_command(args, succeeds=False)
+            write([first.append_column("unexpected", pa.array([1]))])
+            self.run_command(args, succeeds=False)
 
     @unittest.skipUnless(
         NATIVE, "Set HEX_ANALYSIS_TALON_BINARY to test native Arrow regression checks"

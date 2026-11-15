@@ -67,15 +67,31 @@ let write path j =
 
 let normalize ?(factions = []) value =
   let module Memo = Hashtbl.Make (struct
-    type t = Yojson.Basic.t
+    type t = Yojson.Basic.t * Yojson.Basic.t
 
-    let equal = ( == )
-    let hash = Hashtbl.hash
+    let equal (a, p) (b, q) = a == b && p = q
+
+    let hash (value, phase) =
+      Hashtbl.hash
+        ( get value "id",
+          get value "type",
+          get value "hp",
+          get value "tile",
+          phase )
   end) in
   let memo = Memo.create 1024 in
   let rec visit factions value =
     let cacheable = has value "faction" && has value "hp" && has value "tile" in
-    match if cacheable then Memo.find_opt memo value else None with
+    let phase =
+      if cacheable then
+        get
+          (Option.value ~default:`Null
+             (List.assoc_opt (text (get value "faction")) factions))
+          "phase"
+      else `Null
+    in
+    let cache_key = (value, phase) in
+    match if cacheable then Memo.find_opt memo cache_key else None with
     | Some result -> result
     | None -> (
         match value with
@@ -114,7 +130,7 @@ let normalize ?(factions = []) value =
               | `String "playerDefeat" -> set out "winner" (str "enemy")
               | _ -> out
             in
-            if cacheable then Memo.replace memo value out;
+            if cacheable then Memo.replace memo cache_key out;
             out
         | x -> x)
   in

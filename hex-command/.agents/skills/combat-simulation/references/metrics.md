@@ -69,6 +69,16 @@ Exports:
   separated by the recorded unit race.
 - `battlefield_unit_value.csv`: the same contributions separated by exact unit
   and promotion, so shield and heavy branches are not hidden in family totals.
+  Recorded instance `role == leader` controls exclusion from presence and damage
+  rates; a unit type or its catalog role is not a leader identity. The additional
+  `nonleaderUnitTurns`, `nonleaderWeaponHPDamageDealt` and
+  `nonleaderThornHPDamageDealt` totals preserve that distinction when a type is
+  used by both leaders and ordinary troops.
+- `nonleader_unit_events.csv`: recruitment, promotion, casualty and combat-use
+  totals derived from recorded nonleader rosters. These supply army-use shares,
+  so leader attacks cannot inflate their denominators. Opposing factions are
+  pooled; faction, tactic, opposing tactic, map and exact unit stay separate.
+
 - `leader_audit.csv`: phase-boundary leader HP/tile, nonleader army strength,
   recruitment availability and reachable-tile exposure forecasts.
 - `leader_deaths.csv`: death-boundary evidence linked to that leader's last

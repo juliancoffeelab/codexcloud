@@ -163,13 +163,19 @@ def normalize(value):
             return [visit(v, factions) for v in x]
         if not isinstance(x, dict):
             return x
-        if id(x) in memo:
-            return memo[id(x)]
+        is_unit = "hp" in x and "tile" in x and "faction" in x
+        phase = (
+            (factions or {}).get(x.get("faction"), {}).get("phase") if is_unit else None
+        )
+        cache_key = (id(x), phase)
+        if is_unit and cache_key in memo:
+            return memo[cache_key]
         declared = x.get("factions") or x.get("initial", {}).get("factions")
         if declared:
             factions = {f["id"]: f for f in declared}
         result = {k: visit(v, factions) for k, v in x.items()}
-        memo[id(x)] = result
+        if is_unit:
+            memo[cache_key] = result
         if "faction" in x and "hp" in x and "tile" in x and "side" not in x:
             result["side"] = factions[x["faction"]]["phase"]
         for k in ("side", "turn", "first"):
@@ -206,7 +212,7 @@ def paths(inputs):
     return result
 
 
-def journals(reports):
+def journals(reports, kinds=("arena", "campaign")):
     for path, report in reports:
         if report.get("status") != "complete":
             raise ValueError("Unit usage requires a completed run")
@@ -217,8 +223,16 @@ def journals(reports):
                 o.get("detail", {}).get("offset", 0),
             ),
         ):
+            kind = saved.get(
+                "kind", "campaign" if "campaign" in saved["config"] else "arena"
+            )
+            if kind not in kinds:
+                continue
             ref = saved["detail"]
             result = normalize(decode(read_bytes(path.parent, ref), ref["file"]))
+            result.setdefault(
+                "kind", "campaign" if "campaign" in result["config"] else "arena"
+            )
             if result["config"] != saved["config"]:
                 raise ValueError("Journal configuration mismatch")
             yield report, result

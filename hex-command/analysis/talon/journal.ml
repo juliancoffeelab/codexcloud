@@ -43,6 +43,68 @@ let bytes directory reference =
 
 let json_table table = Frame.rows table
 
+(* The gameplay contract is exactly one IPC stream record batch. Query.run
+   canonicalizes batches, so count the validated message envelopes before
+   materializing the table. The Arrow Message FlatBuffer fields are header_type
+   (slot 1) and bodyLength (slot 3); Talon decodes all schemas and values.
+   https://arrow.apache.org/docs/format/Columnar.html#encapsulated-message-format *)
+let record_batches raw =
+  let total = String.length raw in
+  let bad () = failwith "Invalid Arrow gameplay message framing" in
+  let rec loop position count =
+    if position = total then count
+    else (
+      require (position >= 0 && position <= total - 8) "Truncated Arrow message";
+      require
+        (String.get_int32_le raw position = Int32.minus_one)
+        "Gameplay journals require IPC stream framing";
+      let size = Int32.to_int (String.get_int32_le raw (position + 4)) in
+      if size = 0 then count
+      else (
+        require
+          (size > 0 && size <= total - position - 8)
+          "Invalid Arrow metadata length";
+        let first = position + 8 in
+        let last = first + size in
+        let check p width =
+          if p < first || width < 0 || p > last - width then bad ()
+        in
+        let u16 p =
+          check p 2;
+          String.get_uint16_le raw p
+        in
+        let i32 p =
+          check p 4;
+          Int32.to_int (String.get_int32_le raw p)
+        in
+        let message = first + i32 first in
+        let vtable = message - i32 message in
+        let vsize = u16 vtable in
+        let slot index =
+          let p = vtable + 4 + (2 * index) in
+          if p + 2 > vtable + vsize then 0 else u16 p
+        in
+        let header_offset = slot 1 in
+        let header =
+          if header_offset = 0 then 0
+          else (
+            check (message + header_offset) 1;
+            Char.code raw.[message + header_offset])
+        in
+        let body_offset = slot 3 in
+        let body =
+          if body_offset = 0 then 0L
+          else (
+            check (message + body_offset) 8;
+            String.get_int64_le raw (message + body_offset))
+        in
+        require
+          (body >= 0L && body <= Int64.of_int (total - last))
+          "Invalid Arrow body length";
+        loop (last + Int64.to_int body) (count + if header = 3 then 1 else 0)))
+  in
+  loop 0 0
+
 let decode raw name =
   if not (Filename.check_suffix name ".arrow") then parse raw
   else
@@ -58,10 +120,25 @@ let decode raw name =
          (List.init 5 (fun i ->
               "arrow-ipc-snapshot-dictionaries-v" ^ string_of_int (i + 1))))
       "Unknown Arrow gameplay format";
+    require (record_batches raw = 1) "Invalid Arrow gameplay batch count";
     let table =
       Talon.Query.of_source (Talon_arrow.source format buffer)
       |> Talon.Query.run |> Talon.Error.get_ok
     in
+    require (Talon.rows table > 0) "Empty Arrow gameplay batch";
+    require
+      (List.map fst (Talon.Schema.columns (Talon.schema table))
+      = [
+          "header_json";
+          "chapter";
+          "phase_json";
+          "before";
+          "units";
+          "ownership";
+          "unit_snapshots";
+          "ownership_snapshots";
+        ])
+      "Unexpected Arrow gameplay columns";
     let strings name =
       Talon.Column.options Talon.Kind.string (Talon.column table name)
     in
@@ -87,6 +164,12 @@ let decode raw name =
       |> Talon.Query.slice ~offset:0 ~length:1
       |> Talon.Query.run |> Talon.Error.get_ok |> Frame.rows |> List.hd
     in
+    require
+      (List.for_all
+         (fun name ->
+           match get snapshots name with `List _ -> true | _ -> false)
+         [ "unit_snapshots"; "ownership_snapshots" ])
+      "Invalid Arrow snapshot dictionaries";
     let header = parse (Option.get header_strings.(0)) in
     let typed = version <> "arrow-ipc-snapshot-dictionaries-v1" in
     let units =

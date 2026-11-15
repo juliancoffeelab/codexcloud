@@ -26,6 +26,13 @@ type t = {
   reports : (string * Json.t) list;
 }
 
+let with_kind result =
+  if has result "kind" then result
+  else
+    set result "kind"
+      (str
+         (if has (get result "config") "campaign" then "campaign" else "arena"))
+
 let is_dir path = Sys.file_exists path && Sys.is_directory path
 
 let files paths =
@@ -46,6 +53,10 @@ let files paths =
   List.concat_map expand paths
 
 let load paths =
+  let filenames = files paths in
+  Journal.require
+    (paths = [] || filenames <> [])
+    "No recorded reports in the selected inputs";
   let seen = Hashtbl.create 2048 in
   let outcomes = ref [] and sources = ref [] and reports = ref [] in
   List.iter
@@ -133,7 +144,9 @@ let load paths =
                         List.for_all (has ref_)
                           [ "file"; "offset"; "bytes"; "sha256" ]
                       then (
-                        let result = normalize (Journal.read directory ref_) in
+                        let result =
+                          with_kind (normalize (Journal.read directory ref_))
+                        in
                         Journal.require
                           (identity result = key)
                           "Gameplay journal configuration mismatch";
@@ -166,13 +179,17 @@ let load paths =
           [
             ( "fingerprint",
               default report "fingerprint" (get report "fingerprints") );
-            ("file", str (Unix.realpath path));
+            ( "file",
+              str
+                (Unix.realpath
+                   (if Filename.basename path = "outcomes.json" then directory
+                    else path)) );
             ("matches", int (List.length declared));
           ]
       in
       sources := source :: !sources;
       reports := (path, report) :: !reports)
-    (files paths);
+    filenames;
   {
     outcomes = List.rev !outcomes;
     sources = List.rev !sources;

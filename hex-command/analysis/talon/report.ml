@@ -316,6 +316,191 @@ let findings tables physical =
             ];
           "";
         ];
+  let bottlenecks =
+    get_table "campaign_summary"
+    |> List.filter_map (fun c ->
+        let stages =
+          get_table "campaign_stages"
+          |> List.filter (fun stage ->
+              List.for_all (fun k -> get stage k = get c k) Campaign.fields_)
+        in
+        match stages with
+        | [] -> None
+        | first :: rest ->
+            let stopped r = number (get r "defeats") +. number (get r "caps") in
+            let stage =
+              List.fold_left
+                (fun best candidate ->
+                  if stopped candidate > stopped best then candidate else best)
+                first rest
+            in
+            Some stage)
+  in
+  if bottlenecks <> [] then
+    lines :=
+      !lines
+      @ [
+          "## Largest recorded campaign bottlenecks";
+          "";
+          markdown bottlenecks
+            [
+              "campaign";
+              "objective";
+              "diplomacy";
+              "player";
+              "enemy";
+              "maxRounds";
+              "recruitLimit";
+              "stage";
+              "map";
+              "reached";
+              "victories";
+              "defeats";
+              "caps";
+            ];
+          "";
+        ];
+  let runs = get_table "campaign_runs" in
+  (if List.exists (fun r -> truth (get r "recordedPlanning")) runs then
+     let facts =
+       List.concat_map
+         (fun r ->
+           List.map
+             (fun (reason, n) ->
+               obj [ ("reason", str reason); ("observations", n) ])
+             (fields (get r "unmetOrders"))
+           @ [
+               obj
+                 [
+                   ("reason", str "protected retaliation exchanges");
+                   ("observations", get r "protectedRetaliationExchanges");
+                 ];
+             ])
+         runs
+     in
+     lines :=
+       !lines
+       @ [
+           "## Recorded planner diagnostics";
+           "";
+           "Counts are observations per phase. An unmet forecast does not \
+            establish an avoidable defeat.";
+           "";
+           markdown
+             (Frame.group facts [ "reason" ] [ "observations" ])
+             [ "reason"; "observations" ];
+           "";
+         ]);
+  let stalled =
+    runs
+    |> List.filter (fun r ->
+        integer (get r "idleTail") >= 5 && truth (get r "stalledActors"))
+  in
+  if stalled <> [] then
+    lines :=
+      !lines
+      @ [
+          "## Recorded idle-cap actor positions";
+          "";
+          markdown stalled
+            [
+              "campaign";
+              "objective";
+              "diplomacy";
+              "player";
+              "enemy";
+              "map";
+              "seed";
+              "stalledActors";
+            ];
+          "";
+        ];
+  List.iter
+    (fun (name, title, fields, predicate, note) ->
+      let rows = get_table name |> List.filter predicate in
+      if rows <> [] then
+        lines :=
+          !lines @ [ "## " ^ title; ""; note; ""; markdown rows fields; "" ])
+    [
+      ( "army_usage",
+        "Battlefield presence and recruitment flow",
+        [
+          "race";
+          "policy";
+          "opponentPolicy";
+          "map";
+          "family";
+          "sharePercent";
+          "unitTurns";
+          "purchaseSharePercent";
+          "recruited";
+          "lost";
+          "attackSharePercent";
+          "damageSharePercent";
+        ],
+        (fun r -> get r "map" <> str "all"),
+        "Purchases measure recruitment flow; presence and contribution use \
+         recorded nonleader exposure." );
+      ( "support_effects",
+        "Actual support effects",
+        [
+          "race";
+          "policy";
+          "opponentPolicy";
+          "map";
+          "ability";
+          "providerTurns";
+          "adjacentAlliesPerTurn";
+          "healedHP";
+          "healedHPPerTurn";
+          "reflectedDamage";
+          "effectiveReflectedDamage";
+          "overlapPercent";
+        ],
+        (fun r -> get r "unit" = str "all" && get r "map" <> str "all"),
+        "Provider turns include zero-benefit turns. Tied providers split \
+         credit; effective reflection excludes overkill." );
+      ( "battlefield_value",
+        "Protection, objectives and casualty value",
+        [
+          "race";
+          "policy";
+          "opponentPolicy";
+          "family";
+          "unitTurns";
+          "hpDamageDealt";
+          "hpDamageTaken";
+          "armourDamagePrevented";
+          "terrainDamagePrevented";
+          "captures";
+          "objectiveOccupationTurns";
+          "casualties";
+          "recruitGoldLost";
+          "casualtyReplacementValue";
+        ],
+        (fun r -> get r "kind" = str "arena" && get r "map" = str "all"),
+        "Protection is signed and capped at available HP. Captors retain \
+         control credit after death. Replacement value includes free starters \
+         and promotions." );
+      ( "leader_deaths",
+        "Leader death evidence",
+        [
+          "campaign";
+          "mission";
+          "map";
+          "policy";
+          "seed";
+          "round";
+          "armyUnitsAfter";
+          "armyHPValueAfter";
+          "lastDecisionArmyValueRatioBefore";
+          "lastDecisionForecastLethalWithSafeAlternative";
+          "deathDuringOwnAttack";
+        ],
+        (fun _ -> true),
+        "Death boundaries link to the same leader's last own-phase decision. A \
+         forecast-safe tile is not proof of an avoidable death." );
+    ];
   if get_table "battlefield_presence" = [] then
     lines :=
       !lines

@@ -82,21 +82,14 @@ let unit_damage presence values profiles membership =
   let values =
     if not modern then values
     else
-      List.filter_map
+      List.map
         (fun r ->
-          if
-            List.for_all
-              (fun k -> number (get r k) = 0.)
-              Telemetry.nonleader_fields
-          then None
-          else
-            Some
-              (merge r
-                 [
-                   ("unitTurns", get r "nonleaderUnitTurns");
-                   ("weaponHPDamageDealt", get r "nonleaderWeaponHPDamageDealt");
-                   ("thornHPDamageDealt", get r "nonleaderThornHPDamageDealt");
-                 ]))
+          merge r
+            [
+              ("unitTurns", get r "nonleaderUnitTurns");
+              ("weaponHPDamageDealt", get r "nonleaderWeaponHPDamageDealt");
+              ("thornHPDamageDealt", get r "nonleaderThornHPDamageDealt");
+            ])
         values
   in
   let known = Hashtbl.create 64 in
@@ -108,6 +101,10 @@ let unit_damage presence values profiles membership =
           if
             default r "kind" (str "arena") = str "arena"
             && has profiles u
+            && ((not (has r "nonleaderUnitTurns"))
+               || List.exists
+                    (fun k -> number (get r k) <> 0.)
+                    Telemetry.nonleader_fields)
             && (modern || not (truth (get (get profiles u) "leader")))
           then Hashtbl.replace known (text (get r "race"), u) ())
         rows)

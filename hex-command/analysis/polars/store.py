@@ -24,8 +24,11 @@ SOURCE_FIELDS = [
 
 
 def load(inputs):
+    filenames = paths(inputs)
+    if inputs and not filenames:
+        raise ValueError("No recorded reports in the selected inputs")
     outcomes, sources, reports = {}, [], []
-    for path in paths(inputs):
+    for path in filenames:
         raw = read_json(path)
         legacy = {}
         if path.name == "outcomes.json":
@@ -49,7 +52,7 @@ def load(inputs):
         source = {k: report.get(k) for k in SOURCE_FIELDS}
         source.update(
             fingerprint=report.get("fingerprint", report.get("fingerprints")),
-            file=str(path.resolve()),
+            file=str((path.parent if path.name == "outcomes.json" else path).resolve()),
             matches=len(report["outcomes"]),
         )
         sources.append(source)
@@ -72,6 +75,7 @@ def load(inputs):
                         result = normalize(
                             decode(read_bytes(path.parent, ref), ref["file"])
                         )
+                        result.setdefault("kind", "campaign")
                         if identity(result) != key:
                             raise ValueError("Journal configuration mismatch")
                     else:

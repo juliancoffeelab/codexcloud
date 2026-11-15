@@ -221,6 +221,178 @@ def findings(tables, physical):
             ),
             "",
         ]
+    fields = [
+        "campaign",
+        "player",
+        "enemy",
+        "diplomacy",
+        "objective",
+        "maxRounds",
+        "recruitLimit",
+    ]
+    bottlenecks = []
+    for campaign in tables["campaign_summary"]:
+        stages = [
+            r
+            for r in tables["campaign_stages"]
+            if all(r[k] == campaign[k] for k in fields)
+        ]
+        if stages:
+            bottlenecks.append(max(stages, key=lambda r: r["defeats"] + r["caps"]))
+    if bottlenecks:
+        lines += [
+            "## Largest recorded campaign bottlenecks",
+            "",
+            markdown(
+                bottlenecks,
+                [
+                    "campaign",
+                    "objective",
+                    "diplomacy",
+                    "player",
+                    "enemy",
+                    "maxRounds",
+                    "recruitLimit",
+                    "stage",
+                    "map",
+                    "reached",
+                    "victories",
+                    "defeats",
+                    "caps",
+                ],
+            ),
+            "",
+        ]
+    runs = tables["campaign_runs"]
+    if any(r["recordedPlanning"] for r in runs):
+        facts = [
+            dict(reason=k, observations=n)
+            for r in runs
+            for k, n in r["unmetOrders"].items()
+        ] + [
+            dict(
+                reason="protected retaliation exchanges",
+                observations=r["protectedRetaliationExchanges"],
+            )
+            for r in runs
+        ]
+        lines += [
+            "## Recorded planner diagnostics",
+            "",
+            "Counts are observations per phase. An unmet forecast does not establish an avoidable defeat.",
+            "",
+            markdown(
+                group(facts, ["reason"], ["observations"]), ["reason", "observations"]
+            ),
+            "",
+        ]
+    stalled = [r for r in runs if r["idleTail"] >= 5 and r["stalledActors"]]
+    if stalled:
+        lines += [
+            "## Recorded idle-cap actor positions",
+            "",
+            markdown(
+                stalled,
+                [
+                    "campaign",
+                    "objective",
+                    "diplomacy",
+                    "player",
+                    "enemy",
+                    "map",
+                    "seed",
+                    "stalledActors",
+                ],
+            ),
+            "",
+        ]
+    sections = [
+        (
+            "army_usage",
+            "Battlefield presence and recruitment flow",
+            [
+                "race",
+                "policy",
+                "opponentPolicy",
+                "map",
+                "family",
+                "sharePercent",
+                "unitTurns",
+                "purchaseSharePercent",
+                "recruited",
+                "lost",
+                "attackSharePercent",
+                "damageSharePercent",
+            ],
+            lambda r: r["map"] != "all",
+            "Purchases measure recruitment flow; presence and contribution use recorded nonleader exposure.",
+        ),
+        (
+            "support_effects",
+            "Actual support effects",
+            [
+                "race",
+                "policy",
+                "opponentPolicy",
+                "map",
+                "ability",
+                "providerTurns",
+                "adjacentAlliesPerTurn",
+                "healedHP",
+                "healedHPPerTurn",
+                "reflectedDamage",
+                "effectiveReflectedDamage",
+                "overlapPercent",
+            ],
+            lambda r: r["unit"] == "all" and r["map"] != "all",
+            "Provider turns include zero-benefit turns. Tied providers split credit; effective reflection excludes overkill.",
+        ),
+        (
+            "battlefield_value",
+            "Protection, objectives and casualty value",
+            [
+                "race",
+                "policy",
+                "opponentPolicy",
+                "family",
+                "unitTurns",
+                "hpDamageDealt",
+                "hpDamageTaken",
+                "armourDamagePrevented",
+                "terrainDamagePrevented",
+                "captures",
+                "objectiveOccupationTurns",
+                "casualties",
+                "recruitGoldLost",
+                "casualtyReplacementValue",
+            ],
+            lambda r: r["kind"] == "arena" and r["map"] == "all",
+            "Protection is signed and capped at available HP. Captors retain control credit after death. Replacement value includes free starters and promotions.",
+        ),
+        (
+            "leader_deaths",
+            "Leader death evidence",
+            [
+                "campaign",
+                "mission",
+                "map",
+                "policy",
+                "seed",
+                "round",
+                "armyUnitsAfter",
+                "armyHPValueAfter",
+                "lastDecisionArmyValueRatioBefore",
+                "lastDecisionForecastLethalWithSafeAlternative",
+                "deathDuringOwnAttack",
+            ],
+            lambda r: True,
+            "Death boundaries link to the same leader's last own-phase decision. A forecast-safe tile is not proof of an avoidable death.",
+        ),
+    ]
+    for name, title, fields, predicate, note in sections:
+        rows = [r for r in tables.get(name, []) if predicate(r)]
+        if rows:
+            lines += ["## " + title, "", note, "", markdown(rows, fields), ""]
     if not tables.get("battlefield_presence"):
         lines += [
             "Field composition is unavailable. Purchases measure recruitment flow and do not establish composition or survival.",

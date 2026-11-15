@@ -55,7 +55,7 @@ def presence_support(reports, presence=True, support=True):
     )
     catalogs = None
     matches = 0
-    for report, result in journals(reports):
+    for report, result in journals(reports, kinds=("arena",)):
         config = result["config"]
         if config["armies"]["player"] == config["armies"]["enemy"]:
             continue

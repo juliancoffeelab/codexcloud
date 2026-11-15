@@ -85,9 +85,6 @@ def unit_damage(presence, values, profiles, membership=()):
                 thornHPDamageDealt=r["nonleaderThornHPDamageDealt"],
             )
             for r in values
-            if r["nonleaderUnitTurns"]
-            or r["nonleaderWeaponHPDamageDealt"]
-            or r["nonleaderThornHPDamageDealt"]
         ]
     missing = {r["unit"] for r in presence + values if r["unit"] not in profiles}
     if missing:
@@ -123,6 +120,18 @@ def unit_damage(presence, values, profiles, membership=()):
         ],
         how="diagonal_relaxed",
     )
+    if modern:
+        known = known.filter(
+            pl.col("nonleaderUnitTurns").is_null()
+            | pl.any_horizontal(
+                pl.col(k).fill_null(0) != 0
+                for k in [
+                    "nonleaderUnitTurns",
+                    "nonleaderWeaponHPDamageDealt",
+                    "nonleaderThornHPDamageDealt",
+                ]
+            )
+        )
     membership_df = (
         known.select("race", "unit")
         .unique()

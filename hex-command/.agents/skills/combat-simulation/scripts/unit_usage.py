@@ -310,14 +310,14 @@ def unit_damage(presence, battlefield_units, profiles, membership=()):
         battlefield_units = [dict(row, unitTurns=row['nonleaderUnitTurns'],
                                   weaponHPDamageDealt=row['nonleaderWeaponHPDamageDealt'],
                                   thornHPDamageDealt=row['nonleaderThornHPDamageDealt'])
-                             for row in battlefield_units
-                             if row['nonleaderUnitTurns'] or row['nonleaderWeaponHPDamageDealt'] or row['nonleaderThornHPDamageDealt']]
+                             for row in battlefield_units]
     groups = defaultdict(lambda: dict(presence={}, damage={}))
     faction_units = defaultdict(set)
     for rows in (presence, battlefield_units, membership):
         for row in rows:
             unit = row['unit']
-            if row.get('kind', 'arena') == 'arena' and unit in profiles and (modern or not profiles[unit].get('leader', False)):
+            observed_nonleader = 'nonleaderUnitTurns' not in row or any(row.get(k, 0) for k in ('nonleaderUnitTurns', 'nonleaderWeaponHPDamageDealt', 'nonleaderThornHPDamageDealt'))
+            if row.get('kind', 'arena') == 'arena' and unit in profiles and observed_nonleader and (modern or not profiles[unit].get('leader', False)):
                 faction_units[row['race']].add(unit)
     for rows, field in [(presence, 'presence'), (battlefield_units, 'damage')]:
         for row in rows:
