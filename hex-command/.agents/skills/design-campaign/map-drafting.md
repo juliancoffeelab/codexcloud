@@ -38,8 +38,13 @@ outputs in ignored `tmp/`. The renderer reads source data as a devtool, never
 registers content in the playable catalog, and does not execute encounters.
 The OCaml/Melange client reuses the game's terrain selector, painter, fog and
 lighting. The launcher asks Cargo and Dune to update their inputs, then bundles
-the renderer; map-only watch updates reuse the running renderer. Conditions are resolved by the same Rust evaluator used
-by live battles.
+the renderer; map-only watch updates reuse the running renderer. Static condition
+evaluation is in Rust. Its terrain sight preview uses vision-group range,
+penetration, tile concealment and explored cells; it does not execute the live
+battle's complete unit/equipment/effect detection or resolve illumination and
+terrain requirements on concealment. Use unconditional rules for static sight
+comparisons, or explicit authored snapshots. These previews cannot establish
+live detection correctness or wall occlusion.
 
 The map input has `mapId`, positive `cols` and `rows`, and a complete `tiles` grid.
 Tiles use the existing map schema, including explicit `floor` choices and terrain
@@ -51,6 +56,18 @@ content validation or establish whether a scenario is playable.
 An overlay can supply:
 
 - `title` and `notes`: preview title and footer lines.
+- `lighting` and `visionGroups`: replace the corresponding map fields for a
+  comparison using the same tile layout. `observer` selects the declared faction
+  whose terrain view the static resolver renders.
+- `darknessPreview`: explicit `{ "col": 4, "row": 2 }` cells receiving an
+  experimental black-violet veil under fog. `darkvisionPreview: true` preserves
+  more terrain detail through the veil without adding light. This is an author-supplied visual
+  proposal, independent of sight and lighting, not a gameplay condition or a
+  detection calculation. Omit it for current game visuals.
+- `rememberedPreview`: explicit cells showing dimmed, cool-tinted terrain that retains its colors, with
+  unit artwork and health bars suppressed. Supply a map snapshot of the terrain
+  known at that time; this illustration does not reconstruct historical terrain
+  or turn current world facts into knowledge. These cells remain under resolved fog.
 - `units`: the complete set of unit placements for this preview, replacing map
   units. Use an empty array for terrain alone. An optional unit `faction` selects
   an available visual palette independently of allegiance (for example white
@@ -78,6 +95,24 @@ Team bases sit at center + 19; health bars draw at center + 27 in a separate lay
 above all units. Draft bars depict full health, not simulated combat state.
 
 ## Draft scope and completion
+
+For a reproducible terrain visibility comparison, run:
+
+```sh
+node scripts/render-visibility-examples.mjs tmp/visibility-examples
+```
+
+This produces eight real-renderer PNGs, their editable map/overlay JSON inputs and
+`comparison.png`: daylight, ordinary night, remembered terrain, unexplored terrain,
+the proposed darkness veil, restricted terrain sight, darkvision and a local light.
+The light example is an explicit
+author overview with a cleared condition patch, not an illustration of the live
+illumination threshold. The sight pair uses the same range and unconditional
+darkness rules; darkvision penetrates darkness without adding illumination.
+The proposed atmosphere and memory treatments are confined to the drafter and
+are not installed in the game. The veil visually suppresses even a light's glow
+inside its supplied cells; this illustrates a contested boundary, not a new
+authoritative interaction between darkness and illumination.
 
 Draft work may add artwork to the shared library and extend this renderer.
 Artwork alone does not authorize gameplay/runtime changes. Keep broader tooling
