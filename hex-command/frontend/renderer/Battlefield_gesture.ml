@@ -1,6 +1,6 @@
 module P = Phaser_pointer
 
-type view = { left : float; top : float; zoom : float; canvas_left : float; canvas_top : float }
+type view = { pose : Camera_view.pose; canvas_left : float; canvas_top : float }
 
 type command =
   | Pan of float * float
@@ -75,8 +75,8 @@ let tracking t =
       Some
         {
           pointer_id = d.press.sample.id;
-          left = d.view.left -. (d.last.client.client_x -. d.origin.client_x);
-          top = d.view.top -. (d.last.client.client_y -. d.origin.client_y);
+          left = d.view.pose.left -. (d.last.client.client_x -. d.origin.client_x);
+          top = d.view.pose.top -. (d.last.client.client_y -. d.origin.client_y);
           x = d.last.client.client_x;
           y = d.last.client.client_y;
           vx = d.vx;
@@ -98,7 +98,7 @@ let press t (press : P.press) view ~active =
           a = a.P.id;
           b = b.P.id;
           distance = distance a.client b.client;
-          zoom = view.zoom;
+          zoom = view.pose.zoom;
           x = ((a.client.client_x +. b.client.client_x) /. 2.) -. view.canvas_left;
           y = ((a.client.client_y +. b.client.client_y) /. 2.) -. view.canvas_top;
         };
@@ -156,8 +156,8 @@ let move t (sample : P.sample) ~active =
         t.state <- Moving d;
         [
           Pan
-            ( d.view.left -. (sample.client.client_x -. d.origin.client_x),
-              d.view.top -. (sample.client.client_y -. d.origin.client_y) );
+            ( d.view.pose.left -. (sample.client.client_x -. d.origin.client_x),
+              d.view.pose.top -. (sample.client.client_y -. d.origin.client_y) );
         ])
   | _ -> []
 

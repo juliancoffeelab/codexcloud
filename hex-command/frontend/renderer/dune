@@ -31,6 +31,7 @@
   Phaser_input_dom
   Phaser_pointer
   Battlefield_gesture
+  Camera_view
   Phaser_lighting
   Phaser_atmosphere
   Phaser_actor_lighting)

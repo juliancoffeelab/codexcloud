@@ -3,15 +3,14 @@ module D = Phaser_input_dom
 module Set = Host_collections.Set
 module P = Phaser_pointer
 module G = Battlefield_gesture
+module C = Camera_view
 
-let clamp value low high = max low (min high value)
 let int = Performance_trace.int
 let number = Js.Json.number
 let bool = Js.Json.boolean
 let string = Js.Json.string
 let obj = Performance_trace.obj
 
-type clamp_mode = Pan | Fit
 type reveal = { ids : string array; center : bool }
 
 class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option)
@@ -43,21 +42,11 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
          viewport)
   in
   object (self)
-    val mutable zoom = 1.
-    val mutable display_scale = 1.
-    val mutable left = 0.
-    val mutable top = 0.
-    val mutable pending_top : float option = None
-    val mutable viewport_width = 1.
-    val mutable viewport_height = 1.
-    val mutable content_width = 1.
-    val mutable content_height = 1.
+    val view = C.create ()
     val mutable pixel_x = 1.
     val mutable pixel_y = 1.
     val mutable layout_pending = true
-    val mutable layout_ready = false
-    val mutable previous_capacity = 0.
-    val mutable previous_zoom = 1.
+    val mutable last_layout_zoom = 1.
     val mutable pending_reveal : reveal option = None
     val mutable inspection = {js||js}
     val mutable inspection_view : Battlefield_view.view option = None
@@ -79,6 +68,8 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
     val mutable visible = { Phaser_spatial.left = 0.; top = 0.; right = 1.; bottom = 1. }
     val mutable projection : float array option = None
     val mutable detach = fun () -> ()
+    method private pose = (C.snapshot view).pose
+    method private dimensions = C.snapshot view
 
     method private pointers =
       Array_ext.filter
@@ -93,6 +84,12 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
 
     method private record ?(details = []) event =
       if Option.is_some (Performance_trace.configuration ()) then
+        let { C.left; top; zoom } = self#pose in
+        let dimensions = self#dimensions in
+        let viewport_width = dimensions.layout.viewport.width
+        and viewport_height = dimensions.layout.viewport.height
+        and content_width = dimensions.content.width
+        and content_height = dimensions.content.height in
         let frame = current () in
         let fields =
           [
@@ -153,6 +150,8 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       if visible_dirty then (
         visible_dirty <- false;
         let canvas_bounds = D.canvas_bounds canvas in
+        let viewport_width = self#dimensions.layout.viewport.width
+        and viewport_height = self#dimensions.layout.viewport.height in
         let left = ref 0.
         and top = ref 0.
         and right = ref viewport_width
@@ -187,33 +186,13 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
               ancestors (Js.Nullable.toOption (D.parent node))
         in
         ancestors (Js.Nullable.toOption (D.parent host));
-        visible <- { left = !left; top = !top; right = !right; bottom = !bottom });
+        visible <- { left = !left; top = !top; right = !right; bottom = !bottom };
+        C.set_visible_bounds view { left = !left; top = !top; right = !right; bottom = !bottom });
       visible
 
-    method private vertical_limit =
-      let bounds = self#visible_bounds in
-      max (-.bounds.top) (content_height -. bounds.bottom)
-
-    method private apply_scroll clamp_scroll =
-      (* Clipping changes visibility only. Clamp on navigation, not on panel layout. *)
-      Option.iter
-        (fun mode ->
-          let bounds = self#visible_bounds in
-          (* Viewport growth can leave the preserved pose outside its new limits.
-           Panning may return inward, but must not snap that pose into bounds. *)
-          let current_left =
-            if mode = Pan then camera##scrollX *. camera##zoomX /. pixel_x else -.bounds.left
-          in
-          let current_top =
-            if mode = Pan then camera##scrollY *. camera##zoomY /. pixel_y else -.bounds.top
-          in
-          left <-
-            clamp left
-              (min (-.bounds.left) current_left)
-              (max (max (-.bounds.left) (content_width -. bounds.right)) current_left);
-          top <- clamp top (min (-.bounds.top) current_top) (max self#vertical_limit current_top))
-        clamp_scroll;
-      let x = left *. pixel_x /. camera##zoomX and y = top *. pixel_y /. camera##zoomY in
+    method private project =
+      let pose = self#pose in
+      let x = pose.left *. pixel_x /. camera##zoomX and y = pose.top *. pixel_y /. camera##zoomY in
       let next = [| x; y; camera##zoomX; camera##zoomY; camera##width; camera##height |] in
       if not (Option.fold ~none:false ~some:(Array_ext.equal Float.equal next) projection) then (
         projection <- Some next;
@@ -222,9 +201,10 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
         Phaser.CameraMethods.pre_render camera;
         invalidate ())
 
-    method private move_vertical ?(mode = Fit) next =
-      top <- next;
-      self#apply_scroll (Some mode)
+    method private navigate mode ~left ~top =
+      let _ = self#visible_bounds in
+      C.move_to view mode ~left ~top;
+      self#project
 
     method private perform_layout =
       visible_dirty <- true;
@@ -234,9 +214,10 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
           let size =
             Geometry.dimensions ~cols:(Int32.to_int state.cols) ~rows:(Int32.to_int state.rows)
           in
-          let old_width = viewport_width and old_height = viewport_height in
-          let world_center_x = (left +. (previous_capacity /. 2.)) /. display_scale in
-          viewport_width <- float_of_int (D.width host);
+          let old = self#dimensions in
+          let was_ready = C.initialized view in
+          let zoom = old.pose.zoom in
+          let viewport_width = float_of_int (D.width host) in
           let minimum =
             (if D.inner_width <= 540 then 650. else 590.) *. Int32.to_float state.cols /. 11.
           in
@@ -256,21 +237,26 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
               -. 2.)
           in
           let base_width = max capacity_width minimum in
-          content_width <- base_width *. zoom;
-          display_scale <- content_width /. size.width;
-          content_height <- size.height *. display_scale;
-          viewport_height <- min (float_of_int (D.height host)) capacity_height;
+          let viewport_height = min (float_of_int (D.height host)) capacity_height in
           if
-            layout_ready
-            && (previous_capacity <> capacity_width
-               || old_width <> viewport_width || density <> D.device_ratio
-               || (old_height <> viewport_height && previous_zoom = zoom))
+            was_ready
+            && (old.layout.capacity_width <> capacity_width
+               || old.layout.viewport.width <> viewport_width
+               || density <> D.device_ratio
+               || (old.layout.viewport.height <> viewport_height && last_layout_zoom = zoom))
           then self#cancel {js|viewport layout|js};
-          if layout_ready && previous_capacity <> capacity_width then
-            left <- (world_center_x *. display_scale) -. (capacity_width /. 2.);
-          previous_capacity <- capacity_width;
-          previous_zoom <- zoom;
-          layout_ready <- true;
+          C.configure view
+            {
+              map = { width = size.width; height = size.height };
+              base_width;
+              capacity_width;
+              viewport = { width = viewport_width; height = viewport_height };
+            };
+          last_layout_zoom <- zoom;
+          let dimensions = self#dimensions in
+          let content_width = dimensions.content.width
+          and content_height = dimensions.content.height
+          and display_scale = dimensions.display_scale in
           let ratio =
             min D.device_ratio
               (min
@@ -326,12 +312,8 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
             /. (ceil (size.width *. Geometry.native_pixel_scale) /. Geometry.native_pixel_scale))
             (content_height *. pixel_y
             /. (ceil (size.height *. Geometry.native_pixel_scale) /. Geometry.native_pixel_scale));
-          self#apply_scroll None;
-          match pending_top with
-          | None -> ()
-          | Some next ->
-              pending_top <- None;
-              self#move_vertical next)
+          let _ = self#visible_bounds in
+          self#project)
         (current ())
 
     method private refresh_bounds =
@@ -339,22 +321,17 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       if layout_pending || density <> D.device_ratio then (
         layout_pending <- false;
         self#perform_layout);
-      if layout_ready then self#apply_scroll None
+      if C.initialized view then self#project
 
     method private pan dx dy =
-      left <- left +. dx;
-      top <- top +. dy;
-      self#apply_scroll (Some Pan)
+      let _ = self#visible_bounds in
+      C.pan_by view ~dx ~dy;
+      self#project
 
     method private zoom_at next x y =
       pending_reveal <- None;
-      let next = clamp next 0.5 3. in
-      if next <> zoom then (
-        let ratio = next /. zoom in
-        left <- ((left +. x) *. ratio) -. x;
-        pending_top <- Some (((top +. y) *. ratio) -. y);
-        zoom <- next;
-        layout_pending <- true)
+      let _ = self#visible_bounds in
+      if C.zoom_at view ~zoom:next ~x ~y then layout_pending <- true
 
     method private down (pointer : Phaser.pointer) =
       self#pointer_record {js|pointer down received|js} pointer
@@ -370,8 +347,10 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
         | None -> reject {js|unsupported initiating button|js}
         | Some press ->
             let bounds = D.canvas_bounds canvas in
-            let view = { G.left; top; zoom; canvas_left = bounds.left; canvas_top = bounds.top } in
-            if G.press gesture press view ~active:self#samples then (
+            let gesture_view =
+              { G.pose = self#pose; canvas_left = bounds.left; canvas_top = bounds.top }
+            in
+            if G.press gesture press gesture_view ~active:self#samples then (
               gesture_id <- gesture_id + 1;
               self#stop_inertia {js|pointer down|js};
               pending_reveal <- None;
@@ -407,9 +386,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       function
       | G.Pan (requested_left, requested_top) ->
           D.cursor canvas##style {js|grabbing|js};
-          left <- requested_left;
-          top <- requested_top;
-          self#apply_scroll (Some Pan)
+          self#navigate C.Pan ~left:requested_left ~top:requested_top
       | G.Zoom (next, x, y) -> self#zoom_at next x y
       | G.Tap point -> (
           match current () with
@@ -417,7 +394,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
               if layout_pending || density <> D.device_ratio then (
                 layout_pending <- false;
                 self#perform_layout);
-              self#apply_scroll None;
+              self#project;
               let _ = camera##getWorldPoint point.scene_x point.scene_y pick_point in
               self#prepare_picking frame;
               match picking#pick pick_point##x pick_point##y with
@@ -430,7 +407,10 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
                   (actions ()).clear_selection true)
           | _ -> ())
       | G.Coast (vx, vy) ->
-          let duration = min 900. (hypot vx vy /. 0.004) and from_left = left and from_top = top in
+          let pose = self#pose in
+          let duration = min 900. (hypot vx vy /. 0.004)
+          and from_left = pose.left
+          and from_top = pose.top in
           self#record {js|inertia start|js}
             ~details:
               [
@@ -449,9 +429,9 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
                        let progress =
                          Option.value ~default:0. (Js.Nullable.toOption (D.tween_value tween))
                        in
-                       left <- from_left +. (vx *. duration /. 2. *. progress);
-                       top <- from_top +. (vy *. duration /. 2. *. progress);
-                       self#apply_scroll (Some Pan));
+                       self#navigate C.Pan
+                         ~left:(from_left +. (vx *. duration /. 2. *. progress))
+                         ~top:(from_top +. (vy *. duration /. 2. *. progress)));
                    on_complete =
                      (fun[@u] () ->
                        self#record {js|inertia complete|js};
@@ -492,6 +472,8 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       if G.phase gesture = G.Idle then D.cursor canvas##style {js||js}
 
     method private wheel (pointer : Phaser.pointer) dx dy =
+      let zoom = self#pose.zoom in
+      let viewport_height = self#dimensions.layout.viewport.height in
       let event = pointer##event in
       self#record {js|wheel|js}
         ~details:
@@ -520,6 +502,9 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
         && Option.is_some (current ())
         && not (D.ctrl event || D.meta event || D.alt event)
       then
+        let zoom = self#pose.zoom in
+        let viewport_width = self#dimensions.layout.viewport.width
+        and viewport_height = self#dimensions.layout.viewport.height in
         let key = D.key event in
         if List.mem key [ {js|Escape|js}; {js|+|js}; {js|=|js}; {js|-|js}; {js|0|js} ] then (
           self#cancel {js|keyboard shortcut|js};
@@ -550,6 +535,10 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       Option.iter
         (fun (frame : Battlefield_frame.t) ->
           let clip = self#visible_bounds in
+          let pose = self#pose in
+          let left = pose.left and top = pose.top in
+          let content_width = self#dimensions.content.width
+          and content_height = self#dimensions.content.height in
           let tiles =
             Array_ext.filter_map
               (fun id ->
@@ -559,9 +548,10 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
               request.ids
           in
           if Array.length tiles = 0 then (
-            if request.center then (
-              left <- (content_width -. clip.left -. clip.right) /. 2.;
-              self#move_vertical ((content_height -. clip.top -. clip.bottom) /. 2.)))
+            if request.center then
+              self#navigate C.Fit
+                ~left:((content_width -. clip.left -. clip.right) /. 2.)
+                ~top:((content_height -. clip.top -. clip.bottom) /. 2.))
           else
             let scale_x = camera##zoomX /. pixel_x and scale_y = camera##zoomY /. pixel_y in
             let bounds =
@@ -604,29 +594,35 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
             if !y2 -. !y1 +. 24. > clip.bottom -. clip.top then (
               y1 := last.top;
               y2 := last.bottom);
-            (if request.center then (
-               left <- (!x1 +. !x2 -. clip.left -. clip.right) /. 2.;
-               self#move_vertical ((!y1 +. !y2 -. clip.top -. clip.bottom) /. 2.))
+            (if request.center then
+               self#navigate C.Fit
+                 ~left:((!x1 +. !x2 -. clip.left -. clip.right) /. 2.)
+                 ~top:((!y1 +. !y2 -. clip.top -. clip.bottom) /. 2.)
              else
                let visible_top = top in
                let dx = min 0. (!x1 -. left -. clip.left -. 12.) in
-               left <- (left +. if dx <> 0. then dx else max 0. (!x2 -. left -. clip.right +. 12.));
+               let next_left =
+                 left +. if dx <> 0. then dx else max 0. (!x2 -. left -. clip.right +. 12.)
+               in
                let dy = min 0. (!y1 -. visible_top -. clip.top -. 12.) in
-               self#move_vertical ~mode:Pan
-                 (visible_top
-                 +. if dy <> 0. then dy else max 0. (!y2 -. visible_top -. clip.bottom +. 12.)));
+               self#navigate C.Pan ~left:next_left
+                 ~top:
+                   (visible_top
+                   +. if dy <> 0. then dy else max 0. (!y2 -. visible_top -. clip.bottom +. 12.)));
             Performance_trace.instant {js|Battlefield camera reveal|js}
               ~args:
                 (obj
                    [
                      ({js|ids|js}, Js.Json.array (Array.map string request.ids));
                      ({js|center|js}, bool request.center);
-                     ({js|left|js}, number left);
-                     ({js|top|js}, number top);
+                     ({js|left|js}, number self#pose.left);
+                     ({js|top|js}, number self#pose.top);
                    ]))
         (current ())
 
     method private update_commander =
+      let viewport_width = self#dimensions.layout.viewport.width
+      and viewport_height = self#dimensions.layout.viewport.height in
       Option.iter
         (fun (frame : Battlefield_frame.t) ->
           if
@@ -722,6 +718,9 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       self#update_commander;
       Option.iter
         (fun (tracing : Performance_trace.config) ->
+          let { C.left; top; zoom } = self#pose in
+          let viewport_width = self#dimensions.layout.viewport.width
+          and viewport_height = self#dimensions.layout.viewport.height in
           let sample = (left, top, zoom, viewport_width, viewport_height) in
           let drag = G.tracking gesture in
           if
@@ -793,10 +792,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       self#cancel {js|scene reset|js};
       inspection <- {js||js};
       inspection_view <- None;
-      zoom <- 1.;
-      left <- 0.;
-      top <- 0.;
-      layout_ready <- false;
+      C.reset view;
       pending_reveal <- Some { ids; center = true };
       layout_pending <- true
 
