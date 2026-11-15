@@ -1,6 +1,6 @@
 (lang dune 3.24)
 (name hex_analysis)
-(package (name hex_analysis) (depends (ocaml (>= 5.5)) talon yojson))
+(package (name hex_analysis) (depends (ocaml (= 5.5.0)) talon yojson conf-libssl))
 (pin
  (url "git+https://github.com/raven-ml/raven.git#43e6751f83c185548071b8c25adb29ae6082442b")
  (package (name talon))

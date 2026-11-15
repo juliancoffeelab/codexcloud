@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+backend=${1:-}
+mode=${2:-}
+if [[ -z "$backend" || -z "$mode" || "$backend" == --help ]]; then
+  cat <<'HELP'
+Usage: analysis/run BACKEND MODE [arguments]
+  BACKEND: talon | polars | legacy
+  MODE: report | compare-report | compare-dump
+
+Report arguments match report-combat.py, including --baseline and telemetry flags.
+Comparison arguments: BASELINE CURRENT [--out RESULT.json]
+Talon builds in its own locked Dune project with OCaml 5.5.0. The frontend's
+compiler is unchanged. Its C checksum adapter requires OpenSSL headers/libcrypto.
+Set HEX_ANALYSIS_TALON_BINARY to reuse a previously built native executable.
+Polars uses the isolated uv project in analysis/polars.
+HELP
+  exit 0
+fi
+shift 2
+case "$backend:$mode" in
+  talon:report|talon:compare-report|talon:compare-dump)
+    args=("$@")
+    [[ "$mode" == report ]] || args=("$mode" "${args[@]}")
+    if [[ -n "${HEX_ANALYSIS_TALON_BINARY:-}" ]]; then
+      exec "$HEX_ANALYSIS_TALON_BINARY" "${args[@]}"
+    fi
+    dune build --root="$root/analysis/talon" --profile release main.exe
+    exec "$root/analysis/talon/_build/default/main.exe" "${args[@]}"
+    ;;
+  polars:report) exec uv run --project "$root/analysis/polars" python "$root/analysis/polars/main.py" "$@" ;;
+  polars:compare-report) exec uv run --project "$root/analysis/polars" python "$root/analysis/polars/compare.py" "$@" ;;
+  polars:compare-dump) exec uv run --project "$root/analysis/polars" python "$root/scripts/compare-simulation-dumps.py" "$@" ;;
+  legacy:report) exec python3 "$root/.agents/skills/combat-simulation/scripts/report-combat.py" "$@" ;;
+  legacy:compare-report) exec python3 "$root/scripts/compare-simulation-reports.py" "$@" ;;
+  *) printf 'Unknown backend/mode: %s/%s\n' "$backend" "$mode" >&2; exit 2 ;;
+esac

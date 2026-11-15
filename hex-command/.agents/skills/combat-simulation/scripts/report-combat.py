@@ -784,7 +784,7 @@ def build_report(inputs, baseline_inputs, out, unit_usage=False, support_effects
             extra, measured = usage.analyze(inputs, presence=unit_usage or battlefield_presence, support=unit_usage or support_effects)
             tables.update(extra)
         if unit_usage or battlefield_presence:
-            nonleaders = [e for e in units if not any((source.get('unitProfiles') or {}).get(e['unit'], {}).get('leader', False) for source in sources)]
+            nonleaders = tables['nonleader_unit_events']
             tables['army_usage'] = usage.army_usage(nonleaders, tables['purchase_shares'], tables['battlefield_presence'], families)
         value_enabled = battlefield_value or (unit_usage and all(s.get('combatTelemetryVersion') == 1 for s in sources))
         leaders_enabled = leader_audit or (unit_usage and all(s.get('leaderAuditVersion') == 1 for s in sources))

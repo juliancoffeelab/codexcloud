@@ -82,6 +82,7 @@ def analyze(inputs, presence=True, support=True):
     census = defaultdict(Counter)
     totals = defaultdict(Counter)
     present = Counter()
+    role_events = defaultdict(Counter)
     effects = defaultdict(Counter)
     overlaps = defaultdict(Counter)
     catalogs = None
@@ -108,7 +109,7 @@ def analyze(inputs, presence=True, support=True):
             return config['armies'][side], label(side), label(other), landscape
 
         def leader(unit):
-            return profiles.get(unit['type'], {}).get('leader', unit.get('role') == 'leader')
+            return unit.get('role') == 'leader'
 
         def family(unit):
             return profiles.get(unit, {}).get('family', families.get(unit, unit))
@@ -141,6 +142,30 @@ def analyze(inputs, presence=True, support=True):
                 for unit in phase.get('before', []) + phase['units'] + phase.get('losses', []):
                     if not leader(unit):
                         seen[unit['side']].add(unit['type'])
+            if presence:
+                # Match the engine's post-promotion/casualty lookup order, but
+                # keep instance roles through the aggregation boundary.
+                roster = {u['id']: u for u in phase.get('before', []) + phase.get('losses', []) + phase['units']}
+                def role_event(unit, **stats):
+                    if leader(unit):
+                        return
+                    key = (*group(unit['side'], config['landscape']), unit['type'])
+                    role_events[key].update(stats)
+                for loss in phase.get('losses', []):
+                    role_event(loss, lost=1)
+                for action in phase.get('actions', []):
+                    if action['kind'] == 'advance':
+                        role_event(roster[action['unit']], promoted=1)
+                    elif action['kind'] == 'recruit':
+                        previous = {u['id'] for u in phase.get('before', [])}
+                        spawned = [u for u in phase['units'] if u['id'] not in previous and u['type'] == action['type'] and u['tile'] == action['tile'] and u['side'] == side]
+                        if len(spawned) != 1:
+                            raise ValueError('Cannot identify recorded recruit role')
+                        role_event(spawned[0], recruited=1)
+                for combat in phase.get('combats', []):
+                    role_event(roster[combat['unit']], attacks=1, damage=combat.get('damage', 0))
+                    if combat.get('retaliationCount', 0) or combat.get('retaliation', 0):
+                        role_event(roster[combat['target']], retaliations=int(combat.get('retaliationCount', 0) > 0), damage=combat.get('retaliation', 0))
             if not support:
                 continue
             before = phase['before']
@@ -231,7 +256,8 @@ def analyze(inputs, presence=True, support=True):
                                overlapPercent=(100 * counts['overlappingRecipients'] / counts['coveredRecipients'] if counts['coveredRecipients'] else 0)))
     tables = {}
     if presence:
-        tables.update(battlefield_presence=family_rows, battlefield_units=unit_rows)
+        tables.update(battlefield_presence=family_rows, battlefield_units=unit_rows,
+                      nonleader_unit_events=[dict(zip((*DIMS, 'unit'), key), **{field: stats[field] for field in ('recruited','promoted','lost','attacks','retaliations','damage')}) for key, stats in sorted(role_events.items())])
     if support:
         tables['support_effects'] = effect_rows
         tables['support_overlap'] = [dict(zip(DIMS, key[:4]), ability=key[4], providerCount=key[5], recipientsPerProvider=key[6], **stats,
@@ -246,7 +272,7 @@ def army_usage(events, purchases, presence, families):
     totals = defaultdict(Counter)
     counts = defaultdict(Counter)
     for event in events:
-        if event['race'] == event['opponentRace']:
+        if event['race'] == event.get('opponentRace'):
             continue
         for landscape in (event['map'], 'all'):
             key = tuple(event[k] for k in DIMS[:-1]) + (landscape,)
@@ -279,12 +305,19 @@ def unit_damage(presence, battlefield_units, profiles, membership=()):
     units never recorded for that faction are omitted.
     Never average map percentages or per-unit rates to create faction totals.
     """
+    modern = any('nonleaderUnitTurns' in row for row in battlefield_units)
+    if modern:
+        battlefield_units = [dict(row, unitTurns=row['nonleaderUnitTurns'],
+                                  weaponHPDamageDealt=row['nonleaderWeaponHPDamageDealt'],
+                                  thornHPDamageDealt=row['nonleaderThornHPDamageDealt'])
+                             for row in battlefield_units
+                             if row['nonleaderUnitTurns'] or row['nonleaderWeaponHPDamageDealt'] or row['nonleaderThornHPDamageDealt']]
     groups = defaultdict(lambda: dict(presence={}, damage={}))
     faction_units = defaultdict(set)
     for rows in (presence, battlefield_units, membership):
         for row in rows:
             unit = row['unit']
-            if row.get('kind', 'arena') == 'arena' and unit in profiles and not profiles[unit].get('leader', False):
+            if row.get('kind', 'arena') == 'arena' and unit in profiles and (modern or not profiles[unit].get('leader', False)):
                 faction_units[row['race']].add(unit)
     for rows, field in [(presence, 'presence'), (battlefield_units, 'damage')]:
         for row in rows:
@@ -294,7 +327,7 @@ def unit_damage(presence, battlefield_units, profiles, membership=()):
             if unit not in profiles:
                 raise ValueError('Missing recorded unit profile: ' + unit)
             group = groups[tuple(row[k] for k in DIMS)]
-            if not profiles[unit].get('leader', False):
+            if modern or not profiles[unit].get('leader', False):
                 group[field][unit] = row
     result = []
     for key, group in sorted(groups.items()):

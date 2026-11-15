@@ -1,0 +1,3 @@
+; Native analytics has its own compiler and lockfile. Keep it outside the
+; frontend workspace's package-resolution scope.
+(dirs :standard \ talon)

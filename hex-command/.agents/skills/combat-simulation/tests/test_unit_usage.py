@@ -98,6 +98,7 @@ class UsageTests(unittest.TestCase):
         profiles = {'boss':dict(family='boss',leader=True), 'foot':dict(family='foot'),
                     'heavy':dict(family='foot'), 'scout':dict(family='scout'), 'early':dict(family='early')}
         boss, foot, scout = unit('b','boss'), unit('f','foot'), unit('s','scout')
+        boss['role'] = 'leader'
         heavy = unit('f','heavy')
         result = dict(config=dict(armies=dict(player='a',enemy='b'),player='situational',enemy='balanced',landscape='open'),
                       initial=dict(units=[boss,foot,scout,unit('d','early')]), phases=[

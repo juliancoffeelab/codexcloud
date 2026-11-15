@@ -8,6 +8,7 @@ import json
 
 
 CAPTURABLE = {'village', 'grove', 'fort', 'ruins'}
+NONLEADER_FIELDS = ('nonleaderUnitTurns', 'nonleaderWeaponHPDamageDealt', 'nonleaderThornHPDamageDealt')
 FIELDS = ('unitTurns', 'hpDamageDealt', 'hpDamageTaken', 'weaponHPDamageDealt', 'weaponHPDamageTaken',
           'thornHPDamageDealt', 'thornHPDamageTaken', 'armourDamagePrevented',
           'terrainDamagePrevented', 'rawArmourDelta', 'rawTerrainDelta',
@@ -83,7 +84,11 @@ def analyze(inputs, journals, value=True, leaders=True):
                 for label in (landscape, 'all'):
                     key = identity(unit, label)
                     counts[key].update(stats)
-                    unit_counts[(*key[:-1], unit['type'])].update(stats)
+                    unit_stats = dict(stats)
+                    nonleader = unit.get('role') != 'leader'
+                    for source, target in zip(('unitTurns', 'weaponHPDamageDealt', 'thornHPDamageDealt'), NONLEADER_FIELDS):
+                        unit_stats[target] = stats.get(source, 0) if nonleader else 0
+                    unit_counts[(*key[:-1], unit['type'])].update(unit_stats)
 
             for phase_index, phase in enumerate(chapter['phases']):
                 side = phase['side']
@@ -200,7 +205,7 @@ def analyze(inputs, journals, value=True, leaders=True):
     if value:
         tables['battlefield_value'] = rows
         tables['battlefield_unit_value'] = [dict(zip((*DIMS[:-1], 'unit'), key),
-            family=catalogs[key[-1]]['family'], **{f: stats[f] for f in FIELDS})
+            family=catalogs[key[-1]]['family'], **{f: stats[f] for f in (*FIELDS, *NONLEADER_FIELDS)})
             for key, stats in sorted(unit_counts.items())]
     if leaders:
         tables['leader_audit'] = leader_rows

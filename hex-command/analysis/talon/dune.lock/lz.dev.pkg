@@ -1,0 +1,15 @@
+(version dev)
+
+(build
+ (all_platforms ((dune))))
+
+(depends
+ (all_platforms
+  (ocaml dune bytesrw)))
+
+(source
+ (fetch
+  (url
+   git+https://github.com/raven-ml/raven.git#43e6751f83c185548071b8c25adb29ae6082442b)))
+
+(dev)
