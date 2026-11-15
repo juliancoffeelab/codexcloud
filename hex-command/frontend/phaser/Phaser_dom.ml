@@ -44,6 +44,18 @@ external key : Dom.event -> string = "key" [@@mel.get]
 external pointer_type : Dom.event -> string = "pointerType" [@@mel.get]
 external pointer_id : Dom.event -> int = "pointerId" [@@mel.get]
 external button : Dom.event -> int = "button" [@@mel.get]
+external buttons : Dom.event -> int = "buttons" [@@mel.get]
+external default_prevented : Dom.event -> bool = "defaultPrevented" [@@mel.get]
+
+external on_canvas_capture :
+  Phaser.canvas -> string -> (Dom.event -> unit) -> < capture : bool ; passive : bool > Js.t -> unit
+  = "addEventListener"
+[@@mel.send]
+
+external off_canvas_capture : Phaser.canvas -> string -> (Dom.event -> unit) -> bool -> unit
+  = "removeEventListener"
+[@@mel.send]
+
 external event_type : Dom.event -> string = "type" [@@mel.get]
 external prevent : Dom.event -> unit = "preventDefault" [@@mel.send]
 external capture : Phaser.canvas -> int -> unit = "setPointerCapture" [@@mel.send]

@@ -260,7 +260,9 @@ and pointer =
   < id : int
   ; identifier : int
   ; button : int
+  ; buttons : int
   ; isDown : bool
+  ; primaryDown : bool
   ; wasTouch : bool
   ; wasCanceled : bool
   ; leftButtonDown : unit -> bool [@mel.meth]
@@ -270,10 +272,6 @@ and pointer =
   ; y : float
   ; worldX : float
   ; worldY : float
-  ; wasTouch : bool
-  ; identifier : int
-  ; id : int
-  ; isDown : bool
   ; downX : float
   ; downY : float
   ; downTime : float

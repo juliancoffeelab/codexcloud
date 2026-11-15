@@ -29,6 +29,8 @@
   Phaser_picking
   Phaser_assets
   Phaser_input_dom
+  Phaser_pointer
+  Battlefield_gesture
   Phaser_lighting
   Phaser_atmosphere
   Phaser_actor_lighting)
