@@ -1,4 +1,3 @@
 (lang dune 3.24)
 (lock_dir
- (repositories upstream)
- (constraints (cmdliner (= 1.3.0)) (menhir (= 20240715)) (fix (= 20230505))))
+ (constraints (cmdliner (= 2.1.1)) (menhir (= 20260209)) (fix (= 20230505))))

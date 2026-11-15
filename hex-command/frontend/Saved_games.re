@@ -256,9 +256,7 @@ let make = (~session, ~view: Session.model, ~onLoad, ~onDeleted, ~refreshKey=0) 
                          <svg viewBox={js|0 0 24 24|js} ariaHidden=true>
                            <path d={js|m12 3 10 18H2L12 3zM12 9v5M12 17v1|js} />
                          </svg>
-                         <span>
-                           {text({js|This is the game you’re currently playing.|js})}
-                         </span>
+                         <span> {text({js|This is the game you’re currently playing.|js})} </span>
                        </strong>
                        <p>
                          {text({js|Deleting its saves will end this game and open New game.|js})}

@@ -5,9 +5,9 @@
  (name async_search)
  (allow_empty)
  (depends
-  (ocaml (= 5.3.0))
-  (melange (= 7.0.1-53))
+  (ocaml (= 5.5.2))
+  (melange (= 7.0.1-55))
   (js_of_ocaml (= 6.5.0))
-  (lwt (= 5.9.2))
+  (lwt (= 6.1.2))
   (js_of_ocaml-ppx (= 6.5.0))
   (js_of_ocaml-compiler (= 6.5.0))))
