@@ -1,7 +1,7 @@
 type t
 (** Owns contact matching and gesture transitions; never reads mutable Phaser pointers. *)
 
-type view = { left : float; top : float; zoom : float; canvas_left : float; canvas_top : float }
+type view = { pose : Camera_view.pose; canvas_left : float; canvas_top : float }
 
 type command =
   | Pan of float * float

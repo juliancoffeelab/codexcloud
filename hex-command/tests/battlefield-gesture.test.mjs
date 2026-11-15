@@ -3,7 +3,7 @@ import { test } from "vitest";
 import * as Pointer from "@frontend/Phaser_pointer";
 import * as Gesture from "@frontend/Battlefield_gesture";
 
-const view = { left: 100, top: 200, zoom: 1, canvas_left: 0, canvas_top: 0 };
+const view = { pose: { left: 100, top: 200, zoom: 1 }, canvas_left: 0, canvas_top: 0 };
 function pointer(overrides = {}) {
   return {
     id: 0,
