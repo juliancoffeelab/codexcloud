@@ -42,15 +42,24 @@ observed result. Support relevant layers with evidence; explain when a layer doe
 not contribute. Do not substitute an instruction explanation for an architectural
 or implementation cause.
 
-“I failed to apply/follow the instruction” is not a diagnosis.
+Explain the failure with an evidence-backed causal chain: what allowed or
+encouraged the action, how that mechanism operated in this case, and how it
+produced the observed deviation. Admissions such as “it's my fault,” “I ignored
+the instruction” or “I jumped to conclusions” must not substitute for that
+explanation. Responsibility is not causation; do not invent an internal motive
+to fill an evidentiary gap.
 
 An explicit existing rule must not be relabelled as missing or ambiguous to fit an
 explanation. Quoting that rule alone does not establish the cause either.
 Investigate unresolved causal links; distinguish supported conclusions from
 hypotheses and state material uncertainty that remains.
 
-**Complete when:** the causal explanation connects evidence to the deviation, with
-observations separated from hypotheses. An unexplained link remains open work.
+**Complete when:** the causal explanation connects evidence to the deviation,
+with observations separated from hypotheses. Continue investigating material
+causal gaps while relevant evidence is available; do not finalize with an
+admission or a promise to investigate later. If a cause cannot be established,
+identify the specific unavailable evidence and explain what remains unknown
+without presenting a hypothesis as the cause.
 
 ## 3. Propose remedies
 
