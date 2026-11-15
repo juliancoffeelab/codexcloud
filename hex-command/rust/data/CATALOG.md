@@ -5,10 +5,16 @@ engines. Scenario geometry and rosters live in `game/scenario/`; campaign stages
 keep their maps, rosters, scripts and story together in `game/campaigns/`.
 Frontend code receives resolved metadata through the engine API.
 
-Every `scenario.json` and `campaign.json` declares `human: true` or `false`.
+Every `scenario.json` and `campaign.json` declares a nonempty `tags` array, such
+as `["human"]` or `["simulation", "concealment"]`. Tags are explicit, unique
+lowercase identifiers; there is no default `human` tag or fixed category list.
 The engine exposes complete metadata for rendering and loading all registered
 content, including historical map revisions. The frontend filters new-game
-selection lists by `human`; this does not restrict loading or debug launchers.
+selection lists to entries tagged `human` unless “Allow non-human maps” is
+enabled. Human-only browsing shows neither tags nor a filter. When enabled,
+the filter offers the authored tags and matches any selected tag; an empty
+selection shows all permitted entries. This does not restrict loading or debug
+launchers. Campaign stage metadata inherits its campaign's tags.
 Standalone scenarios can declare `characters` when their roster contains named
 actors. Map identifiers and revisions remain the engine's loading keys.
 

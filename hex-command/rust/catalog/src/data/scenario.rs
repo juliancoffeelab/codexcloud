@@ -654,7 +654,8 @@ impl Mission {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Campaign {
-    pub human: bool,
+    /// Explicit browser tags; only an authored `human` tag permits human-only browsing.
+    pub tags: Vec<String>,
     pub tagline: String,
     pub description: String,
     #[serde(rename = "shortDescription")]
@@ -708,7 +709,8 @@ pub struct MapDefinition {
     pub revision: u32,
     pub name: String,
     pub description: String,
-    pub human: bool,
+    /// Authored categories, with no implicit human tag or closed category vocabulary.
+    pub tags: Vec<String>,
     pub cols: i32,
     pub rows: i32,
     pub terrain: Vec<Tile>,

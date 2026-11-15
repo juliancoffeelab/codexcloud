@@ -1,5 +1,5 @@
 {
-  "human": false,
+  "tags": ["simulation"],
   "map": "map.json",
   "roster": "roster.json",
   "characters": [

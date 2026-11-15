@@ -37,8 +37,8 @@ module Settings = {
   let make =
       (
         ~session,
-        ~showHiddenMaps,
-        ~onHiddenMapsChange,
+        ~allowNonHumanMaps,
+        ~onNonHumanMapsChange,
         ~onFollowAiChange,
         ~playtestPreferenceError,
         ~view: Session.model,
@@ -267,42 +267,6 @@ module Settings = {
               onChange={event => onVoiceChange(bindChecked(event))}
             />
           </label>
-          <label className="setting-row sound-row">
-            <span className="label"> {text("Follow AI camera")} </span>
-            <input
-              type_="checkbox"
-              checked={view.follow_ai}
-              onChange={e => onFollowAiChange(bindChecked(e))}
-            />
-          </label>
-          <label className="setting-row">
-            <span className="label"> {text("Player control")} </span>
-            <select
-              ariaLabel="Player control"
-              disabled={state.turn != Domain.Turn_phase.Player}
-              value={Option.fold(~none="human", ~some=p => Setup.preset(p).id, view.player_ai)}
-              onChange={event => {
-                let selected = selectValue(selectTarget(event));
-                let policy =
-                  List.find_opt(
-                    (preset: Setup.difficulty) => preset.id == selected,
-                    Setup.difficulties,
-                  );
-                Session.set_player_ai(
-                  session,
-                  Option.map((preset: Setup.difficulty) => preset.policy, policy),
-                );
-              }}>
-              <option value="human"> {text("You")} </option>
-              {eachList(Setup.difficulties, preset =>
-                 <option key={preset.Setup.id} value={preset.id}>
-                   {text("AI · " ++ preset.name)}
-                 </option>
-               )}
-            </select>
-          </label>
-          {playtestPreferenceError != ""
-             ? <p role="alert"> {text(playtestPreferenceError)} </p> : React.null}
           <details className="advanced">
             <summary className="setting-row">
               <span className="label"> {text("Advanced")} </span>
@@ -311,11 +275,47 @@ module Settings = {
               </svg>
             </summary>
             <label className="setting-row sound-row">
-              <span className="label"> {text("Show hidden maps")} </span>
+              <span className="label"> {text("Follow AI camera")} </span>
               <input
                 type_="checkbox"
-                checked=showHiddenMaps
-                onChange={e => onHiddenMapsChange(bindChecked(e))}
+                checked={view.follow_ai}
+                onChange={e => onFollowAiChange(bindChecked(e))}
+              />
+            </label>
+            <label className="setting-row">
+              <span className="label"> {text("Player control")} </span>
+              <select
+                ariaLabel="Player control"
+                disabled={state.turn != Domain.Turn_phase.Player}
+                value={Option.fold(~none="human", ~some=p => Setup.preset(p).id, view.player_ai)}
+                onChange={event => {
+                  let selected = selectValue(selectTarget(event));
+                  let policy =
+                    List.find_opt(
+                      (preset: Setup.difficulty) => preset.id == selected,
+                      Setup.difficulties,
+                    );
+                  Session.set_player_ai(
+                    session,
+                    Option.map((preset: Setup.difficulty) => preset.policy, policy),
+                  );
+                }}>
+                <option value="human"> {text("You")} </option>
+                {eachList(Setup.difficulties, preset =>
+                   <option key={preset.Setup.id} value={preset.id}>
+                     {text(preset.name ++ " AI")}
+                   </option>
+                 )}
+              </select>
+            </label>
+            {playtestPreferenceError != ""
+               ? <p role="alert"> {text(playtestPreferenceError)} </p> : React.null}
+            <label className="setting-row sound-row">
+              <span className="label"> {text("Allow non-human maps")} </span>
+              <input
+                type_="checkbox"
+                checked=allowNonHumanMaps
+                onChange={e => onNonHumanMapsChange(bindChecked(e))}
               />
             </label>
             <label className="setting-row sound-row">

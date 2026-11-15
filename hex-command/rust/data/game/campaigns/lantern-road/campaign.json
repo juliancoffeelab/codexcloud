@@ -68,5 +68,5 @@
       "name": "Quarry bear"
     }
   ],
-  "human": true
+  "tags": ["human"]
 }

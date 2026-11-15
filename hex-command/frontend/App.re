@@ -204,7 +204,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     },
     [|session|],
   );
-  let (showHiddenMaps, setShowHiddenMaps) = React.useState(() => false);
+  let (allowNonHumanMaps, setAllowNonHumanMaps) = React.useState(() => false);
   let (playtestPreferenceError, setPlaytestPreferenceError) = React.useState(() => "");
   let savePreference = (key, enabled) => {
     setPlaytestPreferenceError(_ => "");
@@ -212,8 +212,8 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     | error => setPlaytestPreferenceError(_ => Foreign_error.exception_(error))
     };
   };
-  let changeHiddenMaps = enabled => {
-    setShowHiddenMaps(_ => enabled);
+  let changeNonHumanMaps = enabled => {
+    setAllowNonHumanMaps(_ => enabled);
     savePreference("hex-command-show-hidden-maps", enabled);
   };
   let changeFollowAi = enabled => {
@@ -223,7 +223,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
   React.useEffect0(() => {
     try(
       {
-        setShowHiddenMaps(_ =>
+        setAllowNonHumanMaps(_ =>
           Js.Nullable.toOption(Browser_storage.storage_get("hex-command-show-hidden-maps"))
           == Some("true")
         );
@@ -590,8 +590,8 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
         <Dialogs.Settings
           voiceEnabled
           onVoiceChange=changeVoice
-          showHiddenMaps
-          onHiddenMapsChange=changeHiddenMaps
+          allowNonHumanMaps
+          onNonHumanMapsChange=changeNonHumanMaps
           onFollowAiChange=changeFollowAi
           playtestPreferenceError
           enemyDetailsError
@@ -627,7 +627,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
              />
            : React.null}
         <New_game
-          showHiddenMaps
+          allowNonHumanMaps
           session
           view
           actions

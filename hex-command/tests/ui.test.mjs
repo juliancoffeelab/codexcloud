@@ -231,14 +231,11 @@ test("The real embedding mounts native presentation, browser tools and reusable 
   await click(".ng-modes button:nth-child(2)");
   assert.ok(element(".new-game-dialog .setup-map-preview polygon"));
   await click(".ng-choice");
-  const strip = element('.ng-strip[aria-label="Your race"]');
-  const choices = [...strip.querySelectorAll('[role="radio"]')];
-  await act(async () => {
-    choices[0].focus();
-    choices[0].dispatchEvent(new KeyboardEvent("keydown", { key: "End", bubbles: true }));
-  });
-  assert.equal(document.activeElement, choices.at(-1));
-  assert.equal(choices.at(-1).getAttribute("aria-checked"), "true");
+  assert.equal(
+    host.querySelector('.ng-strip[aria-label="Your race"]'),
+    null,
+    "Maps with starting armies keep their authored roster",
+  );
   await click(".ng-start-footer button:first-child");
   await click(".ng-browse-footer > button");
   assert.equal(
@@ -642,13 +639,13 @@ test.each(["scenario", "campaign"])(
     assert.deepEqual(
       choices(),
       Catalog.campaigns(catalog)
-        .filter((campaign) => campaign.human)
+        .filter((campaign) => campaign.tags.includes("human"))
         .map((campaign) => campaign.name.toLowerCase()),
     );
     await click(".ng-modes button:nth-child(2)");
     const scenarios = Catalog.scenario_maps(catalog);
-    assert.equal(choices().length, scenarios.filter((map) => map.human).length);
-    for (const map of scenarios.filter((map) => !map.human))
+    assert.equal(choices().length, scenarios.filter((map) => map.tags.includes("human")).length);
+    for (const map of scenarios.filter((map) => !map.tags.includes("human")))
       assert(!choices().includes(map.name.toLowerCase()));
     if (mode === "campaign") await click(".ng-modes button:first-child");
     await click(".ng-choice");
@@ -684,12 +681,18 @@ test.each(["scenario", "campaign"])(
         blocks: { planner: "full", recruiter: "aggressive-predictor", campaign: "mission" },
       },
     });
-    if (mode === "scenario")
-      assert.deepEqual(saved.checkpoint.state.armies, ["human", "skeletons"]);
-    else
+    if (mode === "scenario") {
+      assert.equal(saved.checkpoint.state.armies, undefined);
+      const roster = (state) =>
+        state.units.map(({ type, faction, tile }) => ({ type, faction, tile }));
+      const authored = Native.save(
+        createBattle({ kind: "scenario", map: saved.checkpoint.state.mapId }),
+      ).state;
+      assert.deepEqual(roster(saved.checkpoint.state), roster(authored));
+    } else
       assert.equal(
         saved.checkpoint.state.campaign.id,
-        Catalog.campaigns(catalog).find((campaign) => campaign.human).id,
+        Catalog.campaigns(catalog).find((campaign) => campaign.tags.includes("human")).id,
       );
   },
 );

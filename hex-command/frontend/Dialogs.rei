@@ -7,8 +7,8 @@ module Settings: {
   let make:
     (
       ~session: Session.t,
-      ~showHiddenMaps: bool,
-      ~onHiddenMapsChange: bool => unit,
+      ~allowNonHumanMaps: bool,
+      ~onNonHumanMapsChange: bool => unit,
       ~onFollowAiChange: bool => unit,
       ~playtestPreferenceError: string,
       ~view: Session.model,

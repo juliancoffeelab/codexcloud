@@ -17,7 +17,7 @@ test("Catalog retains the latest scenario revisions and non-human metadata", () 
     Catalog.scenario_maps(catalog).filter((map) => map.id === latest.id),
     [latest],
   );
-  assert(Catalog.scenario_maps(catalog).some((map) => !map.human));
+  assert(Catalog.scenario_maps(catalog).some((map) => !map.tags.includes("human")));
   assert.deepEqual(Catalog.campaigns(catalog), Catalog.raw(catalog).campaigns);
 });
 test("Developer showcase contains both factions' playable units and expansion space", async () => {

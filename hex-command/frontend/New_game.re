@@ -201,7 +201,7 @@ module RaceStrip = {
 let make =
     (
       ~session: Session.t,
-      ~showHiddenMaps,
+      ~allowNonHumanMaps,
       ~view: Session.model,
       ~actions: Session.actions,
       ~request: option((int, Setup.mode)),
@@ -217,7 +217,6 @@ let make =
   let (mapId, setMap) = React.useState(() => "mirror");
   let (campaignId, setCampaign) = React.useState(() => "lantern-road");
   let (playerAi, setPlayerAi) = React.useState(() => None);
-  let (scenarioArmies, setScenarioArmies) = React.useState(() => false);
   let (player, setPlayer) = React.useState(() => "human");
   let (opponent, setOpponent) = React.useState(() => "skeletons");
   let (campaignPlanner, setCampaignPlanner) = React.useState(() => Domain.Planner_kind.Queued);
@@ -235,21 +234,58 @@ let make =
   let (starting, setStarting) = React.useState(() => false);
   let startGuard = React.useRef(false);
   let difficulty = Setup.difficulty(planner, recruiter);
+  let (selectedTags, setSelectedTags) = React.useState(() => []);
+  let permitted = tags => allowNonHumanMaps || Array.exists(tag => tag == "human", tags);
+  let matches = (selection, tags) =>
+    selection == [] || Array.exists(tag => List.mem(tag, selection), tags);
+  let allMaps =
+    List.filter(
+      (map: Domain.map_definition) => permitted(map.tags),
+      Catalog.scenario_maps(view.catalog),
+    );
+  let allCampaigns =
+    List.filter((c: Domain.campaign) => permitted(c.tags), Catalog.campaigns(view.catalog));
   let maps =
     List.filter(
-      (map: Domain.map_definition) => map.human || showHiddenMaps,
-      Catalog.scenario_maps(view.catalog),
+      (map: Domain.map_definition) => !allowNonHumanMaps || matches(selectedTags, map.tags),
+      allMaps,
     );
   let campaigns =
     List.filter(
-      (c: Domain.campaign) => c.human || showHiddenMaps,
-      Catalog.campaigns(view.catalog),
+      (c: Domain.campaign) => !allowNonHumanMaps || matches(selectedTags, c.tags),
+      allCampaigns,
     );
+  let entries =
+    mode == Setup.Campaign
+      ? List.map((c: Domain.campaign) => c.tags, allCampaigns)
+      : List.map((map: Domain.map_definition) => map.tags, allMaps);
+  let tagOptions =
+    List.concat_map(Array.to_list, entries)
+    |> List.sort_uniq((a, b) =>
+         a == b ? 0 : a == "human" ? (-1) : b == "human" ? 1 : String.compare(a, b)
+       )
+    |> List.map(tag =>
+         (
+           tag,
+           List.length(List.filter(tags => Array.exists(value => value == tag, tags), entries)),
+         )
+       );
+  let countTags = selection =>
+    List.length(List.filter(tags => matches(selection, tags), entries));
+  let tagsView = tags =>
+    allowNonHumanMaps
+      ? <span className="ng-map-tags">
+          {eachList(Array.to_list(tags), tag =>
+             <span key=tag> {text(Map_tag_filter.label(tag))} </span>
+           )}
+        </span>
+      : React.null;
   let campaign = Catalog.campaign(view.catalog, campaignId);
   let selectedMap =
     mode == Setup.Campaign
       ? Catalog.mission_map(view.catalog, campaign.missions[0])
       : Catalog.map(view.catalog, mapId);
+  let hasStartingArmies = Array.length(selectedMap.units) > 0;
   let mapName = (map: Domain.map_definition) =>
     map.id == "river-valley" ? "River Valley" : map.name;
   let setDifficulty = policy => {
@@ -341,7 +377,7 @@ let make =
           } else {
             actions.reset(
               ~setup,
-              ~armies=?scenarioArmies ? None : Some((player, opponent)),
+              ~armies=?hasStartingArmies ? None : Some((player, opponent)),
               mapId,
             );
           };
@@ -389,26 +425,37 @@ let make =
     <footer className={browsing ? "ng-footer ng-browse-footer" : "ng-footer ng-start-footer"}>
       {browsing
          ? <>
-             <nav className="ng-modes" ariaLabel="Game mode">
-               {eachList(
-                  [(Setup.Campaign, "Campaigns"), (Setup.Skirmish, "Scenarios")],
-                  ((tab, label)) =>
-                  <button
-                    ariaPressed={string_of_bool(mode == tab)}
-                    disabled=starting
-                    onClick={_ => {
-                      setMode(_ => tab);
-                      setError(_ => "");
-                      if (tab == Setup.Campaign) {
-                        preloadCampaign(campaign);
-                      } else {
-                        Terrain_preload.map(view.catalog, mapId);
-                      };
-                    }}>
-                    {text(label)}
-                  </button>
-                )}
-             </nav>
+             <div className="ng-browse-tools">
+               <nav className="ng-modes" ariaLabel="Game mode">
+                 {eachList(
+                    [(Setup.Campaign, "Campaigns"), (Setup.Skirmish, "Scenarios")],
+                    ((tab, label)) =>
+                    <button
+                      ariaPressed={string_of_bool(mode == tab)}
+                      disabled=starting
+                      onClick={_ => {
+                        setMode(_ => tab);
+                        setSelectedTags(_ => []);
+                        setError(_ => "");
+                        if (tab == Setup.Campaign) {
+                          preloadCampaign(campaign);
+                        } else {
+                          Terrain_preload.map(view.catalog, mapId);
+                        };
+                      }}>
+                      {text(label)}
+                    </button>
+                  )}
+               </nav>
+               {allowNonHumanMaps
+                  ? <Map_tag_filter
+                      options=tagOptions
+                      selected=selectedTags
+                      onChange={tags => setSelectedTags(_ => tags)}
+                      count=countTags
+                    />
+                  : React.null}
+             </div>
              {!view.awaiting_new_game
                 ? <button onClick={_ => dismiss()} disabled=starting> {text("Cancel")} </button>
                 : React.null}
@@ -439,67 +486,88 @@ let make =
       {opened
          ? <>
              {browsing
-                ? <div className="ng-cards">
-                    {mode == Setup.Campaign
-                       ? eachList(campaigns, (c: Domain.campaign) =>
-                           <button
-                             key={c.id}
-                             ariaCurrent={c.id == campaignId ? "true" : "false"}
-                             className="ng-choice"
-                             onFocus={_ => preloadCampaign(c)}
-                             onPointerEnter={_ => preloadCampaign(c)}
-                             onClick={_ => {
-                               setCampaign(_ => c.id);
-                               setBrowsing(_ => false);
-                               setError(_ => "");
-                               preloadCampaign(c);
-                             }}>
-                             <span className="ng-choice-map">
-                               <MapThumbnail
-                                 map={Catalog.mission_map(view.catalog, c.missions[0])}
-                                 backdrop=true
-                               />
-                             </span>
-                             <span className="ng-choice-art">
-                               <Sprite
-                                 artwork={view.artwork}
-                                 name={c.leader}
-                                 width=64.
-                                 height=64.
-                               />
-                             </span>
-                             <strong> {text(c.name)} </strong>
-                             <p> {text(c.short_description)} </p>
-                             <small>
-                               {text(
-                                  string_of_int(Array.length(c.missions))
-                                  ++ (Array.length(c.missions) == 1 ? " mission" : " missions"),
-                                )}
-                             </small>
+                ? <>
+                    {allowNonHumanMaps
+                       ? <div className="ng-map-filters">
+                           <p className="help">
+                             {text(
+                                string_of_int(countTags(selectedTags))
+                                ++ (mode == Setup.Campaign ? " campaigns" : " scenarios"),
+                              )}
+                           </p>
+                         </div>
+                       : React.null}
+                    {countTags(allowNonHumanMaps ? selectedTags : []) == 0
+                       ? <div className="ng-empty">
+                           <p> {text("No maps match these tags.")} </p>
+                           <button onClick={_ => setSelectedTags(_ => [])}>
+                             {text("Clear filters")}
                            </button>
-                         )
-                       : eachList(maps, (map: Domain.map_definition) =>
-                           <button
-                             key={map.id}
-                             ariaCurrent={map.id == mapId ? "true" : "false"}
-                             className="ng-choice"
-                             onFocus={_ => Terrain_preload.map(view.catalog, map.id)}
-                             onPointerEnter={_ => Terrain_preload.map(view.catalog, map.id)}
-                             onClick={_ => {
-                               setMap(_ => map.id);
-                               setScenarioArmies(_ => !map.human);
-                               setBrowsing(_ => false);
-                               setError(_ => "");
-                               Terrain_preload.map(view.catalog, map.id);
-                             }}>
-                             <span className="ng-choice-map">
-                               <MapThumbnail map backdrop=true />
-                             </span>
-                             <strong> {text(mapName(map))} </strong>
-                             <p> {text(map.description)} </p>
-                           </button>
-                         )}
-                  </div>
+                         </div>
+                       : React.null}
+                    <div className="ng-cards">
+                      {mode == Setup.Campaign
+                         ? eachList(campaigns, (c: Domain.campaign) =>
+                             <button
+                               key={c.id}
+                               ariaCurrent={c.id == campaignId ? "true" : "false"}
+                               className="ng-choice"
+                               onFocus={_ => preloadCampaign(c)}
+                               onPointerEnter={_ => preloadCampaign(c)}
+                               onClick={_ => {
+                                 setCampaign(_ => c.id);
+                                 setBrowsing(_ => false);
+                                 setError(_ => "");
+                                 preloadCampaign(c);
+                               }}>
+                               <span className="ng-choice-map">
+                                 <MapThumbnail
+                                   map={Catalog.mission_map(view.catalog, c.missions[0])}
+                                   backdrop=true
+                                 />
+                               </span>
+                               <span className="ng-choice-art">
+                                 <Sprite
+                                   artwork={view.artwork}
+                                   name={c.leader}
+                                   width=64.
+                                   height=64.
+                                 />
+                               </span>
+                               <strong> {text(c.name)} </strong>
+                               {tagsView(c.tags)}
+                               <p> {text(c.short_description)} </p>
+                               <small>
+                                 {text(
+                                    string_of_int(Array.length(c.missions))
+                                    ++ (Array.length(c.missions) == 1 ? " mission" : " missions"),
+                                  )}
+                               </small>
+                             </button>
+                           )
+                         : eachList(maps, (map: Domain.map_definition) =>
+                             <button
+                               key={map.id}
+                               ariaCurrent={map.id == mapId ? "true" : "false"}
+                               className="ng-choice"
+                               onFocus={_ => Terrain_preload.map(view.catalog, map.id)}
+                               onPointerEnter={_ => Terrain_preload.map(view.catalog, map.id)}
+                               onClick={_ => {
+                                 setMap(_ => map.id);
+                                 setBrowsing(_ => false);
+                                 setError(_ => "");
+                                 Terrain_preload.map(view.catalog, map.id);
+                               }}>
+                               <span className="ng-choice-map">
+                                 <MapThumbnail map backdrop=true />
+                               </span>
+                               <strong> {text(mapName(map))} </strong>
+                               {tagsView(map.tags)}
+                               <p> {text(map.description)} </p>
+                             </button>
+                           )}
+                    </div>
+                  </>
                 : <>
                     {mode == Setup.Campaign
                        ? <div className="ng-campaign-info">
@@ -511,7 +579,7 @@ let make =
                            />
                            <p> {text(campaign.short_description)} </p>
                          </div>
-                       : !scenarioArmies
+                       : !hasStartingArmies
                            ? <>
                                <RaceStrip
                                  session
@@ -531,7 +599,7 @@ let make =
                                />
                              </>
                            : <p className="help">
-                               {text("Using this scenario’s authored armies.")}
+                               {text("This map provides the starting armies.")}
                              </p>}
                     <section className="ng-difficulty">
                       <div className="ng-label"> {text("Difficulty")} </div>
@@ -561,42 +629,6 @@ let make =
                         <span className="label"> {text("Advanced")} </span>
                         chevron
                       </summary>
-                      <div className="ng-advanced-group">
-                        <span className="label"> {text("Player control")} </span>
-                        <div
-                          className="ng-segments ng-player-control"
-                          role="group"
-                          ariaLabel="Player control">
-                          <button
-                            ariaPressed={string_of_bool(playerAi == None)}
-                            onClick={_ => setPlayerAi(_ => None)}>
-                            {text("You")}
-                          </button>
-                          {eachList(Setup.difficulties, preset =>
-                             <button
-                               key={preset.Setup.id}
-                               ariaPressed={string_of_bool(playerAi == Some(preset.policy))}
-                               onClick={_ => setPlayerAi(_ => Some(preset.policy))}>
-                               {text("AI · " ++ preset.name)}
-                             </button>
-                           )}
-                        </div>
-                        <p className="help">
-                          {text(
-                             "AI control is saved with this battle. Story dialogue still waits for you.",
-                           )}
-                        </p>
-                      </div>
-                      {mode == Setup.Skirmish
-                         ? <label className="setting-row sound-row">
-                             <span className="label"> {text("Use scenario armies")} </span>
-                             <input
-                               type_="checkbox"
-                               checked=scenarioArmies
-                               onChange={e => setScenarioArmies(_ => bindChecked(e))}
-                             />
-                           </label>
-                         : React.null}
                       {mode == Setup.Skirmish
                          ? <div className="ng-advanced-group">
                              <span className="label"> {text("First turn")} </span>
@@ -670,6 +702,32 @@ let make =
                         </div>
                       </details>
                       <p className="help"> {text(recruiterHelp(recruiter))} </p>
+                      <div className="ng-advanced-group ng-control-options">
+                        <span className="label"> {text("Player control")} </span>
+                        <div
+                          className="ng-segments ng-player-control"
+                          role="group"
+                          ariaLabel="Player control">
+                          <button
+                            ariaPressed={string_of_bool(playerAi == None)}
+                            onClick={_ => setPlayerAi(_ => None)}>
+                            {text("You")}
+                          </button>
+                          {eachList(Setup.difficulties, preset =>
+                             <button
+                               key={preset.Setup.id}
+                               ariaPressed={string_of_bool(playerAi == Some(preset.policy))}
+                               onClick={_ => setPlayerAi(_ => Some(preset.policy))}>
+                               {text(preset.name ++ " AI")}
+                             </button>
+                           )}
+                        </div>
+                        <p className="help">
+                          {text(
+                             "AI control is saved with this battle. Story dialogue still waits for you.",
+                           )}
+                        </p>
+                      </div>
                     </details>
                   </>}
              {error != "" ? <p role="alert" className="ng-error"> {text(error)} </p> : React.null}
