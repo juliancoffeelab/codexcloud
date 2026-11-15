@@ -21,13 +21,13 @@ class picking (camera : Phaser.camera) =
     Phaser.Geom.Polygon.create (Array.map (fun p -> [%mel.obj { x = p##x; y = p##y }]) offsets)
   in
   object (self)
-    val mutable identity = ""
+    val mutable identity = {js||js}
     val rows : (int, (int, cell) Map.t) Map.t = Map.create ()
     val coordinate = Phaser.Geom.Vector2.create ()
 
     initializer
-      Phaser.Tilemaps.stagger_axis layer "y";
-      Phaser.Tilemaps.stagger_index layer "odd"
+      Phaser.Tilemaps.stagger_axis layer {js|y|js};
+      Phaser.Tilemaps.stagger_index layer {js|odd|js}
 
     method prepare key (tiles : Terrain_plan.tile array) =
       if key <> identity then (
@@ -87,5 +87,5 @@ class picking (camera : Phaser.camera) =
 
     method clear =
       Map.clear rows;
-      identity <- ""
+      identity <- {js||js}
   end

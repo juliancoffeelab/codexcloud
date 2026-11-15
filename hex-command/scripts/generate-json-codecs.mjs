@@ -24,7 +24,8 @@ const label = (s) => {
   s = snake(s);
   return keywords.has(s) ? s + "_" : s;
 };
-const quote = JSON.stringify;
+const quote = (value) =>
+  `{js|${JSON.stringify(value).slice(1, -1).replaceAll("|js}", "\\x7cjs}")}|js}`;
 const attr = (s, k) => s?.match(new RegExp(`(?:^|[ (,])${k}\\s*=\\s*"([^"]+)"`))?.[1];
 function renamed(name, attrs, parent, variant = false) {
   const rename = attr(attrs, "rename");
@@ -109,7 +110,8 @@ const enumConstructor = (e, v) =>
 // containers; named payloads keep their own declared representation.
 function jsDictionaryType(t, v, encode) {
   if (t.kind === "named" && ["BTreeMap", "HashMap"].includes(t.name)) {
-    if (t.args[0].name !== "String") throw new Error("Fixture JS dictionaries require string keys");
+    if (!["String", "Text"].includes(t.args[0].name))
+      throw new Error("Fixture JS dictionaries require string keys");
     return `${encode ? "put_js_dict" : "get_js_dict"} (fun v -> ${jsDictionaryType(t.args[1], "v", encode)}) (${v})`;
   }
   if (t.kind === "named" && t.name === "Vec")
@@ -151,33 +153,33 @@ open ${typeModule}
 external has_property : Js.Json.t -> string -> bool = "hasOwn" [@@mel.scope "Object"]
 external dict_create : unit Js.Nullable.t -> 'a Js.Dict.t = "create" [@@mel.scope "Object"]
 external object_from_entries : (string * Js.Json.t) array -> Js.Json.t = "fromEntries" [@@mel.scope "Object"]
-let get_string v = match Js.Json.decodeString v with Some x->Utf8.of_js x|None->invalid_arg "fixture string"
-let put_string v = Js.Json.string (Utf8.to_js v)
-let get_js_string v = match Js.Json.decodeString v with Some x->x|None->invalid_arg "fixture JS string"
-let get_js_dict f v = match Js.Json.decodeObject v with Some values -> let result = dict_create Js.Nullable.null in Array.iter (fun (key,value) -> Js.Dict.set result key (f value)) (Js.Dict.entries values); result | None -> invalid_arg "fixture JS dictionary"
+let get_string v = match Js.Json.decodeString v with Some x->x|None->invalid_arg {js|fixture string|js}
+let put_string v = Js.Json.string v
+let get_js_string v = match Js.Json.decodeString v with Some x->x|None->invalid_arg {js|fixture JS string|js}
+let get_js_dict f v = match Js.Json.decodeObject v with Some values -> let result = dict_create Js.Nullable.null in Array.iter (fun (key,value) -> Js.Dict.set result key (f value)) (Js.Dict.entries values); result | None -> invalid_arg {js|fixture JS dictionary|js}
 let put_js_dict f values = object_from_entries (Array.map (fun (key,value) -> (key,f value)) (Js.Dict.entries values))
-let get_number v = match Js.Json.decodeNumber v with Some x->x|None->invalid_arg "fixture number"
-let get_integer minimum maximum v = let n = get_number v in if floor n <> n || n < minimum || n > maximum then invalid_arg "Invalid historical integer" else n
-let get_bool v = match Js.Json.decodeBoolean v with Some x->x|None->invalid_arg "fixture bool"
+let get_number v = match Js.Json.decodeNumber v with Some x->x|None->invalid_arg {js|fixture number|js}
+let get_integer minimum maximum v = let n = get_number v in if floor n <> n || n < minimum || n > maximum then invalid_arg {js|Invalid historical integer|js} else n
+let get_bool v = match Js.Json.decodeBoolean v with Some x->x|None->invalid_arg {js|fixture bool|js}
 let list_to_array value = Array.of_list value
 let list_of_array value = Array.to_list value
 let sequence_to_array value = value
 let sequence_of_array value = value
-let get_array f v = match Js.Json.decodeArray v with Some a->Array.map f a|None->invalid_arg "fixture array"
+let get_array f v = match Js.Json.decodeArray v with Some a->Array.map f a|None->invalid_arg {js|fixture array|js}
 let put_array f values = Js.Json.array (Array.map f values)
-let get_list f v = match Js.Json.decodeArray v with Some a->Array.to_list (Array.map f a)|None->invalid_arg "fixture array"
+let get_list f v = match Js.Json.decodeArray v with Some a->Array.to_list (Array.map f a)|None->invalid_arg {js|fixture array|js}
 let put_list f values = Js.Json.array (Array.of_list (List.map f values))
 let get_option f v = if Js.Json.classify v=Js.Json.JSONNull then None else Some(f v)
 let put_option f = function None->Js.Json.null|Some v->f v
-let field v key = match Js.Json.decodeObject v with Some d->(match Js.Dict.get d key with Some value when not (Js.Types.test value Js.Types.Undefined) -> value | _ -> Js.Json.null)|None->invalid_arg "fixture object"
+let field v key = match Js.Json.decodeObject v with Some d->(match Js.Dict.get d key with Some value when not (Js.Types.test value Js.Types.Undefined) -> value | _ -> Js.Json.null)|None->invalid_arg {js|fixture object|js}
 let has v key = has_property v key && (match Js.Json.decodeObject v with Some d -> (match Js.Dict.get d key with Some value -> not (Js.Types.test value Js.Types.Undefined) | None -> false) | None -> false)
 let obj fields = object_from_entries (Array.of_list fields)
-let get_map k f v = match Js.Json.decodeObject v with Some d->Array.to_list (Array.map(fun (key,v)->k(Js.Json.string key),f v)(Js.Dict.entries d))|None->invalid_arg "fixture map"
-let put_map k f v = obj (List.map(fun (key,v)->Utf8.to_js(get_string(k key)),f v)v)
+let get_map k f v = match Js.Json.decodeObject v with Some d->Array.to_list (Array.map(fun (key,v)->k(Js.Json.string key),f v)(Js.Dict.entries d))|None->invalid_arg {js|fixture map|js}
+let put_map k f v = obj (List.map(fun (key,v)->get_string(k key),f v)v)
 `;
 for (let n = 2; n <= 4; n++) {
   const ns = Array.from({ length: n }, (_, i) => i);
-  output += `let get_tuple_${n} ${ns.map((i) => "f" + i).join(" ")} v = let a=match Js.Json.decodeArray v with Some a when Array.length a=${n}->a|_->invalid_arg "fixture tuple" in (${ns.map((i) => `f${i} a.(${i})`).join(",")})\n`;
+  output += `let get_tuple_${n} ${ns.map((i) => "f" + i).join(" ")} v = let a=match Js.Json.decodeArray v with Some a when Array.length a=${n}->a|_->invalid_arg {js|fixture tuple|js} in (${ns.map((i) => `f${i} a.(${i})`).join(",")})\n`;
   output += `let put_tuple_${n} ${ns.map((i) => "f" + i).join(" ")} (${ns.map((i) => "v" + i).join(",")}) = Js.Json.array [|${ns.map((i) => `f${i} v${i}`).join(";")}|]\n`;
 }
 function zero(t) {
@@ -222,7 +224,7 @@ function body(e, b, encode, v, parent = e.serde) {
     if (f.serde.includes("default") || /\bskip\b/.test(f.serde)) {
       let def =
         f.ty.name === "String"
-          ? '""'
+          ? "{js||js}"
           : f.ty.name === "bool"
             ? "false"
             : f.ty.name === "Vec"
@@ -253,7 +255,9 @@ for (const encode of [false, true]) {
       output +=
         (e.js_value && e.js_selector === "dict"
           ? jsDictionaryType(e.ty, "v", encode)
-          : ty(e.ty, "v", encode)) + "\n";
+          : e.js_value && e.js_selector === "string"
+            ? `${encode ? "Js.Json.string" : "get_js_string"} v`
+            : ty(e.ty, "v", encode)) + "\n";
       continue;
     }
     if (e.kind === "struct") {
@@ -324,12 +328,12 @@ for (const encode of [false, true]) {
           })
           .join("") + "\n";
     } else {
-      output += `match get_string (${tag ? `field v ${quote(tag)}` : '(match Js.Json.decodeString v with Some _->v|None-> let d=match Js.Json.decodeObject v with Some d->d|None->invalid_arg "fixture variant" in Js.Json.string (Js.Dict.keys d).(0))'}) with\n`;
+      output += `match get_string (${tag ? `field v ${quote(tag)}` : "(match Js.Json.decodeString v with Some _->v|None-> let d=match Js.Json.decodeObject v with Some d->d|None->invalid_arg {js|fixture variant|js} in Js.Json.string (Js.Dict.keys d).(0))"}) with\n`;
       for (const variant of e.variants) {
         const name = renamed(variant.name, variant.serde, e.serde, true),
           constructor = enumConstructor(e, variant),
           b = variant.body;
-        output += `| ${quote(name)} -> `;
+        output += `| matched_text when matched_text = ${quote(name)} -> `;
         if (b.style === "unit") output += constructor;
         else if (b.style === "named")
           output += `${constructor} ${body({ ...e, transparent: false }, b, false, tag ? "v" : `(field v ${quote(name)})`, "")}`;
@@ -337,18 +341,18 @@ for (const encode of [false, true]) {
           output += `${constructor} (${b.fields.map((f) => ty(f.ty, `field v ${quote(name)}`, false)).join(",")})`;
         output += "\n";
       }
-      output += '| _ -> invalid_arg "unknown fixture variant"\n';
+      output += "| _ -> invalid_arg {js|unknown fixture variant|js}\n";
     }
   }
 }
 output +=
-  '\nlet is_ok = function Ok _ -> true | Error _ -> false\nlet result_error = function Error error -> error | Ok _ -> invalid_arg "fixture error"\nlet ok value = Ok value\nlet error value = Error value\nlet value = function Ok value -> value | Error _ -> invalid_arg \"fixture result\"\n';
+  "\nlet is_ok = function Ok _ -> true | Error _ -> false\nlet result_error = function Error error -> error | Ok _ -> invalid_arg {js|fixture error|js}\nlet ok value = Ok value\nlet error value = Error value\nlet value = function Ok value -> value | Error _ -> invalid_arg {js|fixture result|js}\n";
 for (const [key, module] of mapKeys)
   output +=
     module === "Hashtbl"
       ? `let bindings_${key}_map value = Array.of_seq (Hashtbl.to_seq value)\n`
       : `let bindings_${key}_map value = Array.of_list (${module}.bindings value)\n`;
-if (options["--utf8"]) output = output.replaceAll("Utf8.", options["--utf8"] + ".");
+
 const outputPath = options["--out"];
 if (!existsSync(outputPath) || readFileSync(outputPath, "utf8") !== output)
   writeFileSync(outputPath, output);

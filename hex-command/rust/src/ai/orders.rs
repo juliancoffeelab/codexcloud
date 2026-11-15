@@ -1,4 +1,5 @@
 //! Explicit, turn-local contracts between the three fixed AI blocks.
+use crate::data::Text;
 use crate::{ai::context::BattleView, data::*};
 use serde::{Deserialize, Serialize};
 
@@ -14,11 +15,11 @@ pub enum TargetKind {
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Target {
-    pub id: String,
+    pub id: Text,
     pub kind: TargetKind,
     pub tiles: Vec<Hex>,
     pub weight: f64,
-    pub actor: Option<String>,
+    pub actor: Option<Text>,
     pub family: Option<Family>,
     pub hold: Option<bool>,
 }
@@ -159,7 +160,7 @@ pub enum TacticalObjective {
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct ObjectiveOrder {
-    pub id: String,
+    pub id: Text,
     pub priority: ObjectivePriority,
     pub objective: TacticalObjective,
 }
@@ -169,7 +170,7 @@ pub struct ObjectiveOrder {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ObjectiveProgress {
-    pub id: String,
+    pub id: Text,
     pub current: u32,
     pub total: u32,
     pub satisfied: bool,
@@ -429,7 +430,7 @@ pub enum PlanningReason {
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct DutyReport {
-    pub id: String,
+    pub id: Text,
     pub actor: Option<UnitId>,
     pub status: PlanningStatus,
     pub reason: Option<PlanningReason>,

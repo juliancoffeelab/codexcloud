@@ -107,10 +107,15 @@ let fail t error =
     microtask (fun () ->
         let errors = try dispose t with error -> [| error |] in
         t.notify
-          (String.concat "\n"
-             (Foreign_error.exception_ error
-             :: Array.to_list
-                  (Array.map (fun error -> "Cleanup: " ^ Foreign_error.exception_ error) errors)))))
+          (Js.Array.join ~sep:{js|\n|js}
+             (Array.of_list
+                (Foreign_error.exception_ error
+                :: Array.to_list
+                     (Array.map
+                        (fun error ->
+                          let js_text_part_1 = Foreign_error.exception_ error in
+                          {j|Cleanup: $(js_text_part_1)|j})
+                        errors))))))
 
 let guard t f = if not (unavailable t) then try f () with error -> fail t error
 
@@ -120,23 +125,23 @@ let step t time delta =
       if game##pendingDestroy then prototype##runDestroy##call game
       else if not game##isPaused then (
         let events = game##events in
-        Phaser.Events.emit_step events "prestep" time delta;
-        Phaser.Events.emit_step events "step" time delta;
+        Phaser.Events.emit_step events {js|prestep|js} time delta;
+        Phaser.Events.emit_step events {js|step|js} time delta;
         game##scene##update time delta;
-        Phaser.Events.emit_step events "poststep" time delta;
+        Phaser.Events.emit_step events {js|poststep|js} time delta;
         if not t.render_dirty then Phaser.Internal.processing game##scene false
         else (
           t.render_dirty <- false;
           let renderer =
             match Js.Nullable.toOption game##renderer with
             | Some renderer -> renderer
-            | None -> invalid_arg "Phaser renderer is unavailable"
+            | None -> invalid_arg {js|Phaser renderer is unavailable|js}
           in
           renderer##preRender ();
-          Phaser.Events.emit_render events "prerender" renderer time delta;
+          Phaser.Events.emit_render events {js|prerender|js} renderer time delta;
           game##scene##render renderer;
           renderer##postRender ();
-          Phaser.Events.emit_render events "postrender" renderer time delta)))
+          Phaser.Events.emit_render events {js|postrender|js} renderer time delta)))
 
 let create config ~failed =
   let owner = ref None in
@@ -178,12 +183,12 @@ let create config ~failed =
     }
   in
   owner := Some t;
-  let _ = game##events##once "destroy" (fun[@u] () -> release_callbacks t) in
+  let _ = game##events##once {js|destroy|js} (fun[@u] () -> release_callbacks t) in
   let dirty = fun[@u] () -> invalidate t in
   List.iter
     (fun event ->
       let _ = game##events##on event dirty in
       ())
-    [ "visible"; "focus"; "resume" ];
-  let _ = game##scale##on "resize" dirty in
+    [ {js|visible|js}; {js|focus|js}; {js|resume|js} ];
+  let _ = game##scale##on {js|resize|js} dirty in
   t

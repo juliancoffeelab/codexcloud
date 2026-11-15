@@ -20,17 +20,18 @@ external safe_integer : float -> bool = "isSafeInteger" [@@mel.scope "Number"]
 let limits_json (limits : limits) =
   Performance_trace.obj
     [
-      ("texture", Performance_trace.int limits.texture);
-      ("target", Performance_trace.int limits.target);
-      ("viewport", Js.Json.array (Array.map Performance_trace.int limits.viewport));
-      ("attributes", Performance_trace.int limits.attributes);
-      ("varyings", Performance_trace.int limits.varyings);
-      ("textures", Performance_trace.int limits.textures);
+      ({js|texture|js}, Performance_trace.int limits.texture);
+      ({js|target|js}, Performance_trace.int limits.target);
+      ({js|viewport|js}, Js.Json.array (Array.map Performance_trace.int limits.viewport));
+      ({js|attributes|js}, Performance_trace.int limits.attributes);
+      ({js|varyings|js}, Performance_trace.int limits.varyings);
+      ({js|textures|js}, Performance_trace.int limits.textures);
     ]
 
 let snapshot_json (snapshot : snapshot) =
   let amount (amount : amount) =
-    Performance_trace.obj [ ("cpu", Js.Json.number amount.cpu); ("gpu", Js.Json.number amount.gpu) ]
+    Performance_trace.obj
+      [ ({js|cpu|js}, Js.Json.number amount.cpu); ({js|gpu|js}, Js.Json.number amount.gpu) ]
   in
   let groups =
     Array.map
@@ -38,24 +39,24 @@ let snapshot_json (snapshot : snapshot) =
         ( kind,
           Performance_trace.obj
             [
-              ("cpu", Js.Json.number group.cpu);
-              ("gpu", Js.Json.number group.gpu);
-              ("count", Performance_trace.int group.count);
+              ({js|cpu|js}, Js.Json.number group.cpu);
+              ({js|gpu|js}, Js.Json.number group.gpu);
+              ({js|count|js}, Performance_trace.int group.count);
             ] ))
       (Js.Dict.entries snapshot.groups)
   in
   Performance_trace.obj
     [
-      ("groups", Js.Json.object_ (Js.Dict.fromArray groups));
-      ("totals", amount snapshot.totals);
-      ("peaks", amount snapshot.peaks);
+      ({js|groups|js}, Js.Json.object_ (Js.Dict.fromArray groups));
+      ({js|totals|js}, amount snapshot.totals);
+      ({js|peaks|js}, amount snapshot.peaks);
     ]
 
 class resources (game : Phaser.game) =
   let renderer =
     match Js.Nullable.toOption game##renderer with
     | Some renderer -> renderer
-    | None -> failwith "Battlefield WebGL renderer is unavailable"
+    | None -> failwith {js|Battlefield WebGL renderer is unavailable|js}
   in
   let gl = renderer##gl in
   let viewport = Webgl.viewport_array (Webgl.viewport_parameter gl 0x0d3a) in
@@ -81,11 +82,14 @@ class resources (game : Phaser.game) =
     initializer
       if limits.attributes < 8 || limits.varyings < 7 || limits.textures < 4 then
         failwith
-          (Printf.sprintf
-             "Unsupported battlefield WebGL limits: attributes=%d, varyings=%d, textures=%d"
-             limits.attributes limits.varyings limits.textures)
+          (let attributes = string_of_int limits.attributes in
+           let varyings = string_of_int limits.varyings in
+           let textures = string_of_int limits.textures in
+           {j|Unsupported battlefield WebGL limits: attributes=$attributes, varyings=$varyings, textures=$textures|j})
 
-    initializer Performance_trace.instant "Battlefield device limits" ~args:(limits_json limits)
+    initializer
+      Performance_trace.instant {js|Battlefield device limits|js} ~args:(limits_json limits)
+
     method texture = texture
     method target = target
     method limits = limits
@@ -95,7 +99,10 @@ class resources (game : Phaser.game) =
         not
           (safe_integer width && safe_integer height && width > 0. && height > 0.
           && safe_integer (width *. height *. 28.))
-      then failwith (Printf.sprintf "Invalid battlefield dimensions %s: %g×%g" label width height);
+      then
+        failwith
+          (let width = Js.String.make width and height = Js.String.make height in
+           {j|Invalid battlefield dimensions $label: $width×$height|j});
       width *. height
 
     method check ?(target = false) label width height =
@@ -103,15 +110,16 @@ class resources (game : Phaser.game) =
       let limit = if target then limits.target else texture in
       if width > float_of_int limit || height > float_of_int limit then
         failwith
-          (Printf.sprintf "Unsupported battlefield allocation %s: %g×%g; device limit %d" label
-             width height limit);
+          (let width = Js.String.make width and height = Js.String.make height in
+           let limit = string_of_int limit in
+           {j|Unsupported battlefield allocation $label: $width×$height; device limit $limit|j});
       area
 
     method image key image =
       let area =
         self#check key (float_of_int (natural_width image)) (float_of_int (natural_height image))
       in
-      self#set key "decoded image + source texture" (area *. 4.) (area *. 4.)
+      self#set key {js|decoded image + source texture|js} (area *. 4.) (area *. 4.)
 
     method set key kind next_cpu next_gpu =
       let old_cpu, old_gpu =
@@ -136,12 +144,12 @@ class resources (game : Phaser.game) =
     method snapshot =
       Option.iter
         (fun (canvas : Phaser.canvas) ->
-          self#set "main-color" "main drawing buffer" 0.
+          self#set {js|main-color|js} {js|main drawing buffer|js} 0.
             (float_of_int canvas##width *. float_of_int canvas##height *. 4.))
         (Js.Nullable.toOption game##canvas);
       Option.iter
         (fun (capture : Phaser.render_target) ->
-          self#set "native-capture" "native Phaser capture target" 0.
+          self#set {js|native-capture|js} {js|native Phaser capture target|js} 0.
             (float_of_int capture##width
             *. float_of_int capture##height
             *. if capture##hasDepthBuffer then 8. else 4.))
@@ -162,6 +170,6 @@ class resources (game : Phaser.game) =
       { groups; totals = { cpu; gpu }; peaks = { cpu = peak_cpu; gpu = peak_gpu } }
 
     method publish =
-      Performance_trace.instant "Battlefield owned resource estimates"
+      Performance_trace.instant {js|Battlefield owned resource estimates|js}
         ~args:(snapshot_json self#snapshot)
   end

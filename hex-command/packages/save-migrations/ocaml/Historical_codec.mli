@@ -3353,6 +3353,28 @@ val encode_save48_member0_checkpoint_state_campaign_member1_veterans_member1_ite
 
 val read_save48_member1 : Js.Json.t -> save48_member1
 val encode_save48_member1 : save48_member1 -> Js.Json.t
+val read_history5_entries_item_mission : Js.Json.t -> history5_entries_item_mission
+val encode_history5_entries_item_mission : history5_entries_item_mission -> Js.Json.t
+val read_literal_49 : Js.Json.t -> literal_49
+val encode_literal_49 : literal_49 -> Js.Json.t
+val read_save49_member0_progress_entry : Js.Json.t -> save49_member0_progress_entry
+val encode_save49_member0_progress_entry : save49_member0_progress_entry -> Js.Json.t
+val read_save49_member0_progress : Js.Json.t -> save49_member0_progress
+val encode_save49_member0_progress : save49_member0_progress -> Js.Json.t
+val read_save49_member0 : Js.Json.t -> save49_member0
+val encode_save49_member0 : save49_member0 -> Js.Json.t
+val read_history5_entries_item : Js.Json.t -> history5_entries_item
+val encode_history5_entries_item : history5_entries_item -> Js.Json.t
+val read_save49_member1_progress : Js.Json.t -> save49_member1_progress
+val encode_save49_member1_progress : save49_member1_progress -> Js.Json.t
+val read_save49_member1 : Js.Json.t -> save49_member1
+val encode_save49_member1 : save49_member1 -> Js.Json.t
+val read_save49 : Js.Json.t -> save49
+val encode_save49 : save49 -> Js.Json.t
+val read_history5_entries : Js.Json.t -> history5_entries
+val encode_history5_entries : history5_entries -> Js.Json.t
+val read_history5 : Js.Json.t -> history5
+val encode_history5 : history5 -> Js.Json.t
 
 module V2 : sig
   val of_json : Js.Json.t -> Historical_types.V2.t
@@ -3562,6 +3584,7 @@ end
 module History4 : sig
   val of_json : Js.Json.t -> Historical_types.History4.t
   val to_json : Historical_types.History4.t -> Js.Json.t
+  val of_legacy : Historical_types.History4.t -> Historical_types.History4.t
 end
 
 module Fragments_document : sig
@@ -3622,6 +3645,19 @@ end
 module V48 : sig
   val of_json : Js.Json.t -> Historical_types.V48.t
   val to_json : Historical_types.V48.t -> Js.Json.t
+end
+
+module V49 : sig
+  val of_json : Js.Json.t -> Historical_types.V49.t
+  val to_json : Historical_types.V49.t -> Js.Json.t
+  val of_legacy : Historical_types.V49.t -> Historical_types.V49.t
+  val current_entry_to_json : Historical_types.V49.current_entry -> Js.Json.t
+  val turn_entry_to_json : Historical_types.V49.turn_entry -> Js.Json.t
+end
+
+module History5 : sig
+  val of_json : Js.Json.t -> Historical_types.History5.t
+  val to_json : Historical_types.History5.t -> Js.Json.t
 end
 
 module Fragment : sig

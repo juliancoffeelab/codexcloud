@@ -13,7 +13,14 @@ type resource = {
 module Map = Host_collections.Map
 module Set = Host_collections.Set
 
-let skipped = [ "recruitment"; "recruits"; "unlockRecruits"; "advancesTo"; "recall" ]
+let skipped =
+  [
+    {js|recruitment|js};
+    {js|recruits|js};
+    {js|unlockRecruits|js};
+    {js|advancesTo|js};
+    {js|recall|js};
+  ]
 
 let content_types ?(include_recruitment = false) catalog walk content =
   let found = Set.create () in
@@ -39,9 +46,9 @@ let content_types ?(include_recruitment = false) catalog walk content =
   found
 
 let item_frame artwork id =
-  match Art.frame artwork ~kind:"items" ~name:id () with
+  match Art.frame artwork ~kind:{js|items|js} ~name:id () with
   | Some frame -> frame
-  | None -> failwith ("Missing item artwork: " ^ id)
+  | None -> failwith {j|Missing item artwork: $(id)|j}
 
 let current_map_audio game catalog =
   let state = Native.state game in
@@ -84,7 +91,7 @@ let current_map_audio game catalog =
 let texture map_id revision =
   match Terrain_pages.find (Terrain_pages.asset_key map_id revision) with
   | Some texture -> texture
-  | None -> failwith ("Missing prebaked terrain: " ^ map_id ^ ". Rebuild map assets.")
+  | None -> failwith {j|Missing prebaked terrain: $(map_id). Rebuild map assets.|j}
 
 let initial_terrain catalog map_id revision artwork =
   let map =
@@ -93,7 +100,7 @@ let initial_terrain catalog map_id revision artwork =
       (Catalog.raw catalog).maps
   in
   let map =
-    match map with Some map -> map | None -> failwith ("Missing authored map: " ^ map_id)
+    match map with Some map -> map | None -> failwith {j|Missing authored map: $(map_id)|j}
   in
   (Terrain_plan.prepare ~roles:(Catalog.terrain_roles catalog) ~map_id
      ~cols:(Int32.to_float map.cols) ~rows:(Int32.to_float map.rows) map.terrain artwork)
@@ -131,7 +138,7 @@ let prepare ~game ~catalog ~artwork =
   let image key priority =
     match Art.find artwork key with
     | Some frame -> add_frame ~hud:true priority frame
-    | None -> failwith ("Missing artwork: " ^ key)
+    | None -> failwith {j|Missing artwork: $(key)|j}
   in
   let add_sample priority (sample : Phaser_sound.sample) =
     add
@@ -158,7 +165,7 @@ let prepare ~game ~catalog ~artwork =
       Phaser_sound.samples
   in
   let palettes = Set.create () in
-  let _ = Set.add palettes "player" in
+  let _ = Set.add palettes {js|player|js} in
   Array.iter
     (fun (faction : Domain.faction) ->
       let _ = Set.add palettes faction.palette in
@@ -167,7 +174,7 @@ let prepare ~game ~catalog ~artwork =
   let units ?(sides = palettes) types priority =
     Set.each types (fun[@u] kind ->
         Set.each sides (fun[@u] palette ->
-            let key = Art.frame_key ~kind:"units" ~name:kind ~side:palette () in
+            let key = Art.frame_key ~kind:{js|units|js} ~name:kind ~side:palette () in
             if Option.is_some (Art.find artwork key) then image key priority));
     audio (Phaser_sound.battle_sounds (Set.values_array types) [||]) priority
   in
@@ -203,7 +210,10 @@ let prepare ~game ~catalog ~artwork =
         in
         match plan.tiles.(0).frame with
         | Some frame -> add_frame priority frame
-        | None -> failwith ("Missing terrain artwork: " ^ map_id ^ "/" ^ tile.Domain.id)
+        | None ->
+            failwith
+              (let js_text_part_3 = tile.Domain.id in
+               {j|Missing terrain artwork: $(map_id)/$(js_text_part_3)|j})
       in
       Array.iter frame tiles;
       Array.iter
@@ -241,7 +251,7 @@ let prepare ~game ~catalog ~artwork =
         (fun (item : Domain.item) -> add_frame ~hud:true 1 (item_frame artwork item.id))
         unit.items)
     (Native.units game);
-  image "portrait_worker" 1;
+  image {js|portrait_worker|js} 1;
   let current_map = Catalog.map catalog state.map_id in
   let current_types = content_types catalog Domain_resource_walk.walk_map_definition current_map in
   Array.iter
@@ -259,7 +269,7 @@ let prepare ~game ~catalog ~artwork =
   Set.each terrains (fun[@u] terrain ->
       match Art.terrain_portrait artwork terrain with
       | Some frame -> add_frame ~hud:true 1 frame
-      | None -> failwith ("Missing terrain portrait: " ^ terrain));
+      | None -> failwith {j|Missing terrain portrait: $(terrain)|j});
   audio
     (Array.append Phaser_sound.action_families
        (Array.map
@@ -331,7 +341,8 @@ let prepare ~game ~catalog ~artwork =
           terrain_change = (fun _ -> ());
           field =
             (fun name visit ->
-              if List.mem name [ "recruitment"; "recruits"; "unlockRecruits" ] then
+              if List.mem name [ {js|recruitment|js}; {js|recruits|js}; {js|unlockRecruits|js} ]
+              then
                 let rec inside =
                   {
                     Domain_resource_walk.string =
@@ -383,8 +394,10 @@ let prepare ~game ~catalog ~artwork =
           ());
       Array.iter
         (fun key ->
-          match String.split_on_char '_' key with
-          | (("player" | "enemy" | "passive" | "green") as palette) :: _ ->
+          match Array.to_list (Js.String.split ~sep:{js|_|js} key) with
+          | (matched_text_0 as palette) :: _
+            when matched_text_0 = {js|player|js} || matched_text_0 = {js|enemy|js}
+                 || matched_text_0 = {js|passive|js} || matched_text_0 = {js|green|js} ->
               let _ = Set.add next_palettes palette in
               ()
           | _ -> ())
@@ -409,8 +422,12 @@ let prepare ~game ~catalog ~artwork =
         1);
   Array.iter
     (fun key ->
-      match String.split_on_char '_' key with
-      | ("player" | "enemy" | "passive" | "green" | "portrait") :: _ -> image key 5
+      match Array.to_list (Js.String.split ~sep:{js|_|js} key) with
+      | matched_text_1 :: _
+        when matched_text_1 = {js|player|js} || matched_text_1 = {js|enemy|js}
+             || matched_text_1 = {js|passive|js} || matched_text_1 = {js|green|js}
+             || matched_text_1 = {js|portrait|js} ->
+          image key 5
       | _ -> ())
     (Art.keys artwork);
   List.iter
@@ -421,7 +438,7 @@ let prepare ~game ~catalog ~artwork =
   Array.iter
     (fun (sample : Phaser_sound.sample) ->
       if
-        String.starts_with ~prefix:"palette:" sample.family
+        Js.String.startsWith ~prefix:{js|palette:|js} sample.family
         || Array.exists (( = ) sample.family) Phaser_sound.action_families
       then add_sample 5 sample)
     Phaser_sound.samples;

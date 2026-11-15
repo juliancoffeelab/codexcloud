@@ -9,10 +9,15 @@ let object_ value =
 let array value =
   match Js.Json.decodeArray value with Some v -> v | None -> invalid "Expected array"
 
-let string value =
+let legacy_string value =
   match Js.Json.decodeString value with
   | Some v -> Migration_utf8.of_js v
   | None -> invalid "Expected string"
+
+let js_string value =
+  match Js.Json.decodeString value with Some value -> value | None -> invalid "Expected string"
+
+let string = legacy_string
 
 let number value =
   match Js.Json.decodeNumber value with Some v -> v | None -> invalid "Expected number"
@@ -90,3 +95,40 @@ let starts prefix text = String.starts_with ~prefix text
 
 let suffix prefix text =
   String.sub text (String.length prefix) (String.length text - String.length prefix)
+
+(* Current-format consumers receive host text, including dictionary keys. *)
+module Host = struct
+  let string = js_string
+  let s = Js.Json.string
+  let obj fields = object_from_entries (Array.of_list fields)
+  let entries value = Js.Dict.entries (object_ value)
+
+  let get value key =
+    let fields = object_ value in
+    if has_own fields key then Js.Dict.get fields key else None
+
+  let field value key =
+    match get value key with Some value -> value | None -> invalid_arg {j|Missing $(key)|j}
+
+  let set value key item = Js.Dict.set (object_ value) key item
+  let remove value key = delete (object_ value) key
+  let text value key = string (field value key)
+  let list value key = Array.to_list (array (field value key))
+  let copy value = obj (Array.to_list (entries value))
+
+  let present value key =
+    match get value key with
+    | Some value when value <> Js.Json.null && value <> undefined -> Some value
+    | _ -> None
+
+  let default value key fallback = Option.value ~default:fallback (present value key)
+
+  let update value fields =
+    let value = copy value in
+    List.iter (fun (key, item) -> set value key item) fields;
+    value
+end
+
+(* Historical conversion failures also cross the public text boundary. *)
+let host_errors work input =
+  try work input with Invalid_argument message -> invalid_arg (Migration_utf8.to_js message)

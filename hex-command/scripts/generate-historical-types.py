@@ -86,13 +86,13 @@ def discover_aliases(start):
 aliases={}
 for key,i in entries.items():
  aliases[key]=discover_aliases(i)
- if key in ['Save39', 'Save40', 'Save41', 'Save42', 'Save43', 'Save44', 'Save45', 'Save46', 'Save47', 'Save48']:
+ if key in ['Save39', 'Save40', 'Save41', 'Save42', 'Save43', 'Save44', 'Save45', 'Save46', 'Save47', 'Save48', 'Save49']:
   for j,tag,_ in union_tags(i):
    for a,k in discover_aliases(j).items():aliases[key][tag.lower() if a=='t' else tag.lower()+'_'+a]=k
  if key=='Fragments':
   aliases[key].update({field(n):p['type'] for n,p in shapes[i]['properties'].items()})
   aliases[key].update({field(n)+'_item':shapes[p['type']]['element'] for n,p in shapes[i]['properties'].items() if shapes[p['type']]['kind']=='array'})
- if key=='History4':
+ if key in ['History4', 'History5']:
   aliases[key]['entry']=shapes[shapes[i]['properties']['entries']['type']]['element']
  lines.append('\nmodule '+module_name(key)+' = struct')
  for alias,j in aliases[key].items():lines.append('  type nonrec '+alias+' = '+name(j))
@@ -178,6 +178,7 @@ for n,(c,i) in enumerate(sorted(reps.items())):C.append(('let rec 'if n==0 else 
 for c,i in sorted(reps.items()):
  C.extend(['let read_'+names[c]+' value : '+names[c]+' =','  require (Migration_reader.matches value '+str(i)+') '+json.dumps('Invalid frozen '+names[c])+';','  decode_'+names[c]+' value'])
 for key,i in entries.items():
+ if key in ['Save49','History4','History5']:continue
  mod=module_name(key) if key!='Fragments' else 'Fragments_document';C.extend(['\nmodule '+mod+' = struct','  let of_json value : Historical_types.'+module_name(key)+'.t =','    let _ = Migration_reader.read value '+json.dumps(key)+' in','    decode_'+name(i)+' value','  let to_json (value : Historical_types.'+module_name(key)+'.t) = encode_'+name(i)+' value','end'])
 # Direct fragment APIs so no JSON survives a validated fixture boundary.
 frag=shapes[entries['Fragments']]['properties']
@@ -190,6 +191,89 @@ for key,p in frag.items():
  C.append('  let '+field(key)+'_of_json = Fragment.'+field(key))
  C.append('  let '+field(key)+'_to_json = encode_'+name(p['type']))
 C.append('end')
+# Normalize the final V49 save and V4 -> V5 history boundary to host text.
+# Unknown JSON payloads are already host values and must remain untouched.
+seen_text = set()
+def text_visit(i):
+ c = part[i]
+ if c in seen_text: return
+ seen_text.add(c)
+ s = shapes[i]
+ if s['kind']=='object':
+  for p in s.get('properties',{}).values():
+   ms=union_members(p['type'],True) if p['optional'] else []
+   text_visit(ms[0] if len(ms)==1 else p['type'])
+  if 'index' in s: text_visit(s['index'])
+ elif s['kind']=='array': text_visit(s['element'])
+ elif s['kind']=='tuple':
+  for j in s['items']: text_visit(j)
+ elif s['kind']=='union':
+  for j,_,payload in union_tags(i):
+   if payload: text_visit(j)
+text_visit(entries['Save49'])
+text_visit(entries['History4'])
+host_text=set(seen_text)
+seen_text.clear()
+text_visit(entries['Save49'])
+text_visit(entries['History5'])
+js_text=set(seen_text)
+def text_call(i,v):return 'host_'+name(i)+' ('+v+')'
+def text_body(i):
+ s=shapes[i];k=s['kind']
+ if k=='string':return 'Migration_utf8.to_js value'
+ if k=='array':return 'Array.map host_'+name(s['element'])+' value'
+ if k=='tuple':
+  vs=['v'+str(n) for n in range(len(s['items']))]
+  return 'let ('+', '.join(vs)+') = value in ('+', '.join(text_call(j,v) for j,v in zip(s['items'],vs))+')'
+ if k=='union':
+  return 'match value with '+' '.join('| `'+tag+(' x -> `'+tag+' ('+text_call(j,'x')+')' if payload else ' -> `'+tag) for j,tag,payload in union_tags(i))
+ if k=='object':
+  props=s.get('properties',{})
+  def map_index(v):return 'String_map.of_list (List.map (fun (key,v) -> (Migration_utf8.to_js key, '+text_call(s['index'],'v')+')) (String_map.bindings '+v+'))'
+  if not props and 'index' in s:return map_index('value')
+  if not props:return 'value'
+  fields=['wire = host_wire value.wire']
+  for n,p in props.items():
+   v='value.'+field(n)
+   if p['optional']:
+    ms=union_members(p['type'],True);fn=name(ms[0]) if len(ms)==1 else name(p['type'])
+    v='Option.map host_'+fn+' '+v
+   else:v=text_call(p['type'],v)
+   fields.append(field(n)+' = '+v)
+  if 'index' in s:fields.append('additional = '+map_index('value.additional'))
+  return '{ '+'; '.join(fields)+' }'
+ return 'value'
+C.append('let host_wire value = { order = List.map Migration_utf8.to_js value.order; extra = List.map (fun (k,v) -> (Migration_utf8.to_js k,v)) value.extra; undefined_fields = List.map Migration_utf8.to_js value.undefined_fields }')
+for n,c in enumerate(sorted(host_text)):
+ i=reps[c]
+ C.append(('let rec ' if n==0 else 'and ')+'host_'+names[c]+' (value : '+names[c]+') : '+names[c]+' = '+text_body(i))
+
+
+
+C.extend([
+ 'let js_map_of_json decode value = Array.fold_left (fun map (key,v) -> String_map.add key (decode v) map) String_map.empty (Js.Dict.entries (object_ value))',
+ 'let js_map_to_json encode value = object_from_entries (Array.of_list (List.map (fun (k,v) -> (k,encode v)) (String_map.bindings value)))',
+ 'let js_wire_of_json known value = let fields = Array.to_list (Js.Dict.entries (object_ value)) in { order = List.map fst fields; extra = List.filter (fun (k,_) -> not (List.mem k known)) fields; undefined_fields = List.filter_map (fun (k,v) -> if is_undefined v then Some k else None) fields }',
+ 'let js_wire_to_json ~known wire fields = List.iter (fun (key,_) -> require (not (List.mem key known) || List.mem_assoc key fields) ("Unpromoted historical field " ^ key)) wire.extra; let fields = fields @ List.filter (fun (k,_) -> not (List.mem_assoc k fields)) wire.extra in let ordered = List.filter_map (fun k -> Option.map (fun v -> (k,v)) (List.assoc_opt k fields)) wire.order in object_from_entries (Array.of_list (ordered @ List.filter (fun (k,_) -> not (List.mem k wire.order)) fields))'
+])
+for n,c in enumerate(sorted(js_text)):
+ i=reps[c]
+ body=decode_body(i).replace('decode_', 'js_decode_').replace('map_of_json ', 'js_map_of_json ').replace('wire_of_json ', 'js_wire_of_json ')
+ if shapes[i]['kind']=='string':body='js_string value'
+ C.append(('let rec ' if n==0 else 'and ')+'js_decode_'+names[c]+' value : '+names[c]+' = '+body)
+for n,c in enumerate(sorted(js_text)):
+ i=reps[c]
+ body=encode_body(i).replace('encode_', 'js_encode_').replace('map_to_json ', 'js_map_to_json ').replace('wire_to_json ', 'js_wire_to_json ')
+ if shapes[i]['kind']=='string':body='Js.Json.string value'
+ C.append(('let rec ' if n==0 else 'and ')+'js_encode_'+names[c]+' (value : '+names[c]+') : Js.Json.t = '+body)
+for key in ['Save49', 'History4', 'History5']:
+ mod=module_name(key)
+ prefix='' if key=='History4' else 'js_'
+ C.extend(['module '+mod+' = struct', 'let of_json value : Historical_types.'+mod+'.t = let _ = Migration_reader.read value "'+key+'" in '+prefix+'decode_'+name(entries[key])+' value', 'let to_json = '+prefix+'encode_'+name(entries[key])])
+ if key in ['Save49', 'History4']: C.append('let of_legacy = host_'+name(entries[key]))
+ if key=='Save49':
+  for alias in ['current_entry','turn_entry']: C.append('let '+alias+'_to_json = js_encode_'+name(aliases[key][alias]))
+ C.append('end')
 (base/'ocaml/Historical_codec.ml').write_text('\n'.join(C)+'\n')
 I=['(* Generated from frozen src/formats/readers.json. Unchecked decoder helpers are private. *)','open Historical_types','val wire_to_json : known:string list -> wire -> (string * Js.Json.t) list -> Js.Json.t']
 for c,i in sorted(reps.items()):
@@ -197,7 +281,11 @@ for c,i in sorted(reps.items()):
  I.append('val encode_'+names[c]+' : '+names[c]+' -> Js.Json.t')
 for key,i in entries.items():
  mod=module_name(key) if key!='Fragments' else 'Fragments_document'
- I.extend(['module '+mod+' : sig','  val of_json : Js.Json.t -> Historical_types.'+module_name(key)+'.t','  val to_json : Historical_types.'+module_name(key)+'.t -> Js.Json.t','end'])
+ extras=[]
+ if key in ['Save49','History4']: extras.append('  val of_legacy : Historical_types.'+mod+'.t -> Historical_types.'+mod+'.t')
+ if key=='Save49':
+  for alias in ['current_entry','turn_entry']: extras.append('  val '+alias+'_to_json : Historical_types.V49.'+alias+' -> Js.Json.t')
+ I.extend(['module '+mod+' : sig','  val of_json : Js.Json.t -> Historical_types.'+module_name(key)+'.t','  val to_json : Historical_types.'+module_name(key)+'.t -> Js.Json.t']+extras+['end'])
 I.append('module Fragment : sig')
 for key,p in frag.items():I.append('  val '+field(key)+' : Js.Json.t -> '+name(p['type']))
 I.extend(['end','module Fragments : sig'])

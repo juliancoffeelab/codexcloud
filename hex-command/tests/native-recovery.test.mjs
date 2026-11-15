@@ -54,7 +54,7 @@ test("Native entity lookups reject prototype names and derived queries stay empt
       for (const lookup of [Native.tile, Native.unit, Native.at, Native.actions])
         assert.equal(lookup(view, id), undefined, `${id} must not name an inherited entity`);
       assert.deepEqual(toArray(Native.neighbors(view, id)), []);
-      assert.deepEqual(mapBindings("String", Native.reachable(view, id)), []);
+      assert.deepEqual(mapBindings("Text", Native.reachable(view, id)), []);
       assert.deepEqual(toArray(Native.targets(view, id)), []);
       assert.deepEqual(toArray(Native.attack_options(view, id, actor.id)), []);
       assert.equal(Native.best_attack(view, id, actor.id), undefined);
@@ -141,7 +141,7 @@ test.each([
       const actor = required(before.units.find((unit) => unit.id === "u3"));
       const occupied = new Set(before.units.map((unit) => unit.tile));
       const destination = required(
-        mapBindings("String", Native.reachable(initial, actor.id))
+        mapBindings("Text", Native.reachable(initial, actor.id))
           .map(([id]) => id)
           .find((id) => id !== cellKey(actor.tile) && !occupied.has(id)),
       );

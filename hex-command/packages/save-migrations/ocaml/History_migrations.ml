@@ -109,7 +109,7 @@ let v3_to_v4 (value : History3.t) : History4.t =
 
 let migrate_typed input =
   let original = Migration_json.num input "version" in
-  let index, removed =
+  let previous () =
     match original with
     | 1. ->
         let value, removed = v1_to_v2 (Historical_codec.History1.of_json input) in
@@ -119,15 +119,21 @@ let migrate_typed input =
     | 4. -> (Historical_codec.History4.of_json input, [||])
     | _ -> invalid_arg "Invalid saved history index"
   in
-  let _ = Migration_envelope.current_history (Historical_codec.History4.to_json index) in
-  (index, original <> 4., removed)
+  let index, removed =
+    if original = 5. then (Historical_codec.History5.of_json input, [||])
+    else
+      let index, removed = previous () in
+      (Migration_metadata.history_v4 index, Array.map Migration_utf8.to_js removed)
+  in
+  let _ = Migration_envelope.current_history (Historical_codec.History5.to_json index) in
+  (index, original <> 5., removed)
 
 let migrate input =
   let index, migrated, removed = migrate_typed input in
-  let index = Historical_codec.History4.to_json index in
-  Migration_json.obj
+  let index = Historical_codec.History5.to_json index in
+  Migration_json.Host.obj
     [
-      ("index", index);
-      ("migrated", Migration_json.b migrated);
-      ("removedIds", Js.Json.array (Array.map Migration_json.s removed));
+      ({js|index|js}, index);
+      ({js|migrated|js}, Migration_json.b migrated);
+      ({js|removedIds|js}, Js.Json.array (Array.map Js.Json.string removed));
     ]

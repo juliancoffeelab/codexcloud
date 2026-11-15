@@ -1,4 +1,8 @@
-let key (hex : Domain.hex) = Int32.to_string hex.col ^ "," ^ Int32.to_string hex.row
+let key (hex : Domain.hex) =
+  let js_text_part_0 = Int32.to_string hex.col in
+  let js_text_part_2 = Int32.to_string hex.row in
+  {j|$(js_text_part_0),$(js_text_part_2)|j}
+
 let of_tile (tile : Domain.tile) : Domain.hex = { col = tile.col; row = tile.row }
 let equal (left : Domain.hex) (right : Domain.hex) = left.col = right.col && left.row = right.row
 

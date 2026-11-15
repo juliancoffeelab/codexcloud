@@ -1,6 +1,7 @@
 //! Persistent campaign progress, companions and dialogue state.
 
 use super::*;
+use crate::data::Text;
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, HashMap};
 /// Stable campaign-local identity; display names are presentation data.
@@ -12,8 +13,8 @@ use std::collections::{BTreeMap, HashMap};
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Character {
-    pub id: String,
-    pub name: String,
+    pub id: Text,
+    pub name: Text,
 }
 /// One scripted dialogue line with its speaker, portrait and display text.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -24,13 +25,13 @@ pub struct Character {
 )]
 pub struct Dialogue {
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub sound: Option<String>,
+    pub sound: Option<Text>,
     #[serde(default)]
-    pub speaker: String,
+    pub speaker: Text,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub character: Option<String>,
-    pub portrait: String,
-    pub text: String,
+    pub character: Option<Text>,
+    pub portrait: Text,
+    pub text: Text,
 }
 /// Consecutive defended turns and the last round counted for an objective.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -65,7 +66,7 @@ pub struct RefugeCounter {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct EvacuatedUnit {
-    pub event: String,
+    pub event: Text,
     pub unit: PublicUnit,
 }
 /// One explicit flag change. Stage uses the campaign's zero-based mission index.
@@ -82,7 +83,7 @@ pub struct FlagChange {
     pub turn: u32,
 }
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify)]
-pub type FlagHistory = HashMap<String, Vec<FlagChange>>;
+pub type FlagHistory = HashMap<Text, Vec<FlagChange>>;
 
 /// Persistent chapter progress, recalled companions, story choices and dialogue.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -97,28 +98,28 @@ pub struct CampaignState {
     pub scripts: Option<EventState>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub evacuated: Vec<EvacuatedUnit>,
-    pub id: String,
+    pub id: Text,
     pub mission: usize,
-    pub recall: Vec<String>,
+    pub recall: Vec<Text>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub veterans: Option<Vec<Veteran>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub story_veterans: Option<Vec<Veteran>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub fallen_companions: Option<Vec<String>>,
+    pub fallen_companions: Option<Vec<Text>>,
     pub carry_gold: i32,
-    pub marks: Vec<String>,
+    pub marks: Vec<Text>,
     pub dialogue: Vec<Dialogue>,
     pub dialogue_index: usize,
-    pub outcome: Option<String>,
+    pub outcome: Option<Text>,
     pub completed: bool,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub refuge: Option<RefugeCounter>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub vigil: Option<Counter>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub holds: Option<BTreeMap<String, Counter>>,
-    pub flags: HashMap<String, Vec<FlagChange>>,
+    pub holds: Option<BTreeMap<Text, Counter>>,
+    pub flags: HashMap<Text, Vec<FlagChange>>,
 }
 impl CampaignState {
     /// Check whether a once-only event or campaign marker has already been recorded.

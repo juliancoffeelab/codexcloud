@@ -9,7 +9,7 @@
     "ocaml/native-v46.json": "0384687574458478a23c9d9ec4009472a8f6529b7dc7aa87c4f3ba0d21063e2d",
     "ocaml/native-v47.json": "db0e041193115adc49783da6c63a081b69ebce282722960f9765b72b5b38993f",
     "ocaml/native-v48.json": "469f76bd04924960c5179e0e8041bd2acdd1dafeb1be28a1ab7b64f5c56ba1b2",
-    "src/formats/readers.json": "6e88474f4ab2de238b2075e2687fd419fe7d89ac7aee6a10999acc056639df55"
+    "src/formats/readers.json": "074e53714a18f7672111bc07ce0fcad68f68655f7be6f77fbe905b60afe06f52"
   },
   "outputs": {
     "ocaml/Native_v41.ml": "206873c2127bc812426046640d82b4136211e40cb5933331008ede98a3e278c5",
@@ -24,8 +24,8 @@
     "ocaml/Native_v47.mli": "186b55f248583e7aefceadb89977193dfcbce3439f6f9251e3e315114f9c08c0",
     "ocaml/Native_v48.ml": "15d2be564b5f6ca7b071134f4d4cbad58657639788a19f61ab817ffe8274a68e",
     "ocaml/Native_v48.mli": "cbd35a7de427308102a9e1f5d9abb7f3f4f58b201f52f9ec17ddeb79da7e4de7",
-    "ocaml/Historical_types.ml": "f814a86951337561a996e6110e75e057e36f29c93dda816005945cca5d462910",
-    "ocaml/Historical_codec.ml": "fe8159889b956b7f250333784516fd602fe7e0807a94535ac7bce643c0868399",
-    "ocaml/Historical_codec.mli": "2746758157c9684ae160663db3883289a19c11b60a206ccfa9ace68cf5989113"
+    "ocaml/Historical_types.ml": "189a920dbeceb724382fe2eb055e280a6f746e4aa05a015b02024d510b192eea",
+    "ocaml/Historical_codec.ml": "79b8c8a1cbddc79368849ebd0543cff28f1c6403a54625999801eea4001edc31",
+    "ocaml/Historical_codec.mli": "ab68aea67b5162f00558b855d34c245bf56de068293811cf65dd5a6741c80846"
   }
 }

@@ -1,29 +1,21 @@
 open Ui;
-
 [@mel.send] external controlMatches: (Dom.element, string) => bool = "matches";
-
 [@mel.send]
 external controlAttribute: (Dom.element, string) => Js.Nullable.t(string) = "getAttribute";
-
 let controlCue = control =>
-  if (controlMatches(control, "button[role='radio'][data-faction]")) {
-    Js.Nullable.toOption(controlAttribute(control, "data-faction"))
+  if (controlMatches(control, {js|button[role='radio'][data-faction]|js})) {
+    Js.Nullable.toOption(controlAttribute(control, {js|data-faction|js}))
     |> Option.fold(~none=Phaser_sound.Choice, ~some=Phaser_sound.faction_hud_cue);
-  } else if (controlMatches(control, "summary, button[aria-expanded]")) {
+  } else if (controlMatches(control, {js|summary, button[aria-expanded]|js})) {
     Phaser_sound.Disclosure;
   } else if (controlMatches(
                control,
-               "select, input[type='checkbox'], input[type='radio'], input[type='range'], button[aria-pressed], button[role='radio'], button[role='checkbox'], button[role='switch']",
+               {js|select, input[type='checkbox'], input[type='radio'], input[type='range'], button[aria-pressed], button[role='radio'], button[role='checkbox'], button[role='switch']|js},
              )) {
     Phaser_sound.Choice;
   } else {
     Phaser_sound.Action;
   };
-
-[@mel.get] external activationDetail: Dom.event => int = "detail";
-[@mel.get] external primaryPointer: Dom.event => bool = "isPrimary";
-[@mel.get] external pointerButton: Dom.event => int = "button";
-
 module TurnBar = {
   [@react.component]
   let make =
@@ -89,13 +81,13 @@ module TurnBar = {
       }
       turnLabel={
         !ready
-          ? "Loading…"
+          ? {js|Loading…|js}
           : winner == Some(Domain.Battle_result.Player_victory)
-              ? "Victory"
+              ? {js|Victory|js}
               : winner == Some(Domain.Battle_result.Player_defeat)
-                  ? "Defeat"
+                  ? {js|Defeat|js}
                   : state.turn == Domain.Turn_phase.Player && view.player_ai == None
-                      ? "End turn" : "AI turn"
+                      ? {js|End turn|js} : {js|AI turn|js}
       }
       finished={winner != None}
       canEndTurn=canAct
@@ -112,9 +104,10 @@ module TurnBar = {
     />;
   };
 };
+[@ocaml.doc
+  {js| The root is the sole session subscriber. Descendants receive one detached\n    publication and a stable command capability; effects acknowledge DOM commit. |js}
+]
 
-/** The root is the sole session subscriber. Descendants receive one detached
-    publication and a stable command capability; effects acknowledge DOM commit. */
 [@react.component]
 let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit) => unit) => {
   let subscribe =
@@ -130,56 +123,35 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
   React.useEffect1(() => Some(() => Voiceover.close(voice)), [|voice|]);
   let (battlefieldProgress, setBattlefieldProgress) = React.useState(() => None);
   let previews = React.useMemo0(() => Terrain_preview.create());
-  React.useEffect1(() => {Some(() => Terrain_preview.close(previews))}, [|view.artwork|]);
+  React.useEffect1(() => Some(() => Terrain_preview.close(previews)), [|view.artwork|]);
   let actions = Session.commands(session);
   React.useEffect1(
     () => {
-      /* Capture before a control's action can remove or replace its DOM node.
-         Native click also covers keyboard activation; change covers selects
-         and toggles without doubling their click/label activation. */
       let cue = (selector, event) => {
         let node = target(event);
         if (trusted(event)
+            && Js.Nullable.toOption(closest(node, {js|.ng-strip [data-faction]|js})) == None
             && nodeType(node) == 1
             && Js.Nullable.toOption(closest(node, selector)) != None
-            && Js.Nullable.toOption(closest(node, ":disabled, [aria-disabled='true']")) == None) {
+            && Js.Nullable.toOption(closest(node, {js|:disabled, [aria-disabled='true']|js}))
+            == None) {
           let control = Js.Nullable.toOption(closest(node, selector)) |> Option.get;
           let cue = controlCue(control);
           let _ = Session.menu_cue(~cue, session);
           ();
         };
       };
-      let click = event => {
-        let node = target(event);
-        if (nodeType(node) == 1
-            && (
-              activationDetail(event) == 0
-              || Js.Nullable.toOption(closest(node, ".press-control")) == None
-            )) {
-          cue(
-            "button, a[href], summary, input[type='button'], input[type='submit'], input[type='reset']",
-            event,
-          );
-        };
-      };
-      let press = event =>
-        if (primaryPointer(event) && pointerButton(event) == 0) {
-          cue("button.press-control", event);
-        };
+      let click =
+        cue(
+          {js|button, a[href], summary, input[type='button'], input[type='submit'], input[type='reset']|js},
+        );
       let change =
         cue(
-          "select, input[type='checkbox'], input[type='radio'], input[type='range'], input[type='file']",
+          {js|select, input[type='checkbox'], input[type='radio'], input[type='range'], input[type='file']|js},
         );
+      let detachPress = Press_button.installGuard(cue({js|button|js}));
       Browser_audio.listen(
-        "pointerdown",
-        press,
-        {
-          "capture": true,
-          "passive": true,
-        },
-      );
-      Browser_audio.listen(
-        "click",
+        {js|click|js},
         click,
         {
           "capture": true,
@@ -187,7 +159,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
         },
       );
       Browser_audio.listen(
-        "change",
+        {js|change|js},
         change,
         {
           "capture": true,
@@ -196,42 +168,80 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
       );
       Some(
         () => {
-          Browser_audio.unlisten("pointerdown", press, true);
-          Browser_audio.unlisten("click", click, true);
-          Browser_audio.unlisten("change", change, true);
+          Press_button.dispose(detachPress);
+          Browser_audio.unlisten({js|click|js}, click, true);
+          Browser_audio.unlisten({js|change|js}, change, true);
         },
       );
     },
     [|session|],
   );
   let (allowNonHumanMaps, setAllowNonHumanMaps) = React.useState(() => false);
-  let (playtestPreferenceError, setPlaytestPreferenceError) = React.useState(() => "");
-  let savePreference = (key, enabled) => {
-    setPlaytestPreferenceError(_ => "");
-    try(Browser_storage.storage_set(key, string_of_bool(enabled))) {
+  let (campaignTags, setCampaignTags) = React.useState(() => []);
+  let (scenarioTags, setScenarioTags) = React.useState(() => []);
+  let (playtestPreferenceError, setPlaytestPreferenceError) = React.useState(() => {js||js});
+  let savePreference = (key, value) => {
+    setPlaytestPreferenceError(_ => {js||js});
+    try(Browser_storage.storage_set(key, Js.Json.stringify(value))) {
     | error => setPlaytestPreferenceError(_ => Foreign_error.exception_(error))
     };
   };
   let changeNonHumanMaps = enabled => {
     setAllowNonHumanMaps(_ => enabled);
-    savePreference("hex-command-show-hidden-maps", enabled);
+    savePreference({js|hex-command-show-hidden-maps|js}, Js.Json.boolean(enabled));
   };
   let changeFollowAi = enabled => {
     Session.set_follow_ai(session, enabled);
-    savePreference("hex-command-follow-ai-camera", enabled);
+    savePreference({js|hex-command-follow-ai-camera|js}, Js.Json.boolean(enabled));
   };
+  let filterKey = mode =>
+    switch (mode) {
+    | Setup.Campaign => {js|hex-command-campaign-map-tags|js}
+    | Setup.Skirmish => {js|hex-command-scenario-map-tags|js}
+    };
+  let changeMapTags = (mode, tags) => {
+    let setTags = mode == Setup.Campaign ? setCampaignTags : setScenarioTags;
+    setTags(_ => tags);
+    savePreference(filterKey(mode), Js.Json.stringArray(Array.of_list(tags)));
+  };
+  let readMapTags = mode =>
+    try(
+      switch (Js.Nullable.toOption(Browser_storage.storage_get(filterKey(mode)))) {
+      | None => []
+      | Some(value) =>
+        switch (Js.Json.decodeArray(Js.Json.parseExn(value))) {
+        | None => invalid_arg({js|Invalid saved map filters|js})
+        | Some(tags) =>
+          Array.to_list(tags)
+          |> List.map(tag =>
+               switch (Js.Json.decodeString(tag)) {
+               | Some(tag) when tag != {js||js} => tag
+               | _ => invalid_arg({js|Invalid saved map filters|js})
+               }
+             )
+        }
+      }
+    ) {
+    | error =>
+      setPlaytestPreferenceError(_ => Foreign_error.exception_(error));
+      [];
+    };
   React.useEffect0(() => {
     try(
       {
         setAllowNonHumanMaps(_ =>
-          Js.Nullable.toOption(Browser_storage.storage_get("hex-command-show-hidden-maps"))
-          == Some("true")
+          Js.Nullable.toOption(Browser_storage.storage_get({js|hex-command-show-hidden-maps|js}))
+          == Some({js|true|js})
         );
         Session.set_follow_ai(
           session,
-          Js.Nullable.toOption(Browser_storage.storage_get("hex-command-follow-ai-camera"))
-          != Some("false"),
+          Js.Nullable.toOption(Browser_storage.storage_get({js|hex-command-follow-ai-camera|js}))
+          != Some({js|false|js}),
         );
+        let campaignTags = readMapTags(Setup.Campaign);
+        let scenarioTags = readMapTags(Setup.Skirmish);
+        setCampaignTags(_ => campaignTags);
+        setScenarioTags(_ => scenarioTags);
       }
     ) {
     | error => setPlaytestPreferenceError(_ => Foreign_error.exception_(error))
@@ -245,21 +255,27 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     },
     [|view|],
   );
-
   let (showCommanderArrow, setShowCommanderArrow) = React.useState(() => false);
-  let (commanderArrowError, setCommanderArrowError) = React.useState(() => "");
+  let (commanderArrowError, setCommanderArrowError) = React.useState(() => {js||js});
   let changeCommanderArrow = enabled => {
     setShowCommanderArrow(_ => enabled);
-    setCommanderArrowError(_ => "");
-    try(Browser_storage.storage_set("hex-command-commander-arrow", string_of_bool(enabled))) {
+    setCommanderArrowError(_ => {js||js});
+    try(
+      Browser_storage.storage_set({js|hex-command-commander-arrow|js}, string_of_bool(enabled))
+    ) {
     | error => setCommanderArrowError(_ => Foreign_error.exception_(error))
     };
   };
-  let (enemyDetailsError, setEnemyDetailsError) = React.useState(() => "");
+  let (enemyDetailsError, setEnemyDetailsError) = React.useState(() => {js||js});
   let changeEnemyDetails = enabled => {
     Session.set_enemy_combat_details(session, enabled);
-    setEnemyDetailsError(_ => "");
-    try(Browser_storage.storage_set("hex-command-enemy-combat-details", string_of_bool(enabled))) {
+    setEnemyDetailsError(_ => {js||js});
+    try(
+      Browser_storage.storage_set(
+        {js|hex-command-enemy-combat-details|js},
+        string_of_bool(enabled),
+      )
+    ) {
     | error => setEnemyDetailsError(_ => Foreign_error.exception_(error))
     };
   };
@@ -267,8 +283,8 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     let _ = Session.prepare_audio(session);
     try(
       setShowCommanderArrow(_ =>
-        Js.Nullable.toOption(Browser_storage.storage_get("hex-command-commander-arrow"))
-        == Some("true")
+        Js.Nullable.toOption(Browser_storage.storage_get({js|hex-command-commander-arrow|js}))
+        == Some({js|true|js})
       )
     ) {
     | error => setCommanderArrowError(_ => Foreign_error.exception_(error))
@@ -276,8 +292,10 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     try(
       Session.set_enemy_combat_details(
         session,
-        Js.Nullable.toOption(Browser_storage.storage_get("hex-command-enemy-combat-details"))
-        == Some("true"),
+        Js.Nullable.toOption(
+          Browser_storage.storage_get({js|hex-command-enemy-combat-details|js}),
+        )
+        == Some({js|true|js}),
       )
     ) {
     | error => setEnemyDetailsError(_ => Foreign_error.exception_(error))
@@ -285,7 +303,11 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     None;
   });
   let state = Native.state(view.game);
-  let identity = string_of_int(view.session_version) ++ ":" ++ state.map_id;
+  let identity = {
+    let js_text_part_0 = string_of_int(view.session_version);
+    let js_text_part_2 = state.map_id;
+    {j|$(js_text_part_0):$(js_text_part_2)|j};
+  };
   let (voiceOpening, setVoiceOpening) = React.useState(() => None);
   let conversation = Native.campaign(view.game);
   let spokenLines =
@@ -294,7 +316,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
       ~some=
         (campaign: Domain.campaign_state) =>
           Array.fold_left(
-            (count, line: Domain.dialogue) => count + (line.text == "" ? 0 : 1),
+            (count, line: Domain.dialogue) => count + (line.text == {js||js} ? 0 : 1),
             0,
             Array.sub(
               campaign.dialogue,
@@ -329,9 +351,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
             ),
           total: min(2, spokenLines),
           error:
-            Option.bind(currentOpening, value =>
-              Js.Nullable.toOption(value.Voiceover.error) |> Option.map(Utf8.of_js)
-            ),
+            Option.bind(currentOpening, value => Js.Nullable.toOption(value.Voiceover.error)),
         })
       : None;
   React.useLayoutEffect1(
@@ -354,7 +374,11 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     );
   let ready =
     !voiceBlocked
-    && Option.fold(~none=false, ~some=value => value.Battlefield_view.phase == "ready", progress);
+    && Option.fold(
+         ~none=false,
+         ~some=value => value.Battlefield_view.phase == {js|ready|js},
+         progress,
+       );
   React.useEffect1(
     () => {
       if (!view.awaiting_new_game) {
@@ -389,7 +413,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
                  );
                bounds(overview).bottom > top;
              },
-           Js.Nullable.toOption(byId("mission-overview")),
+           Js.Nullable.toOption(byId({js|mission-overview|js})),
          );
     setBriefing(_ => !visible);
     if (!visible) {
@@ -411,7 +435,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
   let (request, setRequest) = React.useState(() => None);
   let (setupBack, setSetupBack) = React.useState(() => false);
   let requestId = React.useRef(0);
-  let settings = React.useRef(Js.Nullable.null);
+  let (settingsOpen, setSettingsOpen) = React.useState(() => false);
   let (settingsKey, setSettingsKey) = React.useState(() => 0);
   let (settingsScreen, setSettingsScreen) = React.useState(() => Dialogs.Settings.Hub);
   let (repairKey, setRepairKey) = React.useState(() => 0);
@@ -420,11 +444,11 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
     settingsFocus.current = focusId;
     setSettingsScreen(_ => screen);
     setSettingsKey(value => value + 1);
-    show(settings);
+    setSettingsOpen(_ => true);
     ();
   };
   let openRepair = () => {
-    close(settings);
+    setSettingsOpen(_ => false);
     setRepairKey(value => value + 1);
   };
   React.useEffect1(
@@ -449,20 +473,20 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
       } else {
         let key = event =>
           if (Session.view(session).failure == None
-              && Js.Undefined.toOption(tagName(keyTarget(event))) != Some("CANVAS")
-              && eventKey(event) == "Escape"
-              && Js.Nullable.toOption(query("dialog[open]")) == None) {
+              && Js.Undefined.toOption(tagName(keyTarget(event))) != Some({js|CANVAS|js})
+              && eventKey(event) == {js|Escape|js}
+              && Js.Nullable.toOption(query({js|[data-ui-modal]|js})) == None) {
             actions.clear(true);
           };
         let away = event => {
           let node = target(event);
           if (Session.view(session).failure == None
               && nodeType(node) == 1
-              && Js.Nullable.toOption(query("dialog[open]")) == None
+              && Js.Nullable.toOption(query({js|[data-ui-modal]|js})) == None
               && Js.Nullable.toOption(
                    closest(
                      node,
-                     ".phaser-battlefield, aside, button, select, input, summary, a, dialog",
+                     {js|.phaser-battlefield, aside, button, select, input, summary, a, [data-ui-modal]|js},
                    ),
                  )
               == None) {
@@ -470,11 +494,11 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
           };
         };
         on_keydown(document, key);
-        addDocumentListener(document, "click", away);
+        addDocumentListener(document, {js|click|js}, away);
         Some(
           () => {
             off_keydown(document, key);
-            removeDocumentListener(document, "click", away);
+            removeDocumentListener(document, {js|click|js}, away);
           },
         );
       },
@@ -482,7 +506,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
   );
   let openSetup = (~fromSettings=false, mode) => {
     setSetupBack(_ => fromSettings);
-    close(settings);
+    setSettingsOpen(_ => false);
     requestId.current = requestId.current + 1;
     setRequest(_ => Some((requestId.current, mode)));
   };
@@ -499,16 +523,36 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
   let openMap = () => openSetup(Setup.Skirmish);
   view.failure != None
     ? <Shell failure={view.failure} />
-    : <>
+    : <Dialogs.Settings
+        voiceEnabled
+        onVoiceChange=changeVoice
+        allowNonHumanMaps
+        onNonHumanMapsChange=changeNonHumanMaps
+        onFollowAiChange=changeFollowAi
+        playtestPreferenceError
+        enemyDetailsError
+        onEnemyDetailsChange=changeEnemyDetails
+        showCommanderArrow
+        commanderArrowError
+        onCommanderArrowChange=changeCommanderArrow
+        session
+        view
+        actions
+        opened=settingsOpen
+        onOpenChange={value => setSettingsOpen(_ => value)}
+        onNewBattle={() => openSetup(~fromSettings=true, Setup.Campaign)}
+        onRepair=openRepair
+        openKey=settingsKey
+        initialScreen=settingsScreen
+        focusId={settingsFocus.current}>
         {!view.awaiting_new_game
            ? <main
                className={
-                 "battle-layout"
-                 ++ (
-                   ready && state.winner == Some(Domain.Battle_result.Player_defeat)
-                     ? " defeated" : ""
-                 )
-               }>
+                           let js_text_part_1 =
+                             ready && state.winner == Some(Domain.Battle_result.Player_defeat)
+                               ? {js| defeated|js} : {js||js};
+                           {j|battle-layout$(js_text_part_1)|j};
+                         }>
                <TurnBar
                  view
                  actions
@@ -517,20 +561,24 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
                  briefing
                  onBriefing=toggleBriefing
                />
-               <p id="status" className="status" role="status" ariaLive="polite">
+               <p
+                 id={js|status|js}
+                 className={js|status|js}
+                 role={js|status|js}
+                 ariaLive={js|polite|js}>
                  {text(
                     !ready
-                      ? "Loading battlefield…"
+                      ? {js|Loading battlefield…|js}
                       : Option.fold(
                           ~none=false,
                           ~some=(frame: Combat_playback.frame) => !frame.complete,
                           view.combat_playback,
                         )
-                          ? "Resolving combat…" : view.status,
+                          ? {js|Resolving combat…|js} : view.status,
                   )}
                </p>
                <Audio_status retryHud={() => Session.prepare_audio(session)} renderer />
-               <div className="battle-content" ref={ReactDOM.Ref.domRef(battleContent)}>
+               <div className={js|battle-content|js} ref={ReactDOM.Ref.domRef(battleContent)}>
                  <Panels.Campaign
                    view
                    actions
@@ -539,7 +587,11 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
                    onCollapse={() => setBriefing(_ => false)}
                    onNewCampaign=openCampaign
                  />
-                 <div className={"workspace" ++ (inspectionOpen ? "" : " map-only")}>
+                 <div
+                   className={
+                               let js_text_part_1 = inspectionOpen ? {js||js} : {js| map-only|js};
+                               {j|workspace$(js_text_part_1)|j};
+                             }>
                    <Battlefield
                      view
                      actions
@@ -555,8 +607,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
                      onSkipVoice={() => changeVoice(false)}
                    />
                    {inspectionOpen
-                      ? {
-                        <aside ariaLabel="Unit and terrain details">
+                      ? <aside ariaLabel={js|Unit and terrain details|js}>
                           <Panels.Unit
                             view=detailsContext
                             hud={view.hud}
@@ -573,8 +624,7 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
                             artwork={view.artwork}
                             items={Hud_details.ground_items(view.hud)}
                           />
-                        </aside>;
-                      }
+                        </aside>
                       : React.null}
                  </div>
                  {ready
@@ -587,28 +637,6 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
                </div>
              </main>
            : React.null}
-        <Dialogs.Settings
-          voiceEnabled
-          onVoiceChange=changeVoice
-          allowNonHumanMaps
-          onNonHumanMapsChange=changeNonHumanMaps
-          onFollowAiChange=changeFollowAi
-          playtestPreferenceError
-          enemyDetailsError
-          onEnemyDetailsChange=changeEnemyDetails
-          showCommanderArrow
-          commanderArrowError
-          onCommanderArrowChange=changeCommanderArrow
-          session
-          view
-          actions
-          dialog=settings
-          onNewBattle={() => openSetup(~fromSettings=true, Setup.Campaign)}
-          onRepair=openRepair
-          openKey=settingsKey
-          initialScreen=settingsScreen
-          focusId={settingsFocus.current}
-        />
         <Save_failure view actions onManage={() => openSettings(Dialogs.Settings.Saves)} />
         <Import_repair
           session
@@ -628,15 +656,18 @@ let make = (~session: Session.t, ~renderer: Phaser_boot.t, ~onMount: (unit, unit
            : React.null}
         <New_game
           allowNonHumanMaps
+          campaignTags
+          scenarioTags
+          onMapTagsChange=changeMapTags
           session
           view
           actions
           request
           onBack=?{
             setupBack
-              ? Some(() => {openSettings(~focusId=Some("new-game"), Dialogs.Settings.Hub)})
+              ? Some(() => openSettings(~focusId=Some({js|new-game|js}), Dialogs.Settings.Hub))
               : None
           }
         />
-      </>;
+      </Dialogs.Settings>;
 };

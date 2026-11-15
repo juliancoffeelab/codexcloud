@@ -108,12 +108,17 @@ class playback (audio : Phaser_sound.t) (catalog : unit -> Catalog.t)
               combat.units
           with
           | Some actor -> actor
-          | None -> failwith ("Combat strike has no actor: " ^ strike.unit_id)
+          | None ->
+              failwith
+                (let js_text_part_1 = strike.unit_id in
+                 {j|Combat strike has no actor: $(js_text_part_1)|j})
         in
         let timing =
           Phaser_sound.schedule_cue ~use_impact:(not playing.pending.reduced) ~pitch_spread:0.8
             ~owner:playing.pending.owner
-            ~key:("strike:" ^ string_of_int index)
+            ~key:
+              (let js_text_part_1 = string_of_int index in
+               {j|strike:$(js_text_part_1)|j})
             audio (self#family combat index) at Phaser_sound.Combat
         in
         let strike_at = timing.impact_at in
@@ -210,7 +215,10 @@ class playback (audio : Phaser_sound.t) (catalog : unit -> Catalog.t)
           Array.find_opt (fun (unit : Domain.public_unit) -> unit.id = strike.unit_id) combat.units
         with
         | Some actor -> actor
-        | None -> failwith ("Combat strike has no actor: " ^ strike.unit_id)
+        | None ->
+            failwith
+              (let js_text_part_1 = strike.unit_id in
+               {j|Combat strike has no actor: $(js_text_part_1)|j})
       in
       let weapon =
         match
@@ -219,7 +227,10 @@ class playback (audio : Phaser_sound.t) (catalog : unit -> Catalog.t)
             (Presentation.weapons (catalog ()) actor)
         with
         | Some weapon -> weapon
-        | None -> failwith ("Combat strike has no weapon: " ^ strike.weapon_id)
+        | None ->
+            failwith
+              (let js_text_part_1 = strike.weapon_id in
+               {j|Combat strike has no weapon: $(js_text_part_1)|j})
       in
       Phaser_sound.sound_for_interaction
         {

@@ -13,7 +13,7 @@ let changes current previous initial_path =
   let result = [||] and path = Array.copy initial_path in
   let emit fields =
     let value = obj fields in
-    set value "path" (Js.Json.array (Array.map Js.Json.string path));
+    set value {js|path|js} (Js.Json.array (Array.map Js.Json.string path));
     let _ = push result value in
     ()
   in
@@ -30,7 +30,7 @@ let changes current previous initial_path =
           let key = current_keys.(index) in
           if not (has previous key) then (
             let _ = push path key in
-            emit [ ("op", Js.Json.string "remove") ];
+            emit [ ({js|op|js}, Js.Json.string {js|remove|js}) ];
             pop path)
         done;
         for index = 0 to Array.length previous_keys - 1 do
@@ -39,7 +39,7 @@ let changes current previous initial_path =
           walk (property current key) (property previous key);
           pop path
         done)
-      else emit [ ("op", Js.Json.string "set"); ("value", previous) ]
+      else emit [ ({js|op|js}, Js.Json.string {js|set|js}); ({js|value|js}, previous) ]
   in
   walk current previous;
   Js.Json.array result
@@ -48,8 +48,8 @@ let rec apply value path replacement =
   match path with
   | [] -> Option.get replacement
   | key :: rest -> (
-      if List.mem key [ "__proto__"; "constructor"; "prototype" ] then
-        invalid_arg "Invalid undo key";
+      if List.mem key [ {js|__proto__|js}; {js|constructor|js}; {js|prototype|js} ] then
+        invalid_arg {js|Invalid undo key|js};
       match Js.Json.decodeArray value with
       | Some source ->
           let result = Array.copy source in
@@ -69,8 +69,8 @@ let apply_changes state entries =
   Array.fold_left
     (fun state change ->
       apply state
-        (Array.to_list (array (field change "path")) |> List.map host_string)
-        (if text change "op" = "set" then Some (field change "value") else None))
+        (Array.to_list (array (field change {js|path|js})) |> List.map host_string)
+        (if text change {js|op|js} = {js|set|js} then Some (field change {js|value|js}) else None))
     state entries
 
 let checkpoint value =
@@ -93,26 +93,26 @@ let create checkpoint state unit round =
   { checkpoint; state; unit; round; following = None; encoded = None }
 
 let restore save =
-  let saved = field save "checkpoint" in
-  let state = ref (field saved "state") in
-  Array.to_list (array (field save "undo"))
+  let saved = field save {js|checkpoint|js} in
+  let state = ref (field saved {js|state|js}) in
+  Array.to_list (array (field save {js|undo|js}))
   |> List.rev
   |> List.map (fun step ->
       let following = !state in
-      state := apply_changes !state (array (field step "changes"));
+      state := apply_changes !state (array (field step {js|changes|js}));
       let snapshot = copy saved in
-      set snapshot "state" !state;
+      set snapshot {js|state|js} !state;
       {
         checkpoint = checkpoint snapshot;
         state = !state;
-        unit = text step "unitId";
-        round = n step "round";
+        unit = text step {js|unitId|js};
+        round = n step {js|round|js};
         following = Some following;
         encoded = Some step;
       })
 
 let saved checkpoint history =
-  let current = ref (field checkpoint "state") in
+  let current = ref (field checkpoint {js|state|js}) in
   let entries =
     List.map
       (fun entry ->
@@ -123,9 +123,9 @@ let saved checkpoint history =
               let encoded =
                 obj
                   [
-                    ("unitId", str entry.unit);
-                    ("round", num entry.round);
-                    ("changes", changes !current entry.state [||]);
+                    ({js|unitId|js}, str entry.unit);
+                    ({js|round|js}, num entry.round);
+                    ({js|changes|js}, changes !current entry.state [||]);
                   ]
               in
               entry.following <- Some !current;

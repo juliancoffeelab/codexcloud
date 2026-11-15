@@ -59,7 +59,7 @@ export const at = (v, id) => to("PublicUnit", Native.at(v, cellKey(id)));
 export const actions = (v, id) => to("UnitActions", Native.actions(v, id));
 const array = (type, values) => toArray(values).map((v) => to(type, v));
 export const reachable = (v, id) =>
-  Object.fromEntries(mapBindings("String", Native.reachable(v, id)));
+  Object.fromEntries(mapBindings("Text", Native.reachable(v, id)));
 export const neighbors = (v, id) => array("Tile", Native.neighbors(v, cellKey(id)));
 export const targets = (v, id) => array("PublicUnit", Native.targets(v, id));
 export const recruit_tiles = (v, id, kind) => array("Tile", Native.recruit_tiles(v, id, kind));

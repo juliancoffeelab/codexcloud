@@ -18,15 +18,15 @@ let identity = [| 1.; 1.; 1.; 0.; 0.; 0.; 0.; 0.; 0.; 0. |]
 let daylight = { Domain.time = Domain.Time_of_day.Day; underground = [||]; lights = [||] }
 
 let bucket_key x y =
-  string_of_int (int_of_float (floor (x /. 128.)))
-  ^ ":"
-  ^ string_of_int (int_of_float (floor (y /. 128.)))
+  let js_text_part_0 = string_of_int (int_of_float (floor (x /. 128.))) in
+  let js_text_part_2 = string_of_int (int_of_float (floor (y /. 128.))) in
+  {j|$(js_text_part_0):$(js_text_part_2)|j}
 
 class actor_lighting (game : Phaser.game) =
   object (self)
     val mutable pipeline : Phaser_pipeline.t option = None
     val mutable lighting = daylight
-    val mutable signature = ""
+    val mutable signature = {js||js}
     val mutable epoch = 0
     val samples : (Phaser.vector, sample) Map.t = Map.create ()
     val owners : (Phaser.vector, Phaser.game_object Set.t) Map.t = Map.create ()
@@ -40,19 +40,19 @@ class actor_lighting (game : Phaser.game) =
         Phaser_pipeline.attributes
           [|
             {
-              Phaser.Pipeline.name = "inFactor";
+              Phaser.Pipeline.name = {js|inFactor|js};
               size = 4;
               kind = Phaser.Pipeline.float_type;
               normalized = false;
             };
             {
-              Phaser.Pipeline.name = "inLuminance";
+              Phaser.Pipeline.name = {js|inLuminance|js};
               size = 3;
               kind = Phaser.Pipeline.float_type;
               normalized = false;
             };
             {
-              Phaser.Pipeline.name = "inOffset";
+              Phaser.Pipeline.name = {js|inOffset|js};
               size = 3;
               kind = Phaser.Pipeline.float_type;
               normalized = false;
@@ -75,7 +75,7 @@ class actor_lighting (game : Phaser.game) =
     method native =
       match pipeline with
       | Some pipeline -> Phaser_pipeline.native pipeline
-      | None -> failwith "Actor pipeline is not initialized"
+      | None -> failwith {js|Actor pipeline is not initialized|js}
 
     method configure (next : Domain.battlefield_lighting) =
       if Lighting.daylight_only next then (
@@ -84,7 +84,7 @@ class actor_lighting (game : Phaser.game) =
           Map.clear samples;
           Set.clear pending;
           Map.clear buckets);
-        signature <- "day";
+        signature <- {js|day|js};
         lighting <- next)
       else
         let next_signature = Lighting.key next in
@@ -131,7 +131,11 @@ class actor_lighting (game : Phaser.game) =
                   col = int_of_float (floor ((x -. light.radius) /. 128.))
                   to int_of_float (floor ((x +. light.radius) /. 128.))
                 do
-                  let key = string_of_int col ^ ":" ^ string_of_int row in
+                  let key =
+                    let js_text_part_0 = string_of_int col in
+                    let js_text_part_2 = string_of_int row in
+                    {j|$(js_text_part_0):$(js_text_part_2)|j}
+                  in
                   let bucket =
                     match Map.get buckets key with Some bucket -> bucket | None -> [||]
                   in
@@ -203,7 +207,7 @@ class actor_lighting (game : Phaser.game) =
           (if not (Weak_map.has registered object_) then
              let _ = Weak_map.set registered object_ true in
              let _ =
-               object_##once "destroy" (fun[@u] () ->
+               object_##once {js|destroy|js} (fun[@u] () ->
                    Option.iter
                      (fun anchor -> self#forget anchor object_)
                      (Weak_map.get anchors object_))

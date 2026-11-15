@@ -47,18 +47,18 @@ let mount root host current failed =
                            let image = target event in
                            let tag = tag_name image in
                            if
-                             (tag = "IMG" || tag = "image" || tag = "IMAGE")
-                             && Js.Nullable.isNullable (closest image ".map-terrain")
+                             (tag = {js|IMG|js} || tag = {js|image|js} || tag = {js|IMAGE|js})
+                             && Js.Nullable.isNullable (closest image {js|.map-terrain|js})
                            then
                              Session.message session
-                               "Artwork could not be loaded. Reload the game to retry."
+                               {js|Artwork could not be loaded. Reload the game to retry.|js}
                        in
                        let close () =
                          if not !disposed then (
                            disposed := true;
-                           remove_capture host "pointerdown" gesture true;
-                           remove_capture host "keydown" gesture true;
-                           remove_capture host "error" artwork_failed true;
+                           remove_capture host {js|pointerdown|js} gesture true;
+                           remove_capture host {js|keydown|js} gesture true;
+                           remove_capture host {js|error|js} artwork_failed true;
                            release_both
                              (fun () -> Phaser_boot.close renderer)
                              (fun () ->
@@ -68,9 +68,9 @@ let mount root host current failed =
                                      (fun () -> Native.dispose_factory factory))))
                        in
                        try
-                         listen_capture host "pointerdown" gesture true;
-                         listen_capture host "keydown" gesture true;
-                         listen_capture host "error" artwork_failed true;
+                         listen_capture host {js|pointerdown|js} gesture true;
+                         listen_capture host {js|keydown|js} gesture true;
+                         listen_capture host {js|error|js} artwork_failed true;
                          let application () =
                            React.createElement App.make
                              [%mel.obj
@@ -84,7 +84,7 @@ let mount root host current failed =
                                        if not !tools_registered then (
                                          tools_registered := true;
                                          unregister_tools := Tools.register session);
-                                       notify (event "hex-command-ready"));
+                                       notify (event {js|hex-command-ready|js}));
                                      close);
                                }]
                          in

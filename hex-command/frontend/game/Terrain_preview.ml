@@ -25,7 +25,11 @@ let load cache (frame : Art.frame) =
   | None -> (
       match cache.request with
       | Some request -> request frame
-      | None -> Js.Promise.reject (Failure ("Artwork loader unavailable: " ^ frame.url)))
+      | None ->
+          Js.Promise.reject
+            (Failure
+               (let js_text_part_1 = frame.url in
+                {j|Artwork loader unavailable: $(js_text_part_1)|j})))
 
 let retry = load
 
@@ -34,8 +38,8 @@ let close cache =
   Host_collections.Map.clear cache.images
 
 let mount node image =
-  class_name image "terrain-card-art pixel-art";
-  alt image "";
+  class_name image {js|terrain-card-art pixel-art|js};
+  alt image {js||js};
   width image 80;
   height image 80;
   replace node image

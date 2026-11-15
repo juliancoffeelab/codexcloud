@@ -1,6 +1,7 @@
 //! Mission progress summaries and objectives supplied to planning policies.
 
 use super::*;
+use crate::data::Text;
 use serde::{Deserialize, Serialize};
 /// A display-ready objective label, count, completion status and tile list.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -11,7 +12,7 @@ use serde::{Deserialize, Serialize};
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Progress {
-    pub label: String,
+    pub label: Text,
     pub current: u32,
     pub total: u32,
     pub done: bool,
@@ -26,12 +27,12 @@ pub struct Progress {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Objective {
-    pub id: String,
+    pub id: Text,
     pub tiles: Vec<Hex>,
     pub weight: f64,
     pub kind: ObjectiveKind,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub actor: Option<String>,
+    pub actor: Option<Text>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub family: Option<Family>,
     #[serde(skip_serializing_if = "Option::is_none")]

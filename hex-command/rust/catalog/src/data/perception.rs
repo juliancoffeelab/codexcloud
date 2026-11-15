@@ -1,6 +1,7 @@
 //! Bounded perception facts. Campaigns change these facts through ordinary actions;
 //! sight queries never interpret scripts or campaign flags.
 use super::{Hex, TerrainRole, TileRef, TurnPhase, UnitMatch};
+use crate::data::Text;
 use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[cfg_attr(
@@ -115,7 +116,7 @@ pub struct SightProfile {
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct SightEmission {
-    pub group: String,
+    pub group: Text,
     pub profile: SightProfile,
 }
 
@@ -155,7 +156,7 @@ impl ConcealmentRule {
                 illuminated() == matches!(required, IlluminationRequirement::Lit)
             })
     }
-    pub fn validate(&self) -> Result<(), String> {
+    pub fn validate(&self) -> Result<(), Text> {
         if self
             .requires
             .terrains
@@ -225,7 +226,7 @@ pub enum UnitConcealmentAppearance {
 )]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct UnitAppearance {
-    pub unit: String,
+    pub unit: Text,
     pub concealment: UnitConcealmentAppearance,
     /// Current-position detection by observers present in the faction's known view.
     pub detection: Vec<KnownDetection>,
@@ -280,7 +281,7 @@ pub struct UnitPerception {
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct VisionGroupState {
-    pub id: String,
+    pub id: Text,
     pub sight: SightProfile,
     pub explored: Vec<Hex>,
 }
@@ -303,7 +304,7 @@ pub struct TurnStamp {
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct PerceptionEffect {
-    pub id: String,
+    pub id: Text,
     #[serde(default)]
     pub penetrates: Vec<ConcealmentKind>,
     #[serde(default)]
@@ -367,7 +368,7 @@ pub struct PerceptionGrant {
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct PerceptionRemoval {
     pub units: UnitMatch,
-    pub effect: String,
+    pub effect: Text,
 }
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[cfg_attr(
@@ -377,7 +378,7 @@ pub struct PerceptionRemoval {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct TerrainReveal {
-    pub group: String,
+    pub group: Text,
     pub area: PerceptionArea,
 }
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -388,8 +389,8 @@ pub struct TerrainReveal {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct VisionGroupAssignment {
-    pub faction: String,
-    pub group: String,
+    pub faction: Text,
+    pub group: Text,
 }
 
 /// Dense group identity is independent of phase, control and diplomatic relations.
@@ -430,7 +431,7 @@ pub struct DetectionFacts {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum DetectionObserver {
-    Unit(String),
+    Unit(Text),
     Terrain(Hex),
 }
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -476,7 +477,7 @@ impl DetectionFacts {
     }
 }
 impl PerceptionEffect {
-    pub fn validate(&self) -> Result<(), String> {
+    pub fn validate(&self) -> Result<(), Text> {
         super::catalog::identifier(&self.id, "perception effect").map_err(|e| e.to_string())?;
         if self.expires_at.as_ref().is_some_and(|at| at.round == 0) {
             return Err("perception expiry requires a positive round".into());
@@ -487,7 +488,7 @@ impl PerceptionEffect {
 pub fn validate_unit_perception(
     concealment: &[UnitConcealment],
     penetrates: &[ConcealmentKind],
-) -> Result<(), String> {
+) -> Result<(), Text> {
     let mut seen = ConcealmentMask::default();
     for &kind in penetrates {
         if seen.contains(kind) {
@@ -505,7 +506,7 @@ pub fn validate_perception(
     factions: &[super::Faction],
     tiles: &[super::Tile],
     units: &[super::PublicUnit],
-) -> Result<(), String> {
+) -> Result<(), Text> {
     let mut ids = std::collections::HashSet::new();
     for group in groups {
         super::catalog::identifier(&group.id, "vision group").map_err(|e| e.to_string())?;

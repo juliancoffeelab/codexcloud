@@ -5,7 +5,7 @@ import * as Domain from "@frontend/Domain";
 import { toJSON } from "./json-fixture.mjs";
 
 test("The baked browser build requires an explicit runtime-catalog feature for custom documents", () => {
-  const result = Domain.NativeEngineFactory.with_documents(Domain.String_map.empty);
+  const result = Domain.NativeEngineFactory.with_documents(Domain.Text_map.empty);
   assert.equal(result.TAG, 1);
   assert.deepEqual(toJSON("EngineError", result._0), {
     code: "invalidRequest",

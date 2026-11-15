@@ -130,19 +130,21 @@ let pause milliseconds =
       ())
 
 let preload catalog map = Terrain_preload.map catalog map
-let initial_status = "Select a unit. Capture villages. Defeat the red commander."
+let initial_status = {js|Select a unit. Capture villages. Defeat the red commander.|js}
 let state t = Native.state t.latest.interaction_game
 let adopt t game = t.latest <- { t.latest with interaction_game = game }
-let ensure_open t = if t.disposed then raise (Failed (Rejected "This battle session has closed."))
+
+let ensure_open t =
+  if t.disposed then raise (Failed (Rejected {js|This battle session has closed.|js}))
 
 let alive t =
   ensure_open t;
   if t.latest.failure <> None then
-    raise (Failed (Rejected "The battle could not continue. Reload the game."))
+    raise (Failed (Rejected {js|The battle could not continue. Reload the game.|js}))
 
 let require_session t =
   alive t;
-  if Save.awaiting t.saves then raise (Failed (Rejected "Choose a new game to continue."))
+  if Save.awaiting t.saves then raise (Failed (Rejected {js|Choose a new game to continue.|js}))
 
 let active t =
   (not (Save.awaiting t.saves))
@@ -154,10 +156,10 @@ let active t =
 
 let require_actor t id =
   alive t;
-  if not (active t) then raise (Failed (Rejected "Wait for your turn."));
+  if not (active t) then raise (Failed (Rejected {js|Wait for your turn.|js}));
   match Native.unit t.latest.interaction_game id with
   | Some unit when Native.controllable t.latest.interaction_game unit.id -> ()
-  | _ -> raise (Failed (Rejected "This unit cannot act now."))
+  | _ -> raise (Failed (Rejected {js|This unit cannot act now.|js}))
 
 let can_undo t =
   match t.history with
@@ -252,8 +254,9 @@ let rec publish ?(render = true) ?(winner = true) ?(effects = fun () -> ()) ?(ne
             Option.value
               ~default:
                 (if side = Domain.Battle_result.Player_victory then
-                   "Victory! The enemy commander has fallen. The field is yours."
-                 else "Your commander has fallen. Start a new battle and try a different approach.")
+                   {js|Victory! The enemy commander has fallen. The field is yours.|js}
+                 else
+                   {js|Your commander has fallen. Start a new battle and try a different approach.|js})
               (Option.bind s.campaign (fun campaign -> campaign.outcome))
       else t.latest.status
     in
@@ -299,8 +302,8 @@ let rec publish ?(render = true) ?(winner = true) ?(effects = fun () -> ()) ?(ne
                           (if
                              (Native.state frame.game).winner
                              = Some Domain.Battle_result.Player_victory
-                           then "victory"
-                           else "defeat")
+                           then {js|victory|js}
+                           else {js|defeat|js})
                       in
                       ()))
             in
@@ -379,14 +382,13 @@ let message t status =
 let error t exception_ =
   let reason =
     match Js.Exn.asJsExn exception_ with
-    | Some error ->
-        Utf8.of_js (Option.value ~default:"Unexpected session failure." (Js.Exn.message error))
+    | Some error -> Option.value ~default:{js|Unexpected session failure.|js} (Js.Exn.message error)
     | None -> (
         match exception_ with
         | Failed failure -> error_message failure
         | Native.Rejected failure -> Native.message failure
         | Failure reason | Invalid_argument reason -> reason
-        | _ -> "Unexpected session failure.")
+        | _ -> {js|Unexpected session failure.|js})
   in
   message t reason
 
@@ -431,12 +433,12 @@ let feedback t before =
         deferred t (fun () ->
             Motion.animate_tile tile
               (match motion with
-              | Presentation.Move -> "move"
-              | Attack -> "attack"
-              | Recruit -> "recruit")))
+              | Presentation.Move -> {js|move|js}
+              | Attack -> {js|attack|js}
+              | Recruit -> {js|recruit|js})))
     changes.tile_effects;
   List.iter
-    (fun tile -> deferred t (fun () -> Motion.animate_tile tile "capture"))
+    (fun tile -> deferred t (fun () -> Motion.animate_tile tile {js|capture|js}))
     changes.captured_tiles;
   if changes.turn_changed then deferred t Motion.animate_turn;
   let combat_pending =
@@ -449,11 +451,11 @@ let feedback t before =
     | Some side ->
         let _ =
           Phaser_sound.play ~owner:(sound_owner t) t.audio
-            (if side = Domain.Battle_result.Player_victory then "victory" else "defeat")
+            (if side = Domain.Battle_result.Player_victory then {js|victory|js} else {js|defeat|js})
         in
         ()
     | None when changes.recruited || changes.advanced ->
-        let _ = Phaser_sound.play ~owner:(sound_owner t) t.audio "recruit" in
+        let _ = Phaser_sound.play ~owner:(sound_owner t) t.audio {js|recruit|js} in
         ()
     | None -> (
         match changes.captured_tiles with
@@ -464,7 +466,9 @@ let feedback t before =
                 (Native.tile t.latest.interaction_game tile)
             in
             deferred t (fun () ->
-                Motion.animate_tile ~sound:{ Phaser_sound.interaction with terrain } tile "capture")
+                Motion.animate_tile
+                  ~sound:{ Phaser_sound.interaction with terrain }
+                  tile {js|capture|js})
         | [] -> ())
 
 let supersede_presentation t =
@@ -507,8 +511,10 @@ let selection_feedback t tile =
       owner =
         Some
           (Phaser_sound.named_owner
-             ("inspection:"
-             ^ Option.fold ~none:tile ~some:(fun (unit : Domain.public_unit) -> unit.id) unit));
+             (let js_text_part_1 =
+                Option.fold ~none:tile ~some:(fun (unit : Domain.public_unit) -> unit.id) unit
+              in
+              {j|inspection:$(js_text_part_1)|j}));
       unit_type = Option.map (fun (unit : Domain.public_unit) -> unit.type_) unit;
       terrain =
         Option.map
@@ -516,7 +522,7 @@ let selection_feedback t tile =
           (Native.tile t.latest.interaction_game tile);
     }
   in
-  deferred t (fun () -> Motion.animate_tile ~sound tile "select")
+  deferred t (fun () -> Motion.animate_tile ~sound tile {js|select|js})
 
 let focus t tile =
   alive t;
@@ -541,7 +547,7 @@ let clear t inspection =
                ~some:(fun tile -> Battle_details.Terrain tile)
                t.latest.map_focus.inspected);
       };
-    publish ~next:(fun () -> message t "Selection cleared.") t)
+    publish ~next:(fun () -> message t {js|Selection cleared.|js}) t)
 
 let move ?(next = fun () -> ()) t unit tile =
   require_actor t unit;
@@ -553,7 +559,8 @@ let move ?(next = fun () -> ()) t unit tile =
           { unit = Native.unit_id unit; tile = Native.hex t.latest.interaction_game tile }));
   if active t then
     t.history <-
-      Save_undo.create checkpoint (Save_json.field persisted "state") unit before.round :: t.history;
+      Save_undo.create checkpoint (Save_json.field persisted {js|state|js}) unit before.round
+      :: t.history;
   t.latest <- { t.latest with details = Battle_details.Unit unit };
   commit ~next t before
 
@@ -617,11 +624,11 @@ let choose t tile_id =
                   publish
                     ~effects:(fun () ->
                       deferred t (fun () ->
-                          let _ = Phaser_sound.play t.audio "select" in
+                          let _ = Phaser_sound.play t.audio {js|select|js} in
                           ()))
                     ~next:(fun () ->
                       message t
-                        "Tap a weapon to attack. Use the magnifying glass for damage details.")
+                        {js|Tap a weapon to attack. Use the magnifying glass for damage details.|js})
                     t)
                 else (
                   t.latest <- { t.latest with details = Battle_details.Unit occupant.id };
@@ -632,13 +639,15 @@ let choose t tile_id =
                         (if not (Native.controllable t.latest.interaction_game occupant.id) then
                            match Native.faction t.latest.interaction_game occupant.id with
                            | Some faction when faction.relation = Domain.Relation.Neutral ->
-                               "Neutral unit selected."
-                           | _ -> "AI-controlled unit selected. Select one of your units to act."
-                         else if occupant.attack_spent then "This unit has finished its turn."
+                               {js|Neutral unit selected.|js}
+                           | _ ->
+                               {js|AI-controlled unit selected. Select one of your units to act.|js}
+                         else if occupant.attack_spent then {js|This unit has finished its turn.|js}
                          else
-                           "Selected "
-                           ^ String.lowercase_ascii (Catalog.unit t.catalog occupant.type_).name
-                           ^ ". Choose a blue hex to move or a red enemy to attack."))
+                           let js_text_part_1 =
+                             Js.String.toLowerCase (Catalog.unit t.catalog occupant.type_).name
+                           in
+                           {j|Selected $(js_text_part_1). Choose a blue hex to move or a red enemy to attack.|j}))
                     t)
             | None -> (
                 match t.latest.map_focus.selected with
@@ -647,12 +656,13 @@ let choose t tile_id =
                          ~some:(fun (unit : Domain.public_unit) ->
                            Native.controllable t.latest.interaction_game unit.id)
                          (Native.unit t.latest.interaction_game id)
-                       && Domain.String_map.find_opt tile_id
+                       && Domain.Text_map.find_opt tile_id
                             (Native.reachable t.latest.interaction_game id)
                           <> None ->
                     move
                       ~next:(fun () ->
-                        message t "Moved. You can attack an enemy in range or select another unit.")
+                        message t
+                          {js|Moved. You can attack an enemy in range or select another unit.|js})
                       t id tile_id
                 | _ ->
                     t.latest <- { t.latest with details = Battle_details.Terrain tile_id };
@@ -662,8 +672,11 @@ let choose t tile_id =
                         let terrain = Catalog.terrain_type t.catalog tile.terrain in
                         message t
                           (if Native.fogged t.latest.interaction_game tile.id then
-                             "Unexplored terrain."
-                           else terrain.name ^ ": " ^ terrain.description))
+                             {js|Unexplored terrain.|js}
+                           else
+                             let js_text_part_0 = terrain.name in
+                             let js_text_part_2 = terrain.description in
+                             {j|$(js_text_part_0): $(js_text_part_2)|j}))
                       t)))
 
 let attack t weapon =
@@ -684,7 +697,7 @@ let attack t weapon =
                 })
             ~next:(fun () ->
               if Option.is_none (state t).winner then
-                message t "Attack complete. Select another unit or end your turn.")
+                message t {js|Attack complete. Select another unit or end your turn.|js})
             t
             (Domain.Command.Attack
                { unit = Native.unit_id unit; target = Native.unit_id target; weapon })
@@ -695,7 +708,7 @@ let drop t unit item =
       require_actor t unit;
       dispatch
         ~accepted:(fun () -> t.history <- [])
-        ~next:(fun () -> message t "Item dropped. Move away so another unit can collect it.")
+        ~next:(fun () -> message t {js|Item dropped. Move away so another unit can collect it.|js})
         t
         (Domain.Command.Drop_item { unit = Native.unit_id unit; item }))
 
@@ -707,14 +720,14 @@ let recruit t type_ tile =
               (Presentation.recruitment_context t.catalog t.latest.interaction_game None tile)
               (fun (commander, _) -> commander))
       with
-      | None -> raise (Failed (Rejected "This unit cannot act now."))
+      | None -> raise (Failed (Rejected {js|This unit cannot act now.|js}))
       | Some unit ->
           require_actor t unit.id;
           dispatch
             ~accepted:(fun () ->
               t.history <- [];
               t.latest <- { t.latest with details = Battle_details.Terrain tile })
-            ~next:(fun () -> message t "Recruited. Your new unit will act next turn.")
+            ~next:(fun () -> message t {js|Recruited. Your new unit will act next turn.|js})
             t
             (Domain.Command.Recruit
                {
@@ -732,7 +745,9 @@ let advance t type_ =
           dispatch
             ~accepted:(fun () -> t.history <- [])
             ~next:(fun () ->
-              message t ("Advanced to " ^ (Catalog.unit t.catalog type_).name ^ ". Ready next turn."))
+              message t
+                (let js_text_part_1 = (Catalog.unit t.catalog type_).name in
+                 {j|Advanced to $(js_text_part_1). Ready next turn.|j}))
             t
             (Domain.Command.Advance { unit = Native.unit_id id; kind = type_ }))
 
@@ -748,7 +763,7 @@ let attack_unit t unit target weapon =
     | None -> (
         match Native.best_attack t.latest.interaction_game unit target with
         | Some attack -> attack.attack.id
-        | None -> raise (Failed (Rejected "Illegal attack")))
+        | None -> raise (Failed (Rejected {js|Illegal attack|js})))
   in
   dispatch
     ~accepted:(fun () ->
@@ -812,11 +827,14 @@ let ai_camera_focus before after command =
   in
   actors
   |> List.concat_map (fun unit ->
-      let id = "u" ^ string_of_int (int_of_float unit) in
+      let id =
+        let js_text_part_1 = string_of_int (int_of_float unit) in
+        {j|u$(js_text_part_1)|j}
+      in
       [ before; after ]
       |> List.filter_map (fun game ->
           Option.map (fun (u : Domain.public_unit) -> Hex.key u.tile) (Native.unit game id)))
-  |> List.sort_uniq String.compare |> Array.of_list
+  |> List.sort_uniq Stdlib.compare |> Array.of_list
 
 let ensure_enemy t origin =
   if
@@ -872,7 +890,8 @@ let ensure_enemy t origin =
                     t.latest <-
                       {
                         t.latest with
-                        status = "Your turn. Capture villages, recruit reinforcements, or attack.";
+                        status =
+                          {js|Your turn. Capture villages, recruit reinforcements, or attack.|js};
                       };
                   publish ~effects:(fun () -> feedback t before) t;
                   task.complete ());
@@ -951,8 +970,8 @@ let ensure_enemy t origin =
                 {
                   t.latest with
                   status =
-                    (if phase = Domain.Turn_phase.Player then "AI is playing your turn…"
-                     else "The enemy is planning its moves…");
+                    (if phase = Domain.Turn_phase.Player then {js|AI is playing your turn…|js}
+                     else {js|The enemy is planning its moves…|js});
                 };
               Js.Promise.then_
                 (fun () ->
@@ -1012,7 +1031,7 @@ let end_turn ?(restored = false) t () =
                && (state t).turn = Domain.Turn_phase.Player
                && t.enemy = None && (state t).winner = None
                && not (Story.dialogue_pending (state t).campaign))
-        then raise (Failed (Rejected "Wait for your turn."));
+        then raise (Failed (Rejected {js|Wait for your turn.|js}));
         supersede_presentation t;
         let before = state t and checkpoint = Engine.save_json t.battle in
         adopt t (Engine.dispatch t.battle Domain.Command.End_turn);
@@ -1044,9 +1063,11 @@ let end_turn ?(restored = false) t () =
 
 let initial_focus game =
   let s = Native.state game in
-  match Array.find_opt (fun (unit : Domain.public_unit) -> unit.faction = "player") s.units with
+  match
+    Array.find_opt (fun (unit : Domain.public_unit) -> unit.faction = {js|player|js}) s.units
+  with
   | Some unit -> Hex.key unit.tile
-  | None -> if Array.length s.tiles = 0 then "" else s.tiles.(0).id
+  | None -> if Array.length s.tiles = 0 then {js||js} else s.tiles.(0).id
 
 let replace ?setup ?(new_run = true) ?(persist = true) t replacement game =
   cancel_enemy t;
@@ -1075,7 +1096,7 @@ let replace ?setup ?(new_run = true) ?(persist = true) t replacement game =
       focused = initial_focus game;
       status =
         (if (state t).campaign = None then initial_status
-         else "Follow the mission objectives. Keep your leader safe.");
+         else {js|Follow the mission objectives. Keep your leader safe.|js});
     };
   if persist then save t false;
   (if persist then
@@ -1090,7 +1111,7 @@ let reset ?(setup = Setup.default) ?armies t map =
       (List.exists
          (fun (candidate : Domain.map_definition) -> candidate.id = map)
          (Catalog.scenario_maps t.catalog))
-  then raise (Failed (Rejected "Unknown battlefield. Choose a skirmish or start a campaign."));
+  then raise (Failed (Rejected {js|Unknown battlefield. Choose a skirmish or start a campaign.|js}));
   preload t.catalog map;
   let armies = Option.map (fun (player, enemy) -> [| player; enemy |]) armies in
   let replacement =
@@ -1128,7 +1149,7 @@ let retry t () =
 let undo t () =
   require_session t;
   if Story.dialogue_pending (state t).campaign then
-    raise (Failed (Rejected "Finish the conversation before undoing a move."));
+    raise (Failed (Rejected {js|Finish the conversation before undoing a move.|js}));
   if can_undo t then
     match t.history with
     | [] -> ()
@@ -1149,12 +1170,15 @@ let undo t () =
         save t false;
         publish
           ~effects:(fun () ->
-            Option.iter (fun tile -> deferred t (fun () -> Motion.animate_tile tile "move")) tile)
-          ~next:(fun () -> message t "Move undone. Choose a new destination.")
+            Option.iter
+              (fun tile -> deferred t (fun () -> Motion.animate_tile tile {js|move|js}))
+              tile)
+          ~next:(fun () -> message t {js|Move undone. Choose a new destination.|js})
           t
 
 let require_settled t =
-  if Option.is_some t.enemy then raise (Failed (Rejected "Wait for the turn to finish saving."))
+  if Option.is_some t.enemy then
+    raise (Failed (Rejected {js|Wait for the turn to finish saving.|js}))
 
 let dialogue t skip =
   require_session t;
@@ -1206,7 +1230,7 @@ let from_loaded ?(clock = pause) ~audio factory (loaded : Native.battle Save.loa
         combat_playback = None;
         settling = false;
         enemy_combat_details = false;
-        treasury = "player";
+        treasury = {js|player|js};
         catalog;
         artwork = Art.current ();
         details = Battle_details.None_;
@@ -1218,7 +1242,7 @@ let from_loaded ?(clock = pause) ~audio factory (loaded : Native.battle Save.loa
           Option.value
             ~default:
               (if Option.is_some (Native.state game).campaign then
-                 "Follow the mission objectives. Keep your leader safe."
+                 {js|Follow the mission objectives. Keep your leader safe.|js}
                else initial_status)
             loaded.notice;
         sound = Phaser_sound.enabled audio;
@@ -1227,7 +1251,7 @@ let from_loaded ?(clock = pause) ~audio factory (loaded : Native.battle Save.loa
         ai_focus = [||];
         can_undo = false;
         failure = None;
-        persistence = "Not saved yet";
+        persistence = {js|Not saved yet|js};
         save_failure = None;
         load_problem = Save.problem loaded.saves;
         awaiting_new_game = Save.awaiting loaded.saves;
@@ -1295,7 +1319,7 @@ let from_loaded ?(clock = pause) ~audio factory (loaded : Native.battle Save.loa
                     Js.Promise.then_
                       (fun browser_saves ->
                         Debug_report.download ~browser_saves t.recordings checkpoint setup state;
-                        message t "Debug report downloaded. You can attach it to the chat.";
+                        message t {js|Debug report downloaded. You can attach it to the chat.|js};
                         Js.Promise.resolve ())
                       (Save.capture ())
                   in
@@ -1379,9 +1403,9 @@ let scene_audio t =
     |> List.map (fun (entry : ground_item) -> entry.item.id)
   in
   let item_sounds =
-    List.sort_uniq String.compare (item_ids @ carried @ ground)
+    List.sort_uniq Stdlib.compare (item_ids @ carried @ ground)
     |> List.concat_map (fun id ->
-        (if id = "quarry-hammer" then [ "attack-melee" ] else [])
+        (if id = {js|quarry-hammer|js} then [ {js|attack-melee|js} ] else [])
         @ Option.fold ~none:[]
             ~some:(fun (item : item) ->
               Array.to_list item.attacks |> List.map (fun (weapon : weapon) -> weapon.sound))
@@ -1399,8 +1423,11 @@ let narrate t view =
         Option.iter
           (fun sound ->
             let key =
-              string_of_int t.epoch ^ ":" ^ progress.id ^ ":" ^ string_of_int index ^ ":"
-              ^ string_of_float progress.mission ^ ":" ^ sound
+              let js_text_part_0 = string_of_int t.epoch in
+              let js_text_part_2 = progress.id in
+              let js_text_part_4 = string_of_int index in
+              let js_text_part_6 = string_of_float progress.mission in
+              {j|$(js_text_part_0):$(js_text_part_2):$(js_text_part_4):$(js_text_part_6):$(sound)|j}
             in
             if t.last_narration <> Some key then (
               t.last_narration <- Some key;
@@ -1413,7 +1440,8 @@ let load factory =
   Save.load ~restore:(Engine.restore factory) ~validate:(Engine.validate_undo factory)
     ~fresh:(fun () ->
       Engine.create factory
-        (Domain.Start.Scenario { map = "mirror"; revision = None; armies = None; first = None })
+        (Domain.Start.Scenario
+           { map = {js|mirror|js}; revision = None; armies = None; first = None })
         17.)
     ~dispose:Native.dispose
 
@@ -1447,7 +1475,7 @@ let save_game t =
       if
         Save.awaiting t.saves || Option.is_some t.enemy
         || ((state t).turn = Domain.Turn_phase.Ai && (state t).winner = None)
-      then Save_error.raise_internal "Wait for the enemy turn to finish before saving.";
+      then Save_error.raise_internal {js|Wait for the enemy turn to finish before saving.|js};
       let checkpoint = Engine.save_json t.battle in
       let work = Save.manual t.saves t.latest.setup checkpoint in
       Js.Promise.catch
@@ -1469,11 +1497,11 @@ let summarize t game =
   let view = Native.view game in
   let state = Native.state view in
   let armies =
-    "player"
+    {js|player|js}
     :: (Array.to_list state.factions
        |> List.filter_map (fun (f : Domain.faction) ->
            if f.controller = Domain.Controller.Human then Some f.id else None))
-    |> List.sort_uniq String.compare
+    |> List.sort_uniq Stdlib.compare
   in
   let levels = Hashtbl.create 4 in
   List.iter (fun level -> Hashtbl.replace levels level 0) [ 1; 2; 3 ];
@@ -1499,11 +1527,12 @@ let summarize t game =
   in
   obj
     [
-      ("gold", num (List.fold_left (fun total id -> total +. Native.gold state.gold id) 0. armies));
-      ( "villages",
+      ( {js|gold|js},
+        num (List.fold_left (fun total id -> total +. Native.gold state.gold id) 0. armies) );
+      ( {js|villages|js},
         obj
           [
-            ( "owned",
+            ( {js|owned|js},
               num
                 (float_of_int
                    (List.length
@@ -1511,29 +1540,33 @@ let summarize t game =
                          (fun (tile : Domain.tile) ->
                            Option.fold ~none:false ~some:(fun id -> List.mem id armies) tile.owner)
                          villages))) );
-            ("total", num (float_of_int (List.length villages)));
+            ({js|total|js}, num (float_of_int (List.length villages)));
           ] );
-      ( "objectives",
+      ( {js|objectives|js},
         match goals with
         | None -> Js.Json.null
         | Some goals ->
             obj
               [
-                ( "completed",
+                ( {js|completed|js},
                   num
                     (float_of_int
                        (List.length
                           (List.filter
                              (fun (o : Domain.objective_status) -> o.progress.done_)
                              goals))) );
-                ("total", num (float_of_int (List.length goals)));
+                ({js|total|js}, num (float_of_int (List.length goals)));
               ] );
-      ( "units",
+      ( {js|units|js},
         arr
           (Hashtbl.fold (fun level count result -> (level, count) :: result) levels []
           |> List.sort compare
           |> List.map (fun (level, count) ->
-              obj [ ("level", num (float_of_int level)); ("count", num (float_of_int count)) ])) );
+              obj
+                [
+                  ({js|level|js}, num (float_of_int level));
+                  ({js|count|js}, num (float_of_int count));
+                ])) );
     ]
 
 let saved_summary t id =
@@ -1549,7 +1582,7 @@ let install_restored t game setup undo pending =
   t.latest <-
     {
       t.latest with
-      status = "Saved progress restored. Recorded turn starts remain in Saved games.";
+      status = {js|Saved progress restored. Recorded turn starts remain in Saved games.|js};
     };
   publish t;
   if pending then
@@ -1563,7 +1596,7 @@ let restore_checkpoint ?(reload = false) t id =
   let epoch = t.epoch in
   let current () =
     ensure_open t;
-    if epoch <> t.epoch then raise (Failed (Rejected "This play session has changed."))
+    if epoch <> t.epoch then raise (Failed (Rejected {js|This play session has changed.|js}))
   in
   Save.restore_progress t.saves ~current ~restore:(Engine.restore t.factory)
     ~validate:(Engine.validate_undo t.factory) ~dispose:Native.dispose
@@ -1611,7 +1644,9 @@ let delete_saved_run t id =
 let repair_inventory t =
   Save.inspect t.saves (fun save ->
       let kind =
-        Save_json.text (Save_json.field (Save_json.field save "progress") "entry") "kind"
+        Save_json.text
+          (Save_json.field (Save_json.field save {js|progress|js}) {js|entry|js})
+          {js|kind|js}
       in
       let game, _, _, _ = restore_text t (Js.Json.stringify save) kind in
       Native.dispose game)
@@ -1638,11 +1673,11 @@ let retry_saved_progress t expected =
         let actual = loaded.entry in
         let normalized v =
           match v with
-          | None -> "null"
+          | None -> {js|null|js}
           | Some v ->
               Js.Json.stringify
                 (obj
-                   (Array.to_list (entries v) |> List.sort (fun (a, _) (b, _) -> String.compare a b)))
+                   (Array.to_list (entries v) |> List.sort (fun (a, _) (b, _) -> Stdlib.compare a b)))
         in
         if
           Option.fold ~none:false
@@ -1651,7 +1686,7 @@ let retry_saved_progress t expected =
         then (
           Native.dispose loaded.game;
           Save_error.reject_internal
-            "Saved progress changed in another tab. Review the latest details before continuing.")
+            {js|Saved progress changed in another tab. Review the latest details before continuing.|js})
         else (
           Save.close t.saves;
           t.saves <- loaded.saves;
@@ -1694,44 +1729,47 @@ let trace_context t =
      corrupts Unicode checkpoints. *)
   let serialized = Engine.save_json t.battle |> Js.Json.parseExn in
   let hex (hex : Domain.tile_id) =
-    obj [ ("col", num (Int32.to_float hex.col)); ("row", num (Int32.to_float hex.row)) ]
+    obj [ ({js|col|js}, num (Int32.to_float hex.col)); ({js|row|js}, num (Int32.to_float hex.row)) ]
   in
   let light (light : Domain.battlefield_light) =
     obj
       ([
-         ("col", num (Int32.to_float light.col));
-         ("row", num (Int32.to_float light.row));
-         ("radius", num light.radius);
-         ("power", num light.power);
+         ({js|col|js}, num (Int32.to_float light.col));
+         ({js|row|js}, num (Int32.to_float light.row));
+         ({js|radius|js}, num light.radius);
+         ({js|power|js}, num light.power);
        ]
-      @ Option.fold ~none:[] ~some:(fun value -> [ ("dx", num value) ]) light.dx
-      @ Option.fold ~none:[] ~some:(fun value -> [ ("dy", num value) ]) light.dy
-      @ Option.fold ~none:[] ~some:(fun value -> [ ("fixture", bool value) ]) light.fixture
+      @ Option.fold ~none:[] ~some:(fun value -> [ ({js|dx|js}, num value) ]) light.dx
+      @ Option.fold ~none:[] ~some:(fun value -> [ ({js|dy|js}, num value) ]) light.dy
+      @ Option.fold ~none:[] ~some:(fun value -> [ ({js|fixture|js}, bool value) ]) light.fixture
       @ Option.fold ~none:[]
           ~some:(fun value ->
-            [ ("color", Js.Json.array (Array.map (fun value -> num (float_of_int value)) value)) ])
+            [
+              ( {js|color|js},
+                Js.Json.array (Array.map (fun value -> num (float_of_int value)) value) );
+            ])
           light.color)
   in
   obj
     [
-      ("mapId", str state.map_id);
-      ("cols", num (Int32.to_float state.cols));
-      ("rows", num (Int32.to_float state.rows));
-      ("round", num state.round);
-      ("turn", str (Enum.string_of_phase state.turn));
-      ("snapshot", field serialized "state");
-      ( "lighting",
+      ({js|mapId|js}, str state.map_id);
+      ({js|cols|js}, num (Int32.to_float state.cols));
+      ({js|rows|js}, num (Int32.to_float state.rows));
+      ({js|round|js}, num state.round);
+      ({js|turn|js}, str (Enum.string_of_phase state.turn));
+      ({js|snapshot|js}, field serialized {js|state|js});
+      ( {js|lighting|js},
         obj
           [
-            ( "time",
+            ( {js|time|js},
               str
                 (match presentation.lighting.time with
-                | Domain.Time_of_day.Day -> "day"
-                | Night -> "night") );
-            ("underground", Js.Json.array (Array.map hex presentation.lighting.underground));
-            ("lights", Js.Json.array (Array.map light presentation.lighting.lights));
+                | Domain.Time_of_day.Day -> {js|day|js}
+                | Night -> {js|night|js}) );
+            ({js|underground|js}, Js.Json.array (Array.map hex presentation.lighting.underground));
+            ({js|lights|js}, Js.Json.array (Array.map light presentation.lighting.lights));
           ] );
-      ("fog", Js.Json.array (Array.map hex presentation.fog));
+      ({js|fog|js}, Js.Json.array (Array.map hex presentation.fog));
     ]
 
 let set_enemy_combat_details t enabled =

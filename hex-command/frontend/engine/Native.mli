@@ -19,7 +19,7 @@ type battle
 type view
 
 val create_factory :
-  ?documents:string Domain.String_map.t -> unit -> (factory, error) result Js.Promise.t
+  ?documents:string Domain.Text_map.t -> unit -> (factory, error) result Js.Promise.t
 (** Initialize the generated WASM module and validate its embedded catalog. Initialization is shared
     and idempotent across factories; failed initial loads may be retried. A failed catalog read
     releases any factory already constructed. A terminal module trap requires a page/module reload.
@@ -98,7 +98,7 @@ val neighbors : view -> string -> Domain.tile array
 (** Fresh array containing shared detached tiles; replacing array entries does not alter the view.
 *)
 
-val reachable : view -> string -> float Domain.String_map.t
+val reachable : view -> string -> float Domain.Text_map.t
 val targets : view -> string -> Domain.public_unit array
 val attack_options : view -> string -> string -> Domain.attack_details array
 val best_attack : view -> string -> string -> Domain.attack_details option

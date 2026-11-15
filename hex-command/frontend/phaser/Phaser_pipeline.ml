@@ -270,7 +270,7 @@ let create ?(multi = false) ?attributes ~game ~vertex ~fragment ~bind ?(dispose 
             done;
             Phaser.Pipeline.set_vertex_count native (native##vertexCount + 6);
             (match Js.Nullable.toOption native##currentBatch with
-            | None -> failwith "Phaser batch missing after texture binding"
+            | None -> failwith {js|Phaser batch missing after texture binding|js}
             | Some batch ->
                 Phaser.Pipeline.set_batch_count batch (native##vertexCount - batch##start));
             native##onBatch (Js.Undefined.fromOption (Js.Nullable.toOption object_));
@@ -361,7 +361,7 @@ let create ?(multi = false) ?attributes ~game ~vertex ~fragment ~bind ?(dispose 
             done;
             Phaser.Pipeline.set_vertex_count native (native##vertexCount + 3);
             (match Js.Nullable.toOption native##currentBatch with
-            | None -> failwith "Phaser batch missing after texture binding"
+            | None -> failwith {js|Phaser batch missing after texture binding|js}
             | Some batch ->
                 Phaser.Pipeline.set_batch_count batch (native##vertexCount - batch##start));
             native##onBatch (Js.Undefined.fromOption (Js.Nullable.toOption object_));
@@ -389,31 +389,31 @@ let attributes extra =
   Array.append
     [|
       {
-        Phaser.Pipeline.name = "inPosition";
+        Phaser.Pipeline.name = {js|inPosition|js};
         size = 2;
         kind = Phaser.Pipeline.float_type;
         normalized = false;
       };
       {
-        Phaser.Pipeline.name = "inTexCoord";
+        Phaser.Pipeline.name = {js|inTexCoord|js};
         size = 2;
         kind = Phaser.Pipeline.float_type;
         normalized = false;
       };
       {
-        Phaser.Pipeline.name = "inTexId";
+        Phaser.Pipeline.name = {js|inTexId|js};
         size = 1;
         kind = Phaser.Pipeline.float_type;
         normalized = false;
       };
       {
-        Phaser.Pipeline.name = "inTintEffect";
+        Phaser.Pipeline.name = {js|inTintEffect|js};
         size = 1;
         kind = Phaser.Pipeline.float_type;
         normalized = false;
       };
       {
-        Phaser.Pipeline.name = "inTint";
+        Phaser.Pipeline.name = {js|inTint|js};
         size = 4;
         kind = Phaser.Pipeline.unsigned_byte;
         normalized = true;
@@ -423,7 +423,7 @@ let attributes extra =
 
 external replace_all : string -> string -> string -> string = "replaceAll" [@@mel.send]
 
-let shader_count source count = replace_all source "%count%" (string_of_int count)
+let shader_count source count = replace_all source {js|%count%|js} (string_of_int count)
 
 let source_texture (texture : Phaser.texture) =
   let sources = texture##source in

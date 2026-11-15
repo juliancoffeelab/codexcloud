@@ -1,5 +1,6 @@
 //! Shared state predicates for events, lighting and terrain visibility.
 use super::{Event, Tile, TileRef};
+use crate::data::Text;
 use serde::{Deserialize, Serialize};
 
 /// Unit allegiance selectors are distinct from the two turn/ownership phases.
@@ -32,50 +33,50 @@ pub enum Condition {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         tile: Option<TileRef>,
         /// Exact faction identifier (the authoring key predates faction economies).
-        side: String,
+        side: Text,
     },
     Proximity {
         #[serde(default, rename = "unitTypes", skip_serializing_if = "Vec::is_empty")]
-        unit_types: Vec<String>,
+        unit_types: Vec<Text>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         tile: Option<TileRef>,
         radius: u16,
         side: ConditionSide,
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
-        unit_type: Option<String>,
+        unit_type: Option<Text>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        character: Option<String>,
+        character: Option<Text>,
     },
     /// A matching unit stands on a tile currently visible through authored fog.
     VisibleUnits {
         side: ConditionSide,
         #[serde(default, rename = "unitTypes", skip_serializing_if = "Vec::is_empty")]
-        unit_types: Vec<String>,
+        unit_types: Vec<Text>,
     },
     HasUnits {
         #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
-        ai_group: Option<String>,
+        ai_group: Option<Text>,
         side: ConditionSide,
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
-        unit_type: Option<String>,
+        unit_type: Option<Text>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        character: Option<String>,
+        character: Option<Text>,
     },
     NoUnits {
         side: ConditionSide,
         #[serde(default, rename = "unitType", skip_serializing_if = "Option::is_none")]
-        unit_type: Option<String>,
+        unit_type: Option<Text>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        character: Option<String>,
+        character: Option<Text>,
     },
     Choice {
-        choice: String,
+        choice: Text,
     },
     Flag {
-        flag: String,
+        flag: Text,
     },
     Event {
-        event: String,
+        event: Text,
     },
     Round {
         round: u32,
@@ -97,7 +98,7 @@ pub enum Condition {
 )]
 pub struct ConditionRule {
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub observer: Option<String>,
+    pub observer: Option<Text>,
     pub condition: Condition,
     #[serde(default)]
     pub remember: bool,
@@ -105,9 +106,9 @@ pub struct ConditionRule {
 impl ConditionRule {
     pub fn validate_references(
         &self,
-        types: &std::collections::HashMap<String, usize>,
+        types: &std::collections::HashMap<Text, usize>,
         factions: &[super::Faction],
-    ) -> Result<(), String> {
+    ) -> Result<(), Text> {
         self.condition
             .validate_observer(self.observer.as_deref(), factions)?;
         self.condition.validate_references(types, factions)
@@ -134,7 +135,7 @@ impl Condition {
         &self,
         observer: Option<&str>,
         factions: &[super::Faction],
-    ) -> Result<(), String> {
+    ) -> Result<(), Text> {
         if let Some(id) = observer {
             super::validate_faction_reference(factions, id)?;
         }
@@ -182,7 +183,7 @@ impl Condition {
         }
     }
 
-    pub fn validate_characters(&self, characters: &[super::Character]) -> Result<(), String> {
+    pub fn validate_characters(&self, characters: &[super::Character]) -> Result<(), Text> {
         match self {
             Self::Proximity {
                 character: Some(id),
@@ -209,7 +210,7 @@ impl Condition {
         }
         Ok(())
     }
-    pub fn validate_presentation(&self) -> Result<(), String> {
+    pub fn validate_presentation(&self) -> Result<(), Text> {
         match self {
             Self::VisibleUnits { .. } => {
                 Err("visibility queries cannot define fog or lighting conditions".into())
@@ -226,9 +227,9 @@ impl Condition {
 
     pub fn validate_references(
         &self,
-        types: &std::collections::HashMap<String, usize>,
+        types: &std::collections::HashMap<Text, usize>,
         factions: &[super::Faction],
-    ) -> Result<(), String> {
+    ) -> Result<(), Text> {
         match self {
             Self::Owner { side, .. }
                 if !matches!(side.as_str(), "player" | "enemy")
@@ -265,12 +266,7 @@ impl Condition {
         }
     }
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn validate(
-        &self,
-        tiles: &[Tile],
-        events: &[Event],
-        contextual: bool,
-    ) -> Result<(), String> {
+    pub fn validate(&self, tiles: &[Tile], events: &[Event], contextual: bool) -> Result<(), Text> {
         match self {
             Self::Owner { tile, .. } | Self::Proximity { tile, .. } => match tile {
                 Some(id) if !tiles.iter().any(|tile| tile.matches_reference(id)) => {

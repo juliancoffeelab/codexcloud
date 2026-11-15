@@ -1,7 +1,7 @@
 open Ui;
 [@react.component]
 let make = (~view: Session.model, ~actions: Session.actions, ~onManage) => {
-  let dialog = React.useRef(Js.Nullable.null);
+  let (opened, setOpened) = React.useState(() => false);
   let shown = React.useRef(None);
   let failure = view.save_failure;
   React.useEffect1(
@@ -9,9 +9,9 @@ let make = (~view: Session.model, ~actions: Session.actions, ~onManage) => {
       switch (failure) {
       | Some(failure) when Some(failure.kind) != shown.current =>
         shown.current = Some(failure.kind);
-        show(dialog);
+        setOpened(_ => true);
       | None =>
-        close(dialog);
+        setOpened(_ => false);
         shown.current = None;
       | _ => ()
       };
@@ -20,56 +20,75 @@ let make = (~view: Session.model, ~actions: Session.actions, ~onManage) => {
     [|failure|],
   );
   let kind = Option.fold(~none=Save_error.Internal, ~some=(f: Save_error.t) => f.kind, failure);
-  <div className="save-failure-style">
-    <dialog
-      className="save-failure-dialog"
-      ref={ReactDOM.Ref.domRef(dialog)}
-      ariaLabelledby="save-failure-title">
-      <h2 id="save-failure-title">
-        {text(
-           kind == Save_error.Full
-             ? "Storage is full"
-             : kind == Save_error.Blocked
-                 ? "Saving is unavailable" : "Progress couldn’t be saved",
-         )}
-      </h2>
-      <p>
-        {text(
-           kind == Save_error.Full
-             ? "Delete some older saves to make room for your progress."
-             : kind == Save_error.Blocked
-                 ? "This browser is blocking access to saved games. Allow site storage in your browser settings."
-                 : "The game encountered an error while saving. Download a debug report so we can investigate.",
-         )}
-      </p>
-      <p className="unsaved"> {text("Your latest progress hasn’t been fully saved.")} </p>
-      {switch (kind) {
-       | Save_error.Full =>
-         <>
-           <button
-             className="primary"
-             onClick={_ => {
-               close(dialog);
-               onManage();
-             }}>
-             {text("Manage saves")}
+  <Modal
+    onCloseAutoFocus={event => {
+      Modal.preventDefault(event);
+      Option.iter(focus, Js.Nullable.toOption(byId({js|settings-button|js})));
+    }}
+    opened
+    onOpenChange={value => setOpened(_ => value)}
+    alert=true
+    title={
+      kind == Save_error.Full
+        ? {js|Storage is full|js}
+        : kind == Save_error.Blocked
+            ? {js|Saving is unavailable|js} : {js|Progress couldn’t be saved|js}
+    }
+    className={js|save-failure-style save-failure-dialog|js}>
+    <h2 id={js|save-failure-title|js}>
+      {text(
+         kind == Save_error.Full
+           ? {js|Storage is full|js}
+           : kind == Save_error.Blocked
+               ? {js|Saving is unavailable|js} : {js|Progress couldn’t be saved|js},
+       )}
+    </h2>
+    <p>
+      {text(
+         kind == Save_error.Full
+           ? {js|Delete some older saves to make room for your progress.|js}
+           : kind == Save_error.Blocked
+               ? {js|This browser is blocking access to saved games. Allow site storage in your browser settings.|js}
+               : {js|The game encountered an error while saving. Download a debug report so we can investigate.|js},
+       )}
+    </p>
+    <p className={js|unsaved|js}>
+      {text({js|Your latest progress hasn’t been fully saved.|js})}
+    </p>
+    {switch (kind) {
+     | Save_error.Full =>
+       <>
+         <button
+           className={js|primary|js}
+           onClick={_ => {
+             setOpened(_ => false);
+             onManage();
+           }}>
+           {text({js|Manage saves|js})}
+         </button>
+         <Radix.AlertCancel asChild=true>
+           <button className={js|keep-playing|js} onClick={_ => setOpened(_ => false)}>
+             {text({js|Keep playing|js})}
            </button>
-           <button className="keep-playing" onClick={_ => close(dialog)}>
-             {text("Keep playing")}
+         </Radix.AlertCancel>
+       </>
+     | Save_error.Blocked =>
+       <Radix.AlertCancel asChild=true>
+         <button className={js|primary|js} onClick={_ => setOpened(_ => false)}>
+           {text({js|Close|js})}
+         </button>
+       </Radix.AlertCancel>
+     | Save_error.Internal =>
+       <>
+         <button className={js|primary|js} onClick={_ => actions.download_debug_report()}>
+           {text({js|Download debug report|js})}
+         </button>
+         <Radix.AlertCancel asChild=true>
+           <button className={js|quiet-close|js} onClick={_ => setOpened(_ => false)}>
+             {text({js|Close|js})}
            </button>
-         </>
-       | Save_error.Blocked =>
-         <button className="primary" onClick={_ => close(dialog)}> {text("Close")} </button>
-       | Save_error.Internal =>
-         <>
-           <button className="primary" onClick={_ => actions.download_debug_report()}>
-             {text("Download debug report")}
-           </button>
-           <button className="quiet-close" onClick={_ => close(dialog)}>
-             {text("Close")}
-           </button>
-         </>
-       }}
-    </dialog>
-  </div>;
+         </Radix.AlertCancel>
+       </>
+     }}
+  </Modal>;
 };

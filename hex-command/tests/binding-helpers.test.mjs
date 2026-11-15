@@ -3,7 +3,6 @@ import { test } from "vitest";
 import * as Enum from "@frontend/Enum";
 import * as Equal from "@frontend/Snapshot_equal";
 import * as Json from "@frontend/Fixture_json";
-import * as Utf8 from "@frontend/Utf8";
 import schema from "@wasm/schema.json" with { type: "json" };
 
 const snake = (name) => name.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase();
@@ -18,12 +17,8 @@ test("Frontend enum conversions follow Rust spellings and reject unknown closed 
     for (const variant of entry.variants) {
       const spelling = variant.serde_name ?? variant.name;
       const native = Json[`of_${name}`](spelling);
-      if (stringify) assert.equal(Utf8.to_js(stringify(native)), spelling);
-      if (parse)
-        assert.deepEqual(
-          Json.put_option(Json[`to_${name}`], parse(Utf8.of_js(spelling))),
-          spelling,
-        );
+      if (stringify) assert.equal(stringify(native), spelling);
+      if (parse) assert.deepEqual(Json.put_option(Json[`to_${name}`], parse(spelling)), spelling);
     }
     if (parse) assert.equal(Json.put_option(Json[`to_${name}`], parse("unknown-value")), null);
   }

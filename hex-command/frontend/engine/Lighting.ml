@@ -14,8 +14,8 @@ let key (lighting : Domain.battlefield_lighting) =
        [|
          Js.Json.string
            (match lighting.time with
-           | Domain.Time_of_day.Day -> "day"
-           | Domain.Time_of_day.Night -> "night");
+           | Domain.Time_of_day.Day -> {js|day|js}
+           | Domain.Time_of_day.Night -> {js|night|js});
          Js.Json.string (Underground.key lighting.underground);
          Js.Json.array
            (Array.map
@@ -287,58 +287,60 @@ let paint context (lighting : Domain.battlefield_lighting) =
         if light.fixture = Some false then (
           let color = Option.value ~default:[| 255; 170; 70 |] light.color in
           let rgba alpha =
-            "rgba("
-            ^ String.concat ","
-                (Array.to_list (Array.map (fun value -> number (float_of_int value)) color))
-            ^ "," ^ alpha ^ ")"
+            let js_text_part_1 =
+              Js.Array.join ~sep:{js|,|js}
+                (Array.of_list
+                   (Array.to_list (Array.map (fun value -> number (float_of_int value)) color)))
+            in
+            {j|rgba($(js_text_part_1),$(alpha))|j}
           in
-          composite context "screen";
+          composite context {js|screen|js};
           let halo = gradient context x y 0. x y 25. in
-          stop halo 0. (rgba ".95");
-          stop halo 0.25 (rgba ".45");
-          stop halo 1. (rgba "0");
+          stop halo 0. (rgba {js|.95|js});
+          stop halo 0.25 (rgba {js|.45|js});
+          stop halo 1. (rgba {js|0|js});
           fill_gradient context halo;
           fill_rect context (x -. 25.) (y -. 25.) 50. 50.;
-          composite context "source-over")
+          composite context {js|source-over|js})
         else (
           List.iter
             (fun (color, dx, dy, w, h) ->
               fill context color;
               fill_rect context (x +. dx) (y +. dy) w h)
             [
-              ("#49361f", -3., -9., 6., 12.);
-              ("#f6aa46", -2., -7., 4., 5.);
-              ("#fff0b0", -1., -6., 2., 3.);
-              ("#50402e", -1., 3., 2., 8.);
+              ({js|#49361f|js}, -3., -9., 6., 12.);
+              ({js|#f6aa46|js}, -2., -7., 4., 5.);
+              ({js|#fff0b0|js}, -1., -6., 2., 3.);
+              ({js|#50402e|js}, -1., 3., 2., 8.);
             ];
-          composite context "screen";
+          composite context {js|screen|js};
           let halo = gradient context x (y -. 5.) 0. x (y -. 5.) 20. in
-          stop halo 0. "rgba(255,204,110,.65)";
-          stop halo 0.25 "rgba(255,169,65,.24)";
-          stop halo 1. "rgba(255,145,44,0)";
+          stop halo 0. {js|rgba(255,204,110,.65)|js};
+          stop halo 0.25 {js|rgba(255,169,65,.24)|js};
+          stop halo 1. {js|rgba(255,145,44,0)|js};
           fill_gradient context halo;
           fill_rect context (x -. 20.) (y -. 25.) 40. 40.;
-          composite context "source-over"))
+          composite context {js|source-over|js}))
       lighting.lights;
     restore context)
 
 let fog context plan tiles =
   save context;
-  filter context "blur(8px)";
-  fill context "#0c1320";
+  filter context {js|blur(8px)|js};
+  fill context {js|#0c1320|js};
   begin_path context;
   Array.iter
     (fun id ->
       match Array.find_opt (fun (tile : Terrain_plan.tile) -> tile.id = id) plan with
-      | None -> invalid_arg "Unknown fog tile"
+      | None -> invalid_arg {js|Unknown fog tile|js}
       | Some tile ->
-          String.split_on_char ' ' tile.points
+          Array.to_list (Js.String.split ~sep:{js| |js} tile.points)
           |> List.iteri (fun index point ->
-              match String.split_on_char ',' point with
+              match Array.to_list (Js.String.split ~sep:{js|,|js} point) with
               | [ x; y ] ->
                   (if index = 0 then move_to else line_to)
                     context (float_of_string x) (float_of_string y)
-              | _ -> invalid_arg "Invalid fog polygon");
+              | _ -> invalid_arg {js|Invalid fog polygon|js});
           close_path context)
     tiles;
   fill_path context;

@@ -101,7 +101,9 @@ let static_fill : Dom.element -> string -> unit =
   [%mel.raw
     {|(node, transform) => { node.style.animation = "none"; node.style.transform = transform; }|}]
 
-let transform value = "scaleX(" ^ Js.Float.toString value ^ ")"
+let transform value =
+  let js_text_part_1 = Js.Float.toString value in
+  {j|scaleX($(js_text_part_1))|j}
 
 let animate node =
   let current = current_plan () in
@@ -129,6 +131,6 @@ let animate node =
         @ [ { transform = transform current.cap; offset = 1. } ])
     in
     let animation =
-      start_animation node frames { duration; fill = "forwards"; easing = "linear" }
+      start_animation node frames { duration; fill = {js|forwards|js}; easing = {js|linear|js} }
     in
     fun () -> cancel_animation animation

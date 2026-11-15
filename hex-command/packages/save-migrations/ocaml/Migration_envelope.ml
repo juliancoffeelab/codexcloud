@@ -1,7 +1,7 @@
 open Migration_json
 
-let version = 48
-let history_version = 4
+let version = 49
+let history_version = 5
 let only value allowed = List.for_all (fun k -> List.mem k allowed) (keys value)
 
 let texts value names =
@@ -55,7 +55,7 @@ let entry_keys =
     "run";
     "mission";
     "round";
-    "side";
+    "mapId";
     "kind";
     "missionStart";
   ]
@@ -66,7 +66,11 @@ let valid_entry value =
     let turn = get value "kind" = Some (s "turn") in
     List.mem (default value "kind" Js.Json.null) [ s "turn"; s "flash" ]
     && only value (entry_keys @ if turn then [ "parentId"; "manual" ] else [])
-    && texts value [ "id"; "runId"; "branchId"; "checkpointId"; "run"; "mission"; "side" ]
+    && texts value [ "id"; "runId"; "branchId"; "checkpointId"; "run"; "mapId" ]
+    && (get value "mission" = Some Js.Json.null
+       || Option.fold ~none:false
+            ~some:(fun chapter -> safe_integer chapter && chapter >= 1.)
+            (Option.bind (get value "mission") Js.Json.decodeNumber))
     && List.for_all
          (fun k ->
            Option.fold ~none:false ~some:finite
@@ -110,7 +114,7 @@ let valid_undo value =
 let current_save value =
   require
     (is_record value
-    && get value "version" = Some (n 48.)
+    && get value "version" = Some (n 49.)
     && only value [ "version"; "checkpoint"; "pendingEnemy"; "setup"; "undo"; "progress" ])
     "Invalid current save envelope";
   let checkpoint = field value "checkpoint" and progress = field value "progress" in
@@ -125,6 +129,12 @@ let current_save value =
   let state = field checkpoint "state" and entry = field progress "entry" in
   require
     (is_record state
+    && get entry "mapId" = get state "mapId"
+    && (if default state "campaign" Js.Json.null = Js.Json.null then
+          get entry "mission" = Some Js.Json.null
+        else
+          get entry "mission"
+          = Some (n (num (default state "campaign" Js.Json.null) "mission" +. 1.)))
     && Option.is_some (Js.Json.decodeArray (field state "factions"))
     && Option.is_some (Js.Json.decodeArray (field state "groundItems"))
     && (get value "pendingEnemy" <> Some (b true)
@@ -151,7 +161,7 @@ let current_turn value = kind value "turn"
 
 let current_history value =
   require
-    (is_record value && get value "version" = Some (n 4.) && only value [ "version"; "entries" ])
+    (is_record value && get value "version" = Some (n 5.) && only value [ "version"; "entries" ])
     "Invalid history index";
   let rows = list value "entries" in
   require

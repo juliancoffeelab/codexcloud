@@ -1,6 +1,7 @@
 //! Authored mission objectives, event triggers and campaign definitions.
 
 use super::*;
+use crate::data::Text;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 /// An authored unit placement, including optional named-companion metadata.
@@ -14,13 +15,13 @@ use std::collections::BTreeMap;
 pub struct StartingUnit {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<Item>,
-    pub faction: String,
+    pub faction: Text,
     pub tile: Hex,
-    pub r#type: String,
+    pub r#type: Text,
     #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
-    pub ai_group: Option<String>,
+    pub ai_group: Option<Text>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub character: Option<String>,
+    pub character: Option<Text>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
 }
@@ -33,11 +34,11 @@ pub struct StartingUnit {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct UnitFilter {
-    pub faction: String,
+    pub faction: Text,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub character: Option<String>,
+    pub character: Option<Text>,
 }
 impl UnitFilter {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
@@ -86,7 +87,7 @@ pub struct Evacuation {
 )]
 pub enum Goal {
     Defeat {
-        label: String,
+        label: Text,
         #[serde(
             default,
             rename = "visibleWhen",
@@ -95,7 +96,7 @@ pub enum Goal {
         visible_when: Option<Condition>,
     },
     Escort {
-        label: String,
+        label: Text,
         #[serde(
             default,
             rename = "visibleWhen",
@@ -105,7 +106,7 @@ pub enum Goal {
         tile: TileRef,
     },
     Escape {
-        label: String,
+        label: Text,
         #[serde(
             default,
             rename = "visibleWhen",
@@ -115,7 +116,7 @@ pub enum Goal {
         tile: TileRef,
     },
     Control {
-        label: String,
+        label: Text,
         #[serde(
             default,
             rename = "visibleWhen",
@@ -125,7 +126,7 @@ pub enum Goal {
         tiles: Vec<TileRef>,
     },
     Seal {
-        label: String,
+        label: Text,
         #[serde(
             default,
             rename = "visibleWhen",
@@ -134,10 +135,10 @@ pub enum Goal {
         visible_when: Option<Condition>,
         tiles: Vec<TileRef>,
         #[serde(rename = "unitType")]
-        unit_type: Option<String>,
+        unit_type: Option<Text>,
     },
     Event {
-        label: String,
+        label: Text,
         #[serde(
             default,
             rename = "visibleWhen",
@@ -145,10 +146,10 @@ pub enum Goal {
         )]
         visible_when: Option<Condition>,
         tile: Option<TileRef>,
-        event: String,
+        event: Text,
     },
     Hold {
-        label: String,
+        label: Text,
         #[serde(
             default,
             rename = "visibleWhen",
@@ -158,18 +159,18 @@ pub enum Goal {
         tile: TileRef,
         turns: u32,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        companion: Option<String>,
+        companion: Option<Text>,
         #[serde(default, rename = "unitTypes", skip_serializing_if = "Vec::is_empty")]
-        unit_types: Vec<String>,
+        unit_types: Vec<Text>,
         #[serde(default)]
         once: bool,
         #[serde(rename = "earliestRound")]
         earliest_round: u32,
         #[serde(rename = "startEvent")]
-        start_event: Option<String>,
+        start_event: Option<Text>,
     },
     Vigil {
-        label: String,
+        label: Text,
         #[serde(
             default,
             rename = "visibleWhen",
@@ -178,10 +179,10 @@ pub enum Goal {
         visible_when: Option<Condition>,
         tile: TileRef,
         turns: u32,
-        companion: String,
+        companion: Text,
     },
     Refuge {
-        label: String,
+        label: Text,
         #[serde(
             default,
             rename = "visibleWhen",
@@ -285,7 +286,7 @@ impl Goal {
     }
     /// Borrow the event that enables counting for a hold objective.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn start_event(&self) -> Option<&String> {
+    pub fn start_event(&self) -> Option<&Text> {
         match self {
             Self::Hold { start_event, .. } => start_event.as_ref(),
             _ => None,
@@ -293,7 +294,7 @@ impl Goal {
     }
     /// Borrow the named companion required at a vigil or named hold site.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn companion(&self) -> Option<&String> {
+    pub fn companion(&self) -> Option<&Text> {
         match self {
             Self::Vigil { companion, .. } => Some(companion),
             Self::Hold { companion, .. } => companion.as_ref(),
@@ -302,7 +303,7 @@ impl Goal {
     }
     /// Borrow the optional unit-family requirement for sealing sites.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn unit_type(&self) -> Option<&String> {
+    pub fn unit_type(&self) -> Option<&Text> {
         match self {
             Self::Seal { unit_type, .. } => unit_type.as_ref(),
             _ => None,
@@ -310,7 +311,7 @@ impl Goal {
     }
     /// Borrow the event marker required by an event objective.
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn event(&self) -> Option<&String> {
+    pub fn event(&self) -> Option<&Text> {
         match self {
             Self::Event { event, .. } => Some(event),
             _ => None,
@@ -332,7 +333,7 @@ pub enum Trigger {
     Condition {
         condition: Condition,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        observer: Option<String>,
+        observer: Option<Text>,
     },
     Round {
         round: u32,
@@ -356,11 +357,11 @@ pub enum Trigger {
 )]
 pub struct SpawnUnit {
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub faction: Option<String>,
-    pub id: String,
-    pub r#type: String,
+    pub faction: Option<Text>,
+    pub id: Text,
+    pub r#type: Text,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub character: Option<String>,
+    pub character: Option<Text>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
 }
@@ -373,9 +374,9 @@ pub struct SpawnUnit {
 )]
 pub struct SpawnGroup {
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub faction: Option<String>,
+    pub faction: Option<Text>,
     #[serde(default, rename = "aiGroup", skip_serializing_if = "Option::is_none")]
-    pub ai_group: Option<String>,
+    pub ai_group: Option<Text>,
     pub area: Vec<TileRef>,
     pub units: Vec<SpawnUnit>,
 }
@@ -390,25 +391,25 @@ pub struct SpawnGroup {
 pub struct Event {
     /// Recruitment unlocked by this event, derived from its durable marker.
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
-    pub recruitment: BTreeMap<String, Vec<FactionRecruit>>,
+    pub recruitment: BTreeMap<Text, Vec<FactionRecruit>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub evacuate: Option<Evacuation>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<ItemReward>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub ground_items: Vec<super::GroundItem>,
-    pub id: String,
+    pub id: Text,
     pub trigger: Trigger,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub requires_event: Option<String>,
+    pub requires_event: Option<Text>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub unless_event: Option<String>,
+    pub unless_event: Option<Text>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub unless_choice: Option<String>,
+    pub unless_choice: Option<Text>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub before_round: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub label: Option<String>,
+    pub label: Option<Text>,
     pub dialogue: Vec<Dialogue>,
     /// Once activated, unplaced members remain pending until an area tile fits.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -417,7 +418,7 @@ pub struct Event {
     pub gold: Option<i32>,
     /// Durable story outcome carried across chapters.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub choice: Option<String>,
+    pub choice: Option<Text>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub war_dialogue: Option<Vec<Dialogue>>,
 }
@@ -433,9 +434,9 @@ pub struct Wave {
     /// Shown only when at least one reinforcement actually arrives.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub dialogue: Vec<Dialogue>,
-    pub id: String,
+    pub id: Text,
     pub round: u32,
-    pub label: String,
+    pub label: Text,
     pub units: Vec<StartingUnit>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub requires_unsealed: Option<TileRef>,
@@ -449,7 +450,7 @@ pub struct Wave {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct CompanionArrival {
-    pub character: String,
+    pub character: Text,
     pub tile: Hex,
 }
 
@@ -462,12 +463,12 @@ pub struct CompanionArrival {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Refuge {
-    pub medicine_event: String,
+    pub medicine_event: Text,
     pub medicine_turns: u32,
     pub escalation: Vec<Dialogue>,
     pub war_victory: Vec<Dialogue>,
-    pub war_briefing: String,
-    pub war_hints: Vec<String>,
+    pub war_briefing: Text,
+    pub war_hints: Vec<Text>,
 }
 /// Chapter content overrides applied after companion losses or story choices.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -479,15 +480,15 @@ pub struct Refuge {
 )]
 pub struct MissionPatch {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub briefing: Option<String>,
+    pub briefing: Option<Text>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub debrief: Option<String>,
+    pub debrief: Option<Text>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub hints: Option<Vec<String>>,
+    pub hints: Option<Vec<Text>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub intro: Option<Vec<Dialogue>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub recruitment: Option<BTreeMap<String, Vec<FactionRecruit>>>,
+    pub recruitment: Option<BTreeMap<Text, Vec<FactionRecruit>>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reinforcements: Option<Vec<StartingUnit>>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -501,7 +502,7 @@ pub struct MissionPatch {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Layout {
-    pub id: String,
+    pub id: Text,
     pub units: Vec<StartingUnit>,
 }
 /// Local orders constrain only members of the authored group.
@@ -515,7 +516,7 @@ pub struct Layout {
 pub enum GroupOrder {
     Hold {
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        observer: Option<String>,
+        observer: Option<Text>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         when: Option<Condition>,
         area: Vec<TileRef>,
@@ -532,7 +533,7 @@ pub enum GroupOrder {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct EnemyGroup {
-    pub id: String,
+    pub id: Text,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub order: Option<GroupOrder>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -548,10 +549,10 @@ pub struct EnemyGroup {
 )]
 pub struct LossCondition {
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub observer: Option<String>,
-    pub label: String,
+    pub observer: Option<Text>,
+    pub label: Text,
     pub condition: Condition,
-    pub message: String,
+    pub message: Text,
 }
 
 /// An authored chapter defining objectives, recruits, events and story feedback.
@@ -564,27 +565,27 @@ pub struct LossCondition {
 )]
 pub struct Mission {
     #[serde(default)]
-    pub item_ids: Vec<String>,
+    pub item_ids: Vec<Text>,
     #[serde(default)]
     pub scripted_events: Vec<ScriptEvent>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub lose_conditions: Vec<LossCondition>,
     pub map: Layout,
     #[serde(default)]
-    pub subtitle: String,
+    pub subtitle: Text,
     pub briefing: ConditionalText,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub debrief: Option<ConditionalText>,
     pub hints: Vec<ConditionalHint>,
     #[serde(default)]
-    pub required_companions: Vec<String>,
+    pub required_companions: Vec<Text>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub arrivals: Vec<CompanionArrival>,
     pub goals: Vec<Goal>,
     /// Authored side objectives, displayed separately and never required for victory.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub optional_goals: Vec<Goal>,
-    pub recruitment: BTreeMap<String, Vec<FactionRecruit>>,
+    pub recruitment: BTreeMap<Text, Vec<FactionRecruit>>,
     pub gold: Gold,
     #[serde(default)]
     pub defend_objectives: bool,
@@ -597,7 +598,7 @@ pub struct Mission {
     pub enemy_groups: Vec<EnemyGroup>,
     pub waves: Vec<Wave>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub companion_losses: Option<BTreeMap<String, MissionPatch>>,
+    pub companion_losses: Option<BTreeMap<Text, MissionPatch>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub refuge: Option<Refuge>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -655,15 +656,15 @@ impl Mission {
 )]
 pub struct Campaign {
     /// Explicit browser tags; only an authored `human` tag permits human-only browsing.
-    pub tags: Vec<String>,
-    pub tagline: String,
-    pub description: String,
+    pub tags: Vec<Text>,
+    pub tagline: Text,
+    pub description: Text,
     #[serde(rename = "shortDescription")]
-    pub short_description: String,
+    pub short_description: Text,
     pub race: Race,
-    pub id: String,
-    pub name: String,
-    pub leader: String,
+    pub id: Text,
+    pub name: Text,
+    pub leader: Text,
     pub characters: Vec<Character>,
     pub missions: Vec<Mission>,
     pub ending: Vec<Speech>,
@@ -705,12 +706,12 @@ impl Trigger {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct MapDefinition {
-    pub id: String,
+    pub id: Text,
     pub revision: u32,
-    pub name: String,
-    pub description: String,
+    pub name: Text,
+    pub description: Text,
     /// Authored categories, with no implicit human tag or closed category vocabulary.
-    pub tags: Vec<String>,
+    pub tags: Vec<Text>,
     pub cols: i32,
     pub rows: i32,
     pub terrain: Vec<Tile>,

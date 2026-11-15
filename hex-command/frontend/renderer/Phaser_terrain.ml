@@ -43,10 +43,10 @@ let destroy_source = function
 let light_source source data =
   match source with
   | Image image ->
-      let _ = Phaser_lighting.Pipeline_data.image image "BattlefieldLighting" data false in
+      let _ = Phaser_lighting.Pipeline_data.image image {js|BattlefieldLighting|js} data false in
       ()
   | Surface surface ->
-      let _ = Phaser_lighting.Pipeline_data.target surface "BattlefieldLighting" data false in
+      let _ = Phaser_lighting.Pipeline_data.target surface {js|BattlefieldLighting|js} data false in
       ()
 
 type page_record = {
@@ -90,23 +90,23 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
     val cells : (string, Terrain_plan.tile) Map.t = Map.create ()
     val dirty : page_record Set.t = Set.create ()
     val mutable lighting : Domain.battlefield_lighting option = None
-    val mutable signature = ""
+    val mutable signature = {js||js}
     val light_index : int Phaser_spatial.t = Phaser_spatial.create ~size:256. ()
 
     initializer
       let _ =
-        resources#area "terrain manifest" (float_of_int manifest.width)
+        resources#area {js|terrain manifest|js} (float_of_int manifest.width)
           (float_of_int manifest.height)
       in
       Array.iter
         (fun record ->
           let page = record.page in
           let _ =
-            resources#check ~target:true "terrain page" (float_of_int page.width)
+            resources#check ~target:true {js|terrain page|js} (float_of_int page.width)
               (float_of_int page.height)
           in
           let _ =
-            resources#check "double-width coefficient page"
+            resources#check {js|double-width coefficient page|js}
               (float_of_int (page.width * 2))
               (float_of_int page.height)
           in
@@ -114,12 +114,18 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
             page.x < 0 || page.y < 0 || page.interior_width <= 0 || page.interior_height <= 0
             || page.x + page.interior_width > manifest.width
             || page.y + page.interior_height > manifest.height
-          then failwith ("Invalid terrain page extent: " ^ page.url);
+          then
+            failwith
+              (let js_text_part_1 = page.url in
+               {j|Invalid terrain page extent: $(js_text_part_1)|j});
           if
             page.width <> page.interior_width + (page.gutter * 2)
             || page.height <> page.interior_height + (page.gutter * 2)
             || page.gutter < 2
-          then failwith ("Invalid padded terrain manifest: " ^ page.url);
+          then
+            failwith
+              (let js_text_part_1 = page.url in
+               {j|Invalid padded terrain manifest: $(js_text_part_1)|j});
           Phaser_spatial.set page_index record (region page))
         pages;
       Array.iter
@@ -175,7 +181,10 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
           Array.iter
             (fun (tile : Terrain_plan.tile) ->
               match tile.frame with
-              | None -> failwith ("Missing terrain frame: " ^ tile.id)
+              | None ->
+                  failwith
+                    (let js_text_part_1 = tile.id in
+                     {j|Missing terrain frame: $(js_text_part_1)|j})
               | Some frame ->
                   let _ = Set.add urls frame.url in
                   ())
@@ -187,7 +196,10 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
       if
         Phaser_dom.natural_width image <> page.width
         || Phaser_dom.natural_height image <> page.height
-      then failwith ("Invalid natural terrain page dimensions: " ^ page.url);
+      then
+        failwith
+          (let js_text_part_1 = page.url in
+           {j|Invalid natural terrain page dimensions: $(js_text_part_1)|j});
       let source =
         Phaser.GameObjects.image scene
           (float_of_int (page.x - page.gutter) /. scale)
@@ -251,13 +263,16 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
               let frame =
                 match tile.frame with
                 | Some frame -> frame
-                | None -> failwith ("Missing terrain frame: " ^ tile.id)
+                | None ->
+                    failwith
+                      (let js_text_part_1 = tile.id in
+                       {j|Missing terrain frame: $(js_text_part_1)|j})
               in
               let image = Phaser.GameObjects.image scene tile.sprite_x tile.sprite_y frame.url in
               let _ = image##setOrigin 0. 0. in
               let _ = image##setDisplaySize tile.sprite_width tile.sprite_height in
               let _ =
-                Phaser_lighting.Pipeline_data.image image "BattlefieldLighting"
+                Phaser_lighting.Pipeline_data.image image {js|BattlefieldLighting|js}
                   {
                     Phaser_lighting.plain with
                     unlit = true;
@@ -272,7 +287,10 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
           Phaser.RenderTexture.draw_many surface (Array.map Phaser.Upcast.image images);
           self#clip_outer surface page;
           record.dirty <- true;
-          resources#set ("terrain-edit:" ^ page.url) "edited unlit terrain" 0.
+          resources#set
+            (let js_text_part_1 = page.url in
+             {j|terrain-edit:$(js_text_part_1)|j})
+            {js|edited unlit terrain|js} 0.
             (float_of_int page.width *. float_of_int page.height *. 4.))
 
     method private clip_outer (target : Phaser.render_texture) (page : Terrain_pages.page) =
@@ -292,7 +310,7 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
       Phaser.DynamicTexture.dirty texture true
 
     method update (next : Domain.battlefield_lighting) =
-      let next_signature = if Lighting.daylight_only next then "day" else Lighting.key next in
+      let next_signature = if Lighting.daylight_only next then {js|day|js} else Lighting.key next in
       if
         next_signature <> signature
         || Set.size dirty > 0
@@ -352,12 +370,12 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
           (fun record ->
             if Option.is_none record.unlit then record.unlit <- Some (self#make_source record.page);
             if Set.has dirty record then (
-              Performance_trace.measure "Phaser terrain page rebuild" (fun () ->
+              Performance_trace.measure {js|Phaser terrain page rebuild|js} (fun () ->
                   self#rebuild record);
               let _ = Set.add changed record in
               ());
             if Set.has changed record then
-              Performance_trace.measure "Phaser terrain page lighting" (fun () ->
+              Performance_trace.measure {js|Phaser terrain page lighting|js} (fun () ->
                   self#shade record next))
           pages;
         Set.clear dirty;
@@ -404,7 +422,10 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
         Phaser.RenderTexture.draw_many target [| object_ source |];
         self#clip_outer target page;
         record.display <- Some (make_display scene page target##texture x y);
-        resources#set ("terrain-lit:" ^ page.url) "lit terrain finals" 0.
+        resources#set
+          (let js_text_part_1 = page.url in
+           {j|terrain-lit:$(js_text_part_1)|j})
+          {js|lit terrain finals|js} 0.
           (float_of_int page.width *. float_of_int page.height *. 4.))
       else
         let local_bounds = region page in
@@ -438,7 +459,7 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
                 (float_of_int cell.height)
             in
             let _ =
-              Phaser_lighting.Pipeline_data.image piece "BattlefieldLighting"
+              Phaser_lighting.Pipeline_data.image piece {js|BattlefieldLighting|js}
                 {
                   Phaser_lighting.plain with
                   lighting_camera = Some target##camera;
@@ -476,14 +497,14 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
                 let halo =
                   Phaser.GameObjects.image scene x
                     (y -. if fixture then 5. else 0.)
-                    "battlefield-white"
+                    {js|battlefield-white|js}
                 in
                 let _ = halo##setDisplaySize (radius *. 2.) (radius *. 2.) in
                 let color =
                   match light.color with Some color -> color | None -> [| 255; 170; 70 |]
                 in
                 let _ =
-                  Phaser_atmosphere.Halo.image halo "BattlefieldHalo" { fixture; color } false
+                  Phaser_atmosphere.Halo.image halo {js|BattlefieldHalo|js} { fixture; color } false
                 in
                 let _ = halo##setBlendMode 3 in
                 let halo = Phaser.Upcast.image halo in
@@ -500,7 +521,10 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
               (fun () -> Phaser.RenderTexture.batch_many target entries));
         self#clip_outer target page;
         record.display <- Some (make_display scene page target##texture x y);
-        resources#set ("terrain-lit:" ^ page.url) "lit terrain finals" 0.
+        resources#set
+          (let js_text_part_1 = page.url in
+           {j|terrain-lit:$(js_text_part_1)|j})
+          {js|lit terrain finals|js} 0.
           (float_of_int page.width *. float_of_int page.height *. 4.)
 
     method visible (bounds : Phaser_spatial.bounds) =
@@ -550,8 +574,12 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
           Option.iter destroy_source record.unlit;
           Option.iter (fun (target : Phaser.render_texture) -> target##destroy ()) record.lit;
           Option.iter (fun (image : Phaser.image) -> image##destroy ()) record.display;
-          resources#remove ("terrain-edit:" ^ record.page.url);
-          resources#remove ("terrain-lit:" ^ record.page.url))
+          resources#remove
+            (let js_text_part_1 = record.page.url in
+             {j|terrain-edit:$(js_text_part_1)|j});
+          resources#remove
+            (let js_text_part_1 = record.page.url in
+             {j|terrain-lit:$(js_text_part_1)|j}))
         pages;
       root##destroy ()
   end

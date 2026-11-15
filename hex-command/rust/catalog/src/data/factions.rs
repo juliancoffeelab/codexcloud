@@ -1,6 +1,7 @@
 //! Faction allegiance is independent of the two input/turn phases and AI policy.
 use super::FactionPolicy;
 use super::{ConditionRule, ConditionSide, TurnPhase};
+use crate::data::Text;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -42,7 +43,7 @@ pub enum Controller {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct FactionTransfer {
-    pub to: String,
+    pub to: Text,
     pub when: ConditionRule,
 }
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -53,7 +54,7 @@ pub struct FactionTransfer {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct FactionRecruit {
-    pub unit: String,
+    pub unit: Text,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub cost: Option<i32>,
 }
@@ -66,20 +67,20 @@ pub struct FactionRecruit {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Faction {
-    pub vision_group: String,
-    pub id: String,
+    pub vision_group: Text,
+    pub id: Text,
     /// Phase in which this controller acts; this is not its diplomatic relation.
     pub phase: TurnPhase,
     pub controller: Controller,
-    pub palette: String,
+    pub palette: Text,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub name: Option<String>,
+    pub name: Option<Text>,
     /// Named factions author their own pool. Prices are recruitment economics,
     /// not modifications to a unit's combat profile.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub recruits: Option<Vec<FactionRecruit>>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
-    pub relations: BTreeMap<String, Relation>,
+    pub relations: BTreeMap<Text, Relation>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub transfer: Option<FactionTransfer>,
 }
@@ -88,8 +89,8 @@ pub fn validate_economy(
     factions: &[Faction],
     gold: &super::Gold,
     tiles: &[super::Tile],
-    types: &std::collections::HashMap<String, usize>,
-) -> Result<(), String> {
+    types: &std::collections::HashMap<Text, usize>,
+) -> Result<(), Text> {
     let known = |id: &str| factions.iter().any(|f| f.id == id);
     if gold.iter().any(|(id, amount)| !known(id) || *amount < 0)
         || factions.iter().any(|f| !gold.contains_key(&f.id))
@@ -114,7 +115,7 @@ pub fn validate_economy(
     Ok(())
 }
 
-pub fn validate_factions(factions: &[Faction], units: &[super::PublicUnit]) -> Result<(), String> {
+pub fn validate_factions(factions: &[Faction], units: &[super::PublicUnit]) -> Result<(), Text> {
     let known = |id: &str| factions.iter().any(|f| f.id == id);
     let mut ids = std::collections::HashSet::new();
     for faction in factions {
@@ -182,8 +183,8 @@ pub fn validate_factions(factions: &[Faction], units: &[super::PublicUnit]) -> R
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct UnitFaction {
-    pub id: String,
-    pub palette: String,
+    pub id: Text,
+    pub palette: Text,
     pub relation: Relation,
     pub controllable: bool,
     pub phase: TurnPhase,
@@ -191,7 +192,7 @@ pub struct UnitFaction {
 
 #[cfg_attr(not(target_arch = "wasm32"), inline)]
 
-pub fn validate_faction_reference(factions: &[Faction], id: &str) -> Result<(), String> {
+pub fn validate_faction_reference(factions: &[Faction], id: &str) -> Result<(), Text> {
     if factions.iter().any(|faction| faction.id == id) {
         Ok(())
     } else {
@@ -242,8 +243,8 @@ pub fn validate_faction_conditions(
     factions: &[Faction],
     tiles: &[super::Tile],
     events: &[super::Event],
-    types: &std::collections::HashMap<String, usize>,
-) -> Result<(), String> {
+    types: &std::collections::HashMap<Text, usize>,
+) -> Result<(), Text> {
     for faction in factions {
         if let Some(pool) = &faction.recruits {
             if pool.iter().any(|entry| !types.contains_key(&entry.unit)) {

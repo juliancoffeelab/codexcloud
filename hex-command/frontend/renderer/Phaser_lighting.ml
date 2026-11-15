@@ -30,16 +30,16 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
   let renderer =
     match Js.Nullable.toOption game##renderer with
     | Some renderer -> renderer
-    | None -> failwith "Lighting requires the battlefield WebGL renderer"
+    | None -> failwith {js|Lighting requires the battlefield WebGL renderer|js}
   in
   let count = max 1 (min 32 ((Webgl.parameter renderer##gl 0x8dfd - 24) / 3)) in
   let field = new Phaser_light_field.light_field scene resources in
   object (self)
     val mutable pipeline : Phaser_pipeline.t option = None
-    val mutable signature = ""
+    val mutable signature = {js||js}
     val mutable factors : Phaser.texture option = None
     val mutable offsets : Phaser.texture option = None
-    val mutable zone_signature = ""
+    val mutable zone_signature = {js||js}
     val mutable zone_texture : Phaser.texture option = None
     val mutable zone_mask : Underground.mask option = None
     val mutable map_width = 1.
@@ -61,29 +61,30 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
              ~bind:(fun native _ object_ -> Option.iter (self#bind native) object_)
              ~dispose:(fun () ->
                self#release;
-               renderer##pipelines##remove "BattlefieldLightField" false;
+               renderer##pipelines##remove {js|BattlefieldLightField|js} false;
                field#native##destroy ())
              ());
-      let _ = renderer##pipelines##add "BattlefieldLightField" field#native in
+      let _ = renderer##pipelines##add {js|BattlefieldLightField|js} field#native in
       ()
 
     method native =
       match pipeline with
       | Some pipeline -> Phaser_pipeline.native pipeline
-      | None -> failwith "Lighting pipeline is not initialized"
+      | None -> failwith {js|Lighting pipeline is not initialized|js}
 
     method cells = field#cells
 
     method configure ?(x = 0.) ?(y = 0.) (next : Domain.battlefield_lighting) width height =
       let next_signature =
-        String.concat ":"
-          [
-            Js.Float.toString x;
-            Js.Float.toString y;
-            Js.Float.toString width;
-            Js.Float.toString height;
-            Lighting.key next;
-          ]
+        Js.Array.join ~sep:{js|:|js}
+          (Array.of_list
+             [
+               Js.Float.toString x;
+               Js.Float.toString y;
+               Js.Float.toString width;
+               Js.Float.toString height;
+               Lighting.key next;
+             ])
       in
       if next_signature <> signature then (
         signature <- next_signature;
@@ -101,7 +102,7 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
         if Lighting.daylight_only next then field#release
         else
           let built =
-            Performance_trace.measure "Phaser lighting field" (fun () ->
+            Performance_trace.measure {js|Phaser lighting field|js} (fun () ->
                 field#build next width height x y)
           in
           factors <- built.factors;
@@ -111,13 +112,13 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
     method private release_zones =
       Option.iter
         (fun (_ : Phaser.texture) ->
-          let _ = scene##textures##remove "battlefield-underground" in
+          let _ = scene##textures##remove {js|battlefield-underground|js} in
           ())
         zone_texture;
       zone_texture <- None;
       zone_mask <- None;
-      zone_signature <- "";
-      resources#remove "underground-mask"
+      zone_signature <- {js||js};
+      resources#remove {js|underground-mask|js}
 
     method private configure_zones (next : Domain.battlefield_lighting) =
       let key = Underground.key next.underground in
@@ -129,7 +130,7 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
         Option.iter
           (fun (mask : Underground.mask) ->
             let _ =
-              resources#check "underground ambience mask" (float_of_int mask.width)
+              resources#check {js|underground ambience mask|js} (float_of_int mask.width)
                 (float_of_int mask.height)
             in
             let bytes =
@@ -138,12 +139,12 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
                 (fun i -> if i mod 4 = 3 then 255 else int_of_float mask.data.(i / 4))
             in
             let texture =
-              Phaser.SceneMethods.white_texture scene##textures "battlefield-underground"
+              Phaser.SceneMethods.white_texture scene##textures {js|battlefield-underground|js}
                 (Phaser.SceneMethods.bytes bytes) mask.width mask.height
             in
             let _ = texture##setFilter Phaser.Textures.linear in
             zone_texture <- Some texture;
-            resources#set "underground-mask" "underground ambience"
+            resources#set {js|underground-mask|js} {js|underground ambience|js}
               (float_of_int (Array.length mask.data * 8))
               (float_of_int (mask.width * mask.height * 4)))
           zone_mask)
@@ -171,13 +172,13 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
             Array.length cell.lights <= field#batch_size)
           data.light_cell
       in
-      let _ = native##set1f "uDirect" (if direct then 1. else 0.) in
+      let _ = native##set1f {js|uDirect|js} (if direct then 1. else 0.) in
       (match data.light_cell with
       | Some cell when not direct ->
           let width, height = field#packed_size in
-          let _ = native##set2f "uPackedSize" (float_of_int width) (float_of_int height) in
+          let _ = native##set2f {js|uPackedSize|js} (float_of_int width) (float_of_int height) in
           let _ =
-            native##set2f "uPackedShift"
+            native##set2f {js|uPackedShift|js}
               (float_of_int (cell.packed_x - cell.x))
               (float_of_int (cell.packed_y - cell.y))
           in
@@ -208,65 +209,65 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
                   | None -> Phaser_light_field.default_offset.(channel))
               done)
             cell.lights;
-          let _ = native##set1f "uCount" (float_of_int (Array.length cell.lights)) in
-          let _ = native##set4fv "uLights" positions in
-          let _ = native##set3fv "uWarm" warm in
-          let _ = native##set3fv "uOffsetsDirect" offsets in
+          let _ = native##set1f {js|uCount|js} (float_of_int (Array.length cell.lights)) in
+          let _ = native##set4fv {js|uLights|js} positions in
+          let _ = native##set3fv {js|uWarm|js} warm in
+          let _ = native##set3fv {js|uOffsetsDirect|js} offsets in
           ()
       | _ -> ());
       let camera = Option.value ~default:camera data.lighting_camera in
       let _ = camera##getWorldPoint 0. 0. view in
-      let _ = native##set2f "uWorldView" view##x view##y in
-      let _ = native##set2f "uZoom" camera##zoomX camera##zoomY in
-      let _ = native##set2f "uMapSize" map_width map_height in
-      let _ = native##set2f "uFieldOrigin" origin_x origin_y in
+      let _ = native##set2f {js|uWorldView|js} view##x view##y in
+      let _ = native##set2f {js|uZoom|js} camera##zoomX camera##zoomY in
+      let _ = native##set2f {js|uMapSize|js} map_width map_height in
+      let _ = native##set2f {js|uFieldOrigin|js} origin_x origin_y in
       let _ =
-        native##set2f "uFieldSize"
+        native##set2f {js|uFieldSize|js}
           (floor ((map_width *. Geometry.native_pixel_scale) +. 0.5) *. 4.)
           (floor ((map_height *. Geometry.native_pixel_scale) +. 0.5))
       in
-      let _ = native##set1f "uNativeScale" Geometry.native_pixel_scale in
-      let _ = native##set1f "uNormalization" normalization in
-      let _ = native##set1f "uNight" (if night && not data.unlit then 1. else 0.) in
-      let _ = native##set1f "uDay" (if (not night) && not data.unlit then 1. else 0.) in
-      let _ = native##set1f "uBrightness" (Option.value ~default:1. data.brightness) in
-      let _ = native##set1f "uGround" (if Option.is_some point then 1. else 0.) in
+      let _ = native##set1f {js|uNativeScale|js} Geometry.native_pixel_scale in
+      let _ = native##set1f {js|uNormalization|js} normalization in
+      let _ = native##set1f {js|uNight|js} (if night && not data.unlit then 1. else 0.) in
+      let _ = native##set1f {js|uDay|js} (if (not night) && not data.unlit then 1. else 0.) in
+      let _ = native##set1f {js|uBrightness|js} (Option.value ~default:1. data.brightness) in
+      let _ = native##set1f {js|uGround|js} (if Option.is_some point then 1. else 0.) in
       (match point with
       | Some point when not (Lighting.daylight_only lighting) ->
           let matrix = Lighting.matrix point##x point##y lighting in
-          let _ = native##set3f "uRowR" matrix.(0) matrix.(1) matrix.(2) in
-          let _ = native##set3f "uRowG" matrix.(5) matrix.(6) matrix.(7) in
-          let _ = native##set3f "uRowB" matrix.(10) matrix.(11) matrix.(12) in
-          let _ = native##set3f "uOffset" matrix.(4) matrix.(9) matrix.(14) in
+          let _ = native##set3f {js|uRowR|js} matrix.(0) matrix.(1) matrix.(2) in
+          let _ = native##set3f {js|uRowG|js} matrix.(5) matrix.(6) matrix.(7) in
+          let _ = native##set3f {js|uRowB|js} matrix.(10) matrix.(11) matrix.(12) in
+          let _ = native##set3f {js|uOffset|js} matrix.(4) matrix.(9) matrix.(14) in
           ()
       | _ -> ());
       let _ =
-        native##set1f "uUnderground"
+        native##set1f {js|uUnderground|js}
           (if (not data.unlit) && (not night) && Option.is_some zone_mask then 1. else 0.)
       in
       (match zone_mask with
       | None ->
-          let _ = native##set4f "uUndergroundBounds" 0. 0. 1. 1. in
+          let _ = native##set4f {js|uUndergroundBounds|js} 0. 0. 1. 1. in
           ()
       | Some mask ->
           let _ =
-            native##set4f "uUndergroundBounds" mask.x mask.y
+            native##set4f {js|uUndergroundBounds|js} mask.x mask.y
               (float_of_int mask.width *. mask.step)
               (float_of_int mask.height *. mask.step)
           in
           ());
-      let _ = native##set1i "uUndergroundMask" 3 in
+      let _ = native##set1i {js|uUndergroundMask|js} 3 in
       Phaser_pipeline.bind_texture native
         (Option.bind zone_texture Phaser_pipeline.source_texture)
         3;
-      let _ = native##set1i "uFactors" 1 in
-      let _ = native##set1i "uOffsets" 2 in
+      let _ = native##set1i {js|uFactors|js} 1 in
+      let _ = native##set1i {js|uOffsets|js} 2 in
       Phaser_pipeline.bind_texture native (Option.bind factors Phaser_pipeline.source_texture) 1;
       Phaser_pipeline.bind_texture native (Option.bind offsets Phaser_pipeline.source_texture) 2;
       Phaser_pipeline.restore_texture native
 
     method release =
-      signature <- "";
+      signature <- {js||js};
       binding <- None;
       field#release;
       self#release_zones;

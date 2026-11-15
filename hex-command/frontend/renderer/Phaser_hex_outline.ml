@@ -1,8 +1,9 @@
 (* Port of #88's shared idle grid and vector action outlines. *)
 let points =
-  Geometry.hex_points 0. 0. |> String.split_on_char ' '
+  Geometry.hex_points 0. 0.
+  |> (fun text -> Array.to_list (Js.String.split ~sep:{js| |js} text))
   |> List.map (fun point ->
-      match String.split_on_char ',' point with
+      match Array.to_list (Js.String.split ~sep:{js|,|js} point) with
       | [ x; y ] -> Phaser.Geom.Point.create (float_of_string x) (float_of_string y)
       | _ -> assert false)
   |> Array.of_list
@@ -19,7 +20,7 @@ let edges =
 
 let perimeter = Array.fold_left (fun sum edge -> sum +. edge.length) 0. edges
 let idle_line_width = 0.7
-let idle_texture_key = "battlefield-idle-hex"
+let idle_texture_key = {js|battlefield-idle-hex|js}
 let native_scale = 64. /. Geometry.sprite_size
 let idle_texture_size = 72
 
@@ -63,7 +64,7 @@ class outline (scene : Phaser.scene) =
   in
   object (self)
     val mutable underlay : Phaser.graphics option = None
-    val mutable style = ""
+    val mutable style = {js||js}
     method root = root
 
     method update x y color width alpha highlighted dash =
@@ -81,10 +82,17 @@ class outline (scene : Phaser.scene) =
         underlay;
       if not is_idle then
         let signature =
-          string_of_int color ^ ":" ^ Js.Float.toString width ^ ":"
-          ^ Option.fold ~none:"undefined"
-              ~some:(fun (a, b) -> Js.Float.toString a ^ ":" ^ Js.Float.toString b)
+          let js_text_part_0 = string_of_int color in
+          let js_text_part_2 = Js.Float.toString width in
+          let js_text_part_4 =
+            Option.fold ~none:{js|undefined|js}
+              ~some:(fun (a, b) ->
+                let js_text_part_0 = Js.Float.toString a in
+                let js_text_part_2 = Js.Float.toString b in
+                {j|$(js_text_part_0):$(js_text_part_2)|j})
               dash
+          in
+          {j|$(js_text_part_0):$(js_text_part_2):$(js_text_part_4)|j}
         in
         if signature <> style then (
           style <- signature;

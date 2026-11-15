@@ -13,7 +13,10 @@ type page = {
   mutable display : Phaser.image option;
 }
 
-let key page = "fog:" ^ string_of_int page.x ^ ":" ^ string_of_int page.y
+let key page =
+  let js_text_part_1 = string_of_int page.x in
+  let js_text_part_3 = string_of_int page.y in
+  {j|fog:$(js_text_part_1):$(js_text_part_3)|j}
 
 let target scene width height =
   let target = Phaser.GameObjects.render_texture scene 0. 0. width height false in
@@ -24,10 +27,10 @@ let points text =
   Array.of_list
     (List.map
        (fun pair ->
-         match String.split_on_char ',' pair with
+         match Array.to_list (Js.String.split ~sep:{js|,|js} pair) with
          | [ x; y ] -> [%mel.obj { x = float_of_string x; y = float_of_string y }]
-         | _ -> invalid_arg "Invalid authored hex polygon")
-       (String.split_on_char ' ' text))
+         | _ -> invalid_arg {js|Invalid authored hex polygon|js})
+       (Array.to_list (Js.String.split ~sep:{js| |js} text)))
 
 class fog (scene : Phaser.scene) (manifest : Terrain_pages.sprite) (tiles : Terrain_plan.tile array)
   (resources : Phaser_resources.resources) =
@@ -55,7 +58,7 @@ class fog (scene : Phaser.scene) (manifest : Terrain_pages.sprite) (tiles : Terr
     initializer
       let _ = root##setDepth 9500. in
       let _ =
-        resources#check ~target:true "padded half-native fog" (float_of_int scratch_width)
+        resources#check ~target:true {js|padded half-native fog|js} (float_of_int scratch_width)
           (float_of_int scratch_height)
       in
       let y = ref 0 in
@@ -159,10 +162,10 @@ class fog (scene : Phaser.scene) (manifest : Terrain_pages.sprite) (tiles : Terr
           in
           mask <- Some next_mask;
           scratch <- Some next_scratch;
-          resources#set "fog-scratch" "fog scratch" 0.
+          resources#set {js|fog-scratch|js} {js|fog scratch|js} 0.
             (float_of_int scratch_width *. float_of_int scratch_height *. 8.));
         Set.each dirty (fun[@u] page ->
-            Performance_trace.measure "Phaser fog page rebuild" (fun () -> self#rebuild page));
+            Performance_trace.measure {js|Phaser fog page rebuild|js} (fun () -> self#rebuild page));
         Set.clear dirty)
 
     method private rebuild page =
@@ -180,7 +183,7 @@ class fog (scene : Phaser.scene) (manifest : Terrain_pages.sprite) (tiles : Terr
       let brush = Phaser.GameObjects.graphics scene in
       let _ = brush##fillStyle 0xffffff 1. in
       let _ =
-        Phaser_atmosphere.Mask.graphics brush "BattlefieldFogMask"
+        Phaser_atmosphere.Mask.graphics brush {js|BattlefieldFogMask|js}
           {
             width = float_of_int scratch_width *. pixel_x;
             height = float_of_int scratch_height *. pixel_y;
@@ -213,14 +216,14 @@ class fog (scene : Phaser.scene) (manifest : Terrain_pages.sprite) (tiles : Terr
         Some [| float_of_int (width mod 2) /. 2.; float_of_int (height mod 2) /. 2. |]
       in
       let _ =
-        Phaser_atmosphere.Blur.target mask "BattlefieldFogBlur"
+        Phaser_atmosphere.Blur.target mask {js|BattlefieldFogBlur|js}
           { x = 1. /. float_of_int scratch_width; y = 0.; region; extent; capture }
           false
       in
       let _ = scratch##clear () in
       let _ = scratch##draw (Phaser.Upcast.render_texture mask) 0. 0. in
       let _ =
-        Phaser_atmosphere.Blur.target scratch "BattlefieldFogBlur"
+        Phaser_atmosphere.Blur.target scratch {js|BattlefieldFogBlur|js}
           { x = 0.; y = 1. /. float_of_int scratch_height; region; extent; capture }
           false
       in
@@ -247,10 +250,10 @@ class fog (scene : Phaser.scene) (manifest : Terrain_pages.sprite) (tiles : Terr
               display##setCrop (float_of_int guard) (float_of_int guard) (float_of_int page.width)
                 (float_of_int page.height)
             in
-            let _ = Phaser_pipeline.composite display "BattlefieldFogComposite" in
+            let _ = Phaser_pipeline.composite display {js|BattlefieldFogComposite|js} in
             page.target <- Some target;
             page.display <- Some display;
-            resources#set (key page) "fog finals" 0.
+            resources#set (key page) {js|fog finals|js} 0.
               (float_of_int scratch_width *. float_of_int scratch_height *. 4.);
             target
       in
@@ -302,7 +305,7 @@ class fog (scene : Phaser.scene) (manifest : Terrain_pages.sprite) (tiles : Terr
     method destroy =
       Option.iter (fun (target : Phaser.render_texture) -> target##destroy ()) mask;
       Option.iter (fun (target : Phaser.render_texture) -> target##destroy ()) scratch;
-      resources#remove "fog-scratch";
+      resources#remove {js|fog-scratch|js};
       Array.iter
         (fun page ->
           Option.iter (fun (image : Phaser.image) -> image##destroy ()) page.display;

@@ -1,16 +1,16 @@
 type t = { step : int; value : float; detail : string }
 
-let state = ref { step = 1; value = 0.; detail = "" }
+let state = ref { step = 1; value = 0.; detail = {js||js} }
 let listeners = ref []
 let current () = !state
 
 let label step =
   match step with
-  | 1 -> "Loading game engine…"
-  | 2 -> "Restoring battle…"
-  | 3 -> "Starting battlefield renderer…"
-  | 4 -> "Loading images and sounds…"
-  | _ -> "Drawing battlefield…"
+  | 1 -> {js|Loading game engine…|js}
+  | 2 -> {js|Restoring battle…|js}
+  | 3 -> {js|Starting battlefield renderer…|js}
+  | 4 -> {js|Loading images and sounds…|js}
+  | _ -> {js|Drawing battlefield…|js}
 
 let publish next =
   if next <> !state then (
@@ -27,12 +27,12 @@ let subscribe notify =
 
 (* Five completed-work segments, not an estimate of elapsed time. Only asset
    preparation has measurable work within its segment. Never rewind a run. *)
-let advance ?(fraction = 0.) ?(detail = "") step =
+let advance ?(fraction = 0.) ?(detail = {js||js}) step =
   let value = float_of_int (step - 1) +. max 0. (min 1. fraction) in
   if step >= !state.step then publish { step; value = max !state.value value; detail }
 
 let begin_battlefield () =
   if !state.step > 3 then Loading_motion.restart ~step:3 ~value:2.;
-  publish { step = 3; value = 2.; detail = "" }
+  publish { step = 3; value = 2.; detail = {js||js} }
 
-let finish () = publish { step = 5; value = 5.; detail = "" }
+let finish () = publish { step = 5; value = 5.; detail = {js||js} }

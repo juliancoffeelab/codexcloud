@@ -106,7 +106,7 @@ let reveal_map ~scroller ~board ~ids =
   let ids =
     Array.to_list ids |> List.rev
     |> List.filter (fun id ->
-        if id = "" || Js.Dict.get seen id <> None then false
+        if id = {js||js} || Js.Dict.get seen id <> None then false
         else (
           Js.Dict.set seen id true;
           true))
@@ -115,10 +115,10 @@ let reveal_map ~scroller ~board ~ids =
   let reveal () =
     if !current then (
       let measurements = Js.Dict.empty () in
-      nodes board "[data-tile], [data-unit-tile]"
+      nodes board {js|[data-tile], [data-unit-tile]|js}
       |> Array.iter (fun node ->
-          let tile = Js.Nullable.toOption (attribute node "data-tile")
-          and unit_tile = Js.Nullable.toOption (attribute node "data-unit-tile") in
+          let tile = Js.Nullable.toOption (attribute node {js|data-tile|js})
+          and unit_tile = Js.Nullable.toOption (attribute node {js|data-unit-tile|js}) in
           let add = function
             | Some id when Js.Dict.get seen id <> None ->
                 let existing = Option.value (Js.Dict.get measurements id) ~default:[] in
@@ -179,10 +179,10 @@ let reveal_attack ~panel =
       if
         !current
         && Js.Undefined.toOption media_function <> None
-        && matches (match_media "(max-width:1000px)")
+        && matches (match_media {js|(max-width:1000px)|js})
       then
-        match Js.Nullable.toOption (child panel ".attack-actions") with
+        match Js.Nullable.toOption (child panel {js|.attack-actions|js}) with
         | Some node when Js.Undefined.toOption (scroll_function node) <> None ->
-            scroll_into_view node { block = "nearest" }
+            scroll_into_view node { block = {js|nearest|js} }
         | _ -> ());
   fun () -> current := false

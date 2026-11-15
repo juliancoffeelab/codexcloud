@@ -24,29 +24,30 @@ external has_own : 'a Js.Dict.t -> string -> bool = "hasOwn" [@@mel.scope "Objec
 let lookup values key = if has_own values key then Js.Dict.get values key else None
 
 let palette_clip family =
-  if String.starts_with ~prefix:"palette:" family then
-    lookup palette.clips (String.sub family 8 (String.length family - 8))
+  if Js.String.startsWith ~prefix:{js|palette:|js} family then
+    lookup palette.clips (Js.String.slice ~start:8 ~end_:(8 + (Js.String.length family - 8)) family)
   else None
 
-let action_families = [| "select"; "recruit"; "turn"; "victory"; "defeat" |]
+let action_families =
+  [| {js|select|js}; {js|recruit|js}; {js|turn|js}; {js|victory|js}; {js|defeat|js} |]
 
 let families =
   Array.append
     [|
-      "attack-bow";
-      "attack-melee";
-      "unit-soldier";
-      "unit-archer";
-      "unit-scout";
-      "unit-commander";
-      "terrain-village";
-      "terrain-water";
-      "terrain-forest";
-      "terrain-hill";
-      "terrain-plains";
-      "terrain-keep";
+      {js|attack-bow|js};
+      {js|attack-melee|js};
+      {js|unit-soldier|js};
+      {js|unit-archer|js};
+      {js|unit-scout|js};
+      {js|unit-commander|js};
+      {js|terrain-village|js};
+      {js|terrain-water|js};
+      {js|terrain-forest|js};
+      {js|terrain-hill|js};
+      {js|terrain-plains|js};
+      {js|terrain-keep|js};
     |]
-    (Array.append action_families [| "bell" |])
+    (Array.append action_families [| {js|bell|js} |])
 
 let family_set =
   let set = Set.create () in
@@ -60,30 +61,30 @@ let family_set =
 let legacy_impact =
   Js.Dict.fromArray
     [|
-      ("attack-bow", 121.632653);
-      ("attack-melee", 29.024943);
-      ("bell", 61.814059);
-      ("defeat", 258.61678);
-      ("recruit", 88.798186);
-      ("select", 8.344671);
-      ("terrain-forest", 28.049887);
-      ("terrain-hill", 53.446712);
-      ("terrain-keep", 24.126984);
-      ("terrain-plains", 52.60771);
-      ("terrain-village", 10.385488);
-      ("terrain-water", 11.972789);
-      ("turn", 221.746032);
-      ("unit-archer", 31.655329);
-      ("unit-commander", 40.521542);
-      ("unit-scout", 19.84127);
-      ("unit-soldier", 9.727891);
-      ("victory", 221.85941);
+      ({js|attack-bow|js}, 121.632653);
+      ({js|attack-melee|js}, 29.024943);
+      ({js|bell|js}, 61.814059);
+      ({js|defeat|js}, 258.61678);
+      ({js|recruit|js}, 88.798186);
+      ({js|select|js}, 8.344671);
+      ({js|terrain-forest|js}, 28.049887);
+      ({js|terrain-hill|js}, 53.446712);
+      ({js|terrain-keep|js}, 24.126984);
+      ({js|terrain-plains|js}, 52.60771);
+      ({js|terrain-village|js}, 10.385488);
+      ({js|terrain-water|js}, 11.972789);
+      ({js|turn|js}, 221.746032);
+      ({js|unit-archer|js}, 31.655329);
+      ({js|unit-commander|js}, 40.521542);
+      ({js|unit-scout|js}, 19.84127);
+      ({js|unit-soldier|js}, 9.727891);
+      ({js|victory|js}, 221.85941);
     |]
 
 type sample = { family : string; key : string; url : string }
 
-let base_url : string = [%mel.raw "import.meta.env?.BASE_URL ?? '/' "]
-let revision = "reviewed-ranges-5"
+let base_url : string = [%mel.raw {js|import.meta.env?.BASE_URL ?? '/' |js}]
+let revision = {js|reviewed-ranges-5|js}
 
 let samples =
   Array.append
@@ -91,16 +92,18 @@ let samples =
        (fun family ->
          {
            family;
-           key = family ^ "-1";
-           url = base_url ^ "assets/audio/" ^ family ^ "-1.wav?v=" ^ revision;
+           key = {j|$(family)-1|j};
+           url = {j|$(base_url)assets/audio/$(family)-1.wav?v=$(revision)|j};
          })
        families)
     (Array.map
        (fun (id, clip) ->
          {
-           family = "palette:" ^ id;
-           key = "palette:" ^ id;
-           url = base_url ^ "assets/audio/" ^ clip.file ^ "?v=" ^ revision;
+           family = {j|palette:$(id)|j};
+           key = {j|palette:$(id)|j};
+           url =
+             (let js_text_part_2 = clip.file in
+              {j|$(base_url)assets/audio/$(js_text_part_2)?v=$(revision)|j});
          })
        (Js.Dict.entries palette.clips))
 
@@ -160,7 +163,9 @@ let sound_for_interaction details =
   let fallback () =
     match details.attack_sound with
     | Some family when Set.has family_set family -> family
-    | _ -> if details.attack_type = Some "archer" then "attack-bow" else "attack-melee"
+    | _ ->
+        if details.attack_type = Some {js|archer|js} then {js|attack-bow|js}
+        else {js|attack-melee|js}
   in
   match (details.attack_type, details.attack_id) with
   | Some kind, Some id ->
@@ -174,7 +179,7 @@ let sound_for_interaction details =
         | None ->
             Option.bind details.attack_category (fun category ->
                 Option.bind details.attack_damage_type (fun damage ->
-                    lookup palette.fallback_attacks (category ^ ":" ^ damage)))
+                    lookup palette.fallback_attacks {j|$(category):$(damage)|j}))
       in
       Option.value ~default:(fallback ()) cue
   | _ -> (
@@ -186,7 +191,7 @@ let sound_for_interaction details =
       match selected with
       | Some cue -> cue
       | None ->
-          Option.value ~default:"select"
+          Option.value ~default:{js|select|js}
             (Option.bind details.terrain (fun terrain ->
                  Option.bind (lookup palette.terrain terrain) Js.Nullable.toOption)))
 
@@ -228,7 +233,8 @@ let ( let* ) promise next = Js.Promise.then_ next promise
 let create () =
   {
     enabled =
-      (try Js.Nullable.toOption (storage_get "hex-command-sound-enabled") <> Some "false"
+      (try
+         Js.Nullable.toOption (storage_get {js|hex-command-sound-enabled|js}) <> Some {js|false|js}
        with _ -> true);
     closed = false;
     game = None;
@@ -309,8 +315,8 @@ let attach t (game : Phaser.game) permission =
                      ready = t.ready;
                      error =
                        Some
-                         ("Browser audio permission could not be resumed. Retry with another \
-                           gesture.\n" ^ Foreign_error.describe cause);
+                         (let js_text_part_1 = Foreign_error.describe cause in
+                          {j|Browser audio permission could not be resumed. Retry with another gesture.\n$(js_text_part_1)|j});
                    };
                Js.Promise.resolve false)
              (permission ()))
@@ -340,7 +346,7 @@ let prepare _ requested =
   Array.iter
     (fun family ->
       if (not (Set.has family_set family)) && Option.is_none (palette_clip family) then
-        failwith ("Unknown audio family: " ^ family))
+        failwith {j|Unknown audio family: $(family)|j})
     requested
 
 let prepare_hud t =
@@ -364,10 +370,10 @@ type hud_cue = Hud_audio.cue =
   | Merfolk
 
 let faction_hud_cue = function
-  | "human" -> Human
-  | "woodland" -> Woodland
-  | "skeletons" -> Skeletons
-  | "coastal" -> Merfolk
+  | matched_text_0 when matched_text_0 = {js|human|js} -> Human
+  | matched_text_1 when matched_text_1 = {js|woodland|js} -> Woodland
+  | matched_text_2 when matched_text_2 = {js|skeletons|js} -> Skeletons
+  | matched_text_3 when matched_text_3 = {js|coastal|js} -> Merfolk
   | _ -> Choice
 
 let play_hud ?cue t =
@@ -384,7 +390,7 @@ let cancel t =
 let set_enabled t value =
   t.enabled <- value;
   if not value then cancel t;
-  try storage_set "hex-command-sound-enabled" (string_of_bool value) with _ -> ()
+  try storage_set {js|hex-command-sound-enabled|js} (string_of_bool value) with _ -> ()
 
 let unlock t ~trusted =
   if (not t.enabled) || not trusted then Js.Promise.resolve false
@@ -433,14 +439,14 @@ let schedule_cue ?(use_impact = true) ?(pitch_spread = 0.8) ?owner:owned ?key ?(
   | Some game when t.enabled && t.ready -> (
       let manager = game##sound in
       match Js.Nullable.toOption manager##context with
-      | Some context when context_state context = "running" ->
+      | Some context when context_state context = {js|running|js} ->
           let clip = palette_clip family in
           if Option.is_none clip && not (Set.has family_set family) then
-            failwith ("Unknown audio family: " ^ family);
-          let sample_key = if Option.is_some clip then family else family ^ "-1" in
+            failwith {j|Unknown audio family: $(family)|j};
+          let sample_key = if Option.is_some clip then family else {j|$(family)-1|j} in
           if not (game##cache##audio##exists sample_key) then (
             Observable.set readiness_owner
-              { ready = false; error = Some ("Prepared audio missing: " ^ sample_key) };
+              { ready = false; error = Some {j|Prepared audio missing: $(sample_key)|j} };
             omitted ())
           else
             let owner = match owned with Some owner -> owner | None -> owner () in
@@ -476,13 +482,14 @@ let schedule_cue ?(use_impact = true) ?(pitch_spread = 0.8) ?owner:owned ?key ?(
             let requested_start = clock_at +. ((impact_at -. performance_at -. anchor) /. 1000.) in
             let start = max (context_time context) requested_start in
             let volume =
-              if Option.is_some clip then 1. else 0.29 *. if family = "select" then 0.25 else 1.
+              if Option.is_some clip then 1.
+              else 0.29 *. if family = {js|select|js} then 0.25 else 1.
             in
             let sound = add_sound manager sample_key [%mel.obj { volume; rate }] in
             let voice = { sound; channel; owner; key } in
             let _ = Set.add t.voices voice in
             notify t owner;
-            let _ = sound##once "complete" (fun[@u] () -> remove_voice t voice) in
+            let _ = sound##once {js|complete|js} (fun[@u] () -> remove_voice t voice) in
             if not (play_delay sound [%mel.obj { delay = max 0. (start -. context_time context) }])
             then (
               remove_voice t voice;
@@ -500,17 +507,17 @@ let schedule_cue ?(use_impact = true) ?(pitch_spread = 0.8) ?owner:owned ?key ?(
                 (Js.Undefined.toOption (volume_node sound));
               let audible_start = performance_at +. ((started -. clock_at) *. 1000.) in
               let actual_impact = audible_start +. anchor in
-              Performance_trace.instant "Audio cue scheduled"
+              Performance_trace.instant {js|Audio cue scheduled|js}
                 ~args:
                   (Performance_trace.obj
                      [
-                       ("family", Js.Json.string family);
-                       ("requestedImpact", Js.Json.number impact_at);
-                       ("impactAt", Js.Json.number actual_impact);
-                       ("sourceStart", Js.Json.number started);
-                       ("rate", Js.Json.number rate);
-                       ("anchor", Js.Json.number anchor);
-                       ("outputTimestamp", Js.Json.boolean mapped);
+                       ({js|family|js}, Js.Json.string family);
+                       ({js|requestedImpact|js}, Js.Json.number impact_at);
+                       ({js|impactAt|js}, Js.Json.number actual_impact);
+                       ({js|sourceStart|js}, Js.Json.number started);
+                       ({js|rate|js}, Js.Json.number rate);
+                       ({js|anchor|js}, Js.Json.number anchor);
+                       ({js|outputTimestamp|js}, Js.Json.boolean mapped);
                      ]);
               {
                 impact_at = actual_impact;
@@ -531,7 +538,7 @@ let play_sequence ?(channel = Feedback) ?pitch_spread ?owner:owned ?(replace = f
       let current_request = t.voice_request in
       let allowed =
         match Js.Nullable.toOption game##sound##context with
-        | Some context when context_state context <> "running" -> (
+        | Some context when context_state context <> {js|running|js} -> (
             match t.unlocking with Some unlocking -> unlocking | None -> Js.Promise.resolve false)
         | _ -> Js.Promise.resolve true
       in
@@ -555,7 +562,7 @@ let play_sequence ?(channel = Feedback) ?pitch_spread ?owner:owned ?(replace = f
                 match pitch_spread with
                 | Some spread -> spread
                 | None ->
-                    if family = "select" then 0.35
+                    if family = {js|select|js} then 0.35
                     else if channel = Combat && i > 0 then 1.2
                     else 0.8
               in
@@ -588,14 +595,17 @@ let play_interaction ?owner t (details : interaction) =
   play_sequence ~pitch_spread:spread ?owner ~replace:true t [| sound_for_interaction details |]
 
 let schedule_movement ?owner t landing_at =
-  schedule_cue ~pitch_spread:0.35 ?owner ~key:"movement" t palette.movement landing_at Feedback
+  schedule_cue ~pitch_spread:0.35 ?owner ~key:{js|movement|js} t palette.movement landing_at
+    Feedback
 
 let schedule_death ?owner ?key t kind at =
   match Option.bind (lookup palette.units kind) (fun unit -> Js.Nullable.toOption unit.death) with
   | None -> { impact_at = at; end_at = at; played = false }
   | Some cue ->
       schedule_cue ~use_impact:false ~pitch_spread:1.2 ?owner
-        ~key:("death:" ^ Option.value ~default:kind key)
+        ~key:
+          (let js_text_part_1 = Option.value ~default:kind key in
+           {j|death:$(js_text_part_1)|j})
         t cue at Combat
 
 let close t =

@@ -58,7 +58,7 @@ let create ~before_game combat resolved publish =
   let current () =
     match !reference with
     | Some current -> current
-    | None -> failwith "Combat playback not initialized"
+    | None -> failwith {js|Combat playback not initialized|js}
   in
   let frame =
     {

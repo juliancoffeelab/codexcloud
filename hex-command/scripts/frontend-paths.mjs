@@ -44,10 +44,6 @@ const frontendAliases = {
   ...frontendModuleAliases(),
   ...Object.fromEntries(
     [
-      // ReasonReact supplies typed JSX/events; Preact supplies the runtime contract.
-      ["react/jsx-runtime", import.meta.resolve("preact/compat/jsx-runtime")],
-      ["react/jsx-dev-runtime", import.meta.resolve("preact/compat/jsx-dev-runtime")],
-      ["react", import.meta.resolve("preact/compat")],
       [
         "@frontend/Save_legacy",
         new URL(

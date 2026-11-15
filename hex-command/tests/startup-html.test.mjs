@@ -3,9 +3,8 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "vitest";
 import { JSDOM } from "jsdom";
-import React from "preact/compat";
-import { createRoot } from "preact/compat/client";
-import { act } from "preact/test-utils";
+import React, { act } from "react";
+import { createRoot } from "react-dom/client";
 import * as Shell from "@frontend/Shell";
 
 const html = readFileSync("index.html", "utf8");
@@ -17,7 +16,13 @@ function structure(node) {
     [...node.attributes]
       .filter((attr) => !(attr.name === "id" && attr.value.startsWith("startup")))
       .filter((attr) => !(attr.name === "style" && node.classList.contains("loading-fill")))
-      .map((attr) => [attr.name, attr.value])
+      .filter((attr) => !(attr.name === "class" && attr.value === ""))
+      .map((attr) => [
+        attr.name,
+        node.localName === "progress" && attr.name === "value"
+          ? String(Number(attr.value))
+          : attr.value,
+      ])
       .sort(([a], [b]) => a.localeCompare(b)),
     [...node.childNodes].map(structure).filter((value) => value !== null),
   ];

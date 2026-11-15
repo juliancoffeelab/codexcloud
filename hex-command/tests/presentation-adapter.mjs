@@ -1,5 +1,4 @@
 import { cellKey } from "./hex-fixture.mjs";
-import * as Utf8 from "@frontend/Utf8";
 import * as P from "@frontend/Presentation";
 import {
   fromJSON as from,
@@ -21,7 +20,7 @@ const domainFields = new Set([
   "attacker",
 ]);
 function host(value) {
-  if (typeof value === "string") return Utf8.to_js(value);
+  if (typeof value === "string") return value;
   if (Array.isArray(value)) return value.map(host);
   if (value && typeof value === "object")
     return Object.fromEntries(
@@ -66,9 +65,9 @@ export const ability = (c, u) => abilityView(P.ability(c, from("PublicUnit", u))
 export const armor = (c, u) => host(toArray(P.armor(c, from("PublicUnit", u))));
 export const terrain_damage_facts = (values) =>
   host(toArray(P.terrain_damage_facts(fromArray(values.map(fromArray)))));
-export const weapon_range = (w) => Utf8.to_js(P.weapon_range(from("Weapon", w)));
-export const damage_name = (d) => Utf8.to_js(P.damage_name(from("DamageType", d.toLowerCase())));
-export const damage_equation = (d) => Utf8.to_js(P.damage_equation(from("DamageDetail", d)));
+export const weapon_range = (w) => P.weapon_range(from("Weapon", w));
+export const damage_name = (d) => P.damage_name(from("DamageType", d.toLowerCase()));
+export const damage_equation = (d) => P.damage_equation(from("DamageDetail", d));
 export const terrain_panel = (...args) => {
   if (args[3] !== undefined) args[3] = cellKey(args[3]);
   const v = P.terrain_panel(...args);

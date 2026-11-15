@@ -138,7 +138,7 @@ external mutation_observer : ((unit -> unit)[@u]) -> mutation_observer = "Mutati
 external observe_dialogs :
   mutation_observer ->
   Dom.element ->
-  < attributes : bool ; attributeFilter : string array ; subtree : bool > Js.t ->
+  < attributes : bool ; attributeFilter : string array ; childList : bool ; subtree : bool > Js.t ->
   unit = "observe"
 [@@mel.send]
 

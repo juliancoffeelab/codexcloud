@@ -23,7 +23,10 @@ let gutter = 2
 
 external sprites : sprite Js.Dict.t = "default" [@@mel.module "virtual:terrain-prebuilt"]
 
-let asset_key map_id revision = Terrain_plan.asset_key (map_id ^ ":" ^ Js.Float.toString revision)
+let asset_key map_id revision =
+  Terrain_plan.asset_key
+    (let js_text_part_2 = Js.Float.toString revision in
+     {j|$(map_id):$(js_text_part_2)|j})
 
 let frame (page : page) : Art.frame =
   {

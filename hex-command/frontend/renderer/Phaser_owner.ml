@@ -22,8 +22,8 @@ let dispose t =
       runtime)
 
 let mount t config ~failed =
-  if t.closed then invalid_arg "Phaser preparation was disposed";
-  if t.runtime <> None then invalid_arg "Phaser preparation already has a game";
+  if t.closed then invalid_arg {js|Phaser preparation was disposed|js};
+  if t.runtime <> None then invalid_arg {js|Phaser preparation already has a game|js};
   let runtime = Phaser_runtime.create config ~failed in
   t.runtime <- Some runtime;
   Phaser_runtime.on_dispose runtime (fun () ->
@@ -64,14 +64,14 @@ let mount_battlefield t (options : Battlefield_view.mount_options) =
           match Js.Nullable.toOption manager##context with
           | None -> Js.Promise.resolve (not manager##locked)
           | Some context ->
-              if context_state context = "closed" then (
+              if context_state context = {js|closed|js} then (
                 manager##removeAll ();
                 let replacement = create_context manager game in
                 clear_context manager Js.Nullable.null;
                 set_context manager replacement);
               let context = Option.get (Js.Nullable.toOption manager##context) in
               let resumed =
-                if context_state context = "running" then Js.Promise.resolve ()
+                if context_state context = {js|running|js} then Js.Promise.resolve ()
                 else resume_context context
               in
               Js.Promise.then_
@@ -79,7 +79,7 @@ let mount_battlefield t (options : Battlefield_view.mount_options) =
                   let ready =
                     (not (Phaser_runtime.unavailable runtime))
                     && Option.fold ~none:false
-                         ~some:(fun context -> context_state context = "running")
+                         ~some:(fun context -> context_state context = {js|running|js})
                          (Js.Nullable.toOption manager##context)
                   in
                   if ready then (
@@ -111,5 +111,4 @@ let retry_audio (t : t) =
   | _ ->
       Phaser_sound.report_readiness t.audio false
         (Some
-           "Battlefield audio is unavailable because its renderer stopped. Reload the game to \
-            restore audio.")
+           {js|Battlefield audio is unavailable because its renderer stopped. Reload the game to restore audio.|js})

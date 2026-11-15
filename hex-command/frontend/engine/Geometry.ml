@@ -17,10 +17,11 @@ let center ~col ~row =
 let hex_points x y =
   Array.init 6 (fun i ->
       let angle = float_of_int ((60 * i) - 30) *. Float.pi /. 180. in
-      Js.Float.toString (x +. (column_spacing /. sqrt 3. *. cos angle))
-      ^ ","
-      ^ Js.Float.toString (y +. (sprite_size /. 2. *. sin angle)))
-  |> Array.to_list |> String.concat " "
+      let js_text_part_0 = Js.Float.toString (x +. (column_spacing /. sqrt 3. *. cos angle)) in
+      let js_text_part_2 = Js.Float.toString (y +. (sprite_size /. 2. *. sin angle)) in
+      {j|$(js_text_part_0),$(js_text_part_2)|j})
+  |> Array.to_list
+  |> fun values -> Js.Array.join ~sep:{js| |js} (Array.of_list values)
 
 let dimensions ~cols ~rows =
   {
@@ -35,25 +36,38 @@ let preview_dimensions ~cols ~rows =
   }
 
 let preview_color = function
-  | "monastery" | "church" | "castle-wall" | "castle-bell" -> "#b9b597"
-  | "graveyard" | "ritual-star" | "ritual-spent" | "burned-village" -> "#8d9f4f"
-  | "mountain" | "mountain-mine" -> "#727063"
-  | "cave-passage" -> "#505358"
-  | "cave-wall" -> "#2c3037"
-  | "house" -> "#d4b476"
-  | "landing" | "ferry" -> "#78a4a6"
-  | "signpost" -> "#8fb337"
-  | "marsh" -> "#809678"
-  | "ruins" -> "#a2a18c"
-  | "fort" -> "#b4a277"
-  | "grove" -> "#4d884e"
-  | "plains" -> "#8d9f4f"
-  | "road" -> "#8fb337"
-  | "forest" -> "#536e3d"
-  | "hill" -> "#85866c"
-  | "water" -> "#407899"
-  | "bridge" -> "#b3ab8d"
-  | "ford" -> "#78a4a6"
-  | "village" -> "#d4b476"
-  | "keep" -> "#b9b597"
-  | _ -> "#8d9f4f"
+  | matched_text_0
+    when matched_text_0 = {js|monastery|js}
+         || matched_text_0 = {js|church|js}
+         || matched_text_0 = {js|castle-wall|js}
+         || matched_text_0 = {js|castle-bell|js} ->
+      {js|#b9b597|js}
+  | matched_text_1
+    when matched_text_1 = {js|graveyard|js}
+         || matched_text_1 = {js|ritual-star|js}
+         || matched_text_1 = {js|ritual-spent|js}
+         || matched_text_1 = {js|burned-village|js} ->
+      {js|#8d9f4f|js}
+  | matched_text_2 when matched_text_2 = {js|mountain|js} || matched_text_2 = {js|mountain-mine|js}
+    ->
+      {js|#727063|js}
+  | matched_text_3 when matched_text_3 = {js|cave-passage|js} -> {js|#505358|js}
+  | matched_text_4 when matched_text_4 = {js|cave-wall|js} -> {js|#2c3037|js}
+  | matched_text_5 when matched_text_5 = {js|house|js} -> {js|#d4b476|js}
+  | matched_text_6 when matched_text_6 = {js|landing|js} || matched_text_6 = {js|ferry|js} ->
+      {js|#78a4a6|js}
+  | matched_text_7 when matched_text_7 = {js|signpost|js} -> {js|#8fb337|js}
+  | matched_text_8 when matched_text_8 = {js|marsh|js} -> {js|#809678|js}
+  | matched_text_9 when matched_text_9 = {js|ruins|js} -> {js|#a2a18c|js}
+  | matched_text_10 when matched_text_10 = {js|fort|js} -> {js|#b4a277|js}
+  | matched_text_11 when matched_text_11 = {js|grove|js} -> {js|#4d884e|js}
+  | matched_text_12 when matched_text_12 = {js|plains|js} -> {js|#8d9f4f|js}
+  | matched_text_13 when matched_text_13 = {js|road|js} -> {js|#8fb337|js}
+  | matched_text_14 when matched_text_14 = {js|forest|js} -> {js|#536e3d|js}
+  | matched_text_15 when matched_text_15 = {js|hill|js} -> {js|#85866c|js}
+  | matched_text_16 when matched_text_16 = {js|water|js} -> {js|#407899|js}
+  | matched_text_17 when matched_text_17 = {js|bridge|js} -> {js|#b3ab8d|js}
+  | matched_text_18 when matched_text_18 = {js|ford|js} -> {js|#78a4a6|js}
+  | matched_text_19 when matched_text_19 = {js|village|js} -> {js|#d4b476|js}
+  | matched_text_20 when matched_text_20 = {js|keep|js} -> {js|#b9b597|js}
+  | _ -> {js|#8d9f4f|js}

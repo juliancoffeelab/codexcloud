@@ -53,7 +53,9 @@
     "Save45": 2927,
     "Save46": 2928,
     "Save47": 2942,
-    "Save48": 2966
+    "Save48": 2966,
+    "Save49": 3449,
+    "History5": 3451
   },
   "shapes": [
     {
@@ -39673,6 +39675,229 @@
     {
       "kind": "literal",
       "value": 48
+    },
+    {
+      "kind": "union",
+      "members": [9, 3]
+    },
+    {
+      "kind": "literal",
+      "value": 49
+    },
+    {
+      "kind": "literal",
+      "value": 5
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 2983,
+          "optional": false
+        },
+        "id": {
+          "type": 2972,
+          "optional": false
+        },
+        "savedAt": {
+          "type": 2971,
+          "optional": false
+        },
+        "run": {
+          "type": 2972,
+          "optional": false
+        },
+        "mission": {
+          "type": 3440,
+          "optional": false
+        },
+        "round": {
+          "type": 2971,
+          "optional": false
+        },
+        "missionStart": {
+          "type": 2968,
+          "optional": false
+        },
+        "runId": {
+          "type": 2972,
+          "optional": false
+        },
+        "branchId": {
+          "type": 2972,
+          "optional": false
+        },
+        "checkpointId": {
+          "type": 2972,
+          "optional": false
+        },
+        "ordinal": {
+          "type": 2971,
+          "optional": false
+        },
+        "mapId": {
+          "type": 13,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "entry": {
+          "type": 3443,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "pendingEnemy": {
+          "type": 2968,
+          "optional": false
+        },
+        "undo": {
+          "type": 2969,
+          "optional": false
+        },
+        "progress": {
+          "type": 3444,
+          "optional": false
+        },
+        "version": {
+          "type": 3441,
+          "optional": false
+        },
+        "checkpoint": {
+          "type": 2985,
+          "optional": false
+        },
+        "setup": {
+          "type": 3399,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3437,
+          "optional": false
+        },
+        "manual": {
+          "type": 2968,
+          "optional": false
+        },
+        "parentId": {
+          "type": 3438,
+          "optional": true
+        },
+        "id": {
+          "type": 2972,
+          "optional": false
+        },
+        "savedAt": {
+          "type": 2971,
+          "optional": false
+        },
+        "run": {
+          "type": 2972,
+          "optional": false
+        },
+        "mission": {
+          "type": 3440,
+          "optional": false
+        },
+        "round": {
+          "type": 2971,
+          "optional": false
+        },
+        "missionStart": {
+          "type": 2968,
+          "optional": false
+        },
+        "runId": {
+          "type": 2972,
+          "optional": false
+        },
+        "branchId": {
+          "type": 2972,
+          "optional": false
+        },
+        "checkpointId": {
+          "type": 2972,
+          "optional": false
+        },
+        "ordinal": {
+          "type": 2971,
+          "optional": false
+        },
+        "mapId": {
+          "type": 13,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "entry": {
+          "type": 3446,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "pendingEnemy": {
+          "type": 3434,
+          "optional": false
+        },
+        "undo": {
+          "type": 3405,
+          "optional": true
+        },
+        "progress": {
+          "type": 3447,
+          "optional": false
+        },
+        "version": {
+          "type": 3441,
+          "optional": false
+        },
+        "checkpoint": {
+          "type": 2985,
+          "optional": false
+        },
+        "setup": {
+          "type": 3399,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3445, 3448]
+    },
+    {
+      "kind": "array",
+      "element": 3446
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "version": {
+          "type": 3442,
+          "optional": false
+        },
+        "entries": {
+          "type": 3450,
+          "optional": false
+        }
+      }
     }
   ],
   "typeNames": {

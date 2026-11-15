@@ -15,25 +15,27 @@ let make = (~retryHud, ~renderer: Phaser_boot.t) => {
   });
   <>
     {option(hud.error, message =>
-       <div role="alert">
-         <p> {text("Menu audio unavailable.")} </p>
+       <div role={js|alert|js}>
+         <p> {text({js|Menu audio unavailable.|js})} </p>
          <details>
-           <summary> {text("Error details")} </summary>
+           <summary> {text({js|Error details|js})} </summary>
            <pre> {text(message)} </pre>
          </details>
          <button
            onClick={_ => {
              let _ = retryHud();
              ();
-           }}> {text("Retry menu audio")} </button>
+           }}>
+           {text({js|Retry menu audio|js})}
+         </button>
        </div>
      )}
     {switch (battle.error) {
      | Some(message) =>
-       <div role="alert">
-         <p> {text("Audio unavailable.")} </p>
+       <div role={js|alert|js}>
+         <p> {text({js|Audio unavailable.|js})} </p>
          <details>
-           <summary> {text("Error details")} </summary>
+           <summary> {text({js|Error details|js})} </summary>
            <pre> {text(message)} </pre>
          </details>
          <button
@@ -41,12 +43,15 @@ let make = (~retryHud, ~renderer: Phaser_boot.t) => {
              let _ = Phaser_boot.retry_audio(renderer);
              ();
            }}>
-           {text("Retry audio")}
+           {text({js|Retry audio|js})}
          </button>
        </div>
      | None =>
-       <p className="status" role="status">
-         {text(battle.ready ? "Audio prepared." : "Preparing audio… Menus remain available.")}
+       <p className={js|status|js} role={js|status|js}>
+         {text(
+            battle.ready
+              ? {js|Audio prepared.|js} : {js|Preparing audio… Menus remain available.|js},
+          )}
        </p>
      }}
   </>;

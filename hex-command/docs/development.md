@@ -19,6 +19,26 @@ its entry points.
 - [Deployment operation](../.agents/skills/deploy/operations.md): pinned builds and hosting transport.
 - [Benchmarks](benchmarkjs.md): existing benchmark commands and measurement boundaries.
 
+## Browser text
+
+Live frontend `string` values contain ordinary JavaScript text. Use `{js|…|js}`
+literals, `{j|…$(value)…|j}` interpolation and `Js.String` operations. Match text
+with guards comparing JS literals; Melange rejects JS literals in patterns. Rust models
+use the `Text` alias, selected with `js_value("string")`, so nested fields and map
+keys keep JS text without changing the surrounding OCaml representation.
+
+Save versions 1–48 retain their frozen byte-string implementation. The final
+V48 → V49 conversion changes interpreted strings and keys to JS text; V49's JSON
+codec reads and writes JS text directly. The current history index uses the same
+convention at its V4 → V5 conversion, including storage-import and repair
+identities. `migrate_typed` therefore returns JS text,
+while older wire representations remain inside their versioned conversions. Opaque JSON payloads
+are already JS values and pass through unchanged.
+
+`Binding_text` is only for the SDK-generated loader input and failure diagnostics,
+which still use native OCaml byte strings. Keep those conversions in the engine
+adapter; application text and game-data bindings do not use them.
+
 ## Issue labels
 
 When creating an issue, apply the relevant labels below. Combine labels for the
@@ -53,3 +73,11 @@ originating PR in the issue and add the relevant area and work labels too.
 | `setup`            | Problems that prevent agents from working.          |
 | `ux`               | User-facing game bugs or usability problems.        |
 | `wontfix`          | Work that will not be undertaken.                   |
+
+## Save metadata
+
+Current saves use format 49 and history index 5. Entries contain a separate
+`mapId` and numeric `mission` (one-based for campaigns, `null` for scenarios).
+The obsolete `side` metadata field is absent; turn phase comes from the native
+checkpoint. Chapter names and numerals are presentation output. Legacy formatted
+mission labels are interpreted only by explicit save/history migrations.

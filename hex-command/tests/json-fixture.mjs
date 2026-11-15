@@ -2,7 +2,6 @@ import { hex, cellKey } from "./hex-fixture.mjs";
 // Historical fixture spelling stays JSON. The compiled OCaml helper constructs
 // and deconstructs native values; tests never manufacture compiler variants.
 import * as Json from "@frontend/Fixture_json";
-import * as Utf8 from "@frontend/Utf8";
 import schema from "@wasm/schema.json" with { type: "json" };
 const snake = (s) =>
   s
@@ -54,7 +53,7 @@ function remember(t, n, j, js = false) {
         t.args[0].name === "String"
           ? js
             ? k
-            : Utf8.to_js(k)
+            : k
           : (Json["to_" + snake(t.args[0].name)]?.(k) ?? k);
       if (Object.hasOwn(j, key)) j[key] = remember(t.args[1], v, j[key], js);
     }

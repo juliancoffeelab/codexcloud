@@ -1,5 +1,6 @@
 //! Stable identifiers and closed vocabularies shared by content and battle APIs.
 
+use crate::data::Text;
 use serde::{Deserialize, Serialize};
 /// Stable unit identity independent of roster order.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(transparent, borrow))]
@@ -41,7 +42,7 @@ impl std::fmt::Display for Hex {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub enum TileRef {
-    Location(String),
+    Location(Text),
     Hex(Hex),
     Binding(TileBinding),
 }
@@ -84,7 +85,7 @@ impl From<Hex> for TileId {
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
 )]
-pub struct UnitTypeId(pub String);
+pub struct UnitTypeId(pub Text);
 impl From<&str> for UnitTypeId {
     fn from(value: &str) -> Self {
         Self(value.to_owned())
@@ -98,7 +99,7 @@ impl From<&str> for UnitTypeId {
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
 )]
-pub struct WeaponId(pub String);
+pub struct WeaponId(pub Text);
 impl From<&str> for WeaponId {
     fn from(value: &str) -> Self {
         Self(value.to_owned())

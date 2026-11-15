@@ -1,53 +1,55 @@
 open Save_json
 
 let run_name catalog entry =
-  let id = text entry "run" in
+  let id = text entry {js|run|js} in
   match List.find_opt (fun (c : Domain.campaign) -> c.id = id) (Catalog.campaigns catalog) with
   | Some c -> c.name
   | None -> (
       match List.find_opt (fun (m : Domain.map_definition) -> m.id = id) (Catalog.maps catalog) with
       | Some m -> m.name
-      | None -> "Saved game")
+      | None -> {js|Saved game|js})
 
 let chapter catalog entry =
-  let mission = text entry "mission" in
-  let pieces = String.split_on_char ' ' mission in
-  let number, map =
-    match pieces with
-    | "Mission" :: number :: "·" :: map -> (int_of_string number, String.concat " " map)
-    | _ -> (0, mission)
-  in
+  let number = int_of_float (n entry {js|mission|js}) in
+  let map = text entry {js|mapId|js} in
   (number, try (Catalog.map catalog map).name with _ -> run_name catalog entry)
 
 let roman value =
-  let remaining = ref value and result = ref "" in
+  let remaining = ref value and result = ref {js||js} in
   List.iter
     (fun (amount, symbol) ->
       while !remaining >= amount do
-        result := !result ^ symbol;
+        (result :=
+           let js_text_part_0 = !result in
+           {j|$(js_text_part_0)$(symbol)|j});
         remaining := !remaining - amount
       done)
     [
-      (1000, "M");
-      (900, "CM");
-      (500, "D");
-      (400, "CD");
-      (100, "C");
-      (90, "XC");
-      (50, "L");
-      (40, "XL");
-      (10, "X");
-      (9, "IX");
-      (5, "V");
-      (4, "IV");
-      (1, "I");
+      (1000, {js|M|js});
+      (900, {js|CM|js});
+      (500, {js|D|js});
+      (400, {js|CD|js});
+      (100, {js|C|js});
+      (90, {js|XC|js});
+      (50, {js|L|js});
+      (40, {js|XL|js});
+      (10, {js|X|js});
+      (9, {js|IX|js});
+      (5, {js|V|js});
+      (4, {js|IV|js});
+      (1, {js|I|js});
     ];
   !result
 
 let turn_name catalog entry =
   let number, name = chapter catalog entry in
-  if number = 0 then "Turn " ^ string_of_int (int_of_float (n entry "round"))
-  else roman number ^ ": " ^ name ^ ", " ^ string_of_int (int_of_float (n entry "round"))
+  if number = 0 then
+    let js_text_part_1 = string_of_int (int_of_float (n entry {js|round|js})) in
+    {j|Turn $(js_text_part_1)|j}
+  else
+    let js_text_part_0 = roman number in
+    let js_text_part_4 = string_of_int (int_of_float (n entry {js|round|js})) in
+    {j|$(js_text_part_0): $(name), $(js_text_part_4)|j}
 
 type date
 
@@ -63,14 +65,18 @@ external local_time :
 
 let save_time value =
   let date = date value in
-  Utf8.of_js
-    ((if date_string date = date_string (today ()) then "Today" else local_date date)
-    ^ ", "
-    ^ local_time date [||] [%mel.obj { hour = "2-digit"; minute = "2-digit"; second = "2-digit" }])
+  let js_text_part_0 =
+    if date_string date = date_string (today ()) then {js|Today|js} else local_date date
+  in
+  let js_text_part_2 =
+    local_time date [||]
+      [%mel.obj { hour = {js|2-digit|js}; minute = {js|2-digit|js}; second = {js|2-digit|js} }]
+  in
+  {j|$(js_text_part_0), $(js_text_part_2)|j}
 
 let order a b =
-  let c = Float.compare (n b "savedAt") (n a "savedAt") in
-  if c <> 0 then c else String.compare (text a "id") (text b "id")
+  let c = Float.compare (n b {js|savedAt|js}) (n a {js|savedAt|js}) in
+  if c <> 0 then c else Stdlib.compare (text a {js|id|js}) (text b {js|id|js})
 
 type game = { id : string; latest : Js.Json.t; earliest : Js.Json.t }
 
@@ -78,7 +84,7 @@ let games sources =
   let grouped = Hashtbl.create 16 in
   Array.iter
     (fun entry ->
-      let id = text entry "runId" in
+      let id = text entry {js|runId|js} in
       match Hashtbl.find_opt grouped id with
       | None -> Hashtbl.add grouped id { id; latest = entry; earliest = entry }
       | Some game ->
@@ -94,7 +100,13 @@ let games sources =
   |> Array.of_list
 
 let first_saved entry =
-  (if text entry "kind" = "turn" && b entry "missionStart" && n entry "ordinal" = 1. then "Started"
-   else "Earliest save")
-  ^ " "
-  ^ save_time (n entry "savedAt")
+  let js_text_part_0 =
+    if
+      text entry {js|kind|js} = {js|turn|js}
+      && b entry {js|missionStart|js}
+      && n entry {js|ordinal|js} = 1.
+    then {js|Started|js}
+    else {js|Earliest save|js}
+  in
+  let js_text_part_2 = save_time (n entry {js|savedAt|js}) in
+  {j|$(js_text_part_0) $(js_text_part_2)|j}

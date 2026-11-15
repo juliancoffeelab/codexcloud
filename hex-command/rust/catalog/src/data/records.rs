@@ -1,6 +1,7 @@
 //! Owned action, combat and loss records produced by simulation sessions.
 
 use super::*;
+use crate::data::Text;
 use serde::ser::SerializeStruct;
 use serde::{Deserialize, Serialize};
 /// Commands recorded by simulations in their established wire shape.
@@ -13,34 +14,34 @@ use serde::{Deserialize, Serialize};
 )]
 pub enum ActionRecord {
     Drop {
-        unit: String,
-        item: String,
+        unit: Text,
+        item: Text,
     },
     Move {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         requested: Option<Hex>,
-        unit: String,
+        unit: Text,
         tile: Hex,
         #[serde(default, skip_serializing_if = "Vec::is_empty")]
         path: Vec<Hex>,
     },
     Attack {
-        unit: String,
-        target: String,
-        weapon: String,
+        unit: Text,
+        target: Text,
+        weapon: Text,
     },
     Recruit {
-        unit: String,
+        unit: Text,
         #[serde(rename = "type")]
-        unit_type: String,
+        unit_type: Text,
         tile: Hex,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         cost: Option<i32>,
     },
     Advance {
-        unit: String,
+        unit: Text,
         #[serde(rename = "type")]
-        unit_type: String,
+        unit_type: Text,
     },
 }
 /// Actual adjacent healing after terrain healing and HP caps. Equal strongest
@@ -53,8 +54,8 @@ pub enum ActionRecord {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct HealingRecord {
-    pub target: String,
-    pub providers: Vec<String>,
+    pub target: Text,
+    pub providers: Vec<Text>,
     pub amount: i32,
 }
 /// Reflection separated from weapon retaliation. Effective damage is the actual
@@ -71,7 +72,7 @@ pub struct ThornRecord {
     pub damage: i32,
     pub aura_damage: i32,
     pub effective_damage: i32,
-    pub aura_sources: Vec<String>,
+    pub aura_sources: Vec<Text>,
 }
 /// Damage stages for an executed weapon, before HP caps. Armour includes racial
 /// and unit modifiers; terrain includes the target's environmental modifiers.
@@ -118,9 +119,9 @@ pub struct CombatMitigationRecord {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct CombatRecord {
-    pub unit: String,
-    pub target: String,
-    pub weapon: String,
+    pub unit: Text,
+    pub target: Text,
+    pub weapon: Text,
     pub from: Hex,
     pub target_tile: Hex,
     pub damage: i32,

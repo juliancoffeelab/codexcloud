@@ -17,23 +17,23 @@ external has_own : 'a -> string -> bool = "hasOwn" [@@mel.scope "Object"]
 external from_entries : (string * Js.Json.t) array -> Js.Json.t = "fromEntries"
 [@@mel.scope "Object"]
 
-let fail message = Js.Exn.raiseError (Utf8.to_js message)
+let fail message = Js.Exn.raiseError message
 let obj fields = from_entries (Array.of_list fields)
-let text value = Js.Json.string (Utf8.to_js value)
+let text value = Js.Json.string value
 let strings values = Js.Json.array (Array.of_list (List.map text values))
-let json serialized = Js.Json.parseExn (Utf8.to_js serialized)
+let json serialized = Js.Json.parseExn serialized
 
 let fields value =
   match Js.Json.decodeObject value with
   | Some fields -> fields
-  | None -> fail "Expected tool inputs to be an object."
+  | None -> fail {js|Expected tool inputs to be an object.|js}
 
 let get object_ key = if has_own object_ key then Js.Dict.get object_ key else None
 
 let field object_ key =
   match get object_ key with
   | Some value -> value
-  | None -> fail ("Missing tool result field: " ^ key)
+  | None -> fail {j|Missing tool result field: $(key)|j}
 
 let input value =
   match Js.Undefined.toOption value with
@@ -41,59 +41,70 @@ let input value =
   | Some value -> (
       match Js.Json.classify value with
       | Js.Json.JSONObject fields -> fields
-      | _ -> fail "Expected tool inputs to be an object.")
+      | _ -> fail {js|Expected tool inputs to be an object.|js})
 
 let string input key =
   match Option.bind (get input key) Js.Json.decodeString with
-  | Some value -> Utf8.of_js value
-  | None -> fail ("Expected " ^ key ^ " to be a string.")
+  | Some value -> value
+  | None -> fail {j|Expected $(key) to be a string.|j}
 
 let array value =
   match Js.Json.decodeArray value with
   | Some values -> values
-  | None -> fail "Malformed native tool result."
+  | None -> fail {js|Malformed native tool result.|js}
 
 let string_property ?values ?description () =
   obj
-    ([ ("type", text "string") ]
-    @ (match values with None -> [] | Some values -> [ ("enum", strings values) ])
-    @ match description with None -> [] | Some value -> [ ("description", text value) ])
+    ([ ({js|type|js}, text {js|string|js}) ]
+    @ (match values with None -> [] | Some values -> [ ({js|enum|js}, strings values) ])
+    @ match description with None -> [] | Some value -> [ ({js|description|js}, text value) ])
 
 let schema ?(required = []) properties =
   obj
     ([
-       ("type", text "object");
-       ("properties", obj properties);
-       ("additionalProperties", Js.Json.boolean false);
+       ({js|type|js}, text {js|object|js});
+       ({js|properties|js}, obj properties);
+       ({js|additionalProperties|js}, Js.Json.boolean false);
      ]
-    @ if required = [] then [] else [ ("required", strings required) ])
+    @ if required = [] then [] else [ ({js|required|js}, strings required) ])
 
 let snapshot session =
   let source = fields (json (Native.state_json (Session.view session).interaction_game)) in
   let sites terrains =
     Js.Json.array
-      (array (field source "tiles")
+      (array (field source {js|tiles|js})
       |> Array.to_list
       |> List.filter_map (fun tile ->
           let tile = fields tile in
-          if List.exists (fun terrain -> field tile "terrain" = text terrain) terrains then
-            Some (obj [ ("id", field tile "id"); ("owner", field tile "owner") ])
+          if List.exists (fun terrain -> field tile {js|terrain|js} = text terrain) terrains then
+            Some
+              (obj
+                 [ ({js|id|js}, field tile {js|id|js}); ({js|owner|js}, field tile {js|owner|js}) ])
           else None)
       |> Array.of_list)
   in
   let campaign =
-    Option.bind (get source "campaign") (fun value ->
+    Option.bind (get source {js|campaign|js}) (fun value ->
         if Js.Json.classify value = Js.Json.JSONNull then None else Some value)
   in
-  let site_values = sites [ "grove"; "fort"; "ruins" ] in
+  let site_values = sites [ {js|grove|js}; {js|fort|js}; {js|ruins|js} ] in
   obj
     (List.map
        (fun key -> (key, field source key))
-       [ "mapId"; "mapRevision"; "round"; "turn"; "gold"; "winner"; "units" ]
-    @ (match campaign with None -> [] | Some value -> [ ("campaign", value) ])
-    @ [ ("villages", sites [ "village" ]) ]
+       [
+         {js|mapId|js};
+         {js|mapRevision|js};
+         {js|round|js};
+         {js|turn|js};
+         {js|gold|js};
+         {js|winner|js};
+         {js|units|js};
+       ]
+    @ (match campaign with None -> [] | Some value -> [ ({js|campaign|js}, value) ])
+    @ [ ({js|villages|js}, sites [ {js|village|js} ]) ]
     @
-    if campaign <> None || Array.length (array site_values) > 0 then [ ("sites", site_values) ]
+    if campaign <> None || Array.length (array site_values) > 0 then
+      [ ({js|sites|js}, site_values) ]
     else [])
 
 let unit_actions session id =
@@ -103,11 +114,12 @@ let unit_actions session id =
       (json
          (match Native.actions_json view id with
          | Some actions -> actions
-         | None -> fail "Unknown unit."))
+         | None -> fail {js|Unknown unit.|js}))
   in
-  let attacks = array (field source "attacks") in
+  let attacks = array (field source {js|attacks|js}) in
   let target_attacks target =
-    Array.to_list attacks |> List.filter (fun value -> field (fields value) "target" = text target)
+    Array.to_list attacks
+    |> List.filter (fun value -> field (fields value) {js|target|js} = text target)
   in
   let targets =
     Native.targets view id
@@ -116,11 +128,11 @@ let unit_actions session id =
         let best =
           match
             List.find_opt
-              (fun value -> field (fields value) "recommended" = Js.Json.boolean true)
+              (fun value -> field (fields value) {js|recommended|js} = Js.Json.boolean true)
               choices
           with
           | Some value -> fields value
-          | None -> fail "No recommended native attack."
+          | None -> fail {js|No recommended native attack.|js}
         in
         let weapons =
           Array.of_list choices
@@ -128,23 +140,23 @@ let unit_actions session id =
               let details = fields value in
               from_entries
                 (Array.append
-                   (Js.Dict.entries (fields (field details "attack")))
+                   (Js.Dict.entries (fields (field details {js|attack|js})))
                    (Js.Dict.entries details)))
         in
         obj
           [
-            ("id", text target.id);
-            ("damage", field best "damage");
-            ("retaliation", field best "retaliation");
-            ("recommendedAttackId", field (fields (field best "attack")) "id");
-            ("weapons", Js.Json.array weapons);
+            ({js|id|js}, text target.id);
+            ({js|damage|js}, field best {js|damage|js});
+            ({js|retaliation|js}, field best {js|retaliation|js});
+            ({js|recommendedAttackId|js}, field (fields (field best {js|attack|js})) {js|id|js});
+            ({js|weapons|js}, Js.Json.array weapons);
           ])
   in
   let recruitment =
-    Native.recruitment_options view "player"
+    Native.recruitment_options view {js|player|js}
     |> Array.to_list
     |> List.map (fun kind ->
-        ( Utf8.to_js kind,
+        ( kind,
           strings
             (Array.to_list
                (Array.map (fun (tile : Domain.tile) -> tile.id) (Native.recruit_tiles view id kind)))
@@ -152,10 +164,10 @@ let unit_actions session id =
   in
   obj
     [
-      ("promotions", field source "promotions");
-      ("moves", field source "reachable");
-      ("attacks", Js.Json.array targets);
-      ("recruitment", obj recruitment);
+      ({js|promotions|js}, field source {js|promotions|js});
+      ({js|moves|js}, field source {js|reachable|js});
+      ({js|attacks|js}, Js.Json.array targets);
+      ({js|recruitment|js}, obj recruitment);
     ]
 
 let registries : (registry, registry_state) Weak_map.t = Weak_map.create ()
@@ -224,13 +236,13 @@ let register session =
   try
     match Js.Nullable.toOption (model_context document) with
     | None -> absent
-    | Some registry when Js.typeof (registration registry) <> "function" -> absent
+    | Some registry when Js.typeof (registration registry) <> {js|function|js} -> absent
     | Some registry ->
         let active = ref true in
         let owner = ref () in
         let registry_state = registry_state registry in
         registry_state.latest <- Some owner;
-        let ensure () = if not !active then fail "This battle session has closed." in
+        let ensure () = if not !active then fail {js|This battle session has closed.|js} in
         let commands = Session.commands session in
         let catalog = (Session.view session).catalog in
         let unit_ids =
@@ -260,120 +272,128 @@ let register session =
           [%mel.obj
             {
               name;
-              description = Utf8.to_js description;
+              description;
               inputSchema = input_schema;
               annotations =
                 (if readonly then
-                   Js.Undefined.return (obj [ ("readOnlyHint", Js.Json.boolean true) ])
+                   Js.Undefined.return (obj [ ({js|readOnlyHint|js}, Js.Json.boolean true) ])
                  else Js.Undefined.empty);
               execute;
             }]
         in
         let tools =
           [|
-            descriptor "advance_unit"
-              "Advance a ready unit after it earns enough experience. Preserves wounds and \
-               consumes this turn."
-              (schema ~required:[ "unitId"; "type" ]
-                 [ ("unitId", string_property ()); ("type", string_property ~values:unit_ids ()) ])
+            descriptor {js|advance_unit|js}
+              {js|Advance a ready unit after it earns enough experience. Preserves wounds and consumes this turn.|js}
+              (schema ~required:[ {js|unitId|js}; {js|type|js} ]
+                 [
+                   ({js|unitId|js}, string_property ());
+                   ({js|type|js}, string_property ~values:unit_ids ());
+                 ])
               (immediate
                  (result (fun value ->
                       let input = input value in
-                      let kind = string input "type" in
-                      member unit_ids kind "Unknown advancement.";
-                      Session.advance_unit session (string input "unitId") kind)));
-            descriptor "start_campaign" "Replace the current battle with a new story campaign."
-              (schema ~required:[ "id" ] [ ("id", string_property ~values:campaign_ids ()) ])
+                      let kind = string input {js|type|js} in
+                      member unit_ids kind {js|Unknown advancement.|js};
+                      Session.advance_unit session (string input {js|unitId|js}) kind)));
+            descriptor {js|start_campaign|js}
+              {js|Replace the current battle with a new story campaign.|js}
+              (schema ~required:[ {js|id|js} ]
+                 [ ({js|id|js}, string_property ~values:campaign_ids ()) ])
               (immediate
                  (result (fun value ->
-                      let id = string (input value) "id" in
-                      member campaign_ids id "Unknown campaign.";
+                      let id = string (input value) {js|id|js} in
+                      member campaign_ids id {js|Unknown campaign.|js};
                       commands.start_campaign id)));
-            descriptor "advance_dialogue" "Read the next line in an active campaign conversation."
-              (schema [])
+            descriptor {js|advance_dialogue|js}
+              {js|Read the next line in an active campaign conversation.|js} (schema [])
               (immediate (fun _ ->
                    commands.dialogue false;
                    Js.Json.null));
-            descriptor ~readonly:true "get_battle_state"
-              "Read units, gold, village ownership, the current turn, and victory state."
+            descriptor ~readonly:true {js|get_battle_state|js}
+              {js|Read units, gold, village ownership, the current turn, and victory state.|js}
               (schema [])
               (immediate (fun _ -> snapshot session));
-            descriptor ~readonly:true "get_unit_actions"
-              "Read legal moves, attacks, and recruiting locations for a unit."
-              (schema ~required:[ "unitId" ] [ ("unitId", string_property ()) ])
-              (immediate (fun value -> unit_actions session (string (input value) "unitId")));
-            descriptor "move_unit"
-              "Move one of your units to a legal hex. Captures a village when entered."
-              (schema ~required:[ "unitId"; "tileId" ]
-                 [ ("unitId", string_property ()); ("tileId", string_property ()) ])
+            descriptor ~readonly:true {js|get_unit_actions|js}
+              {js|Read legal moves, attacks, and recruiting locations for a unit.|js}
+              (schema ~required:[ {js|unitId|js} ] [ ({js|unitId|js}, string_property ()) ])
+              (immediate (fun value -> unit_actions session (string (input value) {js|unitId|js})));
+            descriptor {js|move_unit|js}
+              {js|Move one of your units to a legal hex. Captures a village when entered.|js}
+              (schema
+                 ~required:[ {js|unitId|js}; {js|tileId|js} ]
+                 [ ({js|unitId|js}, string_property ()); ({js|tileId|js}, string_property ()) ])
               (immediate
                  (result (fun value ->
                       let input = input value in
-                      Session.move_unit session (string input "unitId") (string input "tileId"))));
-            descriptor "attack_unit" "Attack an enemy in range and resolve damage and retaliation."
-              (schema ~required:[ "unitId"; "targetId" ]
+                      Session.move_unit session (string input {js|unitId|js})
+                        (string input {js|tileId|js}))));
+            descriptor {js|attack_unit|js}
+              {js|Attack an enemy in range and resolve damage and retaliation.|js}
+              (schema
+                 ~required:[ {js|unitId|js}; {js|targetId|js} ]
                  [
-                   ("unitId", string_property ());
-                   ("targetId", string_property ());
-                   ( "attackId",
+                   ({js|unitId|js}, string_property ());
+                   ({js|targetId|js}, string_property ());
+                   ( {js|attackId|js},
                      string_property
                        ~description:
-                         "Weapon id from get_unit_actions; omit to choose the safest effective \
-                          attack."
+                         {js|Weapon id from get_unit_actions; omit to choose the safest effective attack.|js}
                        () );
                  ])
               (immediate
                  (result (fun value ->
                       let input = input value in
                       let weapon =
-                        match get input "attackId" with
+                        match get input {js|attackId|js} with
                         | None -> None
-                        | Some _ -> Some (string input "attackId")
+                        | Some _ -> Some (string input {js|attackId|js})
                       in
-                      Session.attack_unit session (string input "unitId") (string input "targetId")
-                        weapon)));
-            descriptor "recruit_unit"
-              "Spend gold to recruit a troop from this mission’s pool adjacent to your leader on \
-               the keep."
+                      Session.attack_unit session (string input {js|unitId|js})
+                        (string input {js|targetId|js}) weapon)));
+            descriptor {js|recruit_unit|js}
+              {js|Spend gold to recruit a troop from this mission’s pool adjacent to your leader on the keep.|js}
               (schema
-                 ~required:[ "commanderId"; "type"; "tileId" ]
+                 ~required:[ {js|commanderId|js}; {js|type|js}; {js|tileId|js} ]
                  [
-                   ("commanderId", string_property ());
-                   ("type", string_property ~values:recruitable ());
-                   ("tileId", string_property ());
+                   ({js|commanderId|js}, string_property ());
+                   ({js|type|js}, string_property ~values:recruitable ());
+                   ({js|tileId|js}, string_property ());
                  ])
               (immediate
                  (result (fun value ->
                       let input = input value in
-                      let kind = string input "type" in
-                      member recruitable kind "Unknown recruit type.";
-                      Session.recruit_unit session (string input "commanderId") kind
-                        (string input "tileId"))));
-            descriptor "undo_move"
-              "Undo the latest move in the current player turn, restoring its village ownership \
-               changes. Attacking, recruiting, or ending the turn clears earlier moves."
+                      let kind = string input {js|type|js} in
+                      member recruitable kind {js|Unknown recruit type.|js};
+                      Session.recruit_unit session
+                        (string input {js|commanderId|js})
+                        kind (string input {js|tileId|js}))));
+            descriptor {js|undo_move|js}
+              {js|Undo the latest move in the current player turn, restoring its village ownership changes. Attacking, recruiting, or ending the turn clears earlier moves.|js}
               (schema [])
               (immediate (result (fun _ -> commands.undo ())));
-            descriptor "end_turn"
-              "End your turn, let the enemy army act, and return the resulting battle state."
+            descriptor {js|end_turn|js}
+              {js|End your turn, let the enemy army act, and return the resulting battle state.|js}
               (schema []) (fun _ ->
                 Js.Promise.then_
                   (function
                     | Error error ->
-                        Js.Promise.resolve (obj [ ("error", text (Session.error_message error)) ])
+                        Js.Promise.resolve
+                          (obj [ ({js|error|js}, text (Session.error_message error)) ])
                     | Ok () ->
                         ensure ();
                         Js.Promise.resolve (snapshot session))
                   (commands.end_turn ()));
-            descriptor "start_new_battle" "Replace the current battle with a fresh battle."
-              (schema [ ("mapId", string_property ~values:maps ()) ])
+            descriptor {js|start_new_battle|js}
+              {js|Replace the current battle with a fresh battle.|js}
+              (schema [ ({js|mapId|js}, string_property ~values:maps ()) ])
               (immediate
                  (result (fun value ->
                       let input = input value in
                       commands.reset
-                        (match get input "mapId" with
-                        | None -> "mirror"
-                        | Some _ -> string input "mapId"))));
+                        (match get input {js|mapId|js} with
+                        | None -> {js|mirror|js}
+                        | Some _ -> string input {js|mapId|js}))));
           |]
         in
         Array.iter
@@ -396,7 +416,7 @@ let register session =
                     match registration.owner with
                     | Some current when current == owner ->
                         registration.owner <- None;
-                        if Js.typeof (unregistration registry) = "function" then
+                        if Js.typeof (unregistration registry) = {js|function|js} then
                           unregister_tool registry (tool_name tool)
                         else Js.Json.null
                     | _ -> Js.Json.null))

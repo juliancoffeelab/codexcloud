@@ -1,7 +1,6 @@
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, test, vi } from "vitest";
 import * as Process from "@frontend/Boot_process";
-import * as Utf8 from "@frontend/Utf8";
 
 let now;
 beforeEach(() => {
@@ -11,7 +10,7 @@ beforeEach(() => {
 });
 afterEach(() => delete globalThis.BOOT_PROCESS);
 const progress = (step, value, detail = "") =>
-  Process.progress(step, Utf8.of_js(`Stage ${step}…`), value, Utf8.of_js(detail));
+  Process.progress(step, `Stage ${step}…`, value, detail);
 
 test("Boot diagnostics retain stage timings and resource progress after the first ready frame", () => {
   Process.snapshot();

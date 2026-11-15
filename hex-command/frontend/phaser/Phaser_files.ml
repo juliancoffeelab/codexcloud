@@ -4,10 +4,15 @@ type timer
 type failure = { message : string; cause : Foreign_error.cause option }
 
 let describe failure =
-  failure.message
-  ^ Option.fold ~none:""
-      ~some:(fun cause -> "\nCaused by: " ^ Foreign_error.cause_detail cause)
+  let js_text_part_0 = failure.message in
+  let js_text_part_1 =
+    Option.fold ~none:{js||js}
+      ~some:(fun cause ->
+        let js_text_part_1 = Foreign_error.cause_detail cause in
+        {j|\nCaused by: $(js_text_part_1)|j})
       failure.cause
+  in
+  {j|$(js_text_part_0)$(js_text_part_1)|j}
 
 external timeout : (unit -> unit) -> int -> timer = "setTimeout"
 external clear_timeout : timer -> unit = "clearTimeout"
@@ -134,9 +139,9 @@ let image_failure file =
 
 let admit (file : Phaser.file) =
   if not (owner_image file).abandoned then (
-    Boot_process.resource ~key:file##key ~url:file##src ~phase:"image-admission-start";
+    Boot_process.resource ~key:file##key ~url:file##src ~phase:{js|image-admission-start|js};
     image_lifecycle##onProcessComplete##call file;
-    Boot_process.resource ~key:file##key ~url:file##src ~phase:"image-admitted")
+    Boot_process.resource ~key:file##key ~url:file##src ~phase:{js|image-admitted|js})
 
 type image_definition =
   < initialize : (Phaser.file -> image_init -> unit[@mel.this])
@@ -175,27 +180,29 @@ let image_constructor =
                            Some
                              {
                                message =
-                                 "Image download/decode deadline exceeded: " ^ file##key ^ " ("
-                                 ^ file##src ^ ")";
+                                 (let js_text_part_1 = file##key in
+                                  let js_text_part_3 = file##src in
+                                  {j|Image download/decode deadline exceeded: $(js_text_part_1) ($(js_text_part_3))|j});
                                cause = None;
                              };
                          Option.iter
                            (fun image ->
                              detach_image image;
-                             remove_source image "src")
+                             remove_source image {js|src|js})
                            (loaded_image file);
                          Option.iter
                            (fun (loader : Phaser.loader) -> loader##nextFile file false)
                            (Js.Nullable.toOption file##loader))
                        30000);
-                Boot_process.resource ~key:file##key ~url:init.url ~phase:"image-request-start";
+                Boot_process.resource ~key:file##key ~url:init.url
+                  ~phase:{js|image-request-start|js};
                 native_load##call file));
         onProcessComplete =
           (fun[@mel.this] file ->
             let owner = owner_image file in
             Option.iter clear_timeout owner.deadline;
             owner.complete <- true;
-            Boot_process.resource ~key:file##key ~url:file##src ~phase:"image-loaded";
+            Boot_process.resource ~key:file##key ~url:file##src ~phase:{js|image-loaded|js};
             Option.iter detach_image (loaded_image file);
             match owner.defer with Some defer -> defer file | None -> admit file);
         destroy =
@@ -207,7 +214,7 @@ let image_constructor =
               Option.iter
                 (fun image ->
                   detach_image image;
-                  remove_source image "src")
+                  remove_source image {js|src|js})
                 (loaded_image file);
             image_lifecycle##destroy##call file);
       }]
@@ -253,7 +260,8 @@ let audio_constructor =
       {
         initialize =
           (fun[@mel.this] file (init : audio_init) ->
-            initialize_audio audio_base file init.loader init.key { kind = "wav"; url = init.url }
+            initialize_audio audio_base file init.loader init.key
+              { kind = {js|wav|js}; url = init.url }
               Js.Undefined.empty init.context;
             set_owner_audio file
               {
@@ -265,7 +273,8 @@ let audio_constructor =
               };
             let native_load = load_function file in
             set_load file (fun[@u] () ->
-                Boot_process.resource ~key:file##key ~url:init.url ~phase:"audio-request-start";
+                Boot_process.resource ~key:file##key ~url:init.url
+                  ~phase:{js|audio-request-start|js};
                 native_load##call file));
         onProcess =
           (fun[@mel.this] file ->
@@ -280,7 +289,9 @@ let audio_constructor =
                        owner.report
                          {
                            message =
-                             "Audio decode deadline exceeded: " ^ file##key ^ " (" ^ file##src ^ ")";
+                             (let js_text_part_1 = file##key in
+                              let js_text_part_3 = file##src in
+                              {j|Audio decode deadline exceeded: $(js_text_part_1) ($(js_text_part_3))|j});
                            cause = None;
                          };
                        file##onProcessError ()))
@@ -288,25 +299,31 @@ let audio_constructor =
             let xhr =
               match Js.Nullable.toOption file##xhrLoader with
               | Some xhr -> xhr
-              | None -> failwith ("Audio response missing: " ^ file##key)
+              | None ->
+                  failwith
+                    (let js_text_part_1 = file##key in
+                     {j|Audio response missing: $(js_text_part_1)|j})
             in
-            Boot_process.response ~url:file##src ~status:(response_status xhr) ~source:"phaser-xhr"
-              ~get_header:(fun name -> response_header xhr name);
-            Boot_process.resource ~key:file##key ~url:file##src ~phase:"audio-decode-start";
+            Boot_process.response ~url:file##src ~status:(response_status xhr)
+              ~source:{js|phaser-xhr|js} ~get_header:(fun name -> response_header xhr name);
+            Boot_process.resource ~key:file##key ~url:file##src ~phase:{js|audio-decode-start|js};
             then_decode
               (decode owner.context (response xhr))
               (fun[@u] buffer ->
                 if (not owner.abandoned) && not owner.expired then (
                   Option.iter clear_timeout owner.deadline;
                   set_audio file buffer;
-                  Boot_process.resource ~key:file##key ~url:file##src ~phase:"audio-decoded";
+                  Boot_process.resource ~key:file##key ~url:file##src ~phase:{js|audio-decoded|js};
                   file##onProcessComplete ()))
               (fun[@u] cause ->
                 if (not owner.abandoned) && not owner.expired then (
                   Option.iter clear_timeout owner.deadline;
                   owner.report
                     {
-                      message = "Cannot decode audio " ^ file##key ^ " (" ^ file##src ^ ")";
+                      message =
+                        (let js_text_part_1 = file##key in
+                         let js_text_part_3 = file##src in
+                         {j|Cannot decode audio $(js_text_part_1) ($(js_text_part_3))|j});
                       cause = Some (Foreign_error.Rejection cause);
                     };
                   file##onProcessError ())));

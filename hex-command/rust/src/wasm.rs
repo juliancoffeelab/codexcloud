@@ -1,4 +1,5 @@
 //! Native ownership and typed OCaml transport over the battle engine.
+use crate::data::Text;
 use crate::sort::SharedSort;
 use crate::{
     ai::{self, PlanningWorkspace},
@@ -143,7 +144,7 @@ impl Drop for RuntimeLoan<'_> {
 }
 /// Only terrain publication needs retained delta state; live units stay in runtime storage.
 struct PublishedTerrain {
-    map_id: String,
+    map_id: Text,
     map_revision: u32,
     cols: i32,
     rows: i32,
@@ -218,9 +219,7 @@ pub fn new_factory() -> Result<NativeEngineFactory, EngineError> {
     }
 }
 #[ocamljs_bindgen(module=NativeEngineFactory)]
-pub fn with_documents(
-    documents: BTreeMap<String, String>,
-) -> Result<NativeEngineFactory, EngineError> {
+pub fn with_documents(documents: BTreeMap<Text, Text>) -> Result<NativeEngineFactory, EngineError> {
     #[cfg(any(not(target_arch = "wasm32"), feature = "runtime-catalog"))]
     {
         factory_with_rules(Rules::from_json_bundle(&documents))
@@ -286,7 +285,10 @@ pub fn restore(
 }
 /// Data-only JSON request, decoded at the untrusted persistence boundary.
 #[ocamljs_bindgen(module = NativeEngineFactory)]
-pub fn validate_undo(factory: &NativeEngineFactory, request: &str) -> Result<(), EngineError> {
+pub fn validate_undo(
+    factory: &NativeEngineFactory,
+    request: &TextSlice,
+) -> Result<(), EngineError> {
     let request: UndoValidation =
         serde_json::from_str(request).map_err(|error| EngineError::InvalidSave {
             message: error.to_string(),
@@ -392,7 +394,7 @@ pub fn save_json(
     factory: &NativeEngineFactory,
     id: u32,
     revision: u32,
-) -> Result<String, EngineError> {
+) -> Result<Text, EngineError> {
     #[derive(serde::Serialize)]
     struct Checkpoint<'a> {
         seed: u32,
@@ -416,23 +418,23 @@ pub fn dispose_battle(factory: &mut NativeEngineFactory, id: u32) -> Result<(), 
 }
 /// Decode persistence through the same Rust serde contract used by native restoration.
 #[ocamljs_bindgen]
-pub fn checkpoint_from_json(value: String) -> Result<SavedGame, EngineError> {
+pub fn checkpoint_from_json(value: Text) -> Result<SavedGame, EngineError> {
     serde_json::from_str(&value).map_err(|error| EngineError::InvalidSave {
         message: error.to_string(),
     })
 }
 
 #[ocamljs_bindgen]
-pub fn checkpoint_to_json(value: SavedGame) -> String {
+pub fn checkpoint_to_json(value: SavedGame) -> Text {
     serde_json::to_string(&value).expect("serializable checkpoint")
 }
 
 #[ocamljs_bindgen]
-pub fn state_to_json(value: State) -> String {
+pub fn state_to_json(value: State) -> Text {
     serde_json::to_string(&value).expect("serializable state")
 }
 #[ocamljs_bindgen]
-pub fn unit_actions_to_json(value: UnitActions) -> String {
+pub fn unit_actions_to_json(value: UnitActions) -> Text {
     serde_json::to_string(&value).expect("serializable actions")
 }
 #[ocamljs_bindgen]

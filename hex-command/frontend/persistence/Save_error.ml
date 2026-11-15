@@ -5,7 +5,11 @@ exception Failed of t
 
 let internal detail = { kind = Internal; detail; cause = None }
 let blocked detail = { kind = Blocked; detail; cause = None }
-let kind_name = function Full -> "full" | Blocked -> "blocked" | Internal -> "internal"
+
+let kind_name = function
+  | Full -> {js|full|js}
+  | Blocked -> {js|blocked|js}
+  | Internal -> {js|internal|js}
 
 let of_error value =
   match Js.Exn.anyToExnInternal value with
@@ -16,8 +20,14 @@ let of_error value =
       let kind =
         try
           match Option.bind browser Js.Exn.name with
-          | Some ("QuotaExceededError" | "NS_ERROR_DOM_QUOTA_REACHED") -> Full
-          | Some ("SecurityError" | "NotAllowedError") -> Blocked
+          | Some matched_text_0
+            when matched_text_0 = {js|QuotaExceededError|js}
+                 || matched_text_0 = {js|NS_ERROR_DOM_QUOTA_REACHED|js} ->
+              Full
+          | Some matched_text_1
+            when matched_text_1 = {js|SecurityError|js} || matched_text_1 = {js|NotAllowedError|js}
+            ->
+              Blocked
           | _ -> Internal
         with _ -> Internal
       in

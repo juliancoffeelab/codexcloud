@@ -1,18 +1,19 @@
 //! Runtime catalog vocabulary, separate from the authoring parser.
 use super::*;
+use crate::data::Text;
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{BTreeMap, HashMap, HashSet},
     fmt,
 };
 /// Relative document paths mapped to their complete UTF-8 JSON source.
-pub type JsonBundle = BTreeMap<String, String>;
+pub type JsonBundle = BTreeMap<Text, Text>;
 
 #[derive(Debug)]
 /// A catalog error carrying the authoring document and a concrete diagnostic.
 pub struct ContentError {
-    pub path: String,
-    pub message: String,
+    pub path: Text,
+    pub message: Text,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -23,9 +24,9 @@ pub struct ContentError {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct ArmyRoster {
-    pub id: String,
-    pub leader: String,
-    pub pool: Vec<String>,
+    pub id: Text,
+    pub leader: Text,
+    pub pool: Vec<Text>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -36,7 +37,7 @@ pub struct ArmyRoster {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct ArenaScenario {
-    pub id: String,
+    pub id: Text,
     pub variants: Vec<ArenaVariant>,
     pub hold_turns: u32,
     pub territory: Vec<Hex>,
@@ -49,7 +50,7 @@ pub struct ArenaScenario {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct ArenaVariant {
-    pub map: String,
+    pub map: Text,
     pub forces: ArenaForces,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -71,9 +72,9 @@ pub enum ArenaForces {
 )]
 pub struct ArenaDefaults {
     pub scenarios: Vec<ArenaScenario>,
-    pub default_scenarios: Vec<String>,
+    pub default_scenarios: Vec<Text>,
     pub default_max_rounds: u32,
-    pub policies: Vec<String>,
+    pub policies: Vec<Text>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -84,12 +85,12 @@ pub struct ArenaDefaults {
 )]
 pub struct CampaignDefaults {
     #[serde(default)]
-    pub escalation_flags: BTreeMap<String, String>,
+    pub escalation_flags: BTreeMap<Text, Text>,
     pub default_max_rounds: u32,
-    pub diplomacy: Vec<String>,
-    pub policies: Vec<String>,
-    pub default_campaigns: Vec<String>,
-    pub campaigns: BTreeMap<String, CampaignSimulation>,
+    pub diplomacy: Vec<Text>,
+    pub policies: Vec<Text>,
+    pub default_campaigns: Vec<Text>,
+    pub campaigns: BTreeMap<Text, CampaignSimulation>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -99,8 +100,8 @@ pub struct CampaignDefaults {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct CampaignSimulation {
-    pub diplomacy: Vec<String>,
-    pub routes: BTreeMap<String, SimulationObjective>,
+    pub diplomacy: Vec<Text>,
+    pub routes: BTreeMap<Text, SimulationObjective>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -110,11 +111,11 @@ pub struct CampaignSimulation {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct TrainingDefaults {
-    pub objectives: Vec<String>,
+    pub objectives: Vec<Text>,
     pub arenas: Vec<TrainingArena>,
-    pub campaigns: BTreeMap<String, Vec<TrainingCampaignVariant>>,
-    pub opponents: Vec<String>,
-    pub recruiters: Vec<String>,
+    pub campaigns: BTreeMap<Text, Vec<TrainingCampaignVariant>>,
+    pub opponents: Vec<Text>,
+    pub recruiters: Vec<Text>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -124,7 +125,7 @@ pub struct TrainingDefaults {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct TrainingArena {
-    pub id: String,
+    pub id: Text,
     pub pairs: Vec<TrainingArmies>,
 }
 
@@ -135,8 +136,8 @@ pub struct TrainingArena {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct TrainingArmies {
-    pub player: String,
-    pub enemy: String,
+    pub player: Text,
+    pub enemy: Text,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -146,8 +147,8 @@ pub struct TrainingArmies {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct TrainingCampaignVariant {
-    pub objective: String,
-    pub diplomacy: String,
+    pub objective: Text,
+    pub diplomacy: Text,
 }
 
 /// Named simulator-only routes. Keys are authored stage map identifiers.
@@ -158,7 +159,7 @@ pub struct TrainingCampaignVariant {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct SimulationObjective {
-    pub stages: std::collections::BTreeMap<String, SimulationStageObjective>,
+    pub stages: std::collections::BTreeMap<Text, SimulationStageObjective>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -168,7 +169,7 @@ pub struct SimulationObjective {
 )]
 pub struct SimulationStageObjective {
     #[serde(default)]
-    pub script_conditions: BTreeMap<String, When>,
+    pub script_conditions: BTreeMap<Text, When>,
     #[serde(default)]
     pub script_events: Vec<ScriptEvent>,
     #[serde(default)]
@@ -178,7 +179,7 @@ pub struct SimulationStageObjective {
     #[serde(default)]
     pub events: Vec<Event>,
     #[serde(default)]
-    pub event_conditions: std::collections::BTreeMap<String, Condition>,
+    pub event_conditions: std::collections::BTreeMap<Text, Condition>,
     #[serde(default)]
     pub ignore_optional_when: Option<Condition>,
 }
@@ -227,10 +228,10 @@ pub struct TerrainModifier {
 pub struct TerrainDefinition {
     pub role: TerrainRole,
     pub id: Terrain,
-    pub name: String,
+    pub name: Text,
     pub cost: u16,
     pub passable: bool,
-    pub description: String,
+    pub description: Text,
     #[serde(default)]
     pub damage_modifiers: EnvironmentalModifiers,
 }
@@ -245,14 +246,14 @@ pub struct TerrainDefinition {
 )]
 pub struct RaceDefinition {
     pub id: Race,
-    pub name: String,
+    pub name: Text,
     pub terrain_modifiers: HashMap<TerrainRole, TerrainModifier>,
     pub damage_modifiers: DamageModifiers,
 }
 
 impl ContentError {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn new(path: impl Into<String>, message: impl Into<String>) -> Self {
+    pub fn new(path: impl Into<Text>, message: impl Into<Text>) -> Self {
         Self {
             path: path.into(),
             message: message.into(),
