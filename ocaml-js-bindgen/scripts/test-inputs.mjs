@@ -61,7 +61,9 @@ export function sourceFingerprint(base = root) {
   }
   for (const name of [
     "Makefile",
+    "rust-toolchain.toml",
     "examples/rust-to-ocaml/Makefile",
+    "examples/rust-to-ocaml/rust-toolchain.toml",
     "examples/rust-to-ocaml/dune",
     "examples/rust-to-ocaml/dune-project",
     "examples/rust-to-ocaml/dune-workspace",

@@ -50,7 +50,7 @@ const pkg = join(root, "demos/calculator/_build/_private/default/.pkg"),
   melange = get(
     "--melange",
     (() => {
-      let p = readdirSync(pkg).find((p) => p.startsWith("melange.7.0.1-53-"));
+      let p = readdirSync(pkg).find((p) => p.startsWith("melange.7.0.1-55-"));
       assert(p, "Prepare calculator dependencies first");
       return join(pkg, p, "target");
     })(),

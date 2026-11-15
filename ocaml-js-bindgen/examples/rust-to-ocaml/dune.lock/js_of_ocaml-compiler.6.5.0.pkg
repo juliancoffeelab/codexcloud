@@ -41,7 +41,8 @@
    menhir
    menhirLib
    menhirSdk
-   yojson)))
+   yojson
+   ocamlfind)))
 
 (source
  (fetch

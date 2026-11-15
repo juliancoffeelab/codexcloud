@@ -603,7 +603,7 @@ It covers calls, flat/nested data, arrays and strings in both directions.
 
 ## Validation and real sites
 
-Install Node, Rust's WASM target and Dune 3.24.2. Each project's `dune.lock` pins OCaml 5.3,
+Install Node, Rust's WASM target and Dune 3.24.2. Each project's `dune.lock` pins OCaml 5.5.2,
 Melange 7 and js_of_ocaml 6; npm pins ReScript 11.1.4.
 
 ```sh
