@@ -1,0 +1,5 @@
+(executable
+ (name main)
+ (libraries talon talon.arrow talon.json bytesrw unix yojson rig)
+ (foreign_stubs (language c) (names journal_crypto))
+ (link_flags (:standard -cclib -lcrypto)))
