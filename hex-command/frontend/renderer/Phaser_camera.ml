@@ -139,6 +139,13 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
             ([
                ({js|pointerId|js}, int pointer##id);
                ({js|touch|js}, bool pointer##wasTouch);
+               ({js|button|js}, int pointer##button);
+               ({js|buttons|js}, int pointer##buttons);
+               ({js|isDown|js}, bool pointer##isDown);
+               ({js|leftButtonDown|js}, bool (pointer##leftButtonDown ()));
+               ({js|middleButtonDown|js}, bool (pointer##middleButtonDown ()));
+               ({js|distanceCss|js}, number (pointer##getDistance () /. max pixel_x pixel_y));
+               ({js|eventType|js}, string (D.event_type pointer##event));
                ({js|x|js}, number point.x);
                ({js|y|js}, number point.y);
                ({js|eventTime|js}, number (D.event_time pointer##event));
@@ -359,6 +366,8 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
         layout_pending <- true)
 
     method private down (pointer : Phaser.pointer) =
+      self#pointer_record {js|pointer down received|js} pointer
+        [ ({js|modal|js}, bool (D.modal ())); ({js|dragged|js}, bool gesture) ];
       if cancelled_contacts || D.modal () then
         self#record {js|pointer rejected|js}
           ~details:
@@ -406,6 +415,9 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
                 vx = 0.;
                 vy = 0.;
               }))
+      else
+        self#pointer_record {js|pointer rejected|js} pointer
+          [ ({js|reason|js}, string {js|unsupported button state|js}) ]
 
     method private move (pointer : Phaser.pointer) resampled =
       if D.modal () then self#cancel {js|modal|js}
@@ -464,6 +476,18 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
     method private up (pointer : Phaser.pointer) =
       self#pointer_record {js|pointer up|js} pointer
         [
+          ( {js|activationReason|js},
+            string
+              (if cancelled_contacts then {js|cancelled contacts|js}
+               else if Option.is_none (current ()) then {js|no frame|js}
+               else if D.modal () then {js|modal|js}
+               else if gesture then {js|dragged or invalidated|js}
+               else if pointer##wasCanceled then {js|pointer cancelled|js}
+               else if pointer##getDistance () /. max pixel_x pixel_y >= 6. then
+                 {js|distance threshold|js}
+               else if not (pointer##wasTouch || pointer##button = 0) then
+                 {js|unsupported button|js}
+               else {js|eligible|js}) );
           ({js|cancelled|js}, bool pointer##wasCanceled);
           ({js|dragged|js}, bool gesture);
           ({js|contacts|js}, int (Array.length self#pointers));
@@ -485,8 +509,12 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
             let _ = camera##getWorldPoint pointer##x pointer##y pick_point in
             self#prepare_picking frame;
             match picking#pick pick_point##x pick_point##y with
-            | Some tile -> (actions ()).choose tile
-            | None -> (actions ()).clear_selection true)
+            | Some tile ->
+                self#pointer_record {js|tile activation|js} pointer [ ({js|tile|js}, string tile) ];
+                (actions ()).choose tile
+            | None ->
+                self#pointer_record {js|activation missed map|js} pointer [];
+                (actions ()).clear_selection true)
         | _ -> ());
         if Array.length self#pointers = 0 then (
           (match (drag, pinch) with
@@ -881,6 +909,32 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       and continue_drag = fun[@u] () -> Option.iter (fun drag -> self#move drag.pointer true) drag
       and prepare_layout = fun[@u] _ delta -> self#prepare_layout delta
       and sample_camera = fun[@u] () -> self#sample_camera in
+      let raw_events =
+        [|
+          {js|pointerdown|js};
+          {js|pointerup|js};
+          {js|pointercancel|js};
+          {js|mousedown|js};
+          {js|mouseup|js};
+        |]
+      in
+      let raw_event event =
+        if Option.is_some (Performance_trace.configuration ()) then
+          self#record {js|DOM input|js}
+            ~details:
+              [
+                ({js|eventType|js}, string (D.event_type event));
+                ({js|eventTime|js}, number (D.event_time event));
+                ({js|button|js}, int (D.button event));
+                ({js|buttons|js}, int (D.buttons event));
+                ({js|defaultPrevented|js}, bool (D.default_prevented event));
+                ({js|ctrlKey|js}, bool (D.ctrl event));
+                ({js|metaKey|js}, bool (D.meta event));
+                ({js|x|js}, number (D.client_x event));
+                ({js|y|js}, number (D.client_y event));
+                ({js|dragged|js}, bool gesture);
+              ]
+      in
       let expected_release = Set.create () in
       let capture event =
         if D.pointer_type event = {js|mouse|js} && List.mem (D.button event) [ 0; 1 ] then
@@ -911,6 +965,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
           D.off_window_event {js|blur|js} cancel;
           D.off_scroll {js|scroll|js} mark_visible true;
           self#stop_inertia {js|interrupted|js};
+          Array.iter (fun name -> D.off_canvas_capture canvas name raw_event true) raw_events;
           D.off_canvas canvas {js|pointerdown|js} capture;
           D.off_canvas canvas {js|pointerup|js} release;
           D.off_canvas canvas {js|pointercancel|js} cancel;
@@ -932,6 +987,10 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
         (fun name ->
           D.on_bound canvas name refresh_bounds [%mel.obj { capture = true; passive = true }])
         bound_events;
+      Array.iter
+        (fun name ->
+          D.on_canvas_capture canvas name raw_event [%mel.obj { capture = true; passive = true }])
+        raw_events;
       D.add_pointer scene##input 1;
       D.on_canvas canvas {js|pointerdown|js} capture;
       D.on_canvas canvas {js|pointerup|js} release;

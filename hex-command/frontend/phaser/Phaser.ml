@@ -260,6 +260,7 @@ and pointer =
   < id : int
   ; identifier : int
   ; button : int
+  ; buttons : int
   ; isDown : bool
   ; wasTouch : bool
   ; wasCanceled : bool
