@@ -1,6 +1,8 @@
 open Browser_time
 module D = Phaser_input_dom
 module Set = Host_collections.Set
+module P = Phaser_pointer
+module G = Battlefield_gesture
 
 let clamp value low high = max low (min high value)
 let int = Performance_trace.int
@@ -10,21 +12,6 @@ let string = Js.Json.string
 let obj = Performance_trace.obj
 
 type clamp_mode = Pan | Fit
-
-type drag = {
-  pointer : Phaser.pointer;
-  mutable x : float;
-  mutable y : float;
-  left : float;
-  top : float;
-  mutable last_x : float;
-  mutable last_y : float;
-  mutable time : float;
-  mutable vx : float;
-  mutable vy : float;
-}
-
-type pinch = { distance : float; zoom : float; x : float; y : float }
 type reveal = { ids : string array; center : bool }
 
 class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option)
@@ -86,11 +73,8 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
     val mutable gesture_id = 0
     val mutable sample_trace = 0
     val mutable last_sample : (float * float * float * float * float) option = None
-    val mutable gesture = false
-    val mutable cancelled_contacts = false
+    val gesture = G.create ()
     val mutable inertia : D.tween option = None
-    val mutable drag : drag option = None
-    val mutable pinch : pinch option = None
     val mutable visible_dirty = true
     val mutable visible = { Phaser_spatial.left = 0.; top = 0.; right = 1.; bottom = 1. }
     val mutable projection : float array option = None
@@ -100,6 +84,12 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       Array_ext.filter
         (fun (pointer : Phaser.pointer) -> pointer##isDown)
         scene##input##manager##pointers
+
+    method private samples = Array.map P.sample self#pointers
+    method private pinching = G.phase gesture = G.Pinching
+
+    method private dragged =
+      match G.phase gesture with G.Panning | G.Pinching | G.Suppressed -> true | _ -> false
 
     method private record ?(details = []) event =
       if Option.is_some (Performance_trace.configuration ()) then
@@ -111,7 +101,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
             ( {js|activePointerIds|js},
               Js.Json.array
                 (Array.map (fun (pointer : Phaser.pointer) -> int pointer##id) self#pointers) );
-            ({js|cancelledContacts|js}, bool cancelled_contacts);
+            ({js|cancelledContacts|js}, bool (G.phase gesture = G.Suppressed));
             ({js|left|js}, number left);
             ({js|top|js}, number top);
             ({js|zoom|js}, number zoom);
@@ -142,6 +132,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
                ({js|button|js}, int pointer##button);
                ({js|buttons|js}, int pointer##buttons);
                ({js|isDown|js}, bool pointer##isDown);
+               ({js|primaryDown|js}, bool pointer##primaryDown);
                ({js|leftButtonDown|js}, bool (pointer##leftButtonDown ()));
                ({js|middleButtonDown|js}, bool (pointer##middleButtonDown ()));
                ({js|distanceCss|js}, number (pointer##getDistance () /. max pixel_x pixel_y));
@@ -367,95 +358,34 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
 
     method private down (pointer : Phaser.pointer) =
       self#pointer_record {js|pointer down received|js} pointer
-        [ ({js|modal|js}, bool (D.modal ())); ({js|dragged|js}, bool gesture) ];
-      if cancelled_contacts || D.modal () then
-        self#record {js|pointer rejected|js}
-          ~details:
-            [
-              ( {js|reason|js},
-                string (if cancelled_contacts then {js|cancelled contacts|js} else {js|modal|js}) );
-              ({js|pointerId|js}, int pointer##id);
-            ]
-      else if pointer##wasTouch || pointer##leftButtonDown () || pointer##middleButtonDown () then (
-        gesture_id <- gesture_id + 1;
-        self#stop_inertia {js|pointer down|js};
-        pending_reveal <- None;
-        self#pointer_record {js|pointer down|js} pointer [];
-        D.focus canvas [%mel.obj { preventScroll = true }];
-        let active = self#pointers in
-        if Array.length active >= 2 then (
-          let a = D.position active.(0) and b = D.position active.(1) in
-          let bounds = D.canvas_bounds canvas in
-          let distance = hypot (a.x -. b.x) (a.y -. b.y) in
-          pinch <-
-            Some
-              {
-                distance;
-                zoom;
-                x = ((a.x +. b.x) /. 2.) -. bounds.left;
-                y = ((a.y +. b.y) /. 2.) -. bounds.top;
-              };
-          self#record {js|pinch start|js} ~details:[ ({js|distance|js}, number distance) ];
-          gesture <- true;
-          drag <- None)
-        else (
-          gesture <- false;
-          let point = D.position pointer in
-          drag <-
-            Some
-              {
-                pointer;
-                x = point.x;
-                y = point.y;
-                left;
-                top;
-                last_x = point.x;
-                last_y = point.y;
-                time = D.event_time pointer##event;
-                vx = 0.;
-                vy = 0.;
-              }))
+        [ ({js|modal|js}, bool (D.modal ())); ({js|dragged|js}, bool self#dragged) ];
+      let reject reason =
+        self#pointer_record {js|pointer rejected|js} pointer [ ({js|reason|js}, string reason) ]
+      in
+      if D.modal () then (
+        self#cancel {js|modal|js};
+        reject {js|modal|js})
       else
-        self#pointer_record {js|pointer rejected|js} pointer
-          [ ({js|reason|js}, string {js|unsupported button state|js}) ]
+        match P.press pointer with
+        | None -> reject {js|unsupported initiating button|js}
+        | Some press ->
+            let bounds = D.canvas_bounds canvas in
+            let view = { G.left; top; zoom; canvas_left = bounds.left; canvas_top = bounds.top } in
+            if G.press gesture press view ~active:self#samples then (
+              gesture_id <- gesture_id + 1;
+              self#stop_inertia {js|pointer down|js};
+              pending_reveal <- None;
+              self#pointer_record {js|pointer down|js} pointer [];
+              D.focus canvas [%mel.obj { preventScroll = true }];
+              if self#pinching then self#record {js|pinch start|js})
+            else reject {js|contact already active or suppressed|js}
 
     method private move (pointer : Phaser.pointer) resampled =
       if D.modal () then self#cancel {js|modal|js}
-      else
-        let active = self#pointers in
+      else (
         if not resampled then self#pointer_record {js|pointer move|js} pointer [];
-        match pinch with
-        | Some pinch when Array.length active >= 2 ->
-            let a = D.position active.(0) and b = D.position active.(1) in
-            self#zoom_at
-              (pinch.zoom *. hypot (a.x -. b.x) (a.y -. b.y) /. max 1. pinch.distance)
-              pinch.x pinch.y
-        | _ -> (
-            match drag with
-            | Some drag when pointer == drag.pointer && pointer##isDown ->
-                let point = D.position pointer in
-                let dx = ref (point.x -. drag.x) and dy = ref (point.y -. drag.y) in
-                if gesture || hypot !dx !dy >= 6. then (
-                  if (not gesture) && pointer##wasTouch then (
-                    let distance = hypot !dx !dy in
-                    drag.x <- drag.x +. (!dx /. distance *. 5.);
-                    drag.y <- drag.y +. (!dy /. distance *. 5.);
-                    dx := point.x -. drag.x;
-                    dy := point.y -. drag.y);
-                  if point.x <> drag.last_x || point.y <> drag.last_y then (
-                    let at = D.event_time pointer##event in
-                    let dt = max 8. (at -. drag.time) in
-                    drag.vx <- (point.x -. drag.last_x) /. dt;
-                    drag.vy <- (point.y -. drag.last_y) /. dt;
-                    drag.last_x <- point.x;
-                    drag.last_y <- point.y;
-                    drag.time <- at);
-                  gesture <- true;
-                  D.cursor canvas##style {js|grabbing|js};
-                  left <- drag.left -. !dx;
-                  top <- drag.top -. !dy;
-                  self#apply_scroll (Some Pan))
-            | _ -> ())
+        List.iter (self#apply_gesture pointer)
+          (G.move gesture (P.sample pointer) ~active:self#samples))
 
     method private prepare_picking (frame : Battlefield_frame.t) =
       let state = Native.state frame.view.game in
@@ -473,94 +403,93 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       in
       picking#prepare key frame.terrain_tiles
 
+    method private apply_gesture (pointer : Phaser.pointer) =
+      function
+      | G.Pan (requested_left, requested_top) ->
+          D.cursor canvas##style {js|grabbing|js};
+          left <- requested_left;
+          top <- requested_top;
+          self#apply_scroll (Some Pan)
+      | G.Zoom (next, x, y) -> self#zoom_at next x y
+      | G.Tap point -> (
+          match current () with
+          | Some frame when not (D.modal ()) -> (
+              if layout_pending || density <> D.device_ratio then (
+                layout_pending <- false;
+                self#perform_layout);
+              self#apply_scroll None;
+              let _ = camera##getWorldPoint point.scene_x point.scene_y pick_point in
+              self#prepare_picking frame;
+              match picking#pick pick_point##x pick_point##y with
+              | Some tile ->
+                  self#pointer_record {js|tile activation|js} pointer
+                    [ ({js|tile|js}, string tile) ];
+                  (actions ()).choose tile
+              | None ->
+                  self#pointer_record {js|activation missed map|js} pointer [];
+                  (actions ()).clear_selection true)
+          | _ -> ())
+      | G.Coast (vx, vy) ->
+          let duration = min 900. (hypot vx vy /. 0.004) and from_left = left and from_top = top in
+          self#record {js|inertia start|js}
+            ~details:
+              [
+                ({js|vx|js}, number vx); ({js|vy|js}, number vy); ({js|duration|js}, number duration);
+              ];
+          inertia <-
+            Some
+              (D.counter scene##tweens
+                 {
+                   D.from = 0.;
+                   target = 1.;
+                   duration;
+                   ease = {js|Quad.easeOut|js};
+                   on_update =
+                     (fun[@u] tween ->
+                       let progress =
+                         Option.value ~default:0. (Js.Nullable.toOption (D.tween_value tween))
+                       in
+                       left <- from_left +. (vx *. duration /. 2. *. progress);
+                       top <- from_top +. (vy *. duration /. 2. *. progress);
+                       self#apply_scroll (Some Pan));
+                   on_complete =
+                     (fun[@u] () ->
+                       self#record {js|inertia complete|js};
+                       inertia <- None);
+                 })
+
     method private up (pointer : Phaser.pointer) =
+      let dragged = self#dragged in
+      let blocked =
+        if D.modal () then Some {js|modal|js}
+        else if Option.is_none (current ()) then Some {js|no frame|js}
+        else None
+      in
+      Option.iter self#cancel blocked;
+      let reason, effects = G.release gesture (P.sample pointer) ~active:self#samples in
+      let reason =
+        match blocked with
+        | Some reason -> reason
+        | None -> (
+            match reason with
+            | G.Activate -> {js|eligible|js}
+            | G.No_press -> {js|no accepted press|js}
+            | G.Wrong_contact -> {js|unmatched pointer or button|js}
+            | G.Cancelled -> {js|pointer cancelled|js}
+            | G.Dragged -> {js|dragged|js}
+            | G.Pan_only -> {js|pan-only button|js}
+            | G.Too_far -> {js|distance threshold|js}
+            | G.Contact_suppressed -> {js|cancelled contacts|js})
+      in
       self#pointer_record {js|pointer up|js} pointer
         [
-          ( {js|activationReason|js},
-            string
-              (if cancelled_contacts then {js|cancelled contacts|js}
-               else if Option.is_none (current ()) then {js|no frame|js}
-               else if D.modal () then {js|modal|js}
-               else if gesture then {js|dragged or invalidated|js}
-               else if pointer##wasCanceled then {js|pointer cancelled|js}
-               else if pointer##getDistance () /. max pixel_x pixel_y >= 6. then
-                 {js|distance threshold|js}
-               else if not (pointer##wasTouch || pointer##button = 0) then
-                 {js|unsupported button|js}
-               else {js|eligible|js}) );
+          ({js|activationReason|js}, string reason);
           ({js|cancelled|js}, bool pointer##wasCanceled);
-          ({js|dragged|js}, bool gesture);
+          ({js|dragged|js}, bool dragged);
           ({js|contacts|js}, int (Array.length self#pointers));
         ];
-      if cancelled_contacts then (
-        if Array.length self#pointers = 0 then cancelled_contacts <- false)
-      else (
-        (match current () with
-        | Some frame
-          when (not (D.modal ()))
-               && (not gesture)
-               && (not pointer##wasCanceled)
-               && pointer##getDistance () /. max pixel_x pixel_y < 6.
-               && (pointer##wasTouch || pointer##button = 0) -> (
-            if layout_pending || density <> D.device_ratio then (
-              layout_pending <- false;
-              self#perform_layout);
-            self#apply_scroll None;
-            let _ = camera##getWorldPoint pointer##x pointer##y pick_point in
-            self#prepare_picking frame;
-            match picking#pick pick_point##x pick_point##y with
-            | Some tile ->
-                self#pointer_record {js|tile activation|js} pointer [ ({js|tile|js}, string tile) ];
-                (actions ()).choose tile
-            | None ->
-                self#pointer_record {js|activation missed map|js} pointer [];
-                (actions ()).clear_selection true)
-        | _ -> ());
-        if Array.length self#pointers = 0 then (
-          (match (drag, pinch) with
-          | Some drag, None
-            when pointer##wasTouch
-                 && (not pointer##wasCanceled)
-                 && gesture
-                 && D.event_time pointer##event -. drag.time < 160. ->
-              let vx = -.drag.vx and vy = -.drag.vy in
-              let speed = hypot vx vy in
-              if speed > 0.1 then (
-                let duration = min 900. (speed /. 0.004) and from_left = left and from_top = top in
-                self#record {js|inertia start|js}
-                  ~details:
-                    [
-                      ({js|vx|js}, number vx);
-                      ({js|vy|js}, number vy);
-                      ({js|duration|js}, number duration);
-                    ];
-                inertia <-
-                  Some
-                    (D.counter scene##tweens
-                       {
-                         D.from = 0.;
-                         target = 1.;
-                         duration;
-                         ease = {js|Quad.easeOut|js};
-                         on_update =
-                           (fun[@u] tween ->
-                             let progress =
-                               Option.value ~default:0. (Js.Nullable.toOption (D.tween_value tween))
-                             in
-                             left <- from_left +. (vx *. duration /. 2. *. progress);
-                             top <- from_top +. (vy *. duration /. 2. *. progress);
-                             self#apply_scroll (Some Pan));
-                         on_complete =
-                           (fun[@u] () ->
-                             self#record {js|inertia complete|js};
-                             inertia <- None);
-                       }))
-          | _ -> ());
-          drag <- None;
-          pinch <- None;
-          gesture <- false;
-          D.cursor canvas##style {js||js})
-        else drag <- None)
+      List.iter (self#apply_gesture pointer) effects;
+      if G.phase gesture = G.Idle then D.cursor canvas##style {js||js}
 
     method private wheel (pointer : Phaser.pointer) dx dy =
       let event = pointer##event in
@@ -610,14 +539,11 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
           [
             ({js|reason|js}, string reason);
             ({js|contacts|js}, int (Array.length self#pointers));
-            ({js|dragging|js}, bool (Option.is_some drag));
-            ({js|pinching|js}, bool (Option.is_some pinch));
+            ({js|dragging|js}, bool (Option.is_some (G.tracking gesture)));
+            ({js|pinching|js}, bool self#pinching);
           ];
       self#stop_inertia reason;
-      cancelled_contacts <- Array.length self#pointers > 0;
-      drag <- None;
-      pinch <- None;
-      gesture <- true;
+      G.cancel gesture ~active:self#samples;
       D.cursor canvas##style {js||js}
 
     method private apply_reveal request =
@@ -797,20 +723,17 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       Option.iter
         (fun (tracing : Performance_trace.config) ->
           let sample = (left, top, zoom, viewport_width, viewport_height) in
+          let drag = G.tracking gesture in
           if
             sample_trace <> tracing.id || last_sample <> Some sample || Option.is_some drag
-            || Option.is_some pinch || Option.is_some inertia
+            || self#pinching || Option.is_some inertia
           then (
             sample_trace <- tracing.id;
             last_sample <- Some sample;
             let requested_left =
-              Option.fold ~none:left
-                ~some:(fun (drag : drag) -> drag.left -. (drag.last_x -. drag.x))
-                drag
+              Option.fold ~none:left ~some:(fun (drag : G.tracking) -> drag.left) drag
             and requested_top =
-              Option.fold ~none:top
-                ~some:(fun (drag : drag) -> drag.top -. (drag.last_y -. drag.y))
-                drag
+              Option.fold ~none:top ~some:(fun (drag : G.tracking) -> drag.top) drag
             in
             let visible = self#visible_bounds in
             let details =
@@ -824,8 +747,8 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
                       ({js|bottom|js}, number visible.bottom);
                     ] );
                 ({js|deltaMs|js}, number frame_delta);
-                ({js|dragging|js}, bool (Option.is_some drag));
-                ({js|pinching|js}, bool (Option.is_some pinch));
+                ({js|dragging|js}, bool (Option.is_some (G.tracking gesture)));
+                ({js|pinching|js}, bool self#pinching);
                 ({js|inertia|js}, bool (Option.is_some inertia));
                 ({js|sampledAt|js}, number (now ()));
                 ({js|requestedLeft|js}, number requested_left);
@@ -843,8 +766,8 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
               | None -> details
               | Some drag ->
                   [
-                    ({js|x|js}, number drag.last_x);
-                    ({js|y|js}, number drag.last_y);
+                    ({js|x|js}, number drag.x);
+                    ({js|y|js}, number drag.y);
                     ({js|vx|js}, number drag.vx);
                     ({js|vy|js}, number drag.vy);
                     ({js|eventTime|js}, number drag.time);
@@ -906,7 +829,16 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       and wheel = fun[@u] pointer _ dx dy _ -> self#wheel pointer dx dy
       and key = fun[@u] event -> self#key event
       and cancel event = self#cancel (D.event_type event)
-      and continue_drag = fun[@u] () -> Option.iter (fun drag -> self#move drag.pointer true) drag
+      and continue_drag =
+       fun[@u] () ->
+        Option.iter
+          (fun (track : G.tracking) ->
+            Option.iter
+              (fun pointer -> self#move pointer true)
+              (Array.find_opt
+                 (fun (pointer : Phaser.pointer) -> pointer##id = track.pointer_id)
+                 self#pointers))
+          (G.tracking gesture)
       and prepare_layout = fun[@u] _ delta -> self#prepare_layout delta
       and sample_camera = fun[@u] () -> self#sample_camera in
       let raw_events =
@@ -932,7 +864,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
                 ({js|metaKey|js}, bool (D.meta event));
                 ({js|x|js}, number (D.client_x event));
                 ({js|y|js}, number (D.client_y event));
-                ({js|dragged|js}, bool gesture);
+                ({js|dragged|js}, bool self#dragged);
               ]
       in
       let expected_release = Set.create () in
