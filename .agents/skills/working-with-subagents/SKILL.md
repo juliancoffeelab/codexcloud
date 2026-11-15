@@ -1,9 +1,20 @@
 ---
 name: working-with-subagents
-description: Use when delegating work to subagents or coordinating their execution.
+description: Use when handling a user request for subagents or coordinating authorized subagents.
 ---
 
 # Working with subagents
+
+## User authorization
+
+Use subagents only when the user explicitly requests them. Each request authorizes
+at most one subagent for that task, including any nested delegation.
+
+Use multiple subagents only when the user explicitly requests multiple subagents
+for that specific task. That authorization ends with the task and does not carry
+over to later tasks. Each later task requires its own explicit user request and
+returns to the one-subagent limit unless the user explicitly requests multiple
+again.
 
 ## Roles and order
 
