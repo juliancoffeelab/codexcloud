@@ -1,6 +1,6 @@
 ---
 name: merge-gate
-description: Use when the user asks whether a PR is ready to merge, or asks to merge it.
+description: Use when the user asks to get a PR to merge gate, asks whether it is ready to merge, or asks to merge it.
 ---
 
 # Merge gate
@@ -8,6 +8,16 @@ description: Use when the user asks whether a PR is ready to merge, or asks to m
 Audit existing evidence in under one minute, including tool calls and quick
 checks. Preparation is separate work, undertaken only when requested. Routine
 implementation, pushes and deployment do not invoke this skill.
+
+## Prepare when requested
+
+“Get it to merge gate” explicitly requests preparation: it authorizes one
+fresh-context review subagent and requests history consolidation according to
+the review's source-derived logical units. Follow
+[working-with-subagents](../working-with-subagents/SKILL.md): validate before
+review, resolve substantiated findings and complete necessary history cleanup
+before auditing readiness. Reuse applicable existing review evidence; the
+authorization does not require a redundant review or indiscriminate squashing.
 
 ## Audit the current head
 
@@ -54,6 +64,10 @@ Identify the head and report the five items once, each marked ✅ supported,
 rather than reproducing their reports. Report **ready** only when all five are ✅;
 otherwise report **not ready** and the next action for each gap. Keep the verdict
 in the response or PR metadata, without a tracked gate report file.
+
+If preparation fixed bugs, list every bug fixed and the resulting behavior in
+the final user message, including fixes made by subagents. A validation summary
+or link to the review does not replace this list.
 
 For an explicitly requested merge, follow repository permission and conflict
 rules, confirm the head is unchanged and merge only the ready revision, using an

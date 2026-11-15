@@ -15,6 +15,14 @@ and their procedures in skills; list their invocation conditions below.
 
 READMEs are user-owned; modify them only when explicitly asked.
 
+## Compatibility and input boundaries
+
+Compatibility code is strictly forbidden unless explicitly requested by the
+human. Validate the input format at the boundary and reject unsupported or
+outdated formats rather than silently accepting, repairing or normalizing them.
+Core code works only with current code and data contracts. A request to port,
+refactor or match existing outputs does not authorize compatibility behavior.
+
 ## Repository changes
 
 Use feature branches and pull requests for all repository changes, including
