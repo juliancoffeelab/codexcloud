@@ -3,19 +3,20 @@
 import polars as pl
 import arena
 import campaign
-import telemetry
+import telemetry_tables as telemetry
 import metrics
 from journal import identity
+from frames import empty
 
 
 def changes(rows, before, keys, fields):
-    if not rows or not before:
-        return []
+    if rows.is_empty() or before.is_empty():
+        return empty(keys, fields+[k+"Before" for k in fields])
     return (
-        pl.from_dicts(rows, infer_schema_length=None)
+        rows
         .lazy()
         .join(
-            pl.from_dicts(before, infer_schema_length=None)
+            before
             .lazy()
             .select(*keys, *[pl.col(k).alias(k + "Before") for k in fields]),
             on=keys,
@@ -24,7 +25,6 @@ def changes(rows, before, keys, fields):
             validate="1:1",
         )
         .collect()
-        .to_dicts()
     )
 
 
@@ -104,25 +104,18 @@ def build(
     matchup_changes = changes(
         rows, before, arena.KEYS, ["wins", "losses", "caps", "winRate"]
     )
-    for r in matchup_changes:
-        r["winRateDelta"] = r["winRate"] - r["winRateBefore"]
+    matchup_changes = matchup_changes.with_columns((pl.col("winRate") - pl.col("winRateBefore")).alias("winRateDelta"))
     campaign_changes = changes(
         tables["campaign_summary"],
         old_campaigns["campaign_summary"],
         campaign.FIELDS,
         ["completed", "completionRate"],
     )
-    for r in campaign_changes:
-        r["completionRateDelta"] = r["completionRate"] - r["completionRateBefore"]
+    campaign_changes = campaign_changes.with_columns((pl.col("completionRate") - pl.col("completionRateBefore")).alias("completionRateDelta"))
 
     def race_map(opponent):
         return arena.combine(
-            [
-                r
-                for r in rows
-                if r["opponentPolicy"] == opponent
-                and (r["policy"] != opponent or r["race"] != r["opponentRace"])
-            ],
+            rows.filter((pl.col("opponentPolicy") == opponent) & ((pl.col("policy") != opponent) | (pl.col("race") != pl.col("opponentRace")))),
             ["race", "map", "policy"],
         )
 
@@ -143,7 +136,7 @@ def build(
         matches=ledger,
         campaigns=campaigns,
         policy_matchups=arena.combine(
-            [r for r in rows if r["policy"] != r["opponentPolicy"]],
+            rows.filter(pl.col("policy") != pl.col("opponentPolicy")),
             ["policy", "opponentPolicy"],
             cross=False,
         ),
@@ -175,17 +168,8 @@ def build(
     leaders = leaders or (
         unit_usage and all(s.get("leaderAuditVersion") == 1 for s in current["sources"])
     )
-    if unit_usage or presence or support:
-        extra, _ = telemetry.presence_support(
-            current["reports"],
-            presence=unit_usage or presence,
-            support=unit_usage or support,
-        )
-        tables.update(extra)
-    if value or leaders:
-        tables.update(
-            telemetry.battlefield(current["reports"], value=value, leaders=leaders)
-        )
+    tables.update(telemetry.analyze(current["dataset"], presence_=unit_usage or presence,
+        support_=unit_usage or support, value_=value, leaders_=leaders))
     if unit_usage or presence:
         nonleaders = tables["nonleader_unit_events"]
         tables["army_usage"] = metrics.army_usage(
@@ -197,14 +181,8 @@ def build(
         }
         old = {}
         if previous["outcomes"]:
-            extra, _ = telemetry.presence_support(
-                previous["reports"], presence=True, support=False
-            )
-            old.update(extra)
-            old.update(
-                telemetry.battlefield(previous["reports"], value=True, leaders=False)
-            )
-        membership = tables["battlefield_units"] + old.get("battlefield_units", [])
+            old.update(telemetry.analyze(previous["dataset"], presence_=True, value_=True))
+        membership = pl.concat([tables["battlefield_units"], old.get("battlefield_units", tables["battlefield_units"].head(0))])
         tables["unit_damage"] = metrics.unit_damage(
             tables["battlefield_units"],
             tables["battlefield_unit_value"],

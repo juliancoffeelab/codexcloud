@@ -24,8 +24,9 @@ def main():
         parser.add_argument("--" + flag, action="store_true")
     args = parser.parse_args()
     start = perf_counter()
-    current = store.load(args.inputs)
-    previous = store.load(args.baseline)
+    telemetry = any((args.unit_usage, args.battlefield_presence, args.support_effects, args.battlefield_value, args.leader_audit))
+    current = store.load(args.inputs, telemetry=telemetry)
+    previous = store.load(args.baseline, telemetry=args.unit_usage)
     tables = analysis.build(
         current,
         previous,
@@ -35,6 +36,8 @@ def main():
         value=args.battlefield_value,
         leaders=args.leader_audit,
     )
+    # The single table-to-object boundary is final presentation.
+    tables = {name: value.to_dicts() if hasattr(value, "to_dicts") else value for name, value in tables.items()}
     report.write(args.out, current, previous, tables, perf_counter() - start)
     seconds = perf_counter() - start
     (args.out / "timings.json").write_text(

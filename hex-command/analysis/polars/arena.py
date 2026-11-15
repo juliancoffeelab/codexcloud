@@ -1,4 +1,5 @@
 import polars as pl
+from frames import empty
 
 KEYS = ["race", "opponentRace", "policy", "opponentPolicy", "map"]
 COUNTS = ["games", "wins", "losses", "caps", "leaderWins", "territoryWins", "rounds"]
@@ -155,7 +156,7 @@ def tally(outcomes):
             records.append(rec)
         ledger.append(row)
     if not records:
-        return [], [], ledger, campaigns
+        return empty(KEYS, COUNTS+["winRate","lossRate","capRate","meanRounds"]), empty(KEYS+["unit"], EVENTS), ledger, campaigns
     df = pl.from_dicts(
         records,
         infer_schema_length=None,
@@ -170,13 +171,13 @@ def tally(outcomes):
         },
     )
     matches, units = calculate(df)
-    return matches.to_dicts(), units.to_dicts(), ledger, campaigns
+    return matches, units, ledger, campaigns
 
 
 def combine(rows, keys, equal=False, cross=True):
-    if not rows:
-        return []
-    q = pl.from_dicts(rows).lazy()
+    if rows.is_empty():
+        return empty(keys, COUNTS+["winRate"])
+    q = rows.lazy()
     if equal:
         q = q.filter(pl.col("policy") == pl.col("opponentPolicy"))
     if cross:
@@ -187,15 +188,14 @@ def combine(rows, keys, equal=False, cross=True):
         .with_columns((100 * pl.col("wins") / pl.col("games")).alias("winRate"))
         .sort(keys, nulls_last=True)
         .collect()
-        .to_dicts()
     )
 
 
 def purchase_shares(events, families):
-    if not events:
-        return []
+    if events.is_empty():
+        return empty(["race","policy","opponentPolicy","map","family"], ["purchased","totalPurchases","sharePercent"])
     q = (
-        pl.from_dicts(events)
+        events
         .lazy()
         .filter(pl.col("race") != pl.col("opponentRace"))
         .with_columns(pl.col("unit").replace(families).alias("family"))
@@ -212,5 +212,4 @@ def purchase_shares(events, families):
         )
         .sort(keys + ["family"])
         .collect()
-        .to_dicts()
     )

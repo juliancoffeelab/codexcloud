@@ -13,6 +13,8 @@ ROLE = {
 
 
 def frame(rows, dimensions, numeric):
+    if isinstance(rows, pl.DataFrame):
+        return rows.lazy()
     if rows:
         return pl.from_dicts(rows, infer_schema_length=None).lazy()
     return pl.DataFrame(
@@ -24,10 +26,10 @@ def frame(rows, dimensions, numeric):
 
 
 def army_usage(events, purchases, presence, families):
-    if not presence:
-        return []
+    if presence.is_empty():
+        return pl.DataFrame()
     q = frame(events, DIMS + ["unit", "opponentRace"], EVENTS)
-    if not events or "opponentRace" in events[0]:
+    if "opponentRace" in events.columns:
         q = q.filter(pl.col("race") != pl.col("opponentRace"))
     q = q.with_columns(pl.col("unit").replace(families).alias("family"))
     q = pl.concat([q, q.with_columns(pl.lit("all").alias("map"))])
@@ -43,7 +45,7 @@ def army_usage(events, purchases, presence, families):
         *DIMS, "family", pl.col("sharePercent").alias("purchaseSharePercent")
     )
     q = (
-        pl.from_dicts(presence)
+        presence
         .lazy()
         .join(counts, on=DIMS + ["family"], how="left", validate="1:1")
         .join(buys, on=DIMS + ["family"], how="left", validate="1:1")
@@ -69,26 +71,20 @@ def army_usage(events, purchases, presence, families):
         .drop("__attacks", "__damage")
         .sort(DIMS + ["family"])
     )
-    return q.collect().to_dicts()
+    return q.collect()
 
 
 def unit_damage(presence, values, profiles, membership=()):
-    if not presence and not values:
-        return []
-    modern = any("nonleaderUnitTurns" in r for r in values)
+    if presence.is_empty() and values.is_empty():
+        return pl.DataFrame()
+    modern = "nonleaderUnitTurns" in values.columns
     if modern:
-        values = [
-            dict(
-                r,
-                unitTurns=r["nonleaderUnitTurns"],
-                weaponHPDamageDealt=r["nonleaderWeaponHPDamageDealt"],
-                thornHPDamageDealt=r["nonleaderThornHPDamageDealt"],
-            )
-            for r in values
-        ]
-    missing = {r["unit"] for r in presence + values if r["unit"] not in profiles}
-    if missing:
-        raise ValueError("Missing recorded unit profile: " + sorted(missing)[0])
+        values = values.with_columns(pl.col(source).alias(target) for source, target in zip(
+            ["nonleaderUnitTurns", "nonleaderWeaponHPDamageDealt", "nonleaderThornHPDamageDealt"],
+            ["unitTurns", "weaponHPDamageDealt", "thornHPDamageDealt"]))
+    missing = pl.concat([presence.select("unit"), values.select("unit")]).filter(~pl.col("unit").is_in(list(profiles)))
+    if missing.height:
+        raise ValueError("Missing recorded unit profile: " + missing["unit"][0])
     profile_rows = [
         dict(
             unit=u,
@@ -114,9 +110,9 @@ def unit_damage(presence, values, profiles, membership=()):
             frame(rows, DIMS + ["unit"], ["unitTurns"]).filter(
                 pl.col("kind") == "arena"
             )
-            if rows and "kind" in rows[0]
+            if "kind" in rows.columns
             else frame(rows, DIMS + ["unit"], ["unitTurns"])
-            for rows in [presence, values, list(membership)]
+            for rows in [presence, values, membership]
         ],
         how="diagonal_relaxed",
     )
@@ -229,12 +225,12 @@ def unit_damage(presence, values, profiles, membership=()):
         .sort(DIMS + ["__kind", "family", "level", "name"])
         .drop("__kind")
     )
-    return q.collect().to_dicts()
+    return q.collect()
 
 
 def compare_damage(current, baseline):
-    if not current:
-        return []
+    if current.is_empty():
+        return pl.DataFrame()
     fields = [
         "unitTurns",
         "damage",
@@ -245,10 +241,10 @@ def compare_damage(current, baseline):
         "thornDamage",
         "thornDamagePerUnitTurn",
     ]
-    q = pl.from_dicts(current).lazy()
-    if baseline:
+    q = current.lazy()
+    if not baseline.is_empty():
         old = (
-            pl.from_dicts(baseline)
+            baseline
             .lazy()
             .select(*DIMS, "unit", *[pl.col(k).alias(k + "Before") for k in fields])
         )
@@ -260,5 +256,4 @@ def compare_damage(current, baseline):
             (pl.col(k) - pl.col(k + "Before")).alias(k + "Delta") for k in fields
         )
         .collect()
-        .to_dicts()
     )
