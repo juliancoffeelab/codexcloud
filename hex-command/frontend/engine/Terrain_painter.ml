@@ -59,11 +59,15 @@ let paint context tiles images =
             match lookup images frame.url with
             | Some image ->
                 set_filter context
-                  (if tile.role = Domain.Terrain_role.Forest then "brightness(0.93)" else "none");
+                  (if tile.role = Domain.Terrain_role.Forest then {js|brightness(0.93)|js}
+                   else {js|none|js});
                 draw context image tile.sprite_x tile.sprite_y tile.sprite_width tile.sprite_height
-            | None -> invalid_arg ("Missing decoded terrain image: " ^ frame.url))
-        | None -> invalid_arg "Missing complete terrain frame");
-        set_filter context "none";
+            | None ->
+                invalid_arg
+                  (let js_text_part_1 = frame.url in
+                   {j|Missing decoded terrain image: $(js_text_part_1)|j}))
+        | None -> invalid_arg {js|Missing complete terrain frame|js});
+        set_filter context {js|none|js};
         restore context
       with error ->
         restore context;

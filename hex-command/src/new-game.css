@@ -113,7 +113,7 @@
   background: #d8ba6f08;
   font-weight: 500;
 }
-.ng-modes button[aria-pressed="true"] {
+.ng-modes button[data-state="active"] {
   border-color: var(--gold);
   background: #d8ba6f12;
   box-shadow: inset 0 -2px var(--gold);
@@ -189,8 +189,16 @@
   gap: 2px;
   border-bottom: 1px solid #39413688;
 }
+.ng-control-options {
+  container: player-control / inline-size;
+}
 .ng-segments.ng-player-control {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
+}
+@container player-control (min-width: 22rem) {
+  .ng-segments.ng-player-control {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 .ng-segments.ng-custom {
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -205,7 +213,7 @@
     sans-serif;
   white-space: nowrap;
 }
-.ng-segments > button[aria-pressed="true"] {
+.ng-segments > button[data-state="checked"] {
   color: #dfcc95;
   background: #d8ba6f08;
   box-shadow: inset 0 -2px #9f8c55;
@@ -225,15 +233,28 @@
   transform: none;
 }
 .new-game-dialog.settings-style .advanced[open] > summary .chevron,
-.new-game-dialog .ng-recruitment[open] > summary .chevron {
+.new-game-dialog .ng-recruitment[data-state="open"] > button .chevron {
   transform: rotate(180deg);
 }
-.ng-recruitment > summary {
+.ng-recruitment > button {
   list-style: none;
   cursor: pointer;
 }
-.ng-recruitment > summary::-webkit-details-marker {
-  display: none;
+.ng-recruitment {
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  margin-top: 14px;
+}
+.ng-recruitment > .recruitment-trigger {
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 10px 0;
+  text-align: left;
+  font:
+    14px/1.45 system-ui,
+    sans-serif;
 }
 .ng-recruit-value {
   padding: 6px 10px;
@@ -340,4 +361,109 @@
   .new-game-dialog .advanced {
     margin-top: 8px;
   }
+}
+
+.ng-map-filters {
+  margin-bottom: 14px;
+}
+.ng-browse-tools {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+}
+.ng-browse-tools .ng-modes {
+  flex: 1;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.map-tag-trigger {
+  display: grid;
+  place-items: center;
+  flex: 0 0 46px;
+  padding: 0;
+  border-color: #667154;
+  background: #242d22;
+}
+.map-tag-trigger.active {
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: inset 0 -2px var(--gold);
+}
+.map-tag-trigger > svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+.ng-map-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 8px 14px;
+  font:
+    11px/1.4 system-ui,
+    sans-serif;
+}
+.ng-map-tags > span {
+  padding: 2px 6px;
+  border: 1px solid #46513f;
+  border-radius: 3px;
+  color: #bac4ad;
+  background: #263025;
+}
+.dialog-window.map-tag-panel {
+  position: fixed;
+  inset: auto 12px 12px;
+  width: calc(100% - 24px);
+  max-width: 420px;
+  max-height: min(80dvh, 600px);
+  margin: 0 auto;
+  border-radius: 12px 12px 4px 4px;
+}
+.modal-layer:has(.map-tag-panel) > .modal-overlay {
+  background: #0009;
+  backdrop-filter: blur(1px);
+}
+.map-tag-panel .map-tag-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 58px;
+  border-top: 1px solid var(--line);
+  font:
+    14px/1.45 system-ui,
+    sans-serif;
+  cursor: pointer;
+}
+.map-tag-option > span {
+  flex: 1;
+}
+.map-tag-option small {
+  color: var(--muted);
+}
+.map-tag-option input {
+  width: 22px;
+  height: 22px;
+  accent-color: var(--gold);
+}
+.map-tag-actions {
+  font:
+    14px/1.45 system-ui,
+    sans-serif;
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  gap: 10px;
+  padding: 12px 20px 16px;
+  border-top: 1px solid var(--line);
+}
+.ng-empty {
+  padding: 20px 0;
+  color: var(--muted);
+  font:
+    14px/1.5 system-ui,
+    sans-serif;
+}
+.ng-empty button {
+  margin-top: 12px;
 }

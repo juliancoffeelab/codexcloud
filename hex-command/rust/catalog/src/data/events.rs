@@ -1,5 +1,6 @@
 //! General authored events and durable event facts; no campaign-specific behavior.
 use super::*;
+use crate::data::Text;
 use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Default, Serialize, Deserialize)]
@@ -10,19 +11,19 @@ use serde::{Deserialize, Serialize};
 #[serde(default, rename_all = "camelCase", deny_unknown_fields)]
 pub struct UnitMatch {
     #[serde(default)]
-    pub character: Option<String>,
+    pub character: Option<Text>,
     #[serde(default)]
     pub role: Option<Role>,
     #[serde(default)]
     pub side: Option<ConditionSide>,
     #[serde(default)]
-    pub faction: Option<String>,
+    pub faction: Option<Text>,
     #[serde(default, rename = "unitType")]
-    pub unit_type: Option<String>,
+    pub unit_type: Option<Text>,
     #[serde(default, rename = "unitTypes")]
-    pub unit_types: Vec<String>,
+    pub unit_types: Vec<Text>,
     #[serde(default, rename = "aiGroup")]
-    pub ai_group: Option<String>,
+    pub ai_group: Option<Text>,
     #[serde(default)]
     pub retreating: Option<bool>,
 }
@@ -85,7 +86,7 @@ pub struct HoldSelection {
 #[serde(deny_unknown_fields)]
 pub struct OwnerSelection {
     pub tile: TileRef,
-    pub faction: String,
+    pub faction: Text,
 }
 
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -99,7 +100,7 @@ pub struct OwnSelection {
     #[serde(skip)]
     pub predicate: u32,
     pub tile: TileRef,
-    pub faction: String,
+    pub faction: Text,
     #[serde(default)]
     pub turns: Option<u32>,
     #[serde(default)]
@@ -114,7 +115,7 @@ pub struct OwnSelection {
 #[serde(untagged)]
 pub enum TurnSelection {
     Number(u32),
-    Faction { number: u32, faction: String },
+    Faction { number: u32, faction: Text },
 }
 impl TurnSelection {
     pub fn number(&self) -> u32 {
@@ -134,9 +135,9 @@ pub struct DeathSelection {
     #[serde(flatten)]
     pub units: UnitMatch,
     #[serde(default)]
-    pub initiated_by: Option<String>,
+    pub initiated_by: Option<Text>,
     #[serde(default)]
-    pub killed_by: Option<String>,
+    pub killed_by: Option<Text>,
     #[serde(default)]
     pub defending: Option<bool>,
 }
@@ -150,7 +151,7 @@ pub struct DeathSelection {
 pub struct TextVariant {
     #[serde(default)]
     pub when: Option<When>,
-    pub text: String,
+    pub text: Text,
 }
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -160,7 +161,7 @@ pub struct TextVariant {
 )]
 #[serde(untagged)]
 pub enum ConditionalText {
-    Text(String),
+    Text(Text),
     Variants(Vec<TextVariant>),
 }
 impl ConditionalText {
@@ -179,7 +180,7 @@ impl ConditionalText {
 )]
 #[serde(untagged)]
 pub enum ConditionalHint {
-    Text(String),
+    Text(Text),
     Variant(TextVariant),
 }
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -201,8 +202,8 @@ pub enum When {
     Turn(TurnSelection),
     TurnAtLeast(u32),
     ChapterStarted(bool),
-    Flag(String),
-    ObjectiveSatisfied(String),
+    Flag(Text),
+    ObjectiveSatisfied(Text),
     HasUnits(UnitMatch),
     NoUnits(UnitMatch),
     VisibleUnits(UnitMatch),
@@ -220,14 +221,14 @@ pub enum When {
 #[serde(deny_unknown_fields)]
 pub struct ScriptLine {
     #[serde(default)]
-    pub character: Option<String>,
+    pub character: Option<Text>,
     #[serde(default)]
-    pub speaker: Option<String>,
+    pub speaker: Option<Text>,
     #[serde(default)]
-    pub portrait: Option<String>,
-    pub text: String,
+    pub portrait: Option<Text>,
+    pub text: Text,
     #[serde(default)]
-    pub sound: Option<String>,
+    pub sound: Option<Text>,
 }
 
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -238,7 +239,7 @@ pub struct ScriptLine {
 )]
 #[serde(deny_unknown_fields)]
 pub struct DialogueBranch {
-    pub with: String,
+    pub with: Text,
     pub dialogue: Vec<Speech>,
     #[serde(default)]
     pub alternative: Vec<Speech>,
@@ -265,13 +266,13 @@ pub enum Speech {
 #[serde(deny_unknown_fields)]
 pub struct SpawnMember {
     #[serde(rename = "type")]
-    pub unit_type: String,
+    pub unit_type: Text,
     #[serde(default)]
-    pub character: Option<String>,
+    pub character: Option<Text>,
     #[serde(default)]
     pub role: Option<Role>,
     #[serde(default)]
-    pub items: Vec<String>,
+    pub items: Vec<Text>,
 }
 
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -282,7 +283,7 @@ pub struct SpawnMember {
 )]
 #[serde(untagged)]
 pub enum SpawnEntry {
-    Type(String),
+    Type(Text),
     Member(SpawnMember),
 }
 
@@ -294,7 +295,7 @@ pub enum SpawnEntry {
 )]
 #[serde(deny_unknown_fields)]
 pub struct ScriptSpawn {
-    pub faction: String,
+    pub faction: Text,
     #[serde(default)]
     pub tile: Option<TileRef>,
     #[serde(default)]
@@ -302,7 +303,7 @@ pub struct ScriptSpawn {
     #[serde(default = "spawn_radius")]
     pub radius: u16,
     #[serde(default, rename = "aiGroup")]
-    pub ai_group: Option<String>,
+    pub ai_group: Option<Text>,
     pub units: Vec<SpawnEntry>,
 }
 
@@ -313,7 +314,7 @@ pub struct ScriptSpawn {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct GiveItem {
-    pub item: String,
+    pub item: Text,
     #[serde(default)]
     pub tile: Option<TileRef>,
     #[serde(flatten)]
@@ -328,7 +329,7 @@ pub struct GiveItem {
 )]
 #[serde(deny_unknown_fields)]
 pub struct PlaceItem {
-    pub item: String,
+    pub item: Text,
     pub tile: TileRef,
 }
 
@@ -341,7 +342,7 @@ pub struct PlaceItem {
 #[serde(deny_unknown_fields)]
 pub struct AllegianceChange {
     pub units: UnitMatch,
-    pub faction: String,
+    pub faction: Text,
 }
 
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -352,7 +353,7 @@ pub struct AllegianceChange {
 )]
 #[serde(untagged)]
 pub enum UnitReference {
-    Bound(String),
+    Bound(Text),
     Selection(UnitMatch),
 }
 
@@ -367,7 +368,7 @@ pub struct MarkSpec {
     #[serde(default)]
     pub sight: Option<SightEmission>,
     #[serde(rename = "type")]
-    pub kind: String,
+    pub kind: Text,
     pub tile: TileRef,
     #[serde(default)]
     pub light: Option<TileLight>,
@@ -382,7 +383,7 @@ pub struct MarkSpec {
 #[serde(deny_unknown_fields)]
 pub struct MarkSelection {
     #[serde(rename = "type")]
-    pub kind: String,
+    pub kind: Text,
 }
 
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -418,8 +419,8 @@ pub struct MarkLoop {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub enum FlagUpdate {
-    Name(String),
-    Value { id: String, state: bool },
+    Name(Text),
+    Value { id: Text, state: bool },
 }
 impl FlagUpdate {
     pub fn id(&self) -> &str {
@@ -444,7 +445,7 @@ impl FlagUpdate {
 #[serde(deny_unknown_fields)]
 pub struct TerrainChange {
     pub tile: TileRef,
-    pub terrain: String,
+    pub terrain: Text,
 }
 
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -455,7 +456,7 @@ pub struct TerrainChange {
 )]
 #[serde(deny_unknown_fields)]
 pub struct GoldGrant {
-    pub faction: String,
+    pub faction: Text,
     pub amount: i32,
 }
 
@@ -467,7 +468,7 @@ pub struct GoldGrant {
 )]
 #[serde(deny_unknown_fields)]
 pub struct RecruitmentUnlock {
-    pub faction: String,
+    pub faction: Text,
     pub units: Vec<FactionRecruit>,
 }
 
@@ -492,19 +493,19 @@ pub enum EventAction {
     DeleteUnit(UnitReference),
     SetFlag(FlagUpdate),
     Say(Vec<Speech>),
-    Sound(String),
+    Sound(Text),
     CreateMark(MarkSpec),
-    RemoveMark(String),
+    RemoveMark(Text),
     ForEachUnit(UnitLoop),
     ForEachMark(MarkLoop),
     SetTerrain(TerrainChange),
     Gold(GoldGrant),
     UnlockRecruits(RecruitmentUnlock),
-    Victory(String),
-    Defeat(String),
-    Log(String),
-    FailObjective(String),
-    CompleteObjective(String),
+    Victory(Text),
+    Defeat(Text),
+    Log(Text),
+    FailObjective(Text),
+    CompleteObjective(Text),
     Recruits(RecruitmentUnlock),
 }
 
@@ -552,12 +553,12 @@ pub struct PlayerMarker {
 #[serde(deny_unknown_fields)]
 pub struct EventObjective {
     /// Exact faction assigned this objective, independent of controller or diplomacy.
-    pub faction: String,
+    pub faction: Text,
     #[serde(default)]
-    pub id: Option<String>,
+    pub id: Option<Text>,
     #[serde(default, rename = "preserveLives")]
     pub preserve_lives: Option<UnitMatch>,
-    pub label: String,
+    pub label: Text,
     #[serde(default)]
     pub optional: bool,
     #[serde(default, rename = "visibleWhen")]
@@ -581,8 +582,8 @@ pub struct EventObjective {
 #[serde(deny_unknown_fields)]
 pub struct ScriptEvent {
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub observer: Option<String>,
-    pub id: String,
+    pub observer: Option<Text>,
+    pub id: Text,
     pub when: When,
     #[serde(default = "yes")]
     pub remembers: bool,
@@ -607,7 +608,7 @@ pub struct MapMark {
     pub light_remembered: bool,
     pub id: u32,
     #[serde(rename = "type")]
-    pub kind: String,
+    pub kind: Text,
     pub tile: Hex,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub light: Option<TileLight>,
@@ -621,7 +622,7 @@ pub struct MapMark {
 )]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct EventHold {
-    pub event: String,
+    pub event: Text,
     pub predicate: u32,
     pub turns: u32,
     pub last_round: u32,
@@ -636,9 +637,9 @@ pub struct EventHold {
 #[serde(deny_unknown_fields)]
 pub struct PendingEventSpawn {
     pub area: Vec<Hex>,
-    pub faction: String,
+    pub faction: Text,
     #[serde(default, rename = "aiGroup")]
-    pub ai_group: Option<String>,
+    pub ai_group: Option<Text>,
     pub units: Vec<SpawnMember>,
 }
 
@@ -655,11 +656,11 @@ pub struct EventState {
     #[serde(skip)]
     pub active_mask: Vec<bool>,
     #[serde(default)]
-    pub failed: Vec<String>,
-    pub completed: Vec<String>,
-    pub revealed: Vec<String>,
-    pub recruitment: std::collections::BTreeMap<String, Vec<FactionRecruit>>,
-    pub active: Vec<String>,
+    pub failed: Vec<Text>,
+    pub completed: Vec<Text>,
+    pub revealed: Vec<Text>,
+    pub recruitment: std::collections::BTreeMap<Text, Vec<FactionRecruit>>,
+    pub active: Vec<Text>,
     pub holds: Vec<EventHold>,
     pub marks: Vec<MapMark>,
     pub pending: Vec<PendingEventSpawn>,
@@ -819,7 +820,7 @@ impl When {
 }
 impl EventState {
     pub fn index_active(&mut self, events: &[ScriptEvent]) {
-        let active: std::collections::HashSet<_> = self.active.iter().map(String::as_str).collect();
+        let active: std::collections::HashSet<_> = self.active.iter().map(Text::as_str).collect();
         self.active_indices = events
             .iter()
             .enumerate()
@@ -877,7 +878,7 @@ impl ScriptEvent {
         tiles: &[Tile],
         factions: &[Faction],
         groups: &[VisionGroupState],
-        items: &std::collections::HashMap<String, Item>,
+        items: &std::collections::HashMap<Text, Item>,
         path: &str,
     ) -> Result<(), ContentError> {
         use super::catalog::{identifier, unique};
@@ -907,7 +908,7 @@ impl ScriptEvent {
             }
         }
 
-        let fail = |s: String| ContentError::new(path, s);
+        let fail = |s: Text| ContentError::new(path, s);
         let tile = |id: &TileRef| -> Result<(), ContentError> {
             if tiles.iter().any(|t| t.matches_reference(id)) {
                 Ok(())
@@ -1466,9 +1467,9 @@ pub struct LoopSelection {
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct ResolvedStory {
-    pub briefing: String,
-    pub debrief: Option<String>,
-    pub hints: Vec<String>,
+    pub briefing: Text,
+    pub debrief: Option<Text>,
+    pub hints: Vec<Text>,
 }
 impl ConditionalText {
     pub fn is_empty(&self) -> bool {

@@ -1,4 +1,4 @@
-let dictionary : unit -> 'a Js.Dict.t = [%mel.raw "() => Object.create(null)"]
+let dictionary : unit -> 'a Js.Dict.t = [%mel.raw {js|() => Object.create(null)|js}]
 
 type t = {
   source : Domain.catalog_view;
@@ -16,7 +16,7 @@ let index key values =
   Array.iter
     (fun value ->
       let id = key value in
-      if Js.Dict.get result id <> None then invalid_arg ("Duplicate catalog identifier: " ^ id);
+      if Js.Dict.get result id <> None then invalid_arg {j|Duplicate catalog identifier: $(id)|j};
       Js.Dict.set result id value)
     values;
   result
@@ -67,7 +67,7 @@ let of_view (source : Domain.catalog_view) =
 let require index id =
   match Js.Dict.get index id with
   | Some value -> value
-  | None -> invalid_arg ("Unknown catalog identifier: " ^ id)
+  | None -> invalid_arg {j|Unknown catalog identifier: $(id)|j}
 
 let units t = Array.to_list t.source.Domain.units
 let terrain t = Array.to_list t.source.Domain.terrain

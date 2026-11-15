@@ -1,6 +1,6 @@
 open Domain
 
-let dictionary : unit -> 'a Js.Dict.t = [%mel.raw "() => Object.create(null)"]
+let dictionary : unit -> 'a Js.Dict.t = [%mel.raw {js|() => Object.create(null)|js}]
 
 type chapter = { source : mission; briefing : string; debrief : string option; hints : string list }
 
@@ -11,7 +11,7 @@ let mission catalog view (state : campaign_state) =
   let story = (Native.inspection view).story in
   {
     source;
-    briefing = Option.fold ~none:"" ~some:(fun (s : resolved_story) -> s.briefing) story;
+    briefing = Option.fold ~none:{js||js} ~some:(fun (s : resolved_story) -> s.briefing) story;
     debrief = Option.bind story (fun (s : resolved_story) -> s.debrief);
     hints = Option.fold ~none:[] ~some:(fun (s : resolved_story) -> Array.to_list s.hints) story;
   }
@@ -66,6 +66,6 @@ let returns_with_story catalog (state : campaign_state) (unit : public_unit) =
            mission.arrivals
          || Array.exists
               (fun (incoming : starting_unit) ->
-                incoming.faction = "player" && incoming.character = Some character)
+                incoming.faction = {js|player|js} && incoming.character = Some character)
               mission.map.units)
        unit.character

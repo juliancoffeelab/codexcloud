@@ -554,12 +554,12 @@ module Game = struct
           parent;
           width;
           height;
-          backgroundColor = "#19231c";
+          backgroundColor = {js|#19231c|js};
           pixelArt = false;
           antialias = false;
           transparent = false;
           scene;
-          canvasStyle = "visibility: hidden;";
+          canvasStyle = {js|visibility: hidden;|js};
           roundPixels = false;
           antialiasGL = false;
           banner = false;
@@ -569,7 +569,7 @@ module Game = struct
                 preBoot =
                   (fun[@u] owner ->
                     let manager = owner##sound in
-                    let _ = off_unlock owner##events "boot" manager##unlock manager in
+                    let _ = off_unlock owner##events {js|boot|js} manager##unlock manager in
                     ());
               }];
           input =
@@ -584,7 +584,7 @@ module Game = struct
                 maxParallelDownloads = 6;
                 timeout = 30000;
                 maxRetries = 0;
-                imageLoadType = "HTMLImageElement";
+                imageLoadType = {js|HTMLImageElement|js};
               }];
           scale = [%mel.obj { mode = scale_none; width; height }];
         }]

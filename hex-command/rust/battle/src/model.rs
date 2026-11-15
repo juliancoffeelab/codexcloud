@@ -1,5 +1,6 @@
 //! Neutral battle observations shared by native and browser hosts.
 use crate::data::*;
+use hex_command_catalog::data::Text;
 use serde::{Deserialize, Serialize};
 
 /// Per-command state fields. Terrain is carried separately and only when changed.
@@ -14,11 +15,11 @@ pub struct StateFrame {
     pub ground_items: Vec<GroundItem>,
     /// Selected skirmish factions; campaigns use their authored recruitment.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub armies: Option<[String; 2]>,
+    pub armies: Option<[Text; 2]>,
     /// Durable facts about conditions that have been satisfied at least once.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub condition_memory: Vec<String>,
-    pub map_id: String,
+    pub condition_memory: Vec<Text>,
+    pub map_id: Text,
     pub map_revision: u32,
     pub cols: i32,
     pub rows: i32,
@@ -29,7 +30,7 @@ pub struct StateFrame {
     pub next_id: u32,
     /// Complete persisted combat PRNG state.
     pub combat_rng: u32,
-    pub log: Vec<String>,
+    pub log: Vec<Text>,
     pub units: Vec<PublicUnit>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub campaign: Option<CampaignState>,
@@ -139,10 +140,10 @@ pub struct CombatAnimation {
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[serde(rename_all = "camelCase")]
 pub struct CombatStrike {
-    pub weapon: String,
+    pub weapon: Text,
     /// Stable presentation identity; weapon remains the display label.
-    pub weapon_id: String,
-    pub unit_id: String,
+    pub weapon_id: Text,
+    pub unit_id: Text,
     pub roll_min: i32,
     pub roll_max: i32,
     pub raw: i32,
@@ -185,7 +186,7 @@ pub struct DamageDetail {
     pub modified: i32,
     pub protection: i32,
     pub exposure: i32,
-    pub terrain: String,
+    pub terrain: Text,
     pub damage: i32,
 }
 
@@ -214,7 +215,7 @@ pub struct AttackDetails {
     pub healing: i32,
     pub retaliation_healing: i32,
     pub recommended: bool,
-    pub target: String,
+    pub target: Text,
     pub attack: Weapon,
     pub response: Option<Weapon>,
     pub damage: i32,
@@ -226,23 +227,23 @@ pub struct AttackDetails {
 // Explicit transport aliases select JS dictionaries without changing Rust's
 // ordered-map types or its native, non-Wasm build.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(js_value("dict")))]
-pub type RecruitmentTiles = std::collections::BTreeMap<String, Vec<Hex>>;
+pub type RecruitmentTiles = std::collections::BTreeMap<Text, Vec<Hex>>;
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(js_value("dict")))]
-pub type RecruitmentNames = std::collections::BTreeMap<String, Vec<String>>;
+pub type RecruitmentNames = std::collections::BTreeMap<Text, Vec<Text>>;
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(js_value("dict")))]
 pub type RecruitmentPrices =
-    std::collections::BTreeMap<String, std::collections::BTreeMap<String, i32>>;
+    std::collections::BTreeMap<Text, std::collections::BTreeMap<Text, i32>>;
 
 /// Legal action choices at one immutable browser publication.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 pub struct UnitActions {
-    pub name: Option<String>,
+    pub name: Option<Text>,
     pub faction: crate::data::UnitFaction,
-    pub unit: String,
+    pub unit: Text,
     pub reachable: Vec<ReachableTile>,
     pub attacks: Vec<AttackDetails>,
-    pub promotions: Vec<String>,
+    pub promotions: Vec<Text>,
     pub recruitment: RecruitmentTiles,
 }
 
@@ -253,7 +254,7 @@ pub struct UnitActions {
 pub struct BattleInspection {
     pub story: Option<crate::data::ResolvedStory>,
     /// Current dialogue captions resolved from character IDs for display only.
-    pub speakers: Vec<String>,
+    pub speakers: Vec<Text>,
     pub objectives: Option<crate::data::CampaignObjectives>,
     pub revision: u32,
     pub units: Vec<UnitActions>,

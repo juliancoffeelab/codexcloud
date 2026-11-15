@@ -1,6 +1,7 @@
 //! Owned battle snapshots with the established save and transport field shapes.
 
 use super::*;
+use crate::data::Text;
 use serde::{Deserialize, Serialize};
 include!(concat!(env!("OUT_DIR"), "/terrain_geometry.rs"));
 
@@ -37,15 +38,15 @@ impl HexDirection {
 )]
 pub struct Tile {
     /// Coordinate address (`col,row`), used by commands and snapshots.
-    pub id: String,
+    pub id: Text,
     /// Optional authored landmark identity; ordinary cells have none.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub location: Option<String>,
+    pub location: Option<Text>,
     pub col: i32,
     pub row: i32,
-    pub terrain: String,
+    pub terrain: Text,
     /// Owning faction identifier, independent of its turn phase.
-    pub owner: Option<String>,
+    pub owner: Option<Text>,
     /// Road/village exits or opposite crossing edges; artwork only.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub connections: Option<Vec<HexDirection>>,
@@ -57,7 +58,7 @@ pub struct Tile {
     pub walls: Option<Vec<HexDirection>>,
     /// Reusable ground palette; independent of terrain and its gameplay rules.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub floor: Option<String>,
+    pub floor: Option<Text>,
     /// Immutable condition shared by snapshots; Arc keeps native catalogs thread-safe.
     #[serde(default)]
     pub perception: TilePerception,
@@ -167,7 +168,7 @@ pub struct GroundItem {
     any(feature = "bake", all(feature = "wasm", target_arch = "wasm32")),
     derive(hex_catalog_freeze_derive::Freeze)
 )]
-pub struct Gold(pub std::sync::Arc<std::collections::BTreeMap<String, i32>>);
+pub struct Gold(pub std::sync::Arc<std::collections::BTreeMap<Text, i32>>);
 impl Gold {
     pub fn two(player: i32, enemy: i32) -> Self {
         Self(std::sync::Arc::new(
@@ -176,7 +177,7 @@ impl Gold {
     }
 }
 impl std::ops::Deref for Gold {
-    type Target = std::collections::BTreeMap<String, i32>;
+    type Target = std::collections::BTreeMap<Text, i32>;
     fn deref(&self) -> &Self::Target {
         &self.0
     }
@@ -213,11 +214,11 @@ pub struct State {
     pub ground_items: Vec<GroundItem>,
     /// Selected skirmish factions; campaigns use their authored recruitment.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub armies: Option<[String; 2]>,
+    pub armies: Option<[Text; 2]>,
     /// Durable facts about conditions that have been satisfied at least once.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub condition_memory: Vec<String>,
-    pub map_id: String,
+    pub condition_memory: Vec<Text>,
+    pub map_id: Text,
     pub map_revision: u32,
     pub cols: i32,
     pub rows: i32,
@@ -228,7 +229,7 @@ pub struct State {
     pub next_id: u32,
     /// Complete persisted combat PRNG state.
     pub combat_rng: u32,
-    pub log: Vec<String>,
+    pub log: Vec<Text>,
     pub tiles: Vec<Tile>,
     pub units: Vec<PublicUnit>,
     #[serde(default, skip_serializing_if = "Option::is_none")]

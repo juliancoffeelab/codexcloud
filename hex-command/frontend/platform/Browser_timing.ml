@@ -24,24 +24,29 @@ let interval value first last =
 
 let navigation_phases navigation recorder_started_at_ms =
   let tls =
-    match number navigation "secureConnectionStart" with
-    | Some start when start > 0. -> interval navigation "secureConnectionStart" "connectEnd"
+    match number navigation {js|secureConnectionStart|js} with
+    | Some start when start > 0. ->
+        interval navigation {js|secureConnectionStart|js} {js|connectEnd|js}
     | _ -> None
   in
   let before_recorder =
-    match number navigation "responseEnd" with
+    match number navigation {js|responseEnd|js} with
     | Some finish when finish > 0. && recorder_started_at_ms >= finish ->
         Some (recorder_started_at_ms -. finish)
     | _ -> None
   in
   obj
     [
-      ("dnsMs", nullable_number (interval navigation "domainLookupStart" "domainLookupEnd"));
-      ("connectionMs", nullable_number (interval navigation "connectStart" "connectEnd"));
-      ("tlsWithinConnectionMs", nullable_number tls);
-      ("requestToFirstByteMs", nullable_number (interval navigation "requestStart" "responseStart"));
-      ("responseBodyMs", nullable_number (interval navigation "responseStart" "responseEnd"));
-      ("responseEndToRecorderMs", nullable_number before_recorder);
+      ( {js|dnsMs|js},
+        nullable_number (interval navigation {js|domainLookupStart|js} {js|domainLookupEnd|js}) );
+      ( {js|connectionMs|js},
+        nullable_number (interval navigation {js|connectStart|js} {js|connectEnd|js}) );
+      ({js|tlsWithinConnectionMs|js}, nullable_number tls);
+      ( {js|requestToFirstByteMs|js},
+        nullable_number (interval navigation {js|requestStart|js} {js|responseStart|js}) );
+      ( {js|responseBodyMs|js},
+        nullable_number (interval navigation {js|responseStart|js} {js|responseEnd|js}) );
+      ({js|responseEndToRecorderMs|js}, nullable_number before_recorder);
     ]
 
 let resource_evidence resources =
@@ -51,78 +56,79 @@ let resource_evidence resources =
   and unknown = ref 0 in
   Array.iter
     (fun resource ->
-      match number resource "transferSize" with
+      match number resource {js|transferSize|js} with
       | Some transfer when transfer > 0. ->
-          if string resource "deliveryType" = Some "cache" then incr cache_label_with_transfer
+          if string resource {js|deliveryType|js} = Some {js|cache|js} then
+            incr cache_label_with_transfer
           else incr other_transfer
       | Some 0.
         when Option.fold ~none:false
                ~some:(fun size -> size > 0.)
-               (number resource "encodedBodySize") ->
+               (number resource {js|encodedBodySize|js}) ->
           incr zero_transfer_with_body
       | _ -> incr unknown)
     resources;
   let count value = Js.Json.number (float_of_int !value) in
   obj
     [
-      ("cacheLabelWithReportedTransfer", count cache_label_with_transfer);
-      ("zeroReportedTransferWithBody", count zero_transfer_with_body);
-      ("otherReportedTransfer", count other_transfer);
-      ("insufficientData", count unknown);
+      ({js|cacheLabelWithReportedTransfer|js}, count cache_label_with_transfer);
+      ({js|zeroReportedTransferWithBody|js}, count zero_transfer_with_body);
+      ({js|otherReportedTransfer|js}, count other_transfer);
+      ({js|insufficientData|js}, count unknown);
     ]
 
 let snapshot ~recorder_started_at_ms ~until_ms =
   let collected_at = Browser_time.now () in
-  let navigation = entries "navigation" in
+  let navigation = entries {js|navigation|js} in
   let navigation = if Array.length navigation = 0 then Js.Json.null else json navigation.(0) in
   let resources =
-    entries "resource"
+    entries {js|resource|js}
     |> Array_ext.filter (fun entry -> start_time entry <= until_ms)
     |> Array.map json
   in
   let result =
     obj
       [
-        ("collectedAtMs", Js.Json.number collected_at);
-        ("startupCutoffAtMs", Js.Json.number until_ms);
-        ("navigation", navigation);
-        ("navigationPhases", navigation_phases navigation recorder_started_at_ms);
-        ("resources", Js.Json.array resources);
-        ("resourceEvidence", resource_evidence resources);
-        ( "headerCoverage",
+        ({js|collectedAtMs|js}, Js.Json.number collected_at);
+        ({js|startupCutoffAtMs|js}, Js.Json.number until_ms);
+        ({js|navigation|js}, navigation);
+        ({js|navigationPhases|js}, navigation_phases navigation recorder_started_at_ms);
+        ({js|resources|js}, Js.Json.array resources);
+        ({js|resourceEvidence|js}, resource_evidence resources);
+        ( {js|headerCoverage|js},
           obj
             [
-              ("mode", text "passive-existing-responses");
-              ("extraRequests", Js.Json.number 0.);
-              ("capturedFrom", Js.Json.array [| text "hud-fetch"; text "phaser-xhr" |]);
-              ( "notExposedFor",
+              ({js|mode|js}, text {js|passive-existing-responses|js});
+              ({js|extraRequests|js}, Js.Json.number 0.);
+              ( {js|capturedFrom|js},
+                Js.Json.array [| text {js|hud-fetch|js}; text {js|phaser-xhr|js} |] );
+              ( {js|notExposedFor|js},
                 Js.Json.array
                   [|
-                    text "document"; text "image-element"; text "module-script"; text "wasm-runtime";
+                    text {js|document|js};
+                    text {js|image-element|js};
+                    text {js|module-script|js};
+                    text {js|wasm-runtime|js};
                   |] );
             ] );
-        ( "interpretationLimits",
+        ( {js|interpretationLimits|js},
           Js.Json.array
             [|
               text
-                "deliveryType=cache with positive transferSize does not establish an instant \
-                 local-cache hit.";
+                {js|deliveryType=cache with positive transferSize does not establish an instant local-cache hit.|js};
               text
-                "Zero sizes may mean unavailable timing data; they are not automatically cache \
-                 hits.";
+                {js|Zero sizes may mean unavailable timing data; they are not automatically cache hits.|js};
               text
-                "Response headers are browser-exposed values, not a raw network or validation \
-                 transcript.";
+                {js|Response headers are browser-exposed values, not a raw network or validation transcript.|js};
               text
-                "Request-to-first-byte time includes the delivery path and does not identify \
-                 Cloudflare or origin processing separately.";
+                {js|Request-to-first-byte time includes the delivery path and does not identify Cloudflare or origin processing separately.|js};
               text
-                "TLS time is included in connection time; intervals must not all be added together.";
+                {js|TLS time is included in connection time; intervals must not all be added together.|js};
             |] );
       ]
   in
   Option.iter
     (fun fields ->
-      Js.Dict.set fields "collectionMs" (Js.Json.number (Browser_time.now () -. collected_at)))
+      Js.Dict.set fields {js|collectionMs|js} (Js.Json.number (Browser_time.now () -. collected_at)))
     (Js.Json.decodeObject result);
   result

@@ -1,6 +1,7 @@
 //! Canonical transfer contract shared by native/WASM hosts and generated OCaml bindings.
 /// Transport options reuse the core policy and diplomacy vocabularies.
 pub use crate::ai::{Diplomacy as AiDiplomacy, Policy as AiPolicy};
+use crate::data::Text;
 use crate::data::{Command, CommandError, State};
 use serde::{Deserialize, Serialize};
 
@@ -11,16 +12,16 @@ use serde::{Deserialize, Serialize};
 pub enum Start {
     /// Start the requested revision, or the latest revision when omitted.
     Scenario {
-        map: String,
+        map: Text,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         revision: Option<u32>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
-        armies: Option<[String; 2]>,
+        armies: Option<[Text; 2]>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         first: Option<crate::data::TurnPhase>,
     },
     /// Begin a campaign without incoming veterans or carried gold.
-    Campaign { id: String },
+    Campaign { id: Text },
 }
 
 /// Tagged failures from transport validation, lifecycle checks, or battle rules.
@@ -29,20 +30,20 @@ pub enum Start {
 #[serde(tag = "code", rename_all = "camelCase")]
 pub enum EngineError {
     InvalidRequest {
-        message: String,
+        message: Text,
     },
     Content {
-        path: String,
-        message: String,
+        path: Text,
+        message: Text,
     },
     InvalidSave {
-        message: String,
+        message: Text,
     },
     UnknownMap {
-        map: String,
+        map: Text,
     },
     UnknownCampaign {
-        id: String,
+        id: Text,
     },
     UnknownBattle,
     Disposed,
@@ -87,18 +88,18 @@ pub struct SavedGame {
 #[serde(tag = "op", rename_all = "camelCase", deny_unknown_fields)]
 pub enum UndoChange {
     Set {
-        path: Vec<String>,
+        path: Vec<Text>,
         value: serde_json::Value,
     },
     Remove {
-        path: Vec<String>,
+        path: Vec<Text>,
     },
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct UndoStep {
     pub round: u32,
-    pub unit_id: String,
+    pub unit_id: Text,
     pub changes: Vec<UndoChange>,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]

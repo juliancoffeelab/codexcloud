@@ -4,7 +4,7 @@ use super::*;
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct ScenarioDocuments {
-    human: bool,
+    tags: Vec<String>,
     #[serde(default)]
     characters: Vec<Character>,
     map: String,
@@ -317,8 +317,9 @@ pub fn scenario(
     bundle: &JsonBundle,
     path: &str,
     items: &HashMap<String, Item>,
-) -> Result<(InitialState, String, bool, Vec<Character>), ContentError> {
+) -> Result<(InitialState, String, Vec<String>, Vec<Character>), ContentError> {
     let documents: ScenarioDocuments = parse(bundle, path)?;
+    validate_map_tags(&documents.tags, path)?;
     let map_path = sibling(path, &documents.map)?;
     let map: MapDocument = parse(bundle, &map_path)?;
     map.lighting
@@ -338,7 +339,7 @@ pub fn scenario(
     Ok((
         map.initial(roster),
         roster_path,
-        documents.human,
+        documents.tags,
         documents.characters,
     ))
 }
@@ -468,7 +469,7 @@ pub fn map_metadata(
     descriptor: &str,
     state: &State,
     units: Option<Vec<StartingUnit>>,
-    human: bool,
+    tags: Vec<String>,
 ) -> Result<MapDefinition, ContentError> {
     #[derive(Deserialize)]
     struct Reference {
@@ -522,7 +523,7 @@ pub fn map_metadata(
         revision: state.map_revision,
         name: metadata.name.unwrap_or_else(|| state.map_id.clone()),
         description: metadata.description.unwrap_or_default(),
-        human,
+        tags,
         cols: state.cols,
         rows: state.rows,
         terrain: state.tiles.clone(),

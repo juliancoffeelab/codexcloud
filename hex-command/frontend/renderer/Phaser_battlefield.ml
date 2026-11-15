@@ -78,12 +78,17 @@ let bounds left top right bottom = { Phaser_spatial.left; top; right; bottom }
 let clamp value low high = max low (min high value)
 
 let frame_url (unit : Frame.unit_actor) =
-  match unit.url with Some url -> url | None -> failwith ("Missing unit artwork: " ^ unit.id)
+  match unit.url with
+  | Some url -> url
+  | None ->
+      failwith
+        (let js_text_part_1 = unit.id in
+         {j|Missing unit artwork: $(js_text_part_1)|j})
 
 class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view.actions)
   ~(describe : string -> unit) ~(previews : Terrain_preview.t)
   ~(progress : Battlefield_view.progress -> unit) =
-  let native = Phaser.Scene.create "battlefield" in
+  let native = Phaser.Scene.create {js|battlefield|js} in
   object (self)
     val frame_cache = new Frame.cache
     val mutable runtime : Phaser_runtime.t option = None
@@ -97,7 +102,7 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
     val mutable artwork_metadata : Art.t option = None
     val mutable image_metadata : (string, Art.frame) Map.t = Map.create ()
     val mutable ready = false
-    val mutable identity = ""
+    val mutable identity = {js||js}
     val mutable loading = false
     val mutable assets : Phaser_assets.assets option = None
     val mutable resources : Phaser_resources.resources option = None
@@ -145,7 +150,9 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
     method attach owner = runtime <- Some owner
 
     method private runtime =
-      match runtime with Some owner -> owner | None -> failwith "Battlefield has no boot owner"
+      match runtime with
+      | Some owner -> owner
+      | None -> failwith {js|Battlefield has no boot owner|js}
 
     method private invalidate = Option.iter Phaser_runtime.invalidate runtime
 
@@ -231,7 +238,7 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
       let renderer =
         match Js.Nullable.toOption native##game##renderer with
         | Some renderer -> renderer
-        | None -> failwith "Battlefield WebGL renderer unavailable"
+        | None -> failwith {js|Battlefield WebGL renderer unavailable|js}
       in
       let cleaned = ref false in
       let blur = fun[@u] () -> self#cancel_presentation
@@ -248,10 +255,10 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
           release (fun () -> Option.iter (fun playback -> playback#stop) playback);
           playback_frame <- None;
           release (fun () ->
-              let _ = native##game##events##off "blur" blur in
+              let _ = native##game##events##off {js|blur|js} blur in
               ());
           release (fun () ->
-              let _ = native##game##events##off "poststep" animate in
+              let _ = native##game##events##off {js|poststep|js} animate in
               ());
           release (fun () -> Option.iter (fun controls -> controls#destroy) controls);
           Map.each actors (fun[@u] actor _ ->
@@ -268,10 +275,10 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
               (fun () -> native##tweens##killAll ());
               (fun () -> renderer##pipelines##flush ());
               (fun () -> Option.iter (fun lighting -> lighting#release) lighting);
-              (fun () -> renderer##pipelines##remove "BattlefieldActorLighting" false);
+              (fun () -> renderer##pipelines##remove {js|BattlefieldActorLighting|js} false);
               (fun () ->
                 Option.iter (fun actor_lighting -> actor_lighting#native##destroy ()) actor_lighting);
-              (fun () -> renderer##pipelines##remove "BattlefieldLighting" false);
+              (fun () -> renderer##pipelines##remove {js|BattlefieldLighting|js} false);
               (fun () -> Option.iter (fun lighting -> lighting#native##destroy ()) lighting);
               (fun () -> Option.iter (fun atmosphere -> atmosphere#destroy) atmosphere);
               (fun () -> Option.iter (fun terrain -> terrain#destroy) terrain);
@@ -282,8 +289,8 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
               release (fun () -> pipeline##destroy ()))
             atmosphere_pipelines)
       in
-      let _ = native##events##once "shutdown" (fun[@u] () -> cleanup ()) in
-      let _ = native##events##once "destroy" (fun[@u] () -> cleanup ()) in
+      let _ = native##events##once {js|shutdown|js} (fun[@u] () -> cleanup ()) in
+      let _ = native##events##once {js|destroy|js} (fun[@u] () -> cleanup ()) in
       Phaser_runtime.on_dispose self#runtime cleanup;
       try self#initialize renderer blur animate with error -> self#fail error
 
@@ -327,14 +334,16 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
       let visibility event =
         if backgrounded Browser_dom.document then suspend event else resume event
       in
-      let window_events = [ ("pagehide", suspend); ("pageshow", resume); ("online", resume) ] in
-      Browser_dom.addDocumentListener Browser_dom.document "visibilitychange" visibility;
+      let window_events =
+        [ ({js|pagehide|js}, suspend); ({js|pageshow|js}, resume); ({js|online|js}, resume) ]
+      in
+      Browser_dom.addDocumentListener Browser_dom.document {js|visibilitychange|js} visibility;
       List.iter (fun (event, handler) -> Browser_dom.listen_error event handler) window_events;
       let detach () =
-        Browser_dom.removeDocumentListener Browser_dom.document "visibilitychange" visibility;
+        Browser_dom.removeDocumentListener Browser_dom.document {js|visibilitychange|js} visibility;
         List.iter (fun (event, handler) -> Browser_dom.remove_error event handler) window_events
       in
-      let _ = native##events##once "shutdown" (fun[@u] () -> detach ()) in
+      let _ = native##events##once {js|shutdown|js} (fun[@u] () -> detach ()) in
       Phaser_runtime.on_dispose self#runtime detach;
       if backgrounded Browser_dom.document then self#assets#suspend;
       Phaser_sound.sound_ready audio native##game;
@@ -345,25 +354,26 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
         (fun canvas ->
           let lost _ =
             self#fail
-              (Failure "The battlefield WebGL context was lost. Reload the game to restart cleanly.")
+              (Failure
+                 {js|The battlefield WebGL context was lost. Reload the game to restart cleanly.|js})
           in
-          Phaser_input_dom.on_canvas canvas "webglcontextlost" lost;
+          Phaser_input_dom.on_canvas canvas {js|webglcontextlost|js} lost;
           let _ =
-            native##events##once "destroy" (fun[@u] () ->
-                Phaser_input_dom.off_canvas canvas "webglcontextlost" lost)
+            native##events##once {js|destroy|js} (fun[@u] () ->
+                Phaser_input_dom.off_canvas canvas {js|webglcontextlost|js} lost)
           in
           Phaser_runtime.on_dispose self#runtime (fun () ->
-              Phaser_input_dom.off_canvas canvas "webglcontextlost" lost);
+              Phaser_input_dom.off_canvas canvas {js|webglcontextlost|js} lost);
           ())
         (Js.Nullable.toOption native##game##canvas);
       let lighting_pipeline =
         new Phaser_lighting.lighting native##game native##cameras##main owned_resources native
       in
       lighting <- Some lighting_pipeline;
-      let _ = renderer##pipelines##add "BattlefieldLighting" lighting_pipeline#native in
+      let _ = renderer##pipelines##add {js|BattlefieldLighting|js} lighting_pipeline#native in
       let actor_pipeline = new Phaser_actor_lighting.actor_lighting native##game in
       actor_lighting <- Some actor_pipeline;
-      let _ = renderer##pipelines##add "BattlefieldActorLighting" actor_pipeline#native in
+      let _ = renderer##pipelines##add {js|BattlefieldActorLighting|js} actor_pipeline#native in
       let layer depth =
         let layer = native##add##container 0. 0. in
         let _ = layer##setDepth depth in
@@ -381,13 +391,13 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
           let _ = renderer##pipelines##add name pipeline in
           ())
         [|
-          ("BattlefieldHalo", Phaser_atmosphere.halo);
-          ("BattlefieldFogBlur", Phaser_atmosphere.fog_blur);
-          ("BattlefieldFogComposite", Phaser_atmosphere.fog_composite);
-          ("BattlefieldFogMask", Phaser_atmosphere.fog_mask);
+          ({js|BattlefieldHalo|js}, Phaser_atmosphere.halo);
+          ({js|BattlefieldFogBlur|js}, Phaser_atmosphere.fog_blur);
+          ({js|BattlefieldFogComposite|js}, Phaser_atmosphere.fog_composite);
+          ({js|BattlefieldFogMask|js}, Phaser_atmosphere.fog_mask);
         |];
       let _ =
-        Phaser.SceneMethods.white_texture native##textures "battlefield-white"
+        Phaser.SceneMethods.white_texture native##textures {js|battlefield-white|js}
           (Phaser.SceneMethods.bytes [| 255; 255; 255; 255 |])
           1 1
       in
@@ -401,7 +411,7 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
              ~windup:(fun id at ->
                Option.iter
                  (fun actor ->
-                   self#pulse ~at ~duration:240. actor.data.tile "attack";
+                   self#pulse ~at ~duration:240. actor.data.tile {js|attack|js};
                    let _ = Set.add active_actors actor in
                    ())
                  (self#find_actor id))
@@ -425,32 +435,34 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
                self#invalidate)
              ~invalidate:(fun () -> self#invalidate)
              ~fail:(fun error -> self#fail error));
-      let _ = native##game##events##on "blur" blur in
-      let _ = native##game##events##on "poststep" animate in
+      let _ = native##game##events##on {js|blur|js} blur in
+      let _ = native##game##events##on {js|poststep|js} animate in
       let render_start : (int * float) option ref = ref None in
       let _ =
-        native##events##on "prerender" (fun[@u] () ->
+        native##events##on {js|prerender|js} (fun[@u] () ->
             render_start :=
               Option.map
                 (fun (config : Performance_trace.config) -> (config.id, now ()))
                 (Performance_trace.configuration ()))
       in
       let _ =
-        native##events##on "render" (fun[@u] () ->
+        native##events##on {js|render|js} (fun[@u] () ->
             (match (!render_start, Performance_trace.configuration ()) with
             | Some (id, start), Some config when config.id = id ->
-                Performance_trace.instant "Battlefield CPU render submission"
-                  ~args:(Performance_trace.obj [ ("durationMs", Js.Json.number (now () -. start)) ])
+                Performance_trace.instant {js|Battlefield CPU render submission|js}
+                  ~args:
+                    (Performance_trace.obj
+                       [ ({js|durationMs|js}, Js.Json.number (now () -. start)) ])
             | _ -> ());
             if has_frame && (not loading) && not failed then
               Option.iter
                 (fun canvas ->
-                  if style_visibility canvas##style = "hidden" then (
-                    set_visibility canvas##style "visible";
+                  if style_visibility canvas##style = {js|hidden|js} then (
+                    set_visibility canvas##style {js|visible|js};
                     presented <- true;
                     self#report_loading;
-                    Performance_trace.instant "Battlefield first complete frame"
-                      ~args:(Performance_trace.obj [ ("scene", Js.Json.string identity) ])))
+                    Performance_trace.instant {js|Battlefield first complete frame|js}
+                      ~args:(Performance_trace.obj [ ({js|scene|js}, Js.Json.string identity) ])))
                 (Js.Nullable.toOption native##game##canvas);
             if presented && (not loading) && not failed then (
               self#playback#ready;
@@ -498,7 +510,7 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
     method private refresh_safely =
       try
         let changed =
-          Performance_trace.measure "Phaser scene preparation" (fun () -> self#refresh)
+          Performance_trace.measure {js|Phaser scene preparation|js} (fun () -> self#refresh)
         in
         if changed then self#invalidate;
         let visible = presented || (has_frame && not loading) in
@@ -514,7 +526,7 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
       if not refresh_queued then (
         refresh_queued <- true;
         let _ =
-          native##events##once "preupdate" (fun[@u] () ->
+          native##events##once {js|preupdate|js} (fun[@u] () ->
               refresh_queued <- false;
               if ready && not failed then self#refresh_safely)
         in
@@ -541,9 +553,9 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
         {
           Battlefield_view.identity;
           phase =
-            (if presented then "ready"
-             else if loaded < total || total = 0 then "loading"
-             else "preparing");
+            (if presented then {js|ready|js}
+             else if loaded < total || total = 0 then {js|loading|js}
+             else {js|preparing|js});
           loaded;
           total;
           audio_loaded;
@@ -573,7 +585,7 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
       Map.clear pulses;
       has_frame <- false;
       Option.iter
-        (fun canvas -> set_visibility canvas##style "hidden")
+        (fun canvas -> set_visibility canvas##style {js|hidden|js})
         (Js.Nullable.toOption native##game##canvas);
       let frame = self#frame in
       let units =
@@ -654,7 +666,11 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
                 root##destroy ());
             Map.clear dying);
           let state = Native.state frame.view.game in
-          let next_identity = string_of_int frame.view.session_version ^ ":" ^ state.map_id in
+          let next_identity =
+            let js_text_part_0 = string_of_int frame.view.session_version in
+            let js_text_part_2 = state.map_id in
+            {j|$(js_text_part_0):$(js_text_part_2)|j}
+          in
           if next_identity <> identity then (
             self#reset next_identity;
             last_visual <- None;
@@ -723,8 +739,8 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
             actor.root##destroy ();
             let _ = Map.delete actors id in
             let _ = Set.delete active_actors actor in
-            visibility#delete ("actor:" ^ id);
-            visibility#delete ("indicator:" ^ id)));
+            visibility#delete {j|actor:$(id)|j};
+            visibility#delete {j|indicator:$(id)|j}));
       Map.each dying (fun[@u] death root ->
           if Set.has fog death.tile then (
             visibility#delete death.key;
@@ -748,13 +764,13 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
         scene_game <- Some frame.view.game;
         scene_artwork <- Some frame.view.artwork;
         scene_data <-
-          Some (Performance_trace.measure "scene.project" (fun () -> Frame.scene_data frame)));
+          Some (Performance_trace.measure {js|scene.project|js} (fun () -> Frame.scene_data frame)));
       let scene = Option.get scene_data and terrain = Option.get terrain in
       let urls = Set.create () in
       if not (Option.fold ~none:false ~some:(fun old -> old == frame.view.game) terrain_game) then (
         terrain_game <- Some frame.view.game;
         terrain_urls <-
-          Performance_trace.measure "scene.terrain_plan" (fun () ->
+          Performance_trace.measure {js|scene.terrain_plan|js} (fun () ->
               terrain#plan frame.terrain_tiles));
       Set.each terrain_urls (fun[@u] url ->
           let _ = Set.add urls url in
@@ -867,7 +883,7 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
       Map.each ground_items (fun[@u] item key ->
           if not (Set.has live_items key) then (
             item.root##destroy ();
-            visibility#delete ("item:" ^ key);
+            visibility#delete {j|item:$(key)|j};
             let _ = Map.delete ground_items key in
             ()));
       Array.iteri
@@ -889,14 +905,14 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
                   }
                 in
                 let _ =
-                  Phaser_actor_lighting.Pipeline_data.ellipse base "BattlefieldActorLighting" data
-                    false
+                  Phaser_actor_lighting.Pipeline_data.ellipse base {js|BattlefieldActorLighting|js}
+                    data false
                 in
                 let image = native##add##image 0. 0. item.url in
                 let _ = image##setDisplaySize 64. 64. in
                 let _ =
-                  Phaser_actor_lighting.Pipeline_data.image image "BattlefieldActorLighting" data
-                    false
+                  Phaser_actor_lighting.Pipeline_data.image image {js|BattlefieldActorLighting|js}
+                    data false
                 in
                 Phaser.SceneMethods.add_many root
                   [| Phaser.Upcast.ellipse base; Phaser.Upcast.image image |];
@@ -910,7 +926,10 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
           let _ = record.root##setPosition item.x item.y in
           let _ = record.image##setTexture item.url in
           self#actor_lighting#prepare (Phaser.Upcast.image record.image);
-          visibility#set ("item:" ^ item.key) self#items
+          visibility#set
+            (let js_text_part_1 = item.key in
+             {j|item:$(js_text_part_1)|j})
+            self#items
             (Phaser.Upcast.container record.root)
             (bounds (item.x -. 32.) (item.y -. 32.) (item.x +. 32.) (item.y +. 32.))
             (float_of_int ordinal))
@@ -923,7 +942,7 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
               Option.map (fun actor -> { unit with url = actor.data.url }) (Map.get actors unit.id))
           scene.units
       in
-      Performance_trace.measure "scene.actors" (fun () -> self#sync_units ready_units fog);
+      Performance_trace.measure {js|scene.actors|js} (fun () -> self#sync_units ready_units fog);
       Map.each actors (fun[@u] actor _ ->
           let _ = Set.add urls actor.image##texture##key in
           ());
@@ -932,17 +951,17 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
           ());
       self#draw_owners None;
       self#describe_inspection;
-      Performance_trace.instant "Battlefield workload"
+      Performance_trace.instant {js|Battlefield workload|js}
         ~args:
           (Performance_trace.obj
              [
-               ("tiles", Performance_trace.int (Array.length frame.tiles));
-               ("units", Performance_trace.int (Array.length scene.units));
-               ("items", Performance_trace.int (Array.length scene.items));
-               ( "lights",
+               ({js|tiles|js}, Performance_trace.int (Array.length frame.tiles));
+               ({js|units|js}, Performance_trace.int (Array.length scene.units));
+               ({js|items|js}, Performance_trace.int (Array.length scene.items));
+               ( {js|lights|js},
                  Performance_trace.int
                    (Array.length (Native.presentation frame.view.game).lighting.lights) );
-               ("fog", Performance_trace.int (Set.size fog));
+               ({js|fog|js}, Performance_trace.int (Set.size fog));
              ]);
       has_frame <- terrain_ready;
       last_visual <-
@@ -968,8 +987,8 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
           if not (Set.has live id) then (
             let _ = Map.delete actors id in
             let _ = Set.delete active_actors actor in
-            visibility#delete ("actor:" ^ id);
-            visibility#delete ("indicator:" ^ id);
+            visibility#delete {j|actor:$(id)|j};
+            visibility#delete {j|indicator:$(id)|j};
             native##tweens##killTweensOf (Phaser.Upcast.container actor.root);
             Option.iter (Transition_tween.kill native##tweens) actor.transition;
             let _ = actor.image##clearTint () in
@@ -986,7 +1005,7 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
                 | Some start -> start
                 | None -> if self#playback#holds id then infinity else now ()
               in
-              let key = "dying:" ^ id in
+              let key = {j|dying:$(id)|j} in
               let _ =
                 Map.set dying actor.root
                   {
@@ -1014,14 +1033,16 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
             | None ->
                 let source = Phaser.Texture.source_image (native##textures##get (frame_url unit)) in
                 if image_width source <> 64 || image_height source <> 64 then
-                  failwith ("Units must use native 64×64 artwork: " ^ frame_url unit);
+                  failwith
+                    (let js_text_part_1 = frame_url unit in
+                     {j|Units must use native 64×64 artwork: $(js_text_part_1)|j});
                 let root = native##add##container unit.x unit.y in
                 let _ = root##setDepth (20000. +. unit.y) in
                 let base = native##add##ellipse 0. 19. 38. 14. (color unit.color) in
                 let _ = base##setFillStyle (color unit.color) 0.5 in
                 let _ = base##setSmoothness 20 in
                 let _ =
-                  Phaser_actor_lighting.Pipeline_data.ellipse base "BattlefieldActorLighting"
+                  Phaser_actor_lighting.Pipeline_data.ellipse base {js|BattlefieldActorLighting|js}
                     { unlit = true; light_anchor = None; light_point = None }
                     false
                 in
@@ -1031,7 +1052,7 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
                 let _ = image##setOrigin 0. 0. in
                 let _ = image##setDisplaySize unit.size unit.size in
                 let _ =
-                  Phaser_actor_lighting.Pipeline_data.image image "BattlefieldActorLighting"
+                  Phaser_actor_lighting.Pipeline_data.image image {js|BattlefieldActorLighting|js}
                     {
                       unlit = false;
                       light_anchor = Some (Phaser.Upcast.container_point root);
@@ -1184,8 +1205,8 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
             (if pulse.t >= 1. then
                let _ = Map.delete pulses key in
                ());
-            if pulse.kind = "select" then self#draw_outlines (Some pulse.tile);
-            if pulse.kind = "capture" then self#draw_owners (Some pulse.tile);
+            if pulse.kind = {js|select|js} then self#draw_outlines (Some pulse.tile);
+            if pulse.kind = {js|capture|js} then self#draw_owners (Some pulse.tile);
             self#invalidate);
         Map.each dying (fun[@u] death root ->
             let start =
@@ -1252,10 +1273,14 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
                   y := !y -. ((1. -. t) *. 10.)
               | Some { kind = Hit; _ } -> x := !x +. (sin (t *. Float.pi *. 6.) *. (1. -. t) *. 4.)
               | _ -> ());
-              let pulse = Map.get pulses ("attack:" ^ unit.tile) in
+              let pulse =
+                Map.get pulses
+                  (let js_text_part_1 = unit.tile in
+                   {j|attack:$(js_text_part_1)|j})
+              in
               Option.iter
                 (fun pulse ->
-                  if pulse.kind = "attack" then x := !x +. (sin (pulse.t *. Float.pi) *. 7.))
+                  if pulse.kind = {js|attack|js} then x := !x +. (sin (pulse.t *. Float.pi) *. 7.))
                 pulse;
               let flash =
                 match transition with
@@ -1274,7 +1299,10 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
               let _ = actor.indicators##setAlpha !alpha in
               self#actor_lighting#prepare (Phaser.Upcast.image actor.image);
               if Option.is_none dying_actor then (
-                visibility#set ("actor:" ^ unit.id) self#actor_roots
+                visibility#set
+                  (let js_text_part_1 = unit.id in
+                   {j|actor:$(js_text_part_1)|j})
+                  self#actor_roots
                   (Phaser.Upcast.container actor.root)
                   (bounds
                      (!x -. (unit.size /. 2.))
@@ -1282,13 +1310,19 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
                      (!x +. (unit.size /. 2.))
                      (!y +. 26.))
                   actor.root##depth;
-                visibility#set ("indicator:" ^ unit.id) self#upper_indicators
+                visibility#set
+                  (let js_text_part_1 = unit.id in
+                   {j|indicator:$(js_text_part_1)|j})
+                  self#upper_indicators
                   (Phaser.Upcast.graphics actor.indicators)
                   (bounds (!x -. 31.) (!y -. 26.) (!x +. 31.) (!y +. 32.))
                   0.);
               if
                 Option.is_none transition
-                && not (Option.fold ~none:false ~some:(fun pulse -> pulse.kind = "attack") pulse)
+                && not
+                     (Option.fold ~none:false
+                        ~some:(fun pulse -> pulse.kind = {js|attack|js})
+                        pulse)
               then
                 let _ = Set.delete active_actors actor in
                 ());
@@ -1319,7 +1353,7 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
         Map.each hexes (fun[@u] hex id ->
             if not (Set.has live id) then (
               hex.root##destroy ();
-              visibility#delete ("hex:" ^ id);
+              visibility#delete {j|hex:$(id)|j};
               let _ = Map.delete hexes id in
               ())));
       Array.iter
@@ -1333,7 +1367,7 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
                       Option.fold ~none:false ~some:(fun old -> old == tile) hex.tile)
                     existing)
           then (
-            let classes = String.split_on_char ' ' tile.display.classes in
+            let classes = Array.to_list (Js.String.split ~sep:{js| |js} tile.display.classes) in
             let has value = List.mem value classes in
             let ink = ref 0x39472b
             and width = ref Phaser_hex_outline.idle_line_width
@@ -1346,32 +1380,43 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
                  then 0.14
                  else 0.3)
             in
-            if has "selected" then (
+            if has {js|selected|js} then (
               ink := 0xffe5a1;
               width := 3.);
-            if has "reachable" then (
+            if has {js|reachable|js} then (
               ink := 0x95bfd2;
               width := 2.4;
               alpha := 1.);
-            if has "target" then (
+            if has {js|target|js} then (
               ink := 0xdb8980;
               width := 3.;
               alpha := 1.);
-            if has "recruitable" then (
+            if has {js|recruitable|js} then (
               ink := 0x8ec7a2;
               width := 3.;
               alpha := 1.);
-            if has "objective" then (
-              ink := if has "reachable" || has "selected" then 0x99c8ec else 0xffe5a1;
-              if has "recruitable" then ink := 0x6fdec0;
+            if has {js|objective|js} then (
+              ink := if has {js|reachable|js} || has {js|selected|js} then 0x99c8ec else 0xffe5a1;
+              if has {js|recruitable|js} then ink := 0x6fdec0;
               width := 3.5;
               alpha := 1.);
             let highlighted =
-              Array.exists has [| "selected"; "reachable"; "target"; "recruitable"; "objective" |]
+              Array.exists has
+                [|
+                  {js|selected|js};
+                  {js|reachable|js};
+                  {js|target|js};
+                  {js|recruitable|js};
+                  {js|objective|js};
+                |]
             in
-            let pulse = Map.get pulses ("select:" ^ tile.terrain.id) in
+            let pulse =
+              Map.get pulses
+                (let js_text_part_1 = tile.terrain.id in
+                 {j|select:$(js_text_part_1)|j})
+            in
             (match pulse with
-            | Some { kind = "select"; t; _ } ->
+            | Some { kind = matched_text_0; t; _ } when matched_text_0 = {js|select|js} ->
                 if not highlighted then (
                   ink := 0xffe5a1;
                   width := 3.);
@@ -1380,8 +1425,8 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
                   else 1. -. (0.2 *. (t -. 0.55) /. 0.45)
             | _ -> ());
             let dash =
-              if has "objective" then Some (9., 5.)
-              else if has "recruitable" then Some (4., 3.)
+              if has {js|objective|js} then Some (9., 5.)
+              else if has {js|recruitable|js} then Some (4., 3.)
               else None
             in
             let hex =
@@ -1397,9 +1442,12 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
             in
             hex.outline#update tile.terrain.x tile.terrain.y !ink !width !alpha
               (highlighted
-              || Option.fold ~none:false ~some:(fun pulse -> pulse.kind = "select") pulse)
+              || Option.fold ~none:false ~some:(fun pulse -> pulse.kind = {js|select|js}) pulse)
               dash;
-            visibility#set ("hex:" ^ tile.terrain.id) self#outlines
+            visibility#set
+              (let js_text_part_1 = tile.terrain.id in
+               {j|hex:$(js_text_part_1)|j})
+              self#outlines
               (Phaser.Upcast.container hex.root)
               (bounds (tile.terrain.x -. 42.) (tile.terrain.y -. 45.) (tile.terrain.x +. 42.)
                  (tile.terrain.y +. 45.))
@@ -1424,12 +1472,13 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
         Map.each owner_markers (fun[@u] marker id ->
             if not (Set.has live id) then (
               marker##destroy ();
-              visibility#delete ("owner:" ^ id);
+              visibility#delete {j|owner:$(id)|j};
               let _ = Map.delete owner_markers id in
-              match Map.get pulses ("capture:" ^ id) with
-              | Some ({ kind = "capture"; _ } as pulse) ->
+              match Map.get pulses {j|capture:$(id)|j} with
+              | Some ({ kind = matched_text_1; _ } as pulse) when matched_text_1 = {js|capture|js}
+                ->
                   Pulse_tween.kill native##tweens pulse;
-                  let _ = Map.delete pulses ("capture:" ^ id) in
+                  let _ = Map.delete pulses {j|capture:$(id)|j} in
                   ()
               | _ -> ())));
       Array.iter
@@ -1454,8 +1503,13 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
                   marker
             in
             let radius =
-              match Map.get pulses ("capture:" ^ tile.terrain.id) with
-              | Some { kind = "capture"; t; _ } -> 5. +. (sin (t *. Float.pi) *. 3.)
+              match
+                Map.get pulses
+                  (let js_text_part_1 = tile.terrain.id in
+                   {j|capture:$(js_text_part_1)|j})
+              with
+              | Some { kind = matched_text_2; t; _ } when matched_text_2 = {js|capture|js} ->
+                  5. +. (sin (t *. Float.pi) *. 3.)
               | _ -> 5.
             in
             let fill = color tile.display.owner_color in
@@ -1474,7 +1528,10 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
                   ~some:(fun (hex : outline) -> hex.ordinal)
                   (Map.get hexes tile.terrain.id)
               in
-              visibility#set ("owner:" ^ tile.terrain.id) self#owners (Phaser.Upcast.ellipse marker)
+              visibility#set
+                (let js_text_part_1 = tile.terrain.id in
+                 {j|owner:$(js_text_part_1)|j})
+                self#owners (Phaser.Upcast.ellipse marker)
                 (bounds (tile.terrain.x +. 15.) (tile.terrain.y +. 9.) (tile.terrain.x +. 31.)
                    (tile.terrain.y +. 25.))
                 (float_of_int ordinal))
@@ -1486,16 +1543,15 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
       let label =
         match tile with
         | Some tile when Native.fogged frame.view.game tile.terrain.id ->
-            "Fog-covered terrain, column "
-            ^ string_of_int (Int32.to_int tile.display.tile.col + 1)
-            ^ ", row "
-            ^ string_of_int (Int32.to_int tile.display.tile.row + 1)
+            let js_text_part_1 = string_of_int (Int32.to_int tile.display.tile.col + 1) in
+            let js_text_part_3 = string_of_int (Int32.to_int tile.display.tile.row + 1) in
+            {j|Fog-covered terrain, column $(js_text_part_1), row $(js_text_part_3)|j}
         | Some tile -> tile.display.label
-        | None -> "Battlefield"
+        | None -> {js|Battlefield|js}
       in
       describe label;
       Option.iter
-        (fun canvas -> canvas##setAttribute "aria-label" (Utf8.to_js ("Battlefield. " ^ label)))
+        (fun canvas -> canvas##setAttribute {js|aria-label|js} {j|Battlefield. $(label)|j})
         (Js.Nullable.toOption native##game##canvas)
 
     method pulse ?sound ?sound_owner ?(at = now ()) ?duration tile_id kind =
@@ -1506,25 +1562,27 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
             ())
           sound;
         if not self#frame.reduced_motion then (
-          let duration = Option.value ~default:(if kind = "select" then 180. else 300.) duration in
-          let key = kind ^ ":" ^ tile_id in
+          let duration =
+            Option.value ~default:(if kind = {js|select|js} then 180. else 300.) duration
+          in
+          let key = {j|$(kind):$(tile_id)|j} in
           Option.iter
             (fun previous ->
               Pulse_tween.kill native##tweens previous;
               let _ = Map.delete pulses key in
-              if previous.kind = "capture" then self#draw_owners (Some tile_id);
-              if previous.kind = "select" then self#draw_outlines (Some tile_id))
+              if previous.kind = {js|capture|js} then self#draw_owners (Some tile_id);
+              if previous.kind = {js|select|js} then self#draw_outlines (Some tile_id))
             (Map.get pulses key);
-          let owner = if kind = "select" then None else self#action_owner_option in
+          let owner = if kind = {js|select|js} then None else self#action_owner_option in
           let _ =
             Map.set pulses key { kind; tile = tile_id; t = 0.; start = at; duration; owner }
           in
-          if kind = "attack" then
+          if kind = {js|attack|js} then
             Map.each actors (fun[@u] actor _ ->
                 if actor.data.tile = tile_id then
                   let _ = Set.add active_actors actor in
                   ());
           self#invalidate;
-          if kind = "select" then self#draw_outlines (Some tile_id);
-          if kind = "capture" then self#draw_owners (Some tile_id)))
+          if kind = {js|select|js} then self#draw_outlines (Some tile_id);
+          if kind = {js|capture|js} then self#draw_owners (Some tile_id)))
   end

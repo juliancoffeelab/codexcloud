@@ -16,12 +16,16 @@ let prepare factory =
             map_id = map.id;
             plan;
             key = plan.key;
-            asset_key = Terrain_plan.asset_key (map.id ^ ":" ^ Js.Float.toString map.revision);
+            asset_key =
+              Terrain_plan.asset_key
+                (let js_text_part_0 = map.id in
+                 let js_text_part_2 = Js.Float.toString map.revision in
+                 {j|$(js_text_part_0):$(js_text_part_2)|j});
           })
         (Catalog.raw catalog).maps)
 
 let factory = function
   | Ok factory -> factory
-  | Error error -> Js.Exn.raiseError (Utf8.to_js (Native.message (Native.Engine error)))
+  | Error error -> Js.Exn.raiseError (Native.message (Native.Engine error))
 
 let plans () = prepare (factory (Domain.NativeEngineFactory.create ()))

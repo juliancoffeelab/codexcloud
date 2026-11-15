@@ -1,3 +1,5 @@
+(* The SDK loader and its diagnostics still use native OCaml byte strings.
+   Game data uses Text/js_value; keep these conversions at this SDK boundary. *)
 (* Native OCaml strings hold UTF-8 bytes, while DOM/JSON hold UTF-16. Keep this
    small adapter independent of the lazily loaded WASM runtime: the loading shell
    and the build-time terrain renderer both use it before Rust/WASM is initialized. *)
@@ -19,7 +21,7 @@ external decode : decoder -> buffer -> string = "decode" [@@mel.send]
 external encode : encoder -> string -> buffer = "encode" [@@mel.send]
 external code_at : string -> int -> int = "charCodeAt" [@@mel.send]
 
-let decoder = create_decoder "utf-8" [%mel.obj { fatal = true; ignoreBOM = true }]
+let decoder = create_decoder {js|utf-8|js} [%mel.obj { fatal = true; ignoreBOM = true }]
 let encoder = create_encoder ()
 
 let ascii value =

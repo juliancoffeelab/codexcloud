@@ -62,21 +62,30 @@ let panel = function
   | Open { content = Unit details; _ } -> Presentation.Details details
   | Open { content = Attack (a, b, key); _ } -> Presentation.Combat (a, b, key)
   | Open { content = Combat_report report; _ } ->
-      Presentation.Combat (report.combat.units.(0), report.combat.units.(1), "report")
+      Presentation.Combat (report.combat.units.(0), report.combat.units.(1), {js|report|js})
   | Open { content = Outcome (title, description); _ } -> Presentation.Outcome (title, description)
 
 let terrain = function Closed -> None | Open contents -> contents.terrain
 let ground_items = function Closed -> [||] | Open contents -> contents.ground_items
 
 let reveal_key = function
-  | Closed -> "closed"
+  | Closed -> {js|closed|js}
   | Open { content = Terrain; terrain; _ } ->
-      "terrain:"
-      ^ Option.fold ~none:""
+      let js_text_part_1 =
+        Option.fold ~none:{js||js}
           ~some:(fun (panel : Presentation.terrain_panel) -> panel.tile.id)
           terrain
-  | Open { content = Unit details; _ } -> "unit:" ^ details.unit.id
-  | Open { content = Attack (a, b, _); _ } -> "attack:" ^ a.id ^ ":" ^ b.id
+      in
+      {j|terrain:$(js_text_part_1)|j}
+  | Open { content = Unit details; _ } ->
+      let js_text_part_1 = details.unit.id in
+      {j|unit:$(js_text_part_1)|j}
+  | Open { content = Attack (a, b, _); _ } ->
+      let js_text_part_1 = a.id in
+      let js_text_part_3 = b.id in
+      {j|attack:$(js_text_part_1):$(js_text_part_3)|j}
   | Open { content = Combat_report report; _ } ->
-      "report:" ^ report.combat.units.(0).id ^ ":" ^ report.combat.units.(1).id
-  | Open { content = Outcome _; _ } -> "outcome"
+      let js_text_part_1 = report.combat.units.(0).id in
+      let js_text_part_3 = report.combat.units.(1).id in
+      {j|report:$(js_text_part_1):$(js_text_part_3)|j}
+  | Open { content = Outcome _; _ } -> {js|outcome|js}

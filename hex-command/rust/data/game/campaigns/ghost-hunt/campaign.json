@@ -16,7 +16,7 @@
       "name": "Captain Boots"
     }
   ],
-  "human": false,
+  "tags": ["concealment"],
   "ending": [],
   "stages": ["stages/darkness-hunters-arena/stage.json"]
 }

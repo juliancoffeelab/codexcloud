@@ -24,6 +24,11 @@ body {
   margin: 0;
   padding: 0 var(--page-padding);
 }
+/* Radix's margin-based scroll lock resets body padding. Keep the page gutters
+   that the battlefield's negative margins depend on while a modal is open. */
+body[data-scroll-locked] {
+  padding-inline: var(--page-padding) !important;
+}
 main {
   max-width: 1400px;
   margin: auto;
@@ -372,7 +377,7 @@ aside {
   margin-top: 12px;
   width: 100%;
 }
-dialog {
+.modal-content {
   background: var(--surface);
   color: var(--text);
   width: calc(100% - 32px);
@@ -384,14 +389,14 @@ dialog {
   padding: 22px;
   box-shadow: 0 16px 70px #0008;
 }
-dialog::backdrop {
+.modal-overlay {
   background: #090e09bb;
 }
-dialog h2 {
+:where(.modal-content) h2 {
   font-size: 24px;
   font-weight: normal;
 }
-dialog p {
+:where(.modal-content) p {
   font: 14px/1.6 system-ui;
   color: var(--muted);
   margin: 14px 0;
@@ -533,7 +538,7 @@ summary {
 .panel[hidden] {
   display: none;
 }
-dialog .panel {
+:where(.modal-content) .panel {
   scroll-margin-top: 90px;
 }
 .terrain-detail {
@@ -1568,4 +1573,24 @@ button:active:not(:disabled) {
 }
 .concealment-status.revealed {
   color: #d5b274;
+}
+
+/* Radix portals form independent stacking contexts for nested modal layers. */
+.modal-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+}
+.modal-content {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  height: fit-content;
+  pointer-events: auto;
 }

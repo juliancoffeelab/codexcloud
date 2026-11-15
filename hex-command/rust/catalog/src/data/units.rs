@@ -1,6 +1,7 @@
 //! Resolved unit rules and serializable unit snapshots.
 
 use super::*;
+use crate::data::Text;
 use serde::{Deserialize, Serialize};
 /// The human and automatic turn phases. Factions define diplomatic allegiance.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -94,8 +95,8 @@ impl DamageType {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct Weapon {
-    pub id: String,
-    pub name: String,
+    pub id: Text,
+    pub name: Text,
     pub damage: i32,
     /// Uniform raw roll is damage ± spread, inclusive; omitted means fixed damage.
     #[serde(default)]
@@ -106,7 +107,7 @@ pub struct Weapon {
     pub damage_type: DamageType,
     pub category: Category,
     pub range: u8,
-    pub sound: String,
+    pub sound: Text,
     /// Percentage of actual HP removed restored to a surviving wielder.
     #[serde(default)]
     pub drain: u8,
@@ -125,9 +126,9 @@ pub struct Item {
     pub perception: Option<UnitPerception>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub armor: Option<ItemArmor>,
-    pub id: String,
-    pub name: String,
-    pub description: String,
+    pub id: Text,
+    pub name: Text,
+    pub description: Text,
     pub attacks: Vec<Weapon>,
     /// A carried aura, applied at the start of the carrier's allied turn.
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -310,10 +311,10 @@ impl UnitRole {
 pub struct UnitRule {
     #[serde(default)]
     pub perception: UnitPerception,
-    pub ability: String,
-    pub description: String,
-    pub id: String,
-    pub name: String,
+    pub ability: Text,
+    pub description: Text,
+    pub id: Text,
+    pub name: Text,
     pub hp: i32,
     pub r#move: usize,
     pub damage: i32,
@@ -336,7 +337,7 @@ pub struct UnitRule {
     pub family: Family,
     pub experience_needed: Option<u32>,
     #[serde(default)]
-    pub advances_to: Vec<String>,
+    pub advances_to: Vec<Text>,
     pub costs: Vec<Option<u16>>,
     pub environment: Vec<[[i32; 3]; 2]>,
 }
@@ -349,15 +350,15 @@ pub struct UnitRule {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct PublicUnit {
-    pub revealed_to: Vec<String>,
+    pub revealed_to: Vec<Text>,
     pub perception_effects: Vec<PerceptionEffect>,
-    pub faction: String,
+    pub faction: Text,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<Item>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub ai_group: Option<String>,
-    pub id: String,
-    pub r#type: String,
+    pub ai_group: Option<Text>,
+    pub id: Text,
+    pub r#type: Text,
     pub tile: Hex,
     pub hp: i32,
     pub moved: bool,
@@ -365,7 +366,7 @@ pub struct PublicUnit {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub experience: Option<u32>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub character: Option<String>,
+    pub character: Option<Text>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -412,9 +413,9 @@ impl Unit {
     derive(hex_catalog_freeze_derive::Freeze)
 )]
 pub struct LastCombat {
-    pub attacker_id: String,
-    pub attack_id: String,
-    pub sound: String,
+    pub attacker_id: Text,
+    pub attack_id: Text,
+    pub sound: Text,
 }
 /// A surviving unit carried between campaign chapters with its earned experience.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -427,10 +428,10 @@ pub struct LastCombat {
 pub struct Veteran {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<Item>,
-    pub r#type: String,
+    pub r#type: Text,
     pub experience: u32,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub character: Option<String>,
+    pub character: Option<Text>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub role: Option<Role>,
 }

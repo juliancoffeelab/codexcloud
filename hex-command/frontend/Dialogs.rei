@@ -1,4 +1,4 @@
-/** Native modal lifetimes and immutable authored selection menus. */
+/** Controlled Radix modal lifetimes and immutable authored selection menus. */
 module Settings: {
   type screen =
     | Hub
@@ -7,15 +7,16 @@ module Settings: {
   let make:
     (
       ~session: Session.t,
-      ~showHiddenMaps: bool,
-      ~onHiddenMapsChange: bool => unit,
+      ~allowNonHumanMaps: bool,
+      ~onNonHumanMapsChange: bool => unit,
       ~onFollowAiChange: bool => unit,
       ~playtestPreferenceError: string,
       ~view: Session.model,
       ~voiceEnabled: bool,
       ~onVoiceChange: bool => unit,
       ~actions: Session.actions,
-      ~dialog: React.ref(Js.Nullable.t(Dom.element)),
+      ~opened: bool,
+      ~onOpenChange: bool => unit,
       ~onNewBattle: unit => unit,
       ~onRepair: unit => unit,
       ~openKey: int=?,
@@ -25,7 +26,8 @@ module Settings: {
       ~commanderArrowError: string,
       ~onCommanderArrowChange: bool => unit,
       ~enemyDetailsError: string,
-      ~onEnemyDetailsChange: bool => unit
+      ~onEnemyDetailsChange: bool => unit,
+      ~children: React.element
     ) =>
     React.element;
 };

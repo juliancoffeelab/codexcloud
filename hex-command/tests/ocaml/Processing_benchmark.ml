@@ -4,14 +4,14 @@ let require = function Ok value -> value | Error error -> failwith (Native.messa
    in compiled OCaml; the runner supplies ordinary JSON and records host strings. *)
 let options policy : Domain.ai_options =
   let policy =
-    match Utf8.of_js policy with
-    | "classic" -> Domain.Policy.Classic
-    | "rush" -> Domain.Policy.Rush
-    | "balanced" -> Domain.Policy.Balanced
-    | "rotated" -> Domain.Policy.Rotated
-    | "situational" -> Domain.Policy.Situational
-    | "predictor" -> Domain.Policy.Predictor
-    | _ -> invalid_arg "Unknown benchmark policy"
+    match policy with
+    | matched_text_0 when matched_text_0 = {js|classic|js} -> Domain.Policy.Classic
+    | matched_text_1 when matched_text_1 = {js|rush|js} -> Domain.Policy.Rush
+    | matched_text_2 when matched_text_2 = {js|balanced|js} -> Domain.Policy.Balanced
+    | matched_text_3 when matched_text_3 = {js|rotated|js} -> Domain.Policy.Rotated
+    | matched_text_4 when matched_text_4 = {js|situational|js} -> Domain.Policy.Situational
+    | matched_text_5 when matched_text_5 = {js|predictor|js} -> Domain.Policy.Predictor
+    | _ -> invalid_arg {js|Unknown benchmark policy|js}
   in
   { blocks = None; policy; diplomacy = Domain.Diplomacy.Diplomatic; recruitment_limit = None }
 
@@ -27,7 +27,7 @@ let phase battle options =
     state.turn = Domain.Turn_phase.Ai && state.winner = None
   in
   while enemy () do
-    if !steps >= 1000 then failwith "Benchmark phase exceeded 1000 commands";
+    if !steps >= 1000 then failwith {js|Benchmark phase exceeded 1000 commands|js};
     incr steps;
     let _ = require (Native.enemy_step battle options) in
     ()

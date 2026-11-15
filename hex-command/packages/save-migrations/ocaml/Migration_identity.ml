@@ -1,9 +1,10 @@
 (* Only a fully migrated save establishes ownership. Literal metadata claims
    remain untrusted evidence; they can prevent deletion, never authorize it. *)
 open Migration_json
+open Migration_json.Host
 module T = Historical_types
 
-type entry = Flash_entry of T.V48.current_entry | Turn_entry of T.V48.turn_entry
+type entry = Flash_entry of T.V49.current_entry | Turn_entry of T.V49.turn_entry
 type origin = Index | Payload | Migrated_payload
 
 type claim = {
@@ -21,16 +22,15 @@ let entry_round = function Flash_entry entry -> entry.round | Turn_entry entry -
 let is_turn = function Turn_entry _ -> true | Flash_entry _ -> false
 
 let entry_to_json = function
-  | Flash_entry value -> Historical_codec.encode_save37_progress_entry_member0 value
-  | Turn_entry value -> Historical_codec.encode_history4_entries_item value
+  | Flash_entry value -> Historical_codec.V49.current_entry_to_json value
+  | Turn_entry value -> Historical_codec.V49.turn_entry_to_json value
 
-let entry_of_save : T.V48.t -> entry = function
+let entry_of_save : T.V49.t -> entry = function
   | `Current value -> Flash_entry value.progress.entry
   | `Turn value -> Turn_entry value.progress.entry
 
 let readable_string value key =
-  if not (is_record value) then None
-  else Option.map Migration_utf8.of_js (Option.bind (get value key) Js.Json.decodeString)
+  if not (is_record value) then None else Option.bind (get value key) Js.Json.decodeString
 
 let version value =
   if not (is_record value) then None else Option.bind (get value "version") Js.Json.decodeNumber

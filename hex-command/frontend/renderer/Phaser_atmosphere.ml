@@ -45,9 +45,9 @@ let halo game =
           if not same then (
             native##flush ();
             previous := Some data);
-          let _ = native##set1f "uFixture" (if data.fixture then 1. else 0.) in
+          let _ = native##set1f {js|uFixture|js} (if data.fixture then 1. else 0.) in
           let _ =
-            native##set3f "uGlow"
+            native##set3f {js|uGlow|js}
               (float_of_int data.color.(0) /. 255.)
               (float_of_int data.color.(1) /. 255.)
               (float_of_int data.color.(2) /. 255.)
@@ -77,17 +77,18 @@ let fog_blur game =
           if not (Option.fold ~none:false ~some:(fun old -> old = data) !previous) then (
             native##flush ();
             previous := Some data);
-          let _ = native##set2f "uStep" data.x data.y in
+          let _ = native##set2f {js|uStep|js} data.x data.y in
           let _ =
-            native##set4f "uRegion" data.region.(0) data.region.(1) data.region.(2) data.region.(3)
+            native##set4f {js|uRegion|js} data.region.(0) data.region.(1) data.region.(2)
+              data.region.(3)
           in
-          let _ = native##set2f "uExtent" data.extent.(0) data.extent.(1) in
+          let _ = native##set2f {js|uExtent|js} data.extent.(0) data.extent.(1) in
           let x, y =
             match data.capture with None -> (0., 0.) | Some capture -> (capture.(0), capture.(1))
           in
-          let _ = native##set2f "uCapture" x y in
-          let _ = native##set1fv "uWeights" weights in
-          let _ = native##set1fv "uOffsets" offsets in
+          let _ = native##set2f {js|uCapture|js} x y in
+          let _ = native##set1fv {js|uWeights|js} weights in
+          let _ = native##set1fv {js|uOffsets|js} offsets in
           ())
         object_)
     ()
@@ -105,9 +106,9 @@ let fog_mask game =
       Option.iter
         (fun object_ ->
           let data = Mask.get object_ in
-          let _ = native##set2f "uWorldSize" data.width data.height in
-          let _ = native##set2f "uWorldOrigin" data.origin_x data.origin_y in
-          let _ = native##set2f "uExtent" data.extent.(0) data.extent.(1) in
+          let _ = native##set2f {js|uWorldSize|js} data.width data.height in
+          let _ = native##set2f {js|uWorldOrigin|js} data.origin_x data.origin_y in
+          let _ = native##set2f {js|uExtent|js} data.extent.(0) data.extent.(1) in
           ())
         object_)
     ()

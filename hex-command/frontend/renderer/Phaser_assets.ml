@@ -42,18 +42,18 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
       let completed = fun[@u] key -> self#completed key in
       let errored = fun[@u] file -> self#errored file in
       let schedule = fun[@u] () -> self#schedule in
-      let _ = scene##events##on "preupdate" admit in
+      let _ = scene##events##on {js|preupdate|js} admit in
       let unbind = Terrain_preview.bind hud self#request in
-      on_key scene##load "filecomplete" completed;
-      on_error scene##load "loaderror" errored;
-      let _ = scene##load##on "complete" schedule in
+      on_key scene##load {js|filecomplete|js} completed;
+      on_error scene##load {js|loaderror|js} errored;
+      let _ = scene##load##on {js|complete|js} schedule in
       detach <-
         (fun () ->
           unbind ();
-          let _ = scene##events##off "preupdate" admit in
-          off_key scene##load "filecomplete" completed;
-          off_error scene##load "loaderror" errored;
-          let _ = scene##load##off "complete" schedule in
+          let _ = scene##events##off {js|preupdate|js} admit in
+          off_key scene##load {js|filecomplete|js} completed;
+          off_error scene##load {js|loaderror|js} errored;
+          let _ = scene##load##off {js|complete|js} schedule in
           ())
 
     method files = files
@@ -171,16 +171,18 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
       let removed = splice decoded index 1 in
       let file = removed.(0) in
       if self#owns file then (
-        resources#remove ("pending:" ^ file##key);
+        resources#remove
+          (let js_text_part_1 = file##key in
+           {j|pending:$(js_text_part_1)|j});
         self#check_image file##key (Phaser_files.image_data file);
-        Performance_trace.measure "Phaser image admission" (fun () -> Phaser_files.admit file))
+        Performance_trace.measure {js|Phaser image admission|js} (fun () -> Phaser_files.admit file))
 
     method private admit_adoption key image =
       let _ = Map.delete adoptions key in
       if Map.has plan key && not (scene##textures##exists key) then (
         self#check_image key image;
         let _ =
-          Performance_trace.measure "Phaser image admission" (fun () ->
+          Performance_trace.measure {js|Phaser image admission|js} (fun () ->
               scene##textures##addImage key image)
         in
         let _ = Set.add images key in
@@ -256,8 +258,9 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
           expected
       then
         failwith
-          ("Invalid natural artwork dimensions: " ^ key ^ "; received " ^ string_of_int width ^ "×"
-         ^ string_of_int height);
+          (let js_text_part_3 = string_of_int width in
+           let js_text_part_5 = string_of_int height in
+           {j|Invalid natural artwork dimensions: $(key); received $(js_text_part_3)×$(js_text_part_5)|j});
       resources#image key image
 
     method retire_image key =
@@ -351,7 +354,9 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
               then entry := Some candidate
             done;
             let entry =
-              match !entry with Some entry -> entry | None -> failwith "Asset FIFO count mismatch"
+              match !entry with
+              | Some entry -> entry
+              | None -> failwith {js|Asset FIFO count mismatch|js}
             in
             pending.(priority) <- pending.(priority) - 1;
             let resource = entry.resource in
@@ -367,8 +372,9 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
                                if (not disposed) && self#owns file then (
                                  let image = Phaser_files.image_data file in
                                  resources#set
-                                   ("pending:" ^ file##key)
-                                   "decoded pending images"
+                                   (let js_text_part_1 = file##key in
+                                    {j|pending:$(js_text_part_1)|j})
+                                   {js|decoded pending images|js}
                                    (float_of_int (Phaser_dom.natural_width image)
                                    *. float_of_int (Phaser_dom.natural_height image)
                                    *. 4.)
@@ -380,7 +386,9 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
                      | None ->
                          self#failure resource
                            {
-                             Phaser_files.message = "Web Audio unavailable for " ^ resource.key;
+                             Phaser_files.message =
+                               (let js_text_part_1 = resource.key in
+                                {j|Web Audio unavailable for $(js_text_part_1)|j});
                              cause = None;
                            };
                          None
@@ -391,8 +399,9 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
                                 self#failure resource
                                   {
                                     message =
-                                      "Audio preparation failed: " ^ resource.key ^ "\n"
-                                      ^ Phaser_files.describe cause;
+                                      (let js_text_part_1 = resource.key in
+                                       let js_text_part_3 = Phaser_files.describe cause in
+                                       {j|Audio preparation failed: $(js_text_part_1)\n$(js_text_part_3)|j});
                                     cause = cause.cause;
                                   })))
                in
@@ -412,7 +421,7 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
     method private completed key =
       if Map.has files key && not disposed then (
         let completed_file = Option.get (Map.get files key) in
-        Boot_process.resource ~key ~url:completed_file##src ~phase:"resource-ready";
+        Boot_process.resource ~key ~url:completed_file##src ~phase:{js|resource-ready|js};
         let _ = Map.delete files key in
         microtask (fun () -> Phaser_files.settle scene##load completed_file);
         let resource = Map.get plan key in
@@ -421,7 +430,7 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
         | Some { kind = Audio; priority; _ } ->
             if priority = 1 then audio_loaded <- audio_loaded + 1;
             let buffer = scene##cache##audio##get key in
-            resources#set key "decoded audio"
+            resources#set key {js|decoded audio|js}
               (float_of_int (Phaser_files.audio_length buffer)
               *. float_of_int (Phaser_files.audio_channels buffer)
               *. 4.)
@@ -451,8 +460,9 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
                 | None ->
                     {
                       Phaser_files.message =
-                        "Resource failed: " ^ file##key ^ " (" ^ file##src
-                        ^ "); download or decode error";
+                        (let js_text_part_1 = file##key in
+                         let js_text_part_3 = file##src in
+                         {j|Resource failed: $(js_text_part_1) ($(js_text_part_3)); download or decode error|j});
                       cause = None;
                     }
               in
@@ -537,7 +547,7 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
     method private cancel key file =
       let _ = Map.delete files key in
       decoded <- Array_ext.filter (fun (file : Phaser.file) -> file##key <> key) decoded;
-      resources#remove ("pending:" ^ key);
+      resources#remove {j|pending:$(key)|j};
       (match Map.get states key with
       | Some entry when (not disposed) && entry.state = Active && Map.has plan key ->
           self#enqueue entry
@@ -551,6 +561,8 @@ class assets (scene : Phaser.scene) (resources : Phaser_resources.resources)
       Map.clear adoptions;
       Map.each files (fun[@u] file key -> self#cancel key file);
       Map.each waiters (fun[@u] waiting _ ->
-          Array.iter (fun waiter -> waiter.reject (Failure "Artwork preparation canceled")) waiting);
+          Array.iter
+            (fun waiter -> waiter.reject (Failure {js|Artwork preparation canceled|js}))
+            waiting);
       Map.clear waiters
   end

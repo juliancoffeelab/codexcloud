@@ -41,9 +41,9 @@ let create () = create_raw (fun[@u] name args -> Performance_trace.instant ~args
 
 let line (value : Domain.dialogue) =
   {
-    character = Utf8.to_js (Option.value ~default:"" value.character);
-    speaker = Utf8.to_js value.speaker;
-    text = Utf8.to_js value.text;
+    character = Option.value ~default:{js||js} value.character;
+    speaker = value.speaker;
+    text = value.text;
   }
 
 let speak t scope lines index reveal =
@@ -61,9 +61,9 @@ let prepare_mission t scope catalog view =
       | Domain.Speech.Line value ->
           [
             {
-              character = Utf8.to_js (Option.value ~default:"" value.character);
-              speaker = Utf8.to_js (Option.value ~default:"" value.speaker);
-              text = Utf8.to_js value.text;
+              character = Option.value ~default:{js||js} value.character;
+              speaker = Option.value ~default:{js||js} value.speaker;
+              text = value.text;
             };
           ]
       | Domain.Speech.Branch branch -> speech branch.dialogue @ speech branch.alternative)

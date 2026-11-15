@@ -3,10 +3,8 @@ import { cellKey } from "./hex-fixture.mjs";
 // @vitest-environment jsdom
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, test, vi } from "vitest";
-import React from "preact/compat";
-import { options as preactOptions } from "preact";
-import { act } from "preact/test-utils";
-import { createRoot } from "preact/compat/client";
+import React, { act } from "react";
+import { createRoot } from "react-dom/client";
 import * as RawApp from "@frontend/App";
 import * as Boot from "@frontend/Phaser_boot";
 import * as Action from "@frontend/Action_presentation";
@@ -86,44 +84,17 @@ const { terrainManifest, rendering } = vi.hoisted(() => ({
 }));
 vi.mock("virtual:terrain-prebuilt", () => ({ default: terrainManifest }));
 let root, host, session;
-let restoreDialogs;
 let restoreCanvasTransfer;
 let restoreScroll;
 let applicationCleanup;
 beforeEach(() => {
   audio = Sound.create();
   renderer = Boot.start(audio);
-  const prototype = HTMLDialogElement.prototype;
-  const previous = ["showModal", "close"].map((name) => [
-    name,
-    Object.getOwnPropertyDescriptor(prototype, name),
-  ]);
-  Object.defineProperties(prototype, {
-    showModal: {
-      configurable: true,
-      value() {
-        this.setAttribute("open", "");
-      },
-    },
-    close: {
-      configurable: true,
-      value() {
-        this.removeAttribute("open");
-        this.dispatchEvent(new Event("close"));
-      },
-    },
-  });
   const oldScroll = Object.getOwnPropertyDescriptor(Element.prototype, "scrollIntoView");
   Object.defineProperty(Element.prototype, "scrollIntoView", { configurable: true, value() {} });
   restoreScroll = () => {
     if (oldScroll) Object.defineProperty(Element.prototype, "scrollIntoView", oldScroll);
     else Reflect.deleteProperty(Element.prototype, "scrollIntoView");
-  };
-  restoreDialogs = () => {
-    for (const [name, descriptor] of previous) {
-      if (descriptor) Object.defineProperty(prototype, name, descriptor);
-      else Reflect.deleteProperty(prototype, name);
-    }
   };
   rendering.failed = false;
   rendering.workers.length = 0;
@@ -172,16 +143,19 @@ afterEach(async () => {
   root = void 0;
   session = void 0;
   applicationCleanup = void 0;
-  restoreDialogs();
   restoreCanvasTransfer();
   restoreScroll();
 });
 function element(selector) {
-  return required(host.querySelector(selector));
+  return required(document.querySelector(selector));
 }
 async function click(selector) {
   await act(async () => {
-    element(selector).dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    const control = element(selector);
+    control.focus();
+    control.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, button: 0 }));
+    control.dispatchEvent(new MouseEvent("mouseup", { bubbles: true, button: 0 }));
+    control.dispatchEvent(new MouseEvent("click", { bubbles: true, button: 0 }));
   });
 }
 test("The HUD keeps one native canvas through a session replacement and disposes it on unmount", async () => {
@@ -220,47 +194,43 @@ test("The real embedding mounts native presentation, browser tools and reusable 
   assert.equal((await tools.get("get_battle_state").execute()).mapId, "mirror");
   assert.equal(element("#map").getAttribute("data-phaser-battlefield"), "");
   assert.equal(
-    host.querySelector(".new-game-dialog .setup-map-preview"),
+    document.querySelector(".new-game-dialog .setup-map-preview"),
     null,
     "Closed map choices do not construct hidden previews",
   );
   await click("#settings-button");
   await click("#new-game");
   assert.ok(element(".new-game-dialog .ng-choice"));
-  assert.equal(host.querySelector(".choice-dialog"), null, "New Game has no nested picker dialogs");
+  assert.equal(
+    document.querySelector(".choice-dialog"),
+    null,
+    "New Game has no nested picker dialogs",
+  );
   await click(".ng-modes button:nth-child(2)");
   assert.ok(element(".new-game-dialog .setup-map-preview polygon"));
   await click(".ng-choice");
-  const strip = element('.ng-strip[aria-label="Your race"]');
-  const choices = [...strip.querySelectorAll('[role="radio"]')];
-  await act(async () => {
-    choices[0].focus();
-    choices[0].dispatchEvent(new KeyboardEvent("keydown", { key: "End", bubbles: true }));
-  });
-  assert.equal(document.activeElement, choices.at(-1));
-  assert.equal(choices.at(-1).getAttribute("aria-checked"), "true");
+  assert.equal(
+    document.querySelector('.ng-strip[aria-label="Your race"]'),
+    null,
+    "Maps with starting armies keep their authored roster",
+  );
   await click(".ng-start-footer button:first-child");
   await click(".ng-browse-footer > button");
   assert.equal(
-    host.querySelector(".new-game-dialog .setup-map-preview"),
+    document.querySelector(".new-game-dialog .setup-map-preview"),
     null,
     "Closing releases preview nodes",
   );
   await click("#new-game");
-  await act(async () => element(".new-game-dialog").dispatchEvent(new Event("close")));
-  assert.ok(
-    host.querySelector(".new-game-dialog .ng-choice"),
-    "A stale close event cannot clear a reopened dialog",
-  );
-  await act(async () => element(".new-game-dialog").close());
-  assert.equal(host.querySelector(".new-game-dialog .ng-choice"), null);
+  await click(".new-game-dialog button[aria-label^='Close']");
+  assert.equal(document.querySelector(".new-game-dialog .ng-choice"), null);
   await click("#settings-button");
   await click("#new-game");
   await click(".ng-choice");
   assert.ok(element(".ng-campaign-info"));
-  await act(async () => element(".new-game-dialog").close());
-  assert.equal(host.querySelector(".ng-campaign-info"), null);
-  assert.equal(host.querySelector(".new-game-dialog .setup-map-preview"), null);
+  await click(".new-game-dialog button[aria-label^='Close']");
+  assert.equal(document.querySelector(".ng-campaign-info"), null);
+  assert.equal(document.querySelector(".new-game-dialog .setup-map-preview"), null);
   const cleanup = required(applicationCleanup);
   assert.doesNotThrow(cleanup);
   assert.doesNotThrow(cleanup);
@@ -295,7 +265,7 @@ test("Startup and live controls share their structure, and inspection panels ope
     loadingFrame = frameStructure();
   assert.equal(element("#gold").textContent?.trim(), "\u2014");
   assert.equal(element("#settings-button").disabled, true);
-  assert.equal(host.querySelector("aside"), null);
+  assert.equal(document.querySelector("aside"), null);
   assert.equal(revealMap.mock.calls.length, 0);
   session = await Session.create_with_audio(async () => {}, audio, factory);
   const mounted = session;
@@ -312,7 +282,7 @@ test("Startup and live controls share their structure, and inspection panels ope
   assert.equal(element("#end-turn").disabled, element("#map").getAttribute("aria-busy") === "true");
   assert.equal(element("#settings-button").disabled, false);
   assert(element(".workspace").classList.contains("map-only"));
-  assert.equal(host.querySelector("aside"), null);
+  assert.equal(document.querySelector("aside"), null);
   const unit = required(
     Native.state(Session.view(mounted).game).units.find((unit2) => unit2.faction === "player"),
   );
@@ -320,7 +290,7 @@ test("Startup and live controls share their structure, and inspection panels ope
   assert.equal(element("aside").getAttribute("aria-label"), "Unit and terrain details");
   await click("#status");
   assert.equal(
-    host.querySelector("aside"),
+    document.querySelector("aside"),
     null,
     "Click-away clears selection and inspection together",
   );
@@ -328,7 +298,7 @@ test("Startup and live controls share their structure, and inspection panels ope
   await act(async () => {
     document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
   });
-  assert.equal(host.querySelector("aside"), null);
+  assert.equal(document.querySelector("aside"), null);
 });
 test("Terrain details use one complete canonical image while battlefield directions and floors retain their authored images", async () => {
   const battle = createBattle({ kind: "scenario", map: "mirror" });
@@ -422,13 +392,13 @@ test("An accepted native command with failed inspection replaces battle controls
   vi.spyOn(Domain.NativeEngineFactory, "inspect").mockImplementation(() => {
     throw new Error("Inspection unavailable");
   });
-  await assert.doesNotReject(() => act(async () => Session.commands(mounted).choose(destination)));
+  await act(async () => Session.commands(mounted).choose(destination));
   assert.match(element(".startup-failure").textContent ?? "", /Reloading keeps your saved battle/);
   assert.equal(element(".startup-failure button").textContent?.trim(), "Reload game");
   assert.match(element(".startup-failure pre").textContent ?? "", /Inspection unavailable/);
   assert.equal(element("#end-turn").disabled, true);
   assert.equal(element("#settings-button").disabled, true);
-  assert.equal(host.querySelector("#map canvas"), null);
+  assert.equal(document.querySelector("#map canvas"), null);
   assert.equal(element("#map").getAttribute("aria-busy"), "false");
   assert.equal(await Save.flashText(), saved);
   assert.equal(
@@ -468,7 +438,7 @@ test("Embedding cleanup frees its factory even when battle disposal fails", asyn
 });
 
 for (const phase of ["render", "layout effect"]) {
-  test(`The Preact boundary reports a descendant ${phase} failure`, async () => {
+  test(`The React boundary reports a descendant ${phase} failure`, async () => {
     const error = new Error(`controlled ${phase} fault`),
       received = [];
     function Failing() {
@@ -490,7 +460,7 @@ for (const phase of ["render", "layout effect"]) {
     assert.equal(host.textContent, "");
     await act(async () => root.render(React.createElement(Shell.make, { failure: "Recovered" })));
     assert.match(host.textContent, /Recovered/);
-    assert.equal(host.querySelector(".startup-failure button").textContent, "Reload game");
+    assert.equal(document.querySelector(".startup-failure button").textContent, "Reload game");
   });
 }
 
@@ -556,7 +526,7 @@ test.each(["complete", "cancel", "reduced", "no-op"])(
         Session.commands(mounted).choose("2,3");
         Session.commands(mounted).choose("3,3");
       });
-      const hpBefore = [...host.querySelectorAll(".health-numbers b")].map(
+      const hpBefore = [...document.querySelectorAll(".health-numbers b")].map(
         (node) => node.textContent,
       );
       const before = Session.view(mounted);
@@ -565,7 +535,7 @@ test.each(["complete", "cancel", "reduced", "no-op"])(
         assert.equal(Session.view(mounted), before, "The no-op publishes no replacement model");
         assert.equal(element("#unit-panel").classList.contains("resolving"), false);
         assert.equal(element('[data-attack="mace"]').disabled, false);
-        assert.equal(host.querySelector(".exchange-log"), null);
+        assert.equal(document.querySelector(".exchange-log"), null);
         await act(async () => vi.runAllTimers());
         assert.equal(element('[data-attack="mace"]').disabled, false);
         return;
@@ -574,25 +544,27 @@ test.each(["complete", "cancel", "reduced", "no-op"])(
       assert(combat.strikes.length > 0);
       if (mode === "reduced") {
         await act(async () => Session.view(mounted).combat_playback.skip());
-        assert(host.querySelector(".exchange-totals"));
+        assert(document.querySelector(".exchange-totals"));
         assert.deepEqual(
-          [...host.querySelectorAll(".health-numbers b")].map((node) => Number(node.textContent)),
+          [...document.querySelectorAll(".health-numbers b")].map((node) =>
+            Number(node.textContent),
+          ),
           combat.strikes.at(-1).health,
         );
         return;
       }
       assert.deepEqual(
-        [...host.querySelectorAll(".health-numbers b")].map((node) => node.textContent),
+        [...document.querySelectorAll(".health-numbers b")].map((node) => node.textContent),
         hpBefore,
       );
-      assert.equal(host.querySelectorAll(".exchange-event").length, 0);
+      assert.equal(document.querySelectorAll(".exchange-event").length, 0);
       assert(element("#unit-panel").classList.contains("resolving"));
       await act(async () => vi.advanceTimersByTime(199));
-      assert.equal(host.querySelectorAll(".exchange-event").length, 0);
+      assert.equal(document.querySelectorAll(".exchange-event").length, 0);
       await act(async () => Session.view(mounted).combat_playback.advance(0));
-      assert(host.querySelectorAll(".exchange-event").length > 0);
+      assert(document.querySelectorAll(".exchange-event").length > 0);
       assert.deepEqual(
-        [...host.querySelectorAll(".health-numbers b")].map((node) => Number(node.textContent)),
+        [...document.querySelectorAll(".health-numbers b")].map((node) => Number(node.textContent)),
         combat.strikes[0].health,
       );
       await click(".exchange-inspect");
@@ -603,9 +575,11 @@ test.each(["complete", "cancel", "reduced", "no-op"])(
             Session.view(mounted).combat_playback.advance(i);
           Session.view(mounted).combat_playback.finish();
         });
-        assert(host.querySelector(".exchange-totals"));
+        assert(document.querySelector(".exchange-totals"));
         assert.deepEqual(
-          [...host.querySelectorAll(".health-numbers b")].map((node) => Number(node.textContent)),
+          [...document.querySelectorAll(".health-numbers b")].map((node) =>
+            Number(node.textContent),
+          ),
           combat.strikes.at(-1).health,
         );
         await act(async () => root.unmount());
@@ -614,9 +588,9 @@ test.each(["complete", "cancel", "reduced", "no-op"])(
         return;
       }
       await act(async () => Session.commands(mounted).choose("0,0"));
-      assert.equal(host.querySelector(".exchange-log"), null);
+      assert.equal(document.querySelector(".exchange-log"), null);
       await act(async () => vi.runAllTimers());
-      assert.equal(host.querySelector(".exchange-log"), null);
+      assert.equal(document.querySelector(".exchange-log"), null);
     } finally {
       vi.useRealTimers();
       vi.mocked(Motion.reduced_motion).mockReturnValue(false);
@@ -636,28 +610,28 @@ test.each(["scenario", "campaign"])(
     await click("#new-game");
     const catalog = Session.view(mounted).catalog;
     const choices = () =>
-      [...host.querySelectorAll(".ng-choice > strong")].map((node) =>
+      [...document.querySelectorAll(".ng-choice > strong")].map((node) =>
         node.textContent.toLowerCase(),
       );
     assert.deepEqual(
       choices(),
       Catalog.campaigns(catalog)
-        .filter((campaign) => campaign.human)
+        .filter((campaign) => campaign.tags.includes("human"))
         .map((campaign) => campaign.name.toLowerCase()),
     );
     await click(".ng-modes button:nth-child(2)");
     const scenarios = Catalog.scenario_maps(catalog);
-    assert.equal(choices().length, scenarios.filter((map) => map.human).length);
-    for (const map of scenarios.filter((map) => !map.human))
+    assert.equal(choices().length, scenarios.filter((map) => map.tags.includes("human")).length);
+    for (const map of scenarios.filter((map) => !map.tags.includes("human")))
       assert(!choices().includes(map.name.toLowerCase()));
     if (mode === "campaign") await click(".ng-modes button:first-child");
     await click(".ng-choice");
     assert.equal(
-      host.querySelector('[role="group"][aria-label="First turn"]') !== null,
+      document.querySelector('[role="radiogroup"][aria-label="First turn"]') !== null,
       mode === "scenario",
     );
     const choose = async (group, value) => {
-      const container = element(`[role="group"][aria-label="${group}"]`);
+      const container = element(`[role="radiogroup"][aria-label="${group}"]`);
       const target = required(
         [...container.querySelectorAll("button")].find((button) => button.textContent === value),
       );
@@ -665,14 +639,14 @@ test.each(["scenario", "campaign"])(
     };
     await click(".new-game-dialog .advanced > summary");
     await choose("Opponent planning", "Full");
-    await click(".ng-recruitment > summary");
+    await click(".ng-recruitment > .recruitment-trigger");
     const aggressive = required(
-      [...host.querySelectorAll(".ng-recruit-option")].find((row) =>
+      [...document.querySelectorAll(".ng-recruit-option")].find((row) =>
         row.textContent.includes("Aggressive Predictor"),
       ),
     );
     await act(async () => aggressive.querySelector("input").click());
-    assert.equal(element('.ng-difficulty button[aria-pressed="true"]').textContent, "Custom");
+    assert.equal(element('.ng-difficulty button[aria-checked="true"]').textContent, "Custom");
     await click(".new-game-dialog .ng-start-footer .primary");
     const saved = JSON.parse(await Save.flashText());
     assert.deepEqual(saved.setup, {
@@ -684,12 +658,18 @@ test.each(["scenario", "campaign"])(
         blocks: { planner: "full", recruiter: "aggressive-predictor", campaign: "mission" },
       },
     });
-    if (mode === "scenario")
-      assert.deepEqual(saved.checkpoint.state.armies, ["human", "skeletons"]);
-    else
+    if (mode === "scenario") {
+      assert.equal(saved.checkpoint.state.armies, undefined);
+      const roster = (state) =>
+        state.units.map(({ type, faction, tile }) => ({ type, faction, tile }));
+      const authored = Native.save(
+        createBattle({ kind: "scenario", map: saved.checkpoint.state.mapId }),
+      ).state;
+      assert.deepEqual(roster(saved.checkpoint.state), roster(authored));
+    } else
       assert.equal(
         saved.checkpoint.state.campaign.id,
-        Catalog.campaigns(catalog).find((campaign) => campaign.human).id,
+        Catalog.campaigns(catalog).find((campaign) => campaign.tags.includes("human")).id,
       );
   },
 );
@@ -773,7 +753,7 @@ test("Live dialogue reveals text without delaying Next or Back and cancels its v
       Session.commands(session).dialogue(true);
       render();
     });
-    assert.equal(host.querySelector(".voice-visible"), null);
+    assert.equal(document.querySelector(".voice-visible"), null);
     assert.equal(frames.size, 0);
     assert.equal(voice.active, null);
   } finally {
@@ -805,7 +785,7 @@ test("Campaign opening reuses the loading screen until two actual dialogue track
   await act(async () => new Promise((resolve) => setTimeout(resolve, 0)));
   assert.match(element(".loading-action").textContent, /Trying to pick words/);
   assert.match(element(".loading-detail").textContent, /0 \/ 2 voices ready/);
-  assert.equal(host.querySelector(".story-dialog"), null);
+  assert.equal(document.querySelector(".story-dialog"), null);
   assert.equal(element("#end-turn").disabled, true);
   const complete = async () =>
     act(async () => {
@@ -814,7 +794,7 @@ test("Campaign opening reuses the loading screen until two actual dialogue track
     });
   await complete();
   assert.match(element(".loading-detail").textContent, /1 \/ 2 voices ready/);
-  assert.equal(host.querySelector(".story-dialog"), null);
+  assert.equal(document.querySelector(".story-dialog"), null);
   await complete();
   assert.equal(
     element("#map canvas"),
@@ -826,7 +806,7 @@ test("Campaign opening reuses the loading screen until two actual dialogue track
   await click(".story-next");
   assert.equal(element(".story-count").textContent.trim().startsWith("2 /"), true);
   assert.equal(
-    host.querySelector(".map-loading:not(.is-complete)"),
+    document.querySelector(".map-loading:not(.is-complete)"),
     null,
     "later dialogue does not re-lock",
   );
@@ -835,14 +815,14 @@ test("Campaign opening reuses the loading screen until two actual dialogue track
 test("One determinate loading bar retains progress when the shell becomes the battlefield", async () => {
   LoadingProgress.begin_battlefield();
   await act(async () => root.render(React.createElement(Shell.make, { failure: undefined })));
-  assert.equal(host.querySelectorAll("progress").length, 1);
+  assert.equal(document.querySelectorAll("progress").length, 1);
   assert.equal(Number(element("progress").getAttribute("value")), 2);
   await act(async () => LoadingProgress.advance(0.5, "6 / 12 resources ready", 4));
   const value = element("progress").getAttribute("value");
   assert.equal(element("progress").max, 5);
   assert.match(element(".loading-card").textContent, /Step 4 \/ 5.*6 \/ 12/);
   await act(async () => root.render(React.createElement(BattlefieldWindow.make, {})));
-  assert.equal(host.querySelectorAll("progress").length, 1);
+  assert.equal(document.querySelectorAll("progress").length, 1);
   assert.equal(element("progress").getAttribute("value"), value);
   await act(async () => LoadingProgress.advance(undefined, undefined, 5));
   assert.match(element(".loading-card").textContent, /Drawing battlefield/);
@@ -855,7 +835,7 @@ test("One determinate loading bar retains progress when the shell becomes the ba
   assert.equal(Number(element("progress").getAttribute("value")), 5);
   assert.match(element(".loading-action").textContent, /Battlefield ready/);
   await act(async () => vi.advanceTimersByTime(250));
-  assert.equal(host.querySelector("progress"), null);
+  assert.equal(document.querySelector("progress"), null);
 });
 
 test("The debug-report action includes retained startup diagnostics in its downloaded JSON", async () => {

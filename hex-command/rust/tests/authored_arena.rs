@@ -71,7 +71,7 @@ fn non_human_scenarios_use_the_shared_map_registry() {
     let mut bundle = hex_command_core::data::catalog::embedded_bundle();
     let path = "game/scenario/mirror-v1/scenario.json";
     let mut descriptor: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
-    descriptor["human"] = serde_json::json!(false);
+    descriptor["tags"] = serde_json::json!(["simulation"]);
     bundle.insert(path.into(), descriptor.to_string());
     let rules = Rules::from_json_bundle(&bundle).unwrap();
     assert!(rules.maps.keys().any(|(id, _)| id == "mirror"));
@@ -81,7 +81,8 @@ fn non_human_scenarios_use_the_shared_map_registry() {
             .iter()
             .find(|map| map.id == "mirror")
             .unwrap()
-            .human
+            .tags
+            .contains(&"human".to_owned())
     );
 }
 

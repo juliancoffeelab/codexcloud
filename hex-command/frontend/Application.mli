@@ -1,6 +1,6 @@
 type root
 
-(** Browser embedding owns the Preact root. [current] prevents a cancelled startup from constructing
+(** Browser embedding owns the React root. [current] prevents a cancelled startup from constructing
     a session or rendering after WASM initialization. Returned cleanup removes gesture handlers,
     unregisters optional browser tools and closes session/factory exactly once. [failed] reports
     descendant render and effect failures to that owner; it must schedule cleanup outside the

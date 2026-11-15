@@ -127,7 +127,7 @@ let receive id batch =
                notify ())
              500);
     if Array.length !events >= max_events && !status = Recording then
-      let _ = !stop_current "Event limit reached" in
+      let _ = !stop_current {js|Event limit reached|js} in
       ())
 
 let instant ?args name =
@@ -135,17 +135,19 @@ let instant ?args name =
   | Some current when !status = Recording || !status = Stopping ->
       receive current.id
         [|
-          event ?args ~s:"t" ~cat:"browser" ~ph:"i" ~ts:((clock () -. current.origin) *. 1000.) name;
+          event ?args ~s:{js|t|js} ~cat:{js|browser|js} ~ph:{js|i|js}
+            ~ts:((clock () -. current.origin) *. 1000.)
+            name;
         |]
   | _ -> ()
 
 let command_begin current name args started =
-  let args = Option.map (fun input -> obj [ ("input", input) ]) args in
+  let args = Option.map (fun input -> obj [ ({js|input|js}, input) ]) args in
   receive current.id
     [|
-      event ?args ~s:"t" ~cat:"action" ~ph:"i"
+      event ?args ~s:{js|t|js} ~cat:{js|action|js} ~ph:{js|i|js}
         ~ts:((started -. current.origin) *. 1000.)
-        (name ^ " begin");
+        {j|$(name) begin|j};
     |]
 
 let command_end current name args started error =
@@ -153,15 +155,17 @@ let command_end current name args started error =
     match (args, error) with
     | None, None -> None
     | _ ->
-        let fields = match args with None -> [] | Some args -> [ ("input", args) ] in
+        let fields = match args with None -> [] | Some args -> [ ({js|input|js}, args) ] in
         Some
-          (obj (fields @ match error with None -> [] | Some error -> [ ("error", string error) ]))
+          (obj
+             (fields
+             @ match error with None -> [] | Some error -> [ ({js|error|js}, string error) ]))
   in
   receive current.id
     [|
       event ?args
         ~dur:((clock () -. started) *. 1000.)
-        ~cat:"action" ~ph:"X"
+        ~cat:{js|action|js} ~ph:{js|X|js}
         ~ts:((started -. current.origin) *. 1000.)
         name;
     |]
@@ -189,14 +193,15 @@ external then_result :
 
 external reject : Foreign_error.t -> 'a Js.Promise.t = "reject" [@@mel.scope "Promise"]
 
-let on_error event = instant "Browser error" ~args:(obj [ ("message", string (message event)) ])
+let on_error event =
+  instant {js|Browser error|js} ~args:(obj [ ({js|message|js}, string (message event)) ])
 
 let on_rejection event =
-  instant "Unhandled rejection"
-    ~args:(obj [ ("message", string (Foreign_error.describe (reason event))) ])
+  instant {js|Unhandled rejection|js}
+    ~args:(obj [ ({js|message|js}, string (Foreign_error.describe (reason event))) ])
 
 let on_visibility () =
-  instant "Visibility changed" ~args:(obj [ ("visibility", string visibility) ])
+  instant {js|Visibility changed|js} ~args:(obj [ ({js|visibility|js}, string visibility) ])
 
 let supported_entries () =
   if Option.is_none (Js.Undefined.toOption observer_available) then [||]
@@ -204,6 +209,8 @@ let supported_entries () =
 
 let start get_context =
   if !status <> Recording && !status <> Stopping then (
+    (* A failed snapshot must leave the previous recording and controls intact. *)
+    let starting_context = get_context () in
     events := [||];
     context := Some get_context;
     stopping := None;
@@ -214,39 +221,41 @@ let start get_context =
     dropped := 0;
     reason_ := None;
     let assets =
-      resources "resource"
+      resources {js|resource|js}
       |> Array_ext.filter (fun entry ->
-          let path = List.hd (String.split_on_char '?' entry.name) in
-          includes entry.name "/assets/"
-          && (String.ends_with ~suffix:".js" path || String.ends_with ~suffix:".css" path))
+          let path = List.hd (Array.to_list (Js.String.split ~sep:{js|?|js} entry.name)) in
+          includes entry.name {js|/assets/|js}
+          && (Js.String.endsWith ~suffix:{js|.js|js} path
+             || Js.String.endsWith ~suffix:{js|.css|js} path))
     in
     metadata :=
       Js.Dict.fromArray
         [|
-          ("format", string "hex-command-performance");
-          ("version", int 1);
-          ("startedAt", string (timestamp ()));
-          ("recordingOrigin", number current.origin);
-          ("performanceTimeOrigin", number origin);
-          ("browser", string user_agent);
-          ("supportedPerformanceEntries", Js.Json.array (Array.map string (supported_entries ())));
-          ("assets", Js.Json.array (Array.map (fun entry -> string entry.name) assets));
-          ( "viewport",
+          ({js|format|js}, string {js|hex-command-performance|js});
+          ({js|version|js}, int 1);
+          ({js|startedAt|js}, string (timestamp ()));
+          ({js|recordingOrigin|js}, number current.origin);
+          ({js|performanceTimeOrigin|js}, number origin);
+          ({js|browser|js}, string user_agent);
+          ( {js|supportedPerformanceEntries|js},
+            Js.Json.array (Array.map string (supported_entries ())) );
+          ({js|assets|js}, Js.Json.array (Array.map (fun entry -> string entry.name) assets));
+          ( {js|viewport|js},
             obj
               [
-                ("width", int inner_width);
-                ("height", int inner_height);
-                ("pixelRatio", number pixel_ratio);
+                ({js|width|js}, int inner_width);
+                ({js|height|js}, int inner_height);
+                ({js|pixelRatio|js}, number pixel_ratio);
               ] );
-          ("start", get_context ());
+          ({js|start|js}, starting_context);
         |];
     receive current.id
       [|
         event
-          ~args:(obj [ ("name", string "Browser / actions") ])
-          ~cat:"metadata" ~ph:"M" ~ts:0. "thread_name";
+          ~args:(obj [ ({js|name|js}, string {js|Browser / actions|js}) ])
+          ~cat:{js|metadata|js} ~ph:{js|M|js} ~ts:0. {js|thread_name|js};
       |];
-    instant "Recording started";
+    instant {js|Recording started|js};
     let previous = ref (now ()) in
     let rec tick () =
       if !status = Recording then (
@@ -254,17 +263,17 @@ let start get_context =
         receive current.id
           [|
             event
-              ~args:(obj [ ("visible", string visibility) ])
+              ~args:(obj [ ({js|visible|js}, string visibility) ])
               ~dur:((at -. !previous) *. 1000.)
-              ~cat:"frame" ~ph:"X"
+              ~cat:{js|frame|js} ~ph:{js|X|js}
               ~ts:((origin +. !previous -. current.origin) *. 1000.)
-              "Browser frame interval";
+              {js|Browser frame interval|js};
           |];
         previous := at;
         frame_id := frame tick)
     in
     frame_id := frame tick;
-    if Array.exists (( = ) "longtask") (supported_entries ()) then (
+    if Array.exists (( = ) {js|longtask|js}) (supported_entries ()) then (
       let active =
         new_observer (fun[@u] list ->
             match !config with
@@ -280,24 +289,24 @@ let start get_context =
                         Some
                           (event
                              ~dur:((ended -. clipped) *. 1000.)
-                             ~cat:"longtask" ~ph:"X"
+                             ~cat:{js|longtask|js} ~ph:{js|X|js}
                              ~ts:((clipped -. current.origin) *. 1000.)
-                             "Browser long task"))
+                             {js|Browser long task|js}))
                     (entries list)
                 in
                 receive current.id batch
             | _ -> ())
       in
-      observe active { kind = "longtask" };
+      observe active { kind = {js|longtask|js} };
       observer := Some active);
-    listen_document "visibilitychange" on_visibility;
-    listen "error" on_error;
-    listen "unhandledrejection" on_rejection;
+    listen_document {js|visibilitychange|js} on_visibility;
+    listen {js|error|js} on_error;
+    listen {js|unhandledrejection|js} on_rejection;
     timer :=
       Some
         (timeout
            (fun () ->
-             let _ = !stop_current "Ten-minute limit reached" in
+             let _ = !stop_current {js|Ten-minute limit reached|js} in
              ())
            max_duration);
     notify ())
@@ -307,7 +316,7 @@ type settlement = < status : string > Js.t
 external all_settled : unit Js.Promise.t array -> settlement array Js.Promise.t = "allSettled"
 [@@mel.scope "Promise"]
 
-let stop ?(reason = "Stopped by user") () =
+let stop ?(reason = {js|Stopped by user|js}) () =
   match !stopping with
   | Some stopping -> stopping
   | None -> (
@@ -315,26 +324,35 @@ let stop ?(reason = "Stopped by user") () =
       | Some _ when !status = Recording ->
           status := Stopping;
           reason_ := Some reason;
-          instant "Recording stopped" ~args:(obj [ ("reason", string reason) ]);
+          instant {js|Recording stopped|js} ~args:(obj [ ({js|reason|js}, string reason) ]);
           Option.iter clear_timeout !timer;
           cancel_frame !frame_id;
           Option.iter disconnect !observer;
           observer := None;
-          unlisten_document "visibilitychange" on_visibility;
-          unlisten "error" on_error;
-          unlisten "unhandledrejection" on_rejection;
+          unlisten_document {js|visibilitychange|js} on_visibility;
+          unlisten {js|error|js} on_error;
+          unlisten {js|unhandledrejection|js} on_rejection;
           notify ();
           let flushing = [||] in
           let finished =
             Js.Promise.then_
               (fun results ->
-                Js.Dict.set !metadata "stoppedAt" (string (timestamp ()));
-                Option.iter (fun context -> Js.Dict.set !metadata "end" (context ())) !context;
-                Js.Dict.set !metadata "workerFlushFailures"
+                Js.Dict.set !metadata {js|stoppedAt|js} (string (timestamp ()));
+                Option.iter
+                  (fun context ->
+                    try Js.Dict.set !metadata {js|end|js} (context ())
+                    with error ->
+                      (* Preserve the collected events and make them exportable
+                         even when the final game snapshot cannot be obtained. *)
+                      Js.Dict.set !metadata {js|endSnapshotError|js}
+                        (string (Foreign_error.exception_ error));
+                      reason_ := Some {js|Final snapshot failed; trace data retained|js})
+                  !context;
+                Js.Dict.set !metadata {js|workerFlushFailures|js}
                   (int
                      (Array.fold_left
                         (fun count result ->
-                          if result##status = "rejected" then count + 1 else count)
+                          if result##status = {js|rejected|js} then count + 1 else count)
                         0 results));
                 status := Ready;
                 Option.iter clear_timeout !notification;
@@ -363,18 +381,22 @@ let download () =
     (fun () ->
       if !status = Ready then (
         let metadata = Js.Dict.fromArray (Js.Dict.entries !metadata) in
-        Js.Dict.set metadata "events" (int (Array.length !events));
-        Js.Dict.set metadata "dropped" (int !dropped);
-        Option.iter (fun reason -> Js.Dict.set metadata "stopReason" (string reason)) !reason_;
-        Js.Dict.set metadata "gpuTiming"
+        Js.Dict.set metadata {js|events|js} (int (Array.length !events));
+        Js.Dict.set metadata {js|dropped|js} (int !dropped);
+        Option.iter (fun reason -> Js.Dict.set metadata {js|stopReason|js} (string reason)) !reason_;
+        Js.Dict.set metadata {js|gpuTiming|js}
           (string
-             "CPU render-submission durations do not measure GPU completion. Browser frame \
-              intervals are scheduling intervals, not physical display FPS.");
+             {js|CPU render-submission durations do not measure GPU completion. Browser frame intervals are scheduling intervals, not physical display FPS.|js});
         let file =
-          { trace_events = !events; display_time_unit = "ms"; metadata = Js.Json.object_ metadata }
+          {
+            trace_events = !events;
+            display_time_unit = {js|ms|js};
+            metadata = Js.Json.object_ metadata;
+          }
         in
         Browser_download.json ~revoke_after:1000
-          ("hex-performance-" ^ replace_all (timestamp ()) ":" "-" ^ ".json")
+          (let js_text_part_1 = replace_all (timestamp ()) {js|:|js} {js|-|js} in
+           {j|hex-performance-$(js_text_part_1).json|j})
           (stringify file));
       Js.Promise.resolve ())
     (stop ())

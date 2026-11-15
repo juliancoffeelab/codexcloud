@@ -5,9 +5,12 @@ type mask = { x : float; y : float; width : int; height : int; step : float; dat
 let serialize_key cells =
   Array.to_list
     (Array.map
-       (fun (cell : Domain.hex) -> Int32.to_string cell.col ^ "," ^ Int32.to_string cell.row)
+       (fun (cell : Domain.hex) ->
+         let js_text_part_0 = Int32.to_string cell.col in
+         let js_text_part_2 = Int32.to_string cell.row in
+         {j|$(js_text_part_0),$(js_text_part_2)|j})
        cells)
-  |> String.concat ";"
+  |> fun values -> Js.Array.join ~sep:{js|;|js} (Array.of_list values)
 
 let last_cells : (Domain.hex array * string) option ref = ref None
 

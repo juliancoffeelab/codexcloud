@@ -95,12 +95,12 @@ let mask edges =
         (fun mask edge ->
           let bit =
             match direction edge with
-            | "e" -> 0
-            | "se" -> 1
-            | "sw" -> 2
-            | "w" -> 3
-            | "nw" -> 4
-            | "ne" -> 5
+            | matched_text_0 when matched_text_0 = {js|e|js} -> 0
+            | matched_text_1 when matched_text_1 = {js|se|js} -> 1
+            | matched_text_2 when matched_text_2 = {js|sw|js} -> 2
+            | matched_text_3 when matched_text_3 = {js|w|js} -> 3
+            | matched_text_4 when matched_text_4 = {js|nw|js} -> 4
+            | matched_text_5 when matched_text_5 = {js|ne|js} -> 5
             | _ -> 6
           in
           mask lor (1 lsl bit))
@@ -109,11 +109,22 @@ let mask edges =
 
 let connection_name terrain connections dead_ends walls =
   match terrain with
-  | "castle-wall" | "castle-bell" -> terrain ^ "_" ^ string_of_int walls
-  | "road" when dead_ends <> 0 ->
-      "road_" ^ string_of_int connections ^ "-end-" ^ string_of_int dead_ends
-  | "signpost" | "road" | "village" | "bridge" | "ford" | "landing" | "ferry" | "cave-passage" ->
-      terrain ^ "_" ^ string_of_int connections
+  | matched_text_6 when matched_text_6 = {js|castle-wall|js} || matched_text_6 = {js|castle-bell|js}
+    ->
+      let js_text_part_2 = string_of_int walls in
+      {j|$(terrain)_$(js_text_part_2)|j}
+  | matched_text_7 when matched_text_7 = {js|road|js} && dead_ends <> 0 ->
+      let js_text_part_1 = string_of_int connections in
+      let js_text_part_3 = string_of_int dead_ends in
+      {j|road_$(js_text_part_1)-end-$(js_text_part_3)|j}
+  | matched_text_8
+    when matched_text_8 = {js|signpost|js} || matched_text_8 = {js|road|js}
+         || matched_text_8 = {js|village|js} || matched_text_8 = {js|bridge|js}
+         || matched_text_8 = {js|ford|js} || matched_text_8 = {js|landing|js}
+         || matched_text_8 = {js|ferry|js}
+         || matched_text_8 = {js|cave-passage|js} ->
+      let js_text_part_2 = string_of_int connections in
+      {j|$(terrain)_$(js_text_part_2)|j}
   | _ -> terrain
 
 let connected_name (tile : Domain.tile) =
@@ -122,9 +133,8 @@ let connected_name (tile : Domain.tile) =
 (* Match JavaScript's for-of hashing: surrogate pairs contribute the leading
    UTF-16 code unit once, while isolated code units remain independent. *)
 let layout_hash source =
-  let source = Utf8.to_js source in
-  let hash = ref (Int32.of_string "0x811c9dc5") and index = ref 0 in
-  while !index < String.length source do
+  let hash = ref (Int32.of_string {js|0x811c9dc5|js}) and index = ref 0 in
+  while !index < Js.String.length source do
     let code = code_at source !index in
     hash := Int32.mul (Int32.logxor !hash (Int32.of_int code)) 16777619l;
     index :=
@@ -132,7 +142,7 @@ let layout_hash source =
       +
       if
         code >= 0xd800 && code <= 0xdbff
-        && !index + 1 < String.length source
+        && !index + 1 < Js.String.length source
         &&
         let next = code_at source (!index + 1) in
         next >= 0xdc00 && next <= 0xdfff
@@ -142,7 +152,7 @@ let layout_hash source =
   let mixed =
     Int32.mul
       (Int32.logxor !hash (Int32.shift_right_logical !hash 16))
-      (Int32.of_string "0x85ebca6b")
+      (Int32.of_string {js|0x85ebca6b|js})
   in
   let result = Int32.to_float (Int32.logxor mixed (Int32.shift_right_logical mixed 13)) in
   if result < 0. then result +. 4294967296. else result
@@ -151,12 +161,16 @@ let layout_name tile map_id =
   let name = connected_name tile in
   match lookup layouts name with
   | Some layouts when Array.length layouts > 0 ->
-      name ^ "_layout_"
-      ^ string_of_int
+      let js_text_part_2 =
+        string_of_int
           (int_of_float
              (mod_float
-                (layout_hash (map_id ^ ":" ^ tile.id))
+                (layout_hash
+                   (let js_text_part_2 = tile.id in
+                    {j|$(map_id):$(js_text_part_2)|j}))
                 (float_of_int (Array.length layouts))))
+      in
+      {j|$(name)_layout_$(js_text_part_2)|j}
   | _ -> name
 
 let prepare ~roles ~map_id ~cols ~rows source artwork =
@@ -177,7 +191,10 @@ let prepare ~roles ~map_id ~cols ~rows source artwork =
         let role =
           match Js.Dict.get roles tile.terrain with
           | Some role -> role
-          | None -> invalid_arg ("Missing terrain role: " ^ tile.terrain)
+          | None ->
+              invalid_arg
+                (let js_text_part_1 = tile.terrain in
+                 {j|Missing terrain role: $(js_text_part_1)|j})
         in
         {
           col = Int32.to_float tile.col;
@@ -223,17 +240,20 @@ let paint = Terrain_painter.paint
 external radix : float -> int -> string = "toString" [@@mel.send]
 
 let asset_key source =
-  let source = Utf8.to_js source in
-  let first = ref (Int32.of_string "0x811c9dc5") and second = ref (Int32.of_string "0x85ebca77") in
-  for index = 0 to String.length source - 1 do
+  let first = ref (Int32.of_string {js|0x811c9dc5|js})
+  and second = ref (Int32.of_string {js|0x85ebca77|js}) in
+  for index = 0 to Js.String.length source - 1 do
     let code = Int32.of_int (code_at source index) in
     first := Int32.mul (Int32.logxor !first code) 16777619l;
-    second := Int32.mul (Int32.logxor !second code) (Int32.of_string "0xc2b2ae3d")
+    second := Int32.mul (Int32.logxor !second code) (Int32.of_string {js|0xc2b2ae3d|js})
   done;
   let hex value =
     let value = Int32.to_float value in
     let value = if value < 0. then value +. 4294967296. else value in
     let value = radix value 16 in
-    String.make (8 - String.length value) '0' ^ value
+    let js_text_part_0 = Js.String.repeat ~count:(8 - Js.String.length value) {js|0|js} in
+    {j|$(js_text_part_0)$(value)|j}
   in
-  hex !first ^ hex !second
+  let js_text_part_0 = hex !first in
+  let js_text_part_1 = hex !second in
+  {j|$(js_text_part_0)$(js_text_part_1)|j}

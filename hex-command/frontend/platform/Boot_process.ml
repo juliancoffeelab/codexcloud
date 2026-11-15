@@ -70,19 +70,19 @@ let ensure () =
   | Some process -> process
   | None ->
       let atMs = Browser_time.now () in
-      let label = Utf8.to_js "Loading game engine…" in
+      let label = {js|Loading game engine…|js} in
       let process =
         {
           version = 1;
-          startedAt = Utf8.of_js (Js.Date.toISOString (Js.Date.make ()));
+          startedAt = Js.Date.toISOString (Js.Date.make ());
           timeOrigin = Browser_time.origin;
           startedAtMs = atMs;
           elapsedMs = 0.;
-          status = "loading";
+          status = {js|loading|js};
           step = 1;
           label;
           value = 0.;
-          detail = "";
+          detail = {js||js};
           error = Js.Nullable.null;
           droppedEvents = 0;
           resourceEvents = [||];
@@ -101,7 +101,8 @@ let ensure () =
                 finishedAtMs = Js.Nullable.null;
               };
             |];
-          events = [| { atMs; step = 1; label; value = 0.; detail = ""; status = "loading" } |];
+          events =
+            [| { atMs; step = 1; label; value = 0.; detail = {js||js}; status = {js|loading|js} } |];
         }
       in
       set process;
@@ -116,7 +117,7 @@ let update process ~status ~step ~label ~value ~detail =
     push_stage process.stages
       { step; label; startedAtMs = atMs; durationMs = 0.; finishedAtMs = Js.Nullable.null });
   let stage = process.stages.(Array.length process.stages - 1) in
-  if status <> "loading" then stage.finishedAtMs <- Js.Nullable.return atMs;
+  if status <> {js|loading|js} then stage.finishedAtMs <- Js.Nullable.return atMs;
   process.elapsedMs <- atMs -. process.startedAtMs;
   process.status <- status;
   process.step <- step;
@@ -131,24 +132,24 @@ let update process ~status ~step ~label ~value ~detail =
 
 let progress ~step ~label ~value ~detail =
   let process = ensure () in
-  if process.status = "loading" then
+  if process.status = {js|loading|js} then
     update process
-      ~status:(if value >= 5. then "ready" else "loading")
-      ~step ~label:(Utf8.to_js label) ~value ~detail:(Utf8.to_js detail)
+      ~status:(if value >= 5. then {js|ready|js} else {js|loading|js})
+      ~step ~label ~value ~detail
 
 let fail message =
   let process = ensure () in
-  if process.status = "loading" then (
-    let message = Utf8.to_js message in
+  if process.status = {js|loading|js} then (
+    let message = message in
     process.error <- Js.Nullable.return message;
-    update process ~status:"failed" ~step:process.step ~label:process.label ~value:process.value
-      ~detail:message)
+    update process ~status:{js|failed|js} ~step:process.step ~label:process.label
+      ~value:process.value ~detail:message)
 
 let resource ~key ~url ~phase =
   (* Never create a record for later battles; after boot this is only a global
      lookup and status check. No scans, serialization, observers or layout reads. *)
   match Js.Undefined.toOption (get ()) with
-  | Some process when process.status = "loading" ->
+  | Some process when process.status = {js|loading|js} ->
       push_resource process.resourceEvents { atMs = Browser_time.now (); key; url; phase };
       if Array.length process.resourceEvents > 512 then (
         discard_resource process.resourceEvents 0 1;
@@ -157,7 +158,7 @@ let resource ~key ~url ~phase =
 
 let response ~url ~status ~source ~get_header =
   match Js.Undefined.toOption (get ()) with
-  | Some process when process.status = "loading" ->
+  | Some process when process.status = {js|loading|js} ->
       if Array.length process.responseHeaders >= 64 then
         process.droppedResponseHeaders <- process.droppedResponseHeaders + 1
       else
@@ -170,21 +171,21 @@ let response ~url ~status ~source ~get_header =
                  (fun value -> Js.Dict.set headers name (Js.Json.string value))
                  (Js.Nullable.toOption (get_header name)))
              [|
-               "cache-control";
-               "age";
-               "etag";
-               "last-modified";
-               "expires";
-               "date";
-               "vary";
-               "cf-cache-status";
-               "cf-ray";
-               "server-timing";
-               "cdn-cache-control";
-               "surrogate-control";
-               "x-cache";
-               "via";
-               "server";
+               {js|cache-control|js};
+               {js|age|js};
+               {js|etag|js};
+               {js|last-modified|js};
+               {js|expires|js};
+               {js|date|js};
+               {js|vary|js};
+               {js|cf-cache-status|js};
+               {js|cf-ray|js};
+               {js|server-timing|js};
+               {js|cdn-cache-control|js};
+               {js|surrogate-control|js};
+               {js|x-cache|js};
+               {js|via|js};
+               {js|server|js};
              |]
          with _ -> readError := true);
         push_response process.responseHeaders
@@ -202,7 +203,7 @@ let snapshot () =
   let process = ensure () in
   (* Refresh the duration of a stalled stage when exporting, without inventing
      another progress event or modifying a completed startup. *)
-  if process.status = "loading" then (
+  if process.status = {js|loading|js} then (
     let atMs = Browser_time.now () in
     process.elapsedMs <- atMs -. process.startedAtMs;
     let stage = process.stages.(Array.length process.stages - 1) in

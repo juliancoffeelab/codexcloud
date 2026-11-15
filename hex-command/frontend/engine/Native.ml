@@ -18,34 +18,38 @@ let error_message = function
   | Domain.Engine_error.Invalid_save { message }
   | Domain.Engine_error.Content { message; _ } ->
       message
-  | Domain.Engine_error.Unknown_map { map } -> "Unknown map: " ^ map
-  | Domain.Engine_error.Unknown_campaign { id } -> "Unknown campaign: " ^ id
-  | Domain.Engine_error.Unknown_battle -> "unknownBattle"
-  | Domain.Engine_error.Disposed -> "disposed"
-  | Domain.Engine_error.Stale_revision _ -> "staleRevision"
+  | Domain.Engine_error.Unknown_map { map } -> {j|Unknown map: $(map)|j}
+  | Domain.Engine_error.Unknown_campaign { id } -> {j|Unknown campaign: $(id)|j}
+  | Domain.Engine_error.Unknown_battle -> {js|unknownBattle|js}
+  | Domain.Engine_error.Disposed -> {js|disposed|js}
+  | Domain.Engine_error.Stale_revision _ -> {js|staleRevision|js}
   | Domain.Engine_error.Command { error } -> (
       match error with
-      | Domain.Command_error.Wrong_turn -> "WrongTurn"
-      | Domain.Command_error.Battle_finished -> "BattleFinished"
-      | Domain.Command_error.Unknown_unit id -> "Unknown unit: " ^ string_of_float id
-      | Domain.Command_error.Unknown_tile id -> "Unknown tile: " ^ Hex.key id
-      | Domain.Command_error.Unknown_type id -> "Unknown unit type: " ^ id
-      | Domain.Command_error.Unknown_weapon id -> "Unknown weapon: " ^ id
-      | Domain.Command_error.No_campaign -> "NoCampaign"
-      | Domain.Command_error.No_next_mission -> "NoNextMission"
-      | Domain.Command_error.Illegal_move -> "IllegalMove"
-      | Domain.Command_error.Illegal_attack -> "IllegalAttack"
-      | Domain.Command_error.Illegal_recruit -> "IllegalRecruit"
-      | Domain.Command_error.Illegal_advance -> "IllegalAdvance"
-      | Domain.Command_error.Illegal_item -> "IllegalItem"
-      | Domain.Command_error.Illegal_intent -> "IllegalIntent"
-      | Domain.Command_error.Battle_only_policy -> "BattleOnlyPolicy")
+      | Domain.Command_error.Wrong_turn -> {js|WrongTurn|js}
+      | Domain.Command_error.Battle_finished -> {js|BattleFinished|js}
+      | Domain.Command_error.Unknown_unit id ->
+          let js_text_part_1 = string_of_float id in
+          {j|Unknown unit: $(js_text_part_1)|j}
+      | Domain.Command_error.Unknown_tile id ->
+          let js_text_part_1 = Hex.key id in
+          {j|Unknown tile: $(js_text_part_1)|j}
+      | Domain.Command_error.Unknown_type id -> {j|Unknown unit type: $(id)|j}
+      | Domain.Command_error.Unknown_weapon id -> {j|Unknown weapon: $(id)|j}
+      | Domain.Command_error.No_campaign -> {js|NoCampaign|js}
+      | Domain.Command_error.No_next_mission -> {js|NoNextMission|js}
+      | Domain.Command_error.Illegal_move -> {js|IllegalMove|js}
+      | Domain.Command_error.Illegal_attack -> {js|IllegalAttack|js}
+      | Domain.Command_error.Illegal_recruit -> {js|IllegalRecruit|js}
+      | Domain.Command_error.Illegal_advance -> {js|IllegalAdvance|js}
+      | Domain.Command_error.Illegal_item -> {js|IllegalItem|js}
+      | Domain.Command_error.Illegal_intent -> {js|IllegalIntent|js}
+      | Domain.Command_error.Battle_only_policy -> {js|BattleOnlyPolicy|js})
 
 let message = function
   | Engine error -> error_message error
-  | Initialization error -> Domain.Wasm.Load_error.message error
-  | Module_failed failure -> failure.message
-  | Disposed -> "disposed"
+  | Initialization error -> Binding_text.to_js (Domain.Wasm.Load_error.message error)
+  | Module_failed failure -> Binding_text.to_js failure.message
+  | Disposed -> {js|disposed|js}
   | Invalid_request message -> message
   | Publication cause -> Foreign_error.cause cause
 
@@ -206,18 +210,17 @@ let create_factory ?documents () =
                    (if Domain.Wasm.failure () = None then
                       try Domain.NativeEngineFactory.dispose handle with _ -> ());
                    Fault.raise_original error)))
-    (Domain.Wasm.load (Utf8.of_js (module_url ())))
+    (Domain.Wasm.load (Binding_text.of_js (module_url ())))
 
 let validate_undo factory request =
   ensure_factory factory;
   value
     (foreign (fun () ->
-         Domain.NativeEngineFactory.validate_undo factory.handle
-           (Utf8.of_js (Js.Json.stringify request))))
+         Domain.NativeEngineFactory.validate_undo factory.handle (Js.Json.stringify request)))
 
 let publication ?previous ?inspection ?tiles ?indices ?(combat = None) factory id
     (source : Domain.engine_view) =
-  Performance_trace.measure "native.publication" (fun () ->
+  Performance_trace.measure {js|native.publication|js} (fun () ->
       let state = source.Domain.state in
       let inspection =
         match inspection with
@@ -255,7 +258,7 @@ let publication ?previous ?inspection ?tiles ?indices ?(combat = None) factory i
             { inspection with units }
       in
       if source.Domain.revision <> inspection.Domain.revision then
-        failwith "Incoherent native publication";
+        failwith {js|Incoherent native publication|js};
       let key = (state.map_id, state.map_revision) in
       let topology =
         match List.assoc_opt key factory.topologies with
@@ -411,27 +414,27 @@ let frame_state (frame : Domain.state_frame) tiles : Domain.state =
 
 let update_publication factory id previous (update : Domain.dispatch_update) =
   if update.base_revision <> previous.revision || update.revision <> update.base_revision +. 1. then
-    failwith "Incoherent native update revision";
+    failwith {js|Incoherent native update revision|js};
   let frame = update.state in
   let same =
     (frame.map_id, frame.map_revision, frame.cols, frame.rows)
     = (previous.state.map_id, previous.state.map_revision, previous.state.cols, previous.state.rows)
   in
   let tiles, table, indices =
-    Performance_trace.measure "native.terrain_update" (fun () ->
+    Performance_trace.measure {js|native.terrain_update|js} (fun () ->
         match update.terrain with
         | Domain.Terrain_update.Keep ->
-            if not same then failwith "Incoherent native terrain keep";
+            if not same then failwith {js|Incoherent native terrain keep|js};
             (previous.state.tiles, previous.tiles, previous.tile_indices)
         | Domain.Terrain_update.Replace { tiles } ->
             (tiles, index (fun (tile : Domain.tile) -> tile.id) tiles, tile_indices tiles)
         | Domain.Terrain_update.Patch { tiles } ->
-            if not same then failwith "Incoherent native terrain patch";
+            if not same then failwith {js|Incoherent native terrain patch|js};
             let changed = Array.copy previous.state.tiles in
             Array.iter
               (fun (tile : Domain.tile) ->
                 match Js.Dict.get previous.tile_indices tile.id with
-                | None -> failwith "Unknown native patch tile"
+                | None -> failwith {js|Unknown native patch tile|js}
                 | Some position -> changed.(position) <- tile)
               tiles;
             (changed, index (fun (tile : Domain.tile) -> tile.id) changed, previous.tile_indices))
@@ -462,14 +465,14 @@ let valid_seed seed = is_integer seed && seed >= 0. && seed <= 4294967295.
 
 let create factory start seed =
   ensure_factory factory;
-  if not (valid_seed seed) then raise (Rejected (Invalid_request "seed must be a uint32"));
+  if not (valid_seed seed) then raise (Rejected (Invalid_request {js|seed must be a uint32|js}));
   accept factory
     (foreign (fun () -> value (Domain.NativeEngineFactory.new_battle factory.handle start seed)))
 
 let restore factory (saved : Domain.saved_game) =
   ensure_factory factory;
   if not (valid_seed saved.Domain.seed) then
-    raise (Rejected (Invalid_request "saved seed must be a uint32"));
+    raise (Rejected (Invalid_request {js|saved seed must be a uint32|js}));
   accept factory
     (foreign (fun () -> value (Domain.NativeEngineFactory.restore factory.handle saved)))
 
@@ -534,7 +537,7 @@ let actions_json view id =
 let apply battle expected command =
   ensure battle;
   let result =
-    Performance_trace.measure "engine.dispatch" (fun () ->
+    Performance_trace.measure {js|engine.dispatch|js} (fun () ->
         foreign (fun () ->
             value
               (Domain.NativeEngineFactory.dispatch_update battle.factory.handle battle.id expected
@@ -544,7 +547,7 @@ let apply battle expected command =
      A trap has already invalidated all owners in [foreign]. *)
   try
     let accepted =
-      Performance_trace.measure "native.reconcile" (fun () ->
+      Performance_trace.measure {js|native.reconcile|js} (fun () ->
           update_publication battle.factory battle.id battle.current result)
     in
     battle.current <- accepted;
@@ -560,7 +563,7 @@ let dispatch battle command = apply battle battle.current.revision command
 
 let choose_ai_command battle options =
   ensure battle;
-  Performance_trace.measure "engine.chooseAiCommand" (fun () ->
+  Performance_trace.measure {js|engine.chooseAiCommand|js} (fun () ->
       foreign (fun () ->
           value
             (Domain.NativeEngineFactory.choose_ai_command battle.factory.handle battle.id
@@ -625,7 +628,7 @@ let tile view id = Js.Dict.get view.tiles id
 let hex view id =
   match tile view id with
   | Some tile -> Hex.of_tile tile
-  | None -> raise (Rejected (Invalid_request ("Unknown tile: " ^ id)))
+  | None -> raise (Rejected (Invalid_request {j|Unknown tile: $(id)|j}))
 
 let unit view id =
   Option.bind (Js.Dict.get view.units id) (fun unit ->
@@ -653,12 +656,12 @@ let neighbors view id = tiles_for view (Option.value ~default:[||] (Js.Dict.get 
 
 let reachable view id =
   match actions view id with
-  | None -> Domain.String_map.empty
+  | None -> Domain.Text_map.empty
   | Some choices ->
       Array.fold_left
         (fun result (entry : Domain.reachable_tile) ->
-          Domain.String_map.add (Hex.key entry.tile) (float_of_int entry.cost) result)
-        Domain.String_map.empty choices.reachable
+          Domain.Text_map.add (Hex.key entry.tile) (float_of_int entry.cost) result)
+        Domain.Text_map.empty choices.reachable
 
 let attack_options view id target =
   match actions view id with
@@ -702,16 +705,14 @@ let promotion_options view id =
   match actions view id with None -> [||] | Some choices -> choices.Domain.promotions
 
 let recruitment_options view faction =
-  Option.value ~default:[||] (Js.Dict.get view.inspection.recruitment (Utf8.to_js faction))
-  |> Array.map Utf8.of_js
+  Option.value ~default:[||] (Js.Dict.get view.inspection.recruitment faction)
 
 let recruit_tiles view id kind =
   match actions view id with
   | None -> [||]
   | Some choices ->
       tiles_for view
-        (Array.map Hex.key
-           (Option.value ~default:[||] (Js.Dict.get choices.recruitment (Utf8.to_js kind))))
+        (Array.map Hex.key (Option.value ~default:[||] (Js.Dict.get choices.recruitment kind)))
 
 let movement_cost view kind terrain =
   match Js.Dict.get view.movement_costs kind with
@@ -720,7 +721,7 @@ let movement_cost view kind terrain =
       Option.fold ~none:infinity ~some:float_of_int (Option.join (Js.Dict.get costs terrain))
 
 let gold (value : Domain.gold) faction =
-  Option.fold ~none:0. ~some:Int32.to_float (Domain.String_map.find_opt faction value)
+  Option.fold ~none:0. ~some:Int32.to_float (Domain.Text_map.find_opt faction value)
 
 let income view faction = gold view.inspection.income faction
 
@@ -729,21 +730,25 @@ let unit_name view id =
 
 let recruit_price view faction kind =
   match
-    Option.bind
-      (Js.Dict.get view.inspection.recruitment_prices (Utf8.to_js faction))
-      (fun prices -> Js.Dict.get prices (Utf8.to_js kind))
+    Option.bind (Js.Dict.get view.inspection.recruitment_prices faction) (fun prices ->
+        Js.Dict.get prices kind)
   with
   | Some price -> price
-  | None -> invalid_arg "Unknown faction recruit."
+  | None -> invalid_arg {js|Unknown faction recruit.|js}
 
 let unit_id id =
-  let length = String.length id in
-  let unknown () = raise (Rejected (Invalid_request "Unknown unit.")) in
-  if length < 2 || id.[0] <> 'u' || id.[1] < '1' || id.[1] > '9' then unknown ();
+  let length = Js.String.length id in
+  let unknown () = raise (Rejected (Invalid_request {js|Unknown unit.|js})) in
+  if
+    length < 2
+    || Js.String.get id 0 <> {js|u|js}
+    || Js.String.get id 1 < {js|1|js}
+    || Js.String.get id 1 > {js|9|js}
+  then unknown ();
   for index = 2 to length - 1 do
-    if id.[index] < '0' || id.[index] > '9' then unknown ()
+    if Js.String.get id index < {js|0|js} || Js.String.get id index > {js|9|js} then unknown ()
   done;
-  let number = float_of_string (String.sub id 1 (length - 1)) in
+  let number = float_of_string (Js.String.slice ~start:1 ~end_:(1 + (length - 1)) id) in
   if number > 4294967295. then unknown ();
   number
 

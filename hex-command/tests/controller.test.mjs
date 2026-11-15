@@ -572,13 +572,13 @@ test("Initialization is idempotent and preserves native-URL pixel artwork", asyn
 });
 test("Non-human scenarios remain command-addressable while campaign maps use their own launcher", async () => {
   const scenarios = Catalog.scenario_maps(catalog);
-  const hidden = scenarios.filter((map) => map.human === false);
+  const hidden = scenarios.filter((map) => !map.tags.includes("human"));
   const hiddenId = required(hidden[0]).id;
   const session = await createController(),
     commands = Session.commands(session);
   commands.reset(undefined, undefined, hiddenId);
   assert.equal(state(session).mapId, hiddenId);
-  const visibleId = required(scenarios.find((map) => map.human)).id;
+  const visibleId = required(scenarios.find((map) => map.tags.includes("human"))).id;
   commands.reset(undefined, undefined, visibleId);
   assert.equal(state(session).mapId, visibleId);
   const campaign = required(Catalog.campaigns(catalog)[0]),

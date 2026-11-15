@@ -1,5 +1,6 @@
 //! Authored scenario lighting, loaded and validated with the Rust catalog.
 use super::{ConditionRule, Event, Hex, Tile, UnitAppearance};
+use crate::data::Text;
 use serde::{Deserialize, Serialize};
 
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -77,7 +78,7 @@ pub struct MapLighting {
     pub underground: Vec<Hex>,
 }
 impl MapLighting {
-    pub fn validate(&self, tiles: &[Tile]) -> Result<(), String> {
+    pub fn validate(&self, tiles: &[Tile]) -> Result<(), Text> {
         let positions: std::collections::HashSet<_> = tiles.iter().map(Tile::hex).collect();
         let mut seen = std::collections::HashSet::new();
         for cell in &self.underground {
@@ -107,7 +108,7 @@ impl TileLight {
             when: None,
         }
     }
-    pub fn validate(&self, tiles: &[Tile], events: &[Event]) -> Result<(), String> {
+    pub fn validate(&self, tiles: &[Tile], events: &[Event]) -> Result<(), Text> {
         if !self.radius.is_finite()
             || self.radius <= 0.0
             || !self.power.is_finite()
@@ -146,7 +147,7 @@ pub struct BattlefieldLighting {
 
 impl BattlefieldLighting {
     #[cfg_attr(not(target_arch = "wasm32"), inline)]
-    pub fn validate(&self, tiles: &[Tile], events: &[Event]) -> Result<(), String> {
+    pub fn validate(&self, tiles: &[Tile], events: &[Event]) -> Result<(), Text> {
         MapLighting {
             time: self.time,
             underground: self.underground.clone(),
@@ -193,6 +194,6 @@ pub struct BattlefieldPresentation {
     pub lighting: BattlefieldLighting,
     pub fog: Vec<Hex>,
     /// Engine-resolved unit visibility, including concealment on visible terrain.
-    pub visible_units: Vec<String>,
+    pub visible_units: Vec<Text>,
     pub unit_appearances: Vec<UnitAppearance>,
 }

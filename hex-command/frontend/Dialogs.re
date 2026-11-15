@@ -1,22 +1,19 @@
 open Ui;
 let audioCreditsUrl: string = [%mel.raw
-  "(import.meta.env?.BASE_URL ?? '/') + 'assets/audio/palette/CREDITS.txt'"
+  {js|(import.meta.env?.BASE_URL ?? '/') + 'assets/audio/palette/CREDITS.txt'|js}
 ];
-
 [@mel.get] external selectTarget: React.Event.Form.t => {. "value": string } = "currentTarget";
 [@mel.get] external selectValue: {. "value": string } => string = "value";
-
-let buildCommit: string = [%mel.raw "import.meta.env?.VITE_BUILD_COMMIT ?? 'development'"];
-
+let buildCommit: string = [%mel.raw {js|import.meta.env?.VITE_BUILD_COMMIT ?? 'development'|js}];
 module SoundControl = {
   [@react.component]
   let make =
     React.memo((~enabled, ~setSound) =>
-      <label className="setting-row sound-row" htmlFor="sound-effects">
-        <span className="label"> {text("Sound effects")} </span>
+      <label className={js|setting-row sound-row|js} htmlFor={js|sound-effects|js}>
+        <span className={js|label|js}> {text({js|Sound effects|js})} </span>
         <input
-          id="sound-effects"
-          type_="checkbox"
+          id={js|sound-effects|js}
+          type_={js|checkbox|js}
           checked=enabled
           onChange={event => ignorePromise(setSound(bindChecked(event)))}
         />
@@ -37,15 +34,16 @@ module Settings = {
   let make =
       (
         ~session,
-        ~showHiddenMaps,
-        ~onHiddenMapsChange,
+        ~allowNonHumanMaps,
+        ~onNonHumanMapsChange,
         ~onFollowAiChange,
         ~playtestPreferenceError,
         ~view: Session.model,
         ~voiceEnabled,
         ~onVoiceChange,
         ~actions: Session.actions,
-        ~dialog: React.ref(Js.Nullable.t(Dom.element)),
+        ~opened,
+        ~onOpenChange,
         ~onNewBattle,
         ~onRepair,
         ~openKey=0,
@@ -56,12 +54,14 @@ module Settings = {
         ~onCommanderArrowChange,
         ~enemyDetailsError,
         ~onEnemyDetailsChange,
+        ~children,
       ) => {
     let (screen, setScreen) = React.useState(() => Hub);
     let (saving, setSaving) = React.useState(() => false);
     let (saved, setSaved) = React.useState(() => false);
     let (refreshKey, setRefreshKey) = React.useState(() => 0);
     let body = React.useRef(Js.Nullable.null);
+    let content = React.useRef(Js.Nullable.null);
     let positions = React.useRef([]);
     let pendingFocus = React.useRef(None);
     let remember = () =>
@@ -74,13 +74,13 @@ module Settings = {
          );
     let dismiss = () => {
       remember();
-      close(dialog);
+      onOpenChange(false);
     };
     let navigate = next =>
       if (next == Saves
           && Option.fold(
                ~none=false,
-               ~some=p => Save_json.text(p, "kind") != "ready",
+               ~some=p => Save_json.text(p, {js|kind|js}) != {js|ready|js},
                view.load_problem,
              )) {
         onRepair();
@@ -103,49 +103,60 @@ module Settings = {
       },
       [|openKey|],
     );
-    React.useLayoutEffect2(
-      () => {
-        if (Option.fold(~none=false, ~some=isOpen, Js.Nullable.toOption(dialog.current))) {
-          Js.Nullable.toOption(body.current)
-          |> Option.iter(node => {
-               setScrollTop(
-                 node,
-                 Option.value(~default=0., List.assoc_opt(screen, positions.current)),
-               );
-               if (screen == Hub) {
-                 let selector =
-                   switch (pendingFocus.current) {
-                   | Some(Saves) => Some("[data-window='saves']")
-                   | _ => Option.map(id => "#" ++ id, focusId)
-                   };
-                 Option.iter(
-                   selector =>
-                     Js.Nullable.toOption(queryWithin(node, selector))
-                     |> Option.iter(target => focusWith(target, { "preventScroll": true })),
-                   selector,
-                 );
-               };
-             });
-          if (screen != Hub) {
-            Js.Nullable.toOption(dialog.current)
-            |> Option.iter(node =>
-                 Js.Nullable.toOption(queryWithin(node, "h2"))
-                 |> Option.iter(target => focusWith(target, { "preventScroll": true }))
-               );
+    let restoreScreen = () => {
+      Option.iter(
+        node => {
+          setScrollTop(
+            node,
+            Option.value(~default=0., List.assoc_opt(screen, positions.current)),
+          );
+          if (screen == Hub) {
+            let selector =
+              switch (pendingFocus.current) {
+              | Some(Saves) => {js|[data-window='saves']|js}
+              | _ =>
+                Option.fold(
+                  ~none={js|.settings-hub button:not(:disabled)|js},
+                  ~some=id => {j|#$(id)|j},
+                  focusId,
+                )
+              };
+            Option.iter(
+              target => focusWith(target, { "preventScroll": true }),
+              Js.Nullable.toOption(queryWithin(node, selector)),
+            );
           };
+        },
+        Js.Nullable.toOption(body.current),
+      );
+      if (screen != Hub) {
+        Option.iter(
+          node =>
+            Option.iter(
+              target => focusWith(target, { "preventScroll": true }),
+              Js.Nullable.toOption(queryWithin(node, {js|h2|js})),
+            ),
+          Js.Nullable.toOption(content.current),
+        );
+      };
+      pendingFocus.current = None;
+    };
+    React.useLayoutEffect3(
+      () => {
+        if (opened) {
+          restoreScreen();
         };
-        pendingFocus.current = None;
         None;
       },
-      (screen, openKey),
+      (screen, openKey, opened),
     );
     let (starting, setStarting) = React.useState(() => false);
     let startGuard = React.useRef(false);
     let testBattle = React.useRef(None);
-    let confirmation = React.useRef(Js.Nullable.null);
+    let (confirmOpen, setConfirmOpen) = React.useState(() => false);
     let requestTest = id => {
       testBattle.current = Some(id);
-      show(confirmation);
+      setConfirmOpen(_ => true);
     };
     let finish = () => {
       startGuard.current = false;
@@ -160,17 +171,17 @@ module Settings = {
             try(
               {
                 switch (id) {
-                | Developer => actions.reset("developer")
-                | UndergroundLair => actions.reset("underground-lair")
-                | BellNight => actions.start_campaign("bell-night")
-                | MirrorNight => actions.start_campaign("mirror-night")
+                | Developer => actions.reset({js|developer|js})
+                | UndergroundLair => actions.reset({js|underground-lair|js})
+                | BellNight => actions.start_campaign({js|bell-night|js})
+                | MirrorNight => actions.start_campaign({js|mirror-night|js})
                 };
                 let _ =
                   Js.Promise.resolve()
                   |> Js.Promise.then_(() => {
                        try(
                          {
-                           close(confirmation);
+                           setConfirmOpen(_ => false);
                            dismiss();
                          }
                        ) {
@@ -207,21 +218,60 @@ module Settings = {
            });
       ();
     };
-    let savesProps = ReactDOM.domProps(~className="new-game", ~onClick=_ => navigate(Saves), ());
-    dataWindow(savesProps, "saves");
-    <div className="settings-style">
+    let testLaunch = (id, label, trigger) =>
       <Dialog_window
-        title={screen == Hub ? "Menu" : "Saved games"}
-        dialog
-        id="settings-dialog"
+        key=label
+        trigger
+        title={js|Start test map?|js}
+        opened={confirmOpen && testBattle.current == Some(id)}
+        onOpenChange={value => setConfirmOpen(_ => value)}
+        alert=true
+        canDismiss={!starting}
+        width={js|380px|js}>
+        <p>
+          {text(
+             {js|This replaces your current battle. Saved progress remains available in Saved games.|js},
+           )}
+        </p>
+        <Radix.AlertCancel asChild=true>
+          <button disabled=starting onClick={_ => setConfirmOpen(_ => false)}>
+            {text({js|Cancel|js})}
+          </button>
+        </Radix.AlertCancel>
+        <button disabled=starting onClick={_ => startTest()}>
+          {text(starting ? {js|Starting…|js} : {js|Start test map|js})}
+        </button>
+      </Dialog_window>;
+    let savesProps =
+      ReactDOM.domProps(~className={js|new-game|js}, ~onClick=_ => navigate(Saves), ());
+    dataWindow(savesProps, {js|saves|js});
+    <Modal.Root
+      opened
+      onOpenChange={value => {
+        if (!value) {
+          remember();
+        };
+        onOpenChange(value);
+      }}>
+      children
+      <Dialog_window.Content
+        title={screen == Hub ? {js|Menu|js} : {js|Saved games|js}}
+        onOpenChange
+        contentRef=content
+        className={js|settings-style|js}
+        id={js|settings-dialog|js}
         onBeforeClose=remember
+        onOpenAutoFocus={event => {
+          Modal.preventDefault(event);
+          restoreScreen();
+        }}
         tall={screen != Hub}
-        width={screen == Hub ? "420px" : "500px"}
+        width={screen == Hub ? {js|420px|js} : {js|500px|js}}
         onBack=?{screen == Hub ? None : Some(() => navigate(Hub))}
         body>
-        <div className="settings-hub" hidden={screen != Hub}>
+        <div className={js|settings-hub|js} hidden={screen != Hub}>
           <button
-            className="new-game"
+            className={js|new-game|js}
             disabled={
               saving
               || saved
@@ -232,234 +282,239 @@ module Settings = {
               && state.winner == None
             }
             onClick={_ => saveGame()}>
-            {text(saving ? "Saving…" : saved ? "Saved" : "Save game")}
+            {text(saving ? {js|Saving…|js} : saved ? {js|Saved|js} : {js|Save game|js})}
           </button>
           {ReactDOM.createElement(
-             "button",
+             {js|button|js},
              ~props=savesProps,
              [|
                text(
                  Option.fold(
                    ~none=false,
-                   ~some=p => Save_json.text(p, "kind") != "ready",
+                   ~some=p => Save_json.text(p, {js|kind|js}) != {js|ready|js},
                    view.load_problem,
                  )
-                   ? "Repair saved games" : "Saved games",
+                   ? {js|Repair saved games|js} : {js|Saved games|js},
                ),
              |],
            )}
           <button
-            id="new-game"
-            className="new-game"
+            id={js|new-game|js}
+            className={js|new-game|js}
             onClick={_ => {
               remember();
               onNewBattle();
             }}>
-            {text("New game")}
+            {text({js|New game|js})}
           </button>
           <SoundControl enabled={view.sound} setSound={actions.set_sound} />
-          <label className="setting-row sound-row" htmlFor="dialogue-voices">
-            <span className="label"> {text("Dialogue voices")} </span>
+          <label className={js|setting-row sound-row|js} htmlFor={js|dialogue-voices|js}>
+            <span className={js|label|js}> {text({js|Dialogue voices|js})} </span>
             <input
-              id="dialogue-voices"
-              type_="checkbox"
+              id={js|dialogue-voices|js}
+              type_={js|checkbox|js}
               checked=voiceEnabled
               onChange={event => onVoiceChange(bindChecked(event))}
             />
           </label>
-          <label className="setting-row sound-row">
-            <span className="label"> {text("Follow AI camera")} </span>
-            <input
-              type_="checkbox"
-              checked={view.follow_ai}
-              onChange={e => onFollowAiChange(bindChecked(e))}
-            />
-          </label>
-          <label className="setting-row">
-            <span className="label"> {text("Player control")} </span>
-            <select
-              ariaLabel="Player control"
-              disabled={state.turn != Domain.Turn_phase.Player}
-              value={Option.fold(~none="human", ~some=p => Setup.preset(p).id, view.player_ai)}
-              onChange={event => {
-                let selected = selectValue(selectTarget(event));
-                let policy =
-                  List.find_opt(
-                    (preset: Setup.difficulty) => preset.id == selected,
-                    Setup.difficulties,
-                  );
-                Session.set_player_ai(
-                  session,
-                  Option.map((preset: Setup.difficulty) => preset.policy, policy),
-                );
-              }}>
-              <option value="human"> {text("You")} </option>
-              {eachList(Setup.difficulties, preset =>
-                 <option key={preset.Setup.id} value={preset.id}>
-                   {text("AI · " ++ preset.name)}
-                 </option>
-               )}
-            </select>
-          </label>
-          {playtestPreferenceError != ""
-             ? <p role="alert"> {text(playtestPreferenceError)} </p> : React.null}
-          <details className="advanced">
-            <summary className="setting-row">
-              <span className="label"> {text("Advanced")} </span>
-              <svg className="chevron" viewBox="0 0 16 16" ariaHidden=true>
-                <path d="m3 6 5 5 5-5" />
+          <details className={js|advanced|js}>
+            <summary className={js|setting-row|js}>
+              <span className={js|label|js}> {text({js|Advanced|js})} </span>
+              <svg className={js|chevron|js} viewBox={js|0 0 16 16|js} ariaHidden=true>
+                <path d={js|m3 6 5 5 5-5|js} />
               </svg>
             </summary>
-            <label className="setting-row sound-row">
-              <span className="label"> {text("Show hidden maps")} </span>
+            <label className={js|setting-row sound-row|js}>
+              <span className={js|label|js}> {text({js|Follow AI camera|js})} </span>
               <input
-                type_="checkbox"
-                checked=showHiddenMaps
-                onChange={e => onHiddenMapsChange(bindChecked(e))}
+                type_={js|checkbox|js}
+                checked={view.follow_ai}
+                onChange={e => onFollowAiChange(bindChecked(e))}
               />
             </label>
-            <label className="setting-row sound-row">
-              <span className="label"> {text("Commander return arrow")} </span>
+            <label className={js|setting-row|js}>
+              <span className={js|label|js}> {text({js|Player control|js})} </span>
+              <select
+                ariaLabel={js|Player control|js}
+                disabled={state.turn != Domain.Turn_phase.Player}
+                value={Option.fold(
+                  ~none={js|human|js},
+                  ~some=p => Setup.preset(p).id,
+                  view.player_ai,
+                )}
+                onChange={event => {
+                  let selected = selectValue(selectTarget(event));
+                  let policy =
+                    List.find_opt(
+                      (preset: Setup.difficulty) => preset.id == selected,
+                      Setup.difficulties,
+                    );
+                  Session.set_player_ai(
+                    session,
+                    Option.map((preset: Setup.difficulty) => preset.policy, policy),
+                  );
+                }}>
+                <option value={js|human|js}> {text({js|You|js})} </option>
+                {eachList(Setup.difficulties, preset =>
+                   <option key={preset.Setup.id} value={preset.id}>
+                     {text(
+                        {
+                          let js_text_part_0 = preset.name;
+                          {j|$(js_text_part_0) AI|j};
+                        },
+                      )}
+                   </option>
+                 )}
+              </select>
+            </label>
+            {playtestPreferenceError != {js||js}
+               ? <p role={js|alert|js}> {text(playtestPreferenceError)} </p> : React.null}
+            <label className={js|setting-row sound-row|js}>
+              <span className={js|label|js}> {text({js|Allow non-human maps|js})} </span>
               <input
-                type_="checkbox"
+                type_={js|checkbox|js}
+                checked=allowNonHumanMaps
+                onChange={e => onNonHumanMapsChange(bindChecked(e))}
+              />
+            </label>
+            <label className={js|setting-row sound-row|js}>
+              <span className={js|label|js}> {text({js|Commander return arrow|js})} </span>
+              <input
+                type_={js|checkbox|js}
                 checked=showCommanderArrow
                 onChange={event => onCommanderArrowChange(bindChecked(event))}
               />
             </label>
-            <p className="help">
-              {text("Show a return arrow when your commander is outside the map view.")}
+            <p className={js|help|js}>
+              {text({js|Show a return arrow when your commander is outside the map view.|js})}
             </p>
-            {commanderArrowError != ""
-               ? <div role="alert">
+            {commanderArrowError != {js||js}
+               ? <div role={js|alert|js}>
                    <p>
                      {text(
-                        "The commander arrow preference could not be read or saved. Changes apply to this session.",
+                        {js|The commander arrow preference could not be read or saved. Changes apply to this session.|js},
                       )}
                    </p>
                    <pre> {text(commanderArrowError)} </pre>
                    <button onClick={_ => onCommanderArrowChange(showCommanderArrow)}>
-                     {text("Retry saving preference")}
+                     {text({js|Retry saving preference|js})}
                    </button>
                  </div>
                : React.null}
-            <label className="setting-row sound-row">
-              <span className="label"> {text("Automatically show enemy combat details")} </span>
+            <label className={js|setting-row sound-row|js}>
+              <span className={js|label|js}>
+                {text({js|Automatically show enemy combat details|js})}
+              </span>
               <input
-                type_="checkbox"
+                type_={js|checkbox|js}
                 checked={view.enemy_combat_details}
                 onChange={event => onEnemyDetailsChange(bindChecked(event))}
               />
             </label>
-            <p className="help">
+            <p className={js|help|js}>
               {text(
-                 "Open the combat report when an enemy attacks. Otherwise keep your current inspection.",
+                 {js|Open the combat report when an enemy attacks. Otherwise keep your current inspection.|js},
                )}
             </p>
-            {enemyDetailsError != ""
-               ? <div role="alert">
+            {enemyDetailsError != {js||js}
+               ? <div role={js|alert|js}>
                    <p>
                      {text(
-                        "The enemy combat details preference could not be read or saved. Changes apply to this session.",
+                        {js|The enemy combat details preference could not be read or saved. Changes apply to this session.|js},
                       )}
                    </p>
                    <pre> {text(enemyDetailsError)} </pre>
                    <button onClick={_ => onEnemyDetailsChange(view.enemy_combat_details)}>
-                     {text("Retry saving preference")}
+                     {text({js|Retry saving preference|js})}
                    </button>
                  </div>
                : React.null}
-            <h3 className="group-label"> {text("Debug tools")} </h3>
-            <p className="help">
+            <h3 className={js|group-label|js}> {text({js|Debug tools|js})} </h3>
+            <p className={js|help|js}>
               {text(
-                 "Download the battle, startup timings, last five AI turns, and saved progress. AI-turn recordings clear on reload or mission change.",
+                 {js|Download the battle, startup timings, last five AI turns, and saved progress. AI-turn recordings clear on reload or mission change.|js},
                )}
             </p>
-            <button className="debug-action" onClick={_ => actions.download_debug_report()}>
-              {text("Download debug report")}
+            <button className={js|debug-action|js} onClick={_ => actions.download_debug_report()}>
+              {text({js|Download debug report|js})}
             </button>
-            <h3 className="group-label"> {text("Performance trace")} </h3>
+            <h3 className={js|group-label|js}> {text({js|Performance trace|js})} </h3>
             <Trace_controls session onStart=dismiss />
-            <h3 className="group-label"> {text("Test maps")} </h3>
-            <p className="help"> {text("Starting a test map replaces the current battle.")} </p>
+            <h3 className={js|group-label|js}> {text({js|Test maps|js})} </h3>
+            <p className={js|help|js}>
+              {text({js|Starting a test map replaces the current battle.|js})}
+            </p>
             {eachList(
                [
-                 (Developer, "Developer map"),
-                 (UndergroundLair, "Underground Lair"),
-                 (BellNight, "Bell Night"),
-                 (MirrorNight, "Mirror Night"),
+                 (Developer, {js|Developer map|js}),
+                 (UndergroundLair, {js|Underground Lair|js}),
+                 (BellNight, {js|Bell Night|js}),
+                 (MirrorNight, {js|Mirror Night|js}),
                ],
                ((id, label)) =>
-               <button
-                 className="debug-action test-launch"
-                 disabled=starting
-                 onClick={_ => requestTest(id)}>
-                 <svg className="flask" viewBox="0 0 24 24" ariaHidden=true>
-                   <path
-                     d="M9 3h6M10 3v6l-6 10a1.3 1.3 0 0 0 1.1 2h13.8a1.3 1.3 0 0 0 1.1-2L14 9V3M7.5 15h9"
-                   />
-                 </svg>
-                 <span> {text("Start " ++ label)} </span>
-               </button>
+               testLaunch(
+                 id,
+                 label,
+                 <button
+                   key=label
+                   className={js|debug-action test-launch|js}
+                   disabled=starting
+                   onClick={_ => requestTest(id)}>
+                   <svg className={js|flask|js} viewBox={js|0 0 24 24|js} ariaHidden=true>
+                     <path
+                       d={js|M9 3h6M10 3v6l-6 10a1.3 1.3 0 0 0 1.1 2h13.8a1.3 1.3 0 0 0 1.1-2L14 9V3M7.5 15h9|js}
+                     />
+                   </svg>
+                   <span> {text({j|Start $(label)|j})} </span>
+                 </button>,
+               )
              )}
           </details>
           <a
-            className="credits-link"
+            className={js|credits-link|js}
             href=audioCreditsUrl
-            target="_blank"
-            rel="noreferrer"
-            ariaLabel="Credits (opens in a new tab)">
-            {text("Credits ")}
-            <svg viewBox="0 0 24 24" ariaHidden=true>
+            target={js|_blank|js}
+            rel={js|noreferrer|js}
+            ariaLabel={js|Credits (opens in a new tab)|js}>
+            {text({js|Credits |js})}
+            <svg viewBox={js|0 0 24 24|js} ariaHidden=true>
               <path
-                d="M14 4h6v6M20 4 10 14M10 5H5a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1v-5"
+                d={js|M14 4h6v6M20 4 10 14M10 5H5a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1v-5|js}
               />
             </svg>
           </a>
           <footer>
-            <span> {text("Difficulty: " ++ difficulty)} </span>
-            <span> {text("Build: " ++ buildCommit)} </span>
+            <span> {text({j|Difficulty: $(difficulty)|j})} </span>
+            <span> {text({j|Build: $(buildCommit)|j})} </span>
           </footer>
         </div>
         <div hidden={screen != Saves}>
-          {screen == Saves ? <Saved_games session view refreshKey onLoad=dismiss /> : React.null}
+          {screen == Saves
+             ? <Saved_games session view refreshKey onLoad=dismiss onDeleted=restoreScreen />
+             : React.null}
         </div>
-      </Dialog_window>
-      <Dialog_window
-        title="Start test map?" dialog=confirmation canDismiss={!starting} width="380px">
-        <p>
-          {text(
-             "This replaces your current battle. Saved progress remains available in Saved games.",
-           )}
-        </p>
-        <button disabled=starting onClick={_ => close(confirmation)}> {text("Cancel")} </button>
-        <button disabled=starting onClick={_ => startTest()}>
-          {text(starting ? "Starting…" : "Start test map")}
-        </button>
-      </Dialog_window>
-    </div>;
+      </Dialog_window.Content>
+    </Modal.Root>;
   };
 };
-
 module VoicedText = {
   [@react.component]
   let make = (~voice, ~scope, ~lines: array(Domain.dialogue), ~index) => {
-    let (visible, setVisible) = React.useState(() => "");
+    let (visible, setVisible) = React.useState(() => {js||js});
     React.useEffect0(() =>
       Some(Voiceover.speak(voice, scope, lines, index, value => setVisible(_ => value)))
     );
-    <p className="story-text voice-text">
-      <span className="voice-reserve" ariaHidden=true> {text(lines[index].text)} </span>
-      <span className="voice-visible" ariaHidden=true> {React.string(visible)} </span>
-      <span className="voice-accessible"> {text(lines[index].text)} </span>
+    <p className={js|story-text voice-text|js}>
+      <span className={js|voice-reserve|js} ariaHidden=true> {text(lines[index].text)} </span>
+      <span className={js|voice-visible|js} ariaHidden=true> {React.string(visible)} </span>
+      <span className={js|voice-accessible|js}> {text(lines[index].text)} </span>
     </p>;
   };
 };
-
 module Dialogue = {
   [@react.component]
   let make = (~view: Session.model, ~actions: Session.actions, ~narrate, ~voice, ~scope) => {
     let state = Native.state(view.game);
-    let dialog = React.useRef(Js.Nullable.null);
     let nextButton = React.useRef(Js.Nullable.null);
     let queued = Story.dialogue_pending(state.campaign);
     let line =
@@ -472,7 +527,8 @@ module Dialogue = {
         },
       );
     let pending =
-      queued && Option.fold(~none=false, ~some=(line: Domain.dialogue) => line.text != "", line);
+      queued
+      && Option.fold(~none=false, ~some=(line: Domain.dialogue) => line.text != {js||js}, line);
     React.useEffect2(
       () => {
         narrate(view.game);
@@ -483,35 +539,6 @@ module Dialogue = {
       },
       (view.game, view.settling),
     );
-    React.useLayoutEffect2(
-      () => {
-        if (pending) {
-          switch (Js.Nullable.toOption(dialog.current)) {
-          | Some(element) when !isOpen(element) =>
-            showModal(element);
-            Js.Nullable.toOption(nextButton.current) |> Option.iter(focus);
-          | _ => ()
-          };
-        } else {
-          let wasOpen =
-            switch (Js.Nullable.toOption(dialog.current)) {
-            | None => false
-            | Some(element) => isOpen(element)
-            };
-          close(dialog);
-          if (wasOpen && state.winner != None) {
-            byId("mission-result")
-            |> Js.Nullable.toOption
-            |> Option.iter(element => {
-                 focus(element);
-                 scroll(element, { "block": "start" });
-               });
-          };
-        };
-        None;
-      },
-      (pending, view.game),
-    );
     let navigate = event =>
       if (!view.settling
           && !React.Event.Keyboard.altKey(event)
@@ -519,12 +546,12 @@ module Dialogue = {
           && !React.Event.Keyboard.metaKey(event)
           && !React.Event.Keyboard.shiftKey(event)) {
         switch (React.Event.Keyboard.key(event)) {
-        | "ArrowLeft" =>
+        | matched_text_0 when matched_text_0 == {js|ArrowLeft|js} =>
           React.Event.Keyboard.preventDefault(event);
           if (!React.Event.Keyboard.repeat(event)) {
             actions.previous_dialogue();
           };
-        | "ArrowRight" =>
+        | matched_text_1 when matched_text_1 == {js|ArrowRight|js} =>
           React.Event.Keyboard.preventDefault(event);
           if (!React.Event.Keyboard.repeat(event)) {
             actions.dialogue(false);
@@ -532,93 +559,115 @@ module Dialogue = {
         | _ => ()
         };
       };
-    let props =
-      ReactDOM.domProps(
-        ~className="story-dialog",
-        ~ref=ReactDOM.Ref.domRef(dialog),
-        ~onKeyDown=navigate,
-        ~ariaLabelledby="dialogue-speaker",
-        (),
-      );
-    onCancel(props, React.Event.Form.preventDefault);
-    ReactDOM.createElement(
-      "dialog",
-      ~props,
-      [|
-        option(
-          Native.campaign(view.game),
-          campaign => {
-            let index = int_of_float(campaign.Domain.dialogue_index);
-            if (!pending || index < 0 || index >= Array.length(campaign.dialogue)) {
-              React.null;
-            } else {
-              let line = campaign.dialogue[index];
-              let chapter = Story.mission(view.catalog, view.game, campaign);
-              let forward =
-                index + 1 == Array.length(campaign.dialogue)
-                  ? state.winner != None ? "Review mission result" : "Return to battle"
-                  : "Next line";
-              <>
-                <p className="story-heading">
-                  {text(
-                     Catalog.mission_map(view.catalog, chapter.source).name
-                     ++ (state.winner != None ? " — After the battle" : ""),
-                   )}
-                </p>
-                <div className="story-line" ariaLive="polite" ariaAtomic=true>
-                  <div className="story-portrait">
-                    <Sprite
-                      artwork={view.artwork}
-                      kind="portraits"
-                      name={line.portrait}
-                      width=90.
-                      height=120.
-                    />
-                  </div>
-                  <div>
-                    <h2 id="dialogue-speaker"> {text(line.speaker)} </h2>
-                    <VoicedText
-                      key={scope ++ ":" ++ string_of_int(index) ++ ":" ++ line.text}
-                      voice
-                      scope
-                      lines={campaign.dialogue}
-                      index
-                    />
-                  </div>
-                </div>
-                <nav className="story-navigation" ariaLabel="Conversation">
-                  <button
-                    className="story-back press-control"
-                    disabled={index == 0 || view.settling}
-                    onPointerDown={Button_press.pointer_down(actions.previous_dialogue)}
-                    onClick={Button_press.click(actions.previous_dialogue)}
-                    ariaLabel="Previous line"
-                    title="Previous line (Left arrow)">
-                    <Icon name="left" />
-                  </button>
-                  <span className="story-count">
-                    {text(
-                       string_of_int(index + 1)
-                       ++ " / "
-                       ++ string_of_int(Array.length(campaign.dialogue)),
-                     )}
-                  </span>
-                  <button
-                    className="story-next press-control"
-                    disabled={view.settling}
-                    ref={ReactDOM.Ref.domRef(nextButton)}
-                    onPointerDown={Button_press.pointer_down(() => actions.dialogue(false))}
-                    onClick={Button_press.click(() => actions.dialogue(false))}
-                    ariaLabel=forward
-                    title={Utf8.to_js(forward ++ " (Right arrow)")}>
-                    <Icon name="right" />
-                  </button>
-                </nav>
-              </>;
-            };
-          },
-        ),
-      |],
-    );
+    <Modal
+      opened=pending
+      onOpenChange={_ => ()}
+      canDismiss=false
+      title={Option.fold(
+        ~none={js|Conversation|js},
+        ~some=(line: Domain.dialogue) => line.speaker,
+        line,
+      )}
+      className={js|story-dialog|js}
+      onKeyDown=navigate
+      onOpenAutoFocus={event => {
+        Modal.preventDefault(event);
+        Option.iter(focus, Js.Nullable.toOption(nextButton.current));
+      }}
+      onCloseAutoFocus={event => {
+        Modal.preventDefault(event);
+        if (state.winner != None) {
+          byId({js|mission-result|js})
+          |> Js.Nullable.toOption
+          |> Option.iter(element => {
+               focus(element);
+               scroll(element, { "block": {js|start|js} });
+             });
+        } else {
+          Option.iter(focus, Js.Nullable.toOption(byId({js|settings-button|js})));
+        };
+      }}>
+      {option(
+         Native.campaign(view.game),
+         campaign => {
+           let index = int_of_float(campaign.Domain.dialogue_index);
+           if (!pending || index < 0 || index >= Array.length(campaign.dialogue)) {
+             React.null;
+           } else {
+             let line = campaign.dialogue[index];
+             let chapter = Story.mission(view.catalog, view.game, campaign);
+             let forward =
+               index + 1 == Array.length(campaign.dialogue)
+                 ? state.winner != None ? {js|Review mission result|js} : {js|Return to battle|js}
+                 : {js|Next line|js};
+             <>
+               <p className={js|story-heading|js}>
+                 {text(
+                    {
+                      let js_text_part_0 = Catalog.mission_map(view.catalog, chapter.source).name;
+                      let js_text_part_1 =
+                        state.winner != None ? {js| — After the battle|js} : {js||js};
+                      {j|$(js_text_part_0)$(js_text_part_1)|j};
+                    },
+                  )}
+               </p>
+               <div className={js|story-line|js} ariaLive={js|polite|js} ariaAtomic=true>
+                 <div className={js|story-portrait|js}>
+                   <Sprite
+                     artwork={view.artwork}
+                     kind={js|portraits|js}
+                     name={line.portrait}
+                     width=90.
+                     height=120.
+                   />
+                 </div>
+                 <div>
+                   <h2 id={js|dialogue-speaker|js}> {text(line.speaker)} </h2>
+                   <VoicedText
+                     key={
+                           let js_text_part_2 = string_of_int(index);
+                           let js_text_part_4 = line.text;
+                           {j|$(scope):$(js_text_part_2):$(js_text_part_4)|j};
+                         }
+                     voice
+                     scope
+                     lines={campaign.dialogue}
+                     index
+                   />
+                 </div>
+               </div>
+               <nav className={js|story-navigation|js} ariaLabel={js|Conversation|js}>
+                 <button
+                   className={js|story-back|js}
+                   disabled={index == 0 || view.settling}
+                   onClick={_ => actions.previous_dialogue()}
+                   ariaLabel={js|Previous line|js}
+                   title={js|Previous line (Left arrow)|js}>
+                   <Icon name={js|left|js} />
+                 </button>
+                 <span className={js|story-count|js}>
+                   {text(
+                      {
+                        let js_text_part_0 = string_of_int(index + 1);
+                        let js_text_part_2 = string_of_int(Array.length(campaign.dialogue));
+                        {j|$(js_text_part_0) / $(js_text_part_2)|j};
+                      },
+                    )}
+                 </span>
+                 <button
+                   className={js|story-next|js}
+                   disabled={view.settling}
+                   ref={ReactDOM.Ref.domRef(nextButton)}
+                   onClick={_ => actions.dialogue(false)}
+                   ariaLabel=forward
+                   title={j|$(forward) (Right arrow)|j}>
+                   <Icon name={js|right|js} />
+                 </button>
+               </nav>
+             </>;
+           };
+         },
+       )}
+    </Modal>;
   };
 };

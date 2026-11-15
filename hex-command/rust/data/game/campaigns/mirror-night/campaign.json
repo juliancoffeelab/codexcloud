@@ -18,5 +18,5 @@
       "name": "Opposing commander"
     }
   ],
-  "human": false
+  "tags": ["rendering-test"]
 }

@@ -2,7 +2,9 @@
    complete-frame painter, fog and lighting own the rendered presentation. *)
 module J = struct
   let object_ value =
-    match Js.Json.decodeObject value with Some v -> v | None -> invalid_arg "Expected object"
+    match Js.Json.decodeObject value with
+    | Some v -> v
+    | None -> invalid_arg {js|Expected object|js}
 
   let field value key =
     match Js.Json.decodeObject value with
@@ -13,23 +15,23 @@ module J = struct
 
   let string value =
     match Js.Json.decodeString value with
-    | Some v -> Utf8.of_js v
-    | None -> invalid_arg "Expected string"
+    | Some v -> v
+    | None -> invalid_arg {js|Expected string|js}
 
   let text value key = string (field value key)
 
   let number value =
     match Js.Json.decodeNumber value with
     | Some v when Float.is_finite v -> v
-    | _ -> invalid_arg "Expected finite number"
+    | _ -> invalid_arg {js|Expected finite number|js}
 
   let n value key = number (field value key)
 
   let array value =
-    match Js.Json.decodeArray value with Some v -> v | None -> invalid_arg "Expected array"
+    match Js.Json.decodeArray value with Some v -> v | None -> invalid_arg {js|Expected array|js}
 
   let list value key = if has value key then array (field value key) else [||]
-  let str value = Js.Json.string (Utf8.to_js value)
+  let str value = Js.Json.string value
   let set value key v = Js.Dict.set (object_ value) key v
   let default value key fallback = if has value key then field value key else fallback
   let text_default value key fallback = if has value key then text value key else fallback
@@ -54,10 +56,10 @@ module Node = struct
   external argv : string array = "argv" [@@mel.module "node:process"]
   external stat : string -> file_info = "statSync" [@@mel.module "node:fs"]
 
-  let read path = Js.Json.parseExn (read_text (Utf8.to_js path) "utf8")
-  let absolute path = Utf8.of_js (absolute (Utf8.to_js path))
-  let resolve base path = Utf8.of_js (resolve (Utf8.to_js base) (Utf8.to_js path))
-  let dirname path = Utf8.of_js (dirname (Utf8.to_js path))
+  let read path = Js.Json.parseExn (read_text path {js|utf8|js})
+  let absolute path = absolute path
+  let resolve base path = resolve base path
+  let dirname path = dirname path
 end
 
 let used_files = Hashtbl.create 32
@@ -66,7 +68,7 @@ let read_json path =
   Hashtbl.replace used_files (Node.absolute path) ();
   Node.read path
 
-let dependencies () = Array.of_seq (Seq.map Utf8.to_js (Hashtbl.to_seq_keys used_files))
+let dependencies () = Array.of_seq (Hashtbl.to_seq_keys used_files)
 
 module C = struct
   type canvas = Terrain_plan.image
@@ -117,7 +119,7 @@ module C = struct
   external get : Lighting.pixels -> int -> float = "" [@@mel.get_index]
   external set : Lighting.pixels -> int -> float -> unit = "" [@@mel.set_index]
 
-  let text c value x y = text c (Utf8.to_js value) x y
+  let text c value x y = text c value x y
 end
 
 type image_stamp = { modified : float; changed : float; size : float; inode : float }
@@ -152,8 +154,8 @@ let used_images = Hashtbl.create 32
 
 let frame_path root (frame : Art.frame) =
   if
-    String.starts_with ~prefix:"/assets/" frame.url
-    || String.starts_with ~prefix:"assets/" frame.url
+    Js.String.startsWith ~prefix:{js|/assets/|js} frame.url
+    || Js.String.startsWith ~prefix:{js|assets/|js} frame.url
   then (
     match Hashtbl.find_opt sprite_sources frame.url with
     | Some source -> source
@@ -162,55 +164,55 @@ let frame_path root (frame : Art.frame) =
           match !sprite_bundle with
           | Some sprites -> sprites
           | None ->
-              let sprites = Node.read (Node.resolve root "_build/default/artwork/sprites.json") in
+              let sprites =
+                Node.read (Node.resolve root {js|_build/default/artwork/sprites.json|js})
+              in
               sprite_bundle := Some sprites;
               sprites
         in
-        let source = "data:image/png;base64," ^ J.text sprites (Filename.basename frame.url) in
+        let source =
+          let js_text_part_1 = J.text sprites (Filename.basename frame.url) in
+          {j|data:image/png;base64,$(js_text_part_1)|j}
+        in
         Hashtbl.replace sprite_sources frame.url source;
         source)
   else Node.absolute frame.url
 
 let help =
-  "Usage: node scripts/render-map.mjs [--watch] --map map.json [--overlay overlay.json] --output \
-   preview.png\n\
-   Options: --grid [--grid-color COLOR] --artwork candidate-frames.json\n\
-  \         --draw-order native|reverse-within-z|shuffle-within-z|reverse-all|shuffle-all\n\
-  \         --order-seed 17 --order-terrain castle-wall,castle-bell\n\
-   Static draft only: Rust resolves fog/lights; encounters and gameplay are not executed."
+  {js|Usage: node scripts/render-map.mjs [--watch] --map map.json [--overlay overlay.json] --output preview.png\nOptions: --grid [--grid-color COLOR] --artwork candidate-frames.json\n         --draw-order native|reverse-within-z|shuffle-within-z|reverse-all|shuffle-all\n         --order-seed 17 --order-terrain castle-wall,castle-bell\nStatic draft only: Rust resolves fog/lights; encounters and gameplay are not executed.|js}
 
 let options () =
   let flags = Hashtbl.create 12 in
-  let args = Array.map Utf8.of_js Node.argv in
+  let args = Node.argv in
   let rec read i =
     if i < Array.length args then
       let name = args.(i) in
-      if List.mem name [ "--grid"; "--help" ] then (
-        Hashtbl.replace flags name "true";
+      if List.mem name [ {js|--grid|js}; {js|--help|js} ] then (
+        Hashtbl.replace flags name {js|true|js};
         read (i + 1))
       else if
         List.mem name
           [
-            "--map";
-            "--overlay";
-            "--output";
-            "--grid-color";
-            "--artwork";
-            "--draw-order";
-            "--order-seed";
-            "--order-terrain";
+            {js|--map|js};
+            {js|--overlay|js};
+            {js|--output|js};
+            {js|--grid-color|js};
+            {js|--artwork|js};
+            {js|--draw-order|js};
+            {js|--order-seed|js};
+            {js|--order-terrain|js};
           ]
       then (
-        if i + 1 >= Array.length args || String.starts_with ~prefix:"--" args.(i + 1) then
-          invalid_arg ("Missing value for " ^ name);
+        if i + 1 >= Array.length args || Js.String.startsWith ~prefix:{js|--|js} args.(i + 1) then
+          invalid_arg {j|Missing value for $(name)|j};
         Hashtbl.replace flags name args.(i + 1);
         read (i + 2))
-      else invalid_arg ("Unknown option: " ^ name)
+      else invalid_arg {j|Unknown option: $(name)|j}
   in
   read 2;
   flags
 
-let cli_error error = Js.Exn.raiseError (Utf8.to_js (Foreign_error.exception_ error))
+let cli_error error = Js.Exn.raiseError (Foreign_error.exception_ error)
 
 let ( let* ) promise f =
   Js.Promise.then_ (fun value -> try f value with error -> cli_error error) promise
@@ -220,79 +222,87 @@ let return = Js.Promise.resolve
 let positive name value =
   let n = J.number value in
   if floor n <> n || n <= 0. || n > 2147483647. then
-    invalid_arg ("Expected positive integer " ^ name);
+    invalid_arg {j|Expected positive integer $(name)|j};
   int_of_float n
 
 let normalize map overlay =
-  let cols = positive "cols" (J.field map "cols") and rows = positive "rows" (J.field map "rows") in
-  let map_id = J.text map "mapId" in
-  if map_id = "" then invalid_arg "Expected mapId";
+  let cols = positive {js|cols|js} (J.field map {js|cols|js})
+  and rows = positive {js|rows|js} (J.field map {js|rows|js}) in
+  let map_id = J.text map {js|mapId|js} in
+  if map_id = {js||js} then invalid_arg {js|Expected mapId|js};
   let positions = Hashtbl.create (cols * rows) and locations = Hashtbl.create 16 in
   let coordinate value =
-    let col = J.n value "col" and row = J.n value "row" in
+    let col = J.n value {js|col|js} and row = J.n value {js|row|js} in
     if
       floor col <> col
       || floor row <> row
       || col < 0. || row < 0.
       || col >= float_of_int cols
       || row >= float_of_int rows
-    then invalid_arg "Position outside draft map";
+    then invalid_arg {js|Position outside draft map|js};
     (int_of_float col, int_of_float row)
   in
-  let address (col, row) = string_of_int col ^ "," ^ string_of_int row in
-  let tiles = J.array (J.field map "tiles") in
+  let address (col, row) =
+    let js_text_part_0 = string_of_int col in
+    let js_text_part_2 = string_of_int row in
+    {j|$(js_text_part_0),$(js_text_part_2)|j}
+  in
+  let tiles = J.array (J.field map {js|tiles|js}) in
   Array.iter
     (fun tile ->
       let key = address (coordinate tile) in
-      if Hashtbl.mem positions key then invalid_arg ("Duplicate draft tile: " ^ key);
-      let id = J.text_default tile "id" key in
-      if id <> key && J.has tile "location" && J.text tile "location" <> id then
-        invalid_arg "Conflicting authored tile identifiers";
+      if Hashtbl.mem positions key then invalid_arg {j|Duplicate draft tile: $(key)|j};
+      let id = J.text_default tile {js|id|js} key in
+      if id <> key && J.has tile {js|location|js} && J.text tile {js|location|js} <> id then
+        invalid_arg {js|Conflicting authored tile identifiers|js};
       let location =
         if id <> key then Some id
-        else if J.has tile "location" then Some (J.text tile "location")
+        else if J.has tile {js|location|js} then Some (J.text tile {js|location|js})
         else None
       in
       Option.iter
         (fun name ->
           if
-            (not (Js.Re.test ~str:name (Js.Re.fromString "^[a-z0-9-]+$")))
+            (not (Js.Re.test ~str:name (Js.Re.fromString {js|^[a-z0-9-]+$|js})))
             || Hashtbl.mem locations name
-          then invalid_arg ("Invalid or duplicate location: " ^ name);
+          then invalid_arg {j|Invalid or duplicate location: $(name)|j};
           Hashtbl.add locations name ();
-          J.set tile "location" (J.str name))
+          J.set tile {js|location|js} (J.str name))
         location;
-      J.set tile "id" (J.str key);
+      J.set tile {js|id|js} (J.str key);
       Hashtbl.add positions key ())
     tiles;
-  if Array.length tiles <> cols * rows then invalid_arg "Supply the complete draft tile grid";
+  if Array.length tiles <> cols * rows then invalid_arg {js|Supply the complete draft tile grid|js};
   let units =
-    if J.has overlay "units" then J.array (J.field overlay "units") else J.list map "units"
+    if J.has overlay {js|units|js} then J.array (J.field overlay {js|units|js})
+    else J.list map {js|units|js}
   in
   Array.iter
     (fun unit ->
-      let point = if J.has unit "tile" then J.field unit "tile" else unit in
+      let point = if J.has unit {js|tile|js} then J.field unit {js|tile|js} else unit in
       let col, row = coordinate point in
-      J.set unit "tile"
+      J.set unit {js|tile|js}
         (J.obj
            [
-             ("col", Js.Json.number (float_of_int col)); ("row", Js.Json.number (float_of_int row));
+             ({js|col|js}, Js.Json.number (float_of_int col));
+             ({js|row|js}, Js.Json.number (float_of_int row));
            ]))
     units;
   let input =
     J.obj
       [
-        ("observer", J.default overlay "observer" (J.str "player"));
-        ("tiles", Js.Json.array tiles);
-        ("units", Js.Json.array units);
-        ("lighting", J.default map "lighting" (J.obj [ ("time", J.str "day") ]));
-        ("factions", J.default map "factions" (Js.Json.array [||]));
-        ("visionGroups", J.default map "visionGroups" (Js.Json.array [||]));
-        ("pending", Js.Json.array [||]);
-        ("marks", J.default overlay "marks" (Js.Json.array [||]));
-        ("choices", J.default overlay "choices" (Js.Json.array [||]));
-        ("memory", J.default overlay "memory" (Js.Json.array [||]));
-        ("round", J.default overlay "round" (Js.Json.number 1.));
+        ({js|observer|js}, J.default overlay {js|observer|js} (J.str {js|player|js}));
+        ({js|tiles|js}, Js.Json.array tiles);
+        ({js|units|js}, Js.Json.array units);
+        ( {js|lighting|js},
+          J.default map {js|lighting|js} (J.obj [ ({js|time|js}, J.str {js|day|js}) ]) );
+        ({js|factions|js}, J.default map {js|factions|js} (Js.Json.array [||]));
+        ({js|visionGroups|js}, J.default map {js|visionGroups|js} (Js.Json.array [||]));
+        ({js|pending|js}, Js.Json.array [||]);
+        ({js|marks|js}, J.default overlay {js|marks|js} (Js.Json.array [||]));
+        ({js|choices|js}, J.default overlay {js|choices|js} (Js.Json.array [||]));
+        ({js|memory|js}, J.default overlay {js|memory|js} (Js.Json.array [||]));
+        ({js|round|js}, J.default overlay {js|round|js} (Js.Json.number 1.));
       ]
   in
   (cols, rows, map_id, units, Map_draft_json.of_presentation_input input, coordinate)
@@ -308,31 +318,43 @@ let drawing_order flags source =
         let c = Float.compare a.y b.y in
         if c <> 0 then c else Float.compare a.x b.x)
     ordered;
-  let order = Option.value ~default:"native" (Hashtbl.find_opt flags "--draw-order") in
+  let order = Option.value ~default:{js|native|js} (Hashtbl.find_opt flags {js|--draw-order|js}) in
   if
     not
       (List.mem order
-         [ "native"; "reverse-within-z"; "shuffle-within-z"; "reverse-all"; "shuffle-all" ])
-  then invalid_arg "Unsupported diagnostic draw order";
-  let kinds = Option.map (String.split_on_char ',') (Hashtbl.find_opt flags "--order-terrain") in
+         [
+           {js|native|js};
+           {js|reverse-within-z|js};
+           {js|shuffle-within-z|js};
+           {js|reverse-all|js};
+           {js|shuffle-all|js};
+         ])
+  then invalid_arg {js|Unsupported diagnostic draw order|js};
+  let kinds =
+    Option.map
+      (fun text -> Array.to_list (Js.String.split ~sep:{js|,|js} text))
+      (Hashtbl.find_opt flags {js|--order-terrain|js})
+  in
   Option.iter
     (List.iter (fun kind ->
          if not (Array.exists (fun (tile : Terrain_plan.tile) -> tile.terrain = kind) source) then
-           invalid_arg ("Order terrain absent from draft: " ^ kind)))
+           invalid_arg {j|Order terrain absent from draft: $(kind)|j}))
     kinds;
   let selected (tile : Terrain_plan.tile) =
     Option.fold ~none:true ~some:(List.mem tile.terrain) kinds
   in
-  if order = "native" then ordered
+  if order = {js|native|js} then ordered
   else
     let seed =
-      ref (Int64.of_string (Option.value ~default:"1" (Hashtbl.find_opt flags "--order-seed")))
+      ref
+        (Int64.of_string
+           (Option.value ~default:{js|1|js} (Hashtbl.find_opt flags {js|--order-seed|js})))
     in
     if !seed <= 0L || !seed > 4294967295L then
-      invalid_arg "order-seed must be a positive 32-bit integer";
+      invalid_arg {js|order-seed must be a positive 32-bit integer|js};
     let state = ref (Int64.to_int32 !seed) in
     let shuffle group =
-      if String.starts_with ~prefix:"reverse" order then
+      if Js.String.startsWith ~prefix:{js|reverse|js} order then
         Array.init (Array.length group) (fun i -> group.(Array.length group - 1 - i))
       else
         let group = Array.copy group in
@@ -350,7 +372,7 @@ let drawing_order flags source =
     in
     let targets = Array_ext.filter selected ordered in
     let groups =
-      if String.ends_with ~suffix:"all" order then [| targets |]
+      if Js.String.endsWith ~suffix:{js|all|js} order then [| targets |]
       else
         let groups = ref [] in
         Array.iter
@@ -374,22 +396,22 @@ let drawing_order flags source =
       ordered
 
 let run root =
-  let root = Utf8.of_js root in
+  let root = root in
   Hashtbl.clear used_files;
   Hashtbl.clear used_images;
   Hashtbl.clear sprite_sources;
   sprite_bundle := None;
   let flags = options () in
-  if Hashtbl.mem flags "--help" then (
+  if Hashtbl.mem flags {js|--help|js} then (
     Js.log help;
     return ())
   else
     let required name =
       match Hashtbl.find_opt flags name with Some v -> v | None -> invalid_arg help
     in
-    let map = read_json (required "--map") in
+    let map = read_json (required {js|--map|js}) in
     let overlay =
-      Option.fold ~none:(J.obj []) ~some:read_json (Hashtbl.find_opt flags "--overlay")
+      Option.fold ~none:(J.obj []) ~some:read_json (Hashtbl.find_opt flags {js|--overlay|js})
     in
     let cols, rows, map_id, units, input, coordinate = normalize map overlay in
     let resolved = Domain.preview_presentation input in
@@ -404,16 +426,17 @@ let run root =
               let original =
                 match Art.find base key with
                 | Some f -> f
-                | None -> invalid_arg ("Unknown candidate frame: " ^ key)
+                | None -> invalid_arg {j|Unknown candidate frame: $(key)|j}
               in
               let frame =
                 {
-                  Art.url = Node.resolve (Node.dirname (Node.absolute path)) (J.text value "url");
-                  width = J.n value "width";
-                  height = J.n value "height";
-                  anchor_x = J.n value "anchorX";
-                  anchor_y = J.n value "anchorY";
-                  z = J.n value "z";
+                  Art.url =
+                    Node.resolve (Node.dirname (Node.absolute path)) (J.text value {js|url|js});
+                  width = J.n value {js|width|js};
+                  height = J.n value {js|height|js};
+                  anchor_x = J.n value {js|anchorX|js};
+                  anchor_y = J.n value {js|anchorY|js};
+                  z = J.n value {js|z|js};
                 }
               in
               if
@@ -421,10 +444,10 @@ let run root =
                 || original.anchor_x <> frame.anchor_x
                 || original.anchor_y <> frame.anchor_y
                 || floor frame.z <> frame.z
-              then invalid_arg ("Candidate must preserve existing frame geometry: " ^ key);
+              then invalid_arg {j|Candidate must preserve existing frame geometry: $(key)|j};
               (key, frame))
             entries)
-        (Hashtbl.find_opt flags "--artwork")
+        (Hashtbl.find_opt flags {js|--artwork|js})
     in
     let artwork = Art.with_overrides base overrides in
     let plan =
@@ -438,12 +461,12 @@ let run root =
         let path = frame_path root frame in
         Hashtbl.replace used_images path ();
         let dependency =
-          if String.starts_with ~prefix:"data:image/png;base64," path then
-            Node.resolve root "_build/default/artwork/sprites.json"
+          if Js.String.startsWith ~prefix:{js|data:image/png;base64,|js} path then
+            Node.resolve root {js|_build/default/artwork/sprites.json|js}
           else path
         in
         Hashtbl.replace used_files dependency ();
-        let info = Node.stat (Utf8.to_js dependency) in
+        let info = Node.stat dependency in
         let stamp =
           {
             modified = info##mtimeMs;
@@ -456,7 +479,7 @@ let run root =
           match Hashtbl.find_opt decoded_images path with
           | Some cached when cached.stamp = stamp -> return cached.image
           | _ ->
-              let* image = C.load (Utf8.to_js path) in
+              let* image = C.load path in
               Hashtbl.replace decoded_images path { stamp; image };
               return image
         in
@@ -470,7 +493,10 @@ let run root =
         let frame =
           match tile.frame with
           | Some f -> f
-          | None -> invalid_arg ("Missing terrain frame: " ^ tile.id)
+          | None ->
+              invalid_arg
+                (let js_text_part_1 = tile.id in
+                 {j|Missing terrain frame: $(js_text_part_1)|j})
         in
         let* () = load_frame frame in
         load (i + 1)
@@ -479,7 +505,7 @@ let run root =
     let scale = Geometry.native_pixel_scale in
     let size = Terrain_plan.dimensions plan in
     let width = int_of_float size.width and height = int_of_float size.height in
-    if width <= 0 || height <= 0 then invalid_arg "Draft map has invalid rendered dimensions";
+    if width <= 0 || height <= 0 then invalid_arg {js|Draft map has invalid rendered dimensions|js};
     let ordered = drawing_order flags plan.tiles in
     let key =
       Js.Json.stringify
@@ -510,7 +536,7 @@ let run root =
       | Some cached when cached.key = key -> cached.canvas
       | _ ->
           let canvas = C.create width height in
-          let tc = C.context canvas "2d" in
+          let tc = C.context canvas {js|2d|js} in
           Terrain_plan.configure tc scale;
           Array.iter (fun tile -> Terrain_plan.paint tc [| tile |] images) ordered;
           let pixels = C.image_data tc 0 0 width height in
@@ -520,21 +546,25 @@ let run root =
           terrain_layer := Some { key; canvas };
           canvas
     in
-    let notes = J.list overlay "notes" in
+    let notes = J.list overlay {js|notes|js} in
     let margin = 30. and header = 74. in
     let canvas = C.create (width + 60) (height + 74 + 30 + (22 * Array.length notes)) in
-    let ctx = C.context canvas "2d" in
-    C.fill ctx "#101827";
+    let ctx = C.context canvas {js|2d|js} in
+    C.fill ctx {js|#101827|js};
     C.fill_rect ctx 0. 0. (float_of_int (C.width canvas)) (float_of_int (C.height canvas));
-    C.fill ctx "#ede8d6";
-    C.font ctx "bold 24px sans-serif";
+    C.fill ctx {js|#ede8d6|js};
+    C.font ctx {js|bold 24px sans-serif|js};
     C.text ctx
-      (J.text_default overlay "title" (J.text_default map "name" map_id) ^ " · Map draft")
+      (let js_text_part_0 =
+         J.text_default overlay {js|title|js} (J.text_default map {js|name|js} map_id)
+       in
+       {j|$(js_text_part_0) · Map draft|j})
       margin 31.;
-    C.fill ctx "#aab8c5";
-    C.font ctx "14px sans-serif";
-    C.text ctx "Static design preview · placements and arrows do not execute scenario mechanics"
-      margin 55.;
+    C.fill ctx {js|#aab8c5|js};
+    C.font ctx {js|14px sans-serif|js};
+    C.text ctx
+      {js|Static design preview · placements and arrows do not execute scenario mechanics|js} margin
+      55.;
     C.draw ctx terrain margin header;
     C.save ctx;
     C.translate ctx margin header;
@@ -554,11 +584,11 @@ let run root =
     let faction (unit : Domain.starting_unit) =
       match Array.find_opt (fun (f : Domain.faction) -> f.id = unit.faction) input.factions with
       | Some f -> f
-      | None -> invalid_arg "Draft unit requires a declared faction"
+      | None -> invalid_arg {js|Draft unit requires a declared faction|js}
     in
     let hostile unit =
       let f = faction unit in
-      let relation = Domain.String_map.find_opt "player" f.relations in
+      let relation = Domain.Text_map.find_opt {js|player|js} f.relations in
       relation = Some Domain.Relation.Hostile
     in
     let visible =
@@ -579,15 +609,18 @@ let run root =
         in
         let palette = (faction unit).palette in
         let color =
-          if palette = "passive" then "#efecdc"
-          else if palette = "green" then "#83b765"
-          else if palette = "player" then "#6fdec0"
-          else "#ff9590"
+          if palette = {js|passive|js} then {js|#efecdc|js}
+          else if palette = {js|green|js} then {js|#83b765|js}
+          else if palette = {js|player|js} then {js|#6fdec0|js}
+          else {js|#ff9590|js}
         in
         let frame =
           match Art.unit_frame artwork ~side:palette unit.type_ with
           | Some f -> f
-          | None -> invalid_arg ("Missing unit frame: " ^ unit.type_ ^ "/" ^ palette)
+          | None ->
+              invalid_arg
+                (let js_text_part_1 = unit.type_ in
+                 {j|Missing unit frame: $(js_text_part_1)/$(palette)|j})
         in
         let* () = load_frame frame in
         C.begin_path ctx;
@@ -600,7 +633,7 @@ let run root =
         C.line_width ctx 1.8;
         C.stroke ctx;
         let sprite = C.create 64 64 in
-        let sc = C.context sprite "2d" in
+        let sc = C.context sprite {js|2d|js} in
         C.draw sc (Option.get (Js.Dict.get images frame.url)) 0. 0.;
         let data = C.image_data sc 0 0 64 64 in
         let pixels = C.data data in
@@ -632,12 +665,13 @@ let run root =
         in
         C.begin_path ctx;
         C.rect ctx (p.x -. 19.) (p.y +. 27.) 38. 4. 2.;
-        C.fill ctx "#a9d0a5";
+        C.fill ctx {js|#a9d0a5|js};
         C.fill_path ctx)
       visible;
-    if Hashtbl.mem flags "--grid" then (
+    if Hashtbl.mem flags {js|--grid|js} then (
       C.save ctx;
-      C.stroke_color ctx (Option.value ~default:"#ff4040" (Hashtbl.find_opt flags "--grid-color"));
+      C.stroke_color ctx
+        (Option.value ~default:{js|#ff4040|js} (Hashtbl.find_opt flags {js|--grid-color|js}));
       C.alpha ctx 0.9;
       C.line_width ctx (1. /. scale);
       C.begin_path ctx;
@@ -648,17 +682,20 @@ let run root =
             Array.of_list
               (List.map
                  (fun item ->
-                   match String.split_on_char ',' item with
+                   match Array.to_list (Js.String.split ~sep:{js|,|js} item) with
                    | [ x; y ] -> (float_of_string x, float_of_string y)
                    | _ -> assert false)
-                 (String.split_on_char ' ' tile.points))
+                 (Array.to_list (Js.String.split ~sep:{js| |js} tile.points)))
           in
           Array.iteri
             (fun i a ->
               let b = points.((i + 1) mod 6) in
-              let key (x, y) = Printf.sprintf "%.6f,%.6f" x y in
+              let key (x, y) =
+                let x = Js.Float.toFixed ~digits:6 x and y = Js.Float.toFixed ~digits:6 y in
+                {j|$x,$y|j}
+              in
               let ak = key a and bk = key b in
-              let edge = if ak < bk then ak ^ "|" ^ bk else bk ^ "|" ^ ak in
+              let edge = if ak < bk then {j|$(ak)|$(bk)|j} else {j|$(bk)|$(ak)|j} in
               if not (Hashtbl.mem edges edge) then (
                 Hashtbl.add edges edge ();
                 C.move_to ctx (fst a) (snd a);
@@ -669,9 +706,9 @@ let run root =
       C.restore ctx);
     Array.iter
       (fun arrow ->
-        let a = point (J.field arrow "from") and b = point (J.field arrow "to") in
+        let a = point (J.field arrow {js|from|js}) and b = point (J.field arrow {js|to|js}) in
         let angle = atan2 (b.y -. a.y) (b.x -. a.x) in
-        C.stroke_color ctx (J.text_default arrow "color" "#dfb5bb");
+        C.stroke_color ctx (J.text_default arrow {js|color|js} {js|#dfb5bb|js});
         C.line_width ctx 2.;
         C.begin_path ctx;
         C.move_to ctx a.x a.y;
@@ -684,39 +721,39 @@ let run root =
               (b.y -. (12. *. sin (angle +. offset))))
           [ -0.5; 0.5 ];
         C.stroke ctx)
-      (J.list overlay "arrows");
+      (J.list overlay {js|arrows|js});
     Array.iter
       (fun mark ->
-        let p = point mark and color = J.text_default mark "color" "#c3cbd3" in
+        let p = point mark and color = J.text_default mark {js|color|js} {js|#c3cbd3|js} in
         C.stroke_color ctx color;
         C.line_width ctx 2.;
-        if J.bool mark "ring" then (
+        if J.bool mark {js|ring|js} then (
           C.dash ctx [| 5.; 5. |];
           C.begin_path ctx;
           C.arc ctx p.x p.y 32. 0. (Float.pi *. 2.);
           C.stroke ctx;
           C.dash ctx [||]);
-        if J.has mark "text" then (
-          let text = J.text mark "text" and y = p.y +. J.num_default mark "dy" (-40.) in
-          C.font ctx "bold 14px sans-serif";
-          C.align ctx "center";
+        if J.has mark {js|text|js} then (
+          let text = J.text mark {js|text|js} and y = p.y +. J.num_default mark {js|dy|js} (-40.) in
+          C.font ctx {js|bold 14px sans-serif|js};
+          C.align ctx {js|center|js};
           C.line_width ctx 4.;
-          C.stroke_color ctx "#101827";
-          C.stroke_text ctx (Utf8.to_js text) p.x y;
+          C.stroke_color ctx {js|#101827|js};
+          C.stroke_text ctx text p.x y;
           C.fill ctx color;
           C.text ctx text p.x y))
-      (J.list overlay "annotations");
+      (J.list overlay {js|annotations|js});
     C.restore ctx;
-    C.fill ctx "#c0cbd4";
-    C.font ctx "14px sans-serif";
+    C.fill ctx {js|#c0cbd4|js};
+    C.font ctx {js|14px sans-serif|js};
     Array.iteri
       (fun i note ->
         C.text ctx (J.string note) margin
           (header +. float_of_int height +. 24. +. float_of_int (i * 22)))
       notes;
-    let output = Node.absolute (required "--output") in
-    Node.mkdir (Utf8.to_js (Node.dirname output)) [%mel.obj { recursive = true }];
-    Node.write (Utf8.to_js output) (C.png canvas "image/png");
+    let output = Node.absolute (required {js|--output|js}) in
+    Node.mkdir (Node.dirname output) [%mel.obj { recursive = true }];
+    Node.write output (C.png canvas {js|image/png|js});
     Hashtbl.filter_map_inplace
       (fun path image -> if Hashtbl.mem used_images path then Some image else None)
       decoded_images;

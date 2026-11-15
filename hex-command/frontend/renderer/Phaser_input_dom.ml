@@ -1,6 +1,6 @@
 include Phaser_dom
 
-let modal () = not (Js.Nullable.isNullable (query "dialog[open]"))
+let modal () = not (Js.Nullable.isNullable (query {js|[data-ui-modal]|js}))
 
 let position (pointer : Phaser.pointer) : Geometry.point =
   let found = ref None in

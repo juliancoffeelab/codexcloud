@@ -53,3 +53,9 @@ initialization before touching source records. Fresh in-memory play remains
 available while blocked source data awaits deletion; its automatic writes stay
 suspended. Storage unavailability without source saves is an ordinary save error
 and cannot block starting or playing a campaign.
+
+Current save metadata stores `mapId` and a one-based numeric `mission` (`null` for
+scenarios), with no `side` field. Native checkpoints retain their own typed turn
+phase and zero-based campaign position. Human chapter labels are generated only
+for display. IndexedDB metadata reaches storage version 4 before normal browsing
+or writes; index upgrades run atomically and historical payloads migrate on load.

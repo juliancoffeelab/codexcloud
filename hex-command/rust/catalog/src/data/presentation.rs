@@ -1,4 +1,5 @@
 //! One evaluator shared by gameplay triggers and presentation resolution.
+use crate::data::Text;
 use crate::data::*;
 use serde::{Deserialize, Serialize};
 
@@ -7,7 +8,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PresentationInput {
-    pub observer: String,
+    pub observer: Text,
     #[serde(default)]
     pub factions: Vec<Faction>,
     pub vision_groups: Vec<VisionGroupState>,
@@ -17,11 +18,11 @@ pub struct PresentationInput {
     pub pending: Vec<SpawnUnit>,
     pub lighting: MapLighting,
     #[serde(default)]
-    pub marks: Vec<String>,
+    pub marks: Vec<Text>,
     #[serde(default)]
-    pub choices: Vec<String>,
+    pub choices: Vec<Text>,
     #[serde(default)]
-    pub memory: Vec<String>,
+    pub memory: Vec<Text>,
     pub round: u32,
 }
 /// Borrowed unit facts used by condition evaluation, independent of storage layout.
@@ -59,7 +60,7 @@ pub trait ConditionContext {
     fn any_unit(&self, predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool;
     fn any_pending(&self, predicate: impl FnMut(ConditionUnit<'_>) -> bool) -> bool;
     fn flag(&self, id: &str) -> bool;
-    fn marks(&self) -> &[String];
+    fn marks(&self) -> &[Text];
     fn round(&self) -> u32;
 }
 impl ConditionContext for PresentationInput {
@@ -138,7 +139,7 @@ impl ConditionContext for PresentationInput {
     fn flag(&self, id: &str) -> bool {
         self.choices.iter().any(|v| v == id)
     }
-    fn marks(&self) -> &[String] {
+    fn marks(&self) -> &[Text] {
         &self.marks
     }
     fn round(&self) -> u32 {
@@ -185,7 +186,7 @@ fn evaluate(
     observer: Option<&str>,
 ) -> bool {
     let unit_matches =
-        |unit: ConditionUnit<'_>, side, kind: &Option<String>, character: &Option<String>| {
+        |unit: ConditionUnit<'_>, side, kind: &Option<Text>, character: &Option<Text>| {
             input.matches_side(unit, side, observer)
                 && kind.as_deref().is_none_or(|kind| unit.kind == kind)
                 && character
@@ -269,7 +270,7 @@ pub trait PresentationContext: ConditionContext {
     fn fog_hidden(&self, id: &Hex) -> bool;
 }
 /// Render current facts without cloning or updating durable condition memory.
-pub fn render(input: &impl PresentationContext, memory: &[String]) -> BattlefieldPresentation {
+pub fn render(input: &impl PresentationContext, memory: &[Text]) -> BattlefieldPresentation {
     let lighting = input.lighting();
     let mut lights = Vec::new();
     input.visit_lights(|id, col, row, light| {
@@ -299,7 +300,7 @@ pub fn render(input: &impl PresentationContext, memory: &[String]) -> Battlefiel
     }
 }
 /// Discover new facts without copying existing memory or constructing visual output.
-pub fn discover(input: &impl PresentationContext, memory: &[String]) -> Vec<String> {
+pub fn discover(input: &impl PresentationContext, memory: &[Text]) -> Vec<Text> {
     let mut added = Vec::new();
     input.visit_lights(|id, _, _, light| {
         if let Some(rule) = light.when.as_ref().filter(|r| r.remember) {
@@ -315,9 +316,9 @@ pub fn discover(input: &impl PresentationContext, memory: &[String]) -> Vec<Stri
 
 /// Returns resolved visuals plus durable facts; callers decide whether to persist facts.
 #[cfg_attr(not(target_arch = "wasm32"), inline)]
-pub fn resolve(input: &PresentationInput) -> (BattlefieldPresentation, Vec<String>) {
+pub fn resolve(input: &PresentationInput) -> (BattlefieldPresentation, Vec<Text>) {
     let mut memory = input.memory.clone();
-    let mut rule_met = |rule: &ConditionRule, key: String, target: &TileRef| {
+    let mut rule_met = |rule: &ConditionRule, key: Text, target: &TileRef| {
         let satisfied = rule_matches(rule, input, Some(target));
         if rule.remember {
             if memory.contains(&key) {

@@ -1,9 +1,6 @@
 type keyboard_event
 type page_transition_event
 
-external showModal : Dom.element -> unit = "showModal" [@@mel.send]
-external closeModal : Dom.element -> unit = "close" [@@mel.send]
-external isOpen : Dom.element -> bool = "open" [@@mel.get]
 external focus : Dom.element -> unit = "focus" [@@mel.send]
 external focusWith : Dom.element -> < preventScroll : bool > Js.t -> unit = "focus" [@@mel.send]
 external byId : string -> Dom.element Js.Nullable.t = "getElementById" [@@mel.scope "document"]

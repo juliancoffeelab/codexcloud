@@ -3,13 +3,13 @@ type cue = Action | Choice | Disclosure | Human | Woodland | Skeletons | Merfolk
 
 let clips =
   [|
-    (Action, "select-1.wav?v=3a6cff557cea", 0.29 *. 0.25);
-    (Choice, "palette/village-contact.mp3", 1.);
-    (Disclosure, "palette/light-cloth-rustle.mp3", 0.39);
-    (Human, "palette/chainmail-rattle.mp3", 0.39);
-    (Woodland, "palette/enchanted-forest-rustle.mp3", 0.39);
-    (Skeletons, "palette/bone-crunch.mp3", 0.39);
-    (Merfolk, "palette/underwater-belt-rustle.mp3", 0.39);
+    (Action, {js|select-1.wav?v=3a6cff557cea|js}, 0.29 *. 0.25);
+    (Choice, {js|palette/village-contact.mp3|js}, 1.);
+    (Disclosure, {js|palette/light-cloth-rustle.mp3|js}, 0.39);
+    (Human, {js|palette/chainmail-rattle.mp3|js}, 0.39);
+    (Woodland, {js|palette/enchanted-forest-rustle.mp3|js}, 0.39);
+    (Skeletons, {js|palette/bone-crunch.mp3|js}, 0.39);
+    (Merfolk, {js|palette/underwater-belt-rustle.mp3|js}, 0.39);
   |]
 
 type readiness = Audio_state.readiness = { ready : bool; error : string option }
@@ -19,8 +19,11 @@ let readiness = Observable.reader readiness_owner
 
 open Browser_audio
 
-let base_url : string = [%mel.raw "import.meta.env?.BASE_URL ?? '/' "]
-let gestures = [| "pointerdown"; "pointerup"; "touchend"; "keydown"; "click" |]
+let base_url : string = [%mel.raw {js|import.meta.env?.BASE_URL ?? '/' |js}]
+
+let gestures =
+  [| {js|pointerdown|js}; {js|pointerup|js}; {js|touchend|js}; {js|keydown|js}; {js|click|js} |]
+
 let ( let* ) promise next = Js.Promise.then_ next promise
 
 type t = {
@@ -66,14 +69,14 @@ let unlock t =
   | Some _ when (not (t.enabled ())) || t.disposed || t.suspended -> Js.Promise.resolve false
   | Some owner ->
       let owner =
-        if state owner = "closed" then (
-          let owner = context [%mel.obj { latencyHint = "interactive" }] in
+        if state owner = {js|closed|js} then (
+          let owner = context [%mel.obj { latencyHint = {js|interactive|js} }] in
           t.context <- Some owner;
           owner)
         else owner
       in
-      let* () = if state owner <> "running" then resume owner else Js.Promise.resolve () in
-      Js.Promise.resolve ((not t.disposed) && state owner = "running")
+      let* () = if state owner <> {js|running|js} then resume owner else Js.Promise.resolve () in
+      Js.Promise.resolve ((not t.disposed) && state owner = {js|running|js})
 
 let prepare t =
   if t.disposed || t.suspended then Js.Promise.resolve ()
@@ -93,22 +96,22 @@ let prepare t =
               match t.context with
               | Some context -> context
               | None ->
-                  let owner = context [%mel.obj { latencyHint = "interactive" }] in
+                  let owner = context [%mel.obj { latencyHint = {js|interactive|js} }] in
                   t.context <- Some owner;
                   owner
             in
             let load (cue, file, _) =
-              let url = base_url ^ "assets/audio/" ^ file in
+              let url = {j|$(base_url)assets/audio/$(file)|j} in
               let* response =
                 fetch url [%mel.obj { signal = any_signal [| signal controller; deadline 30000 |] }]
               in
-              Boot_process.response ~url ~status:(status response) ~source:"hud-fetch"
+              Boot_process.response ~url ~status:(status response) ~source:{js|hud-fetch|js}
                 ~get_header:(fun name -> header (headers response) name);
               if not (ok response) then
                 failwith
-                  ("HTTP "
-                  ^ string_of_int (status response)
-                  ^ " " ^ status_text response ^ " " ^ url);
+                  (let js_text_part_1 = string_of_int (status response) in
+                   let js_text_part_3 = status_text response in
+                   {j|HTTP $(js_text_part_1) $(js_text_part_3) $(url)|j});
               let* bytes = array_buffer response in
               if owns_preparation t controller then (
                 let* buffer = decode owner bytes in
@@ -136,7 +139,10 @@ let prepare t =
                 Observable.set readiness_owner
                   {
                     ready = prepared t;
-                    error = Some ("Cannot prepare HUD cues\n" ^ Foreign_error.describe cause);
+                    error =
+                      Some
+                        (let js_text_part_1 = Foreign_error.describe cause in
+                         {j|Cannot prepare HUD cues\n$(js_text_part_1)|j});
                   });
               Js.Promise.resolve ())
             attempt
@@ -178,7 +184,10 @@ let create enabled =
               Observable.set readiness_owner
                 {
                   ready = prepared t;
-                  error = Some ("Cannot unlock HUD audio\n" ^ Foreign_error.describe cause);
+                  error =
+                    Some
+                      (let js_text_part_1 = Foreign_error.describe cause in
+                       {j|Cannot unlock HUD audio\n$(js_text_part_1)|j});
                 };
             Js.Promise.resolve false)
           (unlock t)
@@ -203,13 +212,15 @@ let create enabled =
   let visibility event =
     if backgrounded Browser_dom.document then suspend event else resume event
   in
-  let window_events = [ ("pagehide", suspend); ("pageshow", resume); ("online", resume) ] in
-  Browser_dom.addDocumentListener Browser_dom.document "visibilitychange" visibility;
+  let window_events =
+    [ ({js|pagehide|js}, suspend); ({js|pageshow|js}, resume); ({js|online|js}, resume) ]
+  in
+  Browser_dom.addDocumentListener Browser_dom.document {js|visibilitychange|js} visibility;
   List.iter (fun (event, handler) -> Browser_dom.listen_error event handler) window_events;
   t.detach <-
     (fun () ->
       Array.iter (fun name -> unlisten name activate true) gestures;
-      Browser_dom.removeDocumentListener Browser_dom.document "visibilitychange" visibility;
+      Browser_dom.removeDocumentListener Browser_dom.document {js|visibilitychange|js} visibility;
       List.iter (fun (event, handler) -> Browser_dom.remove_error event handler) window_events);
   t
 
@@ -226,7 +237,9 @@ let play ?(cue = Action) t =
                 {
                   ready = true;
                   error =
-                    Some ("Cannot unlock HUD audio for playback\n" ^ Foreign_error.describe cause);
+                    Some
+                      (let js_text_part_1 = Foreign_error.describe cause in
+                       {j|Cannot unlock HUD audio for playback\n$(js_text_part_1)|j});
                 };
             Js.Promise.resolve false)
           (unlock t)

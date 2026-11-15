@@ -1,6 +1,7 @@
 //! Typed battle commands, validation failures and observable feedback.
 
 use super::*;
+use crate::data::Text;
 use serde::{Deserialize, Serialize};
 /// A validated battle mutation expressed with stable authored identifiers.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -33,7 +34,7 @@ pub enum Command {
     },
     DropItem {
         unit: UnitId,
-        item: String,
+        item: Text,
     },
     EndTurn,
     DismissDialogue,

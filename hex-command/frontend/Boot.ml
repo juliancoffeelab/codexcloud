@@ -7,15 +7,15 @@ external set_busy : Dom.element -> string -> unit = "ariaBusy" [@@mel.set]
 
 let report reason =
   Boot_process.fail reason;
-  field "startup" (fun node -> set_busy node "false");
-  field "startup-loading" (fun node -> hidden node true);
-  field "startup-failure" (fun node -> hidden node false);
-  field "startup-message" (fun node ->
-      set_text node "The game could not start. Reloading keeps your saved battle.");
-  field "startup-error" (fun node ->
+  field {js|startup|js} (fun node -> set_busy node {js|false|js});
+  field {js|startup-loading|js} (fun node -> hidden node true);
+  field {js|startup-failure|js} (fun node -> hidden node false);
+  field {js|startup-message|js} (fun node ->
+      set_text node {js|The game could not start. Reloading keeps your saved battle.|js});
+  field {js|startup-error|js} (fun node ->
       hidden node false;
       open_ node true);
-  field "startup-detail" (fun node -> set_text node reason)
+  field {js|startup-detail|js} (fun node -> set_text node reason)
 
 let load : unit -> unit Js.Promise.t = [%mel.raw {|() => import("./Main.js")|}]
 

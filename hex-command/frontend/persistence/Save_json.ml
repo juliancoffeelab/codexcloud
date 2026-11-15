@@ -4,14 +4,14 @@ let missing value = Js.Types.test value Js.Types.Undefined
 let obj values = Js.Json.object_ (Js.Dict.fromArray (Array.of_list values))
 
 let arr values = Js.Json.array (Array.of_list values)
-let str value = Js.Json.string (Utf8.to_js value)
+let str value = Js.Json.string value
 let num = Js.Json.number
 let bool = Js.Json.boolean
 
 let dict value =
   match Js.Json.decodeObject value with
   | Some value -> value
-  | None -> invalid_arg "Expected save object"
+  | None -> invalid_arg {js|Expected save object|js}
 
 let get value key =
   match Js.Json.decodeObject value with
@@ -20,8 +20,8 @@ let get value key =
       Option.bind (Js.Dict.get d key) (fun value -> if missing value then None else Some value)
 
 let field value key = Option.value ~default:Js.Json.null (get value key)
-let host_string value = Option.value ~default:"" (Js.Json.decodeString value)
-let string value = Option.value ~default:"" (Option.map Utf8.of_js (Js.Json.decodeString value))
+let host_string value = Option.value ~default:{js||js} (Js.Json.decodeString value)
+let string value = Option.value ~default:{js||js} (Js.Json.decodeString value)
 let text value key = string (field value key)
 let number value = Option.value ~default:0. (Js.Json.decodeNumber value)
 let n value key = number (field value key)

@@ -17,14 +17,14 @@ external set : Lighting.pixels -> int -> float -> unit = "" [@@mel.set_index]
 external add : Phaser.textures -> string -> canvas -> Phaser.texture = "addCanvas" [@@mel.send]
 
 let texture textures source =
-  let key = "concealment-outline:" ^ source in
+  let key = {j|concealment-outline:$(source)|j} in
   if not (textures##exists key) then (
     let size = 64 in
     let image = Phaser.Texture.source_image (textures##get source) in
-    let surface = canvas "canvas" in
+    let surface = canvas {js|canvas|js} in
     width surface size;
     height surface size;
-    let ctx = context surface "2d" in
+    let ctx = context surface {js|2d|js} in
     draw ctx image 0 0;
     let original = data (read ctx 0 0 size size) in
     let edge = read ctx 0 0 size size in

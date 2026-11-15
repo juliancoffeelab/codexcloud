@@ -1,4 +1,10 @@
 //! Typed authored content, immutable catalog data and owned battle snapshots.
+/// UTF-8 in Rust, ordinary JavaScript text in the generated browser bindings.
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(js_value("string")))]
+pub type Text = String;
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(js_value("string")))]
+pub type TextSlice = str;
+
 use std::collections::HashMap;
 mod ids;
 mod recruitment;

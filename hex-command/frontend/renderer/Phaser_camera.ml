@@ -34,18 +34,18 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
   let canvas =
     match Js.Nullable.toOption scene##game##canvas with
     | Some canvas -> canvas
-    | None -> failwith "Battlefield canvas is unavailable"
+    | None -> failwith {js|Battlefield canvas is unavailable|js}
   in
   let host =
     match Js.Nullable.toOption canvas##parentElement with
     | Some host -> host
-    | None -> failwith "Battlefield host is unavailable"
+    | None -> failwith {js|Battlefield host is unavailable|js}
   in
-  let workspace = Js.Nullable.toOption (D.closest host ".workspace") in
+  let workspace = Js.Nullable.toOption (D.closest host {js|.workspace|js}) in
   let renderer =
     match Js.Nullable.toOption scene##game##renderer with
     | Some renderer -> renderer
-    | None -> failwith "Battlefield WebGL renderer is unavailable"
+    | None -> failwith {js|Battlefield WebGL renderer is unavailable|js}
   in
   let viewport = Webgl.viewport_array (Webgl.viewport_parameter renderer##gl 0x0d3a) in
   let surface_limit =
@@ -72,7 +72,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
     val mutable previous_capacity = 0.
     val mutable previous_zoom = 1.
     val mutable pending_reveal : reveal option = None
-    val mutable inspection = ""
+    val mutable inspection = {js||js}
     val mutable inspection_view : Battlefield_view.view option = None
     val mutable surface_width = 0
     val mutable surface_height = 0
@@ -106,30 +106,30 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
         let frame = current () in
         let fields =
           [
-            ("gestureId", int gesture_id);
-            ("observedAt", number (now ()));
-            ( "activePointerIds",
+            ({js|gestureId|js}, int gesture_id);
+            ({js|observedAt|js}, number (now ()));
+            ( {js|activePointerIds|js},
               Js.Json.array
                 (Array.map (fun (pointer : Phaser.pointer) -> int pointer##id) self#pointers) );
-            ("cancelledContacts", bool cancelled_contacts);
-            ("left", number left);
-            ("top", number top);
-            ("zoom", number zoom);
-            ("viewportWidth", number viewport_width);
-            ("viewportHeight", number viewport_height);
-            ("contentWidth", number content_width);
-            ("contentHeight", number content_height);
+            ({js|cancelledContacts|js}, bool cancelled_contacts);
+            ({js|left|js}, number left);
+            ({js|top|js}, number top);
+            ({js|zoom|js}, number zoom);
+            ({js|viewportWidth|js}, number viewport_width);
+            ({js|viewportHeight|js}, number viewport_height);
+            ({js|contentWidth|js}, number content_width);
+            ({js|contentHeight|js}, number content_height);
           ]
         in
         let fields =
           match frame with
           | None -> fields
           | Some frame ->
-              ("mapId", string (Native.state frame.view.game).map_id)
-              :: ("sessionVersion", int frame.view.session_version)
+              ({js|mapId|js}, string (Native.state frame.view.game).map_id)
+              :: ({js|sessionVersion|js}, int frame.view.session_version)
               :: fields
         in
-        Performance_trace.instant ("Battlefield " ^ event) ~args:(obj (details @ fields))
+        Performance_trace.instant {j|Battlefield $(event)|j} ~args:(obj (details @ fields))
 
     method private pointer_record event (pointer : Phaser.pointer) extra =
       if Option.is_some (Performance_trace.configuration ()) then
@@ -137,17 +137,17 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
         self#record event
           ~details:
             ([
-               ("pointerId", int pointer##id);
-               ("touch", bool pointer##wasTouch);
-               ("x", number point.x);
-               ("y", number point.y);
-               ("eventTime", number (D.event_time pointer##event));
+               ({js|pointerId|js}, int pointer##id);
+               ({js|touch|js}, bool pointer##wasTouch);
+               ({js|x|js}, number point.x);
+               ({js|y|js}, number point.y);
+               ({js|eventTime|js}, number (D.event_time pointer##event));
              ]
             @ extra)
 
     method private stop_inertia reason =
       if Option.is_some inertia then
-        self#record "inertia stop" ~details:[ ("reason", string reason) ];
+        self#record {js|inertia stop|js} ~details:[ ({js|reason|js}, string reason) ];
       Option.iter D.stop_tween inertia;
       inertia <- None
 
@@ -163,7 +163,9 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
           | None -> ()
           | Some node ->
               let style = D.computed_style node in
-              let clips overflow = List.mem overflow [ "auto"; "scroll"; "hidden"; "clip" ] in
+              let clips overflow =
+                List.mem overflow [ {js|auto|js}; {js|scroll|js}; {js|hidden|js}; {js|clip|js} ]
+              in
               let x = clips (D.overflow_x style) and y = clips (D.overflow_y style) in
               if x || y then (
                 let bounds = D.bounds node in
@@ -265,7 +267,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
             && (previous_capacity <> capacity_width
                || old_width <> viewport_width || density <> D.device_ratio
                || (old_height <> viewport_height && previous_zoom = zoom))
-          then self#cancel "viewport layout";
+          then self#cancel {js|viewport layout|js};
           if layout_ready && previous_capacity <> capacity_width then
             left <- (world_center_x *. display_scale) -. (capacity_width /. 2.);
           previous_capacity <- capacity_width;
@@ -285,17 +287,21 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
             let _ = scene##scale##resize pixels_wide pixels_high in
             surface_width <- pixels_wide;
             surface_height <- pixels_high;
-            Performance_trace.instant "Battlefield surface allocation"
+            Performance_trace.instant {js|Battlefield surface allocation|js}
               ~args:
                 (obj
                    [
-                     ("width", int pixels_wide);
-                     ("height", int pixels_high);
-                     ("density", number D.device_ratio);
+                     ({js|width|js}, int pixels_wide);
+                     ({js|height|js}, int pixels_high);
+                     ({js|density|js}, number D.device_ratio);
                    ]));
           density <- D.device_ratio;
-          D.css_width canvas##style (Js.Float.toString capacity_width ^ "px");
-          D.css_height canvas##style (Js.Float.toString capacity_height ^ "px");
+          D.css_width canvas##style
+            (let js_text_part_0 = Js.Float.toString capacity_width in
+             {j|$(js_text_part_0)px|j});
+          D.css_height canvas##style
+            (let js_text_part_0 = Js.Float.toString capacity_height in
+             {j|$(js_text_part_0)px|j});
           Phaser.ScaleMethods.set_size
             (Phaser.ScaleMethods.display_size scene##scale)
             capacity_width capacity_height;
@@ -309,13 +315,13 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
               (min (float_of_int pixels_high) (ceil (viewport_height *. pixel_y)))
           in
           Phaser.CameraMethods.remove_bounds camera;
-          Performance_trace.instant "Battlefield viewport"
+          Performance_trace.instant {js|Battlefield viewport|js}
             ~args:
               (obj
                  [
-                   ("width", number viewport_width);
-                   ("height", number viewport_height);
-                   ("worldScale", number display_scale);
+                   ({js|width|js}, number viewport_width);
+                   ({js|height|js}, number viewport_height);
+                   ({js|worldScale|js}, number display_scale);
                  ]);
           Phaser.CameraMethods.zoom camera
             (content_width *. pixel_x
@@ -354,17 +360,18 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
 
     method private down (pointer : Phaser.pointer) =
       if cancelled_contacts || D.modal () then
-        self#record "pointer rejected"
+        self#record {js|pointer rejected|js}
           ~details:
             [
-              ("reason", string (if cancelled_contacts then "cancelled contacts" else "modal"));
-              ("pointerId", int pointer##id);
+              ( {js|reason|js},
+                string (if cancelled_contacts then {js|cancelled contacts|js} else {js|modal|js}) );
+              ({js|pointerId|js}, int pointer##id);
             ]
       else if pointer##wasTouch || pointer##leftButtonDown () || pointer##middleButtonDown () then (
         gesture_id <- gesture_id + 1;
-        self#stop_inertia "pointer down";
+        self#stop_inertia {js|pointer down|js};
         pending_reveal <- None;
-        self#pointer_record "pointer down" pointer [];
+        self#pointer_record {js|pointer down|js} pointer [];
         D.focus canvas [%mel.obj { preventScroll = true }];
         let active = self#pointers in
         if Array.length active >= 2 then (
@@ -379,7 +386,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
                 x = ((a.x +. b.x) /. 2.) -. bounds.left;
                 y = ((a.y +. b.y) /. 2.) -. bounds.top;
               };
-          self#record "pinch start" ~details:[ ("distance", number distance) ];
+          self#record {js|pinch start|js} ~details:[ ({js|distance|js}, number distance) ];
           gesture <- true;
           drag <- None)
         else (
@@ -401,10 +408,10 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
               }))
 
     method private move (pointer : Phaser.pointer) resampled =
-      if D.modal () then self#cancel "modal"
+      if D.modal () then self#cancel {js|modal|js}
       else
         let active = self#pointers in
-        if not resampled then self#pointer_record "pointer move" pointer [];
+        if not resampled then self#pointer_record {js|pointer move|js} pointer [];
         match pinch with
         | Some pinch when Array.length active >= 2 ->
             let a = D.position active.(0) and b = D.position active.(1) in
@@ -432,7 +439,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
                     drag.last_y <- point.y;
                     drag.time <- at);
                   gesture <- true;
-                  D.cursor canvas##style "grabbing";
+                  D.cursor canvas##style {js|grabbing|js};
                   left <- drag.left -. !dx;
                   top <- drag.top -. !dy;
                   self#apply_scroll (Some Pan))
@@ -441,24 +448,25 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
     method private prepare_picking (frame : Battlefield_frame.t) =
       let state = Native.state frame.view.game in
       let key =
-        String.concat ":"
-          [
-            string_of_int frame.view.session_version;
-            state.map_id;
-            Js.Float.toString state.map_revision;
-            Int32.to_string state.cols;
-            Int32.to_string state.rows;
-            string_of_int (Array.length frame.tiles);
-          ]
+        Js.Array.join ~sep:{js|:|js}
+          (Array.of_list
+             [
+               string_of_int frame.view.session_version;
+               state.map_id;
+               Js.Float.toString state.map_revision;
+               Int32.to_string state.cols;
+               Int32.to_string state.rows;
+               string_of_int (Array.length frame.tiles);
+             ])
       in
       picking#prepare key frame.terrain_tiles
 
     method private up (pointer : Phaser.pointer) =
-      self#pointer_record "pointer up" pointer
+      self#pointer_record {js|pointer up|js} pointer
         [
-          ("cancelled", bool pointer##wasCanceled);
-          ("dragged", bool gesture);
-          ("contacts", int (Array.length self#pointers));
+          ({js|cancelled|js}, bool pointer##wasCanceled);
+          ({js|dragged|js}, bool gesture);
+          ({js|contacts|js}, int (Array.length self#pointers));
         ];
       if cancelled_contacts then (
         if Array.length self#pointers = 0 then cancelled_contacts <- false)
@@ -491,8 +499,13 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
               let speed = hypot vx vy in
               if speed > 0.1 then (
                 let duration = min 900. (speed /. 0.004) and from_left = left and from_top = top in
-                self#record "inertia start"
-                  ~details:[ ("vx", number vx); ("vy", number vy); ("duration", number duration) ];
+                self#record {js|inertia start|js}
+                  ~details:
+                    [
+                      ({js|vx|js}, number vx);
+                      ({js|vy|js}, number vy);
+                      ({js|duration|js}, number duration);
+                    ];
                 inertia <-
                   Some
                     (D.counter scene##tweens
@@ -500,7 +513,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
                          D.from = 0.;
                          target = 1.;
                          duration;
-                         ease = "Quad.easeOut";
+                         ease = {js|Quad.easeOut|js};
                          on_update =
                            (fun[@u] tween ->
                              let progress =
@@ -511,27 +524,27 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
                              self#apply_scroll (Some Pan));
                          on_complete =
                            (fun[@u] () ->
-                             self#record "inertia complete";
+                             self#record {js|inertia complete|js};
                              inertia <- None);
                        }))
           | _ -> ());
           drag <- None;
           pinch <- None;
           gesture <- false;
-          D.cursor canvas##style "")
+          D.cursor canvas##style {js||js})
         else drag <- None)
 
     method private wheel (pointer : Phaser.pointer) dx dy =
       let event = pointer##event in
-      self#record "wheel"
+      self#record {js|wheel|js}
         ~details:
           [
-            ("dx", number dx);
-            ("dy", number dy);
-            ("deltaMode", int (D.delta_mode event));
-            ("zoomGesture", bool (D.ctrl event || D.meta event));
+            ({js|dx|js}, number dx);
+            ({js|dy|js}, number dy);
+            ({js|deltaMode|js}, int (D.delta_mode event));
+            ({js|zoomGesture|js}, bool (D.ctrl event || D.meta event));
           ];
-      self#cancel "wheel";
+      self#cancel {js|wheel|js};
       pending_reveal <- None;
       D.prevent event;
       if D.ctrl event || D.meta event then
@@ -551,31 +564,33 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
         && not (D.ctrl event || D.meta event || D.alt event)
       then
         let key = D.key event in
-        if List.mem key [ "Escape"; "+"; "="; "-"; "0" ] then (
-          self#cancel "keyboard shortcut";
+        if List.mem key [ {js|Escape|js}; {js|+|js}; {js|=|js}; {js|-|js}; {js|0|js} ] then (
+          self#cancel {js|keyboard shortcut|js};
           pending_reveal <- None;
           D.prevent event;
           match key with
-          | "Escape" -> (actions ()).clear_selection true
-          | "+" | "=" -> self#zoom_at (zoom *. 1.2) (viewport_width /. 2.) (viewport_height /. 2.)
-          | "-" -> self#zoom_at (zoom /. 1.2) (viewport_width /. 2.) (viewport_height /. 2.)
+          | matched_text_0 when matched_text_0 = {js|Escape|js} -> (actions ()).clear_selection true
+          | matched_text_1 when matched_text_1 = {js|+|js} || matched_text_1 = {js|=|js} ->
+              self#zoom_at (zoom *. 1.2) (viewport_width /. 2.) (viewport_height /. 2.)
+          | matched_text_2 when matched_text_2 = {js|-|js} ->
+              self#zoom_at (zoom /. 1.2) (viewport_width /. 2.) (viewport_height /. 2.)
           | _ -> self#zoom_at 1. (viewport_width /. 2.) (viewport_height /. 2.))
 
     method private cancel reason =
-      self#record "gesture cancel"
+      self#record {js|gesture cancel|js}
         ~details:
           [
-            ("reason", string reason);
-            ("contacts", int (Array.length self#pointers));
-            ("dragging", bool (Option.is_some drag));
-            ("pinching", bool (Option.is_some pinch));
+            ({js|reason|js}, string reason);
+            ({js|contacts|js}, int (Array.length self#pointers));
+            ({js|dragging|js}, bool (Option.is_some drag));
+            ({js|pinching|js}, bool (Option.is_some pinch));
           ];
       self#stop_inertia reason;
       cancelled_contacts <- Array.length self#pointers > 0;
       drag <- None;
       pinch <- None;
       gesture <- true;
-      D.cursor canvas##style ""
+      D.cursor canvas##style {js||js}
 
     method private apply_reveal request =
       Option.iter
@@ -646,14 +661,14 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
                self#move_vertical ~mode:Pan
                  (visible_top
                  +. if dy <> 0. then dy else max 0. (!y2 -. visible_top -. clip.bottom +. 12.)));
-            Performance_trace.instant "Battlefield camera reveal"
+            Performance_trace.instant {js|Battlefield camera reveal|js}
               ~args:
                 (obj
                    [
-                     ("ids", Js.Json.array (Array.map string request.ids));
-                     ("center", bool request.center);
-                     ("left", number left);
-                     ("top", number top);
+                     ({js|ids|js}, Js.Json.array (Array.map string request.ids));
+                     ({js|center|js}, bool request.center);
+                     ({js|left|js}, number left);
+                     ({js|top|js}, number top);
                    ]))
         (current ())
 
@@ -701,7 +716,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
             commander_hint <- Some hint;
             let _ =
               Battlefield_view.Commander.dispatch host
-                (Battlefield_view.Commander.create "battlefieldcommander"
+                (Battlefield_view.Commander.create {js|battlefieldcommander|js}
                    [%mel.obj { detail = Js.Nullable.fromOption hint }])
             in
             ()))
@@ -726,11 +741,11 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
           self#prepare_picking frame;
           inspection_view <- Some frame.view;
           let ids = self#inspection_tiles frame.view in
-          let next = String.concat "|" (Array.to_list ids) in
+          let next = Js.Array.join ~sep:{js|||js} (Array.of_list (Array.to_list ids)) in
           if next <> inspection then (
             inspection <- next;
             if Array.length ids > 0 then (
-              self#stop_inertia "selection reveal";
+              self#stop_inertia {js|selection reveal|js};
               let unique = Set.create () in
               Array.iter
                 (fun id ->
@@ -772,27 +787,27 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
             let visible = self#visible_bounds in
             let details =
               [
-                ( "visibleBounds",
+                ( {js|visibleBounds|js},
                   obj
                     [
-                      ("left", number visible.left);
-                      ("top", number visible.top);
-                      ("right", number visible.right);
-                      ("bottom", number visible.bottom);
+                      ({js|left|js}, number visible.left);
+                      ({js|top|js}, number visible.top);
+                      ({js|right|js}, number visible.right);
+                      ({js|bottom|js}, number visible.bottom);
                     ] );
-                ("deltaMs", number frame_delta);
-                ("dragging", bool (Option.is_some drag));
-                ("pinching", bool (Option.is_some pinch));
-                ("inertia", bool (Option.is_some inertia));
-                ("sampledAt", number (now ()));
-                ("requestedLeft", number requested_left);
-                ("requestedTop", number requested_top);
-                ("overshootX", number (requested_left -. left));
-                ("overshootY", number (requested_top -. top));
-                ("canvasWidth", int canvas##width);
-                ("canvasHeight", int canvas##height);
-                ("pixelX", number pixel_x);
-                ("pixelY", number pixel_y);
+                ({js|deltaMs|js}, number frame_delta);
+                ({js|dragging|js}, bool (Option.is_some drag));
+                ({js|pinching|js}, bool (Option.is_some pinch));
+                ({js|inertia|js}, bool (Option.is_some inertia));
+                ({js|sampledAt|js}, number (now ()));
+                ({js|requestedLeft|js}, number requested_left);
+                ({js|requestedTop|js}, number requested_top);
+                ({js|overshootX|js}, number (requested_left -. left));
+                ({js|overshootY|js}, number (requested_top -. top));
+                ({js|canvasWidth|js}, int canvas##width);
+                ({js|canvasHeight|js}, int canvas##height);
+                ({js|pixelX|js}, number pixel_x);
+                ({js|pixelY|js}, number pixel_y);
               ]
             in
             let details =
@@ -800,15 +815,15 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
               | None -> details
               | Some drag ->
                   [
-                    ("x", number drag.last_x);
-                    ("y", number drag.last_y);
-                    ("vx", number drag.vx);
-                    ("vy", number drag.vy);
-                    ("eventTime", number drag.time);
+                    ({js|x|js}, number drag.last_x);
+                    ({js|y|js}, number drag.last_y);
+                    ({js|vx|js}, number drag.vx);
+                    ({js|vy|js}, number drag.vy);
+                    ({js|eventTime|js}, number drag.time);
                   ]
                   @ details
             in
-            self#record "camera sample" ~details))
+            self#record {js|camera sample|js} ~details))
         (Performance_trace.configuration ())
 
     method layout = layout_pending <- true
@@ -816,16 +831,16 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
     method return_to_commander =
       Option.iter
         (fun (tile : Battlefield_frame.tile) ->
-          self#record "return commander" ~details:[ ("tile", string tile.terrain.id) ];
-          self#cancel "return commander";
+          self#record {js|return commander|js} ~details:[ ({js|tile|js}, string tile.terrain.id) ];
+          self#cancel {js|return commander|js};
           pending_reveal <- Some { ids = [| tile.terrain.id |]; center = true };
           layout_pending <- true)
         commander_tile
 
     method reset ids =
       Option.iter self#prepare_picking (current ());
-      self#cancel "scene reset";
-      inspection <- "";
+      self#cancel {js|scene reset|js};
+      inspection <- {js||js};
       inspection_view <- None;
       zoom <- 1.;
       left <- 0.;
@@ -838,11 +853,20 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
 
     initializer
       D.tab_index canvas 0;
-      canvas##setAttribute "role" "application";
-      canvas##setAttribute "aria-label" "Battlefield";
-      canvas##setAttribute "aria-describedby" "battlefield-controls battlefield-description";
+      canvas##setAttribute {js|role|js} {js|application|js};
+      canvas##setAttribute {js|aria-label|js} {js|Battlefield|js};
+      canvas##setAttribute {js|aria-describedby|js}
+        {js|battlefield-controls battlefield-description|js};
       let bound_events =
-        [| "mousedown"; "mousemove"; "mouseup"; "touchstart"; "touchmove"; "touchend"; "wheel" |]
+        [|
+          {js|mousedown|js};
+          {js|mousemove|js};
+          {js|mouseup|js};
+          {js|touchstart|js};
+          {js|touchmove|js};
+          {js|touchend|js};
+          {js|wheel|js};
+        |]
       in
       let refresh_bounds () = self#refresh_bounds
       and mark_visible () = visible_dirty <- true
@@ -850,7 +874,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       let down = fun[@u] pointer -> self#down pointer
       and move = fun[@u] pointer -> self#move pointer false
       and up = fun[@u] pointer -> self#up pointer
-      and outside = fun[@u] () -> self#cancel "pointer up outside"
+      and outside = fun[@u] () -> self#cancel {js|pointer up outside|js}
       and wheel = fun[@u] pointer _ dx dy _ -> self#wheel pointer dx dy
       and key = fun[@u] event -> self#key event
       and cancel event = self#cancel (D.event_type event)
@@ -859,7 +883,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       and sample_camera = fun[@u] () -> self#sample_camera in
       let expected_release = Set.create () in
       let capture event =
-        if D.pointer_type event = "mouse" && List.mem (D.button event) [ 0; 1 ] then
+        if D.pointer_type event = {js|mouse|js} && List.mem (D.button event) [ 0; 1 ] then
           D.capture canvas (D.pointer_id event)
       in
       let release event =
@@ -870,7 +894,7 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
       in
       let lost_capture event =
         if not (Set.delete expected_release (D.pointer_id event)) then
-          self#cancel "lost pointer capture"
+          self#cancel {js|lost pointer capture|js}
       in
       let observer = ref None and dialog_observer = ref None and cleaned = ref false in
       let cleanup () =
@@ -880,62 +904,68 @@ class input (scene : Phaser.scene) (current : unit -> Battlefield_frame.t option
           Option.iter D.disconnect_resize !observer;
           Option.iter D.disconnect_mutation !dialog_observer;
           Array.iter (fun name -> D.off_bound canvas name refresh_bounds true) bound_events;
-          D.off_step scene##events "preupdate" prepare_layout;
-          let _ = scene##events##off "prerender" sample_camera in
-          let _ = scene##events##off "preupdate" continue_drag in
-          D.off_window "resize" resize;
-          D.off_window_event "blur" cancel;
-          D.off_scroll "scroll" mark_visible true;
-          self#stop_inertia "interrupted";
-          D.off_canvas canvas "pointerdown" capture;
-          D.off_canvas canvas "pointerup" release;
-          D.off_canvas canvas "pointercancel" cancel;
-          D.off_canvas canvas "lostpointercapture" lost_capture;
-          D.off_canvas canvas "blur" cancel;
-          D.off_pointer scene##input "pointerdown" down;
-          D.off_pointer scene##input "pointermove" move;
-          D.off_pointer scene##input "pointerup" up;
-          D.off_input scene##input "pointerupoutside" outside;
-          D.off_wheel scene##input "wheel" wheel;
+          D.off_step scene##events {js|preupdate|js} prepare_layout;
+          let _ = scene##events##off {js|prerender|js} sample_camera in
+          let _ = scene##events##off {js|preupdate|js} continue_drag in
+          D.off_window {js|resize|js} resize;
+          D.off_window_event {js|blur|js} cancel;
+          D.off_scroll {js|scroll|js} mark_visible true;
+          self#stop_inertia {js|interrupted|js};
+          D.off_canvas canvas {js|pointerdown|js} capture;
+          D.off_canvas canvas {js|pointerup|js} release;
+          D.off_canvas canvas {js|pointercancel|js} cancel;
+          D.off_canvas canvas {js|lostpointercapture|js} lost_capture;
+          D.off_canvas canvas {js|blur|js} cancel;
+          D.off_pointer scene##input {js|pointerdown|js} down;
+          D.off_pointer scene##input {js|pointermove|js} move;
+          D.off_pointer scene##input {js|pointerup|js} up;
+          D.off_input scene##input {js|pointerupoutside|js} outside;
+          D.off_wheel scene##input {js|wheel|js} wheel;
           Option.iter
-            (fun keyboard -> D.off_key keyboard "keydown" key)
+            (fun keyboard -> D.off_key keyboard {js|keydown|js} key)
             (Js.Nullable.toOption (D.keyboard scene##input)))
       in
       detach <- cleanup;
-      let _ = scene##events##once "shutdown" (fun[@u] () -> cleanup ()) in
-      let _ = scene##events##once "destroy" (fun[@u] () -> cleanup ()) in
+      let _ = scene##events##once {js|shutdown|js} (fun[@u] () -> cleanup ()) in
+      let _ = scene##events##once {js|destroy|js} (fun[@u] () -> cleanup ()) in
       Array.iter
         (fun name ->
           D.on_bound canvas name refresh_bounds [%mel.obj { capture = true; passive = true }])
         bound_events;
       D.add_pointer scene##input 1;
-      D.on_canvas canvas "pointerdown" capture;
-      D.on_canvas canvas "pointerup" release;
-      D.on_canvas canvas "pointercancel" cancel;
-      D.on_canvas canvas "lostpointercapture" lost_capture;
-      D.on_canvas canvas "blur" cancel;
-      D.on_pointer scene##input "pointerdown" down;
-      D.on_pointer scene##input "pointermove" move;
-      D.on_pointer scene##input "pointerup" up;
-      D.on_input scene##input "pointerupoutside" outside;
-      D.on_wheel scene##input "wheel" wheel;
+      D.on_canvas canvas {js|pointerdown|js} capture;
+      D.on_canvas canvas {js|pointerup|js} release;
+      D.on_canvas canvas {js|pointercancel|js} cancel;
+      D.on_canvas canvas {js|lostpointercapture|js} lost_capture;
+      D.on_canvas canvas {js|blur|js} cancel;
+      D.on_pointer scene##input {js|pointerdown|js} down;
+      D.on_pointer scene##input {js|pointermove|js} move;
+      D.on_pointer scene##input {js|pointerup|js} up;
+      D.on_input scene##input {js|pointerupoutside|js} outside;
+      D.on_wheel scene##input {js|wheel|js} wheel;
       Option.iter
-        (fun keyboard -> D.on_key keyboard "keydown" key)
+        (fun keyboard -> D.on_key keyboard {js|keydown|js} key)
         (Js.Nullable.toOption (D.keyboard scene##input));
-      let _ = scene##events##on "preupdate" continue_drag in
-      D.on_step scene##events "preupdate" prepare_layout;
-      let _ = scene##events##on "prerender" sample_camera in
+      let _ = scene##events##on {js|preupdate|js} continue_drag in
+      D.on_step scene##events {js|preupdate|js} prepare_layout;
+      let _ = scene##events##on {js|prerender|js} sample_camera in
       let resized = D.resize_observer (fun[@u] () -> resize ()) in
       observer := Some resized;
       D.observe_resize resized host;
       Option.iter (D.observe_resize resized) workspace;
       let dialogs =
-        D.mutation_observer (fun[@u] () -> if D.modal () then self#cancel "modal opened")
+        D.mutation_observer (fun[@u] () -> if D.modal () then self#cancel {js|modal opened|js})
       in
       dialog_observer := Some dialogs;
       D.observe_dialogs dialogs D.body
-        [%mel.obj { attributes = true; attributeFilter = [| "open" |]; subtree = true }];
-      D.on_window "resize" resize;
-      D.on_window_event "blur" cancel;
-      D.on_scroll "scroll" mark_visible [%mel.obj { capture = true; passive = true }]
+        [%mel.obj
+          {
+            attributes = true;
+            attributeFilter = [| {js|data-ui-modal|js} |];
+            childList = true;
+            subtree = true;
+          }];
+      D.on_window {js|resize|js} resize;
+      D.on_window_event {js|blur|js} cancel;
+      D.on_scroll {js|scroll|js} mark_visible [%mel.obj { capture = true; passive = true }]
   end

@@ -5,25 +5,25 @@ exception Diagnostic of string
 
 let samples () =
   Array.map
-    (fun error -> Utf8.to_js (Fault.describe error))
+    (fun error -> Fault.describe error)
     [|
-      Failure "Précise λ🦀";
-      Invalid_argument "bad argument";
-      Match_failure ("sample.ml", 12, 3);
-      Assert_failure ("sample.ml", 18, 4);
-      Undefined_recursive_module ("sample.ml", 24, 5);
+      Failure {js|Précise λ🦀|js};
+      Invalid_argument {js|bad argument|js};
+      Match_failure ({js|sample.ml|js}, 12, 3);
+      Assert_failure ({js|sample.ml|js}, 18, 4);
+      Undefined_recursive_module ({js|sample.ml|js}, 24, 5);
       Out_of_memory;
       Stack_overflow;
     |]
 
 let generic () =
-  let original = Diagnostic "retained diagnostic payload" in
-  { original; description = Utf8.to_js (Fault.describe original) }
+  let original = Diagnostic {js|retained diagnostic payload|js} in
+  { original; description = Fault.describe original }
 
 let foreign () =
-  try Js.Exn.raiseError (Utf8.to_js "Browser λ🦀 failure")
+  try Js.Exn.raiseError {js|Browser λ🦀 failure|js}
   with error -> (
-    let description = Utf8.to_js (Fault.describe error) in
+    let description = Fault.describe error in
     match Js.Exn.asJsExn error with
     | Some original -> { original; description }
     | None -> raise error)

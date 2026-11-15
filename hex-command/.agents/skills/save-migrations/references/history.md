@@ -514,3 +514,22 @@ random seeds are reset. In the ten RL arena scenarios, the unused
 active; these placeholders were never registered campaign characters and made
 native restoration reject the initial arena checkpoint. Campaign character tags
 and other unit identity remain intact. Archived training catalogs remain frozen.
+
+## Version 49 and history index 5: structured mission metadata
+
+The 48→49 conversion removes the obsolete metadata `side`, stores the chapter
+as a one-based number (`null` for a standalone scenario), and records `mapId`
+separately. Full save payloads derive both values from their own checkpoint;
+their old display label never overrides saved game facts. Native state, setup,
+undo, run/checkpoint identities and unrelated metadata remain unchanged.
+
+History index 4→5 has no checkpoints, so this explicit conversion interprets the
+published `Mission N · map-id` label once. Plain map IDs become scenario entries
+with a null chapter. Invalid chapter labels are rejected and retained for repair.
+Current readers and presentation never parse formatted mission labels.
+
+IndexedDB storage 3→4 atomically upgrades its metadata entries and initialization
+marker. Historical payloads remain versioned and upgrade through the ordinary
+save loader when opened. A failed metadata conversion aborts the transaction and
+retains the prior records. Storage 2→3 campaign retirement runs first in the same
+transaction when required. The physical IndexedDB database schema is unchanged.

@@ -1,10 +1,10 @@
 type root
 type application
 
-external create_root : Dom.element -> root = "createRoot" [@@mel.module "preact/compat/client"]
+external create_root : Dom.element -> root = "createRoot" [@@mel.module "react-dom/client"]
 external render : root -> React.element -> unit = "render" [@@mel.send]
 external unmount : root -> unit = "unmount" [@@mel.send]
-external flush : (unit -> unit) -> unit = "flushSync" [@@mel.module "preact/compat"]
+external flush : (unit -> unit) -> unit = "flushSync" [@@mel.module "react-dom"]
 
 open Browser_dom
 open Browser_time
@@ -30,9 +30,9 @@ let after_paint work =
 
 let () =
   let target =
-    match Js.Nullable.toOption (byId "app") with
+    match Js.Nullable.toOption (byId {js|app|js}) with
     | Some target -> target
-    | None -> Js.Exn.raiseError "Missing application mount."
+    | None -> Js.Exn.raiseError {js|Missing application mount.|js}
   in
   let lifetime = ref None and closed = ref false in
   let failed error =
@@ -43,14 +43,14 @@ let () =
   let root = create_root target in
   let uncaught event = Option.iter failed (Js.Undefined.toOption (event_error event)) in
   let rejected event = failed (event_reason event) in
-  listen_error "error" uncaught;
-  listen_error "unhandledrejection" rejected;
+  listen_error {js|error|js} uncaught;
+  listen_error {js|unhandledrejection|js} rejected;
   let show = function
     | Startup.Ready -> ()
     | phase ->
         let failure = match phase with Startup.Failed message -> Some message | _ -> None in
         flush (fun () -> render root (React.createElement Shell.make [%mel.obj { failure }]));
-        notify (event "hex-command-shell-ready")
+        notify (event {js|hex-command-shell-ready|js})
   in
   let startup =
     Startup.create ~show ~schedule:after_paint ~load:(fun current ->
@@ -65,7 +65,7 @@ let () =
       (* A cached page resumes this owner on Back; only a final departure disposes it. *)
       if (not (page_persisted event)) && not !closed then (
         closed := true;
-        remove_error "error" uncaught;
-        remove_error "unhandledrejection" rejected;
+        remove_error {js|error|js} uncaught;
+        remove_error {js|unhandledrejection|js} rejected;
         Startup.close startup;
         unmount root))

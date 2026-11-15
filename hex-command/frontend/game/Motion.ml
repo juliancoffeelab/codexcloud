@@ -8,11 +8,11 @@ let active : (Dom.element, record) Weak_map.t = Weak_map.create ()
 
 let reduced_motion () =
   Js.Undefined.toOption media_function <> None
-  && matches (match_media "(prefers-reduced-motion: reduce)")
+  && matches (match_media {js|(prefers-reduced-motion: reduce)|js})
 
 let pulse element kind =
   if not (reduced_motion ()) then (
-    let class_name = "motion-" ^ kind in
+    let class_name = {j|motion-$(kind)|j} in
     let previous = Weak_map.get active element in
     let restarting =
       Option.fold ~none:false ~some:(fun record -> record.class_name = class_name) previous
@@ -48,30 +48,33 @@ end)
 type event = Event.event
 
 let detail = Event.detail
-let listen node receive = Event.on node "battlefieldmotion" receive
-let unlisten node receive = Event.off node "battlefieldmotion" receive
+let listen node receive = Event.on node {js|battlefieldmotion|js} receive
+let unlisten node receive = Event.off node {js|battlefieldmotion|js} receive
 
 let animate_tile ?sound tile kind =
   if
     Js.Undefined.toOption document <> None
-    && List.mem kind [ "select"; "move"; "attack"; "recruit"; "capture" ]
+    && List.mem kind
+         [ {js|select|js}; {js|move|js}; {js|attack|js}; {js|recruit|js}; {js|capture|js} ]
   then
     Option.iter
       (fun node ->
         let _ =
           Event.dispatch node
-            (Event.create "battlefieldmotion" [%mel.obj { detail = { tile; kind; sound } }])
+            (Event.create {js|battlefieldmotion|js} [%mel.obj { detail = { tile; kind; sound } }])
         in
         ())
-      (Js.Nullable.toOption (query "#map[data-phaser-battlefield]"))
+      (Js.Nullable.toOption (query {js|#map[data-phaser-battlefield]|js}))
 
 let animate_turn () =
   if Js.Undefined.toOption document <> None then
-    Option.iter (fun element -> pulse element "turn") (Js.Nullable.toOption (query "#end-turn"))
+    Option.iter
+      (fun element -> pulse element {js|turn|js})
+      (Js.Nullable.toOption (query {js|#end-turn|js}))
 
 let subscribe_reduced receive =
-  let preference = match_media "(prefers-reduced-motion: reduce)" in
+  let preference = match_media {js|(prefers-reduced-motion: reduce)|js} in
   let update () = receive (matches preference) in
   update ();
-  media_on preference "change" update;
-  fun () -> media_off preference "change" update
+  media_on preference {js|change|js} update;
+  fun () -> media_off preference {js|change|js} update

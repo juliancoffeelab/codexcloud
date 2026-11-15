@@ -27,7 +27,12 @@ let keys t bounds =
       x = int_of_float (floor (bounds.left /. t.size))
       to int_of_float (floor (bounds.right /. t.size))
     do
-      let _ = push result (string_of_int x ^ ":" ^ string_of_int y) in
+      let _ =
+        push result
+          (let js_text_part_0 = string_of_int x in
+           let js_text_part_2 = string_of_int y in
+           {j|$(js_text_part_0):$(js_text_part_2)|j})
+      in
       ()
     done
   done;

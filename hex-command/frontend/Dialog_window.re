@@ -1,84 +1,132 @@
 open Ui;
-[@mel.set] external setStyle: (ReactDOM.domProps, ReactDOM.Style.t) => unit = "style";
 [@mel.set] external windowWidth: (ReactDOM.Style.t, string) => unit = "--window-width";
-[@react.component]
-let make =
-    (
-      ~title,
-      ~dialog,
-      ~id="",
-      ~width="420px",
-      ~tall=false,
-      ~canDismiss=true,
-      ~releaseControls=false,
-      ~className="",
-      ~onBeforeClose=() => (),
-      ~onBack: option(unit => unit)=?,
-      ~body: option(React.ref(Js.Nullable.t(Dom.element)))=?,
-      ~headerArtwork: option(React.element)=?,
-      ~footer: option(React.element)=?,
-      ~children,
-    ) => {
-  let dismiss = () =>
-    if (canDismiss) {
-      onBeforeClose();
-      close(dialog);
-    };
-  let (backdropDown, backdropUp, backdropCancel, backdropClick) = useBackdrop(dialog, dismiss);
-  let props =
-    ReactDOM.domProps(
-      ~id,
-      ~className="dialog-window " ++ className ++ (tall ? " tall" : ""),
-      ~ref=ReactDOM.Ref.domRef(dialog),
-      ~ariaLabel=Utf8.to_js(title),
-      ~onPointerDown=backdropDown,
-      ~onPointerUp=backdropUp,
-      ~onPointerCancel=backdropCancel,
-      ~onClick=backdropClick,
-      (),
-    );
-  onCancel(props, event =>
-    if (!canDismiss) {
-      React.Event.Form.preventDefault(event);
-    } else {
-      onBeforeClose();
-    }
-  );
-  let style = ReactDOM.Style.make();
-  windowWidth(style, width);
-  setStyle(props, style);
-  ReactDOM.createElement(
-    "dialog",
-    ~props,
-    [|
-      <header className={onBack == None ? "" : "with-back"}>
+module Content = {
+  [@react.component]
+  let make =
+      (
+        ~title,
+        ~onOpenChange,
+        ~id={js||js},
+        ~width={js|420px|js},
+        ~tall=false,
+        ~canDismiss=true,
+        ~alert=false,
+        ~className={js||js},
+        ~onBeforeClose=() => (),
+        ~onBack: option(unit => unit)=?,
+        ~body: option(React.ref(Js.Nullable.t(Dom.element)))=?,
+        ~onOpenAutoFocus: option(Modal.focus_event => unit)=?,
+        ~onCloseAutoFocus: option(Modal.focus_event => unit)=?,
+        ~contentRef: option(React.ref(Js.Nullable.t(Dom.element)))=?,
+        ~headerArtwork: option(React.element)=?,
+        ~footer: option(React.element)=?,
+        ~children,
+      ) => {
+    let change = next =>
+      if (next || canDismiss) {
+        if (!next) {
+          onBeforeClose();
+        };
+        onOpenChange(next);
+      };
+    let style = ReactDOM.Style.make();
+    windowWidth(style, width);
+    <Modal.Content
+      title
+      id
+      ?contentRef
+      canDismiss
+      alert
+      style
+      className={
+                  let js_text_part_2 = tall ? {js| tall|js} : {js||js};
+                  {j|dialog-window $(className)$(js_text_part_2)|j};
+                }
+      ?onOpenAutoFocus
+      ?onCloseAutoFocus>
+      <header className={onBack == None ? {js||js} : {js|with-back|js}}>
         {option(onBack, back =>
-           <button
-             className={releaseControls ? "window-icon" : "window-icon press-control"}
-             onPointerDown=?{releaseControls ? None : Some(Button_press.pointer_down(back))}
-             onClick={releaseControls ? _ => back() : Button_press.click(back)}
-             ariaLabel="Back to Menu">
-             <svg viewBox="0 0 24 24" ariaHidden=true> <path d="m14 5-7 7 7 7" /> </svg>
-           </button>
+           <Press_button onActivate=back>
+             <button className={js|window-icon|js} ariaLabel={js|Back to Menu|js}>
+               <svg viewBox={js|0 0 24 24|js} ariaHidden=true>
+                 <path d={js|m14 5-7 7 7 7|js} />
+               </svg>
+             </button>
+           </Press_button>
          )}
         {option(headerArtwork, artwork => artwork)}
         <h2 tabIndex=(-1)> {text(title)} </h2>
         {canDismiss
-           ? <button
-               className={releaseControls ? "window-icon" : "window-icon press-control"}
-               onPointerDown=?{releaseControls ? None : Some(Button_press.pointer_down(dismiss))}
-               onClick={releaseControls ? _ => dismiss() : Button_press.click(dismiss)}
-               ariaLabel={Utf8.to_js("Close " ++ String.lowercase_ascii(title))}>
-               <svg viewBox="0 0 24 24" ariaHidden=true> <path d="m6 6 12 12M18 6 6 18" /> </svg>
-             </button>
+           ? <Press_button onActivate={() => change(false)}>
+               <button
+                 className={js|window-icon|js}
+                 ariaLabel={
+                             let js_text_part_1 = Js.String.toLowerCase(title);
+                             {j|Close $(js_text_part_1)|j};
+                           }>
+                 <svg viewBox={js|0 0 24 24|js} ariaHidden=true>
+                   <path d={js|m6 6 12 12M18 6 6 18|js} />
+                 </svg>
+               </button>
+             </Press_button>
            : React.null}
-      </header>,
-      switch (body) {
-      | None => <div className="window-content"> children </div>
-      | Some(body) =>
-        <div className="window-content" ref={ReactDOM.Ref.domRef(body)}> children </div>
-      },
-      option(footer, node => node),
-    |],
-  );
+      </header>
+      {switch (body) {
+       | None => <div className={js|window-content|js}> children </div>
+       | Some(body) =>
+         <div className={js|window-content|js} ref={ReactDOM.Ref.domRef(body)}> children </div>
+       }}
+      {option(footer, node => node)}
+    </Modal.Content>;
+  };
+};
+[@react.component]
+let make =
+    (
+      ~title,
+      ~opened,
+      ~onOpenChange,
+      ~id={js||js},
+      ~width={js|420px|js},
+      ~tall=false,
+      ~canDismiss=true,
+      ~alert=false,
+      ~className={js||js},
+      ~onBeforeClose=() => (),
+      ~onBack=?,
+      ~body=?,
+      ~onOpenAutoFocus=?,
+      ~onCloseAutoFocus=?,
+      ~trigger=?,
+      ~contentRef=?,
+      ~headerArtwork=?,
+      ~footer=?,
+      ~children,
+    ) => {
+  let change = value => {
+    if (!value) {
+      onBeforeClose();
+    };
+    onOpenChange(value);
+  };
+  <Modal.Root opened onOpenChange=change canDismiss alert ?trigger>
+    <Content
+      title
+      onOpenChange=change
+      id
+      width
+      tall
+      canDismiss
+      alert
+      className
+      ?onBack
+      ?body
+      ?onOpenAutoFocus
+      ?onCloseAutoFocus
+      ?contentRef
+      ?headerArtwork
+      ?footer>
+      children
+    </Content>
+  </Modal.Root>;
 };

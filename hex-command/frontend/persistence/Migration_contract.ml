@@ -5,17 +5,22 @@
 [@@@warning "+8+9"]
 [@@@warnerror "+8+9"]
 
-module Native_checked : module type of Native_v48 = Domain
-module Native_bridge = Migration_native_contract.Make (Domain)
+module Live_native = struct
+  include Domain
+  module String_map = Domain.Text_map
+end
+
+module Native_checked : module type of Native_v48 = Live_native
+module Native_bridge = Migration_native_contract.Make (Live_native)
 module H = Historical_types
 module V = Current_save
 module A = Save_format
 
-let side_from : H.V48.current_first -> Domain.Turn_phase.t = function
+let side_from : H.V49.current_first -> Domain.Turn_phase.t = function
   | `Player -> Player
   | `Ai -> Ai
 
-let side_to : Domain.Turn_phase.t -> H.V48.current_first = function Player -> `Player | Ai -> `Ai
+let side_to : Domain.Turn_phase.t -> H.V49.current_first = function Player -> `Player | Ai -> `Ai
 
 let policy_from : V.policy -> A.policy = function
   | `Classic -> `Classic
@@ -102,6 +107,9 @@ let setup_to ({ A.first; enemy; player } : A.setup) : V.current_setup =
     player = Option.map policy_to player;
   }
 
+let chapter_from = function `Null -> None | `Number value -> Some value
+let chapter_to = function None -> `Null | Some value -> `Number value
+
 let current_entry_from
     ({
        H.wire = _;
@@ -111,7 +119,7 @@ let current_entry_from
        run;
        mission;
        round;
-       side;
+       map_id;
        mission_start;
        run_id;
        branch_id;
@@ -124,9 +132,9 @@ let current_entry_from
     id;
     saved_at;
     run;
-    mission;
+    mission = chapter_from mission;
     round;
-    side;
+    map_id;
     mission_start;
     run_id;
     branch_id;
@@ -142,7 +150,7 @@ let current_entry_to
        run;
        mission;
        round;
-       side;
+       map_id;
        mission_start;
        run_id;
        branch_id;
@@ -156,9 +164,9 @@ let current_entry_to
     id;
     saved_at;
     run;
-    mission;
+    mission = chapter_to mission;
     round;
-    side;
+    map_id;
     mission_start;
     run_id;
     branch_id;
@@ -177,7 +185,7 @@ let turn_entry_from
        run;
        mission;
        round;
-       side;
+       map_id;
        mission_start;
        run_id;
        branch_id;
@@ -192,9 +200,9 @@ let turn_entry_from
     id;
     saved_at;
     run;
-    mission;
+    mission = chapter_from mission;
     round;
-    side;
+    map_id;
     mission_start;
     run_id;
     branch_id;
@@ -212,7 +220,7 @@ let turn_entry_to
        run;
        mission;
        round;
-       side;
+       map_id;
        mission_start;
        run_id;
        branch_id;
@@ -228,9 +236,9 @@ let turn_entry_to
     id;
     saved_at;
     run;
-    mission;
+    mission = chapter_to mission;
     round;
-    side;
+    map_id;
     mission_start;
     run_id;
     branch_id;
@@ -324,10 +332,10 @@ let save_to : A.t -> V.t = function
   | Current value -> `Current (current_to value)
   | Turn value -> `Turn (turn_to value)
 
-let history_from ({ H.wire = _; version; entries } : H.History4.t) : A.history =
+let history_from ({ H.wire = _; version; entries } : H.History5.t) : A.history =
   { version; entries = Array.map turn_entry_from entries }
 
-let history_to ({ A.version; entries } : A.history) : H.History4.t =
+let history_to ({ A.version; entries } : A.history) : H.History5.t =
   { wire = H.empty_wire; version; entries = Array.map turn_entry_to entries }
 
 (* Check the actual migration API as well as the current model, so changing its

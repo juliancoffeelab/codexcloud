@@ -8,9 +8,6 @@ type preparation = {
   error: option(string),
 };
 [@mel.set] external markPhaser: (ReactDOM.domProps, string) => unit = "data-phaser-battlefield";
-
-/* The startup shell and live renderer share this lightweight frame. It owns
-   geometry and loading UI; mounting Phaser belongs to Battlefield alone. */
 [@react.component]
 let make =
     (
@@ -22,7 +19,7 @@ let make =
       ~navigation=React.null,
       ~children=React.null,
     ) => {
-  let text = value => React.string(Utf8.to_js(value));
+  let text = value => React.string(value);
   let ready = phase == Ready && preparation == None;
   let voiceScreen = React.useRef(false);
   if (preparation != None) {
@@ -70,45 +67,50 @@ let make =
   );
   let caption =
     preparation != None
-      ? "Trying to pick words…"
-      : ready ? "Battlefield ready" : Loading_progress.label(loading.step);
+      ? {js|Trying to pick words…|js}
+      : ready ? {js|Battlefield ready|js} : Loading_progress.label(loading.step);
   let lastCaption = React.useRef(caption);
   let previousCaption = React.useRef(None);
   if (lastCaption.current != caption) {
     previousCaption.current = Some(lastCaption.current);
     lastCaption.current = caption;
   };
-  let hexClass = index =>
-    "loading-hex"
-    ++ (ready || index < loading.step - 1 ? " is-filled" : "")
-    ++ (!ready && index == loading.step - 1 ? " is-current" : "");
+  let hexClass = index => {
+    let js_text_part_1 = ready || index < loading.step - 1 ? {js| is-filled|js} : {js||js};
+    let js_text_part_2 = !ready && index == loading.step - 1 ? {js| is-current|js} : {js||js};
+    {j|loading-hex$(js_text_part_1)$(js_text_part_2)|j};
+  };
   let props =
     ReactDOM.domProps(
-      ~id="map",
-      ~className="map-scroll phaser-battlefield battlefield-window" ++ (ready ? " map-ready" : ""),
+      ~id={js|map|js},
+      ~className={
+        let js_text_part_1 = ready ? {js| map-ready|js} : {js||js};
+        {j|map-scroll phaser-battlefield battlefield-window$(js_text_part_1)|j};
+      },
       ~ariaBusy=!ready,
       (),
     );
-  markPhaser(props, "");
-  <section className="map-section" ariaLabel="Battlefield">
+  markPhaser(props, {js||js});
+  <section className={js|map-section|js} ariaLabel={js|Battlefield|js}>
     {ReactDOM.createElement(
-       "div",
+       {js|div|js},
        ~props,
        [|
-         <div className="battlefield-clip" ref=?{Option.map(ReactDOM.Ref.domRef, host)}>
+         <div className={js|battlefield-clip|js} ref=?{Option.map(ReactDOM.Ref.domRef, host)}>
            navigation
          </div>,
          !visible && ready
            ? React.null
            : <div
                className={
-                 "map-loading"
-                 ++ (ready ? " is-complete" : "")
-                 ++ (voiceScreen.current ? " is-voice-preparing" : "")
-               }
-               role="status">
-               <div className="loading-card">
-                 <div className="loading-hexes" ariaHidden=true>
+                           let js_text_part_1 = ready ? {js| is-complete|js} : {js||js};
+                           let js_text_part_2 =
+                             voiceScreen.current ? {js| is-voice-preparing|js} : {js||js};
+                           {j|map-loading$(js_text_part_1)$(js_text_part_2)|j};
+                         }
+               role={js|status|js}>
+               <div className={js|loading-card|js}>
+                 <div className={js|loading-hexes|js} ariaHidden=true>
                    {React.array(
                       Array.map(
                         index => <span key={string_of_int(index)} className={hexClass(index)} />,
@@ -116,13 +118,15 @@ let make =
                       ),
                     )}
                  </div>
-                 <div className="loading-action" ariaLive="polite">
+                 <div className={js|loading-action|js} ariaLive={js|polite|js}>
                    {Option.fold(
                       ~none=React.null,
                       ~some=
                         previous =>
                           <strong
-                            key=previous className="loading-caption is-leaving" ariaHidden=true>
+                            key=previous
+                            className={js|loading-caption is-leaving|js}
+                            ariaHidden=true>
                             {text(previous)}
                           </strong>,
                       previousCaption.current,
@@ -130,22 +134,28 @@ let make =
                    <strong
                      key=caption
                      className={
-                       "loading-caption" ++ (previousCaption.current == None ? "" : " is-entering")
-                     }>
+                                 let js_text_part_1 =
+                                   previousCaption.current == None
+                                     ? {js||js} : {js| is-entering|js};
+                                 {j|loading-caption$(js_text_part_1)|j};
+                               }>
                      {text(caption)}
                    </strong>
                  </div>
-                 <div className="loading-track" ariaHidden=true>
+                 <div className={js|loading-track|js} ariaHidden=true>
                    <span
-                     className="loading-fill"
+                     className={js|loading-fill|js}
                      ref={ReactDOM.Ref.domRef(fill)}
                      style=?{
                        preparation == None
                          ? None
                          : Some(
                              ReactDOM.Style.make(
-                               ~transform="scaleX(" ++ string_of_float(fraction) ++ ")",
-                               ~animation="none",
+                               ~transform={
+                                 let js_text_part_1 = string_of_float(fraction);
+                                 {j|scaleX($(js_text_part_1))|j};
+                               },
+                               ~animation={js|none|js},
                                (),
                              ),
                            )
@@ -153,41 +163,53 @@ let make =
                    />
                  </div>
                  <progress
-                   className="loading-accessible-progress"
+                   className={js|loading-accessible-progress|js}
                    ariaLabel={
-                     preparation == None ? "Battlefield preparation" : "Dialogue voice preparation"
+                     preparation == None
+                       ? {js|Battlefield preparation|js} : {js|Dialogue voice preparation|js}
                    }
-                   ariaValuetext={Utf8.to_js(
+                   ariaValuetext={
                      preparation != None
-                       ? "Trying to pick words…"
+                       ? {js|Trying to pick words…|js}
                        : ready
-                           ? "Battlefield ready"
-                           : "Step "
-                             ++ string_of_int(loading.step)
-                             ++ " of 5: "
-                             ++ Loading_progress.label(loading.step)
-                             ++ (loading.detail == "" ? "" : " " ++ loading.detail),
-                   )}
-                   max={preparation == None ? "5" : "1"}
+                           ? {js|Battlefield ready|js}
+                           : {
+                             let js_text_part_1 = string_of_int(loading.step);
+                             let js_text_part_3 = Loading_progress.label(loading.step);
+                             let js_text_part_4 =
+                               loading.detail == {js||js}
+                                 ? {js||js}
+                                 : {
+                                   let js_text_part_1 = loading.detail;
+                                   {j| $(js_text_part_1)|j};
+                                 };
+                             {j|Step $(js_text_part_1) of 5: $(js_text_part_3)$(js_text_part_4)|j};
+                           }
+                   }
+                   max={preparation == None ? {js|5|js} : {js|1|js}}
                    value={string_of_float(preparation == None ? loading.value : fraction)}
                  />
-                 <div className="loading-meta">
-                   <span className="loading-step">
+                 <div className={js|loading-meta|js}>
+                   <span className={js|loading-step|js}>
                      {text(
                         preparation == None
-                          ? "Step " ++ string_of_int(loading.step) ++ " / 5" : "Finding a voice",
+                          ? {
+                            let js_text_part_1 = string_of_int(loading.step);
+                            {j|Step $(js_text_part_1) / 5|j};
+                          }
+                          : {js|Finding a voice|js},
                       )}
                    </span>
-                   <span className="loading-detail">
+                   <span className={js|loading-detail|js}>
                      {text(
                         Option.fold(
                           ~none=loading.detail,
                           ~some=
-                            (value: preparation) =>
-                              string_of_int(value.completed)
-                              ++ " / "
-                              ++ string_of_int(value.total)
-                              ++ " voices ready",
+                            (value: preparation) => {
+                              let js_text_part_0 = string_of_int(value.completed);
+                              let js_text_part_2 = string_of_int(value.total);
+                              {j|$(js_text_part_0) / $(js_text_part_2) voices ready|j};
+                            },
                           preparation,
                         ),
                       )}
@@ -197,16 +219,16 @@ let make =
                     ~none=React.null,
                     ~some=
                       reason =>
-                        <div className="startup-failure" role="alert">
-                          <p> {text("The opening voices could not be prepared.")} </p>
-                          <button className="quiet" onClick={_ => onRetryPreparation()}>
-                            {text("Retry voices")}
+                        <div className={js|startup-failure|js} role={js|alert|js}>
+                          <p> {text({js|The opening voices could not be prepared.|js})} </p>
+                          <button className={js|quiet|js} onClick={_ => onRetryPreparation()}>
+                            {text({js|Retry voices|js})}
                           </button>
-                          <button className="quiet" onClick={_ => onSkipPreparation()}>
-                            {text("Continue without voices")}
+                          <button className={js|quiet|js} onClick={_ => onSkipPreparation()}>
+                            {text({js|Continue without voices|js})}
                           </button>
                           <details>
-                            <summary> {text("Error details")} </summary>
+                            <summary> {text({js|Error details|js})} </summary>
                             <pre> {text(reason)} </pre>
                           </details>
                         </div>,

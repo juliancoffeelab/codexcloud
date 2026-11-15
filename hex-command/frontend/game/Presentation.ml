@@ -7,7 +7,7 @@ module Phase = Domain.Turn_phase
 module Terrain_role = Domain.Terrain_role
 open Domain
 
-let dictionary : unit -> 'a Js.Dict.t = [%mel.raw "() => Object.create(null)"]
+let dictionary : unit -> 'a Js.Dict.t = [%mel.raw {js|() => Object.create(null)|js}]
 
 type ability = { name : string; description : string; facts : string list }
 type fact = { label : string; value : float }
@@ -105,16 +105,27 @@ type changes = {
 
 let number = Js.Float.toString
 let filter = List.filter
-let join a = String.concat ", " a
-let signed_value value = if value < 0. then "−" ^ number (-.value) else "+" ^ number value
+let join a = Js.Array.join ~sep:{js|, |js} (Array.of_list a)
+
+let signed_value value =
+  if value < 0. then
+    let js_text_part_1 = number (-.value) in
+    {j|−$(js_text_part_1)|j}
+  else
+    let js_text_part_1 = number value in
+    {j|+$(js_text_part_1)|j}
 
 let damage_name damage =
-  if damage = Damage_type.Blade then "Blade"
-  else if damage = Damage_type.Pierce then "Pierce"
-  else "Impact"
+  if damage = Damage_type.Blade then {js|Blade|js}
+  else if damage = Damage_type.Pierce then {js|Pierce|js}
+  else {js|Impact|js}
 
 let range minimum maximum =
-  if minimum = maximum then number minimum else number minimum ^ "–" ^ number maximum
+  if minimum = maximum then number minimum
+  else
+    let js_text_part_0 = number minimum in
+    let js_text_part_2 = number maximum in
+    {j|$(js_text_part_0)–$(js_text_part_2)|j}
 
 let weapon_damage (weapon : weapon) =
   range
@@ -124,43 +135,69 @@ let weapon_damage (weapon : weapon) =
 let damage_equation (detail : damage_detail) =
   let variable = Int32.to_float detail.roll_min <> Int32.to_float detail.roll_max in
   let term condition sign value label =
-    if condition then sign ^ number value ^ " (" ^ label ^ ")" else ""
+    if condition then
+      let js_text_part_1 = number value in
+      {j|$(sign)$(js_text_part_1) ($(label))|j}
+    else {js||js}
   in
   let equation =
-    (if variable then range (Int32.to_float detail.roll_min) (Int32.to_float detail.roll_max)
-     else number (Int32.to_float detail.base))
-    ^ term (Int32.to_float detail.modifier < 0.) " − " (-.Int32.to_float detail.modifier) "armor"
-    ^ term (Int32.to_float detail.modifier > 0.) " + " (Int32.to_float detail.modifier) "weakness"
-    ^ term (Int32.to_float detail.protection <> 0.) " − " (Int32.to_float detail.protection) "cover"
-    ^ term
+    let js_text_part_0 =
+      if variable then range (Int32.to_float detail.roll_min) (Int32.to_float detail.roll_max)
+      else number (Int32.to_float detail.base)
+    in
+    let js_text_part_1 =
+      term
+        (Int32.to_float detail.modifier < 0.)
+        {js| − |js}
+        (-.Int32.to_float detail.modifier)
+        {js|armor|js}
+    in
+    let js_text_part_2 =
+      term
+        (Int32.to_float detail.modifier > 0.)
+        {js| + |js} (Int32.to_float detail.modifier) {js|weakness|js}
+    in
+    let js_text_part_3 =
+      term
+        (Int32.to_float detail.protection <> 0.)
+        {js| − |js}
+        (Int32.to_float detail.protection)
+        {js|cover|js}
+    in
+    let js_text_part_4 =
+      term
         (Int32.to_float detail.exposure <> 0.)
-        " + " (Int32.to_float detail.exposure)
-        (if detail.terrain = "" || detail.terrain = "ford" then "shallow water" else detail.terrain)
+        {js| + |js} (Int32.to_float detail.exposure)
+        (if detail.terrain = {js||js} || detail.terrain = {js|ford|js} then {js|shallow water|js}
+         else detail.terrain)
+    in
+    {j|$(js_text_part_0)$(js_text_part_1)$(js_text_part_2)$(js_text_part_3)$(js_text_part_4)|j}
   in
   (if
      Int32.to_float detail.roll_min +. Int32.to_float detail.modifier
      -. Int32.to_float detail.protection +. Int32.to_float detail.exposure
      < 0.
-   then "max(0, " ^ equation ^ ")"
+   then {j|max(0, $(equation))|j}
    else equation)
   |> fun per_hit ->
   let counted =
     if float_of_int detail.count = 1. then per_hit
-    else "(" ^ per_hit ^ ") × " ^ number (float_of_int detail.count)
+    else
+      let js_text_part_3 = number (float_of_int detail.count) in
+      {j|($(per_hit)) × $(js_text_part_3)|j}
   in
-  counted ^ " = "
-  ^
-  if variable then
-    number (Int32.to_float detail.minimum)
-    ^ "–"
-    ^ number (Int32.to_float detail.maximum)
-    ^ " (average "
-    ^ Js.Float.toFixed detail.expected ~digits:1
-    ^ ")"
-  else
-    number
-      (if float_of_int detail.count = 1. then Int32.to_float detail.damage
-       else Int32.to_float detail.total)
+  let js_text_part_2 =
+    if variable then
+      let js_text_part_0 = number (Int32.to_float detail.minimum) in
+      let js_text_part_2 = number (Int32.to_float detail.maximum) in
+      let js_text_part_4 = Js.Float.toFixed detail.expected ~digits:1 in
+      {j|$(js_text_part_0)–$(js_text_part_2) (average $(js_text_part_4))|j}
+    else
+      number
+        (if float_of_int detail.count = 1. then Int32.to_float detail.damage
+         else Int32.to_float detail.total)
+  in
+  {j|$(counted) = $(js_text_part_2)|j}
 
 let terrain_damage_facts rows =
   let rows =
@@ -168,12 +205,12 @@ let terrain_damage_facts rows =
   in
   match List.concat rows with
   | [] -> []
-  | first :: rest when List.for_all (( = ) first) rest -> [ { label = ""; value = first } ]
+  | first :: rest when List.for_all (( = ) first) rest -> [ { label = {js||js}; value = first } ]
   | _ ->
       List.concat
         (List.mapi
            (fun category row ->
-             let label = if category = 0 then "Melee" else "Ranged" in
+             let label = if category = 0 then {js|Melee|js} else {js|Ranged|js} in
              match row with
              | [] -> []
              | _ when List.for_all (( = ) 0.) row -> []
@@ -182,7 +219,11 @@ let terrain_damage_facts rows =
                  List.mapi
                    (fun damage value ->
                      {
-                       label = label ^ " " ^ List.nth [ "Blade"; "Pierce"; "Impact" ] damage;
+                       label =
+                         (let js_text_part_2 =
+                            List.nth [ {js|Blade|js}; {js|Pierce|js}; {js|Impact|js} ] damage
+                          in
+                          {j|$(label) $(js_text_part_2)|j});
                        value;
                      })
                    row
@@ -201,17 +242,14 @@ let ability catalog (unit : public_unit) =
         (if Int32.to_float rule.thorns = 0. then []
          else
            [
-             "When defending, reflects "
-             ^ number (Int32.to_float rule.thorns)
-             ^ " damage per incoming melee strike, including killing hits.";
+             (let js_text_part_1 = number (Int32.to_float rule.thorns) in
+              {j|When defending, reflects $(js_text_part_1) damage per incoming melee strike, including killing hits.|j});
            ]);
         (if Int32.to_float rule.thorn_aura = 0. then []
          else
            [
-             "When defending, adjacent allies reflect "
-             ^ number (Int32.to_float rule.thorn_aura)
-             ^ " damage per incoming melee strike. The strongest aura applies and stacks with \
-                Thornshield.";
+             (let js_text_part_1 = number (Int32.to_float rule.thorn_aura) in
+              {j|When defending, adjacent allies reflect $(js_text_part_1) damage per incoming melee strike. The strongest aura applies and stacks with Thornshield.|j});
            ]);
         (let drain =
            List.fold_left
@@ -221,23 +259,24 @@ let ability catalog (unit : public_unit) =
          if drain = 0. then []
          else
            [
-             "Draining attacks restore " ^ number drain
-             ^ "% of HP removed, including retaliation, up to maximum HP.";
+             (let js_text_part_1 = number drain in
+              {j|Draining attacks restore $(js_text_part_1)% of HP removed, including retaliation, up to maximum HP.|j});
            ]);
       ]
   in
   {
-    name = (if unit.role = Some Role.Leader then "Command" else rule.ability);
+    name = (if unit.role = Some Role.Leader then {js|Command|js} else rule.ability);
     description = rule.description;
     facts =
       List.append extras
         (List.append
-           (if unit.role = Some Role.Leader then [ "Losing this unit ends the battle." ] else [])
+           (if unit.role = Some Role.Leader then [ {js|Losing this unit ends the battle.|js} ]
+            else [])
            (match Int32.to_float rule.healing with
            | healing when healing <> 0. ->
                [
-                 "Heals adjacent allies by " ^ number healing
-                 ^ " HP at the start of its side’s turn. Only the strongest healer applies.";
+                 (let js_text_part_1 = number healing in
+                  {j|Heals adjacent allies by $(js_text_part_1) HP at the start of its side’s turn. Only the strongest healer applies.|j});
                ]
            | _ -> []));
   }
@@ -248,25 +287,30 @@ let armor catalog (unit : public_unit) =
     (fun (name, value) ->
       {
         name;
-        label = (if value = 0. then "0" else signed_value value);
-        class_name = (if value < 0. then "resistant" else if value > 0. then "vulnerable" else "");
+        label = (if value = 0. then {js|0|js} else signed_value value);
+        class_name =
+          (if value < 0. then {js|resistant|js}
+           else if value > 0. then {js|vulnerable|js}
+           else {js||js});
       })
     [
-      ("Blade", Int32.to_float modifiers.blade);
-      ("Pierce", Int32.to_float modifiers.pierce);
-      ("Impact", Int32.to_float modifiers.impact);
+      ({js|Blade|js}, Int32.to_float modifiers.blade);
+      ({js|Pierce|js}, Int32.to_float modifiers.pierce);
+      ({js|Impact|js}, Int32.to_float modifiers.impact);
     ]
 
 let weapon_range (weapon : weapon) =
-  if float_of_int weapon.range = 1. then "1 hex range"
-  else "1–" ^ number (float_of_int weapon.range) ^ " hex range"
+  if float_of_int weapon.range = 1. then {js|1 hex range|js}
+  else
+    let js_text_part_1 = number (float_of_int weapon.range) in
+    {j|1–$(js_text_part_1) hex range|j}
 
 let unit_panel catalog view ~selected ~target ~revision =
   let state = Native.state view in
   match (state.campaign, state.winner) with
   | Some _, Some _ -> Hidden
   | _, Some winner when winner = Domain.Battle_result.Player_victory ->
-      Outcome ("The field is yours.", "Your army defeated the enemy commander.")
+      Outcome ({js|The field is yours.|js}, {js|Your army defeated the enemy commander.|js})
   | _, Some _ -> Hidden
   | _ -> (
       match Option.bind selected (Native.unit view) with
@@ -279,13 +323,19 @@ let unit_panel catalog view ~selected ~target ~revision =
                  && Array.exists
                       (fun (other : public_unit) -> other.id = defender.id)
                       (Native.targets view unit.id) ->
-              Combat (unit, defender, unit.id ^ "-" ^ defender.id ^ "-" ^ number revision)
+              Combat
+                ( unit,
+                  defender,
+                  let js_text_part_0 = unit.id in
+                  let js_text_part_2 = defender.id in
+                  let js_text_part_4 = number revision in
+                  {j|$(js_text_part_0)-$(js_text_part_2)-$(js_text_part_4)|j} )
           | _ ->
               let definition = Catalog.unit catalog unit.type_ in
               let occupied =
                 match Native.tile view (Hex.key unit.tile) with
                 | Some tile -> tile
-                | None -> invalid_arg "The selected unit has no battlefield tile."
+                | None -> invalid_arg {js|The selected unit has no battlefield tile.|js}
               in
               Details
                 {
@@ -293,10 +343,10 @@ let unit_panel catalog view ~selected ~target ~revision =
                   definition;
                   terrain_name = (Catalog.terrain_type catalog occupied.terrain).name;
                   action_status =
-                    (if not (Native.controllable view unit.id) then "Not under your control"
-                     else if unit.attack_spent then "Turn finished"
-                     else if unit.moved then "Can still attack"
-                     else "Ready");
+                    (if not (Native.controllable view unit.id) then {js|Not under your control|js}
+                     else if unit.attack_spent then {js|Turn finished|js}
+                     else if unit.moved then {js|Can still attack|js}
+                     else {js|Ready|js});
                   promotions =
                     (if can_act then
                        Array.to_list
@@ -314,28 +364,33 @@ let unit_panel catalog view ~selected ~target ~revision =
                           name = terrain.name;
                           label =
                             (if Js.Float.isFinite cost then
-                               number cost ^ if cost = 1. then " Step" else " Steps"
-                             else "-");
+                               let js_text_part_0 = number cost in
+                               let js_text_part_1 =
+                                 if cost = 1. then {js| Step|js} else {js| Steps|js}
+                               in
+                               {j|$(js_text_part_0)$(js_text_part_1)|j}
+                             else {js|-|js});
                           facts = terrain_damage_facts rows;
                           class_name =
-                            (if not (Js.Float.isFinite cost) then "blocked"
-                             else if cost = 1. then "easy"
-                             else if cost = 2. then "slow"
-                             else "difficult");
+                            (if not (Js.Float.isFinite cost) then {js|blocked|js}
+                             else if cost = 1. then {js|easy|js}
+                             else if cost = 2. then {js|slow|js}
+                             else {js|difficult|js});
                         })
                       (Catalog.terrain catalog)
                       (Array.to_list definition.environment);
                 }))
 
 let death_notice probability =
-  if probability = 0. then ""
-  else if probability = 1. then " (dies)"
+  if probability = 0. then {js||js}
+  else if probability = 1. then {js| (dies)|js}
   else
-    " ("
-    ^ (if probability < 0.01 then "<1"
-       else if probability > 0.99 then ">99"
-       else number (Float.floor ((probability *. 100.) +. 0.5)))
-    ^ "% chance to die)"
+    let js_text_part_1 =
+      if probability < 0.01 then {js|<1|js}
+      else if probability > 0.99 then {js|>99|js}
+      else number (Float.floor ((probability *. 100.) +. 0.5))
+    in
+    {j| ($(js_text_part_1)% chance to die)|j}
 
 let forecast catalog view (unit : public_unit) label impact death (health : hp_forecast) =
   let maximum_hp = Int32.to_float (Catalog.unit catalog unit.type_).hp in
@@ -344,60 +399,65 @@ let forecast catalog view (unit : public_unit) label impact death (health : hp_f
   and maximum_loss = Int32.to_float unit.hp -. Int32.to_float health.minimum in
   let impact_label =
     if minimum_loss >= 0. then
-      impact ^ " "
-      ^ (if minimum_loss > 0. then "−" else "")
-      ^ range minimum_loss maximum_loss ^ " HP"
+      let js_text_part_2 = if minimum_loss > 0. then {js|−|js} else {js||js} in
+      let js_text_part_3 = range minimum_loss maximum_loss in
+      {j|$(impact) $(js_text_part_2)$(js_text_part_3) HP|j}
     else if maximum_loss <= 0. then
-      (if label = "You" then "Heal" else "Ai heals")
-      ^ " +"
-      ^ range (-.maximum_loss) (-.minimum_loss)
-      ^ " HP"
-    else "Change −" ^ number maximum_loss ^ "–+" ^ number (-.minimum_loss) ^ " HP"
+      let js_text_part_0 = if label = {js|You|js} then {js|Heal|js} else {js|Ai heals|js} in
+      let js_text_part_2 = range (-.maximum_loss) (-.minimum_loss) in
+      {j|$(js_text_part_0) +$(js_text_part_2) HP|j}
+    else
+      let js_text_part_1 = number maximum_loss in
+      let js_text_part_3 = number (-.minimum_loss) in
+      {j|Change −$(js_text_part_1)–+$(js_text_part_3) HP|j}
   in
   {
     palette =
-      Option.fold ~none:"passive"
+      Option.fold ~none:{js|passive|js}
         ~some:(fun (f : unit_faction) -> f.palette)
         (Native.faction view unit.id);
     remaining_hp;
     current_hp = Int32.to_float unit.hp;
     maximum_hp;
     remaining_label = range (Int32.to_float health.minimum) (Int32.to_float health.maximum);
-    remaining_class = (if death = 1. then "fatal" else "");
+    remaining_class = (if death = 1. then {js|fatal|js} else {js||js});
     health_label =
-      label ^ ": "
-      ^ number (Int32.to_float unit.hp)
-      ^ " HP before, "
-      ^ range (Int32.to_float health.minimum) (Int32.to_float health.maximum)
-      ^ " HP after this attack, average " ^ number remaining_hp ^ " HP" ^ death_notice death;
+      (let js_text_part_2 = number (Int32.to_float unit.hp) in
+       let js_text_part_4 = range (Int32.to_float health.minimum) (Int32.to_float health.maximum) in
+       let js_text_part_6 = number remaining_hp in
+       let js_text_part_8 = death_notice death in
+       {j|$(label): $(js_text_part_2) HP before, $(js_text_part_4) HP after this attack, average $(js_text_part_6) HP$(js_text_part_8)|j});
     current_percent = Int32.to_float unit.hp /. maximum_hp *. 100.;
     minimum_percent = Int32.to_float health.minimum /. maximum_hp *. 100.;
     maximum_percent = Int32.to_float health.maximum /. maximum_hp *. 100.;
-    impact_label = impact_label ^ death_notice death;
+    impact_label =
+      (let js_text_part_1 = death_notice death in
+       {j|$(impact_label)$(js_text_part_1)|j});
   }
 
 let describe catalog label (weapon : weapon) (detail : damage_detail) terrain =
-  label ^ ": "
-  ^ number (float_of_int weapon.count)
-  ^ " × " ^ weapon_damage weapon ^ " "
-  ^ String.lowercase_ascii (damage_name weapon.damage_type)
-  ^ ", "
-  ^ String.lowercase_ascii weapon.name
-  ^ ", "
-  ^ Enum.string_of_category weapon.category
-  ^
-  if Int32.to_float detail.protection <> 0. || Int32.to_float detail.exposure <> 0. then
-    ", against terrain: " ^ String.lowercase_ascii (Catalog.terrain_type catalog terrain).name
-  else ""
+  let js_text_part_2 = number (float_of_int weapon.count) in
+  let js_text_part_4 = weapon_damage weapon in
+  let js_text_part_6 = Js.String.toLowerCase (damage_name weapon.damage_type) in
+  let js_text_part_8 = Js.String.toLowerCase weapon.name in
+  let js_text_part_10 = Enum.string_of_category weapon.category in
+  let js_text_part_11 =
+    if Int32.to_float detail.protection <> 0. || Int32.to_float detail.exposure <> 0. then
+      let js_text_part_1 = Js.String.toLowerCase (Catalog.terrain_type catalog terrain).name in
+      {j|, against terrain: $(js_text_part_1)|j}
+    else {js||js}
+  in
+  {j|$(label): $(js_text_part_2) × $(js_text_part_4) $(js_text_part_6), $(js_text_part_8), $(js_text_part_10)$(js_text_part_11)|j}
 
 let weapon_label (weapon : weapon) (detail : damage_detail) =
-  "("
-  ^ number (float_of_int weapon.count)
-  ^ " × "
-  ^ range
+  let js_text_part_1 = number (float_of_int weapon.count) in
+  let js_text_part_3 =
+    range
       (Int32.to_float detail.minimum /. float_of_int weapon.count)
       (Int32.to_float detail.maximum /. float_of_int weapon.count)
-  ^ ") " ^ weapon.name
+  in
+  let js_text_part_5 = weapon.name in
+  {j|($(js_text_part_1) × $(js_text_part_3)) $(js_text_part_5)|j}
 
 let attacks catalog view (attacker : public_unit) (defender : public_unit) =
   List.map
@@ -407,29 +467,33 @@ let attacks catalog view (attacker : public_unit) (defender : public_unit) =
           {
             weapon;
             name = weapon.name;
-            response_name = "";
+            response_name = {js||js};
             result = None;
-            button_label = "Attack with " ^ weapon.name ^ " — out of reach or blocked";
+            button_label =
+              (let js_text_part_1 = weapon.name in
+               {j|Attack with $(js_text_part_1) — out of reach or blocked|j});
           }
       | Some preview ->
           let terrain id =
             match Native.tile view id with
             | Some tile -> tile.terrain
-            | None -> invalid_arg "Combatant has no battlefield tile."
+            | None -> invalid_arg {js|Combatant has no battlefield tile.|js}
           in
           let response =
             match (preview.response, preview.retaliation_detail) with
             | Some weapon, Some detail ->
                 {
                   description =
-                    describe catalog "Their attack" weapon detail (terrain (Hex.key attacker.tile));
+                    describe catalog {js|Their attack|js} weapon detail
+                      (terrain (Hex.key attacker.tile));
                   equation = damage_equation detail;
                 }
             | _ ->
                 {
-                  description = "Their attack: none";
+                  description = {js|Their attack: none|js};
                   equation =
-                    (if preview.kill_chance = 1. then "0 (enemy defeated)" else "0 (out of range)");
+                    (if preview.kill_chance = 1. then {js|0 (enemy defeated)|js}
+                     else {js|0 (out of range)|js});
                 }
           in
           let response =
@@ -437,36 +501,41 @@ let attacks catalog view (attacker : public_unit) (defender : public_unit) =
             else
               {
                 description =
-                  response.description ^ "; thorns reflect damage per incoming melee strike";
+                  (let js_text_part_0 = response.description in
+                   {j|$(js_text_part_0); thorns reflect damage per incoming melee strike|j});
                 equation =
-                  response.equation ^ "; "
-                  ^ number
-                      (Int32.to_float preview.retaliation -. Int32.to_float preview.thorn_damage)
-                  ^ " + "
-                  ^ number (Int32.to_float preview.thorn_damage)
-                  ^ " (thorns: average across executed strikes) = "
-                  ^ number (Int32.to_float preview.retaliation);
+                  (let js_text_part_0 = response.equation in
+                   let js_text_part_2 =
+                     number
+                       (Int32.to_float preview.retaliation -. Int32.to_float preview.thorn_damage)
+                   in
+                   let js_text_part_4 = number (Int32.to_float preview.thorn_damage) in
+                   let js_text_part_6 = number (Int32.to_float preview.retaliation) in
+                   {j|$(js_text_part_0); $(js_text_part_2) + $(js_text_part_4) (thorns: average across executed strikes) = $(js_text_part_6)|j});
               }
           in
           let player =
-            forecast catalog view attacker "You" "Take" preview.death_chance preview.attacker_health
+            forecast catalog view attacker {js|You|js} {js|Take|js} preview.death_chance
+              preview.attacker_health
           in
           let enemy =
-            forecast catalog view defender "Ai" "Deal" preview.kill_chance preview.defender_health
+            forecast catalog view defender {js|Ai|js} {js|Deal|js} preview.kill_chance
+              preview.defender_health
           in
           let name = weapon_label weapon preview.damage_detail in
           let response_name =
             match (preview.response, preview.retaliation_detail) with
             | Some weapon, Some detail -> weapon_label weapon detail
-            | _ -> "No retaliation"
+            | _ -> {js|No retaliation|js}
           in
           {
             weapon;
             name;
             response_name;
             button_label =
-              "Attack with " ^ name ^ ". Ai: " ^ response_name ^ ". " ^ player.health_label ^ ". "
-              ^ enemy.health_label ^ ".";
+              (let js_text_part_5 = player.health_label in
+               let js_text_part_7 = enemy.health_label in
+               {j|Attack with $(name). Ai: $(response_name). $(js_text_part_5). $(js_text_part_7).|j});
             result =
               Some
                 {
@@ -475,7 +544,7 @@ let attacks catalog view (attacker : public_unit) (defender : public_unit) =
                   attack =
                     {
                       description =
-                        describe catalog "Your attack" weapon preview.damage_detail
+                        describe catalog {js|Your attack|js} weapon preview.damage_detail
                           (terrain (Hex.key defender.tile));
                       equation = damage_equation preview.damage_detail;
                     };
@@ -488,28 +557,35 @@ let terrain_facts (terrain : terrain_definition) =
   let role = terrain.role and modifiers = terrain.damage_modifiers in
   let protection =
     match role with
-    | Terrain_role.Ford -> "Land troops: +1 damage received. Merfolk: no exposure."
-    | Terrain_role.Marsh -> "Land troops: +1 damage received. Merfolk: −1 damage received."
-    | Terrain_role.Hill -> "Land troops: −1 damage received. Merfolk: +1 damage received."
+    | Terrain_role.Ford -> {js|Land troops: +1 damage received. Merfolk: no exposure.|js}
+    | Terrain_role.Marsh -> {js|Land troops: +1 damage received. Merfolk: −1 damage received.|js}
+    | Terrain_role.Hill -> {js|Land troops: −1 damage received. Merfolk: +1 damage received.|js}
     | Terrain_role.Forest | Terrain_role.Grove ->
-        "Land troops: −1 ranged damage. Merfolk: +1 damage from all attacks."
+        {js|Land troops: −1 ranged damage. Merfolk: +1 damage from all attacks.|js}
     | _ when Int32.to_float modifiers.melee = -1. && Int32.to_float modifiers.ranged = -1. ->
-        "Protection: −1 damage from all attacks"
+        {js|Protection: −1 damage from all attacks|js}
     | _ ->
         let effects =
           List.filter_map
             (fun (name, value) ->
               if value = 0. then None
-              else Some ((if value > 0. then "+" else "") ^ number value ^ " " ^ name ^ " damage"))
+              else
+                Some
+                  (let js_text_part_0 = if value > 0. then {js|+|js} else {js||js} in
+                   let js_text_part_1 = number value in
+                   {j|$(js_text_part_0)$(js_text_part_1) $(name) damage|j}))
             [
-              ("melee", Int32.to_float modifiers.melee);
-              ("ranged", Int32.to_float modifiers.ranged);
-              ("blade", Int32.to_float modifiers.blade);
-              ("pierce", Int32.to_float modifiers.pierce);
-              ("impact", Int32.to_float modifiers.impact);
+              ({js|melee|js}, Int32.to_float modifiers.melee);
+              ({js|ranged|js}, Int32.to_float modifiers.ranged);
+              ({js|blade|js}, Int32.to_float modifiers.blade);
+              ({js|pierce|js}, Int32.to_float modifiers.pierce);
+              ({js|impact|js}, Int32.to_float modifiers.impact);
             ]
         in
-        if effects = [] then "Protection: none" else "Protection: " ^ String.concat ", " effects
+        if effects = [] then {js|Protection: none|js}
+        else
+          let js_text_part_1 = Js.Array.join ~sep:{js|, |js} (Array.of_list effects) in
+          {j|Protection: $(js_text_part_1)|j}
   in
   (if role = Terrain_role.Water then [] else [ protection ])
   @ (if
@@ -522,21 +598,21 @@ let terrain_facts (terrain : terrain_definition) =
            Terrain_role.Mountain_mine;
            Terrain_role.Keep;
          ]
-     then [ "Blocks ranged shots through this hex" ]
+     then [ {js|Blocks ranged shots through this hex|js} ]
      else [])
   @
   match role with
   | Terrain_role.Village ->
       [
-        "+2 gold at the start of its owner’s turn";
-        "Heals a friendly occupant by 4 HP at the start of its turn";
+        {js|+2 gold at the start of its owner’s turn|js};
+        {js|Heals a friendly occupant by 4 HP at the start of its turn|js};
       ]
-  | Terrain_role.Grove -> [ "Heals its owner’s occupant by 4 HP at the start of its turn" ]
+  | Terrain_role.Grove -> [ {js|Heals its owner’s occupant by 4 HP at the start of its turn|js} ]
   | Terrain_role.Keep ->
       [
-        "Its owner’s leader can recruit into adjacent empty terrain passable to the recruit";
-        "Select an empty adjacent hex to recruit";
-        "Move onto a keep to claim it";
+        {js|Its owner’s leader can recruit into adjacent empty terrain passable to the recruit|js};
+        {js|Select an empty adjacent hex to recruit|js};
+        {js|Move onto a keep to claim it|js};
       ]
   | _ -> []
 
@@ -552,7 +628,7 @@ let recruitment_context catalog view selected (tile : tile) =
       Array_ext.filter
         (fun (neighbor : tile) ->
           Catalog.terrain_role catalog neighbor.terrain = Terrain_role.Keep
-          && (neighbor.owner = Some "player"
+          && (neighbor.owner = Some {js|player|js}
              || Option.fold ~none:false
                   ~some:(fun id ->
                     Array.exists
@@ -593,11 +669,11 @@ let treasury catalog view ~selected ~inspected =
             Option.bind (recruitment_context catalog view selected tile) (fun (commander, _) ->
                 commander))
   in
-  Option.fold ~none:"player"
+  Option.fold ~none:{js|player|js}
     ~some:(fun (unit : public_unit) ->
       match Native.faction view unit.id with
       | Some profile when profile.controllable -> profile.id
-      | _ -> "player")
+      | _ -> {js|player|js})
     actor
 
 let terrain_panel catalog view ~selected ~inspected =
@@ -613,16 +689,24 @@ let terrain_panel catalog view ~selected ~inspected =
                   facts :=
                     List.append !facts
                       [
-                        (if Array.exists (( = ) ("sealed:" ^ tile.id)) campaign.marks then
-                           "Binding stone sealed; it will not raise the dead"
+                        (if
+                           Array.exists
+                             (( = )
+                                (let js_text_part_1 = tile.id in
+                                 {j|sealed:$(js_text_part_1)|j}))
+                             campaign.marks
+                         then {js|Binding stone sealed; it will not raise the dead|js}
                          else
-                           "Enter with "
-                           ^ (match goal.unit_type with
-                             | None -> "a friendly unit"
+                           let js_text_part_1 =
+                             match goal.unit_type with
+                             | None -> {js|a friendly unit|js}
                              | Some kind ->
-                                 "a friendly "
-                                 ^ String.lowercase_ascii (Catalog.unit catalog kind).name)
-                           ^ " to seal this binding stone");
+                                 let js_text_part_1 =
+                                   Js.String.toLowerCase (Catalog.unit catalog kind).name
+                                 in
+                                 {j|a friendly $(js_text_part_1)|j}
+                           in
+                           {j|Enter with $(js_text_part_1) to seal this binding stone|j});
                       ]
               | _ -> ())
             (Array.find_opt
@@ -637,9 +721,9 @@ let terrain_panel catalog view ~selected ~inspected =
             let player_turn = state.turn = Phase.Player && state.winner = None in
             let faction =
               Option.fold
-                ~none:(Option.value ~default:"player" tile.owner)
+                ~none:(Option.value ~default:{js|player|js} tile.owner)
                 ~some:(fun (unit : public_unit) ->
-                  Option.fold ~none:"player"
+                  Option.fold ~none:{js|player|js}
                     ~some:(fun (f : unit_faction) -> f.id)
                     (Native.faction view unit.id))
                 commander
@@ -662,10 +746,10 @@ let terrain_panel catalog view ~selected ~inspected =
                 (Array.to_list (Native.recruitment_options view faction))
             in
             let hint =
-              if options = [] then "No units are available for recruitment."
-              else if not stationed then "Return your leader to this keep to recruit."
-              else if not player_turn then "Recruit on your turn."
-              else "New recruits act next turn."
+              if options = [] then {js|No units are available for recruitment.|js}
+              else if not stationed then {js|Return your leader to this keep to recruit.|js}
+              else if not player_turn then {js|Recruit on your turn.|js}
+              else {js|New recruits act next turn.|js}
             in
             let cheapest =
               List.fold_left (fun cost recruit -> min cost recruit.cost) infinity options
@@ -673,11 +757,12 @@ let terrain_panel catalog view ~selected ~inspected =
             {
               options;
               hint =
-                (hint
-                ^
-                if player_turn && stationed && Native.gold state.gold faction < cheapest then
-                  " Not enough gold."
-                else "");
+                (let js_text_part_1 =
+                   if player_turn && stationed && Native.gold state.gold faction < cheapest then
+                     {js| Not enough gold.|js}
+                   else {js||js}
+                 in
+                 {j|$(hint)$(js_text_part_1)|j});
             })
           (recruitment_context catalog view selected tile)
       in
@@ -688,21 +773,33 @@ let terrain_panel catalog view ~selected ~inspected =
         | Terrain_role.Fort | Terrain_role.Monastery ->
             Some
               ( (match owner with
-                | None -> "Unclaimed " ^ tile.terrain
+                | None ->
+                    let js_text_part_1 = tile.terrain in
+                    {j|Unclaimed $(js_text_part_1)|j}
                 | Some id ->
-                    (if id = "player" then "Your"
-                     else if id = "enemy" then "Ai"
-                     else
-                       Option.fold
-                         ~none:(String.concat " " (String.split_on_char '-' id))
-                         ~some:(fun (f : faction) ->
-                           Option.value
-                             ~default:(String.concat " " (String.split_on_char '-' id))
-                             f.name)
-                         (Array.find_opt (fun (f : faction) -> f.id = id) state.factions))
-                    ^ " " ^ tile.terrain),
-                match owner with None -> "neutral" | Some "player" -> "player" | Some _ -> "enemy"
-              )
+                    let js_text_part_0 =
+                      if id = {js|player|js} then {js|Your|js}
+                      else if id = {js|enemy|js} then {js|Ai|js}
+                      else
+                        Option.fold
+                          ~none:
+                            (Js.Array.join ~sep:{js| |js}
+                               (Array.of_list (Array.to_list (Js.String.split ~sep:{js|-|js} id))))
+                          ~some:(fun (f : faction) ->
+                            Option.value
+                              ~default:
+                                (Js.Array.join ~sep:{js| |js}
+                                   (Array.of_list
+                                      (Array.to_list (Js.String.split ~sep:{js|-|js} id))))
+                              f.name)
+                          (Array.find_opt (fun (f : faction) -> f.id = id) state.factions)
+                    in
+                    let js_text_part_2 = tile.terrain in
+                    {j|$(js_text_part_0) $(js_text_part_2)|j}),
+                match owner with
+                | None -> {js|neutral|js}
+                | Some matched_text_0 when matched_text_0 = {js|player|js} -> {js|player|js}
+                | Some _ -> {js|enemy|js} )
         | _ -> None
       in
       {
@@ -731,7 +828,7 @@ type battlefield_cache = {
   mutable cells : battlefield_cell Js.Dict.t;
 }
 
-let create_battlefield_cache () = { catalog = None; map = ""; cells = dictionary () }
+let create_battlefield_cache () = { catalog = None; map = {js||js}; cells = dictionary () }
 
 let battlefield ?cache catalog view ~selected ~inspected =
   let state = Native.state view in
@@ -743,7 +840,7 @@ let battlefield ?cache catalog view ~selected ~inspected =
          selected_unit
   in
   let reachable =
-    if can_act then Native.reachable view (Option.get selected) else Domain.String_map.empty
+    if can_act then Native.reachable view (Option.get selected) else Domain.Text_map.empty
   in
   let targets = dictionary () in
   if can_act then
@@ -766,7 +863,7 @@ let battlefield ?cache catalog view ~selected ~inspected =
           Option.bind (Native.at view tile.id) (fun unit ->
               if Native.visible view unit then Some unit else None)
         in
-        let reachable = Domain.String_map.find_opt tile.id reachable <> None
+        let reachable = Domain.Text_map.find_opt tile.id reachable <> None
         and target = Js.Dict.get targets tile.id <> None in
         let labels = Option.value ~default:[] (Js.Dict.get objectives tile.id) in
         let recruitable =
@@ -791,32 +888,41 @@ let battlefield ?cache catalog view ~selected ~inspected =
             old.display
         | _ ->
             let classes =
-              String.concat " "
-                (List.filter (( <> ) "")
-                   [
-                     "hex";
-                     (if labels <> [] then "objective" else "");
-                     "terrain-" ^ tile.terrain;
-                     (if selected_here then "selected" else "");
-                     (if reachable then "reachable" else "");
-                     (if target then "target" else "");
-                     (if recruitable then "recruitable" else "");
-                   ])
+              Js.Array.join ~sep:{js| |js}
+                (Array.of_list
+                   (List.filter (( <> ) {js||js})
+                      [
+                        {js|hex|js};
+                        (if labels <> [] then {js|objective|js} else {js||js});
+                        (let js_text_part_1 = tile.terrain in
+                         {j|terrain-$(js_text_part_1)|j});
+                        (if selected_here then {js|selected|js} else {js||js});
+                        (if reachable then {js|reachable|js} else {js||js});
+                        (if target then {js|target|js} else {js||js});
+                        (if recruitable then {js|recruitable|js} else {js||js});
+                      ]))
             in
             let label =
               List.concat
                 [
                   [
                     (Catalog.terrain_type catalog tile.terrain).name;
-                    "column " ^ number (Int32.to_float tile.col +. 1.);
-                    "row " ^ number (Int32.to_float tile.row +. 1.);
+                    (let js_text_part_1 = number (Int32.to_float tile.col +. 1.) in
+                     {j|column $(js_text_part_1)|j});
+                    (let js_text_part_1 = number (Int32.to_float tile.row +. 1.) in
+                     {j|row $(js_text_part_1)|j});
                   ];
                   (match tile.owner with
                   | None -> []
                   | Some side ->
                       [
-                        (if side = "player" then "your territory"
-                         else String.concat " " (String.split_on_char '-' side) ^ " territory");
+                        (if side = {js|player|js} then {js|your territory|js}
+                         else
+                           let js_text_part_0 =
+                             Js.Array.join ~sep:{js| |js}
+                               (Array.of_list (Array.to_list (Js.String.split ~sep:{js|-|js} side)))
+                           in
+                           {j|$(js_text_part_0) territory|j});
                       ]);
                   (match occupant with
                   | None -> []
@@ -825,22 +931,30 @@ let battlefield ?cache catalog view ~selected ~inspected =
                       List.concat
                         [
                           [
-                            (match Native.faction view unit.id with
-                              | Some faction when faction.relation = Relation.Neutral -> "neutral "
-                              | Some faction when faction.controllable -> "your "
-                              | Some faction when faction.relation = Relation.Allied -> "allied "
-                              | _ -> "enemy ")
-                            ^ Option.fold ~none:name
-                                ~some:(fun personal -> personal ^ " (" ^ name ^ ")")
-                                (Native.unit_name view unit.id);
-                            number (Int32.to_float unit.hp) ^ " health";
+                            (let js_text_part_0 =
+                               match Native.faction view unit.id with
+                               | Some faction when faction.relation = Relation.Neutral ->
+                                   {js|neutral |js}
+                               | Some faction when faction.controllable -> {js|your |js}
+                               | Some faction when faction.relation = Relation.Allied ->
+                                   {js|allied |js}
+                               | _ -> {js|enemy |js}
+                             in
+                             let js_text_part_1 =
+                               Option.fold ~none:name
+                                 ~some:(fun personal -> {j|$(personal) ($(name))|j})
+                                 (Native.unit_name view unit.id)
+                             in
+                             {j|$(js_text_part_0)$(js_text_part_1)|j});
+                            (let js_text_part_0 = number (Int32.to_float unit.hp) in
+                             {j|$(js_text_part_0) health|j});
                           ];
-                          (if unit.attack_spent then [ "turn finished" ] else []);
-                          (if unit.retreating = Some true then [ "retreating" ] else []);
+                          (if unit.attack_spent then [ {js|turn finished|js} ] else []);
+                          (if unit.retreating = Some true then [ {js|retreating|js} ] else []);
                         ]);
-                  List.map (fun label -> "Objective: " ^ label) labels;
-                  (if reachable then [ "move here" ] else []);
-                  (if target then [ "attack available" ] else []);
+                  List.map (fun label -> {j|Objective: $(label)|j}) labels;
+                  (if reachable then [ {js|move here|js} ] else []);
+                  (if target then [ {js|attack available|js} ] else []);
                 ]
               |> join
             in
@@ -851,15 +965,17 @@ let battlefield ?cache catalog view ~selected ~inspected =
                 classes;
                 label;
                 owner_color =
-                  (if tile.owner = Some "player" then "#6fdec0"
+                  (if tile.owner = Some {js|player|js} then {js|#6fdec0|js}
                    else
                      match
                        Option.bind tile.owner (fun id ->
                            Array.find_opt (fun (f : faction) -> f.id = id) state.factions)
                      with
-                     | Some { palette = "green"; _ } -> "#83b765"
-                     | Some { palette = "passive"; _ } -> "#efecdc"
-                     | _ -> "#ff9590");
+                     | Some { palette = matched_text_1; _ } when matched_text_1 = {js|green|js} ->
+                         {js|#83b765|js}
+                     | Some { palette = matched_text_2; _ } when matched_text_2 = {js|passive|js} ->
+                         {js|#efecdc|js}
+                     | _ -> {js|#ff9590|js});
                 health_width =
                   Option.fold ~none:0.
                     ~some:(fun (unit : public_unit) ->
@@ -924,9 +1040,9 @@ let changes (before : state) (after : state) =
   Array.iter (fun (tile : tile) -> Js.Dict.set old_tiles tile.id tile.owner) before.tiles;
   let territory =
     Array.append
-      (Array_ext.filter (fun (tile : tile) -> tile.terrain = "village") after.tiles)
+      (Array_ext.filter (fun (tile : tile) -> tile.terrain = {js|village|js}) after.tiles)
       (Array_ext.filter
-         (fun (tile : tile) -> List.mem tile.terrain [ "grove"; "fort"; "ruins" ])
+         (fun (tile : tile) -> List.mem tile.terrain [ {js|grove|js}; {js|fort|js}; {js|ruins|js} ])
          after.tiles)
   in
   let captured_tiles =
@@ -974,7 +1090,11 @@ type exchange_entry = {
   strike : int;
 }
 
-let loss value = if value = 0. then "0" else "−" ^ number value
+let loss value =
+  if value = 0. then {js|0|js}
+  else
+    let js_text_part_1 = number value in
+    {j|−$(js_text_part_1)|j}
 
 let exchange_entries catalog (combat : combat_animation) =
   let units = combat.units in
@@ -984,94 +1104,98 @@ let exchange_entries catalog (combat : combat_animation) =
       let actor = if units.(0).id = hit.unit_id then 0 else 1 in
       let before = !previous in
       previous := hit.health;
-      let yours = units.(actor).faction = "player" in
+      let yours = units.(actor).faction = {js|player|js} in
       let equation =
-        number (Int32.to_float hit.raw)
-        ^ (if Int32.to_float hit.modifier < 0. then
-             " − " ^ number (-.Int32.to_float hit.modifier) ^ " armor"
-           else if Int32.to_float hit.modifier > 0. then
-             " + " ^ number (Int32.to_float hit.modifier) ^ " weakness"
-           else "")
-        ^
-        if Int32.to_float hit.terrain < 0. then
-          " − " ^ number (-.Int32.to_float hit.terrain) ^ " cover"
-        else if Int32.to_float hit.terrain > 0. then
-          " + " ^ number (Int32.to_float hit.terrain) ^ " exposure"
-        else ""
+        let js_text_part_0 = number (Int32.to_float hit.raw) in
+        let js_text_part_1 =
+          if Int32.to_float hit.modifier < 0. then
+            let js_text_part_1 = number (-.Int32.to_float hit.modifier) in
+            {j| − $(js_text_part_1) armor|j}
+          else if Int32.to_float hit.modifier > 0. then
+            let js_text_part_1 = number (Int32.to_float hit.modifier) in
+            {j| + $(js_text_part_1) weakness|j}
+          else {js||js}
+        in
+        let js_text_part_2 =
+          if Int32.to_float hit.terrain < 0. then
+            let js_text_part_1 = number (-.Int32.to_float hit.terrain) in
+            {j| − $(js_text_part_1) cover|j}
+          else if Int32.to_float hit.terrain > 0. then
+            let js_text_part_1 = number (Int32.to_float hit.terrain) in
+            {j| + $(js_text_part_1) exposure|j}
+          else {js||js}
+        in
+        {j|$(js_text_part_0)$(js_text_part_1)$(js_text_part_2)|j}
       in
       let equation =
         if Int32.to_float hit.raw +. Int32.to_float hit.modifier +. Int32.to_float hit.terrain < 0.
-        then "max(0, " ^ equation ^ ")"
+        then {j|max(0, $(equation))|j}
         else equation
       in
       let entry id good text details =
-        { id = id ^ "-" ^ string_of_int index; good; text; details; strike = index }
+        {
+          id =
+            (let js_text_part_2 = string_of_int index in
+             {j|$(id)-$(js_text_part_2)|j});
+          good;
+          text;
+          details;
+          strike = index;
+        }
       in
       [
-        entry "hit" yours
-          ("You "
-          ^ (if yours then "deal" else "take")
-          ^ " "
-          ^ loss (Int32.to_float hit.effective)
-          ^ " HP")
+        entry {js|hit|js} yours
+          (let js_text_part_1 = if yours then {js|deal|js} else {js|take|js} in
+           let js_text_part_3 = loss (Int32.to_float hit.effective) in
+           {j|You $(js_text_part_1) $(js_text_part_3) HP|j})
           [
-            hit.weapon ^ ": rolled "
-            ^ number (Int32.to_float hit.raw)
-            ^ " from "
-            ^ number (Int32.to_float hit.roll_min)
-            ^ "–"
-            ^ number (Int32.to_float hit.roll_max)
-            ^ ".";
-            equation ^ " = " ^ number (Int32.to_float hit.damage) ^ " damage";
-            "min("
-            ^ number (Int32.to_float before.(1 - actor))
-            ^ " HP, "
-            ^ number (Int32.to_float hit.damage)
-            ^ " damage) = "
-            ^ number (Int32.to_float hit.effective)
-            ^ " HP removed";
+            (let js_text_part_0 = hit.weapon in
+             let js_text_part_2 = number (Int32.to_float hit.raw) in
+             let js_text_part_4 = number (Int32.to_float hit.roll_min) in
+             let js_text_part_6 = number (Int32.to_float hit.roll_max) in
+             {j|$(js_text_part_0): rolled $(js_text_part_2) from $(js_text_part_4)–$(js_text_part_6).|j});
+            (let js_text_part_2 = number (Int32.to_float hit.damage) in
+             {j|$(equation) = $(js_text_part_2) damage|j});
+            (let js_text_part_1 = number (Int32.to_float before.(1 - actor)) in
+             let js_text_part_3 = number (Int32.to_float hit.damage) in
+             let js_text_part_5 = number (Int32.to_float hit.effective) in
+             {j|min($(js_text_part_1) HP, $(js_text_part_3) damage) = $(js_text_part_5) HP removed|j});
           ];
       ]
       @ (if Int32.to_float hit.healed = 0. then []
          else
            [
-             entry "drain" yours
-               ((if yours then "You heal" else "Opponent heals")
-               ^ " +"
-               ^ number (Int32.to_float hit.healed)
-               ^ " HP")
+             entry {js|drain|js} yours
+               (let js_text_part_0 = if yours then {js|You heal|js} else {js|Opponent heals|js} in
+                let js_text_part_2 = number (Int32.to_float hit.healed) in
+                {j|$(js_text_part_0) +$(js_text_part_2) HP|j})
                [
-                 "min(floor("
-                 ^ number (Int32.to_float hit.effective)
-                 ^ " × "
-                 ^ number (float_of_int hit.drain)
-                 ^ "%), "
-                 ^ number
-                     (Int32.to_float (Catalog.unit catalog units.(actor).type_).hp
-                     -. Int32.to_float before.(actor))
-                 ^ " missing HP) = "
-                 ^ number (Int32.to_float hit.healed)
-                 ^ " HP restored";
+                 (let js_text_part_1 = number (Int32.to_float hit.effective) in
+                  let js_text_part_3 = number (float_of_int hit.drain) in
+                  let js_text_part_5 =
+                    number
+                      (Int32.to_float (Catalog.unit catalog units.(actor).type_).hp
+                      -. Int32.to_float before.(actor))
+                  in
+                  let js_text_part_7 = number (Int32.to_float hit.healed) in
+                  {j|min(floor($(js_text_part_1) × $(js_text_part_3)%), $(js_text_part_5) missing HP) = $(js_text_part_7) HP restored|j});
                ];
            ])
       @
       if Int32.to_float hit.thorns = 0. then []
       else
         [
-          entry "thorns" (not yours)
-            ("You "
-            ^ (if yours then "take" else "deal")
-            ^ " "
-            ^ loss (Int32.to_float hit.reflected)
-            ^ " HP · thorns")
+          entry {js|thorns|js} (not yours)
+            (let js_text_part_1 = if yours then {js|take|js} else {js|deal|js} in
+             let js_text_part_3 = loss (Int32.to_float hit.reflected) in
+             {j|You $(js_text_part_1) $(js_text_part_3) HP · thorns|j})
             [
-              "min("
-              ^ number (Int32.to_float before.(actor) +. Int32.to_float hit.healed)
-              ^ " HP, "
-              ^ number (Int32.to_float hit.thorns)
-              ^ " thorns) = "
-              ^ number (Int32.to_float hit.reflected)
-              ^ " HP removed";
+              (let js_text_part_1 =
+                 number (Int32.to_float before.(actor) +. Int32.to_float hit.healed)
+               in
+               let js_text_part_3 = number (Int32.to_float hit.thorns) in
+               let js_text_part_5 = number (Int32.to_float hit.reflected) in
+               {j|min($(js_text_part_1) HP, $(js_text_part_3) thorns) = $(js_text_part_5) HP removed|j});
             ];
         ])
     combat.strikes

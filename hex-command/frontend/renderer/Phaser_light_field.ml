@@ -35,7 +35,7 @@ class light_field (scene : Phaser.scene) (resources : Phaser_resources.resources
   let renderer =
     match Js.Nullable.toOption scene##game##renderer with
     | Some renderer -> renderer
-    | None -> failwith "Lighting requires the battlefield WebGL renderer"
+    | None -> failwith {js|Lighting requires the battlefield WebGL renderer|js}
   in
   let batch_size = max 1 (min 32 ((Webgl.parameter renderer##gl 0x8dfd - 24) / 3)) in
   object (self)
@@ -62,7 +62,7 @@ class light_field (scene : Phaser.scene) (resources : Phaser_resources.resources
     method native =
       match pipeline with
       | Some pipeline -> Phaser_pipeline.native pipeline
-      | None -> failwith "Lighting field is not initialized"
+      | None -> failwith {js|Lighting field is not initialized|js}
 
     method batch_size = batch_size
     method cells = cells
@@ -103,17 +103,17 @@ class light_field (scene : Phaser.scene) (resources : Phaser_resources.resources
       done;
       cells <- next;
       let crowded = Array_ext.filter (fun cell -> Array.length cell.lights > batch_size) cells in
-      Performance_trace.instant "Battlefield GPU lighting workload"
+      Performance_trace.instant {js|Battlefield GPU lighting workload|js}
         ~args:
           (Performance_trace.obj
              [
-               ("lights", Performance_trace.int (Array.length lights));
-               ("cells", Performance_trace.int (Array.length cells));
-               ("crowdedCells", Performance_trace.int (Array.length crowded));
-               ( "lightCellReferences",
+               ({js|lights|js}, Performance_trace.int (Array.length lights));
+               ({js|cells|js}, Performance_trace.int (Array.length cells));
+               ({js|crowdedCells|js}, Performance_trace.int (Array.length crowded));
+               ( {js|lightCellReferences|js},
                  Performance_trace.int
                    (Array.fold_left (fun count cell -> count + Array.length cell.lights) 0 cells) );
-               ("batchSize", Performance_trace.int batch_size);
+               ({js|batchSize|js}, Performance_trace.int batch_size);
              ]);
       if Array.length crowded = 0 then { factors = None; offsets = None; normalization }
       else
@@ -125,7 +125,7 @@ class light_field (scene : Phaser.scene) (resources : Phaser_resources.resources
         let packed_width = across * cell_size
         and packed_height = (Array.length crowded + across - 1) / across * cell_size in
         let _ =
-          resources#check ~target:true "packed GPU lighting scratch"
+          resources#check ~target:true {js|packed GPU lighting scratch|js}
             (float_of_int (packed_width * 4))
             (float_of_int packed_height)
         in
@@ -150,16 +150,16 @@ class light_field (scene : Phaser.scene) (resources : Phaser_resources.resources
                     let _ = target##camera##setScroll 0. 0. in
                     let _ = target##texture##setFilter 1 in
                     target));
-          resources#set "light-gpu-scratch" "GPU lighting scratch" 0.
+          resources#set {js|light-gpu-scratch|js} {js|GPU lighting scratch|js} 0.
             (float_of_int packed_width *. float_of_int packed_height *. 64.));
         let stamp =
           match stamp with
           | Some stamp -> stamp
           | None ->
-              let created = Phaser.GameObjects.image scene 0. 0. "battlefield-white" in
+              let created = Phaser.GameObjects.image scene 0. 0. {js|battlefield-white|js} in
               let _ = created##setOrigin 0. 0. in
               let _ =
-                Pipeline_data.image created "BattlefieldLightField"
+                Pipeline_data.image created {js|BattlefieldLightField|js}
                   { cell = crowded.(0); origin_x; origin_y; pass = 0; kind = 0 }
                   false
               in
@@ -176,7 +176,7 @@ class light_field (scene : Phaser.scene) (resources : Phaser_resources.resources
             1 crowded
         in
         let output = ref targets.(0) in
-        Performance_trace.measure "Phaser GPU lighting fields" (fun () ->
+        Performance_trace.measure {js|Phaser GPU lighting fields|js} (fun () ->
             for pass = 0 to passes - 1 do
               output := targets.(pass mod 2);
               previous <- (if pass > 0 then Some targets.((pass - 1) mod 2) else None);
@@ -237,21 +237,23 @@ class light_field (scene : Phaser.scene) (resources : Phaser_resources.resources
             | None -> default_offset.(channel))
         done
       done;
-      let _ = native##set2f "uSize" (float_of_int field_width) (float_of_int field_height) in
+      let _ = native##set2f {js|uSize|js} (float_of_int field_width) (float_of_int field_height) in
       let _ =
-        native##set4f "uCell" (float_of_int cell.x) (float_of_int cell.y) (float_of_int cell.width)
-          (float_of_int cell.height)
+        native##set4f {js|uCell|js} (float_of_int cell.x) (float_of_int cell.y)
+          (float_of_int cell.width) (float_of_int cell.height)
       in
-      let _ = native##set2f "uOrigin" origin_x origin_y in
-      let _ = native##set2f "uAtlas" (float_of_int cell.packed_x) (float_of_int cell.packed_y) in
-      let _ = native##set1f "uCount" (float_of_int count) in
-      let _ = native##set1f "uKind" (float_of_int kind) in
-      let _ = native##set1f "uNormalization" normalization in
-      let _ = native##set1f "uHasPrevious" (if Option.is_some previous then 1. else 0.) in
-      let _ = native##set4fv "uLights" positions in
-      let _ = native##set3fv "uWarm" warm in
-      let _ = native##set3fv "uOffset" offsets in
-      let _ = native##set1i "uPrevious" 1 in
+      let _ = native##set2f {js|uOrigin|js} origin_x origin_y in
+      let _ =
+        native##set2f {js|uAtlas|js} (float_of_int cell.packed_x) (float_of_int cell.packed_y)
+      in
+      let _ = native##set1f {js|uCount|js} (float_of_int count) in
+      let _ = native##set1f {js|uKind|js} (float_of_int kind) in
+      let _ = native##set1f {js|uNormalization|js} normalization in
+      let _ = native##set1f {js|uHasPrevious|js} (if Option.is_some previous then 1. else 0.) in
+      let _ = native##set4fv {js|uLights|js} positions in
+      let _ = native##set3fv {js|uWarm|js} warm in
+      let _ = native##set3fv {js|uOffset|js} offsets in
+      let _ = native##set1i {js|uPrevious|js} 1 in
       let previous_texture =
         Option.bind previous (fun pair -> Phaser_pipeline.source_texture pair.(kind)##texture)
       in
@@ -265,5 +267,5 @@ class light_field (scene : Phaser.scene) (resources : Phaser_resources.resources
       targets <- [||];
       field_width <- 0;
       field_height <- 0;
-      resources#remove "light-gpu-scratch"
+      resources#remove {js|light-gpu-scratch|js}
   end

@@ -40,7 +40,7 @@ class cache =
     val old_tiles : (string, tile) Map.t = Map.create ()
 
     method prepare (view : view) reduced_motion =
-      Performance_trace.measure "frame.prepare" (fun () ->
+      Performance_trace.measure {js|frame.prepare|js} (fun () ->
           let state = Native.state view.game in
           let recruit =
             if state.turn = Domain.Turn_phase.Player && view.recruitment then view.inspected_tile
@@ -97,10 +97,13 @@ class cache =
                                   faction;
                                   team_color =
                                     (match faction.palette with
-                                    | "player" -> "#6fdec0"
-                                    | "enemy" -> "#ff9590"
-                                    | "green" -> "#83b765"
-                                    | _ -> "#efecdc");
+                                    | matched_text_0 when matched_text_0 = {js|player|js} ->
+                                        {js|#6fdec0|js}
+                                    | matched_text_1 when matched_text_1 = {js|enemy|js} ->
+                                        {js|#ff9590|js}
+                                    | matched_text_2 when matched_text_2 = {js|green|js} ->
+                                        {js|#83b765|js}
+                                    | _ -> {js|#efecdc|js});
                                   frame =
                                     Art.unit_frame view.artwork ~side:faction.palette unit.type_;
                                   sprite_size = Geometry.sprite_size;
@@ -222,7 +225,9 @@ let scene_data frame =
               let _ =
                 Array_ext.append_value items
                   {
-                    key = id ^ ":" ^ identity ^ ":" ^ string_of_int occurrence;
+                    key =
+                      (let js_text_part_4 = string_of_int occurrence in
+                       {j|$(id):$(identity):$(js_text_part_4)|j});
                     x =
                       tile.terrain.x
                       +. (float_of_int index -. (float_of_int (Array.length pile - 1) /. 2.))

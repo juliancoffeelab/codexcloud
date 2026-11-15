@@ -5,7 +5,7 @@ let detach_root (parent : Phaser.container) (root : Phaser.game_object) =
   if Option.is_some (Js.Undefined.toOption root##scene) then (
     let _ = parent##remove root false in
     root##removeFromDisplayList ();
-    let _ = root##off "destroy" parent##onChildDestroyed parent in
+    let _ = root##off {js|destroy|js} parent##onChildDestroyed parent in
     ())
 
 type entry = {

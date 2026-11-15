@@ -8,7 +8,7 @@
   overflow: hidden;
   background: var(--surface);
 }
-.dialog-window.dialog-window[open] {
+.dialog-window.dialog-window[data-state="open"] {
   display: flex;
   flex-direction: column;
 }
@@ -372,7 +372,7 @@
   background: #cbb66e12;
   color: #dfcb91;
 }
-.saved-progress-style .expanded .turn {
+.saved-progress-style .save[data-state="open"] .turn {
   color: #ede4c7;
 }
 .saved-progress-style .save-summary {
@@ -545,7 +545,7 @@
   }
 }
 
-.save-failure-style .save-failure-dialog {
+.save-failure-style.save-failure-dialog {
   width: min(23rem, calc(100vw - 2rem));
   padding: 24px 22px;
   border-radius: 12px;

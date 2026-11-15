@@ -14,8 +14,8 @@ external remove : anchor -> unit = "remove" [@@mel.send]
 external later : (unit -> unit) -> int -> unit = "setTimeout"
 
 let json ?(revoke_after = 60000) filename text =
-  let url = object_url (blob [| text |] { kind = "application/json" }) in
-  let link = anchor "a" in
+  let url = object_url (blob [| text |] { kind = {js|application/json|js} }) in
+  let link = anchor {js|a|js} in
   try
     set_href link url;
     set_download link filename;

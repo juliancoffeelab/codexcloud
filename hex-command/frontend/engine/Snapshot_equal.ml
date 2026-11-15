@@ -44,8 +44,7 @@ and condition (left : Condition.t) (right : Condition.t) =
   | Condition.Owner { tile = left_tile; side = left_side } -> (
       match right with
       | Condition.Owner { tile = right_tile; side = right_side } ->
-          option (fun left right -> left = right) left_tile right_tile
-          && String.equal left_side right_side
+          option (fun left right -> left = right) left_tile right_tile && left_side = right_side
       | _ -> false)
   | Condition.Proximity
       {
@@ -66,18 +65,18 @@ and condition (left : Condition.t) (right : Condition.t) =
             unit_type = right_unit_type;
             character = right_character;
           } ->
-          sequence (fun left right -> String.equal left right) left_unit_types right_unit_types
+          sequence (fun left right -> left = right) left_unit_types right_unit_types
           && option (fun left right -> left = right) left_tile right_tile
           && left_radius = right_radius
           && condition_side left_side right_side
-          && option (fun left right -> String.equal left right) left_unit_type right_unit_type
-          && option (fun left right -> String.equal left right) left_character right_character
+          && option (fun left right -> left = right) left_unit_type right_unit_type
+          && option (fun left right -> left = right) left_character right_character
       | _ -> false)
   | Condition.Visible_units { side = left_side; unit_types = left_unit_types } -> (
       match right with
       | Condition.Visible_units { side = right_side; unit_types = right_unit_types } ->
           condition_side left_side right_side
-          && sequence (fun left right -> String.equal left right) left_unit_types right_unit_types
+          && sequence (fun left right -> left = right) left_unit_types right_unit_types
       | _ -> false)
   | Condition.Has_units
       {
@@ -94,10 +93,10 @@ and condition (left : Condition.t) (right : Condition.t) =
             unit_type = right_unit_type;
             character = right_character;
           } ->
-          option (fun left right -> String.equal left right) left_ai_group right_ai_group
+          option (fun left right -> left = right) left_ai_group right_ai_group
           && condition_side left_side right_side
-          && option (fun left right -> String.equal left right) left_unit_type right_unit_type
-          && option (fun left right -> String.equal left right) left_character right_character
+          && option (fun left right -> left = right) left_unit_type right_unit_type
+          && option (fun left right -> left = right) left_character right_character
       | _ -> false)
   | Condition.No_units { side = left_side; unit_type = left_unit_type; character = left_character }
     -> (
@@ -105,20 +104,18 @@ and condition (left : Condition.t) (right : Condition.t) =
       | Condition.No_units
           { side = right_side; unit_type = right_unit_type; character = right_character } ->
           condition_side left_side right_side
-          && option (fun left right -> String.equal left right) left_unit_type right_unit_type
-          && option (fun left right -> String.equal left right) left_character right_character
+          && option (fun left right -> left = right) left_unit_type right_unit_type
+          && option (fun left right -> left = right) left_character right_character
       | _ -> false)
   | Condition.Choice { choice = left_choice } -> (
       match right with
-      | Condition.Choice { choice = right_choice } -> String.equal left_choice right_choice
+      | Condition.Choice { choice = right_choice } -> left_choice = right_choice
       | _ -> false)
   | Condition.Flag { flag = left_flag } -> (
-      match right with
-      | Condition.Flag { flag = right_flag } -> String.equal left_flag right_flag
-      | _ -> false)
+      match right with Condition.Flag { flag = right_flag } -> left_flag = right_flag | _ -> false)
   | Condition.Event { event = left_event } -> (
       match right with
-      | Condition.Event { event = right_event } -> String.equal left_event right_event
+      | Condition.Event { event = right_event } -> left_event = right_event
       | _ -> false)
   | Condition.Round { round = left_round } -> (
       match right with
@@ -154,8 +151,8 @@ and damage_type (left : Damage_type.t) (right : Damage_type.t) =
 
 and item (left : item) (right : item) =
   option (fun left right -> item_armor left right) left.armor right.armor
-  && String.equal left.id right.id && String.equal left.name right.name
-  && String.equal left.description right.description
+  && left.id = right.id && left.name = right.name
+  && left.description = right.description
   && sequence (fun left right -> weapon left right) left.attacks right.attacks
   && option (fun left right -> item_healing left right) left.healing right.healing
   && option (fun left right -> left = right) left.perception right.perception
@@ -167,7 +164,7 @@ and item_healing (left : item_healing) (right : item_healing) =
   left.amount = right.amount && left.radius = right.radius
 
 and perception_effect (left : perception_effect) (right : perception_effect) =
-  String.equal left.id right.id
+  left.id = right.id
   && sequence ( = ) left.penetrates right.penetrates
   && sequence ( = ) left.concealment right.concealment
   && option ( = ) left.light right.light
@@ -177,17 +174,16 @@ and perception_effect (left : perception_effect) (right : perception_effect) =
        left.expires_at right.expires_at
 
 and public_unit (left : public_unit) (right : public_unit) =
-  String.equal left.faction right.faction
-  && sequence String.equal left.revealed_to right.revealed_to
+  left.faction = right.faction
+  && sequence ( = ) left.revealed_to right.revealed_to
   && sequence perception_effect left.perception_effects right.perception_effects
   && sequence (fun left right -> item left right) left.items right.items
-  && option (fun left right -> String.equal left right) left.ai_group right.ai_group
-  && String.equal left.id right.id
-  && String.equal left.type_ right.type_
-  && Hex.equal left.tile right.tile && left.hp = right.hp && left.moved = right.moved
+  && option (fun left right -> left = right) left.ai_group right.ai_group
+  && left.id = right.id && left.type_ = right.type_ && Hex.equal left.tile right.tile
+  && left.hp = right.hp && left.moved = right.moved
   && left.attack_spent = right.attack_spent
   && option (fun left right -> left = right) left.experience right.experience
-  && option (fun left right -> String.equal left right) left.character right.character
+  && option (fun left right -> left = right) left.character right.character
   && option (fun left right -> role left right) left.role right.role
   && option (fun left right -> left = right) left.retreating right.retreating
   && option (fun left right -> left = right) left.rebuilding right.rebuilding
@@ -215,17 +211,14 @@ and time_of_day (left : Time_of_day.t) (right : Time_of_day.t) =
   | Time_of_day.Night -> ( match right with Time_of_day.Night -> true | _ -> false)
 
 and unit_faction (left : unit_faction) (right : unit_faction) =
-  String.equal left.id right.id
-  && String.equal left.palette right.palette
+  left.id = right.id && left.palette = right.palette
   && relation left.relation right.relation
   && left.controllable = right.controllable
   && side left.phase right.phase
 
 and weapon (left : weapon) (right : weapon) =
-  String.equal left.id right.id && String.equal left.name right.name && left.damage = right.damage
+  left.id = right.id && left.name = right.name && left.damage = right.damage
   && left.spread = right.spread && left.count = right.count
   && damage_type left.damage_type right.damage_type
   && category left.category right.category
-  && left.range = right.range
-  && String.equal left.sound right.sound
-  && left.drain = right.drain
+  && left.range = right.range && left.sound = right.sound && left.drain = right.drain

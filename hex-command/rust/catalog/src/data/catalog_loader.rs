@@ -33,6 +33,20 @@ struct SimulationPaths {
     campaign: String,
     rl: String,
 }
+fn validate_map_tags(tags: &[String], path: &str) -> Result<(), ContentError> {
+    if tags.is_empty() {
+        return Err(ContentError::new(
+            path,
+            "at least one explicit map tag is required",
+        ));
+    }
+    unique(tags.iter().map(String::as_str), path)?;
+    for tag in tags {
+        identifier(tag, path)?;
+    }
+    Ok(())
+}
+
 impl EnvironmentalModifiers {
     fn value(&self, category: usize, damage: usize) -> i32 {
         [self.melee, self.ranged][category] + [self.blade, self.pierce, self.impact][damage]
@@ -70,7 +84,7 @@ struct UnitSpecification {
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct CampaignFile {
-    human: bool,
+    tags: Vec<String>,
     id: String,
     name: String,
     tagline: String,
@@ -518,11 +532,11 @@ impl Rules {
             if !used_paths.insert(path.clone()) {
                 return Err(ContentError::new(path, "duplicate catalog path"));
             }
-            let (initial, roster_path, human, characters) =
+            let (initial, roster_path, tags, characters) =
                 documents::scenario(bundle, path, &items)?;
             let state = initial.resolve(&units, &types, &roster_path)?;
             scenario_characters.insert((state.map_id.clone(), state.map_revision), characters);
-            map_definitions.push(documents::map_metadata(bundle, path, &state, None, human)?);
+            map_definitions.push(documents::map_metadata(bundle, path, &state, None, tags)?);
             insert_map(&mut maps, state, &terrains, &types, path)?;
         }
         for path in &manifest.campaigns {
@@ -530,6 +544,7 @@ impl Rules {
                 return Err(ContentError::new(path, "duplicate catalog path"));
             }
             let source: CampaignFile = parse(bundle, path)?;
+            validate_map_tags(&source.tags, path)?;
             identifier(&source.id, path)?;
             reference(&source.leader, &types, path)?;
             if source.name.is_empty()
@@ -582,7 +597,7 @@ impl Rules {
                     &stage_path,
                     &state,
                     Some(stage.mission.map.units.clone()),
-                    source.human,
+                    source.tags.clone(),
                 )?);
                 insert_map(&mut maps, state, &terrains, &types, &stage_path)?;
                 missions.push(stage.mission);
@@ -602,7 +617,7 @@ impl Rules {
                         leader: source.leader,
                         missions,
                         ending: source.ending,
-                        human: source.human,
+                        tags: source.tags.clone(),
                     },
                 )
                 .is_some()
@@ -1987,12 +2002,16 @@ mod tests {
         );
     }
     #[test]
-    fn scenario_visibility_is_explicit_and_does_not_change_loadability() {
+    fn scenario_tags_are_explicit_and_do_not_change_loadability() {
         let mut bundle = test_bundle();
         let path = "game/scenario/mirror-v1/scenario.json";
         let mut map: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
-        for human in [true, false] {
-            map["human"] = serde_json::json!(human);
+        for tags in [
+            vec!["human"],
+            vec!["future-category"],
+            vec!["human", "simulation"],
+        ] {
+            map["tags"] = serde_json::json!(tags);
             bundle.insert(path.to_owned(), serde_json::to_string(&map).unwrap());
             let rules = Rules::from_json_bundle(&bundle).unwrap();
             let metadata = rules
@@ -2000,13 +2019,25 @@ mod tests {
                 .iter()
                 .find(|map| map.id == "mirror")
                 .unwrap();
-            assert_eq!(metadata.human, human);
+            assert_eq!(metadata.tags, tags);
             assert!(
                 rules
                     .maps
                     .contains_key(&("mirror".to_owned(), metadata.revision))
             );
         }
+        for invalid in [
+            serde_json::json!([]),
+            serde_json::json!(["human", "human"]),
+            serde_json::json!(["not a tag"]),
+        ] {
+            map["tags"] = invalid;
+            bundle.insert(path.to_owned(), serde_json::to_string(&map).unwrap());
+            assert!(Rules::from_json_bundle(&bundle).is_err());
+        }
+        map.as_object_mut().unwrap().remove("tags");
+        bundle.insert(path.to_owned(), serde_json::to_string(&map).unwrap());
+        assert!(Rules::from_json_bundle(&bundle).is_err());
     }
 
     #[test]

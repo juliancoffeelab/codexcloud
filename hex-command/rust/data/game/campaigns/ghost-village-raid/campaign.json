@@ -16,7 +16,7 @@
       "name": "Captain Boots"
     }
   ],
-  "human": false,
+  "tags": ["concealment"],
   "ending": [],
   "stages": ["stages/darkness-hidden-arena/stage.json"]
 }

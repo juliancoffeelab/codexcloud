@@ -1,21 +1,22 @@
 open Ui;
-
 module KeepTogether = {
   [@react.component]
   let make = (~value) => {
     let parts =
-      Js.String.splitByRe(~regexp=Js.Re.fromStringWithFlags("(\\([^)]*\\))", ~flags="g"), value);
+      Js.String.splitByRe(
+        ~regexp=Js.Re.fromStringWithFlags({js|(\\([^)]*\\))|js}, ~flags={js|g|js}),
+        value,
+      );
     each(
       parts,
       part => {
-        let part = Option.value(~default="", part);
-        String.length(part) > 0 && part.[0] == '('
-          ? <span className="keep-together"> {text(part)} </span> : text(part);
+        let part = Option.value(~default={js||js}, part);
+        Js.String.length(part) > 0 && Js.String.get(part, 0) == {js|(|js}
+          ? <span className={js|keep-together|js}> {text(part)} </span> : text(part);
       },
     );
   };
 };
-
 module UnitCard = {
   [@react.component]
   let make =
@@ -31,17 +32,17 @@ module UnitCard = {
     let faction = Native.faction(Option.value(~default=view.game, game), unit.id);
     let health = Option.value(~default=Int32.to_float(unit.hp), hp);
     let level = number(definition.level);
-    let progress =
-      "L"
-      ++ level
-      ++ " · "
-      ++ (
+    let progress = {
+      let js_text_part_3 =
         switch (definition.experience_needed) {
         | Some(needed) when needed > 0. =>
-          number(Option.value(~default=0., unit.experience)) ++ "/" ++ number(needed) ++ " XP"
-        | _ => "Max"
-        }
-      );
+          let js_text_part_0 = number(Option.value(~default=0., unit.experience));
+          let js_text_part_2 = number(needed);
+          {j|$(js_text_part_0)/$(js_text_part_2) XP|j};
+        | _ => {js|Max|js}
+        };
+      {j|L$(level) · $(js_text_part_3)|j};
+    };
     let hostile =
       Option.fold(
         ~none=false,
@@ -51,29 +52,36 @@ module UnitCard = {
     let controllable =
       Option.fold(~none=false, ~some=(f: Domain.unit_faction) => f.controllable, faction);
     <div
-      className={"combatant " ++ (hostile ? "enemy" : "player")}
-      role="group"
-      ariaLabel={Utf8.to_js(
+      className={
+                  let js_text_part_1 = hostile ? {js|enemy|js} : {js|player|js};
+                  {j|combatant $(js_text_part_1)|j};
+                }
+      role={js|group|js}
+      ariaLabel={
         Option.fold(
           ~none=false,
           ~some=(faction: Domain.unit_faction) => faction.relation == Domain.Relation.Neutral,
           faction,
         )
-          ? "Neutral unit" : controllable ? "Your unit" : hostile ? "Enemy unit" : "Allied unit",
-      )}>
+          ? {js|Neutral unit|js}
+          : controllable ? {js|Your unit|js} : hostile ? {js|Enemy unit|js} : {js|Allied unit|js}
+      }>
       <Sprite
         artwork={view.artwork}
         name={unit.type_}
         side={Option.fold(
-          ~none="passive",
+          ~none={js|passive|js},
           ~some=(faction: Domain.unit_faction) => faction.palette,
           faction,
         )}
         width=72.
         height=90.
-        className={"portrait " ++ (hostile ? "enemy-unit" : "")}
+        className={
+                    let js_text_part_1 = hostile ? {js|enemy-unit|js} : {js||js};
+                    {j|portrait $(js_text_part_1)|j};
+                  }
       />
-      <div className="unit-heading">
+      <div className={js|unit-heading|js}>
         <h2>
           {text(
              showName
@@ -82,27 +90,36 @@ module UnitCard = {
            )}
         </h2>
         {showProgress
-           ? <span className="unit-progress" title={Utf8.to_js("Level " ++ level)}>
+           ? <span className={js|unit-progress|js} title={j|Level $(level)|j}>
                {text(progress)}
              </span>
            : React.null}
       </div>
       {Option.value(~default=false, unit.retreating)
-         ? <span className="retreat-label"> {text("Retreating")} </span> : React.null}
+         ? <span className={js|retreat-label|js}> {text({js|Retreating|js})} </span> : React.null}
       {showName && Native.unit_name(view.game, unit.id) != None
-         ? <span className="named-unit-type"> {text(definition.name)} </span> : React.null}
-      <div className="health-numbers">
+         ? <span className={js|named-unit-type|js}> {text(definition.name)} </span> : React.null}
+      <div className={js|health-numbers|js}>
         <b> {num(health)} </b>
-        <span> {text(" / " ++ number(Int32.to_float(definition.hp)) ++ " HP")} </span>
+        <span>
+          {text(
+             {
+               let js_text_part_1 = number(Int32.to_float(definition.hp));
+               {j| / $(js_text_part_1) HP|j};
+             },
+           )}
+        </span>
       </div>
       <div
-        className="health-track"
-        role="img"
-        ariaLabel={Utf8.to_js(
-          number(health) ++ " of " ++ number(Int32.to_float(definition.hp)) ++ " current health",
-        )}>
+        className={js|health-track|js}
+        role={js|img|js}
+        ariaLabel={
+                    let js_text_part_0 = number(health);
+                    let js_text_part_2 = number(Int32.to_float(definition.hp));
+                    {j|$(js_text_part_0) of $(js_text_part_2) current health|j};
+                  }>
         <span
-          className="health-left"
+          className={js|health-left|js}
           style={percent(health /. Int32.to_float(definition.hp) *. 100.)}
         />
       </div>
@@ -112,26 +129,49 @@ module UnitCard = {
 module ItemList = {
   [@react.component]
   let make = (~items: array(Domain.item), ~artwork: Art.t, ~onDrop: option(string => unit)=?) =>
-    <ul className="item-list">
+    <ul className={js|item-list|js}>
       {items
        |> Array.mapi((index, item: Domain.item) =>
-            <li key={item.id ++ "-" ++ string_of_int(index)} className="item-row">
-              <span className="item-icon" ariaHidden=true>
-                {option(Art.find(artwork, "terrain_prop_items_" ++ item.id), frame =>
-                   <img className="pixel-art" src={frame.url} alt="" width="64" height="64" />
+            <li
+              key={
+                    let js_text_part_0 = item.id;
+                    let js_text_part_2 = string_of_int(index);
+                    {j|$(js_text_part_0)-$(js_text_part_2)|j};
+                  }
+              className={js|item-row|js}>
+              <span className={js|item-icon|js} ariaHidden=true>
+                {option(
+                   Art.find(
+                     artwork,
+                     {
+                       let js_text_part_1 = item.id;
+                       {j|terrain_prop_items_$(js_text_part_1)|j};
+                     },
+                   ),
+                   frame =>
+                   <img
+                     className={js|pixel-art|js}
+                     src={frame.url}
+                     alt={js||js}
+                     width={js|64|js}
+                     height={js|64|js}
+                   />
                  )}
               </span>
-              <div className="item-copy">
-                <div className="item-heading">
+              <div className={js|item-copy|js}>
+                <div className={js|item-heading|js}>
                   <strong> {text(item.name)} </strong>
-                  {option(onDrop, drop => {
+                  {option(onDrop, drop =>
                      <button
-                       className="item-drop"
-                       ariaLabel={"Drop " ++ item.name}
+                       className={js|item-drop|js}
+                       ariaLabel={
+                                   let js_text_part_1 = item.name;
+                                   {j|Drop $(js_text_part_1)|j};
+                                 }
                        onClick={_ => drop(item.id)}>
-                       {text("Drop")}
+                       {text({js|Drop|js})}
                      </button>
-                   })}
+                   )}
                 </div>
                 <p> {text(item.description)} </p>
               </div>
@@ -142,59 +182,62 @@ module ItemList = {
 };
 module GroundItems = {
   [@react.component]
-  let make = (~artwork: Art.t, ~items: array(Domain.item)) => {
+  let make = (~artwork: Art.t, ~items: array(Domain.item)) =>
     <section
-      id="ground-items-panel"
-      className="panel"
-      ariaLabel="Items on the ground"
+      id={js|ground-items-panel|js}
+      className={js|panel|js}
+      ariaLabel={js|Items on the ground|js}
       hidden={Array.length(items) == 0}>
-      <h2> {text("On the ground")} </h2>
+      <h2> {text({js|On the ground|js})} </h2>
       <ItemList items artwork />
     </section>;
-  };
 };
 module Arsenal = {
   [@react.component]
   let make =
-      (~view: Hud_details.context, ~unit: Domain.public_unit, ~onDrop: option(string => unit)=?) => {
+      (~view: Hud_details.context, ~unit: Domain.public_unit, ~onDrop: option(string => unit)=?) =>
     <>
       {Array.length(unit.items) == 0
          ? React.null
-         : <section className="equipment" ariaLabel="Equipment">
-             <h3> {text("Equipment")} </h3>
+         : <section className={js|equipment|js} ariaLabel={js|Equipment|js}>
+             <h3> {text({js|Equipment|js})} </h3>
              <ItemList items={unit.items} artwork={view.artwork} ?onDrop />
            </section>}
-      <div className="arsenal">
-        <h3> {text("Attacks")} </h3>
-        <table className="weapon-table" ariaLabel="Unit attacks">
+      <div className={js|arsenal|js}>
+        <h3> {text({js|Attacks|js})} </h3>
+        <table className={js|weapon-table|js} ariaLabel={js|Unit attacks|js}>
           <thead>
             <tr>
-              <th scope="col"> {text("Attack")} </th>
-              <th scope="col"> {text("Damage")} </th>
-              <th scope="col"> {text("Range")} </th>
+              <th scope={js|col|js}> {text({js|Attack|js})} </th>
+              <th scope={js|col|js}> {text({js|Damage|js})} </th>
+              <th scope={js|col|js}> {text({js|Range|js})} </th>
             </tr>
           </thead>
           <tbody>
             {eachList(Presentation.weapons(view.catalog, unit), weapon =>
                <tr key={weapon.Domain.id}>
-                 <th scope="row">
-                   <span className="weapon-name">
+                 <th scope={js|row|js}>
+                   <span className={js|weapon-name|js}>
                      <Icon name={Enum.string_of_damage_type(weapon.damage_type)} />
                      <strong> {text(weapon.name)} </strong>
                    </span>
-                   <span className="weapon-detail weapon-category">
-                     {text(weapon.category == Domain.Category.Melee ? "Melee" : "Ranged")}
+                   <span className={js|weapon-detail weapon-category|js}>
+                     {text(
+                        weapon.category == Domain.Category.Melee ? {js|Melee|js} : {js|Ranged|js},
+                      )}
                    </span>
                  </th>
-                 <td className="weapon-damage">
+                 <td className={js|weapon-damage|js}>
                    <b>
                      {text(
-                        number(float_of_int(weapon.count))
-                        ++ " × "
-                        ++ Presentation.weapon_damage(weapon),
+                        {
+                          let js_text_part_0 = number(float_of_int(weapon.count));
+                          let js_text_part_2 = Presentation.weapon_damage(weapon);
+                          {j|$(js_text_part_0) × $(js_text_part_2)|j};
+                        },
                       )}
                    </b>
-                   <span className="weapon-detail">
+                   <span className={js|weapon-detail|js}>
                      {text(Presentation.damage_name(weapon.damage_type))}
                    </span>
                  </td>
@@ -204,12 +247,16 @@ module Arsenal = {
           </tbody>
         </table>
       </div>
-      <div className="resistances">
-        <h3> {text("Damage received")} </h3>
-        <div className="resistance-list">
+      <div className={js|resistances|js}>
+        <h3> {text({js|Damage received|js})} </h3>
+        <div className={js|resistance-list|js}>
           {eachList(Presentation.armor(view.catalog, unit), modifier =>
              <span
-               key={modifier.Presentation.name} className={"resistance " ++ modifier.class_name}>
+               key={modifier.Presentation.name}
+               className={
+                           let js_text_part_1 = modifier.class_name;
+                           {j|resistance $(js_text_part_1)|j};
+                         }>
                <span> {text(modifier.name)} </span>
                <b> {text(modifier.label)} </b>
              </span>
@@ -217,21 +264,20 @@ module Arsenal = {
         </div>
       </div>
     </>;
-  };
 };
 module Details = {
   [@react.component]
   let make =
       (~view: Hud_details.context, ~actions: Session.actions, ~details: Presentation.unit_details) =>
-    <div className="unit-detail">
+    <div className={js|unit-detail|js}>
       <UnitCard view unit={details.unit} showName=true showProgress=true />
-      <div className="unit-info">
-        <div className="unit-stats">
-          <span className="unit-stat">
-            <Icon name="move" />
-            <span> {text("Move: ")} <b> {num(details.definition.move)} </b> </span>
+      <div className={js|unit-info|js}>
+        <div className={js|unit-stats|js}>
+          <span className={js|unit-stat|js}>
+            <Icon name={js|move|js} />
+            <span> {text({js|Move: |js})} <b> {num(details.definition.move)} </b> </span>
           </span>
-          <p className="unit-state">
+          <p className={js|unit-state|js}>
             <span> {text(details.terrain_name)} </span>
             <span> {text(details.action_status)} </span>
           </p>
@@ -243,25 +289,25 @@ module Details = {
            )
          ) {
          | Some({ concealment: Domain.Unit_concealment_appearance.Concealed, _ }) =>
-           <p className="concealment-status"> {text("Concealment active")} </p>
+           <p className={js|concealment-status|js}> {text({js|Concealment active|js})} </p>
          | Some({ concealment: Domain.Unit_concealment_appearance.Exposed, _ }) =>
-           <p className="concealment-status revealed"> {text("Exposed")} </p>
+           <p className={js|concealment-status revealed|js}> {text({js|Exposed|js})} </p>
          | _ => React.null
          }}
-        <p className="ability"> {text(details.ability.name)} </p>
+        <p className={js|ability|js}> {text(details.ability.name)} </p>
         {eachList(details.ability.facts, fact =>
-           <p key=fact className="ability-fact"> {text(fact)} </p>
+           <p key=fact className={js|ability-fact|js}> {text(fact)} </p>
          )}
         <p> {text(details.ability.description)} </p>
         {eachList(details.promotions, promotion =>
            <React.Fragment key={promotion.Domain.id}>
-             <button className="primary" onClick={_ => actions.advance(promotion.id)}>
+             <button className={js|primary|js} onClick={_ => actions.advance(promotion.id)}>
                {text(
-                  "Advance to "
-                  ++ promotion.name
-                  ++ " · "
-                  ++ number(Int32.to_float(promotion.hp))
-                  ++ " HP",
+                  {
+                    let js_text_part_1 = promotion.name;
+                    let js_text_part_3 = number(Int32.to_float(promotion.hp));
+                    {j|Advance to $(js_text_part_1) · $(js_text_part_3) HP|j};
+                  },
                 )}
              </button>
              <p> {text(promotion.description)} </p>
@@ -277,37 +323,50 @@ module Details = {
               ? Some(item => actions.drop(details.unit.id, item)) : None
           }
         />
-        <div className="movement-costs">
-          <h3> {text("Terrain effects")} </h3>
-          <table className="weapon-table terrain-effects-table" ariaLabel="Unit terrain effects">
+        <div className={js|movement-costs|js}>
+          <h3> {text({js|Terrain effects|js})} </h3>
+          <table
+            className={js|weapon-table terrain-effects-table|js}
+            ariaLabel={js|Unit terrain effects|js}>
             <thead>
               <tr>
-                <th scope="col"> {text("Terrain")} </th>
-                <th scope="col"> {text("Cost")} </th>
-                <th scope="col"> {text("Damage received")} </th>
+                <th scope={js|col|js}> {text({js|Terrain|js})} </th>
+                <th scope={js|col|js}> {text({js|Cost|js})} </th>
+                <th scope={js|col|js}> {text({js|Damage received|js})} </th>
               </tr>
             </thead>
             <tbody>
               {eachList(details.terrain_effects, terrain =>
                  <tr key={terrain.Presentation.terrain} className={terrain.class_name}>
-                   <th scope="row"> {text(terrain.name)} </th>
+                   <th scope={js|row|js}> {text(terrain.name)} </th>
                    <td
-                     className="terrain-cost"
-                     title=?{terrain.class_name == "blocked" ? Some("Impassable") : None}>
+                     className={js|terrain-cost|js}
+                     title=?{
+                       terrain.class_name == {js|blocked|js} ? Some({js|Impassable|js}) : None
+                     }>
                      <b> {text(terrain.label)} </b>
                    </td>
                    <td>
                      {eachList(terrain.facts, fact =>
-                        <span key={fact.Presentation.label} className="terrain-damage-fact">
+                        <span key={fact.Presentation.label} className={js|terrain-damage-fact|js}>
                           <b
                             className={
-                              fact.value < 0. ? "resistant" : fact.value > 0. ? "vulnerable" : ""
+                              fact.value < 0.
+                                ? {js|resistant|js}
+                                : fact.value > 0. ? {js|vulnerable|js} : {js||js}
                             }>
                             {text(Presentation.signed_value(fact.value))}
                           </b>
-                          {text(" ")}
-                          <span className="terrain-damage-kind">
-                            {text(fact.label == "" ? "Damage" : fact.label ++ " Damage")}
+                          {text({js| |js})}
+                          <span className={js|terrain-damage-kind|js}>
+                            {text(
+                               fact.label == {js||js}
+                                 ? {js|Damage|js}
+                                 : {
+                                   let js_text_part_0 = fact.label;
+                                   {j|$(js_text_part_0) Damage|j};
+                                 },
+                             )}
                           </span>
                         </span>
                       )}
@@ -318,7 +377,7 @@ module Details = {
           </table>
           <p>
             {text(
-               "Cost is movement spent to enter. Damage is the change per hit, in addition to Damage received above.",
+               {js|Cost is movement spent to enter. Damage is the change per hit, in addition to Damage received above.|js},
              )}
           </p>
         </div>
@@ -328,62 +387,101 @@ module Details = {
 module Forecast = {
   [@react.component]
   let make = (~forecast: Presentation.forecast) => {
-    let props = ReactDOM.domProps(~className="attack-health " ++ forecast.palette, ());
+    let props =
+      ReactDOM.domProps(
+        ~className={
+          let js_text_part_1 = forecast.palette;
+          {j|attack-health $(js_text_part_1)|j};
+        },
+        (),
+      );
     dataForecast(props, forecast.palette);
     ReactDOM.createElement(
-      "span",
+      {js|span|js},
       ~props,
       [|
-        <span className="forecast-label">
+        <span className={js|forecast-label|js}>
           <span>
-            {text(number(forecast.current_hp) ++ " → ")}
+            {text(
+               {
+                 let js_text_part_0 = number(forecast.current_hp);
+                 {j|$(js_text_part_0) → |j};
+               },
+             )}
             <b className={forecast.remaining_class}> {text(forecast.remaining_label)} </b>
-            {text(" / " ++ number(forecast.maximum_hp) ++ " HP")}
+            {text(
+               {
+                 let js_text_part_1 = number(forecast.maximum_hp);
+                 {j| / $(js_text_part_1) HP|j};
+               },
+             )}
           </span>
         </span>,
-        <span className="health-track" role="img" ariaLabel={Utf8.to_js(forecast.health_label)}>
+        <span className={js|health-track|js} role={js|img|js} ariaLabel={forecast.health_label}>
           <span
-            className="forecast-loss"
+            className={js|forecast-loss|js}
             style={ReactDOM.Style.make(
-              ~left=number(forecast.maximum_percent) ++ "%",
+              ~left=
+                {let js_text_part_0 = number(forecast.maximum_percent);
+                 {j|$(js_text_part_0)%|j}},
               ~width=
-                number(max(0., forecast.current_percent -. forecast.maximum_percent)) ++ "%",
+                {let js_text_part_0 =
+                   number(max(0., forecast.current_percent -. forecast.maximum_percent));
+                 {j|$(js_text_part_0)%|j}},
               (),
             )}
           />
           <span
-            className="forecast-possible"
+            className={js|forecast-possible|js}
             style={ReactDOM.Style.make(
-              ~left=number(min(forecast.minimum_percent, forecast.current_percent)) ++ "%",
+              ~left=
+                {let js_text_part_0 =
+                   number(min(forecast.minimum_percent, forecast.current_percent));
+                 {j|$(js_text_part_0)%|j}},
               ~width=
-                number(
-                  min(forecast.maximum_percent, forecast.current_percent)
-                  -. min(forecast.minimum_percent, forecast.current_percent),
-                )
-                ++ "%",
+                {let js_text_part_0 =
+                   number(
+                     min(forecast.maximum_percent, forecast.current_percent)
+                     -. min(forecast.minimum_percent, forecast.current_percent),
+                   );
+                 {j|$(js_text_part_0)%|j}},
               (),
             )}
           />
           <span
-            className="forecast-certain"
+            className={js|forecast-certain|js}
             style={percent(min(forecast.minimum_percent, forecast.current_percent))}
           />
           <span
-            className="forecast-healing"
+            className={js|forecast-healing|js}
             style={ReactDOM.Style.make(
-              ~left=number(forecast.current_percent) ++ "%",
+              ~left=
+                {let js_text_part_0 = number(forecast.current_percent);
+                 {j|$(js_text_part_0)%|j}},
               ~width=
-                number(max(0., forecast.maximum_percent -. forecast.current_percent)) ++ "%",
+                {let js_text_part_0 =
+                   number(max(0., forecast.maximum_percent -. forecast.current_percent));
+                 {j|$(js_text_part_0)%|j}},
               (),
             )}
           />
           <span
-            className="forecast-current"
-            style={ReactDOM.Style.make(~left=number(forecast.current_percent) ++ "%", ())}
-            title={Utf8.to_js("Current HP: " ++ number(forecast.current_hp))}
+            className={js|forecast-current|js}
+            style={ReactDOM.Style.make(
+              ~left=
+                {let js_text_part_0 = number(forecast.current_percent);
+                 {j|$(js_text_part_0)%|j}},
+              (),
+            )}
+            title={
+                    let js_text_part_1 = number(forecast.current_hp);
+                    {j|Current HP: $(js_text_part_1)|j};
+                  }
           />
         </span>,
-        <span className="forecast-impact"> <KeepTogether value={forecast.impact_label} /> </span>,
+        <span className={js|forecast-impact|js}>
+          <KeepTogether value={forecast.impact_label} />
+        </span>,
       |],
     );
   };
@@ -391,76 +489,80 @@ module Forecast = {
 module Attack = {
   [@react.component]
   let make = (~choice: Presentation.attack, ~onAttack, ~busy=false) => {
-    let (expanded, setExpanded) = React.useState(() => false);
-    let id = "attack-details-" ++ choice.weapon.id;
     let props =
       ReactDOM.domProps(
-        ~className="attack-action",
-        ~ariaLabel=Utf8.to_js(choice.button_label),
+        ~className={js|attack-action|js},
+        ~ariaLabel=choice.button_label,
         ~disabled=busy || choice.result == None,
         ~onClick=_ => onAttack(choice.weapon.id),
         (),
       );
     dataAttack(props, choice.weapon.id);
-    <div className="attack-action-row">
-      <div className="attack-box">
-        {ReactDOM.createElement(
-           "button",
-           ~props,
-           [|
-             <span className={"attack-heading" ++ (choice.result != None ? " paired" : "")}>
-               {eachList(
-                  choice.result == None ? [choice.name] : [choice.name, choice.response_name],
-                  name =>
-                  <strong key=name> <KeepTogether value=name /> </strong>
-                )}
-               {choice.result == None
-                  ? <span> {text("Out of reach or blocked")} </span> : React.null}
-             </span>,
-             option(choice.result, result =>
-               <span className="attack-forecasts">
-                 <Forecast forecast={result.Presentation.player} />
-                 <Forecast forecast={result.enemy} />
-               </span>
-             ),
-           |],
-         )}
-        {option(
-           choice.result,
-           _ => {
-             let props =
-               ReactDOM.domProps(
-                 ~className="attack-inspect",
-                 ~ariaLabel=
-                   Utf8.to_js(
-                     "Inspect "
-                     ++ String.lowercase_ascii(choice.weapon.name)
-                     ++ " damage calculation",
-                   ),
-                 ~ariaExpanded=expanded,
-                 ~ariaControls=id,
-                 ~dangerouslySetInnerHTML={ "__html": Art.icon_markup("search") },
-                 ~onClick=_ => setExpanded(value => !value),
-                 (),
-               );
-             dataInspect(props, choice.weapon.id);
-             ReactDOM.createElement("button", ~props, [||]);
-           },
+    <Radix.Collapsible.Root asChild=true>
+      <div className={js|attack-action-row|js}>
+        <div className={js|attack-box|js}>
+          {ReactDOM.createElement(
+             {js|button|js},
+             ~props,
+             [|
+               <span
+                 className={
+                             let js_text_part_1 =
+                               choice.result != None ? {js| paired|js} : {js||js};
+                             {j|attack-heading$(js_text_part_1)|j};
+                           }>
+                 {eachList(
+                    choice.result == None ? [choice.name] : [choice.name, choice.response_name],
+                    name =>
+                    <strong key=name> <KeepTogether value=name /> </strong>
+                  )}
+                 {choice.result == None
+                    ? <span> {text({js|Out of reach or blocked|js})} </span> : React.null}
+               </span>,
+               option(choice.result, result =>
+                 <span className={js|attack-forecasts|js}>
+                   <Forecast forecast={result.Presentation.player} />
+                   <Forecast forecast={result.enemy} />
+                 </span>
+               ),
+             |],
+           )}
+          {option(
+             choice.result,
+             _ => {
+               let props =
+                 ReactDOM.domProps(
+                   ~className={js|attack-inspect|js},
+                   ~ariaLabel={
+                     let js_text_part_1 = Js.String.toLowerCase(choice.weapon.name);
+                     {j|Inspect $(js_text_part_1) damage calculation|j};
+                   },
+                   ~dangerouslySetInnerHTML={ "__html": Art.icon_markup({js|search|js}) },
+                   (),
+                 );
+               dataInspect(props, choice.weapon.id);
+               <Radix.Collapsible.Trigger asChild=true>
+                 {ReactDOM.createElement({js|button|js}, ~props, [||])}
+               </Radix.Collapsible.Trigger>;
+             },
+           )}
+        </div>
+        {option(choice.result, result =>
+           <Radix.Collapsible.Content asChild=true>
+             <div className={js|combat-explanation|js}>
+               <div className={js|attack-calculation|js}>
+                 <p> {text(result.Presentation.attack.description)} </p>
+                 <p className={js|damage-equation|js}> {text(result.attack.equation)} </p>
+               </div>
+               <div className={js|attack-calculation|js}>
+                 <p> {text(result.retaliation.description)} </p>
+                 <p className={js|damage-equation|js}> {text(result.retaliation.equation)} </p>
+               </div>
+             </div>
+           </Radix.Collapsible.Content>
          )}
       </div>
-      {option(choice.result, result =>
-         <div id className="combat-explanation" hidden={!expanded}>
-           <div className="attack-calculation">
-             <p> {text(result.Presentation.attack.description)} </p>
-             <p className="damage-equation"> {text(result.attack.equation)} </p>
-           </div>
-           <div className="attack-calculation">
-             <p> {text(result.retaliation.description)} </p>
-             <p className="damage-equation"> {text(result.retaliation.equation)} </p>
-           </div>
-         </div>
-       )}
-    </div>;
+    </Radix.Collapsible.Root>;
   };
 };
 module CombatResult = {
@@ -472,71 +574,102 @@ module CombatResult = {
         ~shown,
         ~complete,
       ) => {
-    let (expanded, setExpanded) = React.useState(() => None);
     let units = combat.units;
-    let player = units[0].faction == "player" ? 0 : 1;
+    let player = units[0].faction == {js|player|js} ? 0 : 1;
     let opponent = 1 - player;
     let finalHealth =
       Array.map(Int32.to_float, combat.strikes[Array.length(combat.strikes) - 1].Domain.health);
     let playerChange = finalHealth[player] -. Int32.to_float(units[player].hp);
     let opponentChange = finalHealth[opponent] -. Int32.to_float(units[opponent].hp);
-    <ol className="exchange-log" role="log" ariaLabel="Combat exchange">
-      {eachList(List.filter(entry => entry.Presentation.strike < shown, entries), entry =>
-         <li key={entry.id} className={"exchange-event " ++ (entry.good ? "good" : "bad")}>
-           <div className="exchange-line">
-             <strong> {text(entry.text)} </strong>
-             <button
-               className="icon-button exchange-inspect"
-               ariaLabel={Utf8.to_js("Inspect calculation: " ++ entry.text)}
-               ariaExpanded={expanded == Some(entry.id)}
-               ariaControls={"exchange-" ++ entry.id}
-               dangerouslySetInnerHTML={ "__html": Art.icon_markup("search") }
-               onClick={_ =>
-                 setExpanded(previous => previous == Some(entry.id) ? None : Some(entry.id))
-               }
-             />
-           </div>
-           <div
-             id={"exchange-" ++ entry.id}
-             className="exchange-calculation"
-             hidden={expanded != Some(entry.id)}>
-             {eachList(entry.details, detail =>
-                <p key=detail className="damage-equation"> {text(detail)} </p>
-              )}
-           </div>
-         </li>
-       )}
-      {complete
-         ? <>
-             {finalHealth[opponent] == 0.
-                ? <li className="exchange-outcome good"> {text("Your opponent died")} </li>
-                : React.null}
-             {finalHealth[player] == 0.
-                ? <li className="exchange-outcome bad"> {text("You died")} </li> : React.null}
-             {finalHealth[0] > 0. && finalHealth[1] > 0.
-                ? <li className="exchange-outcome"> {text("Exchange ended")} </li> : React.null}
-             <li className="exchange-totals">
-               {playerChange > 0.
-                  ? <span className="good">
-                      {text("You healed +" ++ number(playerChange) ++ " HP")}
-                    </span>
-                  : <span className="bad">
-                      {text("You took " ++ Presentation.loss(-. playerChange) ++ " HP")}
-                    </span>}
-               {opponentChange > 0.
-                  ? <span className="bad">
-                      {text("Opponent healed +" ++ number(opponentChange) ++ " HP")}
-                    </span>
-                  : <span className="good">
-                      {text("You dealt " ++ Presentation.loss(-. opponentChange) ++ " HP")}
-                    </span>}
+    <Radix.Accordion.Root _type={js|single|js} collapsible=true asChild=true>
+      <ol className={js|exchange-log|js} role={js|log|js} ariaLabel={js|Combat exchange|js}>
+        {eachList(List.filter(entry => entry.Presentation.strike < shown, entries), entry =>
+           <Radix.Accordion.Item key={entry.id} value={entry.id} asChild=true>
+             <li
+               className={
+                           let js_text_part_1 = entry.good ? {js|good|js} : {js|bad|js};
+                           {j|exchange-event $(js_text_part_1)|j};
+                         }>
+               <Radix.Accordion.Header asChild=true>
+                 <div className={js|exchange-line|js}>
+                   <strong> {text(entry.text)} </strong>
+                   <Radix.Accordion.Trigger asChild=true>
+                     <button
+                       className={js|icon-button exchange-inspect|js}
+                       ariaLabel={
+                                   let js_text_part_1 = entry.text;
+                                   {j|Inspect calculation: $(js_text_part_1)|j};
+                                 }
+                       dangerouslySetInnerHTML={ "__html": Art.icon_markup({js|search|js}) }
+                     />
+                   </Radix.Accordion.Trigger>
+                 </div>
+               </Radix.Accordion.Header>
+               <Radix.Accordion.Content asChild=true>
+                 <div className={js|exchange-calculation|js}>
+                   {eachList(entry.details, detail =>
+                      <p key=detail className={js|damage-equation|js}> {text(detail)} </p>
+                    )}
+                 </div>
+               </Radix.Accordion.Content>
              </li>
-           </>
-         : React.null}
-    </ol>;
+           </Radix.Accordion.Item>
+         )}
+        {complete
+           ? <>
+               {finalHealth[opponent] == 0.
+                  ? <li className={js|exchange-outcome good|js}>
+                      {text({js|Your opponent died|js})}
+                    </li>
+                  : React.null}
+               {finalHealth[player] == 0.
+                  ? <li className={js|exchange-outcome bad|js}> {text({js|You died|js})} </li>
+                  : React.null}
+               {finalHealth[0] > 0. && finalHealth[1] > 0.
+                  ? <li className={js|exchange-outcome|js}> {text({js|Exchange ended|js})} </li>
+                  : React.null}
+               <li className={js|exchange-totals|js}>
+                 {playerChange > 0.
+                    ? <span className={js|good|js}>
+                        {text(
+                           {
+                             let js_text_part_1 = number(playerChange);
+                             {j|You healed +$(js_text_part_1) HP|j};
+                           },
+                         )}
+                      </span>
+                    : <span className={js|bad|js}>
+                        {text(
+                           {
+                             let js_text_part_1 = Presentation.loss(-. playerChange);
+                             {j|You took $(js_text_part_1) HP|j};
+                           },
+                         )}
+                      </span>}
+                 {opponentChange > 0.
+                    ? <span className={js|bad|js}>
+                        {text(
+                           {
+                             let js_text_part_1 = number(opponentChange);
+                             {j|Opponent healed +$(js_text_part_1) HP|j};
+                           },
+                         )}
+                      </span>
+                    : <span className={js|good|js}>
+                        {text(
+                           {
+                             let js_text_part_1 = Presentation.loss(-. opponentChange);
+                             {j|You dealt $(js_text_part_1) HP|j};
+                           },
+                         )}
+                      </span>}
+               </li>
+             </>
+           : React.null}
+      </ol>
+    </Radix.Accordion.Root>;
   };
 };
-
 module Unit = {
   [@react.component]
   let make =
@@ -574,26 +707,29 @@ module Unit = {
     );
     <section
       ref={ReactDOM.Ref.domRef(element)}
-      id="unit-panel"
-      className={"panel" ++ (busy ? " resolving" : "")}
-      ariaLabel="Selected unit"
+      id={js|unit-panel|js}
+      className={
+                  let js_text_part_1 = busy ? {js| resolving|js} : {js||js};
+                  {j|panel$(js_text_part_1)|j};
+                }
+      ariaLabel={js|Selected unit|js}
       hidden={panel == Presentation.Hidden}>
       {switch (panel) {
        | Hidden => React.null
        | Outcome(title, description) =>
          <>
-           <div className="unit-title"> <h2> {text(title)} </h2> </div>
+           <div className={js|unit-title|js}> <h2> {text(title)} </h2> </div>
            <p> {text(description)} </p>
-           <button id="play-again" className="primary" onClick={_ => onNewBattle()}>
-             {text("Play again")}
+           <button id={js|play-again|js} className={js|primary|js} onClick={_ => onNewBattle()}>
+             {text({js|Play again|js})}
            </button>
          </>
        | Details(details) => <Details view actions details />
        | Combat(attacker, defender, reset) =>
          <>
-           <div className="duel">
+           <div className={js|duel|js}>
              <UnitCard view game unit=attacker hp=?{Option.map(health => health[0], health)} />
-             <span className="duel-divider" ariaHidden=true> {text("⚔")} </span>
+             <span className={js|duel-divider|js} ariaHidden=true> {text({js|⚔|js})} </span>
              <UnitCard view game unit=defender hp=?{Option.map(health => health[1], health)} />
            </div>
            {switch (playback) {
@@ -605,7 +741,7 @@ module Unit = {
                 complete={playback.complete}
               />
             | None =>
-              <div key=reset className="attack-actions" ariaLabel="Attack actions">
+              <div key=reset className={js|attack-actions|js} ariaLabel={js|Attack actions|js}>
                 {eachList(Presentation.attacks(view.catalog, game, attacker, defender), choice =>
                    <Attack key={choice.Presentation.weapon.id} choice onAttack=attack busy />
                  )}
@@ -649,7 +785,14 @@ module TerrainPreview = {
             |> Js.Promise.catch(_ => {
                  if (active.contents) {
                    setLoading(_ => false);
-                   setError(_ => Some("Terrain preview could not load: " ++ frame.url));
+                   setError(_ =>
+                     Some(
+                       {
+                         let js_text_part_1 = frame.url;
+                         {j|Terrain preview could not load: $(js_text_part_1)|j};
+                       },
+                     )
+                   );
                  };
                  Js.Promise.resolve();
                });
@@ -660,12 +803,14 @@ module TerrainPreview = {
       (frame, attempt),
     );
     <>
-      <div className="preview-image" ref={ReactDOM.Ref.domRef(host)} ariaHidden=true />
+      <div className={js|preview-image|js} ref={ReactDOM.Ref.domRef(host)} ariaHidden=true />
       {loading
-         ? <span className="preview-status" role="status"> {text("Loading preview…")} </span>
+         ? <span className={js|preview-status|js} role={js|status|js}>
+             {text({js|Loading preview…|js})}
+           </span>
          : option(error, message =>
-             <div className="preview-status" role="alert" title=message>
-               {text("Preview could not load.")}
+             <div className={js|preview-status|js} role={js|alert|js} title=message>
+               {text({js|Preview could not load.|js})}
                <button
                  onClick={_ => {
                    let _ =
@@ -674,7 +819,7 @@ module TerrainPreview = {
                      |> Js.Promise.catch(_ => Js.Promise.resolve());
                    setAttempt(previous => previous + 1);
                  }}>
-                 {text("Retry")}
+                 {text({js|Retry|js})}
                </button>
              </div>
            )}
@@ -692,66 +837,78 @@ module Terrain = {
       ) => {
     let state = Native.state(view.game);
     <section
-      id="terrain-panel" className="panel" ariaLabel="Selected terrain" hidden={panel == None}>
+      id={js|terrain-panel|js}
+      className={js|panel|js}
+      ariaLabel={js|Selected terrain|js}
+      hidden={panel == None}>
       {option(panel, panel =>
          <>
            {option(panel.Presentation.recruitment, recruitment =>
-              <div className="terrain-recruitment">
-                <h3> {text("Recruit here")} </h3>
-                <div className="recruit-list">
+              <div className={js|terrain-recruitment|js}>
+                <h3> {text({js|Recruit here|js})} </h3>
+                <div className={js|recruit-list|js}>
                   {eachList(
                      recruitment.options,
                      recruit => {
                        let definition = recruit.Presentation.definition;
                        let props =
                          ReactDOM.domProps(
-                           ~className="recruit-button",
-                           ~title=Utf8.to_js(definition.description),
+                           ~className={js|recruit-button|js},
+                           ~title=definition.description,
                            ~disabled=!recruit.enabled,
                            ~onClick=_ => actions.recruit(definition.id, panel.tile.id),
                            (),
                          );
                        dataRecruit(props, definition.id);
                        ReactDOM.createElement(
-                         "button",
+                         {js|button|js},
                          ~props,
                          [|
                            <span>
                              {text(definition.name)}
                              {state.campaign != None
-                                ? <small className="recruit-preview">
+                                ? <small className={js|recruit-preview|js}>
                                     {text(
-                                       number(Int32.to_float(definition.hp))
-                                       ++ " HP   "
-                                       ++ number(definition.move)
-                                       ++ " move",
+                                       {
+                                         let js_text_part_0 =
+                                           number(Int32.to_float(definition.hp));
+                                         let js_text_part_2 = number(definition.move);
+                                         {j|$(js_text_part_0) HP   $(js_text_part_2) move|j};
+                                       },
                                      )}
                                   </small>
                                 : React.null}
                            </span>,
-                           <span> {text(number(recruit.cost) ++ " gold")} </span>,
+                           <span>
+                             {text(
+                                {
+                                  let js_text_part_0 = number(recruit.cost);
+                                  {j|$(js_text_part_0) gold|j};
+                                },
+                              )}
+                           </span>,
                          |],
                        );
                      },
                    )}
                 </div>
-                <p className="recruit-hint"> {text(recruitment.hint)} </p>
+                <p className={js|recruit-hint|js}> {text(recruitment.hint)} </p>
               </div>
             )}
-           <div className="terrain-detail">
-             <div className="terrain-portrait">
+           <div className={js|terrain-detail|js}>
+             <div className={js|terrain-portrait|js}>
                {option(Art.terrain_portrait(view.artwork, panel.tile.terrain), frame =>
                   <TerrainPreview cache=previews frame />
                 )}
-               <span className="unit-side"> {text("Terrain")} </span>
+               <span className={js|unit-side|js}> {text({js|Terrain|js})} </span>
              </div>
-             <div className="terrain-info">
+             <div className={js|terrain-info|js}>
                <h2> {text(panel.name)} </h2>
                {option(panel.ownership, ((label, className)) =>
-                  <p className={"terrain-owner " ++ className}> {text(label)} </p>
+                  <p className={j|terrain-owner $(className)|j}> {text(label)} </p>
                 )}
                <p> {text(panel.description)} </p>
-               <ul className="terrain-facts" role="list">
+               <ul className={js|terrain-facts|js} role={js|list|js}>
                  {eachList(panel.facts, fact => <li key=fact> {text(fact)} </li>)}
                </ul>
              </div>
@@ -761,7 +918,6 @@ module Terrain = {
     </section>;
   };
 };
-
 module Campaign = {
   [@react.component]
   let make =
@@ -774,7 +930,7 @@ module Campaign = {
         ~onNewCampaign,
       ) => {
     let state = Native.state(view.game);
-    let conversations = React.useRef(Js.Nullable.null);
+    let (conversationsOpen, setConversationsOpen) = React.useState(() => false);
     let (recall, setRecall) = React.useState(() => []);
     React.useEffect2(
       () => {
@@ -793,8 +949,8 @@ module Campaign = {
            let layout = Catalog.mission_map(view.catalog, mission);
            let survivors =
              filterList(
-               (unit: Domain.public_unit) => {
-                 unit.faction == "player"
+               (unit: Domain.public_unit) =>
+                 unit.faction == {js|player|js}
                  && unit.role != Some(Domain.Role.Leader)
                  && unit.role != Some(Domain.Role.Courier)
                  && !
@@ -802,8 +958,7 @@ module Campaign = {
                         name => Some(name) == unit.character,
                         mission.required_companions,
                       )
-                 && !Story.returns_with_story(view.catalog, campaign, unit)
-               },
+                 && !Story.returns_with_story(view.catalog, campaign, unit),
                Array.to_list(state.units),
              );
            let toggle = id =>
@@ -814,46 +969,82 @@ module Campaign = {
              );
            <>
              <section
-               id="mission-overview"
-               className="campaign-panel mission-overview"
+               id={js|mission-overview|js}
+               className={js|campaign-panel mission-overview|js}
                hidden={!expanded}
-               ariaLabel="Mission briefing">
+               ariaLabel={js|Mission briefing|js}>
                <h2> {text(layout.name)} </h2>
-               <p className="mission-heading">
+               <p className={js|mission-heading|js}>
                  {text(
-                    definition.name
-                    ++ " "
-                    ++ number(campaign.mission +. 1.)
-                    ++ "/"
-                    ++ string_of_int(Array.length(definition.missions)),
+                    {
+                      let js_text_part_0 = definition.name;
+                      let js_text_part_2 = number(campaign.mission +. 1.);
+                      let js_text_part_4 = string_of_int(Array.length(definition.missions));
+                      {j|$(js_text_part_0) $(js_text_part_2)/$(js_text_part_4)|j};
+                    },
                   )}
                </p>
-               <h3> {text("Briefing")} </h3>
+               <h3> {text({js|Briefing|js})} </h3>
                <p>
-                 {text(chapter.briefing ++ " ")}
-                 <button
-                   className="conversation-icon"
-                   ariaLabel="Campaign conversations"
-                   title="Campaign conversations"
-                   onClick={_ => show(conversations)}>
-                   <svg viewBox="0 0 24 24" ariaHidden=true focusable="false">
-                     <path d="M14 3H4a2 2 0 0 0-2 2v11l4-4h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z" />
-                     <path d="M8 16v1a2 2 0 0 0 2 2h8l4 3V11a2 2 0 0 0-2-2" />
-                   </svg>
-                 </button>
+                 {text(
+                    {
+                      let js_text_part_0 = chapter.briefing;
+                      {j|$(js_text_part_0) |j};
+                    },
+                  )}
+                 <Dialog_window
+                   trigger={
+                     <button
+                       className={js|conversation-icon|js}
+                       ariaLabel={js|Campaign conversations|js}
+                       title={js|Campaign conversations|js}>
+                       <svg viewBox={js|0 0 24 24|js} ariaHidden=true focusable={js|false|js}>
+                         <path
+                           d={js|M14 3H4a2 2 0 0 0-2 2v11l4-4h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z|js}
+                         />
+                         <path d={js|M8 16v1a2 2 0 0 0 2 2h8l4 3V11a2 2 0 0 0-2-2|js} />
+                       </svg>
+                     </button>
+                   }
+                   title={js|Campaign conversations|js}
+                   opened=conversationsOpen
+                   onOpenChange={value => setConversationsOpen(_ => value)}
+                   width={js|680px|js}
+                   tall=true>
+                   {switch (state.campaign) {
+                    | Some(campaign) when campaign.dialogue_index > 0. =>
+                      each(
+                        Array.sub(
+                          campaign.dialogue,
+                          0,
+                          min(
+                            Array.length(campaign.dialogue),
+                            int_of_float(campaign.dialogue_index),
+                          ),
+                        ),
+                        line =>
+                        <p>
+                          <strong> {text(line.Domain.speaker)} </strong>
+                          <br />
+                          {text(line.text)}
+                        </p>
+                      )
+                    | _ => <p> {text({js|No conversations yet.|js})} </p>
+                    }}
+                 </Dialog_window>
                </p>
                {chapter.hints == []
                   ? React.null
                   : <>
-                      <h3> {text("Hints")} </h3>
-                      <ul className="mission-items">
+                      <h3> {text({js|Hints|js})} </h3>
+                      <ul className={js|mission-items|js}>
                         {eachList(chapter.hints, hint =>
                            <li key=hint> <span> {text(hint)} </span> </li>
                          )}
                       </ul>
                     </>}
-               <h3> {text("Objectives")} </h3>
-               <ul className="mission-items mission-goals">
+               <h3> {text({js|Objectives|js})} </h3>
+               <ul className={js|mission-items mission-goals|js}>
                  {eachList(
                     Story.goal_statuses(view.game),
                     status => {
@@ -861,19 +1052,39 @@ module Campaign = {
                       <li
                         key={progress.label}
                         className={
-                          (progress.done_ ? "completed-goal " : "")
-                          ++ (status.failed ? "failed-goal" : "")
-                        }
+                                    let js_text_part_0 =
+                                      progress.done_ ? {js|completed-goal |js} : {js||js};
+                                    let js_text_part_1 =
+                                      status.failed ? {js|failed-goal|js} : {js||js};
+                                    {j|$(js_text_part_0)$(js_text_part_1)|j};
+                                  }
                         ariaLabel=?{
                           status.failed
-                            ? Some(Utf8.to_js(progress.label ++ ": failed"))
+                            ? Some(
+                                {
+                                  let js_text_part_0 = progress.label;
+                                  {j|$(js_text_part_0): failed|j};
+                                },
+                              )
                             : progress.done_
-                                ? Some(Utf8.to_js(progress.label ++ ": completed")) : None
+                                ? Some(
+                                    {
+                                      let js_text_part_0 = progress.label;
+                                      {j|$(js_text_part_0): completed|j};
+                                    },
+                                  )
+                                : None
                         }>
                         <span> {text(progress.label)} </span>
                         {progress.total > 1.
                            ? <strong>
-                               {text(number(progress.current) ++ "/" ++ number(progress.total))}
+                               {text(
+                                  {
+                                    let js_text_part_0 = number(progress.current);
+                                    let js_text_part_2 = number(progress.total);
+                                    {j|$(js_text_part_0)/$(js_text_part_2)|j};
+                                  },
+                                )}
                              </strong>
                            : React.null}
                       </li>;
@@ -883,8 +1094,8 @@ module Campaign = {
                {Story.optional_statuses(view.game) == []
                   ? React.null
                   : <>
-                      <h3> {text("Optional objectives")} </h3>
-                      <ul className="mission-items mission-goals">
+                      <h3> {text({js|Optional objectives|js})} </h3>
+                      <ul className={js|mission-items mission-goals|js}>
                         {eachList(
                            Story.optional_statuses(view.game),
                            status => {
@@ -892,22 +1103,38 @@ module Campaign = {
                              <li
                                key={progress.label}
                                className={
-                                 (progress.done_ ? "completed-goal " : "")
-                                 ++ (status.failed ? "failed-goal" : "")
-                               }
+                                           let js_text_part_0 =
+                                             progress.done_ ? {js|completed-goal |js} : {js||js};
+                                           let js_text_part_1 =
+                                             status.failed ? {js|failed-goal|js} : {js||js};
+                                           {j|$(js_text_part_0)$(js_text_part_1)|j};
+                                         }
                                ariaLabel=?{
                                  status.failed
-                                   ? Some(Utf8.to_js(progress.label ++ ": failed"))
+                                   ? Some(
+                                       {
+                                         let js_text_part_0 = progress.label;
+                                         {j|$(js_text_part_0): failed|j};
+                                       },
+                                     )
                                    : progress.done_
-                                       ? Some(Utf8.to_js(progress.label ++ ": completed")) : None
+                                       ? Some(
+                                           {
+                                             let js_text_part_0 = progress.label;
+                                             {j|$(js_text_part_0): completed|j};
+                                           },
+                                         )
+                                       : None
                                }>
                                <span> {text(progress.label)} </span>
                                {progress.total > 1.
                                   ? <strong>
                                       {text(
-                                         number(progress.current)
-                                         ++ "/"
-                                         ++ number(progress.total),
+                                         {
+                                           let js_text_part_0 = number(progress.current);
+                                           let js_text_part_2 = number(progress.total);
+                                           {j|$(js_text_part_0)/$(js_text_part_2)|j};
+                                         },
                                        )}
                                     </strong>
                                   : React.null}
@@ -921,19 +1148,22 @@ module Campaign = {
               && state.winner == Some(Domain.Battle_result.Player_victory)
               && !Story.dialogue_pending(state.campaign)
                 ? <section
-                    id="mission-result"
-                    className="campaign-panel"
-                    ariaLabel="Mission result"
+                    id={js|mission-result|js}
+                    className={js|campaign-panel|js}
+                    ariaLabel={js|Mission result|js}
                     tabIndex=(-1)>
                     <h2> {text(layout.name)} </h2>
-                    <div className="mission-debrief">
+                    <div className={js|mission-debrief|js}>
                       <h3>
-                        {text(campaign.completed ? "Campaign complete" : "The company regroups")}
+                        {text(
+                           campaign.completed
+                             ? {js|Campaign complete|js} : {js|The company regroups|js},
+                         )}
                       </h3>
                       <p>
                         {text(
                            Option.value(
-                             ~default=Option.value(~default="", campaign.outcome),
+                             ~default=Option.value(~default={js||js}, campaign.outcome),
                              chapter.debrief,
                            ),
                          )}
@@ -942,12 +1172,14 @@ module Campaign = {
                          ? <>
                              <p>
                                {text(
-                                  "Choose up to four survivors for the next mission. They return at full health. Carrying "
-                                  ++ number(min(8., Native.gold(state.gold, "player")))
-                                  ++ " gold.",
+                                  {
+                                    let js_text_part_1 =
+                                      number(min(8., Native.gold(state.gold, {js|player|js})));
+                                    {j|Choose up to four survivors for the next mission. They return at full health. Carrying $(js_text_part_1) gold.|j};
+                                  },
                                 )}
                              </p>
-                             <div className="recall-list">
+                             <div className={js|recall-list|js}>
                                {eachList(
                                   survivors,
                                   unit => {
@@ -955,9 +1187,13 @@ module Campaign = {
                                     let rule = Catalog.unit(view.catalog, unit.type_);
                                     <label
                                       key={unit.id}
-                                      className={"recall-choice " ++ (checked ? "selected" : "")}>
+                                      className={
+                                                  let js_text_part_1 =
+                                                    checked ? {js|selected|js} : {js||js};
+                                                  {j|recall-choice $(js_text_part_1)|j};
+                                                }>
                                       <input
-                                        type_="checkbox"
+                                        type_={js|checkbox|js}
                                         checked
                                         disabled={!checked && List.length(recall) >= 4}
                                         onChange={_ => toggle(unit.id)}
@@ -979,29 +1215,33 @@ module Campaign = {
                                         </strong>
                                         <span>
                                           {text(
-                                             number(Int32.to_float(unit.hp))
-                                             ++ " / "
-                                             ++ number(Int32.to_float(rule.hp))
-                                             ++ " HP",
+                                             {
+                                               let js_text_part_0 =
+                                                 number(Int32.to_float(unit.hp));
+                                               let js_text_part_2 =
+                                                 number(Int32.to_float(rule.hp));
+                                               {j|$(js_text_part_0) / $(js_text_part_2) HP|j};
+                                             },
                                            )}
                                         </span>
                                         <span>
                                           {text(
-                                             "Level "
-                                             ++ number(rule.level)
-                                             ++ " · "
-                                             ++ (
-                                               switch (rule.experience_needed) {
-                                               | None => "Fully advanced"
-                                               | Some(needed) =>
-                                                 number(
-                                                   Option.value(~default=0., unit.experience),
-                                                 )
-                                                 ++ " / "
-                                                 ++ number(needed)
-                                                 ++ " XP"
-                                               }
-                                             ),
+                                             {
+                                               let js_text_part_1 = number(rule.level);
+                                               let js_text_part_3 =
+                                                 switch (rule.experience_needed) {
+                                                 | None => {js|Fully advanced|js}
+
+                                                 | Some(needed) =>
+                                                   let js_text_part_0 =
+                                                     number(
+                                                       Option.value(~default=0., unit.experience),
+                                                     );
+                                                   let js_text_part_2 = number(needed);
+                                                   {j|$(js_text_part_0) / $(js_text_part_2) XP|j};
+                                                 };
+                                               {j|Level $(js_text_part_1) · $(js_text_part_3)|j};
+                                             },
                                            )}
                                         </span>
                                       </span>
@@ -1010,7 +1250,7 @@ module Campaign = {
                                 )}
                              </div>
                              <button
-                               className="primary"
+                               className={js|primary|js}
                                onClick={_ => {
                                  actions.next_mission(
                                    filterList(
@@ -1025,19 +1265,20 @@ module Campaign = {
                                  onCollapse();
                                }}>
                                {text(
-                                  "Continue to "
-                                  ++ (
-                                    switch (
-                                      definition.missions[int_of_float(campaign.mission) + 1]
-                                    ) {
-                                    | mission => Catalog.mission_map(view.catalog, mission).name
-                                    }
-                                  ),
+                                  {
+                                    let js_text_part_1 =
+                                      switch (
+                                        definition.missions[int_of_float(campaign.mission) + 1]
+                                      ) {
+                                      | mission => Catalog.mission_map(view.catalog, mission).name
+                                      };
+                                    {j|Continue to $(js_text_part_1)|j};
+                                  },
                                 )}
                              </button>
                            </>
-                         : <button className="primary" onClick={_ => onNewCampaign()}>
-                             {text("Choose another campaign")}
+                         : <button className={js|primary|js} onClick={_ => onNewCampaign()}>
+                             {text({js|Choose another campaign|js})}
                            </button>}
                     </div>
                   </section>
@@ -1045,30 +1286,9 @@ module Campaign = {
            </>;
          },
        )}
-      <Dialog_window
-        title="Campaign conversations"
-        dialog=conversations
-        width="680px"
-        tall=true
-        releaseControls=true>
-        {switch (state.campaign) {
-         | Some(campaign) when campaign.dialogue_index > 0. =>
-           each(
-             Array.sub(
-               campaign.dialogue,
-               0,
-               min(Array.length(campaign.dialogue), int_of_float(campaign.dialogue_index)),
-             ),
-             line =>
-             <p> <strong> {text(line.Domain.speaker)} </strong> <br /> {text(line.text)} </p>
-           )
-         | _ => <p> {text("No conversations yet.")} </p>
-         }}
-      </Dialog_window>
     </>;
   };
 };
-
 module Defeat = {
   [@react.component]
   let make = (~view: Session.model, ~actions: Session.actions, ~onNewGame) => {
@@ -1087,32 +1307,35 @@ module Defeat = {
         let campaign = state.campaign != None;
         let reason =
           Option.fold(
-            ~none="Your commander has fallen.",
+            ~none={js|Your commander has fallen.|js},
             ~some=
               (campaign: Domain.campaign_state) =>
-                Option.value(~default="The company cannot continue.", campaign.outcome),
+                Option.value(~default={js|The company cannot continue.|js}, campaign.outcome),
             state.campaign,
           );
-        <section id="battle-result" className="battle-result" ariaLabel="Battle result">
-          <p className="result-context">
+        <section
+          id={js|battle-result|js} className={js|battle-result|js} ariaLabel={js|Battle result|js}>
+          <p className={js|result-context|js}>
             {text(Catalog.map(view.catalog, state.map_id).name)}
           </p>
-          <h2> {text("Defeat")} </h2>
-          <p className="result-reason"> {text(reason)} </p>
-          <div className="result-actions">
+          <h2> {text({js|Defeat|js})} </h2>
+          <p className={js|result-reason|js}> {text(reason)} </p>
+          <div className={js|result-actions|js}>
             <button
-              id={campaign ? "retry-mission" : "retry-scenario"}
-              className="primary"
+              id={campaign ? {js|retry-mission|js} : {js|retry-scenario|js}}
+              className={js|primary|js}
               onClick={_ => actions.retry()}>
-              {text(campaign ? "Retry mission" : "Retry scenario")}
+              {text(campaign ? {js|Retry mission|js} : {js|Retry scenario|js})}
             </button>
-            <button id="choose-another-game" onClick={_ => onNewGame()}>
-              {text("Choose another game")}
+            <button id={js|choose-another-game|js} onClick={_ => onNewGame()}>
+              {text({js|Choose another game|js})}
             </button>
           </div>
           {campaign
-             ? <p className="result-hint">
-                 {text("You can also return to an earlier turn or mission from Saved games.")}
+             ? <p className={js|result-hint|js}>
+                 {text(
+                    {js|You can also return to an earlier turn or mission from Saved games.|js},
+                  )}
                </p>
              : React.null}
         </section>;

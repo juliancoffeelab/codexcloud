@@ -33,7 +33,7 @@ let cancel t reason = settle t.task (Cancelled reason)
 let claim token =
   match Host_collections.Weak_map.get tasks token with
   | Some task -> task
-  | None -> failwith "Unknown action presentation"
+  | None -> failwith {js|Unknown action presentation|js}
 
 let complete lease = settle lease Completed
 

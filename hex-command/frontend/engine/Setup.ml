@@ -38,22 +38,22 @@ let difficulties =
     [
       {
         policy = Relaxed;
-        id = "classic";
-        name = "Relaxed";
+        id = {js|classic|js};
+        name = {js|Relaxed|js};
         planner = Planner_kind.Classic;
         recruiter = Recruiter_kind.Classic;
       };
       {
         policy = Standard;
-        id = "situational";
-        name = "Standard";
+        id = {js|situational|js};
+        name = {js|Standard|js};
         planner = Planner_kind.Queued;
         recruiter = Recruiter_kind.Situational;
       };
       {
         policy = Veteran;
-        id = "predictor";
-        name = "Veteran";
+        id = {js|predictor|js};
+        name = {js|Veteran|js};
         planner = Planner_kind.Queued;
         recruiter = Recruiter_kind.Predictor;
       };
@@ -131,7 +131,7 @@ let completed_turns setup (state : Domain.state) =
     +. (if state.turn = Domain.Turn_phase.Ai then 1. else 0.)
     -. if setup.first = Domain.Turn_phase.Ai then 1. else 0.)
 
-let invalid () = invalid_arg "Invalid saved setup"
+let invalid () = invalid_arg {js|Invalid saved setup|js}
 
 (* The saved browser preference type is narrower than Rust's AI configuration.
    This adapter preserves that distinction rather than accepting simulation-only
@@ -187,10 +187,22 @@ let opponent (setup : t) =
   let planner, recruiter =
     Option.value ~default:(selected.planner, selected.recruiter) setup.overrides
   in
-  ( (if planner = selected.planner && recruiter = selected.recruiter then selected.name else "Custom"),
-    String.concat " "
-      (List.map String.capitalize_ascii
-         (String.split_on_char '-' (Enum.string_of_planner_kind planner))),
-    String.concat " "
-      (List.map String.capitalize_ascii
-         (String.split_on_char '-' (Enum.string_of_recruiter_kind recruiter))) )
+  ( (if planner = selected.planner && recruiter = selected.recruiter then selected.name
+     else {js|Custom|js}),
+    Js.Array.join ~sep:{js| |js}
+      (Array.of_list
+         (List.map
+            (fun text ->
+              let js_text_part_0 = Js.String.toUpperCase (Js.String.slice ~start:0 ~end_:1 text) in
+              let js_text_part_1 = Js.String.slice ~start:1 text in
+              {j|$(js_text_part_0)$(js_text_part_1)|j})
+            (Array.to_list (Js.String.split ~sep:{js|-|js} (Enum.string_of_planner_kind planner))))),
+    Js.Array.join ~sep:{js| |js}
+      (Array.of_list
+         (List.map
+            (fun text ->
+              let js_text_part_0 = Js.String.toUpperCase (Js.String.slice ~start:0 ~end_:1 text) in
+              let js_text_part_1 = Js.String.slice ~start:1 text in
+              {j|$(js_text_part_0)$(js_text_part_1)|j})
+            (Array.to_list
+               (Js.String.split ~sep:{js|-|js} (Enum.string_of_recruiter_kind recruiter))))) )
