@@ -3,85 +3,50 @@ name: agent-failure
 description: Diagnose the cause of an agent failure when the user asks why its behavior or output went wrong.
 ---
 
-# Agent failure
+# Garden investigation
 
-Produce an audit of the failure and its current status, a deep causal diagnosis,
-and concrete steps to fix the remaining causes. Investigate enough to support
-those conclusions; keep verification methods internal rather than making a
-verification plan a deliverable or handing investigation back to the user. Do not
-edit code, instructions or artifacts as part of this workflow.
+This skill is about building a better environment for an agent. The agent is
+doing its best, and the human is doing their best. Sometimes that is not enough.
 
-## 1. Establish the failure
+We investigate what went wrong in the process of communication between the human
+and the agent, and what needs to be weeded out so that similar problems do not
+happen again.
 
-Establish the expected behavior from the user's request and decisions. Inspect
-the actions and resulting artifacts to identify the concrete deviation. Trace
-repairs already made and explain what they fixed, how, and what remains. A past
-failure does not by itself establish a current defect.
+Investigate the failure and report its causes and remedies. Do not edit code,
+instructions or artifacts during this workflow.
 
-**Complete when:** the deviation, its scope, completed repairs and any remaining
-problem are clear.
+## 1. Triage the problem
 
-## 2. Trace the cause
+Inspect what happened and whether the problem still exists. Check any repairs
+already made and establish what they fixed, how, and what remains.
 
-Investigate in this order:
+**Complete when:** the problem is triaged and its current state is established.
 
-1. **Architecture:** what the model, boundaries, interfaces, ownership and workflow
-   allow, and what they encourage. Identify whether the unwanted behavior is a
-   supported operation or a natural extension of the design.
-2. **Existing code:** trace the actual path, its placement, representation, naming
-   and implementation patterns. Establish how those choices lead toward the
-   failure and whether subsequent repairs removed that path. For non-code tasks,
-   examine the existing artifacts and how they are produced.
-3. **Skills and other instructions:** after tracing architecture and code, inspect
-   relevant guidance for gaps, ambiguity, contradictions, stale information or
-   ineffective context pointers. Distinguish instructions that existed from
-   material demonstrably available during the decision.
+## 2. Find the causes
 
-Follow the path from the governing requirement through these mechanisms to the
-observed result. Support relevant layers with evidence; explain when a layer does
-not contribute. Do not substitute an instruction explanation for an architectural
-or implementation cause.
+Examine these layers in order:
 
-Explain the failure with an evidence-backed causal chain: what allowed or
-encouraged the action, how that mechanism operated in this case, and how it
-produced the observed deviation. Admissions such as “it's my fault,” “I ignored
-the instruction” or “I jumped to conclusions” must not substitute for that
-explanation. Responsibility is not causation; do not invent an internal motive
-to fill an evidentiary gap.
+1. Architecture.
+2. Existing code or artifacts.
+3. Instructions.
 
-An explicit existing rule must not be relabelled as missing or ambiguous to fit an
-explanation. Quoting that rule alone does not establish the cause either.
-Investigate unresolved causal links; distinguish supported conclusions from
-hypotheses and state material uncertainty that remains.
+Investigate how each shaped the agent's actions and contributed to the failure.
+For non-code failures, examine the workflow that produced the artifacts.
 
-**Complete when:** the causal explanation connects evidence to the deviation,
-with observations separated from hypotheses. Continue investigating material
-causal gaps while relevant evidence is available; do not finalize with an
-admission or a promise to investigate later. If a cause cannot be established,
-identify the specific unavailable evidence and explain what remains unknown
-without presenting a hypothesis as the cause.
+**Complete when:** each layer has an evidence-supported explanation of how it
+contributed, or why it did not; unresolved contributions remain explicit.
 
 ## 3. Propose remedies
 
-Consider remedies at the layers implicated by the diagnosis:
+Address the remaining causes in priority order:
 
-1. **Architecture:** remove the invalid operation or change the boundaries and
-   defaults that encourage it. Prefer prevention by construction.
-2. **Existing code:** simplify or correct the path, placement and implementation
-   patterns responsible for the failure.
-3. **Skills and other instructions:** where guidance contributes, identify the
-   exact instruction to edit or remove; extend it only when necessary.
+1. Architecture.
+2. Existing code or artifacts.
+3. Instructions.
 
-Do not recommend instruction changes as a substitute for repairing defective
-architecture or code. Avoid accumulating incident-specific prohibitions or
-duplicating existing rules.
+For every relevant remaining cause, explain what to change and how that change
+fixes the problem. Account for repairs already completed. If no further change
+is needed, explain why those repairs are sufficient.
 
-Propose changes for demonstrated remaining causes, accounting for completed
-repairs. Rank fix steps by impact on those causes and make each actionable: name
-what to change, where, and how it interrupts the failure mechanism. A possible
-future regression alone does not justify more rules or checks. If no further
-change is justified, say why the completed repair is sufficient.
-
-**Complete when:** the report explains what failed, what is already fixed and how,
-the deep cause, and concrete fix steps for what remains, ordered by impact. State
-material unresolved uncertainty and stop at that report.
+**Complete when:** every remaining cause is linked to an identified change and
+its expected effect, or completed repairs are explained as sufficient.
