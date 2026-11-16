@@ -1,86 +1,194 @@
-"""Lossless readers for checksummed JSONL and native Arrow gameplay journals."""
+"""Readers for the current native Arrow gameplay journal contract."""
+
 import json
 
-ARROW_FORMAT = "arrow-ipc-snapshot-dictionaries-v1"
-ARROW_TYPED_FORMAT = "arrow-ipc-snapshot-dictionaries-v2"
-ARROW_FACTION_FORMAT = "arrow-ipc-snapshot-dictionaries-v3"
-ARROW_HEX_FORMAT = "arrow-ipc-snapshot-dictionaries-v4"
-ARROW_PERCEPTION_FORMAT = "arrow-ipc-snapshot-dictionaries-v5"
+FORMAT = b"arrow-ipc-snapshot-dictionaries-v5"
+
+
+def validate_report(report):
+    if report.get("detailFormat") != FORMAT.decode():
+        raise ValueError("Report must index current Arrow gameplay format v5")
+    if not isinstance(report.get("unitProfiles"), dict) or not isinstance(
+        report.get("unitFamilies"), dict
+    ):
+        raise ValueError("Report must contain its recorded unit catalog")
+    if any(not isinstance(p.get("role"), str) for p in report["unitProfiles"].values()):
+        raise ValueError(
+            "Recorded unit profiles must include their current catalog role"
+        )
+    for outcome in report["outcomes"]:
+        if outcome["kind"] not in ("arena", "campaign") or not outcome["detail"][
+            "file"
+        ].endswith(".arrow"):
+            raise ValueError("Gameplay journals must use the current Arrow format")
+
+
+def hex_(value):
+    if (
+        not isinstance(value, dict)
+        or set(value) != {"col", "row"}
+        or any(
+            type(value[k]) is not int or not -(2**31) <= value[k] < 2**31
+            for k in ("col", "row")
+        )
+    ):
+        raise ValueError("Gameplay coordinates must be current structured hexes")
+
+
+def validate_header(result):
+    if result.get("kind") not in ("arena", "campaign"):
+        raise ValueError("Invalid gameplay kind")
+    chapters = [result] if result["kind"] == "arena" else result["missions"]
+
+    for chapter in chapters:
+        for state in (chapter["initial"], chapter["final"]):
+            for unit in state["units"]:
+                hex_(unit["tile"])
+                if not isinstance(unit.get("faction"), str) or "side" in unit:
+                    raise ValueError("Unit must record current faction ownership")
+        for goal in chapter.get("goals", []):
+            for tile in goal["tiles"]:
+                hex_(tile)
+
+
+def validate_phase(phase):
+    for unit in phase.get("losses", []):
+        hex_(unit["tile"])
+    for action in phase.get("actions", []):
+        if "tile" in action:
+            hex_(action["tile"])
+    for field in ("goals", "objectives"):
+        for goal in phase.get(field, []):
+            for tile in goal["tiles"]:
+                hex_(tile)
+    for order in (
+        ((phase.get("planning") or {}).get("orders") or {})
+        .get("tactics", {})
+        .get("objectives", [])
+    ):
+        for body in order["objective"].values():
+            for field in ("destination", "location"):
+                if field in body:
+                    hex_(body[field])
+    for audit in phase.get("leaderAudit", []):
+        for field in ("before", "after"):
+            if audit.get(field) is not None:
+                hex_(audit[field]["tile"])
+        if "minTile" in (audit.get("exposure") or {}):
+            hex_(audit["exposure"]["minTile"])
+
+
+def arrow_batch(data, name):
+    if not name.endswith(".arrow"):
+        raise ValueError("Gameplay journals must use the current Arrow format")
+    import pyarrow as pa
+
+    reader = pa.ipc.open_stream(data)
+    if (reader.schema.metadata or {}).get(b"hex-command.detail-format") != FORMAT:
+        raise ValueError("Gameplay journals must use Arrow gameplay format v5")
+    batches = iter(reader)
+    batch = next(batches, None)
+    if batch is None or next(batches, None) is not None or not batch.num_rows:
+        raise ValueError("Invalid Arrow gameplay batch")
+    columns = {
+        "header_json": pa.string(),
+        "chapter": pa.uint32(),
+        "phase_json": pa.string(),
+        "before": pa.list_(pa.uint32()),
+        "units": pa.list_(pa.uint32()),
+        "ownership": pa.uint32(),
+        "unit_snapshots": None,
+        "ownership_snapshots": pa.list_(pa.list_(pa.string())),
+    }
+    if batch.schema.names != list(columns) or any(
+        dtype is not None and batch.schema.field(k).type != dtype
+        for k, dtype in columns.items()
+    ):
+        raise ValueError("Unexpected Arrow gameplay schema")
+    dictionary = batch.schema.field("unit_snapshots").type
+    if not pa.types.is_list(dictionary) or not pa.types.is_struct(
+        dictionary.value_type
+    ):
+        raise ValueError("Invalid Arrow unit dictionary schema")
+    unit = dictionary.value_type
+    tile = pa.struct(
+        [
+            pa.field("col", pa.int32(), nullable=False),
+            pa.field("row", pa.int32(), nullable=False),
+        ]
+    )
+    required = {
+        "id": pa.string(),
+        "type": pa.string(),
+        "tile": tile,
+        "hp": pa.int32(),
+        "faction": pa.string(),
+        "role": pa.string(),
+        "rebuilding": pa.bool_(),
+    }
+    if "side" in unit.names or any(
+        k not in unit.names or unit.field(k).type != t for k, t in required.items()
+    ):
+        raise ValueError("Invalid Arrow unit dictionary schema")
+    if (
+        not batch["header_json"][0].is_valid
+        or not batch["unit_snapshots"][0].is_valid
+        or not batch["ownership_snapshots"][0].is_valid
+    ):
+        raise ValueError("Missing Arrow header or snapshot dictionaries")
+    values = batch["unit_snapshots"][0].values
+    if any(values.field(k).null_count for k in ("id", "type", "tile", "hp", "faction")):
+        raise ValueError("Missing Arrow unit facts")
+    validate_header(json.loads(batch["header_json"][0].as_py()))
+    return batch
 
 
 def decode_detail(data, name):
-    if not name.endswith(".arrow"):
-        return json.loads(data)
-    try:
-        import pyarrow as pa
-    except ImportError as exc:
-        raise RuntimeError("Arrow journals need pyarrow: run with `uv run --with pyarrow`") from exc
-    reader = pa.ipc.open_stream(data)
-    format_name = (reader.schema.metadata or {}).get(b"hex-command.detail-format")
-    if format_name not in (ARROW_FORMAT.encode(), ARROW_TYPED_FORMAT.encode(), ARROW_FACTION_FORMAT.encode(), ARROW_HEX_FORMAT.encode(), ARROW_PERCEPTION_FORMAT.encode()):
-        raise ValueError("Unknown Arrow gameplay format")
-    batches = iter(reader)
-    batch = next(batches, None)
-    if batch is None or next(batches, None) is not None or batch.num_rows == 0:
-        raise ValueError("Invalid Arrow gameplay batch")
-    names = ["header_json", "chapter", "phase_json", "before", "units", "ownership",
-             "unit_snapshots", "ownership_snapshots"]
-    if batch.schema.names != names:
-        raise ValueError("Unexpected Arrow gameplay columns")
-    columns = {name: batch.column(name) for name in names}
-    result = json.loads(columns["header_json"][0].as_py())
-    if format_name in (ARROW_TYPED_FORMAT.encode(), ARROW_FACTION_FORMAT.encode(), ARROW_HEX_FORMAT.encode(), ARROW_PERCEPTION_FORMAT.encode()):
-        units = [{key: value for key, value in item.items() if value is not None}
-                 for item in columns["unit_snapshots"][0].as_py()]
-        for unit in units:
-            for field in list(unit):
-                if not field.endswith("_json"):
-                    continue
-                values = json.loads(unit.pop(field))
-                if not isinstance(values, list):
+    batch = arrow_batch(data, name)
+    columns = batch.to_pydict()
+    result = json.loads(columns["header_json"][0])
+    validate_header(result)
+    units = []
+    for saved in columns["unit_snapshots"][0]:
+        unit = {k: v for k, v in saved.items() if v is not None}
+        for k in list(unit):
+            if k.endswith("_json"):
+                value = json.loads(unit.pop(k))
+                if not isinstance(value, list):
                     raise ValueError("Invalid Arrow unit array")
-                key = field[:-5]
-                if key != "items" or values:
-                    unit[key] = values
-        ownership = columns["ownership_snapshots"][0].as_py()
-    else:
-        units = [json.loads(item) for item in columns["unit_snapshots"][0].as_py()]
-        ownership = [json.loads(item) for item in columns["ownership_snapshots"][0].as_py()]
-    for row in range(1, batch.num_rows):
-        phase = json.loads(columns["phase_json"][row].as_py())
-        for key in ("before", "units"):
-            indices = columns[key][row].as_py()
-            if indices is None or any(index is None or not 0 <= index < len(units) for index in indices):
-                raise ValueError("Invalid Arrow roster indices")
-            phase[key] = [units[index] for index in indices]
-        index = columns["ownership"][row].as_py()
-        if index is None or not 0 <= index < len(ownership):
+                if k != "items_json" or value:
+                    unit[k[:-5]] = value
+        units.append(unit)
+    owners = columns["ownership_snapshots"][0]
+    for i in range(1, batch.num_rows):
+        phase = json.loads(columns["phase_json"][i])
+        validate_phase(phase)
+        chapter = columns["chapter"][i]
+        if (
+            chapter is None
+            or (result["kind"] == "arena" and chapter != 0)
+            or (result["kind"] == "campaign" and chapter >= len(result["missions"]))
+        ):
+            raise ValueError("Invalid Arrow chapter")
+        target = result if result["kind"] == "arena" else result["missions"][chapter]
+        for k in ("before", "units"):
+            indices = columns[k][i]
+            if indices is None or any(
+                j is None or not 0 <= j < len(units) for j in indices
+            ):
+                raise ValueError("Invalid Arrow roster index")
+            phase[k] = [units[j] for j in indices]
+        j = columns["ownership"][i]
+        if j is None or not 0 <= j < len(owners) or owners[j] is None:
             raise ValueError("Invalid Arrow ownership index")
-        chapter = columns["chapter"][row].as_py()
-        if format_name in (ARROW_TYPED_FORMAT.encode(), ARROW_FACTION_FORMAT.encode(), ARROW_HEX_FORMAT.encode(), ARROW_PERCEPTION_FORMAT.encode()):
-            tiles = result["initial"]["tiles"] if result["kind"] == "arena" else result["missions"][chapter]["initial"]["tiles"]
-            owners = ownership[index]
-            if len(owners) != len(tiles):
-                raise ValueError("Invalid Arrow ownership snapshot")
-            if format_name in (ARROW_FACTION_FORMAT.encode(), ARROW_HEX_FORMAT.encode(), ARROW_PERCEPTION_FORMAT.encode()):
-                if any(owner is not None and not isinstance(owner, str) for owner in owners):
-                    raise ValueError("Invalid Arrow faction owner")
-                phase["ownership"] = [{"tile": {"col":tile["col"],"row":tile["row"]} if format_name in (ARROW_HEX_FORMAT.encode(), ARROW_PERCEPTION_FORMAT.encode()) else tile["id"], "owner": owner} for tile, owner in zip(tiles, owners)]
-            else:
-                if any(owner not in (None, 0, 1) for owner in owners):
-                    raise ValueError("Invalid Arrow ownership snapshot")
-                phase["ownership"] = [{"tile": tile["id"], "owner": None if owner is None else ("player", "enemy")[owner]}
-                                      for tile, owner in zip(tiles, owners)]
-        else:
-            phase["ownership"] = ownership[index]
-        if result["kind"] == "arena":
-            if chapter != 0:
-                raise ValueError("Invalid Arrow arena chapter")
-            result["phases"].append(phase)
-        else:
-            if chapter is None or not 0 <= chapter < len(result["missions"]):
-                raise ValueError("Invalid Arrow campaign chapter")
-            result["missions"][chapter]["phases"].append(phase)
+        tiles = target["initial"]["tiles"]
+        if len(owners[j]) != len(tiles):
+            raise ValueError("Invalid Arrow ownership snapshot")
+        phase["ownership"] = [
+            {"tile": {"col": t["col"], "row": t["row"]}, "owner": o}
+            for t, o in zip(tiles, owners[j])
+        ]
+        target["phases"].append(phase)
     return result
 
 
@@ -94,14 +202,14 @@ def analysis_view(value, factions=None):
         return [analysis_view(item, factions) for item in value]
     if not isinstance(value, dict):
         return value
-    declared = value.get('factions') or value.get('initial', {}).get('factions')
+    declared = value.get("factions") or value.get("initial", {}).get("factions")
     if declared:
-        factions = {f['id']: f for f in declared}
+        factions = {f["id"]: f for f in declared}
     result = {key: analysis_view(item, factions) for key, item in value.items()}
-    # Unit ownership is faction-only. These legacy two-phase report labels are
+    # Unit ownership is faction-only. The two-seat report labels are
     # derived in the analysis copy, never written back into replay checkpoints.
-    if 'faction' in value and 'hp' in value and 'tile' in value and 'side' not in value:
-        result['side'] = factions[value['faction']]['phase']
+    if "faction" in value and "hp" in value and "tile" in value and "side" not in value:
+        result["side"] = factions[value["faction"]]["phase"]
     for key in ("side", "turn", "first"):
         if result.get(key) == "ai":
             result[key] = "enemy"

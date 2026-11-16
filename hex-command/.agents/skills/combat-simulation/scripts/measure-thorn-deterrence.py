@@ -85,7 +85,7 @@ def before_state(detail, index, units):
         if action['kind'] == 'recruit':
             state['gold'][phase['side']] += units[action['type']]['cost']
     ownership = (detail['phases'][index - 1]['ownership'] if index else
-                 [{'tile': t['id'], 'owner': t.get('owner')} for t in state['tiles']])
+                 [{'tile': {'col':t['col'],'row':t['row']}, 'owner': t.get('owner')} for t in state['tiles']])
     owners = {cell_key(t['tile']): t['owner'] for t in ownership}
     for tile in state['tiles']:
         tile['owner'] = owners[tile['id']]

@@ -3,8 +3,8 @@
 use super::{error::SimulationError, summaries, types::*};
 use crate::data::{CampaignState, Gold, Objective, Progress, PublicUnit, Records, TurnPhase};
 use arrow_array::{
-    Array, ArrayRef, BooleanArray, Int8Array, Int32Array, ListArray, RecordBatch, StringArray,
-    StructArray, UInt32Array,
+    Array, ArrayRef, BooleanArray, Int32Array, ListArray, RecordBatch, StringArray, StructArray,
+    UInt32Array,
     builder::{ListBuilder, StringBuilder, UInt32Builder},
 };
 use arrow_buffer::{NullBuffer, OffsetBuffer};
@@ -332,32 +332,15 @@ fn unit_dictionary(array: &dyn Array) -> Result<Vec<Value>, SimulationError> {
         })
         .collect()
 }
-fn owners(
-    array: &ListArray,
-    index: usize,
-    tiles: &Value,
-    structured_positions: bool,
-) -> Result<Value, SimulationError> {
+fn owners(array: &ListArray, index: usize, tiles: &Value) -> Result<Value, SimulationError> {
     if index >= array.len() || array.is_null(index) {
         return Err("Invalid ownership index".into());
     }
     let values = array.value(index);
-    let owners: Vec<Value> = if let Some(strings) = values.as_any().downcast_ref::<StringArray>() {
-        strings
-            .iter()
-            .map(|owner| owner.map_or(Value::Null, Value::from))
-            .collect()
-    } else {
-        column::<Int8Array>(values.as_ref())?
-            .iter()
-            .map(|owner| match owner {
-                None => Ok(Value::Null),
-                Some(0) => Ok(Value::from("player")),
-                Some(1) => Ok(Value::from("enemy")),
-                _ => Err(SimulationError::from("Invalid owner side")),
-            })
-            .collect::<Result<_, _>>()?
-    };
+    let owners: Vec<Value> = column::<StringArray>(values.as_ref())?
+        .iter()
+        .map(|owner| owner.map_or(Value::Null, Value::from))
+        .collect();
     let tiles = tiles.as_array().ok_or("Missing chapter tiles")?;
     if owners.len() != tiles.len() {
         return Err("Ownership length differs from chapter tiles".into());
@@ -366,11 +349,7 @@ fn owners(
         .iter()
         .zip(owners)
         .map(|(tile, owner)| {
-            let address = if structured_positions {
-                serde_json::json!({"col":tile["col"],"row":tile["row"]})
-            } else {
-                tile["id"].clone()
-            };
+            let address = serde_json::json!({"col":tile["col"],"row":tile["row"]});
             serde_json::json!({"tile":address, "owner":owner})
         })
         .collect();
@@ -395,16 +374,15 @@ fn roster(array: &ListArray, row: usize, dictionary: &[Value]) -> Result<Value, 
 }
 pub(crate) fn decode(bytes: &[u8]) -> Result<Value, SimulationError> {
     let mut reader = StreamReader::try_new(Cursor::new(bytes), None)?;
-    let structured_positions = match reader
+    if reader
         .schema()
         .metadata()
         .get("hex-command.detail-format")
         .map(String::as_str)
+        != Some(FORMAT)
     {
-        Some("arrow-ipc-snapshot-dictionaries-v2" | "arrow-ipc-snapshot-dictionaries-v3") => false,
-        Some("arrow-ipc-snapshot-dictionaries-v4" | FORMAT) => true,
-        _ => return Err("Unknown Arrow gameplay format".into()),
-    };
+        return Err("Unknown Arrow gameplay format".into());
+    }
     let batch = reader.next().ok_or("Missing Arrow gameplay batch")??;
     if reader.next().is_some() || batch.num_columns() != 8 || batch.num_rows() == 0 {
         return Err("Invalid Arrow gameplay batch".into());
@@ -441,12 +419,7 @@ pub(crate) fn decode(bytes: &[u8]) -> Result<Value, SimulationError> {
                 .and_then(|initial| initial.get("tiles"))
                 .ok_or("Invalid campaign chapter index")?
         };
-        phase["ownership"] = owners(
-            ownership_dictionary,
-            ownership.value(row) as usize,
-            tiles,
-            structured_positions,
-        )?;
+        phase["ownership"] = owners(ownership_dictionary, ownership.value(row) as usize, tiles)?;
         let target = if arena {
             if chapters.value(row) != 0 {
                 return Err("Invalid arena chapter index".into());

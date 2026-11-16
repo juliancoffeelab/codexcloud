@@ -121,8 +121,8 @@ mod tests {
         let path =
             std::env::temp_dir().join(format!("hex-index-recovery-{}.jsonl", std::process::id()));
         let mut journal = ResultJournal::create(&path).unwrap();
-        let first = json!({"config":{"seed":2},"detail":{"file":"details.jsonl","offset":10,"bytes":20,"sha256":"saved"}});
-        let second = json!({"config":{"seed":1},"detail":{"file":"details.jsonl","offset":0,"bytes":10,"sha256":"saved"}});
+        let first = json!({"config":{"seed":2},"detail":{"file":"details.arrow","offset":10,"bytes":20,"sha256":"saved"}});
+        let second = json!({"config":{"seed":1},"detail":{"file":"details.arrow","offset":0,"bytes":10,"sha256":"saved"}});
         journal
             .append(&IndexedOutcome {
                 index: 1,

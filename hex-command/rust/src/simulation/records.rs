@@ -10,7 +10,7 @@ use std::{
 };
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-/// Checksum-protected byte range locating one complete JSONL journal record.
+/// Checksum-protected byte range locating one complete Arrow gameplay record.
 pub struct DetailRecord {
     pub file: String,
     pub offset: u64,
@@ -110,6 +110,7 @@ pub fn read_detail(directory: &Path, record: &DetailRecord) -> Result<Value, Sim
     let path = PathBuf::from(&record.file);
     if path.components().count() != 1
         || path.file_name().and_then(|name| name.to_str()) != Some(record.file.as_str())
+        || !record.file.ends_with(".arrow")
         || record.bytes == 0
     {
         return Err(SimulationError::Replay(
@@ -141,11 +142,7 @@ pub fn read_detail(directory: &Path, record: &DetailRecord) -> Result<Value, Sim
             record.file
         )));
     }
-    if record.file.ends_with(".arrow") {
-        super::arrow::decode(&bytes)
-    } else {
-        Ok(serde_json::from_slice(&bytes)?)
-    }
+    super::arrow::decode(&bytes)
 }
 #[cfg(test)]
 mod tests {
@@ -154,7 +151,7 @@ mod tests {
     fn byte_ranges_and_checksum_are_checked() {
         let directory = std::env::temp_dir().join(format!("hex-journal-{}", std::process::id()));
         std::fs::create_dir_all(&directory).unwrap();
-        let path = directory.join("details.jsonl");
+        let path = directory.join("details.arrow");
         let mut journal = ResultJournal::create(&path).unwrap();
         let first = journal.append(&serde_json::json!({"name":"é"})).unwrap();
         let mut second = journal
@@ -162,11 +159,23 @@ mod tests {
             .unwrap();
         assert_eq!(second.offset, first.bytes);
         journal.flush().unwrap();
-        assert_eq!(read_detail(&directory, &first).unwrap()["name"], "é");
+        // Valid byte ranges and checksums reach the Arrow decoder; JSON payloads
+        // are no longer accepted as gameplay records.
+        assert!(read_detail(&directory, &first).is_err());
         second.sha256 = "corrupt".into();
-        assert!(read_detail(&directory, &second).is_err());
-        second.file = "../details.jsonl".into();
-        assert!(read_detail(&directory, &second).is_err());
+        assert!(
+            read_detail(&directory, &second)
+                .unwrap_err()
+                .to_string()
+                .contains("checksum")
+        );
+        second.file = "../details.arrow".into();
+        assert!(
+            read_detail(&directory, &second)
+                .unwrap_err()
+                .to_string()
+                .contains("Invalid result journal reference")
+        );
         drop(journal);
         std::fs::remove_dir_all(directory).unwrap();
     }

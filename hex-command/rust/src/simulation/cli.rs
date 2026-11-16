@@ -88,9 +88,6 @@ struct SimulationArgs {
     /// Keep raw results without generating the report.
     #[arg(group = "batch", long, conflicts_with = "baseline")]
     no_report: bool,
-    /// Lossless gameplay journal format.
-    #[arg(group = "batch", long, value_enum, default_value = "jsonl")]
-    details: DetailFormat,
     /// Compare every selected arena tactic with every other tactic.
     #[arg(group = "batch", long, conflicts_with_all = ["vs_classic", "vs"])]
     all_pairs: bool,
@@ -143,12 +140,6 @@ struct SimulationArgs {
     fingerprint: bool,
 }
 
-#[derive(Clone, Copy, Debug, ValueEnum)]
-enum DetailFormat {
-    Jsonl,
-    Arrow,
-}
-
 fn campaign_participants() -> clap::builder::PossibleValuesParser {
     clap::builder::PossibleValuesParser::new(
         Policy::ALL
@@ -164,7 +155,6 @@ struct CliOptions {
     workers: usize,
     out: PathBuf,
     trace: bool,
-    arrow: bool,
     replay: Option<PathBuf>,
     schedule_only: bool,
     profile_turns: bool,
@@ -322,7 +312,6 @@ impl SimulationArgs {
             workers: self.workers as usize,
             out,
             trace: self.trace,
-            arrow: matches!(self.details, DetailFormat::Arrow),
             replay: self.replay,
             schedule_only: self.schedule_only,
             profile_turns: self.profile_turns,
@@ -549,12 +538,8 @@ fn replay(rules: &Rules, path: &Path, fingerprint: &str) -> Result<(), Simulatio
         .ok_or("Replay report outcomes missing")?;
     let mut definitions = CampaignDefinitions::new(rules);
     for (index, outcome) in outcomes.iter().enumerate() {
-        let expected = if let Some(reference) = outcome.get("detail") {
-            let reference: DetailRecord = serde_json::from_value(reference.clone())?;
-            read_detail(path.parent().unwrap_or(Path::new(".")), &reference)?
-        } else {
-            outcome.clone()
-        };
+        let reference: DetailRecord = serde_json::from_value(outcome["detail"].clone())?;
+        let expected = read_detail(path.parent().unwrap_or(Path::new(".")), &reference)?;
         let config: MatchConfig = serde_json::from_value(expected["config"].clone())?;
         definitions.prepare_match(&config)?;
         let actual = report::detailed_summary(&matches::run(rules, config, &definitions)?)?;
@@ -590,7 +575,6 @@ fn execute_schedule<F>(
     configs: &[MatchConfig],
     workers: usize,
     trace: bool,
-    arrow: bool,
     mut append: F,
 ) -> Result<(), SimulationError>
 where
@@ -602,11 +586,7 @@ where
     }
     let prepare = |result: MatchResult, elapsed: f64| {
         let summary = report::borrowed_summary(&result, true)?;
-        let details = if arrow {
-            EncodedRecord::from_bytes(super::arrow::encode(&result, &summary)?)
-        } else {
-            EncodedRecord::new(&summary)?
-        };
+        let details = EncodedRecord::from_bytes(super::arrow::encode(&result, &summary)?);
         // The journal thread supplies the final file and byte offset.
         let compact = report::compact_summary(
             &summary,
@@ -747,12 +727,7 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     };
     fs::create_dir_all(output.parent().unwrap_or(Path::new(".")))?;
     let partial = sibling(&output, ".partial.json")?;
-    let suffix = if options.arrow {
-        ".details.arrow"
-    } else {
-        ".details.jsonl"
-    };
-    let mut journal = ResultJournal::create(&sibling(&output, suffix)?)?;
+    let mut journal = ResultJournal::create(&sibling(&output, ".details.arrow")?)?;
     let mut index_journal = ResultJournal::create(&sibling(&output, ".outcomes.jsonl")?)?;
     let mut trace = if options.trace {
         Some(ResultJournal::create(&sibling(&output, ".trace.jsonl")?)?)
@@ -783,7 +758,6 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
         &configs,
         options.workers,
         options.trace,
-        options.arrow,
         |index, result, _elapsed| {
             let reference = journal.append_encoded(&result.details)?;
             if let (Some(trace), Some(encoded)) = (&mut trace, &result.trace) {
@@ -872,9 +846,7 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
         outcomes,
         trace_files,
     )?;
-    if options.arrow {
-        report["detailFormat"] = Value::String(super::arrow::FORMAT.into());
-    }
+    report["detailFormat"] = Value::String(super::arrow::FORMAT.into());
     report["recruitmentProfiles"] = serde_json::to_value(&rules.recruitment)?;
     report["unitFamilies"] = serde_json::to_value(
         rules
