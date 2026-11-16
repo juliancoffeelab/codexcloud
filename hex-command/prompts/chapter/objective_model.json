@@ -1,0 +1,616 @@
+{
+  "scope": "246 source-reviewed battle templates; bonus/training excluded. Interpretive authored frequencies, not player probabilities.",
+  "method": "Every choice consumes a shuffled weighted bag. Initial pivots use symmetric, equally weighted branch heads within each source chapter; next-objective counts use branch heads of the next structure, retaining sequential steps separately. Terminal successor counts follow group joins to shared continuations, without an additional END count. Groups currently have two branches.",
+  "next_shapes": {
+    "START": {
+      "OR": 46,
+      "AND": 7,
+      "ATOM": 193,
+      "END": 0
+    },
+    "Survive leaders": {
+      "OR": 0,
+      "AND": 0,
+      "ATOM": 1,
+      "END": 10
+    },
+    "Defeat enemies": {
+      "OR": 2,
+      "AND": 0,
+      "ATOM": 18,
+      "END": 187
+    },
+    "Pick up item": {
+      "OR": 0,
+      "AND": 0,
+      "ATOM": 6,
+      "END": 3
+    },
+    "Move units out": {
+      "OR": 0,
+      "AND": 0,
+      "ATOM": 0,
+      "END": 5
+    },
+    "Free / rescue people": {
+      "OR": 1,
+      "AND": 0,
+      "ATOM": 3,
+      "END": 5
+    },
+    "Survive specified units": {
+      "OR": 0,
+      "AND": 0,
+      "ATOM": 4,
+      "END": 22
+    },
+    "Pursue": {
+      "OR": 0,
+      "AND": 0,
+      "ATOM": 0,
+      "END": 2
+    },
+    "Move units to a place": {
+      "OR": 1,
+      "AND": 1,
+      "ATOM": 13,
+      "END": 12
+    },
+    "Army escape": {
+      "OR": 0,
+      "AND": 0,
+      "ATOM": 0,
+      "END": 38
+    },
+    "Find an NPC": {
+      "OR": 2,
+      "AND": 0,
+      "ATOM": 4,
+      "END": 1
+    },
+    "Special task": {
+      "OR": 0,
+      "AND": 0,
+      "ATOM": 4,
+      "END": 4
+    },
+    "Transport cargo / materials": {
+      "OR": 0,
+      "AND": 0,
+      "ATOM": 0,
+      "END": 3
+    },
+    "Operate / destroy structures": {
+      "OR": 0,
+      "AND": 0,
+      "ATOM": 4,
+      "END": 7
+    },
+    "Capture units": {
+      "OR": 0,
+      "AND": 0,
+      "ATOM": 0,
+      "END": 5
+    },
+    "Control territory": {
+      "OR": 0,
+      "AND": 1,
+      "ATOM": 1,
+      "END": 12
+    },
+    "Negotiate": {
+      "OR": 1,
+      "AND": 0,
+      "ATOM": 0,
+      "END": 0
+    },
+    "Explore": {
+      "OR": 1,
+      "AND": 0,
+      "ATOM": 2,
+      "END": 0
+    },
+    "Deliver item": {
+      "OR": 0,
+      "AND": 0,
+      "ATOM": 0,
+      "END": 1
+    },
+    "Find a place": {
+      "OR": 0,
+      "AND": 0,
+      "ATOM": 1,
+      "END": 0
+    }
+  },
+  "group_shapes": {
+    "OR": {
+      "OR": 0,
+      "AND": 0,
+      "ATOM": 2,
+      "END": 53
+    },
+    "AND": {
+      "OR": 0,
+      "AND": 0,
+      "ATOM": 2,
+      "END": 16
+    }
+  },
+  "next_objectives": {
+    "START": {
+      "Survive leaders": 6.75,
+      "Defeat enemies": 143.5,
+      "Pick up item": 4.25,
+      "Move units out": 1.0,
+      "Free / rescue people": 5.75,
+      "Survive specified units": 15.25,
+      "Pursue": 2,
+      "Move units to a place": 15.75,
+      "Army escape": 21.5,
+      "Find an NPC": 6.5,
+      "Special task": 5.0,
+      "Operate / destroy structures": 4.5,
+      "Capture units": 3.0,
+      "Control territory": 7.0,
+      "Explore": 2,
+      "Transport cargo / materials": 1.25,
+      "Find a place": 1
+    },
+    "Pick up item": {
+      "Defeat enemies": 1,
+      "Transport cargo / materials": 1,
+      "Negotiate": 1,
+      "Move units to a place": 1,
+      "Army escape": 1,
+      "Deliver item": 1
+    },
+    "Defeat enemies": {
+      "Army escape": 4.666666666666666,
+      "Survive specified units": 1.3333333333333333,
+      "Defeat enemies": 4.0,
+      "Pick up item": 2,
+      "Move units to a place": 4,
+      "Operate / destroy structures": 2,
+      "Control territory": 1,
+      "Free / rescue people": 1
+    },
+    "Move units to a place": {
+      "Defeat enemies": 7.25,
+      "Survive specified units": 1.5,
+      "Control territory": 2.0,
+      "Pick up item": 1,
+      "Explore": 1,
+      "Move units to a place": 2,
+      "Operate / destroy structures": 0.25
+    },
+    "Special task": {
+      "Defeat enemies": 3,
+      "Special task": 1
+    },
+    "Find an NPC": {
+      "Move units out": 2,
+      "Move units to a place": 1,
+      "Defeat enemies": 1.6666666666666665,
+      "Army escape": 0.3333333333333333,
+      "Operate / destroy structures": 1.0
+    },
+    "Free / rescue people": {
+      "Capture units": 1,
+      "Survive specified units": 0.5,
+      "Defeat enemies": 1.5,
+      "Army escape": 1
+    },
+    "Survive specified units": {
+      "Defeat enemies": 2,
+      "Army escape": 1,
+      "Operate / destroy structures": 1
+    },
+    "Negotiate": {
+      "Army escape": 0.5,
+      "Defeat enemies": 0.5
+    },
+    "Survive leaders": {
+      "Army escape": 1
+    },
+    "Explore": {
+      "Defeat enemies": 3.0
+    },
+    "Control territory": {
+      "Defeat enemies": 1.5,
+      "Move units to a place": 0.5
+    },
+    "Operate / destroy structures": {
+      "Defeat enemies": 4
+    },
+    "Find a place": {
+      "Army escape": 1
+    }
+  },
+  "partners": {
+    "AND": {
+      "Defeat enemies": {
+        "Free / rescue people": 2,
+        "Operate / destroy structures": 2,
+        "Find an NPC": 1,
+        "Defeat enemies": 2,
+        "Move units to a place": 1,
+        "Special task": 1,
+        "Control territory": 1
+      },
+      "Free / rescue people": {
+        "Defeat enemies": 2
+      },
+      "Operate / destroy structures": {
+        "Defeat enemies": 2,
+        "Capture units": 1
+      },
+      "Control territory": {
+        "Survive specified units": 2,
+        "Survive leaders": 1,
+        "Defeat enemies": 1
+      },
+      "Survive specified units": {
+        "Control territory": 2,
+        "Move units to a place": 1
+      },
+      "Find an NPC": {
+        "Defeat enemies": 1
+      },
+      "Move units to a place": {
+        "Survive specified units": 1,
+        "Defeat enemies": 1,
+        "Transport cargo / materials": 1
+      },
+      "Survive leaders": {
+        "Control territory": 1
+      },
+      "Transport cargo / materials": {
+        "Move units to a place": 1
+      },
+      "Move units out": {
+        "Move units out": 1
+      },
+      "Special task": {
+        "Defeat enemies": 1
+      },
+      "Capture units": {
+        "Operate / destroy structures": 1
+      }
+    },
+    "OR": {
+      "Defeat enemies": {
+        "Survive leaders": 6,
+        "Defeat enemies": 8,
+        "Army escape": 12,
+        "Survive specified units": 9,
+        "Special task": 3,
+        "Pick up item": 2,
+        "Move units to a place": 3,
+        "Operate / destroy structures": 1,
+        "Control territory": 2,
+        "Free / rescue people": 1
+      },
+      "Survive leaders": {
+        "Defeat enemies": 6,
+        "Move units to a place": 1
+      },
+      "Army escape": {
+        "Survive specified units": 1,
+        "Defeat enemies": 12
+      },
+      "Survive specified units": {
+        "Army escape": 1,
+        "Defeat enemies": 9,
+        "Free / rescue people": 1,
+        "Capture units": 1
+      },
+      "Special task": {
+        "Defeat enemies": 3
+      },
+      "Move units to a place": {
+        "Survive leaders": 1,
+        "Defeat enemies": 3
+      },
+      "Free / rescue people": {
+        "Survive specified units": 1,
+        "Defeat enemies": 1
+      },
+      "Pick up item": {
+        "Defeat enemies": 2
+      },
+      "Operate / destroy structures": {
+        "Defeat enemies": 1
+      },
+      "Control territory": {
+        "Defeat enemies": 2
+      },
+      "Capture units": {
+        "Survive specified units": 1
+      }
+    }
+  },
+  "terminal_results": {
+    "AND: Capture units + Operate / destroy structures": {
+      "terminal_objectives": [
+        "Capture units",
+        "Operate / destroy structures"
+      ],
+      "result_counts": {
+        "Information / discovery": 1
+      }
+    },
+    "AND: Control territory + Defeat enemies": {
+      "terminal_objectives": [
+        "Control territory",
+        "Defeat enemies"
+      ],
+      "result_counts": {
+        "Territory / position": 1
+      }
+    },
+    "AND: Control territory + Survive leaders": {
+      "terminal_objectives": [
+        "Control territory",
+        "Survive leaders"
+      ],
+      "result_counts": {
+        "Defense": 1
+      }
+    },
+    "AND: Control territory + Survive specified units": {
+      "terminal_objectives": [
+        "Control territory",
+        "Survive specified units"
+      ],
+      "result_counts": {
+        "Defense": 1
+      }
+    },
+    "AND: Defeat enemies + Defeat enemies": {
+      "terminal_objectives": [
+        "Defeat enemies",
+        "Defeat enemies"
+      ],
+      "result_counts": {
+        "Forces / allies": 1,
+        "Passage": 2,
+        "Enemy / threat removed": 1
+      }
+    },
+    "AND: Defeat enemies + Free / rescue people": {
+      "terminal_objectives": [
+        "Defeat enemies",
+        "Free / rescue people"
+      ],
+      "result_counts": {
+        "People freed / recovered": 2
+      }
+    },
+    "AND: Defeat enemies + Operate / destroy structures": {
+      "terminal_objectives": [
+        "Defeat enemies",
+        "Operate / destroy structures"
+      ],
+      "result_counts": {
+        "Enemy / threat removed": 1,
+        "Defense": 1
+      }
+    },
+    "AND: Defeat enemies + Pick up item": {
+      "terminal_objectives": [
+        "Defeat enemies",
+        "Pick up item"
+      ],
+      "result_counts": {
+        "Escape / withdrawal": 1
+      }
+    },
+    "AND: Move units out + Move units out": {
+      "terminal_objectives": [
+        "Move units out",
+        "Move units out"
+      ],
+      "result_counts": {
+        "Escape / withdrawal": 1
+      }
+    },
+    "AND: Move units to a place + Transport cargo / materials": {
+      "terminal_objectives": [
+        "Move units to a place",
+        "Transport cargo / materials"
+      ],
+      "result_counts": {
+        "Item / material assets": 1
+      }
+    },
+    "AND: Pick up item + Survive specified units": {
+      "terminal_objectives": [
+        "Pick up item",
+        "Survive specified units"
+      ],
+      "result_counts": {
+        "Item / material assets": 1
+      }
+    },
+    "Army escape": {
+      "terminal_objectives": [
+        "Army escape"
+      ],
+      "result_counts": {
+        "Escape / withdrawal": 16,
+        "Passage": 12,
+        "Enemy / threat removed": 1,
+        "Arrival": 5,
+        "People freed / recovered": 1,
+        "Setback / no durable gain": 1,
+        "Item / material assets": 2
+      }
+    },
+    "Capture units": {
+      "terminal_objectives": [
+        "Capture units"
+      ],
+      "result_counts": {
+        "Forces / allies": 3,
+        "Defense": 1
+      }
+    },
+    "Control territory": {
+      "terminal_objectives": [
+        "Control territory"
+      ],
+      "result_counts": {
+        "Defense": 2,
+        "Item / material assets": 3,
+        "Territory / position": 2,
+        "Forces / allies": 1,
+        "Authority / political status": 1
+      }
+    },
+    "Defeat enemies": {
+      "terminal_objectives": [
+        "Defeat enemies"
+      ],
+      "result_counts": {
+        "Defense": 28,
+        "People freed / recovered": 6,
+        "Enemy / threat removed": 40,
+        "Territory / position": 12,
+        "Forces / allies": 14,
+        "Passage": 24,
+        "Item / material assets": 6,
+        "Capability / training": 7,
+        "Authority / political status": 3,
+        "Escape / withdrawal": 13,
+        "Safety": 5,
+        "Information / discovery": 8,
+        "Arrival": 3,
+        "Setback / no durable gain": 3
+      }
+    },
+    "Deliver item": {
+      "terminal_objectives": [
+        "Deliver item"
+      ],
+      "result_counts": {
+        "Item / material assets": 1
+      }
+    },
+    "Find an NPC": {
+      "terminal_objectives": [
+        "Find an NPC"
+      ],
+      "result_counts": {
+        "People freed / recovered": 1
+      }
+    },
+    "Free / rescue people": {
+      "terminal_objectives": [
+        "Free / rescue people"
+      ],
+      "result_counts": {
+        "People freed / recovered": 3
+      }
+    },
+    "Move units out": {
+      "terminal_objectives": [
+        "Move units out"
+      ],
+      "result_counts": {
+        "People freed / recovered": 2,
+        "Forces / allies": 1
+      }
+    },
+    "Move units to a place": {
+      "terminal_objectives": [
+        "Move units to a place"
+      ],
+      "result_counts": {
+        "Enemy / threat removed": 1,
+        "Defense": 1,
+        "Forces / allies": 2,
+        "Arrival": 4,
+        "Escape / withdrawal": 1,
+        "Information / discovery": 1,
+        "Item / material assets": 1
+      }
+    },
+    "Operate / destroy structures": {
+      "terminal_objectives": [
+        "Operate / destroy structures"
+      ],
+      "result_counts": {
+        "Safety": 1,
+        "Item / material assets": 1,
+        "Enemy / threat removed": 2
+      }
+    },
+    "Pick up item": {
+      "terminal_objectives": [
+        "Pick up item"
+      ],
+      "result_counts": {
+        "Item / material assets": 1
+      }
+    },
+    "Pursue": {
+      "terminal_objectives": [
+        "Pursue"
+      ],
+      "result_counts": {
+        "Item / material assets": 1,
+        "Information / discovery": 1
+      }
+    },
+    "Special task": {
+      "terminal_objectives": [
+        "Special task"
+      ],
+      "result_counts": {
+        "Defense": 2,
+        "Time / preparation gained": 1,
+        "Setback / no durable gain": 1
+      }
+    },
+    "Survive leaders": {
+      "terminal_objectives": [
+        "Survive leaders"
+      ],
+      "result_counts": {
+        "Escape / withdrawal": 1,
+        "Defense": 3,
+        "Safety": 1,
+        "Item / material assets": 1,
+        "Enemy / threat removed": 1,
+        "Forces / allies": 1,
+        "Setback / no durable gain": 1
+      }
+    },
+    "Survive specified units": {
+      "terminal_objectives": [
+        "Survive specified units"
+      ],
+      "result_counts": {
+        "Defense": 4,
+        "Item / material assets": 2,
+        "Forces / allies": 6,
+        "Setback / no durable gain": 1,
+        "Escape / withdrawal": 1,
+        "Safety": 3,
+        "Arrival": 1,
+        "People freed / recovered": 1,
+        "Information / discovery": 1
+      }
+    },
+    "Transport cargo / materials": {
+      "terminal_objectives": [
+        "Transport cargo / materials"
+      ],
+      "result_counts": {
+        "Item / material assets": 2
+      }
+    }
+  },
+  "result_reference": "Derived from objective_results.json by results.py; one bound result per successful source completion, AND terminals conditioned jointly. Consumed by the objective sampler: one conditional result per finishing route; missing joint contexts reject the walk."
+}
