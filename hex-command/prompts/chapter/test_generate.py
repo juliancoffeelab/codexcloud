@@ -5,6 +5,16 @@ import generate
 
 
 class ChapterCompositionTests(unittest.TestCase):
+    def test_prompt_carries_selected_context_and_sampled_story_definition(self):
+        result = generate.sample(1, 42, "opening")
+        context = "Selected enemy: Black Banner. Selected protagonist: King's March."
+        prompt = generate.render_prompt(result, "/campaign/world-design.md", context)
+        self.assertIn(context, prompt)
+        self.assertIn("/campaign/world-design.md", prompt)
+        self.assertIn(result["chapters"][0]["story_kind_definition"], prompt)
+        self.assertIn("Sample beyond the most likely answers", prompt)
+        self.assertNotIn("{{ingredients}}", prompt)
+
     def test_story_transitions_and_correlated_events_share_one_output(self):
         opening_kind = next(iter(generate.BATTLE_TRANSITIONS["opening-middle"]))
         middle_kind = next(iter(generate.BATTLE_TRANSITIONS["middle-middle"]))

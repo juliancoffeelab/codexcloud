@@ -7,7 +7,8 @@ Run from the project root:
         --previous-kind "Success, Then Trouble" --count 10 --seed 42
 
 Without --output, print JSON. With --output, save sample.json and table.md in a
-new directory. Classified data live beside the scripts;
+new directory. With --context, also render prompt.md for Luna; without --output,
+--context prints that prompt instead of JSON. Classified data live beside the scripts;
 story-kind counts and transitions are inline. No research files in tmp/ are read.
 
 The coordinator supplies the existing situation and subjects. Luna connects the
@@ -294,6 +295,17 @@ def render_chapters(result):
     return "\n".join(lines)
 
 
+def render_prompt(result, skill_path, context):
+    words = {1: "one", 2: "two", 3: "three", 4: "four", 5: "five",
+             6: "six", 7: "seven", 8: "eight", 9: "nine", 10: "ten"}
+    return (Path(__file__).with_name("prompt.md").read_text()
+            .replace("{{skill_path}}", str(skill_path))
+            .replace("{{position}}", result["position"])
+            .replace("{{count}}", words.get(result["count"], str(result["count"])))
+            .replace("{{context}}", context.strip())
+            .replace("{{ingredients}}", render_chapters(result)))
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--count", type=int, default=10)
@@ -305,6 +317,10 @@ def main():
                         help="Story kind of the previous battle; required for middle/finale")
     parser.add_argument("--seed", type=int, help="Reproduce a batch; otherwise use a fresh seed")
     parser.add_argument("--output", type=Path, help="New directory for sample.json and table.md")
+    parser.add_argument("--context", type=Path,
+                        help="Selected factions, current situation and previous achievements; renders a Luna prompt")
+    parser.add_argument("--skill-path", type=Path,
+                        default=Path(__file__).resolve().parents[2] / ".agents/skills/design-campaign/world-design.md")
     parser.add_argument("--event-prior-strength", type=float, default=20,
                         help="Shrink sparse event correlations toward baseline (default: 20)")
     args = parser.parse_args()
@@ -312,6 +328,10 @@ def main():
         parser.error("--count must be positive")
     if args.output and args.output.exists():
         parser.error("--output must be a new directory; existing files will not be overwritten")
+    if args.context and not args.context.is_file():
+        parser.error(f"Chapter context not found: {args.context}")
+    if args.context and not args.skill_path.is_file():
+        parser.error(f"Campaign design rules not found: {args.skill_path}")
     seed = args.seed if args.seed is not None else random.SystemRandom().getrandbits(64)
     try:
         result = sample(args.count, seed, args.position, args.previous_position, args.previous_kind,
@@ -319,11 +339,19 @@ def main():
     except ValueError as error:
         parser.error(str(error))
     serialized = json.dumps(result, ensure_ascii=False, indent=2) + "\n"
+    prompt = (render_prompt(result, args.skill_path.resolve(), args.context.read_text())
+              if args.context else None)
     if args.output:
         args.output.mkdir(parents=True)
         (args.output / "sample.json").write_text(serialized, encoding="utf-8")
         (args.output / "table.md").write_text(render_chapters(result), encoding="utf-8")
         print(f"Seed: {seed}\n{args.output / 'sample.json'}\n{args.output / 'table.md'}")
+        if prompt is not None:
+            (args.output / "prompt.md").write_text(prompt, encoding="utf-8")
+            print(args.output / "prompt.md")
+    elif prompt is not None:
+        print(f"Seed: {seed}", file=sys.stderr)
+        print(prompt, end="")
     else:
         print(serialized, end="")
 

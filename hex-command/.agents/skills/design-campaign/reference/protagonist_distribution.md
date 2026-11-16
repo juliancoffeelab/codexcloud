@@ -22,14 +22,14 @@ One dominant background per character for this tally. Ancestry, office and occup
 
 One category per initially assembled player group. A community can have soldiers; a professional company can defend its captain’s home. The category describes how the group exists and holds together at the outset.
 
-| Player faction                     |  Count |
-| ---------------------------------- | -----: |
-| People / community                 |     11 |
-| State-service company / expedition |      4 |
-| Professional company / commission  |      2 |
-| Dynastic rebel coalition           |      1 |
-| Research expedition                |      1 |
-| **Total**                          | **19** |
+| Player faction                    |  Count |
+| --------------------------------- | -----: |
+| People / community                |     11 |
+| Military group                    |      4 |
+| Professional company / commission |      2 |
+| Dynastic rebel coalition          |      1 |
+| Research expedition               |      1 |
+| **Total**                         | **19** |
 
 ## Pursuits by kind and role
 
