@@ -1,0 +1,153 @@
+{
+  "events": [
+    {
+      "id": "ash-lost",
+      "when": {
+        "killed": {
+          "character": "ash"
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Ash-Muzzle has fallen. The grove is lost."
+        }
+      ],
+      "priority": 100
+    },
+    {
+      "id": "pasture-cleared",
+      "when": {
+        "own": {
+          "tile": {
+            "location": "pasture"
+          },
+          "faction": "enemy",
+          "turns": 1
+        }
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Human cutters",
+              "portrait": "swordsman",
+              "text": "Trees down! Keep the lane clear for the riders."
+            },
+            {
+              "character": "ash",
+              "portrait": "wildkeeper",
+              "text": "They have opened a lane. Take the village and I can bring the roots back."
+            }
+          ]
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "cut-west"
+            },
+            "terrain": "plains"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "cut-north"
+            },
+            "terrain": "plains"
+          }
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "location": "patrol-camp"
+            },
+            "radius": 2,
+            "units": ["spearman"]
+          }
+        },
+        {
+          "setFlag": "first-village-cut"
+        }
+      ]
+    },
+    {
+      "id": "pasture-restored",
+      "when": {
+        "all": [
+          {
+            "flag": "first-village-cut"
+          },
+          {
+            "own": {
+              "tile": {
+                "location": "pasture"
+              },
+              "faction": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "ash",
+              "portrait": "wildkeeper",
+              "text": "The cutters have lost their shelter. Up, roots. Close the road they made."
+            }
+          ]
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "cut-west"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "cut-north"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "setFlag": "first-village-restored"
+        }
+      ]
+    },
+    {
+      "id": "patrol-defeated",
+      "when": {
+        "noUnits": {
+          "faction": "enemy"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "feeding-trail-open"
+        },
+        {
+          "victory": "The patrol is gone. The packs can use the feeding trail."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Defeat Merek’s occupying patrol",
+        "intent": {
+          "defeat": {
+            "faction": "enemy"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "optional": false,
+        "playerMarker": null
+      }
+    }
+  ]
+}

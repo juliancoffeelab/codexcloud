@@ -1,0 +1,41 @@
+{
+  "subtitle": "The Waterworks Ridge",
+  "briefing": [
+    {
+      "when": {
+        "flag": "culvert-parley"
+      },
+      "text": "Bryn has shown Mira the dry culvert mouth beneath the southern arch. Open its stone door to gain a passage through the ridge."
+    },
+    {
+      "text": "The recovered chest has equipped a fresh levy. Defeat the Circle’s road screen to gain access to the waterworks ridge. Mira knows the boundary stone can choke the road with thorns."
+    }
+  ],
+  "hints": [],
+  "intro": [
+    {
+      "character": "mira",
+      "text": "The chest bought us another levy. Keep the casters behind the shields; those thorn shields tear apart anything that rushes them."
+    },
+    {
+      "character": "sere",
+      "portrait": "thorncaller",
+      "text": "The ridge is closed, and our spears hold the road. Go back to your tomb."
+    },
+    {
+      "character": "mira",
+      "text": "Your roots are in my master’s ground. Break the screen. I will have someone show me a way through this ridge."
+    }
+  ],
+  "victory": [
+    {
+      "character": "mira",
+      "text": "The channel is dry from end to end. Our riders can come out behind the Circle’s line."
+    },
+    {
+      "character": "mira",
+      "text": "Bring the levy through. The cistern will be ours again before Vael can close this passage."
+    }
+  ],
+  "debrief": "Mira has opened a dry service passage through the ridge. Bryn’s local agreement permits woodland auxiliaries while the grove remains uncut; the main levy remains skeletal."
+}

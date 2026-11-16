@@ -1,0 +1,183 @@
+{
+  "events": [
+    {
+      "id": "ash-lost",
+      "when": {
+        "killed": {
+          "character": "ash"
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Ash-Muzzle has fallen. The grove is lost."
+        }
+      ],
+      "priority": 100
+    },
+    {
+      "id": "exposed-pasture-edge",
+      "when": {
+        "all": [
+          {
+            "chapterStarted": true
+          },
+          {
+            "flag": "first-village-cut"
+          },
+          {
+            "not": {
+              "flag": "first-village-restored"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "pasture-edge-a"
+            },
+            "terrain": "plains"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "pasture-edge-b"
+            },
+            "terrain": "plains"
+          }
+        }
+      ]
+    },
+    {
+      "id": "old-root-claimed",
+      "when": {
+        "all": [
+          {
+            "own": {
+              "tile": {
+                "location": "old-root"
+              },
+              "faction": "player"
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "location": "old-root"
+              },
+              "faction": "player",
+              "character": "ash"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "ash",
+              "portrait": "wildkeeper",
+              "text": "Old Root, I will not leave you to stand alone. Give my company your thorns."
+            }
+          ]
+        },
+        {
+          "unlockRecruits": {
+            "faction": "player",
+            "units": [
+              {
+                "unit": "thorncaller"
+              }
+            ]
+          }
+        },
+        {
+          "setFlag": "old-root-claimed"
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Bring Ash-Muzzle to Old Root to unlock thorncaller recruits",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "old-root"
+            },
+            "character": "ash"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "optional": true,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "root-alliance",
+      "when": {
+        "noUnits": {
+          "faction": "enemy"
+        }
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "location": "old-root"
+            },
+            "radius": 2,
+            "units": [
+              {
+                "type": "thorncaller",
+                "character": "pip"
+              }
+            ]
+          }
+        },
+        {
+          "say": [
+            {
+              "character": "ash",
+              "portrait": "wildkeeper",
+              "text": "The causeway is ours. Come out, thorncallers. I have come to lead the valley against Merek, and I need you with me."
+            }
+          ]
+        },
+        {
+          "unlockRecruits": {
+            "faction": "player",
+            "units": [
+              {
+                "unit": "thorncaller"
+              }
+            ]
+          }
+        },
+        {
+          "setFlag": "root-alliance"
+        },
+        {
+          "victory": "The garrison is broken. Old Root joins Ash-Muzzle."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Defeat the causeway garrison to unite with Old Root",
+        "intent": {
+          "defeat": {
+            "faction": "enemy"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "optional": false,
+        "playerMarker": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,316 @@
+{
+  "events": [
+    {
+      "id": "mira-lost",
+      "when": {
+        "killed": {
+          "character": "mira"
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Mira is destroyed. The unbound servants collapse, and the Circle takes the estate."
+        }
+      ],
+      "priority": 100
+    },
+    {
+      "id": "culvert-thorn-growth",
+      "when": {
+        "all": [
+          {
+            "stand": {
+              "tile": {
+                "location": "boundary-stone"
+              },
+              "faction": "enemy",
+              "through": false
+            }
+          },
+          {
+            "not": {
+              "chapterStarted": true
+            }
+          },
+          {
+            "not": {
+              "flag": "culvert-stone-broken"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "vael",
+              "portrait": "thorncaller",
+              "text": "Let the road take root. There will be no more digging through our grove."
+            }
+          ]
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "thorn-west"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "thorn-mid"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "thorn-east"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "unlockRecruits": {
+            "faction": "enemy",
+            "units": [
+              {
+                "unit": "fox-spearguard"
+              }
+            ]
+          }
+        },
+        {
+          "setFlag": "culvert-thorns-grown"
+        }
+      ]
+    },
+    {
+      "id": "culvert-break-stone",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "boundary-stone"
+          },
+          "faction": "player",
+          "through": false
+        }
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "Break its seam. Vael will not grow another road barrier from this stone."
+            }
+          ]
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "boundary-stone"
+            },
+            "terrain": "ruins"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "thorn-west"
+            },
+            "terrain": "plains"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "thorn-mid"
+            },
+            "terrain": "plains"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "thorn-east"
+            },
+            "terrain": "plains"
+          }
+        },
+        {
+          "setFlag": "culvert-stone-broken"
+        }
+      ]
+    },
+    {
+      "id": "culvert-parley",
+      "when": {
+        "noUnits": {
+          "faction": "enemy"
+        }
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "bryn",
+              "portrait": "fox-spearguard",
+              "text": "Enough. I tended these waterworks before your master took the crypt. There is a dry service channel under the ridge."
+            },
+            {
+              "character": "mira",
+              "text": "Then show me."
+            },
+            {
+              "character": "bryn",
+              "portrait": "fox-spearguard",
+              "text": "Your word first: no trees cut inside the grove. Vael’s roots have crossed the old boundary, but I will not trade our trees for your road."
+            },
+            {
+              "character": "mira",
+              "text": "I need the cistern. Keep your trees. Walk with us, and see that I keep my word."
+            },
+            {
+              "character": "bryn",
+              "portrait": "fox-spearguard",
+              "text": "The old arch to the south is the mouth. Clear the latch and the stone door will open. I will bring others who accept these terms."
+            }
+          ]
+        },
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "hex": {
+                "col": 5,
+                "row": 7
+              }
+            },
+            "radius": 2,
+            "units": [
+              {
+                "type": "fox-spearguard",
+                "character": "bryn"
+              }
+            ]
+          }
+        },
+        {
+          "unlockRecruits": {
+            "faction": "player",
+            "units": [
+              {
+                "unit": "fox-spearguard",
+                "cost": 18
+              }
+            ]
+          }
+        },
+        {
+          "setFlag": "culvert-parley"
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Defeat the Circle’s road screen",
+        "intent": {
+          "defeat": {
+            "faction": "enemy"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        }
+      }
+    },
+    {
+      "id": "culvert-open",
+      "when": {
+        "all": [
+          {
+            "flag": "culvert-parley"
+          },
+          {
+            "stand": {
+              "tile": {
+                "location": "culvert-mouth"
+              },
+              "faction": "player",
+              "through": false
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "Pull the stone back. Leave the passage wide enough for the riders."
+            }
+          ]
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "culvert-block-west"
+            },
+            "terrain": "ruins"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "culvert-block-east"
+            },
+            "terrain": "ruins"
+          }
+        },
+        {
+          "setFlag": "culvert-opened"
+        },
+        {
+          "victory": "The dry culvert opens a route to the estate cistern."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Open the stone door at the dry culvert mouth",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "culvert-mouth"
+            },
+            "faction": "player",
+            "through": false
+          }
+        },
+        "visibleWhen": {
+          "flag": "culvert-parley"
+        }
+      }
+    },
+    {
+      "id": "earned-lich",
+      "when": {
+        "hasUnits": {
+          "character": "mira",
+          "unitTypes": ["lich", "lich-commander-l3"]
+        }
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "The grave-bolt strikes harder now. Keep the servants between me and those roots."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

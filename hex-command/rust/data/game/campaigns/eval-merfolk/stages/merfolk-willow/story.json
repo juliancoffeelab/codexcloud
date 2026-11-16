@@ -1,0 +1,34 @@
+{
+  "subtitle": "The Captain at the Spring",
+  "briefing": [
+    {
+      "when": {
+        "flag": "focus-broken"
+      },
+      "text": "The root focus is broken. Defeat the Root-Crown Mother to end her hold on the spring."
+    },
+    {
+      "text": "The united watch approaches the willow through the inlet. Break the forward guards and destroy the root focus at the springhead, then defeat the Mother. Orra and Mares must survive."
+    }
+  ],
+  "hints": [],
+  "intro": [],
+  "victory": [
+    {
+      "character": "mares",
+      "portrait": "tidekeeper",
+      "text": "Both crews heard your orders. Both came home. I will not split this company again."
+    },
+    {
+      "character": "orra",
+      "portrait": "tidekeeper",
+      "text": "Then call the watch together. We keep the spring, and we keep the willow’s standing roots out of the saws."
+    },
+    {
+      "character": "mares",
+      "portrait": "tidekeeper",
+      "text": "That sounds like an order, Captain Orra."
+    }
+  ],
+  "debrief": "The Mother’s root focus lies broken. The watch holds the spring and works only the already cleared bank. Both crews recognize Orra as their captain."
+}

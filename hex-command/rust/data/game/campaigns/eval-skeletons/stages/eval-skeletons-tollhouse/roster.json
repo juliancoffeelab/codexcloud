@@ -1,0 +1,159 @@
+{
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "visionGroup": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "relations": {
+        "enemy": "hostile"
+      },
+      "gold": 24,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        },
+        {
+          "unit": "skeleton-rider"
+        },
+        {
+          "unit": "skeleton-axeman"
+        }
+      ],
+      "units": [
+        {
+          "type": "necromancer",
+          "tile": {
+            "col": 2,
+            "row": 5
+          },
+          "character": "mira",
+          "role": "leader"
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 3,
+            "row": 4
+          }
+        },
+        {
+          "type": "skeleton-impact-caster",
+          "tile": {
+            "col": 3,
+            "row": 5
+          }
+        },
+        {
+          "type": "bonearcher",
+          "tile": {
+            "col": 2,
+            "row": 6
+          }
+        },
+        {
+          "type": "skeleton-rider",
+          "tile": {
+            "col": 3,
+            "row": 6
+          }
+        }
+      ]
+    },
+    {
+      "id": "enemy",
+      "phase": "ai",
+      "visionGroup": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "relations": {
+        "player": "hostile"
+      },
+      "gold": 8,
+      "recruits": [
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "thorncaller"
+        }
+      ],
+      "units": [
+        {
+          "type": "thorncaller",
+          "tile": {
+            "col": 12,
+            "row": 4
+          },
+          "character": "rusk",
+          "role": "leader"
+        },
+        {
+          "type": "fox-spearguard",
+          "tile": {
+            "col": 8,
+            "row": 3
+          }
+        },
+        {
+          "type": "wolf",
+          "tile": {
+            "col": 9,
+            "row": 4
+          }
+        },
+        {
+          "type": "fox-spearguard",
+          "tile": {
+            "col": 10,
+            "row": 5
+          }
+        },
+        {
+          "type": "thorncaller",
+          "tile": {
+            "col": 11,
+            "row": 6
+          }
+        },
+        {
+          "type": "briarweaver",
+          "tile": {
+            "col": 12,
+            "row": 6
+          },
+          "character": "vesh"
+        }
+      ]
+    }
+  ]
+}

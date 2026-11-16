@@ -1,0 +1,52 @@
+{
+  "id": "eval-woodland",
+  "name": "One Voice in the Briars",
+  "tagline": "Three battles for a valley that has never followed one keeper.",
+  "description": "Ash-Muzzle means to unite the scattered woodland packs. A chief’s private revenge has brought human spears into their feeding woods. Win the packs, recover the groves, and break the occupation before the valley is cleared.",
+  "shortDescription": "Lead woodland folk against a local chief’s revenge.",
+  "race": "beast",
+  "leader": "wildkeeper",
+  "tags": ["woodland"],
+  "characters": [
+    {
+      "id": "ash",
+      "name": "Ash-Muzzle"
+    },
+    {
+      "id": "sedge",
+      "name": "Sedge"
+    },
+    {
+      "id": "pip",
+      "name": "Pip"
+    },
+    {
+      "id": "yara",
+      "name": "Wildkeeper Yara"
+    },
+    {
+      "id": "merek",
+      "name": "Chief Merek"
+    },
+    {
+      "id": "watch-captain",
+      "name": "Captain Harl"
+    },
+    {
+      "id": "causeway-captain",
+      "name": "Captain Venn"
+    }
+  ],
+  "ending": [
+    {
+      "portrait": "wildkeeper",
+      "text": "The packs do not move into a palace, and Old Root does not bow to one. But when a runner brings word of spears on the trail, they gather at the same keep. Ash-Muzzle has the voice he fought for; now he has to answer it.",
+      "speaker": "Afterwards"
+    }
+  ],
+  "stages": [
+    "stages/woodland-pasture/stage.json",
+    "stages/woodland-old-root/stage.json",
+    "stages/woodland-valley-mouth/stage.json"
+  ]
+}

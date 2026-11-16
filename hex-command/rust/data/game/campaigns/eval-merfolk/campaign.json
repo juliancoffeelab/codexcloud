@@ -1,0 +1,64 @@
+{
+  "id": "eval-merfolk",
+  "name": "The Split-Reef Command",
+  "tagline": "Two crews. One disputed spring.",
+  "description": "Orra means to take command of a divided merfolk watch. When the Root-Crown Mother drives both crews from their freshwater spring, Orra must bring the watch together and break the roots that hold the bank.",
+  "shortDescription": "Unite a merfolk watch and retake its spring in three chapters.",
+  "race": "merfolk",
+  "leader": "tidekeeper",
+  "tags": ["merfolk"],
+  "characters": [
+    {
+      "id": "orra",
+      "name": "Orra"
+    },
+    {
+      "id": "rell",
+      "name": "Rell"
+    },
+    {
+      "id": "vessa",
+      "name": "Vessa"
+    },
+    {
+      "id": "bank-warden",
+      "name": "Willow-bank warden"
+    },
+    {
+      "id": "mother",
+      "name": "Root-Crown Mother"
+    },
+    {
+      "id": "mares",
+      "name": "Captain Mares"
+    },
+    {
+      "id": "selka",
+      "name": "Selka"
+    },
+    {
+      "id": "den-warden",
+      "name": "Den warden"
+    },
+    {
+      "id": "cell-guard",
+      "name": "Cell guard"
+    },
+    {
+      "id": "freed-scout",
+      "name": "Released scout"
+    }
+  ],
+  "ending": [
+    {
+      "character": "orra",
+      "portrait": "tidekeeper",
+      "text": "One watch at the spring, one at the inlet. Change the guards together. Nobody leaves a crew behind again."
+    }
+  ],
+  "stages": [
+    "stages/merfolk-cut-off/stage.json",
+    "stages/merfolk-two-standards/stage.json",
+    "stages/merfolk-willow/stage.json"
+  ]
+}

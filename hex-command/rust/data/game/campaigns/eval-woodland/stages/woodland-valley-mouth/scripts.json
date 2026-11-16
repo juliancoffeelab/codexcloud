@@ -1,0 +1,135 @@
+{
+  "events": [
+    {
+      "id": "ash-lost",
+      "when": {
+        "killed": {
+          "character": "ash"
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Ash-Muzzle has fallen. The grove is lost."
+        }
+      ],
+      "priority": 100
+    },
+    {
+      "id": "tent-discovery",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "merek-tent"
+          },
+          "faction": "player",
+          "character": "ash"
+        }
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "ash",
+              "portrait": "wildkeeper",
+              "text": "His brother’s orders, kept beside his own. Cut the grove, then drive out whoever remains. Yara killed him defending those trees."
+            },
+            {
+              "character": "ash",
+              "portrait": "wildkeeper",
+              "text": "Merek knew. His grief was real, but the valley claim was how he made others fight for it."
+            }
+          ]
+        },
+        {
+          "setFlag": "merek-pretext-revealed"
+        }
+      ]
+    },
+    {
+      "id": "occupation-ended",
+      "when": {
+        "noUnits": {
+          "faction": "enemy"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "woodland-united"
+        },
+        {
+          "victory": "Merek and his field force are defeated. The united woodland folk reclaim their valley."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Defeat Merek and his entire occupying force",
+        "intent": {
+          "defeat": {
+            "faction": "enemy"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "optional": false,
+        "playerMarker": null
+      }
+    }
+  ],
+  "enemyGroups": [
+    {
+      "id": "bow-ridge",
+      "order": {
+        "kind": "hold",
+        "area": [
+          {
+            "hex": {
+              "col": 10,
+              "row": 3
+            }
+          },
+          {
+            "hex": {
+              "col": 11,
+              "row": 2
+            }
+          }
+        ],
+        "attackRadius": 3
+      }
+    },
+    {
+      "id": "shelf-rider",
+      "order": {
+        "kind": "hold",
+        "area": [
+          {
+            "hex": {
+              "col": 9,
+              "row": 1
+            }
+          },
+          {
+            "hex": {
+              "col": 8,
+              "row": 1
+            }
+          }
+        ],
+        "attackRadius": 4
+      }
+    },
+    {
+      "id": "merek-command",
+      "order": {
+        "kind": "hold",
+        "area": [
+          {
+            "location": "merek-keep"
+          }
+        ],
+        "attackRadius": 3
+      }
+    }
+  ]
+}

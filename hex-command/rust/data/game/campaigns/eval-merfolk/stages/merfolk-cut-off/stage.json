@@ -1,0 +1,7 @@
+{
+  "id": "merfolk-cut-off",
+  "map": "map.json",
+  "roster": "roster.json",
+  "story": "story.json",
+  "scripts": "scripts.json"
+}

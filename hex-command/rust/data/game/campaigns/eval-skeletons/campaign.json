@@ -1,0 +1,55 @@
+{
+  "id": "eval-skeletons",
+  "name": "The Master’s Cistern",
+  "tagline": "The dead want their road back. The grove wants it buried.",
+  "description": "The Thornward Circle has closed the road to a lich’s cistern. His undead steward Mira must recover the occupied tollhouse chest and keep the estate from disappearing beneath Vael’s roots.",
+  "shortDescription": "Command Mira’s skeletal levy in a three-chapter struggle over a crypt road and its waterworks.",
+  "race": "skeletons",
+  "leader": "necromancer",
+  "tags": ["human", "skeletons"],
+  "characters": [
+    {
+      "id": "mira",
+      "name": "Grave Adept Mira"
+    },
+    {
+      "id": "vael",
+      "name": "Thorncaller Vael"
+    },
+    {
+      "id": "rusk",
+      "name": "Warden Rusk"
+    },
+    {
+      "id": "vesh",
+      "name": "Root-caster Vesh"
+    },
+    {
+      "id": "sere",
+      "name": "Warden Sere"
+    },
+    {
+      "id": "bryn",
+      "name": "Bryn"
+    },
+    {
+      "id": "rear-watch",
+      "name": "The rear watch"
+    },
+    {
+      "id": "outlier",
+      "name": "The patrol outrider"
+    }
+  ],
+  "ending": [
+    {
+      "character": "mira",
+      "text": "Leave the grave-soil by the grove alone. We have a passage under the ridge now, and I will not spend another levy defending our master’s stubbornness."
+    }
+  ],
+  "stages": [
+    "stages/eval-skeletons-tollhouse/stage.json",
+    "stages/eval-skeletons-culvert/stage.json",
+    "stages/eval-skeletons-cistern/stage.json"
+  ]
+}

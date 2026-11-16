@@ -1,0 +1,169 @@
+{
+  "events": [
+    {
+      "id": "chart-found",
+      "when": {
+        "proximity": {
+          "tile": {
+            "location": "downstream"
+          },
+          "radius": 2,
+          "side": "player"
+        }
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "orra",
+              "portrait": "tidekeeper",
+              "text": "A current-map, caught under this mooring stone. These lines run beneath the old willow. That is where her roots join."
+            },
+            {
+              "character": "orra",
+              "portrait": "tidekeeper",
+              "text": "We have a way back and a place to strike. Let the captains argue with that."
+            }
+          ]
+        },
+        {
+          "setFlag": "chart-found"
+        }
+      ],
+      "priority": 20
+    },
+    {
+      "id": "escape",
+      "when": {
+        "all": [
+          {
+            "stand": {
+              "tile": {
+                "location": "downstream"
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "flag": "chart-found"
+          },
+          {
+            "stand": {
+              "tile": {
+                "location": "downstream"
+              },
+              "character": "orra",
+              "side": "player",
+              "through": true
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "downstream-passage"
+        },
+        {
+          "victory": "Orra and the surviving detachment leave through the downstream channel."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Bring Orra to the downstream landing",
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "intent": {
+          "escape": {
+            "tile": {
+              "location": "downstream"
+            },
+            "character": "orra",
+            "side": "player"
+          }
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "downstream"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "first-roots",
+      "when": {
+        "all": [
+          {
+            "turnAtLeast": 4
+          },
+          {
+            "not": {
+              "flag": "focus-broken"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "root-a"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "root-b"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "log": "Living roots spread across the marked bank."
+        }
+      ]
+    },
+    {
+      "id": "second-roots",
+      "when": {
+        "all": [
+          {
+            "turnAtLeast": 7
+          },
+          {
+            "not": {
+              "flag": "focus-broken"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "root-c"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "root-d"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "log": "Living roots spread across the marked bank."
+        }
+      ]
+    }
+  ]
+}

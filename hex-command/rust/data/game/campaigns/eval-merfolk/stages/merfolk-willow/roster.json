@@ -1,0 +1,174 @@
+{
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "visionGroup": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "relations": {
+        "enemy": "hostile"
+      },
+      "gold": 24,
+      "recruits": [
+        {
+          "unit": "reefguard"
+        },
+        {
+          "unit": "harpooner"
+        },
+        {
+          "unit": "wavemender"
+        },
+        {
+          "unit": "merfolk-maceguard"
+        }
+      ],
+      "units": [
+        {
+          "type": "tidekeeper",
+          "tile": {
+            "col": 2,
+            "row": 5
+          },
+          "character": "orra",
+          "role": "leader"
+        },
+        {
+          "type": "harpooner",
+          "tile": {
+            "col": 3,
+            "row": 4
+          },
+          "character": "rell"
+        },
+        {
+          "type": "wavemender",
+          "tile": {
+            "col": 2,
+            "row": 6
+          },
+          "character": "vessa"
+        },
+        {
+          "type": "reefguard",
+          "tile": {
+            "col": 3,
+            "row": 5
+          }
+        },
+        {
+          "type": "merfolk-maceguard",
+          "tile": {
+            "col": 3,
+            "row": 6
+          }
+        },
+        {
+          "type": "tidekeeper",
+          "tile": {
+            "col": 4,
+            "row": 5
+          },
+          "character": "mares"
+        }
+      ]
+    },
+    {
+      "id": "enemy",
+      "phase": "ai",
+      "visionGroup": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "relations": {
+        "player": "hostile"
+      },
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "wildkeeper",
+          "tile": {
+            "col": 15,
+            "row": 2
+          },
+          "character": "mother",
+          "role": "leader",
+          "aiGroup": "mother"
+        },
+        {
+          "type": "thorncaller",
+          "tile": {
+            "col": 12,
+            "row": 4
+          },
+          "aiGroup": "forward"
+        },
+        {
+          "type": "fox-spearguard",
+          "tile": {
+            "col": 10,
+            "row": 4
+          },
+          "aiGroup": "forward"
+        },
+        {
+          "type": "fox-spearguard",
+          "tile": {
+            "col": 11,
+            "row": 4
+          },
+          "aiGroup": "forward"
+        },
+        {
+          "type": "wolf",
+          "tile": {
+            "col": 13,
+            "row": 5
+          },
+          "aiGroup": "raiders"
+        },
+        {
+          "type": "fox-spearguard",
+          "tile": {
+            "col": 13,
+            "row": 8
+          },
+          "character": "cell-guard",
+          "aiGroup": "cell"
+        }
+      ]
+    }
+  ],
+  "arrivals": [
+    {
+      "character": "selka",
+      "tile": {
+        "col": 4,
+        "row": 6
+      }
+    }
+  ]
+}

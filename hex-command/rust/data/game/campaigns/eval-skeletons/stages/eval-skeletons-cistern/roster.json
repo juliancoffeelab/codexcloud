@@ -1,0 +1,232 @@
+{
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "visionGroup": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "relations": {
+        "enemy": "hostile",
+        "prisoners": "neutral"
+      },
+      "gold": 44,
+      "recruits": [
+        {
+          "unit": "skeleton"
+        },
+        {
+          "unit": "bonearcher"
+        },
+        {
+          "unit": "skeleton-impact-caster"
+        },
+        {
+          "unit": "skeleton-rider"
+        },
+        {
+          "unit": "skeleton-axeman"
+        }
+      ],
+      "units": [
+        {
+          "type": "necromancer",
+          "tile": {
+            "col": 2,
+            "row": 6
+          },
+          "character": "mira",
+          "role": "leader"
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 3,
+            "row": 5
+          }
+        },
+        {
+          "type": "skeleton-impact-caster",
+          "tile": {
+            "col": 3,
+            "row": 6
+          }
+        },
+        {
+          "type": "bonearcher",
+          "tile": {
+            "col": 2,
+            "row": 7
+          }
+        },
+        {
+          "type": "skeleton-rider",
+          "tile": {
+            "col": 3,
+            "row": 7
+          }
+        },
+        {
+          "type": "skeleton-rider",
+          "tile": {
+            "col": 2,
+            "row": 9
+          },
+          "character": "rear-watch"
+        }
+      ]
+    },
+    {
+      "id": "enemy",
+      "phase": "ai",
+      "visionGroup": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "relations": {
+        "player": "hostile",
+        "prisoners": "neutral"
+      },
+      "gold": 16,
+      "recruits": [
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "thorncaller"
+        },
+        {
+          "unit": "fox-spearguard"
+        }
+      ],
+      "units": [
+        {
+          "type": "thorncaller",
+          "tile": {
+            "col": 15,
+            "row": 6
+          },
+          "character": "vael",
+          "role": "leader"
+        },
+        {
+          "type": "fox-spearguard",
+          "tile": {
+            "col": 10,
+            "row": 7
+          },
+          "aiGroup": "screen"
+        },
+        {
+          "type": "fox-spearguard",
+          "tile": {
+            "col": 11,
+            "row": 8
+          },
+          "aiGroup": "screen"
+        },
+        {
+          "type": "thorncaller",
+          "tile": {
+            "col": 11,
+            "row": 6
+          },
+          "aiGroup": "screen"
+        },
+        {
+          "type": "wolf",
+          "tile": {
+            "col": 10,
+            "row": 8
+          },
+          "aiGroup": "screen"
+        },
+        {
+          "type": "briarweaver",
+          "tile": {
+            "col": 13,
+            "row": 7
+          }
+        },
+        {
+          "type": "wolf",
+          "tile": {
+            "col": 14,
+            "row": 8
+          }
+        },
+        {
+          "type": "wolf",
+          "tile": {
+            "col": 15,
+            "row": 2
+          },
+          "character": "outlier",
+          "aiGroup": "outliers"
+        },
+        {
+          "type": "fox-spearguard",
+          "tile": {
+            "col": 14,
+            "row": 2
+          },
+          "aiGroup": "outliers"
+        },
+        {
+          "type": "fox-spearguard",
+          "tile": {
+            "col": 15,
+            "row": 3
+          },
+          "aiGroup": "outliers"
+        }
+      ]
+    },
+    {
+      "id": "prisoners",
+      "phase": "ai",
+      "visionGroup": "player",
+      "controller": {
+        "kind": "passive"
+      },
+      "palette": "enemy",
+      "relations": {
+        "player": "neutral",
+        "enemy": "neutral"
+      },
+      "gold": 0,
+      "recruits": [],
+      "units": []
+    }
+  ],
+  "arrivals": [
+    {
+      "character": "bryn",
+      "tile": {
+        "col": 3,
+        "row": 7
+      }
+    }
+  ]
+}

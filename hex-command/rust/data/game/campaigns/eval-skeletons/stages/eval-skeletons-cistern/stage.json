@@ -1,0 +1,7 @@
+{
+  "id": "eval-skeletons-cistern",
+  "map": "map.json",
+  "roster": "roster.json",
+  "story": "story.json",
+  "scripts": "scripts.json"
+}

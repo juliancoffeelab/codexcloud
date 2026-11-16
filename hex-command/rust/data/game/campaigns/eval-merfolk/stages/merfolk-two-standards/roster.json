@@ -1,0 +1,203 @@
+{
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "visionGroup": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "relations": {
+        "enemy": "hostile",
+        "rival": "allied"
+      },
+      "gold": 24,
+      "recruits": [
+        {
+          "unit": "reefguard"
+        },
+        {
+          "unit": "harpooner"
+        },
+        {
+          "unit": "wavemender"
+        },
+        {
+          "unit": "merfolk-maceguard"
+        }
+      ],
+      "units": [
+        {
+          "type": "tidekeeper",
+          "tile": {
+            "col": 2,
+            "row": 5
+          },
+          "character": "orra",
+          "role": "leader"
+        },
+        {
+          "type": "harpooner",
+          "tile": {
+            "col": 3,
+            "row": 4
+          },
+          "character": "rell"
+        },
+        {
+          "type": "wavemender",
+          "tile": {
+            "col": 2,
+            "row": 6
+          },
+          "character": "vessa"
+        },
+        {
+          "type": "reefguard",
+          "tile": {
+            "col": 3,
+            "row": 5
+          }
+        },
+        {
+          "type": "merfolk-maceguard",
+          "tile": {
+            "col": 3,
+            "row": 6
+          }
+        }
+      ]
+    },
+    {
+      "id": "enemy",
+      "phase": "ai",
+      "visionGroup": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "relations": {
+        "player": "hostile",
+        "rival": "hostile"
+      },
+      "gold": 18,
+      "recruits": [
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "fox-spearguard"
+        },
+        {
+          "unit": "thorncaller"
+        }
+      ],
+      "units": [
+        {
+          "type": "wildkeeper",
+          "tile": {
+            "col": 15,
+            "row": 4
+          },
+          "character": "den-warden",
+          "role": "leader"
+        },
+        {
+          "type": "wolf",
+          "tile": {
+            "col": 13,
+            "row": 3
+          }
+        },
+        {
+          "type": "wolf",
+          "tile": {
+            "col": 14,
+            "row": 6
+          }
+        },
+        {
+          "type": "fox-spearguard",
+          "tile": {
+            "col": 13,
+            "row": 5
+          }
+        },
+        {
+          "type": "thorncaller",
+          "tile": {
+            "col": 14,
+            "row": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "rival",
+      "phase": "player",
+      "visionGroup": "player",
+      "controller": {
+        "kind": "passive"
+      },
+      "palette": "player",
+      "name": "Mares’s crew",
+      "relations": {
+        "player": "allied",
+        "enemy": "hostile"
+      },
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "tidekeeper",
+          "tile": {
+            "col": 9,
+            "row": 5
+          },
+          "character": "mares"
+        },
+        {
+          "type": "wavemender",
+          "tile": {
+            "col": 8,
+            "row": 5
+          },
+          "character": "selka"
+        },
+        {
+          "type": "reefguard",
+          "tile": {
+            "col": 10,
+            "row": 5
+          }
+        },
+        {
+          "type": "reefguard",
+          "tile": {
+            "col": 9,
+            "row": 4
+          }
+        }
+      ]
+    }
+  ]
+}

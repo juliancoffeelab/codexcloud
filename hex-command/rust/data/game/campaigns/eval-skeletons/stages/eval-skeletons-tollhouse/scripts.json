@@ -1,0 +1,360 @@
+{
+  "events": [
+    {
+      "id": "mira-lost",
+      "when": {
+        "killed": {
+          "character": "mira"
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Mira is destroyed. The unbound servants collapse, and the Circle takes the estate."
+        }
+      ],
+      "priority": 100
+    },
+    {
+      "id": "toll-thorn-growth",
+      "when": {
+        "all": [
+          {
+            "stand": {
+              "tile": {
+                "location": "boundary-stone"
+              },
+              "faction": "enemy",
+              "through": false
+            }
+          },
+          {
+            "not": {
+              "chapterStarted": true
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "vael",
+              "portrait": "thorncaller",
+              "text": "Let the road take root. There will be no more digging through our grove."
+            }
+          ]
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "thorn-west"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "thorn-mid"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "thorn-east"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "unlockRecruits": {
+            "faction": "enemy",
+            "units": [
+              {
+                "unit": "fox-spearguard"
+              }
+            ]
+          }
+        },
+        {
+          "setFlag": "toll-thorns-grown"
+        }
+      ]
+    },
+    {
+      "id": "chest-recovered",
+      "when": {
+        "stand": {
+          "tile": {
+            "location": "chest"
+          },
+          "faction": "player",
+          "through": false
+        }
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "The chest is ours. Back to the crypt; I need servants, not a heap of broken bones."
+            }
+          ]
+        },
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 20
+          }
+        },
+        {
+          "setFlag": "toll-chest-recovered"
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Recover the toll chest in the occupied yard",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "chest"
+            },
+            "faction": "player",
+            "through": false
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        }
+      }
+    },
+    {
+      "id": "servant-home",
+      "when": {
+        "all": [
+          {
+            "flag": "toll-chest-recovered"
+          },
+          {
+            "stand": {
+              "tile": {
+                "location": "muster"
+              },
+              "faction": "player",
+              "unitTypes": [
+                "skeleton",
+                "skeleton-scythe-caster-l2",
+                "skeleton-rider-l3",
+                "skeleton-impact-caster-l3",
+                "skeleton-scythe-caster-l3",
+                "skeleton-flanker-l2",
+                "skeleton-axeman-l3",
+                "skeleton-dreadguard",
+                "skeleton-bow-master",
+                "bonearcher",
+                "skeleton-impact-caster-l2",
+                "skeleton-rider-l2",
+                "skeleton-axeman",
+                "skeleton-flanker-l3",
+                "skeleton-axeman-l2",
+                "deatharcher",
+                "revenant",
+                "skeleton-impact-caster",
+                "skeleton-rider"
+              ],
+              "through": false
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "toll-servant-home"
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Bring a skeletal servant to the crypt muster",
+        "intent": {
+          "escape": {
+            "tile": {
+              "location": "muster"
+            },
+            "faction": "player",
+            "unitTypes": [
+              "skeleton",
+              "skeleton-scythe-caster-l2",
+              "skeleton-rider-l3",
+              "skeleton-impact-caster-l3",
+              "skeleton-scythe-caster-l3",
+              "skeleton-flanker-l2",
+              "skeleton-axeman-l3",
+              "skeleton-dreadguard",
+              "skeleton-bow-master",
+              "bonearcher",
+              "skeleton-impact-caster-l2",
+              "skeleton-rider-l2",
+              "skeleton-axeman",
+              "skeleton-flanker-l3",
+              "skeleton-axeman-l2",
+              "deatharcher",
+              "revenant",
+              "skeleton-impact-caster",
+              "skeleton-rider"
+            ],
+            "through": false
+          }
+        },
+        "visibleWhen": {
+          "flag": "toll-chest-recovered"
+        }
+      }
+    },
+    {
+      "id": "mira-home",
+      "when": {
+        "all": [
+          {
+            "flag": "toll-chest-recovered"
+          },
+          {
+            "stand": {
+              "tile": {
+                "location": "crypt"
+              },
+              "faction": "player",
+              "through": false,
+              "character": "mira"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "toll-mira-home"
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Withdraw Mira to the crypt keep",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "crypt"
+            },
+            "faction": "player",
+            "through": false,
+            "character": "mira"
+          }
+        },
+        "visibleWhen": {
+          "flag": "toll-chest-recovered"
+        }
+      }
+    },
+    {
+      "id": "toll-pursuit",
+      "when": {
+        "all": [
+          {
+            "flag": "toll-chest-recovered"
+          },
+          {
+            "hasUnits": {
+              "character": "rusk"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "rusk",
+              "portrait": "thorncaller",
+              "text": "They have taken the chest. Cut them off at the road!"
+            }
+          ]
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 11,
+                "row": 2
+              }
+            },
+            "radius": 2,
+            "units": [
+              {
+                "type": "wolf"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "toll-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "toll-chest-recovered"
+          },
+          {
+            "stand": {
+              "tile": {
+                "location": "crypt"
+              },
+              "faction": "player",
+              "through": false,
+              "character": "mira"
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "location": "muster"
+              },
+              "faction": "player",
+              "unitTypes": [
+                "skeleton",
+                "skeleton-scythe-caster-l2",
+                "skeleton-rider-l3",
+                "skeleton-impact-caster-l3",
+                "skeleton-scythe-caster-l3",
+                "skeleton-flanker-l2",
+                "skeleton-axeman-l3",
+                "skeleton-dreadguard",
+                "skeleton-bow-master",
+                "bonearcher",
+                "skeleton-impact-caster-l2",
+                "skeleton-rider-l2",
+                "skeleton-axeman",
+                "skeleton-flanker-l3",
+                "skeleton-axeman-l2",
+                "deatharcher",
+                "revenant",
+                "skeleton-impact-caster",
+                "skeleton-rider"
+              ],
+              "through": false
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "toll-ward-understood"
+        },
+        {
+          "victory": "The toll chest and surviving patrol reach the crypt."
+        }
+      ],
+      "priority": -20
+    }
+  ]
+}

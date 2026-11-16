@@ -174,7 +174,10 @@
     "game/campaigns/rl-company-human/campaign.json",
     "game/campaigns/rl-company-skeletons/campaign.json",
     "game/campaigns/rl-company-woodland/campaign.json",
-    "game/campaigns/rl-company-coastal/campaign.json"
+    "game/campaigns/rl-company-coastal/campaign.json",
+    "game/campaigns/eval-merfolk/campaign.json",
+    "game/campaigns/eval-skeletons/campaign.json",
+    "game/campaigns/eval-woodland/campaign.json"
   ],
   "simulation": {
     "rosters": "simulation/rosters.json",

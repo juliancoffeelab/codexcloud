@@ -1,0 +1,113 @@
+{
+  "subtitle": "One Voice at the Valley Mouth",
+  "briefing": "Merek’s own force holds the valley mouth. The packs and Old Root now fight together under Ash-Muzzle. Break the chief and his army to end the occupation. Their bows cover the nearest ford; a narrow forest shelf runs behind them, while the southern marsh crossing offers another approach.",
+  "hints": [],
+  "intro": [
+    {
+      "character": "merek",
+      "portrait": "commander",
+      "text": "Yara hides behind beasts while another keeper wears her quarrel. Come across, Ash-Muzzle. I will settle both debts."
+    },
+    {
+      "character": "ash",
+      "portrait": "wildkeeper",
+      "text": "Yara does not command me. You brought your spears onto our feeding grounds. Now every den you threatened stands against you."
+    },
+    {
+      "with": "pip",
+      "dialogue": [
+        {
+          "character": "pip",
+          "portrait": "thorncaller",
+          "text": "The bows cover that ford. Put the old tree in front; arrows bite poorly into its bark. We can follow once the archers turn."
+        }
+      ],
+      "alternative": [
+        {
+          "character": "ash",
+          "portrait": "wildkeeper",
+          "text": "Their bows cover the ford. Let the old tree take the arrows while our thorns work behind it."
+        }
+      ]
+    },
+    {
+      "with": "sedge",
+      "dialogue": [
+        {
+          "character": "sedge",
+          "portrait": "fox-spearguard",
+          "text": "I can hold the mouth of that forest shelf. Send wolves past me before the rider closes it."
+        }
+      ],
+      "alternative": [
+        {
+          "character": "ash",
+          "portrait": "wildkeeper",
+          "text": "A thornshield must hold the forest shelf against that rider. Send wolves through behind the archers."
+        }
+      ]
+    },
+    {
+      "character": "ash",
+      "portrait": "wildkeeper",
+      "text": "Pack, grove and thorn together. Break Merek’s force. We will not leave a human army on this side of the valley."
+    }
+  ],
+  "victory": [
+    {
+      "character": "ash",
+      "portrait": "wildkeeper",
+      "text": "Merek is dead. His army is broken. Leave the village to its people; we take the southern ford home."
+    },
+    {
+      "with": "sedge",
+      "dialogue": [
+        {
+          "character": "sedge",
+          "portrait": "fox-spearguard",
+          "text": "At the pasture I promised you a hearing. You have my den now, Ash-Muzzle, and my shield."
+        }
+      ],
+      "alternative": [
+        {
+          "speaker": "The pack speakers",
+          "portrait": "wolf",
+          "text": "Sedge pledged his den to this road. We will keep that pledge. We follow Ash-Muzzle."
+        }
+      ]
+    },
+    {
+      "with": "pip",
+      "dialogue": [
+        {
+          "character": "pip",
+          "portrait": "thorncaller",
+          "text": "And Old Root’s thorns. One call, when the valley needs us."
+        }
+      ],
+      "alternative": [
+        {
+          "speaker": "The grove-dwellers",
+          "portrait": "thorncaller",
+          "text": "Old Root follows the packs. One call, when the valley needs us."
+        }
+      ]
+    },
+    {
+      "character": "ash",
+      "portrait": "wildkeeper",
+      "text": "One call, then. But we answer together. Keep the young close while we cross."
+    }
+  ],
+  "debrief": [
+    {
+      "when": {
+        "flag": "merek-pretext-revealed"
+      },
+      "text": "Merek’s own camp exposed the claim behind his grief: his brother had meant to clear the grove before Yara killed him. His army is gone. The woodland folk leave by the marsh ford as one company under Ash-Muzzle, with their feeding grounds free of the occupation."
+    },
+    {
+      "text": "Merek’s army is gone. The woodland folk leave by the marsh ford as one company under Ash-Muzzle. The packs and Old Root keep their own homes, but now answer one call when their feeding grounds are threatened."
+    }
+  ]
+}

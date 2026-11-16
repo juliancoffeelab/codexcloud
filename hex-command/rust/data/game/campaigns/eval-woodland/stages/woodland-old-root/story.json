@@ -1,0 +1,57 @@
+{
+  "subtitle": "Old Root",
+  "briefing": "The opened migration trail leads to Old Root, where the thorncallers have kept apart from the packs. Merek’s garrison blocks the marsh causeway beyond it. Ash-Muzzle can claim the empty grove to call thorncallers at the nearby keep; breaking the garrison will let the whole grove join him.",
+  "hints": [],
+  "intro": [
+    {
+      "character": "ash",
+      "portrait": "wildkeeper",
+      "text": "Sedge’s trail brought us here before Merek. There is still time to bring Old Root into our company."
+    },
+    {
+      "with": "sedge",
+      "dialogue": [
+        {
+          "character": "sedge",
+          "portrait": "fox-spearguard",
+          "text": "Their spears hold the dry bank. My shields can meet them, but the wolves will bleed if they rush that line."
+        }
+      ],
+      "alternative": [
+        {
+          "character": "ash",
+          "portrait": "wildkeeper",
+          "text": "Their spears hold the dry bank. Put shields before the wolves; use the marsh to reach their archers."
+        }
+      ]
+    },
+    {
+      "character": "ash",
+      "portrait": "wildkeeper",
+      "text": "I will claim the grove above the marsh. The thorncallers can answer from there, and the empty keep beside it will give them a place to gather."
+    },
+    {
+      "character": "causeway-captain",
+      "portrait": "commander",
+      "text": "No beast crosses this causeway. Hold them apart until the chief arrives."
+    },
+    {
+      "character": "ash",
+      "portrait": "wildkeeper",
+      "text": "We break that garrison. Then no pack has to ask Merek’s leave to reach Old Root."
+    }
+  ],
+  "victory": [
+    {
+      "character": "pip",
+      "portrait": "thorncaller",
+      "text": "You have made a road for all of us, not just Yara’s groves. My thorncallers will march with your packs."
+    },
+    {
+      "character": "ash",
+      "portrait": "wildkeeper",
+      "text": "Bring them to the valley mouth. Merek came here expecting separate dens to frighten. Let him meet one company."
+    }
+  ],
+  "debrief": "The causeway is open. Old Root’s thorncallers join the packs and make their ranged attacks available for the final battle. Merek’s own camp still bars the valley mouth."
+}

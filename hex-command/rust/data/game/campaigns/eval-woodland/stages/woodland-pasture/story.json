@@ -1,0 +1,83 @@
+{
+  "subtitle": "The Feeding Trail",
+  "briefing": "Merek’s patrol holds the pasture beside the feeding woods. Sedge’s den will open the migration trail if Ash-Muzzle removes the occupiers. The humans are cutting the two stands beside their village; taking it back will stop them.",
+  "hints": [],
+  "intro": [
+    {
+      "character": "sedge",
+      "portrait": "fox-spearguard",
+      "text": "Our packs will not follow another keeper into Yara’s feud. Those riders came for her."
+    },
+    {
+      "character": "ash",
+      "portrait": "wildkeeper",
+      "text": "They are eating your winter grass and cutting my hunting cover. Their feud has already reached us."
+    },
+    {
+      "character": "sedge",
+      "portrait": "fox-spearguard",
+      "text": "Then drive this patrol out. I will open the migration trail and speak for you at Old Root."
+    },
+    {
+      "character": "ash",
+      "portrait": "wildkeeper",
+      "text": "Done. We clear the patrol, not your dens. And if we can take their village, those cut stands will grow again."
+    },
+    {
+      "character": "watch-captain",
+      "portrait": "commander",
+      "text": "Hold the pasture. The chief wants a clear road before he brings the rest."
+    }
+  ],
+  "victory": [
+    {
+      "character": "ash",
+      "portrait": "wildkeeper",
+      "text": "The pasture is clear. Will your packs hear me now?"
+    },
+    {
+      "with": "sedge",
+      "dialogue": [
+        {
+          "character": "sedge",
+          "portrait": "fox-spearguard",
+          "text": "You kept the fighting away from our young. The trail is open; I will bring my shield to Old Root."
+        }
+      ],
+      "alternative": [
+        {
+          "character": "ash",
+          "portrait": "wildkeeper",
+          "text": "Sedge paid for this trail with his life. I will carry his pledge to Old Root."
+        }
+      ]
+    },
+    {
+      "speaker": "Pack runner",
+      "portrait": "wolf",
+      "text": "Merek is gathering at the valley mouth. He says he will clear a road all the way to Yara’s grove."
+    },
+    {
+      "character": "ash",
+      "portrait": "wildkeeper",
+      "text": "Then the scattered packs cannot stay scattered. Old Root first; we will need the thorncallers there."
+    }
+  ],
+  "debrief": [
+    {
+      "when": {
+        "flag": "first-village-restored"
+      },
+      "text": "The patrol is gone, and the pasture’s bordering woods stand again. The open migration trail brings Ash-Muzzle and Sedge’s pledge toward Old Root."
+    },
+    {
+      "when": {
+        "flag": "first-village-cut"
+      },
+      "text": "The patrol is gone and the migration trail is open. The cut edge of the pasture remains exposed; Ash-Muzzle takes Sedge’s pledge toward Old Root."
+    },
+    {
+      "text": "The patrol broke before its cutters opened the woods. Ash-Muzzle takes Sedge’s pledge along the newly opened migration trail toward Old Root."
+    }
+  ]
+}

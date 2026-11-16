@@ -1,0 +1,346 @@
+{
+  "requiredCompanions": ["mares"],
+  "events": [
+    {
+      "id": "joint-command",
+      "when": {
+        "chapterStarted": true
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mares",
+              "portrait": "tidekeeper",
+              "text": "Orra! The roots have covered the route on your map. My rear guard is still coming through the inlet. We cannot leave them here."
+            },
+            {
+              "character": "orra",
+              "portrait": "tidekeeper",
+              "text": "Then we hold together. Put your guards under my orders until they are through."
+            },
+            {
+              "character": "mares",
+              "portrait": "tidekeeper",
+              "text": "For this fight. Bring the company back to the spring, and I will hear your claim to the captaincy."
+            },
+            {
+              "character": "orra",
+              "portrait": "tidekeeper",
+              "text": "Keep yourself alive, Mares. We hold this inlet until your rear guard is through. Our forward reserve is waiting for a standard on either bank."
+            }
+          ]
+        },
+        {
+          "changeAllegiance": {
+            "units": {
+              "faction": "rival"
+            },
+            "faction": "player"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "old-route"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "setFlag": "joint-command"
+        }
+      ],
+      "priority": 30
+    },
+    {
+      "id": "reserve-upper",
+      "when": {
+        "all": [
+          {
+            "stand": {
+              "tile": {
+                "location": "upper-standard"
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "not": {
+              "flag": "early-reserve"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "location": "upper-standard"
+            },
+            "radius": 2,
+            "units": ["reefguard", "reefguard", "harpooner"]
+          }
+        },
+        {
+          "setFlag": "early-reserve"
+        },
+        {
+          "setFlag": "signal-upper"
+        },
+        {
+          "say": [
+            {
+              "character": "orra",
+              "portrait": "tidekeeper",
+              "text": "There they are. Form around the standard; leave room for the swimmers behind you."
+            }
+          ]
+        },
+        {
+          "log": "The forward reserve enters at the upper standard."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Call the forward reserve at the upper standard (one wave)",
+        "optional": true,
+        "visibleWhen": {
+          "all": [
+            {
+              "flag": "joint-command"
+            },
+            {
+              "not": {
+                "flag": "early-reserve"
+              }
+            }
+          ]
+        },
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "upper-standard"
+            },
+            "side": "player"
+          }
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "upper-standard"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "reserve-lower",
+      "when": {
+        "all": [
+          {
+            "stand": {
+              "tile": {
+                "location": "lower-standard"
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "not": {
+              "flag": "early-reserve"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "location": "lower-standard"
+            },
+            "radius": 2,
+            "units": ["reefguard", "reefguard", "harpooner"]
+          }
+        },
+        {
+          "setFlag": "early-reserve"
+        },
+        {
+          "setFlag": "signal-lower"
+        },
+        {
+          "say": [
+            {
+              "character": "orra",
+              "portrait": "tidekeeper",
+              "text": "There they are. Form around the standard; leave room for the swimmers behind you."
+            }
+          ]
+        },
+        {
+          "log": "The forward reserve enters at the lower standard."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Call the forward reserve at the lower standard (one wave)",
+        "optional": true,
+        "visibleWhen": {
+          "all": [
+            {
+              "flag": "joint-command"
+            },
+            {
+              "not": {
+                "flag": "early-reserve"
+              }
+            }
+          ]
+        },
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "lower-standard"
+            },
+            "side": "player"
+          }
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "lower-standard"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "signal-roots",
+      "when": {
+        "all": [
+          {
+            "turnAtLeast": 4
+          },
+          {
+            "not": {
+              "flag": "focus-broken"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "root-e"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "root-f"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "log": "Living roots spread across the marked bank."
+        }
+      ]
+    },
+    {
+      "id": "leaders-survive",
+      "when": {
+        "all": [
+          {
+            "turnAtLeast": 7
+          },
+          {
+            "hasUnits": {
+              "character": "orra",
+              "side": "player"
+            }
+          },
+          {
+            "hasUnits": {
+              "character": "mares",
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "location": "mares-camp"
+            },
+            "radius": 3,
+            "units": ["reefguard", "harpooner", "harpooner"]
+          }
+        },
+        {
+          "setFlag": "crews-united"
+        },
+        {
+          "victory": "Both leaders hold until Mares’s crew arrives. The united watch withdraws through the inlet."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Keep Orra and Mares alive until turn 7",
+        "optional": false,
+        "visibleWhen": {
+          "flag": "joint-command"
+        },
+        "intent": {
+          "hold": {
+            "tile": {
+              "location": "mares-camp"
+            },
+            "turns": 6,
+            "side": "player"
+          }
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "mares-camp"
+            }
+          ]
+        },
+        "satisfiedWhen": {
+          "all": [
+            {
+              "turnAtLeast": 7
+            },
+            {
+              "hasUnits": {
+                "character": "orra",
+                "side": "player"
+              }
+            },
+            {
+              "hasUnits": {
+                "character": "mares",
+                "side": "player"
+              }
+            }
+          ]
+        },
+        "preserveLives": {
+          "side": "player",
+          "unitTypes": ["tidekeeper", "tideseer", "merfolk-tide-sovereign"]
+        }
+      }
+    }
+  ]
+}

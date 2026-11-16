@@ -1,0 +1,139 @@
+{
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "range": "unlimited",
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "visionGroup": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "relations": {
+        "enemy": "hostile"
+      },
+      "gold": 32,
+      "recruits": [
+        {
+          "unit": "wolf"
+        },
+        {
+          "unit": "boar"
+        },
+        {
+          "unit": "fox-spearguard"
+        }
+      ],
+      "units": [
+        {
+          "type": "wildkeeper",
+          "tile": {
+            "col": 1,
+            "row": 4
+          },
+          "character": "ash",
+          "role": "leader"
+        },
+        {
+          "type": "fox-spearguard",
+          "tile": {
+            "col": 2,
+            "row": 3
+          },
+          "character": "sedge"
+        },
+        {
+          "type": "wolf",
+          "tile": {
+            "col": 2,
+            "row": 5
+          }
+        },
+        {
+          "type": "wolf",
+          "tile": {
+            "col": 3,
+            "row": 4
+          }
+        },
+        {
+          "type": "boar",
+          "tile": {
+            "col": 1,
+            "row": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "enemy",
+      "phase": "ai",
+      "visionGroup": "enemy",
+      "controller": {
+        "kind": "ai"
+      },
+      "palette": "enemy",
+      "relations": {
+        "player": "hostile"
+      },
+      "gold": 0,
+      "recruits": [
+        {
+          "unit": "spearman"
+        },
+        {
+          "unit": "archer"
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "tile": {
+            "col": 12,
+            "row": 4
+          },
+          "character": "watch-captain",
+          "role": "leader"
+        },
+        {
+          "type": "spearman",
+          "tile": {
+            "col": 10,
+            "row": 4
+          }
+        },
+        {
+          "type": "archer",
+          "tile": {
+            "col": 11,
+            "row": 3
+          }
+        },
+        {
+          "type": "rider",
+          "tile": {
+            "col": 10,
+            "row": 6
+          }
+        }
+      ]
+    }
+  ]
+}

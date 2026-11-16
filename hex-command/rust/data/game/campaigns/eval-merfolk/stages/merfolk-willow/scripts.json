@@ -1,0 +1,633 @@
+{
+  "requiredCompanions": ["mares"],
+  "enemyGroups": [
+    {
+      "id": "forward",
+      "order": {
+        "kind": "hold",
+        "area": [
+          {
+            "location": "focus"
+          }
+        ],
+        "attackRadius": 2
+      }
+    },
+    {
+      "id": "mother",
+      "when": {
+        "condition": {
+          "kind": "flag",
+          "flag": "focus-broken"
+        },
+        "remember": true
+      }
+    },
+    {
+      "id": "raiders"
+    },
+    {
+      "id": "cell",
+      "order": {
+        "kind": "hold",
+        "area": [
+          {
+            "location": "cell"
+          }
+        ],
+        "attackRadius": 1
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "willow-demand",
+      "when": {
+        "chapterStarted": true
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mother",
+              "portrait": "wildkeeper",
+              "text": "You brought both crews. Twice as many axes will not make this your bank."
+            },
+            {
+              "character": "orra",
+              "portrait": "tidekeeper",
+              "text": "We came for the spring. Your guards have taken the worksite and driven us from the water."
+            },
+            {
+              "character": "mother",
+              "portrait": "wildkeeper",
+              "text": "Your builders cut living roots. I will cover every plank they lay."
+            },
+            {
+              "character": "mares",
+              "portrait": "tidekeeper",
+              "text": "Those thornshields guard the knot in the stonework. We cannot reach it through them."
+            },
+            {
+              "character": "orra",
+              "portrait": "tidekeeper",
+              "text": "Then break their line and tear the knot out. She will not send another root across this bank."
+            }
+          ]
+        },
+        {
+          "setFlag": "final-orders"
+        }
+      ],
+      "priority": 30
+    },
+    {
+      "id": "forward-cleared",
+      "when": {
+        "noUnits": {
+          "aiGroup": "forward",
+          "side": "enemy"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "forward-cleared"
+        },
+        {
+          "say": [
+            {
+              "character": "orra",
+              "portrait": "tidekeeper",
+              "text": "The springhead is clear. Get close to the stonework and pull that root-knot free. The roots must stop before we leave."
+            }
+          ]
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Defeat the three forward guards at the springhead",
+        "optional": false,
+        "visibleWhen": {
+          "flag": "final-orders"
+        },
+        "intent": {
+          "defeat": {
+            "side": "enemy",
+            "aiGroup": "forward"
+          }
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "break-focus",
+      "when": {
+        "all": [
+          {
+            "flag": "forward-cleared"
+          },
+          {
+            "proximity": {
+              "tile": {
+                "location": "focus"
+              },
+              "radius": 1,
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "focus-broken"
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "focus"
+            },
+            "terrain": "ritual-spent"
+          }
+        },
+        {
+          "say": [
+            {
+              "character": "orra",
+              "portrait": "tidekeeper",
+              "text": "The knot is out. The roots have stopped moving."
+            },
+            {
+              "with": "mother",
+              "dialogue": [
+                {
+                  "character": "mares",
+                  "portrait": "tidekeeper",
+                  "text": "Then she has only her remaining guards. Finish this, captain."
+                }
+              ],
+              "alternative": [
+                {
+                  "character": "mares",
+                  "portrait": "tidekeeper",
+                  "text": "No more roots to do her killing. The spring is ours."
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Destroy the exposed root focus: approach within one hex",
+        "optional": false,
+        "visibleWhen": {
+          "flag": "forward-cleared"
+        },
+        "intent": {
+          "approach": {
+            "tile": {
+              "location": "focus"
+            },
+            "radius": 1,
+            "side": "player"
+          }
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "focus"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "mother-falls",
+      "when": {
+        "killed": {
+          "character": "mother"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "mother-defeated"
+        }
+      ]
+    },
+    {
+      "id": "spring-won",
+      "when": {
+        "all": [
+          {
+            "flag": "forward-cleared"
+          },
+          {
+            "flag": "focus-broken"
+          },
+          {
+            "flag": "mother-defeated"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "orra-captain"
+        },
+        {
+          "victory": "The root focus is destroyed and the Root-Crown Mother falls. The spring is free of her occupation."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Defeat the Root-Crown Mother",
+        "optional": false,
+        "visibleWhen": {
+          "flag": "focus-broken"
+        },
+        "intent": {
+          "defeat": {
+            "side": "enemy",
+            "character": "mother"
+          }
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "willow-first-pulse",
+      "when": {
+        "all": [
+          {
+            "turnAtLeast": 4
+          },
+          {
+            "not": {
+              "flag": "focus-broken"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "root-g"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "root-h"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "log": "Living roots spread across the marked bank."
+        }
+      ]
+    },
+    {
+      "id": "willow-second-pulse",
+      "when": {
+        "all": [
+          {
+            "turnAtLeast": 7
+          },
+          {
+            "not": {
+              "flag": "focus-broken"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "root-i"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "root-j"
+            },
+            "terrain": "forest"
+          }
+        },
+        {
+          "log": "Living roots spread across the marked bank."
+        }
+      ]
+    },
+    {
+      "id": "willow-reserve",
+      "when": {
+        "all": [
+          {
+            "turnAtLeast": 6
+          },
+          {
+            "not": {
+              "flag": "focus-broken"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "location": "mother-keep"
+            },
+            "radius": 4,
+            "aiGroup": "raiders",
+            "units": ["wolf", "wolf", "thorncaller"]
+          }
+        },
+        {
+          "log": "A fresh thorn patrol comes out of the willow bank."
+        }
+      ]
+    },
+    {
+      "id": "cell-discovered",
+      "when": {
+        "proximity": {
+          "tile": {
+            "location": "cell"
+          },
+          "radius": 3,
+          "side": "player"
+        }
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Trapped scout",
+              "portrait": "reefguard",
+              "text": "Here! Under the roots! Her guard took my spear. Get him away from this cage!"
+            },
+            {
+              "character": "orra",
+              "portrait": "tidekeeper",
+              "text": "We can reach you from the water. Keep back while we cut you loose."
+            }
+          ]
+        },
+        {
+          "setFlag": "cell-known"
+        }
+      ]
+    },
+    {
+      "id": "cell-guard-falls",
+      "when": {
+        "killed": {
+          "character": "cell-guard"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "cell-guard-dead"
+        }
+      ]
+    },
+    {
+      "id": "release-scout",
+      "when": {
+        "all": [
+          {
+            "flag": "cell-known"
+          },
+          {
+            "flag": "cell-guard-dead"
+          },
+          {
+            "proximity": {
+              "tile": {
+                "location": "cell"
+              },
+              "radius": 1,
+              "side": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "location": "cell"
+            },
+            "radius": 2,
+            "units": [
+              {
+                "type": "reefguard",
+                "character": "freed-scout"
+              }
+            ]
+          }
+        },
+        {
+          "say": [
+            {
+              "speaker": "Freed scout",
+              "portrait": "reefguard",
+              "text": "A spear. Good. I can still use one. Let me help you finish this."
+            }
+          ]
+        },
+        {
+          "setFlag": "scout-released"
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Release the scout: defeat his guard and approach the cell",
+        "optional": true,
+        "visibleWhen": {
+          "flag": "cell-known"
+        },
+        "intent": {
+          "approach": {
+            "tile": {
+              "location": "cell"
+            },
+            "radius": 1,
+            "side": "player"
+          }
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "cell"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "final-reserve-upper",
+      "when": {
+        "all": [
+          {
+            "flag": "early-reserve"
+          },
+          {
+            "stand": {
+              "tile": {
+                "location": "upper-standard"
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "not": {
+              "flag": "final-reserve-sent"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "location": "upper-standard"
+            },
+            "radius": 2,
+            "units": ["reefguard", "reefguard", "harpooner"]
+          }
+        },
+        {
+          "setFlag": "final-reserve-sent"
+        },
+        {
+          "log": "The remaining bank watch answers the known standard signal."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Call the bank watch at the upper standard (one wave)",
+        "optional": true,
+        "visibleWhen": {
+          "all": [
+            {
+              "flag": "final-orders"
+            },
+            {
+              "flag": "early-reserve"
+            },
+            {
+              "not": {
+                "flag": "final-reserve-sent"
+              }
+            }
+          ]
+        },
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "upper-standard"
+            },
+            "side": "player"
+          }
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "upper-standard"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "final-reserve-lower",
+      "when": {
+        "all": [
+          {
+            "flag": "early-reserve"
+          },
+          {
+            "stand": {
+              "tile": {
+                "location": "lower-standard"
+              },
+              "side": "player",
+              "through": true
+            }
+          },
+          {
+            "not": {
+              "flag": "final-reserve-sent"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "location": "lower-standard"
+            },
+            "radius": 2,
+            "units": ["reefguard", "reefguard", "harpooner"]
+          }
+        },
+        {
+          "setFlag": "final-reserve-sent"
+        },
+        {
+          "log": "The remaining bank watch answers the known standard signal."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Call the bank watch at the lower standard (one wave)",
+        "optional": true,
+        "visibleWhen": {
+          "all": [
+            {
+              "flag": "final-orders"
+            },
+            {
+              "flag": "early-reserve"
+            },
+            {
+              "not": {
+                "flag": "final-reserve-sent"
+              }
+            }
+          ]
+        },
+        "intent": {
+          "goTo": {
+            "tile": {
+              "location": "lower-standard"
+            },
+            "side": "player"
+          }
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "lower-standard"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

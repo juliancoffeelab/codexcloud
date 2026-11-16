@@ -1,0 +1,42 @@
+{
+  "subtitle": "The Unheard Order",
+  "briefing": [
+    {
+      "when": {
+        "flag": "chart-found"
+      },
+      "text": "The old current-map points beneath the willow. Get Orra through the downstream landing and return to the divided company."
+    },
+    {
+      "text": "The retreat orders left Orra’s detachment cut off at the worksite. Reach the downstream landing through the lower channel. The Mother’s roots are spreading across the bank."
+    }
+  ],
+  "hints": [
+    "Water offers a route the woodland guards cannot follow. Harpoons can strike thornshields without touching their thorns."
+  ],
+  "intro": [
+    {
+      "character": "orra",
+      "portrait": "tidekeeper",
+      "text": "Both captains ordered a retreat. Neither bothered to tell the other crew. Now we are the ones left on this bank."
+    },
+    {
+      "character": "rell",
+      "portrait": "harpooner",
+      "text": "The downstream landing is still clear. We can swim the lower channel before her guards close it."
+    },
+    {
+      "character": "orra",
+      "portrait": "tidekeeper",
+      "text": "Then we get back to the company. I mean to command more than whoever happens to hear me shout."
+    }
+  ],
+  "victory": [
+    {
+      "character": "orra",
+      "portrait": "tidekeeper",
+      "text": "The map shows a spring still worth keeping. If the captains will not bring both crews together, I will."
+    }
+  ],
+  "debrief": "Orra returns to the rear camp with a route through the inlet and a current-map leading toward the willow. The spring is still in the Mother’s hands."
+}

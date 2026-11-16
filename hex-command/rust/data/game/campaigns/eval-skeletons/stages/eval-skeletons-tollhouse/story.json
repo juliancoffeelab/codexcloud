@@ -1,0 +1,46 @@
+{
+  "subtitle": "The Tollhouse Chest",
+  "briefing": [
+    {
+      "when": {
+        "flag": "toll-chest-recovered"
+      },
+      "text": "The chest is recovered. Bring Mira back to the crypt keep and a skeletal servant to the adjacent muster. The Circle is trying to cut off the patrol."
+    },
+    {
+      "text": "Recover the estate’s toll chest from the occupied yard, then bring Mira and a skeletal servant back to the crypt muster. The Circle holds the trees on both sides of the road."
+    }
+  ],
+  "hints": [],
+  "intro": [
+    {
+      "character": "mira",
+      "text": "The toll chest is still in that yard. Take it. I will not ask our master for another coin while Vael sits on his road."
+    },
+    {
+      "character": "rusk",
+      "portrait": "thorncaller",
+      "text": "The offer stands: stop digging grave-soil beside our trees, and turn back."
+    },
+    {
+      "character": "mira",
+      "text": "My master refused you. I have come for his property, not your terms. Bring the chest back to the crypt, with enough servants left to carry it."
+    },
+    {
+      "character": "rusk",
+      "portrait": "thorncaller",
+      "text": "Then the boundary will close behind you. Our guardian is already at the stone."
+    }
+  ],
+  "victory": [
+    {
+      "character": "mira",
+      "text": "A guardian on the boundary stone, roots across the road, and more spears answering from the grove. That is how Vael holds this ground."
+    },
+    {
+      "character": "mira",
+      "text": "We have the coin. Next time we split his stone and find a way around those trees."
+    }
+  ],
+  "debrief": "The chest pays for another levy. Mira has seen how the boundary stone feeds the road thorns; the estate can now strike at the mechanism rather than fight along the road again."
+}

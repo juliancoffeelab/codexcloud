@@ -1,0 +1,777 @@
+{
+  "events": [
+    {
+      "id": "mira-lost",
+      "when": {
+        "killed": {
+          "character": "mira"
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Mira is destroyed. The unbound servants collapse, and the Circle takes the estate."
+        }
+      ],
+      "priority": 100
+    },
+    {
+      "id": "honor-bryn-agreement",
+      "when": {
+        "all": [
+          {
+            "chapterStarted": true
+          },
+          {
+            "flag": "culvert-parley"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "unlockRecruits": {
+            "faction": "player",
+            "units": [
+              {
+                "unit": "fox-spearguard",
+                "cost": 18
+              }
+            ]
+          }
+        }
+      ],
+      "priority": 85
+    },
+    {
+      "id": "bryn-falls",
+      "when": {
+        "all": [
+          {
+            "killed": {
+              "character": "bryn"
+            }
+          },
+          {
+            "flag": "cistern-bryn-entered"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "Bryn is down. We will clear the intake after the fighting. Destroy the remaining invasion."
+            }
+          ]
+        },
+        {
+          "failObjective": "restore-intake"
+        }
+      ],
+      "priority": 30
+    },
+    {
+      "id": "bryn-entered",
+      "when": {
+        "all": [
+          {
+            "chapterStarted": true
+          },
+          {
+            "hasUnits": {
+              "character": "bryn"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "cistern-bryn-entered"
+        }
+      ]
+    },
+    {
+      "id": "storehouse-burned",
+      "when": {
+        "owner": {
+          "tile": {
+            "location": "storehouse"
+          },
+          "faction": "enemy"
+        }
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "They have fired the stores. Leave the ashes; keep the crypt approach open."
+            }
+          ]
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "storehouse"
+            },
+            "terrain": "burned-village"
+          }
+        },
+        {
+          "setFlag": "cistern-stores-burned"
+        }
+      ]
+    },
+    {
+      "id": "screen-broken",
+      "when": {
+        "noUnits": {
+          "faction": "enemy",
+          "aiGroup": "screen"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "cistern-screen-broken"
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Defeat the Circle’s forward screen",
+        "intent": {
+          "defeat": {
+            "faction": "enemy",
+            "aiGroup": "screen"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        }
+      }
+    },
+    {
+      "id": "screen-parley",
+      "when": {
+        "all": [
+          {
+            "flag": "cistern-screen-broken"
+          },
+          {
+            "hasUnits": {
+              "character": "vael"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "Those root threads run back toward the boundary stone. Vael has not bound the cistern itself. We can flush his foothold from the intake."
+            },
+            {
+              "character": "mira",
+              "text": "Your forward line is gone, Vael. I can clear that intake without touching a tree inside your boundary."
+            },
+            {
+              "character": "vael",
+              "portrait": "thorncaller",
+              "text": "Then prove it. Turn the water against these roots, and I will take the survivors home. Until then this basin stays closed."
+            },
+            {
+              "character": "mira",
+              "text": "I must hold the intake open until the channel runs clean. Keep them off me. Or finish his army, and we can mend it in peace."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "screen-dead-vael",
+      "when": {
+        "all": [
+          {
+            "flag": "cistern-screen-broken"
+          },
+          {
+            "flag": "cistern-vael-dead"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "Vael is dead, but his force still holds the basin. Clear them out and take back the cistern."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rear-watch-withdraws",
+      "when": {
+        "all": [
+          {
+            "flag": "cistern-screen-broken"
+          },
+          {
+            "not": {
+              "flag": "cistern-stores-burned"
+            }
+          },
+          {
+            "hasUnits": {
+              "character": "rear-watch"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "Rear watch: take the remaining chest reserve to the crypt. Leave the levy its share, and hold that road."
+            }
+          ]
+        },
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 8
+          }
+        },
+        {
+          "deleteUnit": {
+            "character": "rear-watch"
+          }
+        },
+        {
+          "setFlag": "cistern-reserve-saved"
+        }
+      ]
+    },
+    {
+      "id": "vael-dead",
+      "when": {
+        "killed": {
+          "character": "vael"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "cistern-vael-dead"
+        },
+        {
+          "failObjective": "restore-intake"
+        },
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "The root-master is down. Do not let his surviving guards keep the waterworks."
+            }
+          ]
+        }
+      ],
+      "priority": 20
+    },
+    {
+      "id": "culvert-ambush",
+      "when": {
+        "all": [
+          {
+            "flag": "cistern-screen-broken"
+          },
+          {
+            "hasUnits": {
+              "character": "vael"
+            }
+          },
+          {
+            "proximity": {
+              "tile": {
+                "location": "cistern"
+              },
+              "radius": 2,
+              "faction": "player",
+              "character": "mira"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "Wolves at the culvert mouth. Close ranks around the intake!"
+            }
+          ]
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 7,
+                "row": 3
+              }
+            },
+            "radius": 2,
+            "units": [
+              {
+                "type": "wolf"
+              },
+              {
+                "type": "wolf"
+              }
+            ]
+          }
+        },
+        {
+          "setFlag": "cistern-ambush"
+        }
+      ],
+      "priority": 10
+    },
+    {
+      "id": "outlier-surrender",
+      "when": {
+        "all": [
+          {
+            "killed": {
+              "character": "outlier"
+            }
+          },
+          {
+            "not": {
+              "flag": "cistern-outliers-settled"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "Isolated Thornshields",
+              "portrait": "fox-spearguard",
+              "text": "The outrider is down. We yield. Keep us out of your crypt."
+            },
+            {
+              "character": "mira",
+              "text": "Stack your spears and stay together. You will leave when this is settled."
+            }
+          ]
+        },
+        {
+          "changeAllegiance": {
+            "units": {
+              "faction": "enemy",
+              "aiGroup": "outliers"
+            },
+            "faction": "prisoners"
+          }
+        },
+        {
+          "setFlag": "cistern-outliers-captured"
+        },
+        {
+          "setFlag": "cistern-outliers-settled"
+        }
+      ],
+      "priority": 5
+    },
+    {
+      "id": "outlier-retreat",
+      "when": {
+        "all": [
+          {
+            "owner": {
+              "tile": {
+                "location": "road-fork"
+              },
+              "faction": "player"
+            }
+          },
+          {
+            "not": {
+              "flag": "cistern-outliers-settled"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "Their flank patrol has lost its road home. They are falling back to the grove."
+            }
+          ]
+        },
+        {
+          "forEachUnit": {
+            "select": {
+              "faction": "enemy",
+              "aiGroup": "outliers"
+            },
+            "actions": [
+              {
+                "deleteUnit": "$unit"
+              }
+            ]
+          }
+        },
+        {
+          "setFlag": "cistern-outliers-retreated"
+        },
+        {
+          "setFlag": "cistern-outliers-settled"
+        }
+      ]
+    },
+    {
+      "id": "outlier-objective",
+      "when": {
+        "flag": "cistern-outliers-settled"
+      },
+      "actions": [
+        {
+          "log": "The isolated patrol no longer threatens the culvert flank."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Optional: take the road fork or kill the isolated patrol’s wolf outrider",
+        "intent": {
+          "capture": [
+            {
+              "location": "road-fork"
+            }
+          ]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "optional": true
+      }
+    },
+    {
+      "id": "cistern-controlled",
+      "when": {
+        "owner": {
+          "tile": {
+            "location": "cistern"
+          },
+          "faction": "player"
+        }
+      },
+      "actions": [
+        {
+          "log": "The estate garrison has entered the cistern."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Control the estate cistern at victory",
+        "intent": {
+          "own": {
+            "tile": {
+              "location": "cistern"
+            },
+            "faction": "player"
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "owner": {
+            "tile": {
+              "location": "cistern"
+            },
+            "faction": "player"
+          }
+        }
+      }
+    },
+    {
+      "id": "destroy-invasion",
+      "when": {
+        "all": [
+          {
+            "flag": "cistern-screen-broken"
+          },
+          {
+            "noUnits": {
+              "faction": "enemy"
+            }
+          },
+          {
+            "owner": {
+              "tile": {
+                "location": "cistern"
+              },
+              "faction": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "cistern-ending-destroyed"
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "root-road-west"
+            },
+            "terrain": "plains"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "root-road-east"
+            },
+            "terrain": "plains"
+          }
+        },
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "The invasion is finished. Clear the intake; there is no one left to drive us from it."
+            }
+          ]
+        },
+        {
+          "forEachUnit": {
+            "select": {
+              "faction": "prisoners"
+            },
+            "actions": [
+              {
+                "deleteUnit": "$unit"
+              }
+            ]
+          }
+        },
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "Any guards who yielded may return to the grove. Take no one into the crypt."
+            }
+          ]
+        },
+        {
+          "victory": "Vael and his invading force are destroyed. The estate cistern is secure."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Finish by destroying the remaining invasion",
+        "intent": {
+          "defeat": {
+            "faction": "enemy"
+          }
+        },
+        "visibleWhen": {
+          "flag": "cistern-screen-broken"
+        }
+      },
+      "priority": -10
+    },
+    {
+      "id": "restore-intake",
+      "when": {
+        "all": [
+          {
+            "flag": "cistern-screen-broken"
+          },
+          {
+            "hasUnits": {
+              "character": "vael"
+            }
+          },
+          {
+            "held": {
+              "tile": {
+                "location": "cistern"
+              },
+              "turns": 2,
+              "faction": "player",
+              "character": "mira",
+              "when": {
+                "flag": "cistern-screen-broken"
+              }
+            }
+          },
+          {
+            "any": [
+              {
+                "not": {
+                  "flag": "cistern-bryn-entered"
+                }
+              },
+              {
+                "hasUnits": {
+                  "character": "bryn",
+                  "faction": "player"
+                }
+              }
+            ]
+          },
+          {
+            "owner": {
+              "tile": {
+                "location": "cistern"
+              },
+              "faction": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "cistern-ending-truce"
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "root-road-west"
+            },
+            "terrain": "plains"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "location": "root-road-east"
+            },
+            "terrain": "plains"
+          }
+        },
+        {
+          "say": [
+            {
+              "character": "vael",
+              "portrait": "thorncaller",
+              "text": "The intake runs clear. I gave my word: the Circle withdraws. Keep your servants outside our grove."
+            },
+            {
+              "character": "mira",
+              "text": "The basin is mine to hold. Any of your guards who accepted Bryn’s terms may stay at its boundary. The rest go home."
+            }
+          ]
+        },
+        {
+          "changeAllegiance": {
+            "units": {
+              "faction": "enemy",
+              "unitType": "fox-spearguard"
+            },
+            "faction": "player"
+          }
+        },
+        {
+          "forEachUnit": {
+            "select": {
+              "faction": "enemy"
+            },
+            "actions": [
+              {
+                "deleteUnit": "$unit"
+              }
+            ]
+          }
+        },
+        {
+          "forEachUnit": {
+            "select": {
+              "faction": "prisoners"
+            },
+            "actions": [
+              {
+                "deleteUnit": "$unit"
+              }
+            ]
+          }
+        },
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "Any guards who yielded may return to the grove. Take no one into the crypt."
+            }
+          ]
+        },
+        {
+          "victory": "The restored cistern flushes the roots away. The Circle withdraws under the grove agreement."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Or keep Mira at the cistern for 2 turns to clear the intake; preserve Bryn if she entered",
+        "intent": {
+          "hold": {
+            "tile": {
+              "location": "cistern"
+            },
+            "turns": 2,
+            "faction": "player",
+            "character": "mira",
+            "when": {
+              "flag": "cistern-screen-broken"
+            }
+          }
+        },
+        "visibleWhen": {
+          "all": [
+            {
+              "flag": "cistern-screen-broken"
+            },
+            {
+              "hasUnits": {
+                "character": "vael"
+              }
+            }
+          ]
+        },
+        "preserveLives": {
+          "character": "mira"
+        },
+        "availableWhen": {
+          "any": [
+            {
+              "not": {
+                "flag": "cistern-bryn-entered"
+              }
+            },
+            {
+              "hasUnits": {
+                "character": "bryn",
+                "faction": "player"
+              }
+            }
+          ]
+        }
+      },
+      "priority": -20
+    }
+  ],
+  "enemyGroups": [
+    {
+      "id": "screen"
+    },
+    {
+      "id": "outliers"
+    }
+  ]
+}

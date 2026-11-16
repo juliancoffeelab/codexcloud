@@ -1,0 +1,24 @@
+{
+  "subtitle": "Two Standards",
+  "briefing": "Roots have closed the charted bank route. Keep Orra and Mares alive while the other crew reaches the inlet. A unit at either standard can call the forward reserve to that bank; the reserve can answer only once.",
+  "hints": [],
+  "intro": [],
+  "victory": [
+    {
+      "character": "mares",
+      "portrait": "tidekeeper",
+      "text": "Every swimmer through. I would have left half of them behind if I had kept to my own orders."
+    },
+    {
+      "character": "orra",
+      "portrait": "tidekeeper",
+      "text": "Then we use one set of orders now. The inlet reaches the other side of the willow."
+    },
+    {
+      "character": "mares",
+      "portrait": "tidekeeper",
+      "text": "My crew will follow you there. Clear the spring, and the company is yours."
+    }
+  ],
+  "debrief": "The watch withdraws together through the inlet. Mares gives Orra field command for the assault on the willow; the permanent captaincy still depends on breaking the Mother’s hold on the spring."
+}

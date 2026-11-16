@@ -1,0 +1,74 @@
+{
+  "subtitle": "The Master’s Cistern",
+  "briefing": [
+    {
+      "when": {
+        "all": [
+          {
+            "flag": "cistern-screen-broken"
+          },
+          {
+            "flag": "cistern-vael-dead"
+          }
+        ]
+      },
+      "text": "Vael is dead. Destroy the remaining invasion and keep the cistern in estate hands."
+    },
+    {
+      "when": {
+        "flag": "cistern-screen-broken"
+      },
+      "text": "The forward screen is broken. Destroy the remaining invasion, or keep Mira at the cistern while she clears the intake. If Bryn entered this battle, she must survive that operation. The culvert remains an approach for both sides."
+    },
+    {
+      "text": "Vael’s troops hold the estate cistern. Break their forward screen. The dry culvert opened in the previous battle reaches behind their thorned road position."
+    }
+  ],
+  "hints": [],
+  "intro": [
+    {
+      "character": "mira",
+      "text": "Vael has crossed into the estate and choked the cistern intake. So much for his boundary."
+    },
+    {
+      "with": "bryn",
+      "dialogue": [
+        {
+          "character": "bryn",
+          "portrait": "fox-spearguard",
+          "text": "The grove is still untouched. Make him answer for what he does here. I will stand by our agreement."
+        }
+      ],
+      "alternative": [
+        {
+          "character": "mira",
+          "text": "The grove stays uncut. That was the agreement, and the culvert gives us all the approach we need."
+        }
+      ]
+    },
+    {
+      "character": "mira",
+      "text": "Our passage comes out behind their spears. Break the forward screen. Then we can turn the roots out of the intake."
+    },
+    {
+      "character": "vael",
+      "portrait": "thorncaller",
+      "text": "You would have dug your road through our grove. I will close every approach before I let you try again."
+    },
+    {
+      "character": "mira",
+      "text": "Watch the passage behind us. Those fresh tracks are wolves, and they are not going toward the grove."
+    },
+    {
+      "character": "mira",
+      "text": "There is an isolated patrol on the northern road. Take its road fork or bring down its wolf outrider; either should break its hold on our flank."
+    }
+  ],
+  "victory": [
+    {
+      "character": "mira",
+      "text": "Water through the intake, servants at the gate, and no roots on the road. My master has his cistern back."
+    }
+  ],
+  "debrief": "The crypt and cistern remain the lich’s estate. The repaired intake and the opened culvert keep the waterworks reachable; the grove stands beyond the old boundary, uncut."
+}
