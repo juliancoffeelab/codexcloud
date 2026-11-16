@@ -5,6 +5,11 @@ description: Use for implementation validation, targeted checks and tests, final
 
 # Hex Command verification
 
+For non-code changes, code checks are forbidden, including `make full-verify`,
+builds, compilation, code linters and test suites. Documentation, skills and
+prompt text are non-code changes. Review the changed content directly; use only
+content-relevant checks such as links, formatting or schemas.
+
 Tests must be small, fast, and lightweight.
 
 - Data-only changes do not justify new behavioral tests or extra named-content
@@ -35,8 +40,9 @@ Before any build or check, you **must** run `source /workspace/.setup/env.sh` in
 every new shell. These commands and `make dev` require the tool paths and cache
 variables it supplies and will not work correctly without them.
 
-Run targeted checks while working. When and only when you return the work to the
-user, run `make full-verify` to catch unexpected regressions. Fix failures and repeat.
+For code changes, run targeted checks while working. When and only when you
+return code changes to the user, run `make full-verify` to catch unexpected
+regressions. Fix failures and repeat.
 
 - `cargo check --locked --manifest-path rust/Cargo.toml --workspace`: Rust compilation.
 - `cargo test --locked --manifest-path rust/Cargo.toml --workspace --features wasm [filter]`: Rust tests.

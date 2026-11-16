@@ -1,5 +1,25 @@
 #!/usr/bin/env python3
-"""Generate shuffled enemy ingredients and a ready-to-send Luna prompt."""
+"""Generate shuffled enemy ingredients and a ready-to-send Luna prompt.
+
+Each weighted column gets an independent oversized bag: round expected counts
+of at least one, chance-roll smaller counts, shuffle, cut, then zip columns.
+Auxiliary inclusion is drawn per enemy; its kind is drawn only when included.
+Organization and presentation use separate marginals, so historical zero joint
+cells do not prohibit combinations. Output is unfiltered ingredients.
+
+Provenance: background weights cover 16 sole/allied-main enemy records; goals
+cover 24 primary, three auxiliary and six means occurrences. Organization and
+presentation each cover 19 campaigns. These are different samples, not a joint
+model. Auxiliary inclusion uses three of 19 campaigns as a provisional proxy,
+not a measured per-enemy frequency. One means per skeleton is a generation choice.
+Raids / pillage inherits an earlier acquisition category's weight, not a new
+raid census.
+
+Weights are inline; only the standard library is used, with no tmp/ dependencies.
+Definitions and research context live under
+.agents/skills/design-campaign/reference/{opposition,motive}_distribution.md
+relative to the project root.
+"""
 
 import argparse
 from collections import Counter
@@ -107,7 +127,7 @@ def sample(count, seed):
     }
 
 
-def render_prompt(result, skill_path):
+def render_prompt(result, skill_path, player_race=None):
     fields = [
         "background", "primary_goal", "auxiliary_goal", "means", "opposition", "presentation"
     ]
@@ -125,6 +145,7 @@ def render_prompt(result, skill_path):
     return (
         (HERE / "prompt.md").read_text()
         .replace("{{skill_path}}", str(skill_path))
+        .replace("{{race}}", player_race or "an unspecified race")
         .replace("{{count}}", words.get(result["count"], str(result["count"])))
         .replace("{{table}}", "\n".join(lines))
     )
@@ -133,21 +154,22 @@ def render_prompt(result, skill_path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--count", type=int, default=10)
+    parser.add_argument("--race", help="Player race, when specified")
     parser.add_argument("--seed", type=int, help="Reproduce a batch; defaults to a fresh seed")
     parser.add_argument("--output", type=Path, help="Save prompt.md and sample.json in this directory")
     parser.add_argument(
         "--skill-path", type=Path,
-        default=HERE.parents[1] / ".agents/skills/design-campaign/SKILL.md",
+        default=HERE.parents[1] / ".agents/skills/design-campaign/world-design.md",
     )
     args = parser.parse_args()
     if args.count < 1:
         parser.error("--count must be positive")
     skill_path = args.skill_path.resolve()
     if not skill_path.is_file():
-        parser.error(f"Campaign skill not found: {skill_path}")
+        parser.error(f"Campaign design rules not found: {skill_path}")
     seed = args.seed if args.seed is not None else random.SystemRandom().getrandbits(64)
     result = sample(args.count, seed)
-    prompt = render_prompt(result, skill_path)
+    prompt = render_prompt(result, skill_path, args.race)
     if args.output:
         output = args.output.resolve()
         if output == HERE:
