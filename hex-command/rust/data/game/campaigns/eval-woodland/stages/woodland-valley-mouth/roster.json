@@ -55,7 +55,8 @@
             "row": 4
           },
           "character": "ash",
-          "role": "leader"
+          "role": "leader",
+          "items": ["root-mantle"]
         },
         {
           "type": "fox-spearguard",
@@ -100,7 +101,7 @@
       "relations": {
         "player": "hostile"
       },
-      "gold": 8,
+      "gold": 20,
       "recruits": [
         {
           "unit": "spearman"
@@ -110,24 +111,26 @@
         },
         {
           "unit": "swordsman"
+        },
+        {
+          "unit": "adept"
         }
       ],
       "units": [
         {
-          "type": "commander",
+          "type": "marshal",
           "tile": {
             "col": 12,
             "row": 4
           },
           "character": "merek",
-          "role": "leader",
-          "aiGroup": "merek-command"
+          "role": "leader"
         },
         {
-          "type": "spearman",
+          "type": "warden",
           "tile": {
             "col": 9,
-            "row": 4
+            "row": 3
           }
         },
         {
@@ -138,34 +141,45 @@
           }
         },
         {
-          "type": "archer",
+          "type": "marksman",
           "tile": {
             "col": 10,
-            "row": 3
-          },
-          "aiGroup": "bow-ridge"
-        },
-        {
-          "type": "archer",
-          "tile": {
-            "col": 11,
             "row": 2
-          },
-          "aiGroup": "bow-ridge"
+          }
         },
         {
           "type": "rider",
           "tile": {
-            "col": 9,
+            "col": 10,
             "row": 1
-          },
-          "aiGroup": "shelf-rider"
+          }
         },
         {
-          "type": "swordsman",
+          "type": "soldier",
+          "tile": {
+            "col": 11,
+            "row": 4
+          }
+        },
+        {
+          "type": "hammerman",
           "tile": {
             "col": 11,
             "row": 5
+          }
+        },
+        {
+          "type": "adept",
+          "tile": {
+            "col": 12,
+            "row": 5
+          }
+        },
+        {
+          "type": "healer",
+          "tile": {
+            "col": 13,
+            "row": 4
           }
         }
       ]

@@ -14,14 +14,7 @@
       }
     },
     {
-      "id": "mother",
-      "when": {
-        "condition": {
-          "kind": "flag",
-          "flag": "focus-broken"
-        },
-        "remember": true
-      }
+      "id": "mother"
     },
     {
       "id": "raiders"
@@ -66,6 +59,16 @@
             {
               "character": "mares",
               "portrait": "tidekeeper",
+              "text": "Only the narrow channels are deep. Her packs can reach us across the shallow bank. Keep a line around the harpooners."
+            },
+            {
+              "character": "mares",
+              "portrait": "tidekeeper",
+              "text": "The caster behind those shields binds thorns around the whole line. Let our harpoons and tidebolts break that spell before we close."
+            },
+            {
+              "character": "mares",
+              "portrait": "tidekeeper",
               "text": "Those thornshields guard the knot in the stonework. We cannot reach it through them."
             },
             {
@@ -105,7 +108,7 @@
       ],
       "objective": {
         "faction": "player",
-        "label": "Defeat the three forward guards at the springhead",
+        "label": "Defeat the four forward guards at the springhead",
         "optional": false,
         "visibleWhen": {
           "flag": "final-orders"
@@ -140,6 +143,12 @@
       "actions": [
         {
           "setFlag": "focus-broken"
+        },
+        {
+          "recruits": {
+            "faction": "enemy",
+            "units": []
+          }
         },
         {
           "setTerrain": {
@@ -330,7 +339,7 @@
       "when": {
         "all": [
           {
-            "turnAtLeast": 6
+            "turnAtLeast": 8
           },
           {
             "not": {
@@ -532,6 +541,9 @@
               "not": {
                 "flag": "final-reserve-sent"
               }
+            },
+            {
+              "flag": "final-reserve-explained"
             }
           ]
         },
@@ -609,6 +621,9 @@
               "not": {
                 "flag": "final-reserve-sent"
               }
+            },
+            {
+              "flag": "final-reserve-explained"
             }
           ]
         },
@@ -628,6 +643,65 @@
           ]
         }
       }
+    },
+    {
+      "id": "final-reserve-explained",
+      "when": {
+        "all": [
+          {
+            "chapterStarted": true
+          },
+          {
+            "flag": "early-reserve"
+          }
+        ]
+      },
+      "priority": 20,
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mares",
+              "portrait": "tidekeeper",
+              "text": "The remaining bank watch learned our signal at the inlet. They have a fresh detachment waiting. Show it at either standard and they will join us; they can answer once."
+            }
+          ]
+        },
+        {
+          "setFlag": "final-reserve-explained"
+        }
+      ]
+    },
+    {
+      "id": "willow-last-patrol",
+      "when": {
+        "all": [
+          {
+            "turnAtLeast": 12
+          },
+          {
+            "not": {
+              "flag": "focus-broken"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "location": "mother-keep"
+            },
+            "radius": 4,
+            "aiGroup": "raiders",
+            "units": ["boar", "wolf", "thorncaller"]
+          }
+        },
+        {
+          "log": "The last bank patrol answers the root focus. Breaking the focus will stop further calls."
+        }
+      ]
     }
   ]
 }

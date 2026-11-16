@@ -2,7 +2,7 @@
   "mapId": "eval-skeletons-cistern",
   "mapRevision": 1,
   "name": "The Master’s Cistern",
-  "description": "Vael’s invading force occupies the estate basin. The opened dry culvert reaches its northern flank.",
+  "description": "Vael’s field force occupies the open estate basin. The dry culvert crosses the northern ridge into its flank.",
   "cols": 18,
   "rows": 13,
   "tiles": [
@@ -225,13 +225,13 @@
     {
       "col": 0,
       "row": 2,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
       "col": 1,
       "row": 2,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
@@ -334,13 +334,13 @@
     {
       "col": 0,
       "row": 3,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
       "col": 1,
       "row": 3,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
@@ -451,13 +451,13 @@
     {
       "col": 0,
       "row": 4,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
       "col": 1,
       "row": 4,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
@@ -722,7 +722,7 @@
     {
       "col": 9,
       "row": 6,
-      "terrain": "mountain",
+      "terrain": "plains",
       "owner": null
     },
     {
@@ -904,13 +904,13 @@
     {
       "col": 0,
       "row": 8,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
       "col": 1,
       "row": 8,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
@@ -958,7 +958,7 @@
     {
       "col": 9,
       "row": 8,
-      "terrain": "mountain",
+      "terrain": "plains",
       "owner": null
     },
     {
@@ -1012,13 +1012,13 @@
     {
       "col": 0,
       "row": 9,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
       "col": 1,
       "row": 9,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
@@ -1044,19 +1044,19 @@
     {
       "col": 5,
       "row": 9,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
       "col": 6,
       "row": 9,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
       "col": 7,
       "row": 9,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
@@ -1068,7 +1068,7 @@
     {
       "col": 9,
       "row": 9,
-      "terrain": "mountain",
+      "terrain": "plains",
       "owner": null
     },
     {
@@ -1123,13 +1123,13 @@
     {
       "col": 0,
       "row": 10,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
       "col": 1,
       "row": 10,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
@@ -1153,19 +1153,19 @@
     {
       "col": 5,
       "row": 10,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
       "col": 6,
       "row": 10,
-      "terrain": "hill",
+      "terrain": "forest",
       "owner": null
     },
     {
       "col": 7,
       "row": 10,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
@@ -1177,7 +1177,7 @@
     {
       "col": 9,
       "row": 10,
-      "terrain": "mountain",
+      "terrain": "plains",
       "owner": null
     },
     {
@@ -1261,19 +1261,19 @@
     {
       "col": 5,
       "row": 11,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
       "col": 6,
       "row": 11,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
       "col": 7,
       "row": 11,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null
     },
     {
@@ -1285,7 +1285,7 @@
     {
       "col": 9,
       "row": 11,
-      "terrain": "mountain",
+      "terrain": "plains",
       "owner": null
     },
     {
@@ -1393,7 +1393,7 @@
     {
       "col": 9,
       "row": 12,
-      "terrain": "mountain",
+      "terrain": "plains",
       "owner": null
     },
     {

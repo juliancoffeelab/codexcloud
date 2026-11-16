@@ -18,7 +18,7 @@
       "when": {
         "flag": "cistern-screen-broken"
       },
-      "text": "The forward screen is broken. Destroy the remaining invasion, or keep Mira at the cistern while she clears the intake. If Bryn entered this battle, she must survive that operation. The culvert remains an approach for both sides."
+      "text": "The forward screen is broken. Destroy the remaining invasion, or hold a garrison at the cistern while the servants clear the intake. The culvert remains an approach for both sides."
     },
     {
       "text": "Vael’s troops hold the estate cistern. Break their forward screen. The dry culvert opened in the previous battle reaches behind their thorned road position."
@@ -62,6 +62,14 @@
     {
       "character": "mira",
       "text": "There is an isolated patrol on the northern road. Take its road fork or bring down its wolf outrider; either should break its hold on our flank."
+    },
+    {
+      "character": "mira",
+      "text": "He has brought a boar and a living tree into the basin. Keep our casters screened; their blows will break exposed bones."
+    },
+    {
+      "character": "mira",
+      "text": "Wolves have come around the crypt road behind us. Screen the keep while the levy breaks into the basin; we cannot fight this from our gate."
     }
   ],
   "victory": [

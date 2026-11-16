@@ -139,6 +139,22 @@
           }
         },
         {
+          "give": {
+            "item": "root-mantle",
+            "character": "ash",
+            "faction": "player"
+          }
+        },
+        {
+          "say": [
+            {
+              "character": "pip",
+              "portrait": "thorncaller",
+              "text": "Wear this bark, Ash-Muzzle. You stood for the grove; it will stand between you and their blades."
+            }
+          ]
+        },
+        {
           "say": [
             {
               "character": "ash",
@@ -177,6 +193,47 @@
         },
         "optional": false,
         "playerMarker": null
+      }
+    }
+  ],
+  "enemyGroups": [
+    {
+      "id": "causeway-screen",
+      "order": {
+        "kind": "hold",
+        "area": [
+          {
+            "hex": {
+              "col": 9,
+              "row": 2
+            }
+          },
+          {
+            "hex": {
+              "col": 9,
+              "row": 4
+            }
+          },
+          {
+            "hex": {
+              "col": 10,
+              "row": 5
+            }
+          },
+          {
+            "hex": {
+              "col": 10,
+              "row": 3
+            }
+          },
+          {
+            "hex": {
+              "col": 11,
+              "row": 5
+            }
+          }
+        ],
+        "attackRadius": 3
       }
     }
   ]

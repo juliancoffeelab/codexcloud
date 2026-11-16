@@ -42,55 +42,6 @@
       "priority": 85
     },
     {
-      "id": "bryn-falls",
-      "when": {
-        "all": [
-          {
-            "killed": {
-              "character": "bryn"
-            }
-          },
-          {
-            "flag": "cistern-bryn-entered"
-          }
-        ]
-      },
-      "actions": [
-        {
-          "say": [
-            {
-              "character": "mira",
-              "text": "Bryn is down. We will clear the intake after the fighting. Destroy the remaining invasion."
-            }
-          ]
-        },
-        {
-          "failObjective": "restore-intake"
-        }
-      ],
-      "priority": 30
-    },
-    {
-      "id": "bryn-entered",
-      "when": {
-        "all": [
-          {
-            "chapterStarted": true
-          },
-          {
-            "hasUnits": {
-              "character": "bryn"
-            }
-          }
-        ]
-      },
-      "actions": [
-        {
-          "setFlag": "cistern-bryn-entered"
-        }
-      ]
-    },
-    {
       "id": "storehouse-burned",
       "when": {
         "owner": {
@@ -181,7 +132,7 @@
             },
             {
               "character": "mira",
-              "text": "I must hold the intake open until the channel runs clean. Keep them off me. Or finish his army, and we can mend it in peace."
+              "text": "The servants must hold the intake open until the channel runs clean. Keep them at the pumps. Or finish his army, and we can mend it in peace."
             }
           ]
         }
@@ -350,6 +301,12 @@
           {
             "not": {
               "flag": "cistern-outliers-settled"
+            }
+          },
+          {
+            "hasUnits": {
+              "faction": "enemy",
+              "aiGroup": "outliers"
             }
           }
         ]
@@ -607,26 +564,10 @@
               },
               "turns": 2,
               "faction": "player",
-              "character": "mira",
               "when": {
                 "flag": "cistern-screen-broken"
               }
             }
-          },
-          {
-            "any": [
-              {
-                "not": {
-                  "flag": "cistern-bryn-entered"
-                }
-              },
-              {
-                "hasUnits": {
-                  "character": "bryn",
-                  "faction": "player"
-                }
-              }
-            ]
           },
           {
             "owner": {
@@ -667,7 +608,102 @@
             },
             {
               "character": "mira",
-              "text": "The basin is mine to hold. Any of your guards who accepted Bryn’s terms may stay at its boundary. The rest go home."
+              "text": "The basin is mine to hold. Guards who accept Bryn’s terms may stand at its boundary. The rest go home."
+            }
+          ]
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Or hold a garrison at the cistern for 2 turns to clear the intake",
+        "intent": {
+          "hold": {
+            "tile": {
+              "location": "cistern"
+            },
+            "turns": 2,
+            "faction": "player",
+            "when": {
+              "flag": "cistern-screen-broken"
+            }
+          }
+        },
+        "visibleWhen": {
+          "all": [
+            {
+              "flag": "cistern-intake-ready"
+            },
+            {
+              "hasUnits": {
+                "character": "vael"
+              }
+            }
+          ]
+        },
+        "preserveLives": {
+          "character": "mira"
+        },
+        "availableWhen": {
+          "flag": "cistern-intake-ready"
+        }
+      },
+      "priority": -20
+    },
+    {
+      "id": "outlier-patrol-destroyed",
+      "when": {
+        "all": [
+          {
+            "killed": {
+              "character": "outlier"
+            }
+          },
+          {
+            "not": {
+              "flag": "cistern-outliers-settled"
+            }
+          },
+          {
+            "noUnits": {
+              "faction": "enemy",
+              "aiGroup": "outliers"
+            }
+          }
+        ]
+      },
+      "priority": 4,
+      "actions": [
+        {
+          "log": "The isolated patrol is destroyed."
+        },
+        {
+          "setFlag": "cistern-outliers-settled"
+        }
+      ]
+    },
+    {
+      "id": "surviving-guards-consent",
+      "when": {
+        "all": [
+          {
+            "flag": "cistern-ending-truce"
+          },
+          {
+            "hasUnits": {
+              "faction": "enemy",
+              "unitType": "fox-spearguard"
+            }
+          }
+        ]
+      },
+      "priority": -25,
+      "actions": [
+        {
+          "say": [
+            {
+              "speaker": "The surviving Thornshields",
+              "portrait": "fox-spearguard",
+              "text": "We accept those terms. We will hold the boundary here, and your servants will leave the grove uncut."
             }
           ]
         },
@@ -679,7 +715,26 @@
             },
             "faction": "player"
           }
-        },
+        }
+      ]
+    },
+    {
+      "id": "truce-withdrawal",
+      "when": {
+        "all": [
+          {
+            "flag": "cistern-ending-truce"
+          },
+          {
+            "noUnits": {
+              "faction": "enemy",
+              "unitType": "fox-spearguard"
+            }
+          }
+        ]
+      },
+      "priority": -30,
+      "actions": [
         {
           "forEachUnit": {
             "select": {
@@ -715,55 +770,38 @@
         {
           "victory": "The restored cistern flushes the roots away. The Circle withdraws under the grove agreement."
         }
-      ],
-      "objective": {
-        "faction": "player",
-        "label": "Or keep Mira at the cistern for 2 turns to clear the intake; preserve Bryn if she entered",
-        "intent": {
-          "hold": {
-            "tile": {
-              "location": "cistern"
-            },
-            "turns": 2,
-            "faction": "player",
-            "character": "mira",
-            "when": {
-              "flag": "cistern-screen-broken"
+      ]
+    },
+    {
+      "id": "intake-ready",
+      "when": {
+        "all": [
+          {
+            "flag": "cistern-screen-broken"
+          },
+          {
+            "owner": {
+              "tile": {
+                "location": "cistern"
+              },
+              "faction": "player"
             }
           }
-        },
-        "visibleWhen": {
-          "all": [
-            {
-              "flag": "cistern-screen-broken"
-            },
-            {
-              "hasUnits": {
-                "character": "vael"
-              }
-            }
-          ]
-        },
-        "preserveLives": {
-          "character": "mira"
-        },
-        "availableWhen": {
-          "any": [
-            {
-              "not": {
-                "flag": "cistern-bryn-entered"
-              }
-            },
-            {
-              "hasUnits": {
-                "character": "bryn",
-                "faction": "player"
-              }
-            }
-          ]
-        }
+        ]
       },
-      "priority": -20
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mira",
+              "text": "The garrison has the intake. Keep the root-creatures off the pump crew while they work."
+            }
+          ]
+        },
+        {
+          "setFlag": "cistern-intake-ready"
+        }
+      ]
     }
   ],
   "enemyGroups": [

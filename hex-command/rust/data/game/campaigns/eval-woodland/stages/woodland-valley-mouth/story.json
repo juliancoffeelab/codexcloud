@@ -1,12 +1,12 @@
 {
   "subtitle": "One Voice at the Valley Mouth",
-  "briefing": "Merek’s own force holds the valley mouth. The packs and Old Root now fight together under Ash-Muzzle. Break the chief and his army to end the occupation. Their bows cover the nearest ford; a narrow forest shelf runs behind them, while the southern marsh crossing offers another approach.",
+  "briefing": "Merek’s household veterans hold the open valley mouth. The packs and Old Root now fight together under Ash-Muzzle. Break the chief and his army to end the occupation. Forest patches and the northern hills offer cover, while the southern marsh ford gives the wolves a longer flank.",
   "hints": [],
   "intro": [
     {
       "character": "merek",
-      "portrait": "commander",
-      "text": "Yara hides behind beasts while another keeper wears her quarrel. Come across, Ash-Muzzle. I will settle both debts."
+      "portrait": "marshal",
+      "text": "Yara hides behind beasts while another keeper wears her quarrel. Come forward, Ash-Muzzle. I will settle both debts."
     },
     {
       "character": "ash",
@@ -14,19 +14,24 @@
       "text": "Yara does not command me. You brought your spears onto our feeding grounds. Now every den you threatened stands against you."
     },
     {
+      "character": "merek",
+      "portrait": "marshal",
+      "text": "My brother meant to clear that grove. I will finish his road, and take the valley he should have lived to see."
+    },
+    {
       "with": "pip",
       "dialogue": [
         {
           "character": "pip",
           "portrait": "thorncaller",
-          "text": "The bows cover that ford. Put the old tree in front; arrows bite poorly into its bark. We can follow once the archers turn."
+          "text": "The old tree can take their arrows. Keep it clear of the swordsman and that hammer. Their healer will keep those men standing unless we bring him down."
         }
       ],
       "alternative": [
         {
           "character": "ash",
           "portrait": "wildkeeper",
-          "text": "Their bows cover the ford. Let the old tree take the arrows while our thorns work behind it."
+          "text": "The old tree can take their arrows. Keep it clear of the swordsman and that hammer. Bring down their healer before he mends our work."
         }
       ]
     },
@@ -36,21 +41,21 @@
         {
           "character": "sedge",
           "portrait": "fox-spearguard",
-          "text": "I can hold the mouth of that forest shelf. Send wolves past me before the rider closes it."
+          "text": "The rider is looking for our thorncallers. I will cover them. Send the wolves round once his foot soldiers commit."
         }
       ],
       "alternative": [
         {
           "character": "ash",
           "portrait": "wildkeeper",
-          "text": "A thornshield must hold the forest shelf against that rider. Send wolves through behind the archers."
+          "text": "Keep shields beside the thorncallers. Hold their cavalry while our wolves go round the fighting."
         }
       ]
     },
     {
       "character": "ash",
       "portrait": "wildkeeper",
-      "text": "Pack, grove and thorn together. Break Merek’s force. We will not leave a human army on this side of the valley."
+      "text": "Pack, grove and thorn together. Break Merek’s army. We will not leave his spears on this side of the valley."
     }
   ],
   "victory": [
@@ -99,15 +104,5 @@
       "text": "One call, then. But we answer together. Keep the young close while we cross."
     }
   ],
-  "debrief": [
-    {
-      "when": {
-        "flag": "merek-pretext-revealed"
-      },
-      "text": "Merek’s own camp exposed the claim behind his grief: his brother had meant to clear the grove before Yara killed him. His army is gone. The woodland folk leave by the marsh ford as one company under Ash-Muzzle, with their feeding grounds free of the occupation."
-    },
-    {
-      "text": "Merek’s army is gone. The woodland folk leave by the marsh ford as one company under Ash-Muzzle. The packs and Old Root keep their own homes, but now answer one call when their feeding grounds are threatened."
-    }
-  ]
+  "debrief": "Merek’s army is gone. The woodland folk leave by the marsh ford as one company under Ash-Muzzle. The packs and Old Root keep their own homes, but now answer one call when their feeding grounds are threatened."
 }

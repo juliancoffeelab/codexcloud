@@ -176,7 +176,7 @@
       ],
       "objective": {
         "faction": "player",
-        "label": "Bring a skeletal servant to the crypt muster",
+        "label": "Keep a skeletal servant at the crypt muster until Mira returns",
         "intent": {
           "escape": {
             "tile": {
@@ -209,6 +209,36 @@
         },
         "visibleWhen": {
           "flag": "toll-chest-recovered"
+        },
+        "satisfiedWhen": {
+          "stand": {
+            "tile": {
+              "location": "muster"
+            },
+            "faction": "player",
+            "unitTypes": [
+              "skeleton",
+              "skeleton-scythe-caster-l2",
+              "skeleton-rider-l3",
+              "skeleton-impact-caster-l3",
+              "skeleton-scythe-caster-l3",
+              "skeleton-flanker-l2",
+              "skeleton-axeman-l3",
+              "skeleton-dreadguard",
+              "skeleton-bow-master",
+              "bonearcher",
+              "skeleton-impact-caster-l2",
+              "skeleton-rider-l2",
+              "skeleton-axeman",
+              "skeleton-flanker-l3",
+              "skeleton-axeman-l2",
+              "deatharcher",
+              "revenant",
+              "skeleton-impact-caster",
+              "skeleton-rider"
+            ],
+            "through": false
+          }
         }
       }
     },
@@ -251,6 +281,16 @@
         },
         "visibleWhen": {
           "flag": "toll-chest-recovered"
+        },
+        "satisfiedWhen": {
+          "stand": {
+            "tile": {
+              "location": "crypt"
+            },
+            "faction": "player",
+            "through": false,
+            "character": "mira"
+          }
         }
       }
     },

@@ -582,7 +582,7 @@
       "col": 9,
       "row": 5,
       "terrain": "village",
-      "owner": "rival",
+      "owner": "player",
       "id": "mares-camp",
       "connections": []
     },

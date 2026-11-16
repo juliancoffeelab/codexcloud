@@ -30,7 +30,7 @@
         "enemy": "hostile",
         "prisoners": "neutral"
       },
-      "gold": 44,
+      "gold": 36,
       "recruits": [
         {
           "unit": "skeleton"
@@ -108,7 +108,7 @@
         "player": "hostile",
         "prisoners": "neutral"
       },
-      "gold": 16,
+      "gold": 24,
       "recruits": [
         {
           "unit": "wolf"
@@ -118,6 +118,12 @@
         },
         {
           "unit": "fox-spearguard"
+        },
+        {
+          "unit": "boar"
+        },
+        {
+          "unit": "treant"
         }
       ],
       "units": [
@@ -131,7 +137,7 @@
           "role": "leader"
         },
         {
-          "type": "fox-spearguard",
+          "type": "boar",
           "tile": {
             "col": 10,
             "row": 7
@@ -170,7 +176,7 @@
           }
         },
         {
-          "type": "wolf",
+          "type": "treant",
           "tile": {
             "col": 14,
             "row": 8
@@ -200,6 +206,20 @@
             "row": 3
           },
           "aiGroup": "outliers"
+        },
+        {
+          "type": "wolf",
+          "tile": {
+            "col": 0,
+            "row": 3
+          }
+        },
+        {
+          "type": "wolf",
+          "tile": {
+            "col": 0,
+            "row": 9
+          }
         }
       ]
     },

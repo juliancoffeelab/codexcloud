@@ -110,28 +110,40 @@
           "tile": {
             "col": 9,
             "row": 4
-          }
+          },
+          "aiGroup": "causeway-screen"
         },
         {
           "type": "spearman",
           "tile": {
             "col": 10,
             "row": 5
-          }
+          },
+          "aiGroup": "causeway-screen"
         },
         {
           "type": "archer",
           "tile": {
             "col": 10,
             "row": 3
-          }
+          },
+          "aiGroup": "causeway-screen"
         },
         {
           "type": "archer",
           "tile": {
             "col": 11,
             "row": 5
-          }
+          },
+          "aiGroup": "causeway-screen"
+        },
+        {
+          "type": "archer",
+          "tile": {
+            "col": 9,
+            "row": 2
+          },
+          "aiGroup": "causeway-screen"
         }
       ]
     }

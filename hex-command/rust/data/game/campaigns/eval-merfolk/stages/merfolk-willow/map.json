@@ -141,7 +141,7 @@
     {
       "col": 5,
       "row": 1,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -153,13 +153,13 @@
     {
       "col": 7,
       "row": 1,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 8,
       "row": 1,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -239,7 +239,7 @@
     {
       "col": 5,
       "row": 2,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -350,7 +350,7 @@
     {
       "col": 5,
       "row": 3,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -362,13 +362,13 @@
     {
       "col": 7,
       "row": 3,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 8,
       "row": 3,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -446,7 +446,7 @@
     {
       "col": 5,
       "row": 4,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -458,13 +458,13 @@
     {
       "col": 7,
       "row": 4,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 8,
       "row": 4,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -558,25 +558,26 @@
     {
       "col": 5,
       "row": 5,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 6,
       "row": 5,
-      "terrain": "water",
-      "owner": null
+      "terrain": "ford",
+      "owner": null,
+      "connections": ["e", "w"]
     },
     {
       "col": 7,
       "row": 5,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 8,
       "row": 5,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -658,7 +659,7 @@
     {
       "col": 5,
       "row": 6,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -670,43 +671,43 @@
     {
       "col": 7,
       "row": 6,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 8,
       "row": 6,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 9,
       "row": 6,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 10,
       "row": 6,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 11,
       "row": 6,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 12,
       "row": 6,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 13,
       "row": 6,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -766,7 +767,7 @@
     {
       "col": 5,
       "row": 7,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -778,43 +779,43 @@
     {
       "col": 7,
       "row": 7,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 8,
       "row": 7,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 9,
       "row": 7,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 10,
       "row": 7,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 11,
       "row": 7,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 12,
       "row": 7,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 13,
       "row": 7,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -864,7 +865,7 @@
     {
       "col": 5,
       "row": 8,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -876,13 +877,13 @@
     {
       "col": 7,
       "row": 8,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 8,
       "row": 8,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -896,19 +897,19 @@
     {
       "col": 10,
       "row": 8,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 11,
       "row": 8,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 12,
       "row": 8,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -975,7 +976,7 @@
     {
       "col": 5,
       "row": 9,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
@@ -1072,61 +1073,61 @@
     {
       "col": 5,
       "row": 10,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 6,
       "row": 10,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 7,
       "row": 10,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 8,
       "row": 10,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 9,
       "row": 10,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 10,
       "row": 10,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 11,
       "row": 10,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 12,
       "row": 10,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 13,
       "row": 10,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {
       "col": 14,
       "row": 10,
-      "terrain": "water",
+      "terrain": "marsh",
       "owner": null
     },
     {

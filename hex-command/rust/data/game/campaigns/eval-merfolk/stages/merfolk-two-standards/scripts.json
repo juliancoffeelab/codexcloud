@@ -27,7 +27,7 @@
             {
               "character": "orra",
               "portrait": "tidekeeper",
-              "text": "Keep yourself alive, Mares. We hold this inlet until your rear guard is through. Our forward reserve is waiting for a standard on either bank."
+              "text": "Keep yourself alive, Mares. We hold this inlet until your rear guard is through. They can wait in the outer channel if the bank is lost, but they cannot join us until we retake it. Our forward reserve is waiting for a standard on either bank."
             }
           ]
         },
@@ -86,9 +86,6 @@
         },
         {
           "setFlag": "early-reserve"
-        },
-        {
-          "setFlag": "signal-upper"
         },
         {
           "say": [
@@ -169,9 +166,6 @@
         },
         {
           "setFlag": "early-reserve"
-        },
-        {
-          "setFlag": "signal-lower"
         },
         {
           "say": [
@@ -273,6 +267,26 @@
               "character": "mares",
               "side": "player"
             }
+          },
+          {
+            "any": [
+              {
+                "owner": {
+                  "tile": {
+                    "location": "mares-camp"
+                  },
+                  "faction": "player"
+                }
+              },
+              {
+                "owner": {
+                  "tile": {
+                    "location": "mares-camp"
+                  },
+                  "faction": "rival"
+                }
+              }
+            ]
           }
         ]
       },
@@ -296,7 +310,7 @@
       ],
       "objective": {
         "faction": "player",
-        "label": "Keep Orra and Mares alive until turn 7",
+        "label": "Keep Orra and Mares alive; secure the inlet for the rear guard from turn 7",
         "optional": false,
         "visibleWhen": {
           "flag": "joint-command"
@@ -333,6 +347,26 @@
                 "character": "mares",
                 "side": "player"
               }
+            },
+            {
+              "any": [
+                {
+                  "owner": {
+                    "tile": {
+                      "location": "mares-camp"
+                    },
+                    "faction": "player"
+                  }
+                },
+                {
+                  "owner": {
+                    "tile": {
+                      "location": "mares-camp"
+                    },
+                    "faction": "rival"
+                  }
+                }
+              ]
             }
           ]
         },
@@ -341,6 +375,49 @@
           "unitTypes": ["tidekeeper", "tideseer", "merfolk-tide-sovereign"]
         }
       }
+    },
+    {
+      "id": "rear-guard-waits",
+      "when": {
+        "all": [
+          {
+            "turnAtLeast": 7
+          },
+          {
+            "not": {
+              "any": [
+                {
+                  "owner": {
+                    "tile": {
+                      "location": "mares-camp"
+                    },
+                    "faction": "player"
+                  }
+                },
+                {
+                  "owner": {
+                    "tile": {
+                      "location": "mares-camp"
+                    },
+                    "faction": "rival"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "say": [
+            {
+              "character": "mares",
+              "portrait": "tidekeeper",
+              "text": "The rear guard is waiting in the outer channel. We need the inlet bank back before they can come ashore."
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -18,7 +18,7 @@
     {
       "character": "orra",
       "portrait": "tidekeeper",
-      "text": "Both captains ordered a retreat. Neither bothered to tell the other crew. Now we are the ones left on this bank."
+      "text": "Captain Mares ordered the retreat. His two crew chiefs each thought the other would warn us. Now we are the ones left on this bank."
     },
     {
       "character": "rell",
@@ -35,7 +35,7 @@
     {
       "character": "orra",
       "portrait": "tidekeeper",
-      "text": "The map shows a spring still worth keeping. If the captains will not bring both crews together, I will."
+      "text": "The map shows a spring still worth keeping. If Mares cannot make his crews act together, I will."
     }
   ],
   "debrief": "Orra returns to the rear camp with a route through the inlet and a current-map leading toward the willow. The spring is still in the Mother’s hands."
