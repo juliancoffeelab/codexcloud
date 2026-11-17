@@ -107,6 +107,7 @@ module C = struct
   external translate : context -> float -> float -> unit = "translate" [@@mel.send]
   external save : context -> unit = "save" [@@mel.send]
   external restore : context -> unit = "restore" [@@mel.send]
+  external clip : context -> unit = "clip" [@@mel.send]
   external fill_rect : context -> float -> float -> float -> float -> unit = "fillRect" [@@mel.send]
   external begin_path : context -> unit = "beginPath" [@@mel.send]
   external move_to : context -> float -> float -> unit = "moveTo" [@@mel.send]
@@ -295,9 +296,12 @@ let normalize map overlay =
         ({js|tiles|js}, Js.Json.array tiles);
         ({js|units|js}, Js.Json.array units);
         ( {js|lighting|js},
-          J.default map {js|lighting|js} (J.obj [ ({js|time|js}, J.str {js|day|js}) ]) );
+          J.default overlay {js|lighting|js}
+            (J.default map {js|lighting|js} (J.obj [ ({js|time|js}, J.str {js|day|js}) ])) );
         ({js|factions|js}, J.default map {js|factions|js} (Js.Json.array [||]));
-        ({js|visionGroups|js}, J.default map {js|visionGroups|js} (Js.Json.array [||]));
+        ( {js|visionGroups|js},
+          J.default overlay {js|visionGroups|js}
+            (J.default map {js|visionGroups|js} (Js.Json.array [||])) );
         ({js|pending|js}, Js.Json.array [||]);
         ({js|marks|js}, J.default overlay {js|marks|js} (Js.Json.array [||]));
         ({js|choices|js}, J.default overlay {js|choices|js} (Js.Json.array [||]));
@@ -569,6 +573,64 @@ let run root =
     C.save ctx;
     C.translate ctx margin header;
     Terrain_plan.configure ctx scale;
+    (* Author-supplied visual states, not a second perception evaluator. Snapshot
+       transforms affect terrain only; fog is painted over all proposals. *)
+    let remembered = Hashtbl.create 16 in
+    Array.iter
+      (fun cell ->
+        let col, row = coordinate cell in
+        let key = Hex.key { Domain.col = Int32.of_int col; row = Int32.of_int row } in
+        Hashtbl.replace remembered key ())
+      (J.list overlay {js|rememberedPreview|js});
+    let paint_state field transform =
+      let cells = J.list overlay field in
+      if Array.length cells > 0 then (
+        let snapshot = C.create width height in
+        let sc = C.context snapshot {js|2d|js} in
+        let data = C.image_data (C.context terrain {js|2d|js}) 0 0 width height in
+        let pixels = C.data data in
+        for i = 0 to (width * height) - 1 do
+          if C.get pixels ((i * 4) + 3) > 0. then (
+            let r = C.get pixels (i * 4)
+            and g = C.get pixels ((i * 4) + 1)
+            and b = C.get pixels ((i * 4) + 2) in
+            let r, g, b = transform (i mod width) (i / width) r g b in
+            C.set pixels (i * 4) r;
+            C.set pixels ((i * 4) + 1) g;
+            C.set pixels ((i * 4) + 2) b)
+        done;
+        C.put sc data 0 0;
+        Array.iter
+          (fun cell ->
+            let col, row = coordinate cell in
+            let p = Geometry.center ~col ~row in
+            let points = Js.String.split ~sep:{js| |js} (Geometry.hex_points p.x p.y) in
+            C.save ctx;
+            C.begin_path ctx;
+            Array.iteri
+              (fun i item ->
+                let xy = Js.String.split ~sep:{js|,|js} item in
+                let x = float_of_string xy.(0) and y = float_of_string xy.(1) in
+                if i = 0 then C.move_to ctx x y else C.line_to ctx x y)
+              points;
+            C.clip ctx;
+            C.draw_scaled ctx snapshot 0. 0.
+              (float_of_int width /. scale)
+              (float_of_int height /. scale);
+            C.restore ctx)
+          cells)
+    in
+    paint_state {js|rememberedPreview|js} (fun _ _ r g b ->
+        ((r *. 0.68) +. 8., (g *. 0.68) +. 7., (b *. 0.72) +. 20.));
+    let darkvision = J.bool overlay {js|darkvisionPreview|js} in
+    paint_state {js|darknessPreview|js} (fun x y r g b ->
+        let wisp = (sin ((float_of_int x *. 0.035) +. sin (float_of_int y *. 0.041)) +. 1.) /. 2. in
+        if darkvision then
+          ((r *. 0.57) +. 9. +. (wisp *. 4.), (g *. 0.32) +. 3., (b *. 0.82) +. 23. +. (wisp *. 7.))
+        else
+          ( (r *. 0.09) +. 8. +. (wisp *. 7.),
+            (g *. 0.035) +. 3.,
+            (b *. 0.18) +. 17. +. (wisp *. 12.) ));
     Lighting.fog ctx plan.tiles (Array.map Hex.key resolved.fog);
     let fog = Hashtbl.create 16 in
     Array.iter (fun hex -> Hashtbl.replace fog (Hex.key hex) ()) resolved.fog;
@@ -595,7 +657,9 @@ let run root =
       Array_ext.filter_map
         (fun (tile : Domain.tile) ->
           match Hashtbl.find_opt placements tile.id with
-          | Some (unit, raw) when (not (hostile unit)) || not (Hashtbl.mem fog tile.id) ->
+          | Some (unit, raw)
+            when (not (Hashtbl.mem remembered tile.id))
+                 && ((not (hostile unit)) || not (Hashtbl.mem fog tile.id)) ->
               Some (unit, raw)
           | _ -> None)
         input.tiles
