@@ -41,24 +41,24 @@ lighting. The launcher asks Cargo and Dune to update their inputs, then bundles
 the renderer; map-only watch updates reuse the running renderer. Conditions are resolved by the same Rust evaluator used
 by live battles.
 
-The map input has `mapId`, positive `cols` and `rows`, and a complete `tiles` grid.
-Tiles use the existing map schema, including explicit `floor` choices and terrain
-`connections`. An optional `name` titles the preview. Optional `lighting` uses the
-Rust-authored map format; optional `units` have `type`, `side`, `col` and `row`.
-This renderer checks geometry and artwork availability; it does not replace Rust
-content validation or establish whether a scenario is playable.
+Pass an authored `map.json` with the `mapId` and `mapRevision` of a registered
+map. The renderer substitutes this file into the draft catalog and loads it
+through Rust with the registered roster. Keep the authored `tiles` array,
+including explicit floors and terrain connections. Clipped edges and gaps stay
+empty. The dimensions give the coordinate bounds.
 
 An overlay can supply:
 
 - `title` and `notes`: preview title and footer lines.
-- `units`: the complete set of unit placements for this preview, replacing map
-  units. Use an empty array for terrain alone. An optional unit `faction` selects
-  an available visual palette independently of allegiance (for example white
-  passive artwork). These are illustrations, not spawned units in a running game.
-- `memory`: previously remembered condition keys, as exported in a checkpoint’s
-  `conditionMemory`. `round` optionally sets the current round (default 1).
+- `units`: complete native unit snapshots, replacing the roster units in the
+  preview. Copy units from a checkpoint or omit this field to use the roster.
+  Use an empty array for terrain alone. Each unit's `faction` is an ID declared
+  by the roster. The renderer uses that faction's `palette` for its sprites.
+- `observer`: faction whose visibility to render. Defaults to `player`.
+- `memory`: explored hexes for the observer's vision group. `round` can
+  override the prepared preview's round.
 - `marks`: completed event markers, in the engine's `event:<id>` format, for
-  resolving event-controlled lights. Ownership comes from the supplied map tiles.
+  resolving event-controlled lights. Ownership comes from the prepared preview state.
 - `annotations`: objects with `col`, `row`, optional `text`, `color`, `dy` (label
   offset in battlefield coordinates), and `ring` (boolean).
 - `arrows`: objects with `from` and `to` coordinates and optional `color`.
