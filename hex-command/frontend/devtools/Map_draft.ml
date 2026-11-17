@@ -272,7 +272,7 @@ let normalize map overlay =
       J.set tile {js|id|js} (J.str key);
       Hashtbl.add positions key ())
     tiles;
-  if Array.length tiles <> cols * rows then invalid_arg {js|Supply the complete draft tile grid|js};
+  if Array.length tiles = 0 then invalid_arg {js|Supply draft map tiles|js};
   let units =
     if J.has overlay {js|units|js} then J.array (J.field overlay {js|units|js})
     else J.list map {js|units|js}

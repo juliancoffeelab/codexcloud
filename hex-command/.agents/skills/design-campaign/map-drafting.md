@@ -41,10 +41,12 @@ lighting. The launcher asks Cargo and Dune to update their inputs, then bundles
 the renderer; map-only watch updates reuse the running renderer. Conditions are resolved by the same Rust evaluator used
 by live battles.
 
-The map input has `mapId`, positive `cols` and `rows`, and a complete `tiles` grid.
+The map input has `mapId`, positive `cols` and `rows`, and the authored `tiles`.
+Clipped edges and gaps remain empty; only supplied tiles are drawn.
 Tiles use the existing map schema, including explicit `floor` choices and terrain
 `connections`. An optional `name` titles the preview. Optional `lighting` uses the
-Rust-authored map format; optional `units` have `type`, `side`, `col` and `row`.
+Rust-authored map format. Supply `factions` and `visionGroups` from the roster
+when showing units; each unit has `type`, a declared `faction`, `col` and `row`.
 This renderer checks geometry and artwork availability; it does not replace Rust
 content validation or establish whether a scenario is playable.
 
@@ -52,9 +54,9 @@ An overlay can supply:
 
 - `title` and `notes`: preview title and footer lines.
 - `units`: the complete set of unit placements for this preview, replacing map
-  units. Use an empty array for terrain alone. An optional unit `faction` selects
-  an available visual palette independently of allegiance (for example white
-  passive artwork). These are illustrations, not spawned units in a running game.
+  units. Use an empty array for terrain alone. Each unit references a declared
+  faction, whose palette selects its artwork (for example white passive artwork).
+  These are illustrations, not spawned units in a running game.
 - `memory`: previously remembered condition keys, as exported in a checkpoint’s
   `conditionMemory`. `round` optionally sets the current round (default 1).
 - `marks`: completed event markers, in the engine's `event:<id>` format, for
