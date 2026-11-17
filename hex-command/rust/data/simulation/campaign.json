@@ -2,7 +2,7 @@
   "defaultMaxRounds": 100,
   "diplomacy": ["unrestricted", "diplomatic"],
   "policies": ["classic", "rush", "balanced", "rotated", "situational"],
-  "defaultCampaigns": ["lantern-road"],
+  "defaultCampaigns": ["lantern-road", "eval-merfolk", "eval-skeletons", "eval-woodland"],
   "campaigns": {
     "lantern-road": {
       "diplomacy": ["unrestricted"],
@@ -77,6 +77,69 @@
           }
         }
       }
+    },
+    "eval-merfolk": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "eval-skeletons": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "destroy": {
+          "stages": {
+            "eval-skeletons-cistern": {
+              "scriptConditions": {
+                "restore-intake": {
+                  "always": false
+                }
+              },
+              "scriptEvents": [
+                {
+                  "id": "simulation-destroy-route",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "failObjective": "restore-intake"
+                    }
+                  ],
+                  "priority": 90
+                }
+              ]
+            }
+          }
+        },
+        "restore": {
+          "stages": {
+            "eval-skeletons-cistern": {
+              "scriptConditions": {
+                "destroy-invasion": {
+                  "always": false
+                }
+              },
+              "scriptEvents": [
+                {
+                  "id": "simulation-restore-route",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "failObjective": "destroy-invasion"
+                    }
+                  ],
+                  "priority": 90
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "eval-woodland": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
     },
     "mirror-night": {
       "diplomacy": ["unrestricted"],
