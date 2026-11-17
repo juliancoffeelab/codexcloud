@@ -15,6 +15,58 @@
       "priority": 100
     },
     {
+      "id": "den-pledge-guard",
+      "priority": 30,
+      "when": {
+        "all": [
+          {
+            "chapterStarted": true
+          },
+          {
+            "flag": "feeding-trail-open"
+          },
+          {
+            "noUnits": {
+              "character": "sedge",
+              "faction": "player"
+            }
+          },
+          {
+            "not": {
+              "flag": "den-pledge-guard-sent"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "hex": {
+                "col": 4,
+                "row": 3
+              }
+            },
+            "radius": 1,
+            "units": ["fox-spearguard"]
+          }
+        },
+        {
+          "say": [
+            {
+              "speaker": "Sedge’s den",
+              "portrait": "fox-spearguard",
+              "text": "Sedge promised you our shields. His place in the line will not stand empty."
+            }
+          ]
+        },
+        {
+          "setFlag": "den-pledge-guard-sent"
+        }
+      ]
+    },
+    {
       "id": "occupation-ended",
       "when": {
         "noUnits": {

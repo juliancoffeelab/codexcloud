@@ -117,7 +117,29 @@
         {
           "setFlag": "first-village-restored"
         }
-      ]
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Reclaim the pasture village to restore the cut woods",
+        "optional": true,
+        "visibleWhen": {
+          "flag": "first-village-cut"
+        },
+        "intent": {
+          "capture": [
+            {
+              "location": "pasture"
+            }
+          ]
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "pasture"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "patrol-defeated",

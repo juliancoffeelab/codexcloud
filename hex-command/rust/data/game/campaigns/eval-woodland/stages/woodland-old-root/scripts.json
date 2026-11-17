@@ -112,7 +112,13 @@
           "always": true
         },
         "optional": true,
-        "playerMarker": null
+        "playerMarker": {
+          "tiles": [
+            {
+              "location": "old-root"
+            }
+          ]
+        }
       }
     },
     {

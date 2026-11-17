@@ -1,15 +1,15 @@
 {
   "mapId": "woodland-pasture",
-  "mapRevision": 1,
+  "mapRevision": 2,
   "cols": 15,
   "rows": 9,
   "tiles": [
     {
       "col": 0,
       "row": 0,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-forest"
     },
     {
       "col": 1,
@@ -35,338 +35,338 @@
     {
       "col": 4,
       "row": 0,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
-    },
-    {
-      "col": 5,
-      "row": 0,
-      "terrain": "mountain",
-      "owner": null,
-      "floor": "mountain-rock"
-    },
-    {
-      "col": 6,
-      "row": 0,
-      "terrain": "mountain",
-      "owner": null,
-      "floor": "mountain-rock"
-    },
-    {
-      "col": 7,
-      "row": 0,
-      "terrain": "mountain",
-      "owner": null,
-      "floor": "mountain-rock"
-    },
-    {
-      "col": 8,
-      "row": 0,
-      "terrain": "mountain",
-      "owner": null,
-      "floor": "mountain-rock"
-    },
-    {
-      "col": 9,
-      "row": 0,
-      "terrain": "mountain",
-      "owner": null,
-      "floor": "mountain-rock"
-    },
-    {
-      "col": 10,
-      "row": 0,
-      "terrain": "mountain",
-      "owner": null,
-      "floor": "mountain-rock"
-    },
-    {
-      "col": 11,
-      "row": 0,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 12,
-      "row": 0,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
-    },
-    {
-      "col": 13,
-      "row": 0,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 14,
-      "row": 0,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 0,
-      "row": 1,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 1,
-      "row": 1,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 2,
-      "row": 1,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 3,
-      "row": 1,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
-    },
-    {
-      "col": 4,
-      "row": 1,
       "terrain": "forest",
       "owner": null,
       "floor": "green-forest"
     },
     {
       "col": 5,
-      "row": 1,
+      "row": 0,
       "terrain": "forest",
       "owner": null,
       "floor": "green-forest"
     },
     {
       "col": 6,
-      "row": 1,
+      "row": 0,
       "terrain": "marsh",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "marsh"
     },
     {
       "col": 7,
-      "row": 1,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
-    },
-    {
-      "col": 8,
-      "row": 1,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 9,
-      "row": 1,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 10,
-      "row": 1,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 11,
-      "row": 1,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
-    },
-    {
-      "col": 12,
-      "row": 1,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 13,
-      "row": 1,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 14,
-      "row": 1,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 0,
-      "row": 2,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 1,
-      "row": 2,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 2,
-      "row": 2,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
-    },
-    {
-      "col": 3,
-      "row": 2,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 4,
-      "row": 2,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 5,
-      "row": 2,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 6,
-      "row": 2,
+      "row": 0,
       "terrain": "marsh",
       "owner": null,
-      "floor": "green-plain"
-    },
-    {
-      "col": 7,
-      "row": 2,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
+      "floor": "marsh"
     },
     {
       "col": 8,
-      "row": 2,
+      "row": 0,
       "terrain": "forest",
       "owner": null,
       "floor": "green-forest"
     },
     {
       "col": 9,
-      "row": 2,
+      "row": 0,
       "terrain": "forest",
       "owner": null,
       "floor": "green-forest"
     },
     {
       "col": 10,
-      "row": 2,
-      "terrain": "plains",
+      "row": 0,
+      "terrain": "forest",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-forest"
     },
     {
       "col": 11,
-      "row": 2,
+      "row": 0,
       "terrain": "forest",
       "owner": null,
       "floor": "green-forest"
     },
     {
       "col": 12,
-      "row": 2,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 13,
-      "row": 2,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 14,
-      "row": 2,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
-    },
-    {
-      "col": 0,
-      "row": 3,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 1,
-      "row": 3,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
-    },
-    {
-      "col": 2,
-      "row": 3,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 3,
-      "row": 3,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 4,
-      "row": 3,
-      "terrain": "forest",
-      "owner": null,
-      "floor": "green-forest"
-    },
-    {
-      "col": 5,
-      "row": 3,
-      "terrain": "plains",
-      "owner": null,
-      "floor": "green-plain"
-    },
-    {
-      "col": 6,
-      "row": 3,
+      "row": 0,
       "terrain": "hill",
       "owner": null,
       "floor": "green-plain"
+    },
+    {
+      "col": 13,
+      "row": 0,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain"
+    },
+    {
+      "col": 14,
+      "row": 0,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain"
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 6,
+      "row": 1,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh"
+    },
+    {
+      "col": 7,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 8,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 9,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 10,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 11,
+      "row": 1,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 12,
+      "row": 1,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain"
+    },
+    {
+      "col": 13,
+      "row": 1,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain"
+    },
+    {
+      "col": 14,
+      "row": 1,
+      "terrain": "hill",
+      "owner": null,
+      "floor": "green-plain"
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 6,
+      "row": 2,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh"
+    },
+    {
+      "col": 7,
+      "row": 2,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh"
+    },
+    {
+      "col": 8,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 9,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 10,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 11,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 12,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 13,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 14,
+      "row": 2,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain"
+    },
+    {
+      "col": 4,
+      "row": 3,
+      "terrain": "plains",
+      "owner": null,
+      "floor": "green-plain"
+    },
+    {
+      "col": 5,
+      "row": 3,
+      "terrain": "forest",
+      "owner": null,
+      "floor": "green-forest"
+    },
+    {
+      "col": 6,
+      "row": 3,
+      "terrain": "marsh",
+      "owner": null,
+      "floor": "marsh"
     },
     {
       "col": 7,
@@ -407,9 +407,9 @@
     {
       "col": 12,
       "row": 3,
-      "terrain": "forest",
+      "terrain": "plains",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain"
     },
     {
       "col": 13,
@@ -428,9 +428,9 @@
     {
       "col": 0,
       "row": 4,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-forest"
     },
     {
       "col": 1,
@@ -457,38 +457,42 @@
     {
       "col": 4,
       "row": 4,
-      "terrain": "plains",
+      "terrain": "road",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": ["e"]
     },
     {
       "col": 5,
       "row": 4,
-      "terrain": "forest",
+      "terrain": "road",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain",
+      "connections": ["e", "w"]
     },
     {
       "col": 6,
       "row": 4,
       "terrain": "ford",
       "owner": null,
-      "floor": "green-plain",
+      "floor": "shallow-water",
       "connections": ["e", "w"]
     },
     {
       "col": 7,
       "row": 4,
-      "terrain": "forest",
+      "terrain": "road",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain",
+      "connections": ["e", "w"]
     },
     {
       "col": 8,
       "row": 4,
-      "terrain": "plains",
+      "terrain": "road",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "connections": ["se", "w"]
     },
     {
       "col": 9,
@@ -505,14 +509,15 @@
       "owner": "enemy",
       "floor": "green-plain",
       "id": "pasture",
-      "connections": []
+      "connections": ["e", "sw"]
     },
     {
       "col": 11,
       "row": 4,
-      "terrain": "forest",
+      "terrain": "road",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain",
+      "connections": ["e", "w"]
     },
     {
       "col": 12,
@@ -525,9 +530,9 @@
     {
       "col": 13,
       "row": 4,
-      "terrain": "forest",
+      "terrain": "plains",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain"
     },
     {
       "col": 14,
@@ -539,9 +544,10 @@
     {
       "col": 0,
       "row": 5,
-      "terrain": "forest",
+      "terrain": "road",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain",
+      "connections": ["se", "ne"]
     },
     {
       "col": 1,
@@ -581,37 +587,39 @@
     {
       "col": 6,
       "row": 5,
-      "terrain": "hill",
+      "terrain": "marsh",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "marsh"
     },
     {
       "col": 7,
       "row": 5,
-      "terrain": "plains",
+      "terrain": "marsh",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "marsh"
     },
     {
       "col": 8,
       "row": 5,
-      "terrain": "forest",
+      "terrain": "road",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain",
+      "connections": ["e", "nw"]
     },
     {
       "col": 9,
       "row": 5,
-      "terrain": "forest",
+      "terrain": "road",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain",
+      "connections": ["w", "ne"]
     },
     {
       "col": 10,
       "row": 5,
-      "terrain": "forest",
+      "terrain": "plains",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain"
     },
     {
       "col": 11,
@@ -623,16 +631,16 @@
     {
       "col": 12,
       "row": 5,
-      "terrain": "forest",
+      "terrain": "plains",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain"
     },
     {
       "col": 13,
       "row": 5,
-      "terrain": "forest",
+      "terrain": "plains",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain"
     },
     {
       "col": 14,
@@ -651,9 +659,10 @@
     {
       "col": 1,
       "row": 6,
-      "terrain": "forest",
+      "terrain": "road",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain",
+      "connections": ["e", "nw"]
     },
     {
       "col": 2,
@@ -662,14 +671,14 @@
       "owner": "player",
       "floor": "green-plain",
       "id": "den-stores",
-      "connections": []
+      "connections": ["w"]
     },
     {
       "col": 3,
       "row": 6,
-      "terrain": "forest",
+      "terrain": "plains",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain"
     },
     {
       "col": 4,
@@ -688,30 +697,30 @@
     {
       "col": 6,
       "row": 6,
-      "terrain": "marsh",
+      "terrain": "forest",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-forest"
     },
     {
       "col": 7,
       "row": 6,
-      "terrain": "forest",
+      "terrain": "marsh",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "marsh"
     },
     {
       "col": 8,
       "row": 6,
-      "terrain": "forest",
+      "terrain": "marsh",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "marsh"
     },
     {
       "col": 9,
       "row": 6,
-      "terrain": "forest",
+      "terrain": "plains",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain"
     },
     {
       "col": 10,
@@ -723,16 +732,16 @@
     {
       "col": 11,
       "row": 6,
-      "terrain": "forest",
+      "terrain": "plains",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain"
     },
     {
       "col": 12,
       "row": 6,
-      "terrain": "forest",
+      "terrain": "plains",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain"
     },
     {
       "col": 13,
@@ -744,9 +753,9 @@
     {
       "col": 14,
       "row": 6,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-forest"
     },
     {
       "col": 0,
@@ -758,9 +767,9 @@
     {
       "col": 1,
       "row": 7,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-forest"
     },
     {
       "col": 2,
@@ -772,9 +781,9 @@
     {
       "col": 3,
       "row": 7,
-      "terrain": "forest",
+      "terrain": "plains",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain"
     },
     {
       "col": 4,
@@ -786,16 +795,16 @@
     {
       "col": 5,
       "row": 7,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-forest"
     },
     {
       "col": 6,
       "row": 7,
-      "terrain": "marsh",
+      "terrain": "forest",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-forest"
     },
     {
       "col": 7,
@@ -807,23 +816,23 @@
     {
       "col": 8,
       "row": 7,
-      "terrain": "forest",
+      "terrain": "marsh",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "marsh"
     },
     {
       "col": 9,
       "row": 7,
-      "terrain": "plains",
+      "terrain": "marsh",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "marsh"
     },
     {
       "col": 10,
       "row": 7,
-      "terrain": "forest",
+      "terrain": "plains",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-plain"
     },
     {
       "col": 11,
@@ -842,9 +851,9 @@
     {
       "col": 13,
       "row": 7,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-forest"
     },
     {
       "col": 14,
@@ -856,9 +865,9 @@
     {
       "col": 0,
       "row": 8,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-forest"
     },
     {
       "col": 1,
@@ -884,51 +893,51 @@
     {
       "col": 4,
       "row": 8,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-forest"
     },
     {
       "col": 5,
       "row": 8,
-      "terrain": "mountain",
+      "terrain": "forest",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "green-forest"
     },
     {
       "col": 6,
       "row": 8,
-      "terrain": "mountain",
+      "terrain": "forest",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "green-forest"
     },
     {
       "col": 7,
       "row": 8,
-      "terrain": "mountain",
+      "terrain": "forest",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "green-forest"
     },
     {
       "col": 8,
       "row": 8,
-      "terrain": "mountain",
+      "terrain": "forest",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "green-forest"
     },
     {
       "col": 9,
       "row": 8,
-      "terrain": "mountain",
+      "terrain": "marsh",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "marsh"
     },
     {
       "col": 10,
       "row": 8,
-      "terrain": "mountain",
+      "terrain": "marsh",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "marsh"
     },
     {
       "col": 11,
@@ -940,9 +949,9 @@
     {
       "col": 12,
       "row": 8,
-      "terrain": "plains",
+      "terrain": "forest",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-forest"
     },
     {
       "col": 13,
