@@ -56,6 +56,10 @@ module Node = struct
   external absolute : string -> string = "resolve" [@@mel.module "node:path"]
   external resolve : string -> string -> string = "resolve" [@@mel.module "node:path"]
   external dirname : string -> string = "dirname" [@@mel.module "node:path"]
+
+  external realpath : string -> string = "native"
+  [@@mel.module "node:fs"] [@@mel.scope "realpathSync"]
+
   external argv : string array = "argv" [@@mel.module "node:process"]
   external stat : string -> file_info = "statSync" [@@mel.module "node:fs"]
 
@@ -67,8 +71,24 @@ end
 
 let used_files = Hashtbl.create 32
 
+let rec watch_existing_parent path =
+  try Hashtbl.replace used_files (Node.realpath path) ()
+  with _ ->
+    let parent = Node.dirname path in
+    if parent <> path then watch_existing_parent parent
+
+let physical_path path =
+  try Node.realpath path
+  with error ->
+    (* A missing file cannot be canonicalized yet. Watch its physical ancestor
+       so creating it (or a missing parent directory) retries the render. *)
+    watch_existing_parent (Node.dirname path);
+    raise error
+
 let read_json path =
   Hashtbl.replace used_files (Node.absolute path) ();
+  let path = physical_path path in
+  Hashtbl.replace used_files path ();
   Node.read path
 
 let dependencies () = Array.of_seq (Hashtbl.to_seq_keys used_files)
@@ -129,6 +149,14 @@ type image_stamp = { modified : float; changed : float; size : float; inode : fl
 type decoded_image = { stamp : image_stamp; image : C.canvas }
 type terrain_layer = { key : string; canvas : C.canvas }
 
+type draft_actor = {
+  tile : Domain.hex;
+  palette : string;
+  frame_key : string;
+  health_bar : bool;
+  order : int;
+}
+
 let decoded_images : (string, decoded_image) Hashtbl.t = Hashtbl.create 32
 let terrain_layer : terrain_layer option ref = ref None
 let sprite_bundle = ref None
@@ -162,7 +190,7 @@ let frame_path root (frame : Art.frame) =
   else Node.absolute frame.url
 
 let help =
-  {js|Usage: node scripts/render-map.mjs [--watch] --map map.json [--overlay overlay.json] --output preview.png\nOptions: --grid [--grid-color COLOR] --artwork candidate-frames.json\n         --draw-order native|reverse-within-z|shuffle-within-z|reverse-all|shuffle-all\n         --order-seed 17 --order-terrain castle-wall,castle-bell\nSupply a registered map/revision with its authored scenario or campaign roster.\nStatic draft only: Rust resolves perception; encounters and gameplay are not executed.|js}
+  {js|Usage: node scripts/render-map.mjs [--watch] --map map.json --roster roster.json --scenario scenario.json [--overlay overlay.json] --output preview.png\nOptions: --grid [--grid-color COLOR] --artwork frames.json --content content.json\n         --draw-order native|reverse-within-z|shuffle-within-z|reverse-all|shuffle-all\n         --order-seed 17 --order-terrain castle-wall,castle-bell\nSupply standalone current-format map, roster and scenario documents; no catalogue registration is needed.\nStatic draft only: Rust resolves perception; encounters and gameplay are not executed.|js}
 
 let options () =
   let flags = Hashtbl.create 12 in
@@ -177,10 +205,13 @@ let options () =
         List.mem name
           [
             {js|--map|js};
+            {js|--roster|js};
+            {js|--scenario|js};
             {js|--overlay|js};
             {js|--output|js};
             {js|--grid-color|js};
             {js|--artwork|js};
+            {js|--content|js};
             {js|--draw-order|js};
             {js|--order-seed|js};
             {js|--order-terrain|js};
@@ -208,13 +239,28 @@ let positive name value =
     invalid_arg {j|Expected positive integer $(name)|j};
   int_of_float n
 
-(* Drafts use the same authored documents and setup path as a live map. The
-   devtool may read source files; Rust remains responsible for their mechanics. *)
-let draft_factory root map =
+(* Keep content definitions, but load only the supplied scenario in this temporary
+   bundle. The on-disk catalogue is untouched and cannot shadow a draft identity. *)
+let draft_factory root map_path map roster_path scenario_path content_path =
   let data_root = Node.resolve root {js|rust/data|js} in
-  let wanted = J.text map {js|mapId|js} in
-  let revision = J.n map {js|mapRevision|js} in
-  let replaced = ref false in
+  let scenario = read_json scenario_path in
+  let key path = {js|__draft__|js} ^ Node.absolute path in
+  let reference field supplied =
+    let relative = J.text scenario field in
+    if Js.String.startsWith ~prefix:{js|/|js} relative then
+      invalid_arg {j|Draft scenario $(field) reference must be relative|j};
+    let referenced = physical_path (Node.dirname scenario_path ^ {js|/|js} ^ relative) in
+    if referenced <> supplied then
+      invalid_arg {j|Draft scenario $(field) reference does not match --$(field)|j};
+    ()
+  in
+  reference {js|map|js} map_path;
+  reference {js|roster|js} roster_path;
+  let scenario_key = {js|__draft__/scenario.json|js}
+  and map_key = {js|__draft__/map.json|js}
+  and roster_key = {js|__draft__/roster.json|js} in
+  J.set scenario {js|map|js} (J.str {js|map.json|js});
+  J.set scenario {js|roster|js} (J.str {js|roster.json|js});
   let documents =
     Array.fold_left
       (fun documents path ->
@@ -222,25 +268,75 @@ let draft_factory root map =
         else
           let source_path = Node.resolve data_root path in
           Hashtbl.replace used_files source_path ();
-          let text = Node.read_text source_path {js|utf8|js} in
-          let value = Js.Json.parseExn text in
-          let text =
-            if
-              J.has value {js|tiles|js} && J.has value {js|mapId|js}
-              && J.text value {js|mapId|js} = wanted
-              && J.n value {js|mapRevision|js} = revision
-            then (
-              replaced := true;
-              Js.Json.stringify map)
-            else text
-          in
-          Domain.Text_map.add path text documents)
+          Domain.Text_map.add path (Node.read_text source_path {js|utf8|js}) documents)
       Domain.Text_map.empty
       (Node.paths data_root [%mel.obj { recursive = true }])
   in
-  if not !replaced then
-    invalid_arg
-      {js|Draft must replace a registered map and revision; author its scenario/roster first|js};
+  let manifest =
+    match Domain.Text_map.find_opt {js|manifest.json|js} documents with
+    | Some text -> Js.Json.parseExn text
+    | None -> invalid_arg {js|Missing catalogue manifest.json|js}
+  in
+  let documents =
+    Option.fold ~none:documents
+      ~some:(fun path ->
+        let content = read_json path in
+        let registries =
+          [
+            {js|units|js};
+            {js|races|js};
+            {js|items|js};
+            {js|abilities|js};
+            {js|environmentEffects|js};
+          ]
+        in
+        Array.fold_left
+          (fun documents (registry, paths) ->
+            if not (List.mem registry registries) then
+              invalid_arg {j|Unsupported draft content registry: $(registry)|j};
+            let ids = Hashtbl.create 8 in
+            let local, documents =
+              Array.fold_left
+                (fun (local, documents) relative ->
+                  let source = Node.dirname (Node.realpath path) ^ {js|/|js} ^ J.string relative in
+                  let value = read_json source in
+                  let source = Node.realpath source in
+                  let id = J.text value {js|id|js} in
+                  if Hashtbl.mem ids id then invalid_arg {j|Duplicate draft content ID: $(id)|j};
+                  Hashtbl.add ids id ();
+                  let document_key = key source in
+                  if Domain.Text_map.mem document_key documents then
+                    invalid_arg {j|Duplicate draft document: $(source)|j};
+                  ( J.str document_key :: local,
+                    Domain.Text_map.add document_key (Js.Json.stringify value) documents ))
+                ([], documents) (J.array paths)
+            in
+            let retained =
+              Array.to_list (J.array (J.field manifest registry))
+              |> List.filter (fun path ->
+                  let document = Domain.Text_map.find (J.string path) documents in
+                  not (Hashtbl.mem ids (J.text (Js.Json.parseExn document) {js|id|js})))
+            in
+            J.set manifest registry (Js.Json.array (Array.of_list (retained @ List.rev local)));
+            documents)
+          documents
+          (Js.Dict.entries (J.object_ content)))
+      content_path
+  in
+  J.set manifest {js|scenarios|js} (Js.Json.array [| J.str scenario_key |]);
+  J.set manifest {js|campaigns|js} (Js.Json.array [||]);
+  let documents =
+    Domain.Text_map.add {js|manifest.json|js} (Js.Json.stringify manifest) documents
+  in
+  let documents =
+    List.fold_left
+      (fun documents (key, value) ->
+        if Domain.Text_map.mem key documents then
+          invalid_arg {j|Duplicate draft document path: $(key)|j};
+        Domain.Text_map.add key (Js.Json.stringify value) documents)
+      documents
+      [ (scenario_key, scenario); (map_key, map); (roster_key, read_json roster_path) ]
+  in
   match Domain.NativeEngineFactory.with_documents documents with
   | Ok factory -> factory
   | Error error -> failwith (Native.message (Native.Engine error))
@@ -268,7 +364,7 @@ let normalize factory map overlay =
         catalog.maps
     with
     | Some map -> map.state
-    | None -> invalid_arg {js|Unregistered draft map revision|js}
+    | None -> invalid_arg {js|Draft map was not loaded|js}
   in
   let state_json = Js.Json.parseExn (Domain.state_to_json prepared) in
   if J.has overlay {js|units|js} then J.set state_json {js|units|js} (J.field overlay {js|units|js});
@@ -290,7 +386,6 @@ let normalize factory map overlay =
          if J.field group {js|id|js} = group_id then
            J.set group {js|explored|js} (J.field overlay {js|memory|js}))
        (J.array (J.field state_json {js|visionGroups|js})));
-  let units = J.array (J.field state_json {js|units|js}) in
   let input =
     J.obj
       [
@@ -301,7 +396,7 @@ let normalize factory map overlay =
         ({js|choices|js}, J.default overlay {js|choices|js} (Js.Json.array [||]));
       ]
   in
-  (cols, rows, map_id, units, Map_draft_json.of_presentation_input input, coordinate)
+  (cols, rows, map_id, Map_draft_json.of_presentation_input input, coordinate)
 
 let drawing_order flags source =
   let ordered = Array.copy source in
@@ -405,24 +500,37 @@ let run root =
     let required name =
       match Hashtbl.find_opt flags name with Some v -> v | None -> invalid_arg help
     in
-    let map = read_json (required {js|--map|js}) in
+    let map_path = physical_path (required {js|--map|js})
+    and roster_path = physical_path (required {js|--roster|js})
+    and scenario_path = physical_path (required {js|--scenario|js}) in
+    let map = read_json map_path in
     let overlay =
       Option.fold ~none:(J.obj []) ~some:read_json (Hashtbl.find_opt flags {js|--overlay|js})
     in
-    let factory = draft_factory root map in
-    let cols, rows, map_id, units, input, coordinate, resolved, roles =
-      Fun.protect
-        ~finally:(fun () -> Domain.NativeEngineFactory.dispose factory)
-        (fun () ->
-          let cols, rows, map_id, units, input, coordinate = normalize factory map overlay in
-          ( cols,
-            rows,
-            map_id,
-            units,
-            input,
-            coordinate,
-            Domain.NativeEngineFactory.preview_presentation factory input,
-            Catalog.terrain_roles (Catalog.of_view (Domain.NativeEngineFactory.catalog factory)) ))
+    let factory =
+      draft_factory root map_path map roster_path scenario_path
+        (Hashtbl.find_opt flags {js|--content|js})
+    in
+    let cols, rows, map_id, input, coordinate, resolved, roles =
+      let prepare () =
+        let cols, rows, map_id, input, coordinate = normalize factory map overlay in
+        ( cols,
+          rows,
+          map_id,
+          input,
+          coordinate,
+          Domain.NativeEngineFactory.preview_presentation factory input,
+          Catalog.terrain_roles (Catalog.of_view (Domain.NativeEngineFactory.catalog factory)) )
+      in
+      (* Fun.protect's exception path requires an unavailable Melange backtrace primitive. *)
+      match prepare () with
+      | result ->
+          Domain.NativeEngineFactory.dispose factory;
+          result
+      | exception error ->
+          (* A failed boundary call may have already poisoned/released its handle. *)
+          (try Domain.NativeEngineFactory.dispose factory with _ -> ());
+          raise error
     in
     let base = Art.current () in
     let overrides =
@@ -431,11 +539,6 @@ let run root =
           let entries = Js.Dict.entries (J.object_ (read_json path)) in
           Array.map
             (fun (key, value) ->
-              let original =
-                match Art.find base key with
-                | Some f -> f
-                | None -> invalid_arg {j|Unknown candidate frame: $(key)|j}
-              in
               let frame =
                 {
                   Art.url =
@@ -447,12 +550,21 @@ let run root =
                   z = J.n value {js|z|js};
                 }
               in
-              if
-                original.width <> frame.width || original.height <> frame.height
-                || original.anchor_x <> frame.anchor_x
-                || original.anchor_y <> frame.anchor_y
-                || floor frame.z <> frame.z
-              then invalid_arg {j|Candidate must preserve existing frame geometry: $(key)|j};
+              (match Art.find base key with
+              | Some original ->
+                  if
+                    original.width <> frame.width || original.height <> frame.height
+                    || original.anchor_x <> frame.anchor_x
+                    || original.anchor_y <> frame.anchor_y
+                    || floor frame.z <> frame.z
+                  then invalid_arg {j|Candidate must preserve existing frame geometry: $(key)|j}
+              | None ->
+                  if
+                    frame.width <> 64. || frame.height <> 64. || frame.anchor_x <> 32.
+                    || frame.anchor_y <> 32.
+                    || (not (Float.is_finite frame.z))
+                    || floor frame.z <> frame.z
+                  then invalid_arg {j|New actor frame must use native 64x64 geometry: $(key)|j});
               (key, frame))
             entries)
         (Hashtbl.find_opt flags {js|--artwork|js})
@@ -584,49 +696,97 @@ let run root =
       let col, row = coordinate value in
       Geometry.center ~col ~row
     in
-    let placements = Hashtbl.create (Array.length units) in
-    Array.iteri
-      (fun i (unit : Domain.public_unit) ->
-        Hashtbl.replace placements (Hex.key unit.tile) (unit, units.(i)))
+    let placements = Hashtbl.create (Array.length input.state.units) in
+    Array.iter
+      (fun (unit : Domain.public_unit) -> Hashtbl.replace placements (Hex.key unit.tile) unit)
       input.state.units;
-    let faction (unit : Domain.public_unit) =
-      match
-        Array.find_opt (fun (f : Domain.faction) -> f.id = unit.faction) input.state.factions
-      with
-      | Some faction -> faction
-      | None -> invalid_arg {js|Draft unit requires a declared faction|js}
+    let palette faction_id =
+      match Array.find_opt (fun (f : Domain.faction) -> f.id = faction_id) input.state.factions with
+      | Some faction -> faction.palette
+      | None -> invalid_arg {j|Draft actor requires a declared faction: $(faction_id)|j}
     in
+    let tile_order = Hashtbl.create (Array.length input.state.tiles) in
+    Array.iteri (fun i (tile : Domain.tile) -> Hashtbl.add tile_order tile.id i) input.state.tiles;
     let known_units = Hashtbl.create (Array.length resolved.visible_units) in
     Array.iter (fun id -> Hashtbl.replace known_units id ()) resolved.visible_units;
-    let visible =
+    let native =
       Array_ext.filter_map
         (fun (tile : Domain.tile) ->
           match Hashtbl.find_opt placements tile.id with
-          | Some (unit, raw) when Hashtbl.mem known_units unit.id -> Some (unit, raw)
+          | Some unit when Hashtbl.mem known_units unit.id ->
+              let palette = palette unit.faction in
+              Some
+                {
+                  tile = unit.tile;
+                  palette;
+                  frame_key = Art.frame_key ~kind:{js|units|js} ~name:unit.type_ ~side:palette ();
+                  health_bar = true;
+                  order = Hashtbl.find tile_order tile.id;
+                }
           | _ -> None)
         input.state.tiles
     in
+    let figures =
+      Array_ext.filter_map
+        (fun figure ->
+          Array.iter
+            (fun (key, _) ->
+              if
+                not
+                  (List.mem key
+                     [
+                       {js|col|js}; {js|row|js}; {js|frame|js}; {js|faction|js}; {js|visibility|js};
+                     ])
+              then invalid_arg {j|Unknown draft figure field: $(key)|j})
+            (Js.Dict.entries (J.object_ figure));
+          let col, row = coordinate figure in
+          let tile : Domain.hex = { col = Int32.of_int col; row = Int32.of_int row } in
+          let id = Hex.key tile in
+          let order =
+            match Hashtbl.find_opt tile_order id with
+            | Some i -> i
+            | None -> invalid_arg {j|Draft figure requires an authored tile: $(id)|j}
+          in
+          let actor =
+            {
+              tile;
+              palette = palette (J.text figure {js|faction|js});
+              frame_key = J.text figure {js|frame|js};
+              health_bar = false;
+              order;
+            }
+          in
+          let visible =
+            match J.text figure {js|visibility|js} with
+            | "shown" -> true
+            | "hidden" -> false
+            | "terrain-visible" -> not (Hashtbl.mem fog id)
+            | value -> invalid_arg {j|Unknown draft figure visibility: $(value)|j}
+          in
+          if visible then Some actor else None)
+        (J.list overlay {js|figures|js})
+    in
+    let visible = Array.append native figures in
+    Array.stable_sort (fun a b -> Int.compare a.order b.order) visible;
     let rec paint_unit i =
       if i = Array.length visible then return ()
       else
-        let unit, _raw = visible.(i) in
+        let unit = visible.(i) in
         let p =
           Geometry.center ~col:(Int32.to_int unit.tile.col) ~row:(Int32.to_int unit.tile.row)
         in
-        let palette = (faction unit).palette in
+        let palette = unit.palette in
         let color =
           if palette = {js|passive|js} then {js|#efecdc|js}
           else if palette = {js|green|js} then {js|#83b765|js}
           else if palette = {js|player|js} then {js|#6fdec0|js}
           else {js|#ff9590|js}
         in
+        let frame_key = unit.frame_key in
         let frame =
-          match Art.unit_frame artwork ~side:palette unit.type_ with
+          match Art.find artwork frame_key with
           | Some f -> f
-          | None ->
-              invalid_arg
-                (let js_text_part_1 = unit.type_ in
-                 {j|Missing unit frame: $(js_text_part_1)/$(palette)|j})
+          | None -> invalid_arg {j|Missing actor frame: $(frame_key)|j}
         in
         let* () = load_frame frame in
         C.begin_path ctx;
@@ -640,7 +800,10 @@ let run root =
         C.stroke ctx;
         let sprite = C.create 64 64 in
         let sc = C.context sprite {js|2d|js} in
-        C.draw sc (Option.get (Js.Dict.get images frame.url)) 0. 0.;
+        let image = Option.get (Js.Dict.get images frame.url) in
+        if C.width image <> 64 || C.height image <> 64 then
+          invalid_arg {j|Actor image must be native 64x64: $(frame_key)|j};
+        C.draw sc image 0. 0.;
         let data = C.image_data sc 0 0 64 64 in
         let pixels = C.data data in
         let matrix = Lighting.matrix p.x p.y resolved.lighting in
@@ -665,14 +828,15 @@ let run root =
     in
     let* () = paint_unit 0 in
     Array.iter
-      (fun ((unit : Domain.public_unit), _) ->
-        let p =
-          Geometry.center ~col:(Int32.to_int unit.tile.col) ~row:(Int32.to_int unit.tile.row)
-        in
-        C.begin_path ctx;
-        C.rect ctx (p.x -. 19.) (p.y +. 27.) 38. 4. 2.;
-        C.fill ctx {js|#a9d0a5|js};
-        C.fill_path ctx)
+      (fun unit ->
+        if unit.health_bar then (
+          let p =
+            Geometry.center ~col:(Int32.to_int unit.tile.col) ~row:(Int32.to_int unit.tile.row)
+          in
+          C.begin_path ctx;
+          C.rect ctx (p.x -. 19.) (p.y +. 27.) 38. 4. 2.;
+          C.fill ctx {js|#a9d0a5|js};
+          C.fill_path ctx))
       visible;
     if Hashtbl.mem flags {js|--grid|js} then (
       C.save ctx;

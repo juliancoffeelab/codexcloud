@@ -12,7 +12,14 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const watching = process.argv.includes("--watch") && !process.argv.includes("--help");
 const args = process.argv.slice(2).filter((arg) => arg !== "--watch");
 const output = resolve(root, "tmp/map-draft/runner.mjs");
-const inputPaths = ["--map", "--overlay", "--artwork"].flatMap((flag) => {
+const inputPaths = [
+  "--map",
+  "--roster",
+  "--scenario",
+  "--content",
+  "--overlay",
+  "--artwork",
+].flatMap((flag) => {
   const index = args.indexOf(flag);
   return index >= 0 && args[index + 1] ? [resolve(args[index + 1])] : [];
 });
