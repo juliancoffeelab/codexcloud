@@ -28,10 +28,23 @@ class SpatialData:
         )
         diplomacy = (
             self.manifest.get("spatial_schema") == 7
-            and self.manifest.get("channel_names") == native.SPATIAL_CHANNEL_NAMES
+            and self.manifest.get("channel_names")
+            == native.CAMPAIGN_SPATIAL_CHANNEL_NAMES
         )
-        if not current and not legacy and not duties and not diplomacy:
+        campaign = (
+            self.manifest.get("spatial_schema") == 9
+            and self.manifest.get("channel_names")
+            == native.CAMPAIGN_SPATIAL_CHANNEL_NAMES
+        )
+        if not current and not legacy and not duties and not diplomacy and not campaign:
             raise ValueError("spatial dataset schema mismatch")
+        if (
+            current
+            and self.manifest.get("actor_channels") != native.ACTOR_SPATIAL_CHANNELS
+        ):
+            raise ValueError(
+                "spatial actor-context schema mismatch; regenerate this dataset"
+            )
         self.dense = load_dataset(directory)
         self.offsets = np.load(directory / "board_offsets.npy")
         self.shapes = np.load(directory / "shapes.npy")
@@ -39,6 +52,37 @@ class SpatialData:
         n = len(self.dense[2])
         channels = len(self.manifest["channel_names"])
         self.channels = channels
+        self.context_values = (
+            np.load(directory / "context_values.npy", mmap_mode="r")
+            if current
+            else np.zeros(0, np.float32)
+        )
+        self.contexts = (
+            np.load(directory / "contexts.npy")
+            if current
+            else np.empty((0, 3), np.int64)
+        )
+        if self.contexts.ndim != 2 or self.contexts.shape[1] != 3:
+            raise ValueError("invalid actor context metadata")
+        expected = 0
+        actors = set()
+        for owner, site, offset in self.contexts:
+            if (
+                not 0 <= owner < len(self.shapes)
+                or not 0 <= site < np.prod(self.shapes[owner])
+                or offset != expected
+                or (owner, site) in actors
+            ):
+                raise ValueError("invalid actor context index or offset")
+            actors.add((owner, site))
+            expected += len(native.ACTOR_SPATIAL_CHANNELS) * int(
+                np.prod(self.shapes[owner])
+            )
+        if (
+            expected != len(self.context_values)
+            or not np.isfinite(self.context_values).all()
+        ):
+            raise ValueError("invalid actor context values")
         expected_width = (
             len(native.LEGACY_FEATURE_NAMES)
             if legacy
@@ -46,6 +90,8 @@ class SpatialData:
             if duties
             else len(native.DIPLOMACY_FEATURE_NAMES)
             if diplomacy
+            else len(native.CAMPAIGN_FEATURE_NAMES)
+            if campaign
             else len(native.FEATURE_NAMES)
         )
         if self.dense[0].shape[1] != expected_width:
@@ -87,6 +133,9 @@ def collect_spatial_dataset(configs, directory, progress=None, batch_games=8):
     shapes = []
     indices = []
     shards = []
+    context_values = []
+    contexts = []
+    context_offset = 0
     rows = 0
     values = 0
     with (
@@ -98,7 +147,13 @@ def collect_spatial_dataset(configs, directory, progress=None, batch_games=8):
                 encode(configs[start : start + batch_games]), 1_000_000, side="player"
             )
             x, bounds, y, missing = dense
-            boards, bbounds, shape, ix = spatial
+            boards, bbounds, shape, ix, cv, cm = spatial
+            cm = cm.copy()
+            cm[:, 0] += len(labels)
+            cm[:, 2] += context_offset
+            context_offset += len(cv)
+            context_values.append(cv)
+            contexts.append(cm)
             if missing or len(y) >= 1_000_000:
                 raise RuntimeError("incomplete spatial teacher shard")
             assert len(shape) == len(y) and len(ix) == len(x)
@@ -140,11 +195,14 @@ def collect_spatial_dataset(configs, directory, progress=None, batch_games=8):
     ]:
         np.save(directory / f"{name}.npy", np.asarray(array, dtype=np.int64))
     np.save(directory / "indices.npy", np.concatenate(indices))
+    np.save(directory / "context_values.npy", np.concatenate(context_values))
+    np.save(directory / "contexts.npy", np.concatenate(contexts))
     manifest = dict(
         schema=native.SCHEMA,
         feature_names=native.FEATURE_NAMES,
         spatial_schema=native.SPATIAL_SCHEMA,
         channel_names=native.SPATIAL_CHANNEL_NAMES,
+        actor_channels=native.ACTOR_SPATIAL_CHANNELS,
         fingerprints=json.loads(native.fingerprints()),
         configs=configs,
         collection_side="player",
@@ -156,41 +214,38 @@ def collect_spatial_dataset(configs, directory, progress=None, batch_games=8):
     return SpatialData(directory)
 
 
-def batches(data, ids, batch_size=64):
+def batches(data, ids, batch_size=8):
+    from .ppo import pack
+
     features, offsets, labels, _ = data.dense
-    channels = len(native.SPATIAL_CHANNEL_NAMES)
     for start in range(0, len(ids), batch_size):
         selected = np.asarray(ids[start : start + batch_size])
-        sizes = offsets[selected + 1] - offsets[selected]
-        width = int(sizes.max())
-        h, w = data.shapes[selected].max(0)
-        h = int(h)
-        w = int(w)
-        board = np.zeros((len(selected), channels, h, w), dtype=np.float32)
-        ix = np.full((len(selected), width, 3), -1, dtype=np.int64)
-        x = np.zeros(
-            (len(selected), width, len(native.FEATURE_NAMES)), dtype=np.float32
-        )
-        mask = np.arange(width)[None, :] < sizes[:, None]
-        for row, (i, size) in enumerate(zip(selected, sizes)):
-            bh, bw = map(int, data.shapes[i])
-            a = int(offsets[i])
-            b = int(offsets[i + 1])
-            board[row, : data.channels, :bh, :bw] = data.boards[
-                data.offsets[i] : data.offsets[i + 1]
-            ].reshape(data.channels, bh, bw)
-            x[row, :size, : features.shape[1]] = features[a:b]
-            positions = data.indices[a:b]
-            ix[row, :size] = np.where(
-                positions < 0, -1, (positions // bw) * w + positions % bw
+        samples = []
+        for i in selected:
+            h, w = map(int, data.shapes[i])
+            a, b = int(offsets[i]), int(offsets[i + 1])
+            contexts = [
+                (
+                    int(site),
+                    data.context_values[
+                        offset : offset + len(native.ACTOR_SPATIAL_CHANNELS) * h * w
+                    ].reshape(len(native.ACTOR_SPATIAL_CHANNELS), h, w),
+                )
+                for owner, site, offset in data.contexts
+                if owner == i
+            ]
+            samples.append(
+                (
+                    features[a:b],
+                    data.boards[data.offsets[i] : data.offsets[i + 1]].reshape(
+                        data.channels, h, w
+                    ),
+                    data.indices[a:b],
+                    contexts,
+                )
             )
-        yield (
-            torch.from_numpy(x),
-            torch.from_numpy(board),
-            torch.from_numpy(ix),
-            torch.from_numpy(mask),
-            torch.from_numpy(labels[selected].copy()),
-        )
+        x, board, ix, mask = pack(samples)
+        yield x, board, ix, mask, torch.from_numpy(labels[selected].copy())
 
 
 def map_weights(data, enabled=False):

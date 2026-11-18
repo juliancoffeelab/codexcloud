@@ -16,7 +16,8 @@
       "category": "ranged",
       "range": 2,
       "sound": "attack-magic",
-      "spread": 4
+      "spread": 4,
+      "drain": 0
     },
     {
       "id": "knife",
@@ -27,7 +28,8 @@
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "spread": 1
+      "spread": 1,
+      "drain": 0
     }
   ],
   "damageModifiers": {
@@ -41,5 +43,16 @@
   "level": 2,
   "family": "scout",
   "advancesTo": ["fireslinger"],
-  "experienceNeeded": 18
+  "experienceNeeded": 18,
+  "sight": {
+    "range": 0,
+    "unlimited": false,
+    "sightModifiers": {
+      "lit": 0,
+      "unlit": 0,
+      "darkness": 0
+    },
+    "penetrates": []
+  },
+  "abilities": []
 }

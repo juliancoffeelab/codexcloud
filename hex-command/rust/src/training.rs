@@ -1,19 +1,20 @@
 //! Native training contract. Numeric observations never expose authored scripts.
 use crate::{
-    ai::{Planner, context::BattleView, orders::*},
+    ai::{PlannerKind, context::BattleView, orders::*},
     data::*,
 };
-use hex_command_battle::RuntimeCommand as Command;
+use hex_command_battle::RuntimeCommand;
 use serde::{Deserialize, Serialize};
 use std::cell::RefCell;
-pub const SCHEMA: u32 = 8;
+pub const SCHEMA: u32 = 10;
 mod duties;
 mod features;
 mod inference;
 pub mod spatial;
+mod visibility;
 pub use features::{
-    Choices, DIPLOMACY_FEATURES, DUTY_FEATURES, FEATURE_NAMES, FEATURES, LEGACY_FEATURES,
-    candidates,
+    CAMPAIGN_FEATURES, Choices, DIPLOMACY_FEATURES, DUTY_FEATURES, FEATURE_NAMES, FEATURES,
+    LEGACY_FEATURES, candidates,
 };
 pub use inference::Evaluator;
 #[derive(Default)]
@@ -25,11 +26,11 @@ pub struct Dataset {
     pub limit: usize,
     pub phase: Option<TurnPhase>,
     pub spatial: bool,
-    pub boards: Vec<spatial::Board>,
+    pub boards: Vec<spatial::SpatialBoard>,
     pub indices: Vec<[i64; 3]>,
 }
 #[derive(Clone, Deserialize, Serialize)]
-pub struct Layer {
+pub struct DenseLayer {
     pub weights: Vec<Vec<f32>>,
     pub bias: Vec<f32>,
 }
@@ -38,11 +39,11 @@ pub struct Model {
     pub schema: u32,
     pub feature_names: Vec<String>,
     #[serde(default)]
-    pub layers: Vec<Layer>,
+    pub layers: Vec<DenseLayer>,
     #[serde(default)]
     pub trees: Vec<Tree>,
     #[serde(default)]
-    pub spatial: Option<spatial::Encoder>,
+    pub spatial: Option<spatial::SpatialEncoder>,
 }
 #[derive(Clone, Deserialize, Serialize)]
 pub struct Tree {
@@ -130,7 +131,8 @@ impl Model {
         let (old_width, old_channels) = match (self.schema, self.spatial.is_some()) {
             (2, false) | (3, true) => (LEGACY_FEATURES, spatial::LEGACY_CHANNELS),
             (4, false) | (5, true) => (DUTY_FEATURES, spatial::DUTY_CHANNELS),
-            (6, false) | (7, true) => (DIPLOMACY_FEATURES, spatial::CHANNELS),
+            (6, false) | (7, true) => (DIPLOMACY_FEATURES, spatial::CAMPAIGN_CHANNELS),
+            (8, false) | (9, true) => (CAMPAIGN_FEATURES, spatial::CAMPAIGN_CHANNELS),
             _ => return self.validate(),
         };
         if self.feature_names != FEATURE_NAMES[..old_width] {
@@ -269,15 +271,15 @@ impl Model {
     }
 }
 /// A disconnected controller cancels its native rollout.
-pub type Controller = Box<dyn FnMut(&Choices) -> Option<usize>>;
+pub type DecisionController = Box<dyn FnMut(&Choices) -> Option<usize>>;
 #[derive(Default)]
-struct Session {
+struct TrainingSession {
     data: Option<Dataset>,
     model: Option<Evaluator>,
-    controller: Option<Controller>,
+    controller: Option<DecisionController>,
 }
-thread_local! { static SESSION: RefCell<Session> = RefCell::new(Session::default()); }
-struct Restore(Option<Session>);
+thread_local! { static SESSION: RefCell<TrainingSession> = RefCell::new(TrainingSession::default()); }
+struct Restore(Option<TrainingSession>);
 impl Drop for Restore {
     fn drop(&mut self) {
         SESSION.with(|s| *s.borrow_mut() = self.0.take().unwrap());
@@ -286,11 +288,11 @@ impl Drop for Restore {
 pub fn scoped<T>(
     data: Option<Dataset>,
     model: Option<Model>,
-    controller: Option<Controller>,
+    controller: Option<DecisionController>,
     f: impl FnOnce() -> T,
 ) -> (T, Option<Dataset>) {
     let old = SESSION.with(|s| {
-        s.replace(Session {
+        s.replace(TrainingSession {
             data,
             model: model.map(|model| Evaluator::new(model).expect("valid learned model required")),
             controller,
@@ -301,7 +303,7 @@ pub fn scoped<T>(
     let data = SESSION.with(|s| s.borrow_mut().data.take());
     (result, data)
 }
-pub(crate) fn record(g: &BattleView<'_, '_>, orders: &TacticalOrders, command: &Command) {
+pub(crate) fn record(g: &BattleView<'_, '_>, orders: &TacticalOrders, command: &RuntimeCommand) {
     let enabled = SESSION.with(|s| {
         s.borrow().data.as_ref().is_some_and(|d| {
             d.labels.len() < d.limit && d.phase.is_none_or(|side| side == g.turn())
@@ -310,10 +312,10 @@ pub(crate) fn record(g: &BattleView<'_, '_>, orders: &TacticalOrders, command: &
     if !enabled
         || !matches!(
             command,
-            Command::Move { .. }
-                | Command::Attack { .. }
-                | Command::Advance { .. }
-                | Command::EndTurn
+            RuntimeCommand::Move { .. }
+                | RuntimeCommand::Attack { .. }
+                | RuntimeCommand::Advance { .. }
+                | RuntimeCommand::EndTurn
         )
     {
         return;
@@ -379,7 +381,7 @@ pub(crate) fn select(choices: &Choices) -> Option<usize> {
     })
 }
 pub fn learned_blocks(mut blocks: crate::ai::Blocks) -> crate::ai::Blocks {
-    blocks.planner = Planner::Learned;
+    blocks.planner = PlannerKind::Learned;
     blocks
 }
 
@@ -393,14 +395,14 @@ mod tests {
             feature_names: FEATURE_NAMES.iter().map(|s| s.to_string()).collect(),
             trees: vec![],
             spatial: None,
-            layers: vec![Layer {
+            layers: vec![DenseLayer {
                 weights: vec![vec![0.; FEATURES]],
                 bias: vec![0.],
             }],
         };
         let choices = Choices {
             spatial: None,
-            commands: vec![Command::EndTurn; 3],
+            commands: vec![RuntimeCommand::EndTurn; 3],
             features: vec![[0.; FEATURES]; 3],
         };
         let (index, _) = scoped(None, Some(model), None, || select(&choices));
@@ -408,8 +410,8 @@ mod tests {
     }
     #[test]
     fn candidates_execute_on_mechanical_forecasts() {
-        let rules = Rules::load().unwrap();
-        let mut game = crate::logic::Game::new(&rules, "mirror");
+        let rules = Catalogue::load().unwrap();
+        let mut game = crate::logic::BattleSession::new(&rules, "mirror");
         let orders = TacticalOrders::default();
         for step in 0..48 {
             if game.winner().is_some() {
@@ -430,9 +432,10 @@ mod tests {
         }
     }
     #[test]
+    #[cfg(feature = "simulation")]
     fn recording_preserves_complete_teacher_trace() {
         use crate::simulation::{ArenaConfig, Armies, run_arena};
-        let rules = Rules::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         let config = ArenaConfig {
             objective: Default::default(),
             seed: 33,

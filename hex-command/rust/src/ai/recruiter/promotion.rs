@@ -33,7 +33,11 @@ pub(super) fn choices(
                 super::RecruiterKind::Balanced | super::RecruiterKind::Frontline => {
                     let draw = super::random(
                         seed,
-                        &format!("promotion:{}:{}", unit.id, game.rules().units[unit.kind].id),
+                        &format!(
+                            "promotion:{}:{}",
+                            unit.id,
+                            game.unit_definition(unit.kind).id()
+                        ),
                     );
                     options[(draw * options.len() as f64) as usize]
                 }
@@ -48,19 +52,16 @@ pub(super) fn choices(
             };
             Some((
                 UnitId(unit.id),
-                UnitTypeId(game.rules().units[kind].id.clone()),
+                UnitTypeId(game.unit_definition(kind).id().to_owned()),
             ))
         })
         .collect()
 }
 
 fn choose(game: &BattleView<'_, '_>, unit: &Unit, predict: bool) -> Option<usize> {
-    let wounds = game.rules().units[unit.kind].hp - unit.hp;
     game.promotion_options(unit).into_iter().max_by(|&a, &b| {
         let score = |kind| {
-            let mut promoted = unit.clone();
-            promoted.kind = kind;
-            promoted.hp = (game.rules().units[kind].hp - wounds).max(1);
+            let promoted = game.promotion(unit, kind);
             super::evaluation::Assessment::with_forecast(game, &promoted, predict)
                 .score(game, &promoted)
         };
@@ -72,32 +73,32 @@ fn choose(game: &BattleView<'_, '_>, unit: &Unit, predict: bool) -> Option<usize
 mod tests {
     use super::*;
     use crate::ai::recruiter::fixtures;
-    use crate::logic::Game;
-    use hex_command_battle::RuntimeCommand as Command;
+    use crate::logic::BattleSession;
+    use hex_command_battle::RuntimeCommand;
 
-    fn fixture() -> (Rules, usize, usize, usize) {
-        let mut rules = Rules::load().unwrap();
-        let base = rules.types["swordsman"];
-        let a = rules.types["soldier"];
-        let b = rules.types["hammerman"];
-        rules.units[base].advances_to = vec![rules.units[a].id.clone(), rules.units[b].id.clone()];
-        rules.units[base].experience_needed = Some(1);
-        let mut branch = rules.units[a].clone();
-        branch.attacks.truncate(1);
-        branch.attacks[0].count = 1;
-        branch.attacks[0].damage = 10;
-        branch.attacks[0].drain = 0;
-        branch.healing = 0;
-        branch.thorn_aura = 0;
-        for kind in [a, b] {
-            let id = rules.units[kind].id.clone();
-            rules.units[kind] = branch.clone();
-            rules.units[kind].id = id;
-        }
-        (rules, base, a, b)
+    fn fixture() -> (JsonBundle, usize, usize, usize) {
+        let mut bundle = crate::catalogue_fixture::bundle();
+        let base = crate::catalogue_fixture::kind(&bundle, "swordsman");
+        let a = crate::catalogue_fixture::kind(&bundle, "soldier");
+        let b = crate::catalogue_fixture::kind(&bundle, "hammerman");
+        crate::catalogue_fixture::unit_kind(&mut bundle, base, |unit| {
+            unit["advancesTo"] = serde_json::json!(["soldier", "hammerman"]);
+            unit["experienceNeeded"] = serde_json::json!(1);
+        });
+        crate::catalogue_fixture::unit_kind(&mut bundle, a, |unit| {
+            unit["attacks"].as_array_mut().unwrap().truncate(1);
+            unit["attacks"][0]["count"] = serde_json::json!(1);
+            unit["attacks"][0]["damage"] = serde_json::json!(10);
+            unit["attacks"][0]["drain"] = serde_json::json!(0);
+        });
+        crate::effect_fixture::healing(&mut bundle, "soldier", None);
+        crate::effect_fixture::thorn_aura(&mut bundle, "soldier", 0);
+        crate::catalogue_fixture::copy_unit(&mut bundle, a, b);
+        (bundle, base, a, b)
     }
-    fn battle(rules: &Rules, base: usize) -> (Game<'_>, u32) {
-        let mut game = Game::new(rules, "mirror");
+    fn battle(bundle: &JsonBundle, base: usize) -> (BattleSession<'static>, u32) {
+        let rules = crate::catalogue_fixture::frozen(bundle);
+        let mut game = BattleSession::new(rules, "mirror");
         fixtures::units(&mut game, |units| {
             units.retain(|u| u.is_leader());
         });
@@ -139,9 +140,12 @@ mod tests {
                 .collect();
             assert_eq!(
                 outcomes,
-                [rules.units[a].id.clone(), rules.units[b].id.clone()]
-                    .into_iter()
-                    .collect()
+                [
+                    crate::catalogue_fixture::id(&rules, a),
+                    crate::catalogue_fixture::id(&rules, b)
+                ]
+                .into_iter()
+                .collect()
             );
         }
     }
@@ -169,11 +173,17 @@ mod tests {
         );
         assert_eq!(
             result[0],
-            (UnitId(id), UnitTypeId(rules.units[a].id.clone()))
+            (
+                UnitId(id),
+                UnitTypeId(crate::catalogue_fixture::id(&rules, a))
+            )
         );
         assert_eq!(
             result[1],
-            (UnitId(second), UnitTypeId(rules.units[b].id.clone()))
+            (
+                UnitId(second),
+                UnitTypeId(crate::catalogue_fixture::id(&rules, b))
+            )
         );
         let index = game.index(id).unwrap();
         fixtures::units(&mut game, |units| {
@@ -194,15 +204,25 @@ mod tests {
             )[0]
             .1
             .0,
-            rules.units[b].id
+            crate::catalogue_fixture::id(&rules, b)
         );
     }
 
     #[test]
     fn resistance_selects_either_branch_without_changing_authored_order() {
         let (mut rules, base, a, b) = fixture();
-        rules.units[a].attacks[0].damage_type = DamageType::Blade;
-        rules.units[b].attacks[0].damage_type = DamageType::Pierce;
+        {
+            let fixture_value = serde_json::json!(DamageType::Blade);
+            crate::catalogue_fixture::unit_kind(&mut rules, a, |unit| {
+                unit["attacks"][0]["damageType"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(DamageType::Pierce);
+            crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| {
+                unit["attacks"][0]["damageType"] = fixture_value
+            });
+        }
         let enemy = battle(&rules, base)
             .0
             .units()
@@ -211,8 +231,18 @@ mod tests {
             .unwrap()
             .kind;
         for (blade, pierce, expected) in [(-10, 0, b), (0, -10, a)] {
-            rules.units[enemy].damage_modifiers.blade = blade;
-            rules.units[enemy].damage_modifiers.pierce = pierce;
+            {
+                let fixture_value = serde_json::json!(blade);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["damageModifiers"]["blade"] = fixture_value
+                });
+            }
+            {
+                let fixture_value = serde_json::json!(pierce);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["damageModifiers"]["pierce"] = fixture_value
+                });
+            }
             let (mut game, id) = battle(&rules, base);
             assert_eq!(
                 choose(&BattleView::new(&game), game.unit(id).unwrap(), false),
@@ -235,9 +265,24 @@ mod tests {
         let (mut rules, base, a, b) = fixture();
         for (kind, damage_type, damage) in [(a, DamageType::Blade, 11), (b, DamageType::Pierce, 10)]
         {
-            rules.units[kind].attacks[0].damage_type = damage_type;
-            rules.units[kind].attacks[0].damage = damage;
-            rules.units[kind].attacks[0].spread = 0;
+            {
+                let fixture_value = serde_json::json!(damage_type);
+                crate::catalogue_fixture::unit_kind(&mut rules, kind, |unit| {
+                    unit["attacks"][0]["damageType"] = fixture_value
+                });
+            }
+            {
+                let fixture_value = serde_json::json!(damage);
+                crate::catalogue_fixture::unit_kind(&mut rules, kind, |unit| {
+                    unit["attacks"][0]["damage"] = fixture_value
+                });
+            }
+            {
+                let fixture_value = serde_json::json!(0);
+                crate::catalogue_fixture::unit_kind(&mut rules, kind, |unit| {
+                    unit["attacks"][0]["spread"] = fixture_value
+                });
+            }
         }
         let observed = battle(&rules, base)
             .0
@@ -246,22 +291,31 @@ mod tests {
             .find(|u| u.phase == TurnPhase::Ai)
             .unwrap()
             .kind;
-        rules.units[observed].damage_modifiers = DamageModifiers {
-            blade: 0,
-            pierce: 0,
-            impact: 0,
-        };
-        rules.units[observed].environment.fill([[0; 3]; 2]);
-        for attack in &mut rules.units[observed].attacks {
-            attack.damage = 0;
-            attack.spread = 0;
+        {
+            let fixture_value = serde_json::json!(DamageModifiers {
+                blade: 0,
+                pierce: 0,
+                impact: 0,
+            });
+            crate::catalogue_fixture::unit_kind(&mut rules, observed, |unit| {
+                unit["damageModifiers"] = fixture_value
+            });
         }
-        let future = rules.types["scout"];
-        let mut foe = rules.units[observed].clone();
-        foe.id = rules.units[future].id.clone();
-        foe.damage_modifiers.blade = -10;
-        rules.units[future] = foe;
-        rules.route_classes[future] = future;
+        {
+            let id = crate::catalogue_fixture::id(&rules, observed);
+            crate::catalogue_fixture::environment(&mut rules, &id, 0);
+        }
+        crate::catalogue_fixture::unit_kind(&mut rules, observed, |unit| {
+            for attack in unit["attacks"].as_array_mut().unwrap() {
+                attack["damage"] = serde_json::json!(0);
+                attack["spread"] = serde_json::json!(0);
+            }
+        });
+        let future = crate::catalogue_fixture::kind(&rules, "scout");
+        crate::catalogue_fixture::copy_unit(&mut rules, observed, future);
+        crate::catalogue_fixture::unit_kind(&mut rules, future, |unit| {
+            unit["damageModifiers"]["blade"] = serde_json::json!(-10)
+        });
         let (mut game, actor) = battle(&rules, base);
         game.configure_arena(Some([vec![], vec![]]), None);
         for anticipate in [false, true] {
@@ -279,7 +333,7 @@ mod tests {
                     .find(|(id, _)| id.0 == actor)
                     .unwrap()
                     .1;
-                assert_eq!(selected.0, rules.units[expected].id);
+                assert_eq!(selected.0, crate::catalogue_fixture::id(&rules, expected));
                 let rows = super::super::diagnostics(&game, policy);
                 let best = rows
                     .iter()
@@ -299,11 +353,20 @@ mod tests {
     fn wounded_and_exposed_allies_make_support_branch_useful() {
         for thorns in [false, true] {
             let (mut rules, base, a, b) = fixture();
-            rules.units[b].attacks[0].damage = 0;
+            {
+                let fixture_value = serde_json::json!(0);
+                crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| {
+                    unit["attacks"][0]["damage"] = fixture_value
+                });
+            }
             if thorns {
-                rules.units[b].thorn_aura = 20;
+                crate::effect_fixture::thorn_aura_kind(&mut rules, b, 20);
             } else {
-                rules.units[b].healing = 20;
+                crate::effect_fixture::healing_kind(
+                    &mut rules,
+                    b,
+                    (20 > 0).then_some((20, 1, false, crate::data::HealingTargets::Allies)),
+                );
             }
             let enemy = battle(&rules, base)
                 .0
@@ -313,10 +376,27 @@ mod tests {
                 .unwrap()
                 .kind;
             // A committed multi-strike melee enemy makes aura support useful.
-            rules.units[enemy].attacks.truncate(1);
-            rules.units[enemy].attacks[0].category = Category::Melee;
-            rules.units[enemy].attacks[0].range = 1;
-            rules.units[enemy].attacks[0].count = 3;
+            crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                unit["attacks"].as_array_mut().unwrap().truncate(1)
+            });
+            {
+                let fixture_value = serde_json::json!(Category::Melee);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["attacks"][0]["category"] = fixture_value
+                });
+            }
+            {
+                let fixture_value = serde_json::json!(1);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["attacks"][0]["range"] = fixture_value
+                });
+            }
+            {
+                let fixture_value = serde_json::json!(3);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["attacks"][0]["count"] = fixture_value
+                });
+            }
             let (mut game, id) = battle(&rules, base);
             let unit = game.unit(id).unwrap().clone();
             let tiles: Vec<_> = game.board().adjacent[unit.tile]
@@ -371,7 +451,7 @@ mod tests {
                     .map(|u| {
                         (
                             UnitId(u.id),
-                            UnitTypeId(game.rules().units[self.0].id.clone()),
+                            UnitTypeId(game.unit_definition(self.0).id().to_owned()),
                         )
                     })
                     .collect()
@@ -386,7 +466,7 @@ mod tests {
                 let plan = tactic.run_turn(&game, &mut workspace).unwrap();
                 assert!(
                     plan.commands.contains(
-                        &Command::Advance {
+                        &RuntimeCommand::Advance {
                             unit: UnitId(id),
                             kind: UnitKind(branch),
                         }

@@ -3,7 +3,13 @@
     {
       "id": "player",
       "sight": {
-        "range": "unlimited",
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": []
       },
       "explored": []
@@ -11,7 +17,13 @@
     {
       "id": "enemy",
       "sight": {
-        "range": "unlimited",
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": ["fog"]
       },
       "explored": []
@@ -19,7 +31,13 @@
     {
       "id": "prisoners",
       "sight": {
-        "range": "unlimited",
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": ["fog"]
       },
       "explored": []
@@ -27,7 +45,13 @@
     {
       "id": "swamp-dead",
       "sight": {
-        "range": "unlimited",
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": ["fog"]
       },
       "explored": []
@@ -51,7 +75,17 @@
           "tile": {
             "col": 0,
             "row": 5
-          }
+          },
+          "id": "u1",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "scout",
@@ -59,7 +93,18 @@
           "tile": {
             "col": 0,
             "row": 4
-          }
+          },
+          "id": "u2",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "adept",
@@ -67,31 +112,51 @@
           "tile": {
             "col": 0,
             "row": 6
-          }
+          },
+          "id": "u3",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
       "relations": {
-        "toll-skeletons": "hostile"
+        "toll-skeletons": "hostile",
+        "player": "allied",
+        "prisoners": "neutral",
+        "swamp-dead": "hostile"
       },
-      "visionGroup": "player"
+      "visionGroup": "player",
+      "name": null,
+      "transfer": null
     },
     {
       "id": "toll-skeletons",
       "phase": "ai",
       "controller": {
-        "kind": "ai"
+        "kind": "ai",
+        "policy": null
       },
       "palette": "enemy",
       "gold": 6,
       "recruits": [
         {
-          "unit": "skeleton"
+          "unit": "skeleton",
+          "cost": null
         },
         {
-          "unit": "bonearcher"
+          "unit": "bonearcher",
+          "cost": null
         },
         {
-          "unit": "skeleton-impact-caster"
+          "unit": "skeleton-impact-caster",
+          "cost": null
         }
       ],
       "units": [
@@ -101,7 +166,18 @@
           "tile": {
             "col": 7,
             "row": 6
-          }
+          },
+          "id": "u4",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "necromancer",
@@ -111,25 +187,41 @@
           "tile": {
             "col": 14,
             "row": 7
-          }
+          },
+          "id": "u5",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
       "relations": {
-        "player": "hostile"
+        "player": "hostile",
+        "toll-skeletons": "allied",
+        "prisoners": "allied",
+        "swamp-dead": "neutral"
       },
-      "visionGroup": "enemy"
+      "visionGroup": "enemy",
+      "name": null,
+      "transfer": null
     },
     {
       "id": "prisoners",
       "phase": "ai",
       "controller": {
-        "kind": "ai"
+        "kind": "ai",
+        "policy": null
       },
       "palette": "passive",
       "relations": {
         "player": "neutral",
         "toll-skeletons": "allied",
-        "swamp-dead": "neutral"
+        "swamp-dead": "neutral",
+        "prisoners": "allied"
       },
       "gold": 0,
       "recruits": [],
@@ -142,21 +234,35 @@
             "col": 8,
             "row": 6
           },
-          "aiGroup": "prisoner-column"
+          "aiGroup": "prisoner-column",
+          "id": "u6",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
-      "visionGroup": "prisoners"
+      "visionGroup": "prisoners",
+      "name": null,
+      "transfer": null
     },
     {
       "id": "swamp-dead",
       "phase": "ai",
       "controller": {
-        "kind": "ai"
+        "kind": "ai",
+        "policy": null
       },
       "palette": "green",
       "relations": {
         "player": "hostile",
-        "toll-skeletons": "neutral"
+        "toll-skeletons": "neutral",
+        "prisoners": "neutral",
+        "swamp-dead": "allied"
       },
       "name": "Marsh dead",
       "recruits": [
@@ -180,10 +286,24 @@
           "tile": {
             "col": 12,
             "row": 12
-          }
+          },
+          "id": "u7",
+          "hp": "full",
+          "perceptionEffects": [],
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
-      "visionGroup": "swamp-dead"
+      "visionGroup": "swamp-dead",
+      "transfer": null
     }
-  ]
+  ],
+  "arrivals": [],
+  "round": 1,
+  "turn": "player",
+  "log": ["Capture villages for gold. Defeat the enemy commander."],
+  "combatRng": 1831565813
 }

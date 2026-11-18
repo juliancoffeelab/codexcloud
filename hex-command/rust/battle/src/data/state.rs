@@ -1,0 +1,199 @@
+//! Runtime-owned battle snapshots. Equipment is represented by definition identifiers.
+
+use super::*;
+use crate::data::Text;
+use serde::{Deserialize, Serialize};
+include!(concat!(env!("OUT_DIR"), "/terrain_geometry.rs"));
+
+/// A tile snapshot combining authored coordinates with current terrain and ownership.
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Tile {
+    pub effects: Vec<ScopedEffect>,
+    /// Coordinate address (`col,row`), used by commands and snapshots.
+    pub id: Text,
+    /// Optional authored landmark identity; ordinary cells have none.
+    pub location: Option<Text>,
+    pub col: i32,
+    pub row: i32,
+    pub terrain: Text,
+    /// Owning faction identifier, independent of its turn phase.
+    pub owner: Option<Text>,
+    /// Road/village exits or opposite crossing edges; artwork only.
+    pub connections: Option<Vec<HexDirection>>,
+    /// Short road spurs capped inside this tile rather than meeting another tile.
+    #[serde(rename = "deadEnds")]
+    pub dead_ends: Option<Vec<HexDirection>>,
+    /// Explicit complete wall edges; never inferred from neighbors.
+    pub walls: Option<Vec<HexDirection>>,
+    /// Reusable ground palette; independent of terrain and its gameplay rules.
+    pub floor: Option<Text>,
+    /// Immutable condition shared by snapshots; Arc keeps native catalogs thread-safe.
+    pub perception: TilePerception,
+    /// Terrain light anchored to this tile, using the same contextual rules as fog.
+    pub light: Option<std::sync::Arc<TileLight>>,
+}
+impl Tile {
+    pub fn hex(&self) -> Hex {
+        Hex::new(self.col, self.row)
+    }
+    pub fn matches_reference(&self, reference: &TileRef) -> bool {
+        match reference {
+            TileRef::Location(name) => self.location.as_ref() == Some(name),
+            TileRef::Hex(hex) => (self.col, self.row) == (hex.col, hex.row),
+            TileRef::Binding(_) => false,
+        }
+    }
+
+    pub fn valid_connections(&self) -> bool {
+        if matches!(self.terrain.as_str(), "castle-wall" | "castle-bell") {
+            if self.connections.is_some() || self.dead_ends.is_some() {
+                return false;
+            }
+            let Some(walls) = &self.walls else {
+                return false;
+            };
+            let mask = walls.iter().fold(0u8, |mask, edge| mask | edge.bit());
+            if mask.count_ones() as usize != walls.len() {
+                return false;
+            }
+            let variants = match self.terrain.as_str() {
+                "castle-wall" => CASTLE_WALL_VARIANTS,
+                "castle-bell" => CASTLE_BELL_VARIANTS,
+                _ => unreachable!(),
+            };
+            return variants.contains(&mask);
+        }
+        if self.walls.is_some() {
+            return false;
+        }
+        let Some(exits) = &self.connections else {
+            return !matches!(
+                self.terrain.as_str(),
+                "signpost"
+                    | "road"
+                    | "village"
+                    | "bridge"
+                    | "ford"
+                    | "landing"
+                    | "ferry"
+                    | "castle-wall"
+                    | "castle-bell"
+                    | "cave-passage"
+            ) && self.dead_ends.is_none();
+        };
+        let mask = exits.iter().fold(0u8, |mask, exit| mask | exit.bit());
+        if (mask == 0
+            && !matches!(
+                self.terrain.as_str(),
+                "village" | "castle-wall" | "castle-bell" | "cave-passage"
+            ))
+            || mask.count_ones() as usize != exits.len()
+        {
+            return false;
+        }
+        if let Some(ends) = &self.dead_ends {
+            let capped = ends.iter().fold(0u8, |mask, end| mask | end.bit());
+            if self.terrain != "road"
+                || capped == 0
+                || capped.count_ones() as usize != ends.len()
+                || capped & mask != 0
+                || !ROAD_DEAD_ENDS.contains(&(mask, capped))
+            {
+                return false;
+            }
+        }
+        match self.terrain.as_str() {
+            "road" | "cave-passage" => true,
+            "signpost" => mask == 9,
+            "village" => mask.count_ones() <= 3,
+            "bridge" | "ford" => matches!(mask, 9 | 18 | 36),
+            "landing" | "ferry" => matches!(mask, 1 | 8),
+            _ => false,
+        }
+    }
+}
+/// An item left on a battlefield tile. Ownership passes only when collected.
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct GroundItem {
+    pub tile: Hex,
+    pub item: Text,
+}
+
+/// Treasury balances keyed by faction identifier.
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(transparent, borrow))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(transparent)]
+pub struct Gold(pub std::sync::Arc<std::collections::BTreeMap<Text, i32>>);
+impl Gold {
+    pub fn two(player: i32, enemy: i32) -> Self {
+        Self(std::sync::Arc::new(
+            [("player".into(), player), ("enemy".into(), enemy)].into(),
+        ))
+    }
+}
+impl std::ops::Deref for Gold {
+    type Target = std::collections::BTreeMap<Text, i32>;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+impl std::ops::DerefMut for Gold {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        std::sync::Arc::make_mut(&mut self.0)
+    }
+}
+impl std::ops::Index<&str> for Gold {
+    type Output = i32;
+    fn index(&self, id: &str) -> &i32 {
+        &self.0[id]
+    }
+}
+impl std::ops::IndexMut<&str> for Gold {
+    fn index_mut(&mut self, id: &str) -> &mut i32 {
+        std::sync::Arc::make_mut(&mut self.0)
+            .get_mut(id)
+            .expect("validated faction treasury")
+    }
+}
+/// A complete owned battle snapshot suitable for persistence and transport.
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct State {
+    pub map_modifiers: StatModifiers,
+    pub lighting: MapLighting,
+    pub vision_groups: Vec<VisionGroupState>,
+    pub factions: Vec<Faction>,
+    pub ground_items: Vec<GroundItem>,
+    /// Selected skirmish factions; campaigns use their authored recruitment.
+    pub armies: Option<[Text; 2]>,
+    /// Durable facts about conditions that have been satisfied at least once.
+    pub condition_memory: Vec<Text>,
+    pub map_id: Text,
+    pub map_revision: u32,
+    pub cols: i32,
+    pub rows: i32,
+    pub round: u32,
+    pub turn: TurnPhase,
+    pub gold: Gold,
+    pub winner: Option<BattleResult>,
+    pub next_id: u32,
+    /// Complete persisted combat PRNG state.
+    pub combat_rng: u32,
+    pub log: Vec<Text>,
+    pub tiles: Vec<Tile>,
+    pub units: Vec<PublicUnit>,
+
+    pub campaign: Option<CampaignState>,
+    #[serde(deserialize_with = "present_value")]
+    pub last_combat: Option<Option<LastCombat>>,
+}
+pub fn present_value<'de, D: serde::Deserializer<'de>>(
+    deserializer: D,
+) -> Result<Option<Option<LastCombat>>, D::Error> {
+    Option::<LastCombat>::deserialize(deserializer).map(Some)
+}

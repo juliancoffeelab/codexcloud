@@ -10,6 +10,8 @@
         "flight": {
           "stages": {
             "lantern-villages": {
+              "scriptConditions": {},
+              "scriptEvents": [],
               "ignoreOptionalWhen": {
                 "kind": "flag",
                 "flag": "village-safe"
@@ -20,6 +22,38 @@
         "fight": {
           "stages": {
             "lantern-villages": {
+              "scriptConditions": {
+                "eastern-departure": {
+                  "all": [
+                    {
+                      "all": [
+                        {
+                          "stand": {
+                            "tile": {
+                              "location": "exit"
+                            },
+                            "side": "player",
+                            "character": "nera",
+                            "through": true,
+                            "role": null,
+                            "faction": null,
+                            "unitType": null,
+                            "unitTypes": [],
+                            "aiGroup": null,
+                            "retreating": null
+                          }
+                        },
+                        {
+                          "flag": "village-safe"
+                        }
+                      ]
+                    },
+                    {
+                      "flag": "simulation-road-cleared"
+                    }
+                  ]
+                }
+              },
               "scriptEvents": [
                 {
                   "id": "simulation-road-cleared",
@@ -35,44 +69,33 @@
                     },
                     "intent": {
                       "defeat": {
-                        "side": "enemy"
+                        "side": "enemy",
+                        "character": null,
+                        "role": null,
+                        "faction": null,
+                        "unitType": null,
+                        "unitTypes": [],
+                        "aiGroup": null,
+                        "retreating": null
                       }
                     },
-                    "playerMarker": null
+                    "playerMarker": null,
+                    "id": null,
+                    "preserveLives": null,
+                    "availableWhen": null,
+                    "satisfiedWhen": null
                   },
                   "actions": [
                     {
                       "setFlag": "simulation-road-cleared"
                     }
-                  ]
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 0
                 }
               ],
-              "scriptConditions": {
-                "eastern-departure": {
-                  "all": [
-                    {
-                      "all": [
-                        {
-                          "stand": {
-                            "tile": {
-                              "location": "exit"
-                            },
-                            "side": "player",
-                            "character": "nera",
-                            "through": true
-                          }
-                        },
-                        {
-                          "flag": "village-safe"
-                        }
-                      ]
-                    },
-                    {
-                      "flag": "simulation-road-cleared"
-                    }
-                  ]
-                }
-              }
+              "ignoreOptionalWhen": null
             }
           }
         }
@@ -155,6 +178,22 @@
       "routes": {}
     },
     "rl-company-coastal": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-dark-escort": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-forest-evacuation": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-twilight-hold": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-mist-reach": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     }

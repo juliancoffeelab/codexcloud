@@ -9,6 +9,9 @@ variables it supplies and will not work correctly without them.
 
 # Principles
 
+For Rust engine, authored-data or AI changes, read the
+[Rust engine principles and responsibility boundaries](rust/AGENTS.md).
+
 Startup should be fast and show as much of final UI to the user as possible as
 early as possible, by lazy-loading unnecessary parts.
 The data should be prefetched, user must never wait for the data loading.

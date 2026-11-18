@@ -1,6 +1,7 @@
 //! Diplomacy and ownership transitions, independent of planner implementations.
 use super::BattlePosition;
 use crate::data::*;
+use crate::logic::conditions::LiveContext;
 impl BattlePosition<'_> {
     #[inline]
     pub(crate) fn gold_for_faction(&self, faction: &str) -> i32 {
@@ -108,7 +109,7 @@ impl BattlePosition<'_> {
     }
 }
 
-impl super::Game<'_> {
+impl super::LiveBattle<'_> {
     pub(crate) fn apply_faction_transfers(&mut self) -> bool {
         if self
             .factions
@@ -159,7 +160,7 @@ impl super::Game<'_> {
             unit.retreating = None;
             unit.rebuilding = None;
             let kind = unit.kind;
-            let label = self.rules.units[kind].name.clone();
+            let label = self.definitions.unit(kind).name().to_owned();
             self.record(format!("{label} joined {faction}."));
         }
         self.roster_changed();
@@ -169,7 +170,9 @@ impl super::Game<'_> {
         if self
             .faction(self.unit_faction(unit))
             .is_some_and(|f| matches!(f.controller, Controller::Passive))
-            || self.weapons(unit).next().is_none()
+            || self.with_capabilities_at(unit, unit.tile, &self.units, &[], |caps| {
+                caps.attacks().next().is_none()
+            })
         {
             return false;
         }
@@ -178,11 +181,12 @@ impl super::Game<'_> {
                 .and_then(|id| mission.enemy_groups.iter().find(|group| group.id == id))
         });
         group.is_none_or(|group| {
-            self.group_active(group)
+            LiveContext::new(self, None, None).group_active(group)
                 && match &group.order {
                     Some(GroupOrder::Hold { when, observer, .. }) => {
                         when.as_ref().is_some_and(|condition| {
-                            !self.event_condition_met(condition, observer.as_deref())
+                            !LiveContext::new(self, observer.as_deref(), None)
+                                .event_condition_met(condition)
                         })
                     }
                     None => true,

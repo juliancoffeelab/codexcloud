@@ -1,6 +1,5 @@
 //! Independently selectable AI blocks. Policy names select fixed presets.
-use super::{CampaignBlock, Planner, Policy, Recruiter};
-use super::{campaigner::CampaignerKind, planner::PlannerKind, recruiter::RecruiterKind};
+use super::{CampaignerKind, PlannerKind, Policy, RecruiterKind};
 use serde::{Deserialize, Serialize};
 
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
@@ -27,34 +26,34 @@ impl Policy {
     pub const fn blocks(self) -> Blocks {
         match self {
             Self::Classic => Blocks {
-                recruiter: Recruiter::Classic,
-                campaign: CampaignBlock::Mission,
-                planner: Planner::Classic,
+                recruiter: RecruiterKind::Classic,
+                campaign: CampaignerKind::Mission,
+                planner: PlannerKind::Classic,
             },
             Self::Rush => Blocks {
-                recruiter: Recruiter::Frontline,
-                campaign: CampaignBlock::Mission,
-                planner: Planner::Queued,
+                recruiter: RecruiterKind::Frontline,
+                campaign: CampaignerKind::Mission,
+                planner: PlannerKind::Queued,
             },
             Self::Balanced => Blocks {
-                recruiter: Recruiter::Balanced,
-                campaign: CampaignBlock::Mission,
-                planner: Planner::Queued,
+                recruiter: RecruiterKind::Balanced,
+                campaign: CampaignerKind::Mission,
+                planner: PlannerKind::Queued,
             },
             Self::Rotated => Blocks {
-                recruiter: Recruiter::Rotation,
-                campaign: CampaignBlock::Mission,
-                planner: Planner::Queued,
+                recruiter: RecruiterKind::Rotation,
+                campaign: CampaignerKind::Mission,
+                planner: PlannerKind::Queued,
             },
             Self::Situational => Blocks {
-                recruiter: Recruiter::Situational,
-                campaign: CampaignBlock::Mission,
-                planner: Planner::Queued,
+                recruiter: RecruiterKind::Situational,
+                campaign: CampaignerKind::Mission,
+                planner: PlannerKind::Queued,
             },
             Self::Predictor => Blocks {
-                recruiter: Recruiter::Predictor,
-                campaign: CampaignBlock::Mission,
-                planner: Planner::Queued,
+                recruiter: RecruiterKind::Predictor,
+                campaign: CampaignerKind::Mission,
+                planner: PlannerKind::Queued,
             },
         }
     }
@@ -68,25 +67,25 @@ mod tests {
     use crate::{
         ai::{Diplomacy, PlanningWorkspace, choose_game_command},
         data::*,
-        logic::Game,
+        logic::BattleSession,
     };
-    use hex_command_battle::RuntimeCommand as Command;
+    use hex_command_battle::RuntimeCommand;
 
-    fn end_turn(command: &Command) -> bool {
-        fn boundary(command: &Command) -> bool {
+    fn end_turn(command: &RuntimeCommand) -> bool {
+        fn boundary(command: &RuntimeCommand) -> bool {
             match command {
-                Command::EndTurn => true,
-                Command::Move { .. }
-                | Command::Attack { .. }
-                | Command::Recruit { .. }
-                | Command::Advance { .. }
-                | Command::SetUnitIntent { .. }
-                | Command::DismissDialogue
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::DropItem { .. }
-                | Command::SkipDialogue => false,
+                RuntimeCommand::EndTurn => true,
+                RuntimeCommand::Move { .. }
+                | RuntimeCommand::Attack { .. }
+                | RuntimeCommand::Recruit { .. }
+                | RuntimeCommand::Advance { .. }
+                | RuntimeCommand::SetUnitIntent { .. }
+                | RuntimeCommand::DismissDialogue
+                | RuntimeCommand::RecallMission { .. }
+                | RuntimeCommand::RetryMission
+                | RuntimeCommand::PreviousDialogue
+                | RuntimeCommand::DropItem { .. }
+                | RuntimeCommand::SkipDialogue => false,
             }
         }
         boundary(command)
@@ -94,8 +93,8 @@ mod tests {
 
     #[test]
     fn player_and_enemy_rebuilding_emit_explicit_hold_targets() {
-        let rules = Rules::load().unwrap();
-        let mut game = Game::new(&rules, "mirror");
+        let rules = Catalogue::load().unwrap();
+        let mut game = BattleSession::new(&rules, "mirror");
         fixtures::units(&mut game, |units| units.retain(|u| u.is_leader()));
         for faction in ["player", "enemy"] {
             let phase = game.faction(faction).unwrap().phase;
@@ -109,7 +108,7 @@ mod tests {
                 .unwrap()
                 .id;
             let mission = MissionPolicy::new(game.campaign_view(), game.phase_forecasts());
-            let orders = CampaignBlock::Mission.campaign_orders(
+            let orders = CampaignerKind::Mission.campaign_orders(
                 &mission,
                 CampaignInput {
                     seed: 0,
@@ -139,8 +138,8 @@ mod tests {
 
     #[test]
     fn independent_blocks_keep_the_selected_planner_under_another_preset() {
-        let rules = Rules::load().unwrap();
-        let mut game = Game::new(&rules, "mirror");
+        let rules = Catalogue::load().unwrap();
+        let mut game = BattleSession::new(&rules, "mirror");
         let blocks = Policy::Balanced.blocks();
         let mut custom =
             PlanningWorkspace::new(7, 1, None, Diplomacy::Diplomatic).with_blocks(blocks);

@@ -26,7 +26,7 @@ test("Frontend enum conversions follow Rust spellings and reject unknown closed 
 test("Snapshot comparisons preserve NaN, signed zero, nested content and sequence lengths", () => {
   const light = (power) =>
     Json.of_battlefield_lighting({
-      time: "night",
+      unlit_tiles: [{ col: 0, row: 0 }],
       lights: [{ col: 0, row: 0, radius: 10, power }],
     });
   const nan = light(NaN);
@@ -36,7 +36,7 @@ test("Snapshot comparisons preserve NaN, signed zero, nested content and sequenc
   assert.equal(
     Equal.battlefield_lighting(
       light(1),
-      Json.of_battlefield_lighting({ time: "night", lights: [] }),
+      Json.of_battlefield_lighting({ unlit_tiles: [{ col: 0, row: 0 }], lights: [] }),
     ),
     false,
   );
@@ -60,11 +60,5 @@ test("Snapshot comparisons preserve NaN, signed zero, nested content and sequenc
   assert(Equal.public_unit(one, one));
   assert(Equal.public_unit(one, unit("one")));
   assert.equal(Equal.public_unit(one, unit("two")), false);
-  assert.equal(
-    Equal.public_unit(
-      one,
-      unit("one", [{ id: "item", name: "Item", description: "Description", attacks: [] }]),
-    ),
-    false,
-  );
+  assert.equal(Equal.public_unit(one, unit("one", ["item"])), false);
 });

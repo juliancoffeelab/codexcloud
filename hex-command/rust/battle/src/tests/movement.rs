@@ -4,12 +4,6 @@ use std::collections::HashSet;
 
 #[test]
 fn terrain_connectivity_preserves_route_saturation_and_fork_invalidation() {
-    let mut rules = Rules::load().unwrap();
-    let kind = rules.types["swordsman"];
-    let plains = rules.terrains["plains"];
-    let water = rules.terrains["water"];
-    rules.route_classes[kind] = kind;
-    rules.units[kind].costs[water] = None;
     let mut state = flat().state();
     state.units.clear();
     for tile in &mut state.tiles {
@@ -19,27 +13,41 @@ fn terrain_connectivity_preserves_route_saturation_and_fork_invalidation() {
         }
     }
     for cost in [0, 1, 40_000] {
-        rules.content_fingerprint = format!("connectivity-cost-{cost}");
-        rules.units[kind].costs[plains] = Some(cost);
-        let game = Game::from_state(&rules, state.clone());
+        let mut bundle = crate::catalogue_fixture::deterministic();
+        crate::catalogue_fixture::edit(&mut bundle, "game/terrain.json", |terrains| {
+            for terrain in terrains.as_array_mut().unwrap() {
+                if terrain["id"] == "plains" {
+                    terrain["cost"] = serde_json::json!(cost);
+                }
+                if terrain["id"] == "water" {
+                    terrain["passable"] = serde_json::json!(false);
+                }
+            }
+        });
+        let rules = Catalogue::from_json_bundle(&bundle).unwrap();
+        let game = LiveBattle::from_state(&rules, state.clone());
         let left = game.site(&Hex::new(1, 1));
         let middle = game.site(&Hex::new(2, 1));
         let right = game.site(&Hex::new(3, 1));
         let blocked = game.site(&Hex::new(4, 1));
+        let plains = game.definitions.terrain_name("plains");
+        let water = game.definitions.terrain_name("water");
+        let kind = game.kind("swordsman");
+        let actor = game.prospective(kind, game.runtime.names.find("player").unwrap(), left);
         for start in [left, middle, blocked] {
-            let reachable = game.reachability(kind, start);
-            let distances = game.routes_from(kind, start);
+            let reachable = game.reachability(&actor, start);
+            let distances = game.routes_from(&actor, start);
             for (tile, &distance) in distances.iter().enumerate() {
                 assert_eq!(reachable.contains(tile), distance != u16::MAX);
             }
             for (category, range) in [(Category::Melee, 1), (Category::Ranged, 2)] {
                 let mut expected = Vec::new();
                 game.attack_origins(category, range)[right].for_each(|tile| {
-                    if distances[tile] != u16::MAX && game.cost(kind, tile) != u16::MAX {
+                    if distances[tile] != u16::MAX && game.step_cost(&actor, tile) != u16::MAX {
                         expected.push((game.terrain[tile], game.board.distance(tile, right)));
                     }
                 });
-                let grouped = game.attack_origin_runs(kind, start, category, range, right);
+                let grouped = game.attack_origin_runs(&actor, start, category, range, right);
                 let actual: Vec<_> = grouped
                     .iter()
                     .flat_map(|run| {
@@ -52,24 +60,24 @@ fn terrain_connectivity_preserves_route_saturation_and_fork_invalidation() {
             }
         }
         if cost < 40_000 {
-            assert!(game.reachability(kind, left).contains(right));
-            let origins = game.attack_origin_runs(kind, left, Category::Ranged, 2, right);
+            assert!(game.reachability(&actor, left).contains(right));
+            let origins = game.attack_origin_runs(&actor, left, Category::Ranged, 2, right);
             assert_eq!(origins.iter().map(|run| run.count).sum::<usize>(), 2);
             let mut fork = game.fork();
             fork.set_terrain(middle, water);
-            assert!(!fork.reachability(kind, left).contains(right));
-            assert!(game.reachability(kind, left).contains(right));
-            let changed = fork.attack_origin_runs(kind, left, Category::Ranged, 2, right);
+            assert!(!fork.reachability(&actor, left).contains(right));
+            assert!(game.reachability(&actor, left).contains(right));
+            let changed = fork.attack_origin_runs(&actor, left, Category::Ranged, 2, right);
             assert_eq!(changed.iter().map(|run| run.count).sum::<usize>(), 1);
             assert_eq!(
-                game.attack_origin_runs(kind, left, Category::Ranged, 2, right)
+                game.attack_origin_runs(&actor, left, Category::Ranged, 2, right)
                     .iter()
                     .map(|run| run.count)
                     .sum::<usize>(),
                 2
             );
         } else {
-            assert!(!game.reachability(kind, left).contains(right));
+            assert!(!game.reachability(&actor, left).contains(right));
         }
     }
 }
@@ -81,8 +89,13 @@ fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
         let mut state = flat().state();
         state.tiles = (0..size)
             .map(|tile| Tile {
+                effects: vec![],
                 location: None,
-                perception: TilePerception::default(),
+                perception: TilePerception {
+                    illumination: Some(Illumination::Lit),
+                    remember: false,
+                    concealment: vec![],
+                },
                 light: None,
                 id: format!("{},{}", tile % 9, tile / 9),
                 col: (tile % 9) as i32,
@@ -95,7 +108,7 @@ fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
                 floor: None,
             })
             .collect();
-        let mut game = Game::from_state(rules(), state);
+        let mut game = LiveBattle::from_state(rules(), state);
         for (index, kind) in ["swordsman", "reefguard", "scout"].into_iter().enumerate() {
             let tile = game.board.ids[index * 3].clone();
             add(&mut game, kind, "player", &tile);
@@ -103,7 +116,7 @@ fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
         let blocker = game.add(game.kind("wolf"), "enemy", 11);
         for terrain in ["forest", "water", "plains"] {
             for tile in (0..size).step_by(5) {
-                game.set_terrain(tile, rules().terrains[terrain]);
+                game.set_terrain(tile, game.definitions.terrain_name(terrain));
             }
             let mut occupancy = vec![None; size];
             for unit in &game.units {
@@ -137,7 +150,7 @@ fn threat_flood_matches_ordered_movement_with_blockers_and_terrain_changes() {
         let cached = game.reachable(&unit);
         assert!(std::rc::Rc::ptr_eq(&cached, &game.fork().reachable(&unit)));
         let mut forecast = game.fork();
-        forecast.set_terrain(1, rules().terrains["water"]);
+        forecast.set_terrain(1, game.definitions.terrain_name("water"));
         assert!(std::rc::Rc::ptr_eq(&cached, &game.reachable(&unit)));
         game.units[0].moved = true;
         let mut expected = TileSet::new(size);
@@ -152,7 +165,7 @@ fn moves_obey_turns_actions_occupancy_and_passability() {
     let actor = add(&mut game, "swordsman", "player", Hex::new(2, 3));
     add(&mut game, "scout", "enemy", Hex::new(3, 3));
     let water = game.site(&Hex::new(2, 2));
-    game.set_terrain(water, game.rules.terrains["water"]);
+    game.set_terrain(water, game.definitions.terrain_name("water"));
     assert!(
         !game
             .reachable(game.unit(actor).unwrap())
@@ -180,18 +193,18 @@ fn routes_spend_the_whole_allowance_and_stop_at_blockers() {
     let kind = "scout";
     let terrain = "hill";
     let mut game = flat();
-    let water = game.rules.terrains["water"];
+    let water = game.definitions.terrain_name("water");
     for tile in 0..game.terrain.len() {
         game.set_terrain(tile, water);
     }
     let start = game.site(&Hex::new(0, 0));
-    game.set_terrain(start, game.rules.terrains["plains"]);
+    game.set_terrain(start, game.definitions.terrain_name("plains"));
     for col in 1..=5 {
         let tile = game.site_at(col, 0);
-        game.set_terrain(tile, game.rules.terrains[terrain]);
+        game.set_terrain(tile, game.definitions.terrain_name(terrain));
     }
     let id = add(&mut game, kind, "player", Hex::new(0, 0));
-    let allowance = game.rules.units[game.kind(kind)].r#move;
+    let allowance = game.movement_limit(game.unit(id).unwrap());
     let goal = game.site_at(allowance as i32, 0);
     assert!(
         game.reachable(game.unit(id).unwrap())
@@ -219,21 +232,21 @@ fn routes_spend_the_whole_allowance_and_stop_at_blockers() {
 #[test]
 fn adjacency_matches_hex_distance_including_edges() {
     for (map, revision) in [("mirror", 1), ("river-valley", 2)] {
-        let game = Game::from_state(rules(), rules().maps[&(map.into(), revision)].clone());
+        let game = LiveBattle::from_map(rules(), rules().map(map, revision));
         for first in 0..game.board.ids.len() {
             let expected: Vec<_> = (0..game.board.ids.len())
                 .filter(|&second| game.board.distance(first, second) == 1)
                 .collect();
             assert_eq!(game.board.adjacent[first], expected);
         }
-        let restored = Game::try_from_state(rules(), game.state()).unwrap();
+        let restored = LiveBattle::try_from_state(rules(), game.state()).unwrap();
         assert_eq!(restored.board.adjacent, game.board.adjacent);
     }
 }
 
 #[test]
 fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
-    let original = Game::new(rules(), "mirror");
+    let original = LiveBattle::new(rules(), "mirror");
     let mut state = original.state();
     let tile = state
         .tiles
@@ -246,7 +259,7 @@ fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
     tile.dead_ends = Some(vec![HexDirection::W]);
     tile.floor = Some("green-forest".into());
     let state = serde_json::from_str(&serde_json::to_string(&state).unwrap()).unwrap();
-    let decorated = Game::try_from_state(rules(), state).unwrap();
+    let decorated = LiveBattle::try_from_state(rules(), state).unwrap();
     for unit in &original.units {
         assert_eq!(original.reachable(unit), decorated.reachable(unit));
     }
@@ -283,7 +296,7 @@ fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
     let mut invalid = decorated.state();
     let tile = invalid.tiles.iter_mut().find(|tile| tile.id == id).unwrap();
     tile.connections = Some(vec![HexDirection::E, HexDirection::E]);
-    assert!(Game::try_from_state(rules(), invalid).is_err());
+    assert!(LiveBattle::try_from_state(rules(), invalid).is_err());
 
     for ends in [
         vec![HexDirection::Se],
@@ -297,7 +310,7 @@ fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
             .find(|tile| tile.id == id)
             .unwrap()
             .dead_ends = Some(ends);
-        assert!(Game::try_from_state(rules(), state).is_err());
+        assert!(LiveBattle::try_from_state(rules(), state).is_err());
     }
 
     for (terrain, exits, valid) in [
@@ -324,7 +337,7 @@ fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
         tile.terrain = terrain.into();
         tile.connections = Some(exits.clone());
         tile.dead_ends = None;
-        let restored = Game::try_from_state(rules(), state);
+        let restored = LiveBattle::try_from_state(rules(), state);
         assert_eq!(restored.is_ok(), valid, "{terrain} {exits:?}");
         if let Ok(game) = restored {
             assert_eq!(
@@ -343,7 +356,7 @@ fn artwork_choices_survive_restore_and_forks_without_changing_movement() {
 
 #[test]
 fn developer_showcase_has_each_unit_for_both_sides_and_every_terrain() {
-    let game = Game::new(rules(), "developer");
+    let game = LiveBattle::new(rules(), "developer");
     for side in [TurnPhase::Player, TurnPhase::Ai] {
         let mut kinds: Vec<_> = game
             .units
@@ -352,8 +365,81 @@ fn developer_showcase_has_each_unit_for_both_sides_and_every_terrain() {
             .map(|u| u.kind)
             .collect();
         kinds.sort_unstable();
-        assert_eq!(kinds, (0..rules().units.len()).collect::<Vec<_>>());
+        assert_eq!(kinds, (0..rules().units().count()).collect::<Vec<_>>());
     }
     let terrains: HashSet<_> = game.terrain.iter().copied().collect();
-    assert_eq!(terrains, (0..rules().terrain_names.len()).collect());
+    assert_eq!(terrains, (0..rules().terrains().count()).collect());
+}
+
+#[test]
+fn weather_and_carried_movement_adjustments_stack() {
+    let mut bundle = crate::catalogue_fixture::deterministic();
+    let mut adjustment = rules().map("mirror", 1).modifiers().clone();
+    adjustment.terrain_modifiers.insert(
+        TerrainRole::Plains,
+        TerrainStatModifiers {
+            cost: -1,
+            passable: None,
+            damage_modifiers: EnvironmentalModifiers {
+                melee: 0,
+                ranged: 0,
+                blade: 0,
+                pierce: 0,
+                impact: 0,
+            },
+        },
+    );
+    crate::catalogue_fixture::ability(
+        &mut bundle,
+        "fixture-travel",
+        vec![ScopedEffect {
+            scope: EffectScope {
+                radius: 0,
+                include_self: true,
+                targets: HealingTargets::Allies,
+            },
+            stacking: StackingRule {
+                group: "travel".into(),
+                combine: EffectCombine::Add,
+            },
+            effect: EffectValue::StatModifiers {
+                modifiers: adjustment,
+            },
+        }],
+    );
+    crate::catalogue_fixture::edit(&mut bundle, "game/items/church-mail.json", |item| {
+        item["abilities"]
+            .as_array_mut()
+            .unwrap()
+            .push(serde_json::json!("fixture-travel"));
+    });
+    let local = Catalogue::from_json_bundle(&bundle).unwrap();
+    let mut game = LiveBattle::from_state(&local, flat().state());
+    let id = add(&mut game, "soldier", "player", Hex::new(2, 3));
+    let tile = game.site(&Hex::new(3, 3));
+    let role = TerrainRole::Plains; // flat() explicitly installs plains terrain.
+    let before = game.step_cost(game.unit(id).unwrap(), tile);
+    let modifier = TerrainStatModifiers {
+        cost: 1,
+        passable: None,
+        damage_modifiers: EnvironmentalModifiers {
+            melee: 0,
+            ranged: 0,
+            blade: 0,
+            pierce: 0,
+            impact: 0,
+        },
+    };
+    std::rc::Rc::make_mut(&mut game.map_modifiers)
+        .terrain_modifiers
+        .insert(role, modifier.clone());
+    game.invalidate_terrain_queries();
+    assert_eq!(game.step_cost(game.unit(id).unwrap(), tile), before + 1);
+    game.give_item(id, "church-mail".into());
+    let unit = game.unit(id).unwrap();
+    assert_eq!(game.step_cost(unit, tile), before);
+    assert_eq!(game.routes(unit, &[tile])[unit.tile], before);
+    assert_eq!(game.reachability(unit, unit.tile).contains(tile), true);
+    game.drop_item(id, 0);
+    assert_eq!(game.step_cost(game.unit(id).unwrap(), tile), before + 1);
 }

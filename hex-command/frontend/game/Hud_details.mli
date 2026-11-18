@@ -10,5 +10,5 @@ val is_open : t -> bool
 val report : t -> Battle_details.report option
 val panel : t -> Presentation.panel
 val terrain : t -> Presentation.terrain_panel option
-val ground_items : t -> Domain.item array
+val ground_items : t -> Domain.wiki_item array
 val reveal_key : t -> string

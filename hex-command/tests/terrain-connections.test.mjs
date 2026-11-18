@@ -59,13 +59,13 @@ test("Every native-accepted terrain connection and floor has a corresponding nat
 });
 test("Every authored native map selects available art, including independent floors and deterministic layouts", () => {
   for (const map of Catalog.maps(catalog)) {
-    for (const authored of map.terrain) {
+    for (const authored of map.state.tiles) {
       const tile = {
         ...authored,
         id: `${authored.col},${authored.row}`,
         owner: null,
       };
-      if (tile.floor !== void 0) assert(Object.hasOwn(pixelFloorColors, tile.floor));
+      if (tile.floor != null) assert(Object.hasOwn(pixelFloorColors, tile.floor));
       requireFrames(tile, map.id);
     }
   }

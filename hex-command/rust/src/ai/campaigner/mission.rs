@@ -1,7 +1,8 @@
 //! Authored missions are interpreted here and emitted as explicit turn orders.
-use super::CampaignerKind as CampaignBlock;
+use super::CampaignerKind;
 use crate::ai::context::BattleView;
 use crate::ai::orders::UnitSelector;
+use crate::ai::policies::recruitment::RecruitRolePolicy;
 use crate::ai::{
     Diplomacy,
     orders::*,
@@ -10,9 +11,9 @@ use crate::ai::{
 use crate::data::*;
 use crate::sort::SharedSort;
 use hex_command_battle::{
-    CampaignGroup, CampaignIntent, CampaignObjective, CampaignView as AuthoredView, PhaseForecasts,
+    CampaignGroup, CampaignIntent, CampaignObjective, CampaignObservation, PhaseForecasts,
 };
-use rustc_hash::FxHashSet as HashSet;
+use rustc_hash::FxHashSet;
 #[derive(Clone, Copy)]
 pub(crate) struct CampaignInput<'a> {
     pub seed: u32,
@@ -23,7 +24,7 @@ pub(crate) struct CampaignInput<'a> {
 /// Mission decision inputs. The authored read model cannot obtain live execution.
 pub(crate) struct MissionPolicy<'a, 'catalog> {
     pub(crate) battle: &'a BattleView<'a, 'catalog>,
-    authored: AuthoredView<'a, 'catalog>,
+    authored: CampaignObservation<'a, 'catalog>,
     phases: PhaseForecasts<'a, 'catalog>,
     objectives: Vec<CampaignObjective<'a>>,
     groups: Vec<CampaignGroup<'a>>,
@@ -31,7 +32,7 @@ pub(crate) struct MissionPolicy<'a, 'catalog> {
 }
 impl<'a, 'catalog> MissionPolicy<'a, 'catalog> {
     pub(crate) fn new(
-        authored: AuthoredView<'a, 'catalog>,
+        authored: CampaignObservation<'a, 'catalog>,
         phases: PhaseForecasts<'a, 'catalog>,
     ) -> Self {
         let battle = authored.battle();
@@ -64,7 +65,7 @@ impl<'a, 'catalog> std::ops::Deref for MissionPolicy<'a, 'catalog> {
     }
 }
 
-impl CampaignBlock {
+impl CampaignerKind {
     pub const fn supports_campaign(self) -> bool {
         match self {
             Self::Mission => true,
@@ -321,7 +322,7 @@ impl CampaignBlock {
                 && unit.character.is_some()
                 && game.essential(unit)
                 && (!leader
-                    || unit.hp * 2 <= game.rules().units[unit.kind].hp
+                    || unit.hp * 2 <= game.unit_definition(unit.kind).max_hp
                     || crate::ai::policies::threat::Threats::protected(
                         game.phases,
                         game.unit_faction(unit),
@@ -446,7 +447,7 @@ impl CampaignBlock {
                             game.belongs_to_faction(unit, game.observer_faction())
                                 && !unit.is_leader()
                                 && !unit.role.is_some_and(Role::is_escort)
-                                && game.rules().units[unit.kind].role == role
+                                && game.unit_definition(unit.kind).role() == role
                         })
                         .count();
                     if guards > 0 {
@@ -653,7 +654,7 @@ impl MissionPolicy<'_, '_> {
                     .unit_type
                     .as_ref()
                     .or(selector.unit_types.first())
-                    .map(|kind| self.rules().units[self.kind(kind)].family)
+                    .map(|kind| self.unit_definition(self.kind(kind)).family())
             })
     }
 
@@ -672,7 +673,7 @@ impl MissionPolicy<'_, '_> {
     pub fn objectives(&self) -> Vec<Objective> {
         let mut goals = self.scripted_policy_objectives();
         for tile in 0..self.terrain().len() {
-            if self.role_is(tile, TerrainRole::Village)
+            if self.terrain_definition(tile).income() > 0
                 && self.captures(tile, self.observer_faction())
             {
                 goals.push(objective(
@@ -759,8 +760,8 @@ impl MissionPolicy<'_, '_> {
     pub fn protects_withdrawal(&self, diplomatic: bool) -> bool {
         diplomatic && self.observer_faction() == "player" && self.authored.in_campaign()
     }
-    pub fn withdrawal_lanes(&self, restrained: bool) -> HashSet<usize> {
-        let mut lanes = HashSet::default();
+    pub fn withdrawal_lanes(&self, restrained: bool) -> FxHashSet<usize> {
+        let mut lanes = FxHashSet::default();
         if !self.protects_withdrawal(restrained) {
             return lanes;
         }
@@ -770,7 +771,7 @@ impl MissionPolicy<'_, '_> {
             let mut homes: Vec<_> = (0..self.terrain().len())
                 .filter(|&t| {
                     self.owns(t, self.unit_faction(&u))
-                        && (self.is_keep(t) || self.role_is(t, TerrainRole::Village))
+                        && (self.is_keep(t) || self.terrain_definition(t).income() > 0)
                 })
                 .collect();
             if homes.is_empty() {
@@ -778,9 +779,9 @@ impl MissionPolicy<'_, '_> {
                     .filter(|&t| self.board().positions[t].0 == self.cols() - 1)
                     .collect();
             }
-            let routes = self.routes(u.kind, &homes);
+            let routes = self.routes(u, &homes);
             for &t in &self.board().adjacent[u.tile] {
-                if routes[t] < routes[u.tile] && self.cost(u.kind, t) != u16::MAX {
+                if routes[t] < routes[u.tile] && self.step_cost(&u, t) != u16::MAX {
                     lanes.insert(t);
                 }
             }
@@ -833,7 +834,7 @@ impl MissionPolicy<'_, '_> {
             // Only a nearly wiped-out army sends its leader to recover income.
             (0..self.terrain().len())
                 .filter(|&tile| {
-                    self.role_is(tile, TerrainRole::Village)
+                    self.terrain_definition(tile).income() > 0
                         && self.captures(tile, self.unit_faction(&u))
                 })
                 .collect()
@@ -911,11 +912,11 @@ pub(in crate::ai) fn terminal_attack(
             .all(|u| u.id == target.id)
 }
 
-pub(super) struct Mission;
-impl super::Campaigner for Mission {
+pub(super) struct MissionCampaigner;
+impl super::Campaigner for MissionCampaigner {
     fn objectives(
         &mut self,
-        view: crate::ai::context::CampaignView<'_, '_>,
+        view: crate::ai::context::CampaignerContext<'_, '_>,
     ) -> crate::ai::orders::CampaignOrders {
         view.orders(super::CampaignerKind::Mission)
     }
@@ -947,7 +948,6 @@ fn actor_route(goal: &Objective) -> bool {
         match goal.kind {
             ObjectiveKind::Escort | ObjectiveKind::Escape | ObjectiveKind::Vigil => true,
             ObjectiveKind::Capture => goal.actor.is_some(),
-            ObjectiveKind::Seal => goal.family.is_some(),
             ObjectiveKind::Visit => goal.actor.is_some(),
             ObjectiveKind::Defeat => false,
         }

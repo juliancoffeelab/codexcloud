@@ -4,10 +4,26 @@
   "name": "Spearman",
   "terrainModifiers": {
     "ford": {
-      "cost": 1
+      "cost": 1,
+      "passable": null,
+      "damageModifiers": {
+        "melee": 0,
+        "ranged": 0,
+        "blade": 0,
+        "pierce": 0,
+        "impact": 0
+      }
     },
     "marsh": {
-      "cost": 1
+      "cost": 1,
+      "passable": null,
+      "damageModifiers": {
+        "melee": 0,
+        "ranged": 0,
+        "blade": 0,
+        "pierce": 0,
+        "impact": 0
+      }
     }
   },
   "race": "human",
@@ -24,7 +40,8 @@
       "range": 1,
       "sound": "attack-melee",
       "count": 2,
-      "spread": 1
+      "spread": 1,
+      "drain": 0
     },
     {
       "id": "shieldbash",
@@ -35,7 +52,8 @@
       "range": 1,
       "sound": "attack-melee",
       "count": 1,
-      "spread": 2
+      "spread": 2,
+      "drain": 0
     }
   ],
   "damageModifiers": {
@@ -48,5 +66,16 @@
   "level": 2,
   "family": "spearman",
   "experienceNeeded": 18,
-  "advancesTo": ["sentinel"]
+  "advancesTo": ["sentinel"],
+  "sight": {
+    "range": 0,
+    "unlimited": false,
+    "sightModifiers": {
+      "lit": 0,
+      "unlit": 0,
+      "darkness": 0
+    },
+    "penetrates": []
+  },
+  "abilities": []
 }

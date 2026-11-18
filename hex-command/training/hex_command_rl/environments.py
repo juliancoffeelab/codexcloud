@@ -508,6 +508,7 @@ def main():
     arena = json.loads((DATA / "simulation/arena.json").read_text())
     campaign = json.loads((DATA / "simulation/campaign.json").read_text())
     races = ["human", "skeletons", "woodland", "coastal"]
+    existing = json.loads((DATA / "simulation/rl.json").read_text())
     arenas, campaigns = [], {}
     for i, biome in enumerate(BIOMES):
         identifier = "rl-" + biome[0]
@@ -615,6 +616,9 @@ def main():
             campaign,
             campaigns,
         )
+    generated = {a["id"] for a in arenas}
+    arenas.extend(a for a in existing["arenas"] if a["id"] not in generated)
+    campaigns = existing["campaigns"] | campaigns
     write(DATA / "manifest.json", manifest)
     write(DATA / "simulation/arena.json", arena)
     write(DATA / "simulation/campaign.json", campaign)

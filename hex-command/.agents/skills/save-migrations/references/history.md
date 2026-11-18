@@ -533,3 +533,44 @@ marker. Historical payloads remain versioned and upgrade through the ordinary
 save loader when opened. A failed metadata conversion aborts the transaction and
 retains the prior records. Storage 2→3 campaign retirement runs first in the same
 transaction when required. The physical IndexedDB database schema is unchanged.
+
+## Version-forty-nine migration
+
+The v49-to-v50 step replaces historical item healing amounts with the shared
+healing profile (power, radius, self eligibility and allegiance targets), emits
+all resolved native fields explicitly, and makes ambient illumination concrete.
+New per-tile illumination is resolved from the frozen v49 map/revision lighting
+table. Scalar concealment illumination requirements become explicit lists:
+`lit` becomes `[lit]`, and historical `unlit` becomes `[unlit, darkness]`. Complete each faction relation matrix
+using v49's self/allied, reciprocal relation and neutral-absence semantics.
+Materialize historical absent carryover records and activate the authored company
+survival event. Convert reconstructed undo states through the same typed step.
+Other resolved identities, health, inventory, treasury, campaign progress, turn,
+seed and RNG state remain intact. Current Rust performs no historical filling.
+
+## Version 51: typed effects and stacking
+
+Adds explicit `mapModifiers` and runtime map `lighting.time`. Map time is resolved
+from the frozen v50 map/revision table; old saved tile ambient levels remain
+explicit. Tile occupant effects become a required array. Carried healing and
+perception profiles become typed scoped effects and a complete numeric sight
+contribution; inherited item sight becomes a zero contribution. The authored
+v50 Darkvision range floor becomes the v51 +3 adjustment in unlit/dark places.
+Other finite item sight profiles are unsupported rather than silently becoming
+additive range boosts. Perception
+`expiresAt` is retired without discarding the active effect. Unrelated resolved
+facts remain unchanged. Undo is rebuilt by converting each reconstructed full
+state with the frozen v50/v51 host-text codecs. Native restoration accepts v51 only.
+
+## Version 52: opaque Catalogue and equipment references
+
+Runtime inventories, veterans and ground items retain each item's definition ID
+instead of embedding authored item records. IDs, ownership and array order are
+preserved. Autonomous sight emitted by tiles and map marks is retired; their
+lighting and concealment remain. Faction sight becomes an additive contribution:
+finite ranges retain their value, unlimited remains explicit, and the newly
+introduced illumination adjustments are zero. All unrelated resolved facts,
+including HP, XP, identities, treasury, campaign progress and RNG, are unchanged.
+Undo patches are rebuilt by converting every reconstructed full state through
+the frozen v51/v52 codecs. The v52 native contract freezes only the complete
+persisted checkpoint graph, independently of browser display DTOs.

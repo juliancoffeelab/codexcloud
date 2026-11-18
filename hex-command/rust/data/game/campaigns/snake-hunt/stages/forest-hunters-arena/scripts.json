@@ -1,18 +1,58 @@
 {
   "events": [
     {
+      "id": "company-survival",
+      "observer": null,
+      "priority": 2147483647,
+      "remembers": false,
+      "objective": null,
+      "when": {
+        "any": [
+          {
+            "not": {
+              "survives": {
+                "company": "player",
+                "allies": false,
+                "character": null,
+                "role": "leader",
+                "includeEvacuated": true
+              }
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The company cannot continue without its protected companions."
+        }
+      ]
+    },
+    {
       "id": "leader-lost",
       "priority": 100,
       "when": {
         "killed": {
-          "character": "captain-boots"
+          "character": "captain-boots",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "initiatedBy": null,
+          "killedBy": null,
+          "defending": null
         }
       },
       "actions": [
         {
           "defeat": "Your leader has fallen."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "objective": null
     },
     {
       "id": "control-pine-hamlet",
@@ -21,7 +61,9 @@
           "tile": {
             "location": "pine-hamlet"
           },
-          "faction": "player"
+          "faction": "player",
+          "turns": null,
+          "when": null
         }
       },
       "objective": {
@@ -35,7 +77,9 @@
             "tile": {
               "location": "pine-hamlet"
             },
-            "faction": "player"
+            "faction": "player",
+            "turns": null,
+            "when": null
           }
         },
         "intent": {
@@ -43,7 +87,9 @@
             "tile": {
               "location": "pine-hamlet"
             },
-            "faction": "player"
+            "faction": "player",
+            "turns": null,
+            "when": null
           }
         },
         "playerMarker": {
@@ -51,14 +97,23 @@
             {
               "location": "pine-hamlet"
             }
-          ]
-        }
+          ],
+          "units": null,
+          "visibleInFog": false
+        },
+        "id": null,
+        "preserveLives": null,
+        "optional": false,
+        "availableWhen": null
       },
       "actions": [
         {
           "log": "Pine Hamlet first captured."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "control-moss-hamlet",
@@ -67,7 +122,9 @@
           "tile": {
             "location": "moss-hamlet"
           },
-          "faction": "player"
+          "faction": "player",
+          "turns": null,
+          "when": null
         }
       },
       "objective": {
@@ -81,7 +138,9 @@
             "tile": {
               "location": "moss-hamlet"
             },
-            "faction": "player"
+            "faction": "player",
+            "turns": null,
+            "when": null
           }
         },
         "intent": {
@@ -89,7 +148,9 @@
             "tile": {
               "location": "moss-hamlet"
             },
-            "faction": "player"
+            "faction": "player",
+            "turns": null,
+            "when": null
           }
         },
         "playerMarker": {
@@ -97,14 +158,23 @@
             {
               "location": "moss-hamlet"
             }
-          ]
-        }
+          ],
+          "units": null,
+          "visibleInFog": false
+        },
+        "id": null,
+        "preserveLives": null,
+        "optional": false,
+        "availableWhen": null
       },
       "actions": [
         {
           "log": "Moss Hamlet first captured."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "control-fern-hamlet",
@@ -113,7 +183,9 @@
           "tile": {
             "location": "fern-hamlet"
           },
-          "faction": "player"
+          "faction": "player",
+          "turns": null,
+          "when": null
         }
       },
       "objective": {
@@ -127,7 +199,9 @@
             "tile": {
               "location": "fern-hamlet"
             },
-            "faction": "player"
+            "faction": "player",
+            "turns": null,
+            "when": null
           }
         },
         "intent": {
@@ -135,7 +209,9 @@
             "tile": {
               "location": "fern-hamlet"
             },
-            "faction": "player"
+            "faction": "player",
+            "turns": null,
+            "when": null
           }
         },
         "playerMarker": {
@@ -143,14 +219,23 @@
             {
               "location": "fern-hamlet"
             }
-          ]
-        }
+          ],
+          "units": null,
+          "visibleInFog": false
+        },
+        "id": null,
+        "preserveLives": null,
+        "optional": false,
+        "availableWhen": null
       },
       "actions": [
         {
           "log": "Fern Hamlet first captured."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "villages-won",
@@ -171,7 +256,11 @@
         {
           "victory": "All three villages are under your control."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "villages-lost",
@@ -182,7 +271,9 @@
               "tile": {
                 "location": "pine-hamlet"
               },
-              "faction": "forest-hunters"
+              "faction": "forest-hunters",
+              "turns": null,
+              "when": null
             }
           },
           {
@@ -190,7 +281,9 @@
               "tile": {
                 "location": "moss-hamlet"
               },
-              "faction": "forest-hunters"
+              "faction": "forest-hunters",
+              "turns": null,
+              "when": null
             }
           },
           {
@@ -198,7 +291,9 @@
               "tile": {
                 "location": "fern-hamlet"
               },
-              "faction": "forest-hunters"
+              "faction": "forest-hunters",
+              "turns": null,
+              "when": null
             }
           }
         ]
@@ -207,13 +302,27 @@
         {
           "defeat": "The opposing army controls all three villages."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "rival-defeated",
       "when": {
         "killed": {
-          "character": "night-mayor"
+          "character": "night-mayor",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "initiatedBy": null,
+          "killedBy": null,
+          "defending": null
         }
       },
       "objective": {
@@ -225,16 +334,34 @@
         },
         "intent": {
           "defeat": {
-            "character": "night-mayor"
+            "character": "night-mayor",
+            "role": null,
+            "side": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
-        "playerMarker": null
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "availableWhen": null,
+        "satisfiedWhen": null
       },
       "actions": [
         {
           "victory": "The opposing leader has fallen."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     }
-  ]
+  ],
+  "enemyGroups": [],
+  "requiredCompanions": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false
 }

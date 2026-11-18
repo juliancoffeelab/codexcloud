@@ -1,7 +1,7 @@
 //! Native schedule, bounded scoped worker pool, reporting and replay.
 use super::{
     CampaignDefinitions,
-    checkpoint::{IndexedOutcome, Progress},
+    checkpoint::{CheckpointProgress, IndexedOutcome},
     error::SimulationError,
     matches,
     records::{DetailRecord, EncodedRecord, ResultJournal, read_detail, sha256},
@@ -13,7 +13,7 @@ use super::{
 };
 use crate::{
     ai::{Diplomacy, Policy},
-    data::Rules,
+    data::Catalogue,
 };
 use clap::{Parser, ValueEnum};
 use serde_json::{Value, json};
@@ -163,7 +163,7 @@ struct CliOptions {
     baselines: Vec<PathBuf>,
 }
 
-// Catalog membership and duplicate selections are domain validation, after Clap
+// Catalogue membership and duplicate selections are domain validation, after Clap
 // has handled argument syntax, types, ranges, conflicts and help.
 fn selection<T: Clone + PartialEq>(
     input: Option<Vec<T>>,
@@ -183,7 +183,7 @@ fn selection<T: Clone + PartialEq>(
 }
 
 impl SimulationArgs {
-    fn resolve(self, rules: &Rules) -> Result<CliOptions, SimulationError> {
+    fn resolve(self, rules: &Catalogue) -> Result<CliOptions, SimulationError> {
         let mut options = ScheduleOptions::defaults(rules)?;
         options.with = self.with;
         options.mode = self.mode;
@@ -208,13 +208,13 @@ impl SimulationArgs {
             return Err("--self-play requires --mode arena".into());
         }
         options.max_rounds = self.rounds.unwrap_or(if self.mode == Mode::Campaign {
-            rules.campaign_defaults.default_max_rounds
+            rules.meta().simulation.campaign.default_max_rounds
         } else {
-            rules.arena.default_max_rounds
+            rules.meta().simulation.arena.default_max_rounds
         });
         options.campaign_max_rounds = self
             .rounds
-            .unwrap_or(rules.campaign_defaults.default_max_rounds);
+            .unwrap_or(rules.meta().simulation.campaign.default_max_rounds);
         options.recruit_limit = self.recruits.map(|n| n as usize);
         options.armies = selection(self.armies, "--armies", &options.armies)?;
         options.landscapes = selection(self.landscapes, "--landscapes", &options.landscapes)?;
@@ -338,13 +338,18 @@ pub fn default_workers() -> usize {
     }
     count.clamp(1, 8)
 }
-pub fn fingerprints(rules: &Rules) -> Value {
-    json!({"content":rules.content_fingerprint,"engine":env!("HEX_ENGINE_FINGERPRINT")})
+pub fn fingerprints(rules: &Catalogue) -> Value {
+    let content = rules
+        .content_fingerprint
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect::<String>();
+    json!({"content":content,"engine":env!("HEX_ENGINE_FINGERPRINT")})
 }
-fn report_fingerprint(rules: &Rules) -> Result<String, SimulationError> {
+fn report_fingerprint(rules: &Catalogue) -> Result<String, SimulationError> {
     Ok(sha256(&serde_json::to_vec(&fingerprints(rules))?))
 }
-fn stdio(rules: &Rules) -> Result<(), SimulationError> {
+fn stdio(rules: &Catalogue) -> Result<(), SimulationError> {
     let stdin = io::stdin();
     let stdout = io::stdout();
     let mut output = io::BufWriter::new(stdout.lock());
@@ -365,7 +370,7 @@ fn stdio(rules: &Rules) -> Result<(), SimulationError> {
 }
 use super::phase_fixtures::{Capture, CaptureRequest, PhaseRequest};
 /// Generate a small independent artifact, without changing normal journal records.
-fn capture_stdio(rules: &Rules) -> Result<(), SimulationError> {
+fn capture_stdio(rules: &Catalogue) -> Result<(), SimulationError> {
     let mut output = io::BufWriter::new(io::stdout().lock());
     let mut definitions = CampaignDefinitions::new(rules);
     for line in io::stdin().lock().lines() {
@@ -398,7 +403,7 @@ fn capture_stdio(rules: &Rules) -> Result<(), SimulationError> {
     Ok(())
 }
 /// Replay one own phase from a saved position, for fixed-input policy profiling.
-fn phase_stdio(rules: &Rules) -> Result<(), SimulationError> {
+fn phase_stdio(rules: &Catalogue) -> Result<(), SimulationError> {
     let mut output = io::BufWriter::new(io::stdout().lock());
     let mut definitions = CampaignDefinitions::new(rules);
     for line in io::stdin().lock().lines() {
@@ -415,12 +420,12 @@ fn phase_stdio(rules: &Rules) -> Result<(), SimulationError> {
 }
 /// Replay a validated serialized phase request for native embedding/profiling.
 /// Turn preparation is controlled by the request, just as in --phase-stdio.
-pub fn saved_phase_json(rules: &Rules, request: &str) -> Result<Value, SimulationError> {
+pub fn saved_phase_json(rules: &Catalogue, request: &str) -> Result<Value, SimulationError> {
     let mut definitions = CampaignDefinitions::new(rules);
     saved_phase(rules, &mut definitions, serde_json::from_str(request)?)
 }
 fn saved_phase(
-    rules: &Rules,
+    rules: &Catalogue,
     definitions: &mut CampaignDefinitions<'_>,
     request: PhaseRequest,
 ) -> Result<Value, SimulationError> {
@@ -444,19 +449,23 @@ fn saved_phase(
         crate::logic::validate_state_geometry(rules, &request.state, &arena.state())
             .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
     } else {
-        let authored = rules
-            .maps
-            .get(&(request.state.map_id.clone(), request.state.map_revision))
+        let map = rules
+            .maps()
+            .find(|map| {
+                map.id() == request.state.map_id && map.revision() == request.state.map_revision
+            })
             .ok_or_else(|| SimulationError::InvalidConfig("unknown map revision".into()))?;
+        let authored = crate::logic::BattleSession::from_map(rules, map).state();
         crate::logic::validate_state_geometry_with_campaign(
             rules,
             &request.state,
-            authored,
+            &authored,
             definition,
         )
         .map_err(|error| SimulationError::InvalidConfig(error.to_string()))?;
     }
-    let mut game = crate::logic::Game::from_state_with_campaign(rules, request.state, definition);
+    let mut game =
+        crate::logic::BattleSession::from_state_with_campaign(rules, request.state, definition);
     if let Some(arena) = arena {
         game.configure_arena(arena.pools().cloned(), arena.arena_first());
     }
@@ -528,10 +537,10 @@ fn read_report(path: &Path) -> Result<Value, SimulationError> {
     };
     Ok(serde_json::from_slice(&bytes)?)
 }
-fn replay(rules: &Rules, path: &Path, fingerprint: &str) -> Result<(), SimulationError> {
+fn replay(rules: &Catalogue, path: &Path, fingerprint: &str) -> Result<(), SimulationError> {
     let saved = read_report(path)?;
     if saved["fingerprint"] != fingerprint {
-        return Err(SimulationError::Replay("Rules/policies/runner changed; replay on the recorded source before comparing outcomes".into()));
+        return Err(SimulationError::Replay("Catalogue/policies/runner changed; replay on the recorded source before comparing outcomes".into()));
     }
     let outcomes = saved["outcomes"]
         .as_array()
@@ -571,7 +580,7 @@ struct PreparedMatch {
     trace: Option<EncodedRecord>,
 }
 fn execute_schedule<F>(
-    rules: &Rules,
+    rules: &Catalogue,
     configs: &[MatchConfig],
     workers: usize,
     trace: bool,
@@ -711,7 +720,11 @@ fn write_json<T: serde::Serialize>(
     fs::rename(temporary, path)?;
     Ok(())
 }
-fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<(), SimulationError> {
+fn run_batch(
+    rules: &Catalogue,
+    options: CliOptions,
+    fingerprint: &str,
+) -> Result<(), SimulationError> {
     let configs = schedule(&options.schedule)?;
     if options.schedule_only {
         println!(
@@ -739,7 +752,7 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     let mut completed = 0;
     write_json(
         &partial,
-        &Progress::new(
+        &CheckpointProgress::new(
             "running",
             options.schedule.mode,
             fingerprint,
@@ -779,7 +792,7 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
                 index_journal.flush()?;
                 write_json(
                     &partial,
-                    &Progress::new(
+                    &CheckpointProgress::new(
                         "running",
                         options.schedule.mode,
                         fingerprint,
@@ -807,7 +820,7 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
         let message = error.to_string();
         write_json(
             &partial,
-            &Progress::new(
+            &CheckpointProgress::new(
                 "failed",
                 options.schedule.mode,
                 fingerprint,
@@ -847,12 +860,11 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
         trace_files,
     )?;
     report["detailFormat"] = Value::String(super::arrow::FORMAT.into());
-    report["recruitmentProfiles"] = serde_json::to_value(&rules.recruitment)?;
+    report["recruitmentProfiles"] = serde_json::to_value(&rules.meta().recruiter_weights)?;
     report["unitFamilies"] = serde_json::to_value(
         rules
-            .units
-            .iter()
-            .map(|unit| (unit.id.clone(), unit.family))
+            .units()
+            .map(|unit| (unit.id().to_owned(), unit.family()))
             .collect::<std::collections::BTreeMap<_, _>>(),
     )?;
     report["supportTelemetryVersion"] = json!(1);
@@ -860,16 +872,11 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     report["leaderAuditVersion"] = json!(1);
     report["unitProfiles"] = serde_json::to_value(
         rules
-            .units
-            .iter()
-            .map(|u| {
+            .units()
+            .map(|unit| {
                 (
-                    u.id.clone(),
-                    json!({
-                        "name":u.name,"family":u.family,"race":u.race,"hp":u.hp,
-                        "level":u.level,"cost":u.cost,"move":u.r#move,"role":u.role,
-                        "healing":u.healing,"thornAura":u.thorn_aura,"thorns":u.thorns
-                    }),
+                    unit.id(),
+                    hex_command_catalog::diagnostics::unit_profile(unit),
                 )
             })
             .collect::<std::collections::BTreeMap<_, _>>(),
@@ -884,7 +891,7 @@ fn run_batch(rules: &Rules, options: CliOptions, fingerprint: &str) -> Result<()
     }
     write_json(
         &partial,
-        &Progress::new(
+        &CheckpointProgress::new(
             "complete",
             options.schedule.mode,
             fingerprint,
@@ -950,9 +957,9 @@ pub fn run(args: &[String]) -> Result<(), SimulationError> {
         Err(error) => return Err(SimulationError::InvalidConfig(error.to_string())),
     };
     let rules = if let Some(root) = &args.data_dir {
-        Rules::load_from(root)?
+        Catalogue::load_from(root)?
     } else {
-        Rules::load()?
+        Catalogue::load()?
     };
     if args.fingerprint {
         println!("{}", fingerprints(&rules));
@@ -983,7 +990,7 @@ mod tests {
     use super::*;
     #[test]
     fn arena_opponent_defaults_to_balanced_without_changing_campaign_enemy() {
-        let rules = Rules::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         let options = SimulationArgs::try_parse_from(["sim"])
             .unwrap()
             .resolve(&rules)
@@ -1024,7 +1031,7 @@ mod tests {
     }
     #[test]
     fn saved_phase_restores_generated_arenas_and_validates_geometry() {
-        let rules = Rules::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         let mut definitions = CampaignDefinitions::new(&rules);
         let config: super::super::types::ArenaConfig = serde_json::from_value(json!({
             "seed": 7, "maxRounds": 30, "recruitLimit": 0, "landscape": "open",
@@ -1084,7 +1091,7 @@ mod tests {
     }
     #[test]
     fn selected_capture_preserves_run_and_restores_planner_entry() {
-        let rules = Rules::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         let config: super::super::types::ArenaConfig = serde_json::from_value(json!({
             "seed":7,"maxRounds":2,"recruitLimit":null,"landscape":"open",
             "first":"ai","player":"classic","enemy":"classic",
@@ -1138,7 +1145,7 @@ mod tests {
     }
     #[test]
     fn campaign_capture_keeps_route_and_separate_rng_at_planner_entry() {
-        let rules = Rules::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         let mut definitions = CampaignDefinitions::new(&rules);
         let config: super::super::types::CampaignConfig = serde_json::from_value(json!({
             "seed":7,"maxRounds":3,"recruitLimit":0,"campaign":"lantern-road",
@@ -1151,7 +1158,7 @@ mod tests {
         let definition = definitions
             .get(&config.campaign, &config.objective)
             .unwrap();
-        let mut game = crate::logic::Game::start_campaign_from_definition(
+        let mut game = crate::logic::BattleSession::start_campaign_from_definition(
             &rules,
             definition,
             1,

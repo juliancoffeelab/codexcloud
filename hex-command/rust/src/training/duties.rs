@@ -3,7 +3,7 @@ use crate::{
     ai::{context::BattleView, orders::*},
     data::*,
 };
-use hex_command_battle::RuntimeCommand as Command;
+use hex_command_battle::RuntimeCommand;
 use std::rc::Rc;
 
 pub const NAMES: [&str; 57] = [
@@ -174,10 +174,10 @@ impl Duties {
                 continue;
             };
             let destination = g.site(&destination.unwrap().0);
-            let costs = g.routes(unit.kind, &[destination]);
+            let costs = g.routes(&unit, &[destination]);
             let mut corridor = vec![];
             let (unmet, actionable) = if kind == 2 {
-                let from = g.routes_from(unit.kind, unit.tile);
+                let from = g.routes_from(&unit, unit.tile);
                 let total = costs[unit.tile];
                 corridor = (0..g.terrain().len())
                     .map(|tile| {
@@ -262,7 +262,7 @@ impl Duties {
         &self,
         g: &BattleView<'_, '_>,
         orders: &TacticalOrders,
-        command: &Command,
+        command: &RuntimeCommand,
         x: &mut [f32],
     ) {
         if !orders.campaign {
@@ -282,8 +282,10 @@ impl Duties {
             timing(p, x);
         }
         let (id, tile) = match command {
-            Command::Move { unit, tile } => (unit.0, Some(tile.0)),
-            Command::Attack { unit, .. } | Command::Advance { unit, .. } => (unit.0, None),
+            RuntimeCommand::Move { unit, tile } => (unit.0, Some(tile.0)),
+            RuntimeCommand::Attack { unit, .. } | RuntimeCommand::Advance { unit, .. } => {
+                (unit.0, None)
+            }
             _ => return,
         };
         let unit = g.unit(id).unwrap();
@@ -295,7 +297,7 @@ impl Duties {
                 .filter(|u| g.hostile(unit, u))
                 .min_by_key(|u| (g.board().distance(after, u.tile), u.id))
                 .is_some_and(|u| u.retreating == Some(true)) as u8 as f32;
-            if let Command::Attack { target, .. } = command {
+            if let RuntimeCommand::Attack { target, .. } = command {
                 x[52] = orders.mediated.contains(target) as u8 as f32;
             }
             x[53] = orders
@@ -319,7 +321,7 @@ impl Duties {
                 .max_by_key(|r| (r.priority, std::cmp::Reverse(r.costs[after])))
             {
                 let start = kind * 7;
-                let movement = g.rules().units[unit.kind].r#move.max(1) as f32;
+                let movement = g.movement_limit(&unit).max(1) as f32;
                 x[start] = 1.;
                 x[start + 1] = priority(r.priority);
                 x[start + 2] = if r.costs[unit.tile] == u16::MAX {
@@ -382,10 +384,10 @@ impl Duties {
                 timing(p, x);
             }
         }
-        if let Command::Move { .. } = command {
+        if let RuntimeCommand::Move { .. } = command {
             x[34] = orders.arrives(g, unit, after) as u8 as f32;
         }
-        if let Command::Attack { target, .. } = command {
+        if let RuntimeCommand::Attack { target, .. } = command {
             x[35] = orders.terminal_targets.contains(target) as u8 as f32;
         }
     }
@@ -448,14 +450,14 @@ impl Duties {
 mod tests {
     use super::*;
     use crate::{
-        logic::Game,
+        logic::BattleSession,
         training::{self, Dataset, FEATURE_NAMES, LEGACY_FEATURES},
     };
 
     #[test]
     fn diplomacy_filters_attacks_and_marks_protected_units_and_lanes() {
-        let rules = Rules::load().unwrap();
-        let original = Game::new(&rules, "mirror");
+        let rules = Catalogue::load().unwrap();
+        let original = BattleSession::new(&rules, "mirror");
         let actor = original
             .units()
             .iter()
@@ -483,7 +485,7 @@ mod tests {
         target.tile = original.board().ids[adjacent];
         target.retreating = Some(true);
         let observe = |state: &State, orders: &TacticalOrders| {
-            let game = Game::from_state(&rules, state.clone());
+            let game = BattleSession::from_state(&rules, state.clone());
             training::scoped(
                 Some(Dataset {
                     spatial: true,
@@ -499,7 +501,7 @@ mod tests {
             choices
                 .commands
                 .iter()
-                .filter(|c| matches!(c, Command::Attack { .. }))
+                .filter(|c| matches!(c, RuntimeCommand::Attack { .. }))
                 .count()
         };
         let mut orders = TacticalOrders {
@@ -570,8 +572,8 @@ mod tests {
 
     #[test]
     fn markers_bind_actors_and_expose_unfinished_work_on_end_turn() {
-        let rules = Rules::load().unwrap();
-        let game = Game::new(&rules, "mirror");
+        let rules = Catalogue::load().unwrap();
+        let game = BattleSession::new(&rules, "mirror");
         let units: Vec<_> = game
             .units()
             .iter()
@@ -624,7 +626,7 @@ mod tests {
                     selector: UnitSelector::AnyOf(
                         units
                             .iter()
-                            .map(|u| UnitTypeId(rules.units[u.kind].id.clone()))
+                            .map(|u| UnitTypeId(rules.units().nth(u.kind).unwrap().id().into()))
                             .collect(),
                     ),
                 },
@@ -661,7 +663,7 @@ mod tests {
             .commands
             .iter()
             .position(
-                |c| matches!(c,Command::Move{unit,tile:t} if unit.0==actor.id && t.0==destination),
+                |c| matches!(c,RuntimeCommand::Move{unit,tile:t} if unit.0==actor.id && t.0==destination),
             )
             .unwrap();
         assert_eq!(choices.features[move_index][feature("goto_at_after")], 1.);
@@ -669,7 +671,7 @@ mod tests {
         let guard_index = choices
             .commands
             .iter()
-            .position(|c| matches!(c,Command::Move{unit,..} if unit.0==guard.id))
+            .position(|c| matches!(c,RuntimeCommand::Move{unit,..} if unit.0==guard.id))
             .unwrap();
         assert_eq!(choices.features[guard_index][feature("goto_assigned")], 0.);
         assert_eq!(
@@ -685,14 +687,14 @@ mod tests {
         assert!(spatial.values[61 * cells..62 * cells].contains(&1.));
         orders.campaign = false;
         let arena = observe(&orders);
-        assert!(
-            arena
-                .features
+        assert!(arena.features.iter().all(|x| {
+            x[LEGACY_FEATURES..super::super::CAMPAIGN_FEATURES]
                 .iter()
-                .all(|x| x[LEGACY_FEATURES..].iter().all(|&v| v == 0.))
-        );
+                .all(|&v| v == 0.)
+        }));
         assert!(
-            arena.spatial.unwrap().board.values[53 * cells..]
+            arena.spatial.unwrap().board.values
+                [53 * cells..super::super::spatial::CAMPAIGN_CHANNELS * cells]
                 .iter()
                 .all(|&v| v == 0.)
         );

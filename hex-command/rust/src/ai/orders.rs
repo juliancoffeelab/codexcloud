@@ -31,8 +31,7 @@ impl From<crate::data::Objective> for Target {
             ObjectiveKind::Visit
             | ObjectiveKind::Escort
             | ObjectiveKind::Escape
-            | ObjectiveKind::Vigil
-            | ObjectiveKind::Seal => TargetKind::Visit,
+            | ObjectiveKind::Vigil => TargetKind::Visit,
         };
         Self {
             id: value.id,
@@ -68,12 +67,12 @@ pub enum UnitSelector {
 }
 impl UnitSelector {
     pub(crate) fn accepts(&self, game: &BattleView<'_, '_>, kind: usize) -> bool {
-        let rule = &game.rules().units[kind];
+        let rule = game.unit_definition(kind);
         match self {
-            Self::Type(id) => rule.id == id.0,
-            Self::AnyOf(ids) => ids.iter().any(|id| rule.id == id.0),
-            Self::Family(family) => rule.family == *family,
-            Self::Role(role) => rule.role == *role,
+            Self::Type(id) => rule.id() == id.0,
+            Self::AnyOf(ids) => ids.iter().any(|id| rule.id() == id.0),
+            Self::Family(family) => rule.family() == *family,
+            Self::Role(role) => rule.role() == *role,
         }
     }
 }
@@ -217,7 +216,7 @@ impl TacticalOrders {
         let (_, kind) = self.promotions.iter().find(|(id, _)| id.0 == unit.id)?;
         game.promotion_options(unit)
             .into_iter()
-            .find(|&option| game.rules().units[option].id == kind.0)
+            .find(|&option| game.unit_definition(option).id() == kind.0)
     }
 
     pub(crate) fn assigned_elsewhere(&self, id: u32, goal: &Target) -> bool {
@@ -386,7 +385,7 @@ impl TacticalOrders {
         if goals.is_empty() {
             return destinations;
         }
-        let routes = game.routes(unit.kind, &goals);
+        let routes = game.routes(&unit, &goals);
         let limit = destinations
             .iter()
             .map(|&t| routes[t])

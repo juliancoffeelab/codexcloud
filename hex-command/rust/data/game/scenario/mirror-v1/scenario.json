@@ -1,5 +1,6 @@
 {
   "map": "map.json",
   "roster": "roster.json",
+  "characters": [],
   "tags": ["human", "simulation"]
 }

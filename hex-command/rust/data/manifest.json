@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 6,
   "terrain": "game/terrain.json",
   "races": [
     "game/races/merfolk.json",
@@ -151,7 +151,11 @@
     "game/scenario/rl-cavern/scenario.json",
     "game/scenario/rl-ruins/scenario.json",
     "game/scenario/rl-broadfield/scenario.json",
-    "game/scenario/rl-floodplain/scenario.json"
+    "game/scenario/rl-floodplain/scenario.json",
+    "game/scenario/rl-dark-rooms/scenario.json",
+    "game/scenario/rl-twilight-ridge/scenario.json",
+    "game/scenario/rl-mist-wetland/scenario.json",
+    "game/scenario/rl-lantern-forest/scenario.json"
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",
@@ -174,7 +178,11 @@
     "game/campaigns/rl-company-human/campaign.json",
     "game/campaigns/rl-company-skeletons/campaign.json",
     "game/campaigns/rl-company-woodland/campaign.json",
-    "game/campaigns/rl-company-coastal/campaign.json"
+    "game/campaigns/rl-company-coastal/campaign.json",
+    "game/campaigns/rl-dark-escort/campaign.json",
+    "game/campaigns/rl-forest-evacuation/campaign.json",
+    "game/campaigns/rl-twilight-hold/campaign.json",
+    "game/campaigns/rl-mist-reach/campaign.json"
   ],
   "simulation": {
     "rosters": "simulation/rosters.json",
@@ -186,7 +194,48 @@
   "items": [
     "game/items/church-mail.json",
     "game/items/healing-bottle.json",
-    "game/items/quarry-hammer.json"
+    "game/items/quarry-hammer.json",
+    "game/items/rl-darkcloak.json",
+    "game/items/rl-darkvision.json",
+    "game/items/rl-lantern.json",
+    "game/items/rl-forestcloak.json"
   ],
-  "concealmentKinds": "game/concealment-kinds.json"
+  "concealmentKinds": "game/concealment-kinds.json",
+  "abilities": [
+    "abilities/darkcloak.json",
+    "abilities/darkvision.json",
+    "abilities/forestcloak.json",
+    "abilities/mending-3.json",
+    "abilities/mending-4.json",
+    "abilities/mending-5.json",
+    "abilities/mending-6.json",
+    "abilities/restorative-aura.json",
+    "abilities/external-thorns-6.json",
+    "abilities/external-thorns-8.json",
+    "abilities/personal-thorns-4.json",
+    "abilities/personal-thorns-6.json",
+    "abilities/personal-thorns-8.json",
+    "abilities/external-thorns-3.json",
+    "abilities/carried-light-2.json"
+  ],
+  "environmentEffects": [
+    "environment-effects/darkness-ambient.json",
+    "environment-effects/darkness-reveal-1.json",
+    "environment-effects/fog-reveal-2.json",
+    "environment-effects/fog-reveal-3.json",
+    "environment-effects/glow-105-75.json",
+    "environment-effects/glow-105-85.json",
+    "environment-effects/glow-110-80.json",
+    "environment-effects/glow-75-50.json",
+    "environment-effects/glow-75-70.json",
+    "environment-effects/glow-90-95.json",
+    "environment-effects/house-visit-glow.json",
+    "environment-effects/lit-ambient.json",
+    "environment-effects/monastery-start-glow.json",
+    "environment-effects/player-owned-glow.json",
+    "environment-effects/remember-terrain.json",
+    "environment-effects/unlit-ambient.json",
+    "environment-effects/village-contact-glow.json",
+    "environment-effects/settlement-healing.json"
+  ]
 }

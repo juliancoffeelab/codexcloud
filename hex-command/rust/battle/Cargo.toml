@@ -6,6 +6,7 @@ publish = false
 
 [features]
 default = []
+simulation = ["hex-command-catalog/simulation"]
 wasm = ["hex-command-catalog/wasm", "dep:ocamljsify", "dep:ocamljs_bindgen"]
 runtime-catalog = ["hex-command-catalog/runtime-catalog"]
 
@@ -17,3 +18,6 @@ hex-catalog-freeze-derive = { path = "../freeze-derive" }
 rustc-hash = "2"
 serde = { version = "1", features = ["derive", "rc"] }
 serde_json = { version = "1", features = ["raw_value", "float_roundtrip"] }
+
+[build-dependencies]
+serde_json="1"

@@ -1,7 +1,7 @@
-use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
+use crate::ai::orders::{Target, TargetKind};
 use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*};
-use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
+use rustc_hash::{FxHashMap, FxHashSet};
 use std::cmp::Ordering;
 /// Compare canonical actor identities without formatting in candidate loops.
 pub(in crate::ai) fn actor_matches(actor: &Option<String>, id: u32) -> bool {
@@ -45,11 +45,11 @@ pub fn objective(
         hold: None,
     }
 }
-pub fn individual(goals: Vec<Objective>) -> Vec<Objective> {
+pub fn individual(goals: Vec<Target>) -> Vec<Target> {
     goals
         .into_iter()
         .flat_map(|g| {
-            if g.kind == ObjectiveKind::Capture && g.tiles.len() > 1 {
+            if g.kind == TargetKind::Capture && g.tiles.len() > 1 {
                 g.tiles
                     .iter()
                     .map(|t| {
@@ -147,8 +147,8 @@ impl TileOrder {
         };
         let a = axial(first);
         let b = axial(second);
-        let av = self.villages && g.role_is(first, TerrainRole::Village);
-        let bv = self.villages && g.role_is(second, TerrainRole::Village);
+        let av = self.villages && g.terrain_definition(first).income() > 0;
+        let bv = self.villages && g.terrain_definition(second).income() > 0;
         let home_distance = |p: (f64, f64)| {
             ((p.0 - self.home.0).abs()
                 + (p.1 - self.home.1).abs()
@@ -179,23 +179,19 @@ impl TileOrder {
     }
 }
 
-pub fn can_pursue(game: &BattleView<'_, '_>, u: &Unit, g: &Objective) -> bool {
+pub fn can_pursue(game: &BattleView<'_, '_>, u: &Unit, g: &Target) -> bool {
     (g.actor.is_none() || actor_matches(&g.actor, u.id))
         && g.family
             .as_ref()
-            .is_none_or(|family| game.rules().units[u.kind].family == *family)
+            .is_none_or(|family| game.unit_definition(u.kind).family() == *family)
 }
 
 /// Personal duties take precedence over incidental nearby resources.
-pub(in crate::ai) fn assigned_duty(
-    game: &BattleView<'_, '_>,
-    unit: &Unit,
-    goal: &Objective,
-) -> bool {
+pub(in crate::ai) fn assigned_duty(game: &BattleView<'_, '_>, unit: &Unit, goal: &Target) -> bool {
     crate::ai::policies::objectives::can_pursue(game, unit, goal)
         && (goal.actor.is_some() || goal.family.is_some())
 }
-pub fn reserved(game: &BattleView<'_, '_>, u: &Unit, goals: &[Objective]) -> HashSet<usize> {
+pub fn reserved(game: &BattleView<'_, '_>, u: &Unit, goals: &[Target]) -> FxHashSet<usize> {
     goals
         .iter()
         .filter(|g| {
@@ -205,18 +201,18 @@ pub fn reserved(game: &BattleView<'_, '_>, u: &Unit, goals: &[Objective]) -> Has
         .flat_map(|g| g.tiles.iter().map(|t| game.site(t)))
         .collect()
 }
-pub fn support_objective(game: &BattleView<'_, '_>, u: &Unit, g: &Objective) -> Objective {
+pub fn support_objective(game: &BattleView<'_, '_>, u: &Unit, g: &Target) -> Target {
     let mut result = g.clone();
     if crate::ai::policies::objectives::can_pursue(game, u, g) {
         return result;
     }
     let reserved = crate::ai::policies::objectives::reserved(game, u, std::slice::from_ref(g));
-    let mut seen = HashSet::default();
+    let mut seen = FxHashSet::default();
     result.tiles = g
         .tiles
         .iter()
         .flat_map(|t| game.board().adjacent[game.site(t)].iter().copied())
-        .filter(|&t| seen.insert(t) && !reserved.contains(&t) && game.cost(u.kind, t) != u16::MAX)
+        .filter(|&t| seen.insert(t) && !reserved.contains(&t) && game.step_cost(&u, t) != u16::MAX)
         .map(|t| game.board().ids[t].clone())
         .collect();
     result.weight *= 0.35;
@@ -225,9 +221,9 @@ pub fn support_objective(game: &BattleView<'_, '_>, u: &Unit, g: &Objective) -> 
 /// Identify friendly blockers on an explicitly assigned actor corridor.
 pub(in crate::ai) fn actor_lanes(
     game: &BattleView<'_, '_>,
-    goals: &[Objective],
-) -> HashMap<u32, HashSet<usize>> {
-    let mut lanes: HashMap<u32, HashSet<usize>> = HashMap::default();
+    goals: &[Target],
+) -> FxHashMap<u32, FxHashSet<usize>> {
+    let mut lanes: FxHashMap<u32, FxHashSet<usize>> = FxHashMap::default();
     for goal in goals.iter().filter(|g| actor_route(g)) {
         let Some(actor) = game
             .units()
@@ -242,7 +238,7 @@ pub(in crate::ai) fn actor_lanes(
             })
             .min_by_key(|u| {
                 let targets: Vec<_> = goal.tiles.iter().map(|t| game.site(t)).collect();
-                game.routes(u.kind, &targets)[u.tile]
+                game.routes(u, &targets)[u.tile]
             })
         else {
             continue;
@@ -256,13 +252,13 @@ pub(in crate::ai) fn actor_lanes(
         let available = if actor.moved {
             0
         } else {
-            game.rules().units[actor.kind].r#move as u16
+            game.movement_limit(&actor) as u16
         };
         if route[actor.tile] > available {
             let short = game.occupied_routes_with_penalty(actor, &targets, Some(0));
             let arrival_cost = targets
                 .iter()
-                .map(|&tile| game.cost(actor.kind, tile))
+                .map(|&tile| game.step_cost(&actor, tile))
                 .min()
                 .unwrap_or(0);
             if short[actor.tile] <= available.saturating_add(arrival_cost) {
@@ -294,7 +290,7 @@ pub(in crate::ai) fn actor_lanes(
                     let occupied = game
                         .at(tile)
                         .is_some_and(|u| u.id != actor.id && game.allied(actor, u));
-                    let entering = game.cost(actor.kind, tile).saturating_add(if occupied {
+                    let entering = game.step_cost(&actor, tile).saturating_add(if occupied {
                         penalty
                     } else {
                         0
@@ -302,7 +298,7 @@ pub(in crate::ai) fn actor_lanes(
                     route[tile].saturating_add(entering) <= route[current]
                 })
                 .collect();
-            next.order_by_key(|&tile| route[tile].saturating_add(game.cost(actor.kind, tile)));
+            next.order_by_key(|&tile| route[tile].saturating_add(game.step_cost(&actor, tile)));
             for tile in next {
                 parents[tile] = current;
                 pending.push_back(tile);
@@ -319,8 +315,8 @@ pub(in crate::ai) fn actor_lanes(
         path.reverse();
         let mut spent = 0;
         for &tile in path.iter().skip(1) {
-            spent += game.cost(actor.kind, tile) as usize;
-            if spent > game.rules().units[actor.kind].r#move {
+            spent += game.step_cost(&actor, tile) as usize;
+            if spent > game.movement_limit(&actor) {
                 break;
             }
             if let Some(blocker) = game
@@ -346,7 +342,7 @@ pub(in crate::ai) fn ordinary<'a>(
             && game.available_combatant(o)
             && !o.is_leader()
             && !o.role.is_some_and(Role::is_escort)
-            && game.rules().units[o.kind].healing == 0
+            && game.with_owned_assessment(&o, |caps| caps.meta_healing_score() as i32) == 0
     })
 }
 pub fn proximity(game: &BattleView<'_, '_>, faction: &str, tile: usize) -> u16 {
@@ -376,7 +372,7 @@ pub fn leader_may_advance(
         return true;
     }
     let escorts = crate::ai::policies::objectives::ordinary(game, u).filter(|o| {
-        o.hp as f64 >= game.rules().units[o.kind].hp as f64 / 2.0
+        o.hp as f64 >= game.unit_definition(o.kind).max_hp as f64 / 2.0
             && game.board().distance(tile, o.tile) <= 2
     });
     let (count, at_front) = escorts.fold((0, false), |(count, front), unit| {
@@ -393,8 +389,8 @@ pub fn leader_may_advance(
     count >= 2 && at_front
 }
 /// Whether an actor must be routed through current occupancy and allies must yield.
-pub(in crate::ai) fn actor_route(goal: &Objective) -> bool {
-    (goal.actor.is_some() || goal.family.is_some()) && goal.kind != ObjectiveKind::Defeat
+pub(in crate::ai) fn actor_route(goal: &Target) -> bool {
+    (goal.actor.is_some() || goal.family.is_some()) && goal.kind != TargetKind::Defeat
 }
 
 #[cfg(test)]
@@ -402,8 +398,8 @@ mod target_tests {
     use super::*;
     #[test]
     fn horizontal_spawn_reflections_preserve_tile_preferences() {
-        let rules = crate::data::Rules::load().unwrap();
-        let game = crate::logic::Game::new(&rules, "mirror");
+        let rules = crate::data::Catalogue::load().unwrap();
+        let game = crate::logic::BattleSession::new(&rules, "mirror");
         let view = BattleView::new(&game);
         let leader = |side| {
             view.units()
@@ -449,7 +445,7 @@ mod target_tests {
     fn repeated_target_normalization_preserves_stable_duty_ids() {
         let target = crate::ai::orders::target(
             "territory",
-            ObjectiveKind::Capture,
+            TargetKind::Capture,
             vec![Hex::new(0, 0), Hex::new(1, 0)],
             24.0,
         );

@@ -6,14 +6,14 @@ use hex_command_battle::PhaseForecasts;
 use rustc_hash::FxHashMap;
 
 #[derive(Default)]
-pub(in crate::ai) struct Workspace {
+pub(in crate::ai) struct EscortDefenseWorkspace {
     signature: Vec<(u32, usize, usize, i32, bool, bool)>,
     terrain: Vec<usize>,
     owners: Vec<Option<String>>,
-    fields: FxHashMap<u32, Field>,
+    fields: FxHashMap<u32, EscortDefenseField>,
     assignments: Vec<(UnitId, Vec<UnitId>)>,
 }
-struct Field {
+struct EscortDefenseField {
     positions: Vec<f64>,
     threats: FxHashMap<u32, i32>,
 }
@@ -21,7 +21,7 @@ fn pressure(board: &BattleView<'_, '_>, actor: &Unit, enemy: &Unit, blockers: Ti
     let reach = board.threat_reach_blocked(enemy, blockers);
     let coverage = Threats::coverage(board, enemy, &reach);
     board
-        .weapons(enemy)
+        .attack_reaches(enemy)
         .enumerate()
         .filter(|(weapon, _)| {
             coverage[*weapon].contains(actor.tile)
@@ -31,7 +31,7 @@ fn pressure(board: &BattleView<'_, '_>, actor: &Unit, enemy: &Unit, blockers: Ti
         .max()
         .unwrap_or(0)
 }
-impl Workspace {
+impl EscortDefenseWorkspace {
     pub(in crate::ai) fn prepare(
         &mut self,
         phases: PhaseForecasts<'_, '_>,
@@ -156,7 +156,7 @@ impl Workspace {
                 }
                 self.fields.insert(
                     unit.id,
-                    Field {
+                    EscortDefenseField {
                         positions: scores,
                         threats: threats.clone(),
                     },

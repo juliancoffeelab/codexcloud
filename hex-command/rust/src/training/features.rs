@@ -3,12 +3,13 @@ use crate::{
     ai::{context::BattleView, orders::*},
     data::*,
 };
-use hex_command_battle::RuntimeCommand as Command;
+use hex_command_battle::RuntimeCommand;
 use std::{collections::HashMap, rc::Rc};
 pub const LEGACY_FEATURES: usize = 172;
 pub const DUTY_FEATURES: usize = 219;
 pub const DIPLOMACY_FEATURES: usize = 227;
-pub const FEATURES: usize = LEGACY_FEATURES + super::duties::NAMES.len();
+pub const CAMPAIGN_FEATURES: usize = LEGACY_FEATURES + super::duties::NAMES.len();
+pub const FEATURES: usize = CAMPAIGN_FEATURES + super::visibility::NAMES.len();
 pub const LEGACY_FEATURE_NAMES: [&str; LEGACY_FEATURES] = [
     "end_turn",
     "move",
@@ -197,12 +198,17 @@ pub const FEATURE_NAMES: [&str; FEATURES] = {
         names[i + j] = super::duties::NAMES[j];
         j += 1;
     }
+    let mut k = 0;
+    while k < super::visibility::NAMES.len() {
+        names[CAMPAIGN_FEATURES + k] = super::visibility::NAMES[k];
+        k += 1;
+    }
     names
 };
 #[derive(Clone)]
 pub struct Choices {
     pub spatial: Option<super::spatial::Spatial>,
-    pub commands: Vec<Command>,
+    pub commands: Vec<RuntimeCommand>,
     pub features: Vec<[f32; FEATURES]>,
 }
 fn actor_matches(g: &BattleView<'_, '_>, actor: &Option<String>, unit: &Unit) -> bool {
@@ -211,7 +217,7 @@ fn actor_matches(g: &BattleView<'_, '_>, actor: &Option<String>, unit: &Unit) ->
         .is_none_or(|a| a == &format!("u{}", unit.id) || g.name(unit.character) == Some(a.as_str()))
 }
 pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices {
-    let mut commands = vec![Command::EndTurn];
+    let mut commands = vec![RuntimeCommand::EndTurn];
     let mut move_costs = vec![0.];
     for unit in game
         .units()
@@ -221,7 +227,7 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
         if !unit.moved {
             for &(tile, cost) in game.reachable(unit).iter() {
                 if tile != unit.tile {
-                    let c = Command::Move {
+                    let c = RuntimeCommand::Move {
                         unit: UnitId(unit.id),
                         tile: TileIndex(tile),
                     };
@@ -238,10 +244,10 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
                     if !orders.attack_allowed(game, unit, target, weapon, unit.tile) {
                         continue;
                     }
-                    let c = Command::Attack {
+                    let c = RuntimeCommand::Attack {
                         unit: UnitId(unit.id),
                         target: UnitId(target.id),
-                        weapon: game.weapon(unit, weapon).key(),
+                        weapon: game.weapon_key(unit, weapon),
                     };
                     if game.permits_runtime(&c) {
                         commands.push(c);
@@ -251,7 +257,7 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
             }
         }
         if let Some(kind) = orders.promotion(game, unit) {
-            commands.push(Command::Advance {
+            commands.push(RuntimeCommand::Advance {
                 unit: UnitId(unit.id),
                 kind: UnitKind(kind),
             });
@@ -275,7 +281,7 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
 fn encode(
     g: &BattleView<'_, '_>,
     orders: &TacticalOrders,
-    c: &Command,
+    c: &RuntimeCommand,
     move_cost: f32,
     extra: &Extra,
 ) -> [f32; FEATURES] {
@@ -287,17 +293,20 @@ fn encode(
     x[6] = enemies.len() as f32 / 10.;
     x[7] = g.gold_for_faction(g.observer_faction()) as f32 / 100.;
     x[31] = orders.targets.len() as f32 / 10.;
-    extra.duties.encode(g, orders, c, &mut x[LEGACY_FEATURES..]);
+    extra
+        .duties
+        .encode(g, orders, c, &mut x[LEGACY_FEATURES..CAMPAIGN_FEATURES]);
+    x[CAMPAIGN_FEATURES..].copy_from_slice(&g.visibility_action_features(c));
     let (id, tile, target, weapon) = match c {
-        Command::EndTurn => {
+        RuntimeCommand::EndTurn => {
             x[0] = 1.;
             return x;
         }
-        Command::Move { unit, tile } => {
+        RuntimeCommand::Move { unit, tile } => {
             x[1] = 1.;
             (unit.0, Some(tile.0), None, None)
         }
-        Command::Attack {
+        RuntimeCommand::Attack {
             unit,
             target,
             weapon,
@@ -305,22 +314,22 @@ fn encode(
             x[2] = 1.;
             (unit.0, None, Some(target.0), Some(*weapon))
         }
-        Command::Advance { unit, .. } => {
+        RuntimeCommand::Advance { unit, .. } => {
             x[3] = 1.;
             (unit.0, None, None, None)
         }
         _ => unreachable!(),
     };
     let u = g.unit(id).unwrap();
-    let r = &g.rules().units[u.kind];
+    let r = g.unit_definition(u.kind);
     let tile = tile.unwrap_or(u.tile);
-    x[8] = u.hp as f32 / r.hp.max(1) as f32;
+    x[8] = u.hp as f32 / r.max_hp.max(1) as f32;
     x[9] = u.hp as f32 / 30.;
     x[10] = u.is_leader() as u8 as f32;
     x[11] = u.moved as u8 as f32;
     x[12] = u.attack_spent as u8 as f32;
-    x[13] = r.cost as f32 / 30.;
-    x[14] = r.r#move as f32 / 10.;
+    x[13] = g.recruit_cost(u, u.kind) as f32 / 30.;
+    x[14] = g.movement_limit(u) as f32 / 10.;
     x[15] = orders.protects(id) as u8 as f32;
     let dist = |a, b| g.board().distance(a, b) as f32;
     let before = enemies
@@ -350,7 +359,7 @@ fn encode(
         .targets
         .iter()
         .filter(|o| {
-            actor_matches(g, &o.actor, u) && o.family.as_ref().is_none_or(|f| *f == r.family)
+            actor_matches(g, &o.actor, u) && o.family.as_ref().is_none_or(|f| *f == r.family())
         })
         .filter_map(|o| {
             o.tiles
@@ -380,16 +389,32 @@ fn encode(
         x[100..134].copy_from_slice(&extra.profiles[&enemy.id]);
     }
     let paths = &extra.paths[&id];
-    path_features(&paths.0, u.tile, tile, r.r#move, &mut x[154..158]);
-    path_features(&paths.1, u.tile, tile, r.r#move, &mut x[158..162]);
+    path_features(
+        &paths.0,
+        u.tile,
+        tile,
+        g.movement_limit(u),
+        &mut x[154..158],
+    );
+    path_features(
+        &paths.1,
+        u.tile,
+        tile,
+        g.movement_limit(u),
+        &mut x[158..162],
+    );
     x[162] = move_cost;
     if let Some(t) = target.and_then(|id| g.unit(id)) {
-        let w = g.weapons(u).position(|w| Some(w.key()) == weapon).unwrap();
+        let w = g
+            .weapon_index(u, weapon.expect("attack candidate has a weapon"))
+            .expect("candidate weapon belongs to actor");
         x[66..100].copy_from_slice(&extra.profiles[&t.id]);
         terrain_features(g, t, t.tile, &mut x[144..154]);
-        let attack = g.weapon(u, w);
-        weapon_features(attack, &mut x[163..171]);
-        x[171] = (attack.category == Category::Melee) as u8 as f32;
+        g.with_capabilities(u, u.tile, |caps| {
+            let attack = caps.attacks().nth(w).expect("attack index is valid");
+            weapon_features(caps, attack, &mut x[163..171]);
+            x[171] = f32::from(attack.category() == Category::Melee);
+        });
         let forecast = g.exchange(u, t, w, u.tile);
         x[26] = forecast.effective[0] as f32 / 30.;
         x[27] = forecast.damage[1] as f32 / 30.;
@@ -447,7 +472,7 @@ impl<'a> Extra<'a> {
                     actor_matches(g, &o.actor, u)
                         && o.family
                             .as_ref()
-                            .is_none_or(|f| *f == g.rules().units[u.kind].family)
+                            .is_none_or(|f| *f == g.unit_definition(u.kind).family())
                 })
                 .flat_map(|o| o.tiles.iter().map(move |t| (o, g.site(t))))
                 .filter(|(o, t)| match o.kind {
@@ -459,7 +484,7 @@ impl<'a> Extra<'a> {
                 .collect();
             goals.sort_unstable();
             goals.dedup();
-            paths.insert(u.id, (g.routes(u.kind, &goals), g.routes(u.kind, &enemies)));
+            paths.insert(u.id, (g.routes(u, &goals), g.routes(u, &enemies)));
         }
         Self {
             allies,
@@ -470,81 +495,104 @@ impl<'a> Extra<'a> {
         }
     }
 }
-fn weapon_features(w: &WeaponRules, x: &mut [f32]) {
-    x[0] = w.damage as f32 / 10.;
-    x[1] = w.count as f32 / 5.;
-    x[2] = w.range as f32 / 5.;
-    x[3] = w.spread as f32 / 10.;
-    x[4] = w.drain as f32 / 100.;
-    x[5 + w.damage_type.index()] = 1.;
+fn weapon_features(caps: &UnitCapabilities<'_>, attack: AttackHandle<'_>, x: &mut [f32]) {
+    let stats = caps.neural_pure_attack_features(attack);
+    x[0] = stats.mean_damage as f32 / 10.;
+    x[1] = f32::from(stats.strike_count) / 5.;
+    x[2] = f32::from(attack.range()) / 5.;
+    x[3] = stats.spread as f32 / 10.;
+    x[4] = f32::from(stats.drain_percent) / 100.;
+    x[5 + attack.damage_type().index()] = 1.;
 }
 pub(super) fn unit_features(g: &BattleView<'_, '_>, u: &Unit) -> [f32; 34] {
     let mut x = [0.; 34];
-    let r = &g.rules().units[u.kind];
-    x[0] = r.hp as f32 / 30.;
-    x[1] = r.cost as f32 / 30.;
-    x[2] = r.r#move as f32 / 10.;
-    x[3] = r.level as f32 / 5.;
-    x[4] = r
-        .experience_needed
-        .map_or(0., |n| u.experience.unwrap_or(0) as f32 / n.max(1) as f32);
-    x[5] = (r
-        .experience_needed
-        .is_some_and(|n| u.experience.unwrap_or(0) >= n)
-        && !r.advances_to.is_empty()) as u8 as f32;
-    x[6] = r.healing as f32 / 10.;
-    if let Some(aura) = g
-        .inventory(u)
-        .filter_map(|i| i.healing.as_ref())
-        .max_by_key(|a| (a.amount, a.radius))
-    {
-        x[7] = aura.amount as f32 / 10.;
-        x[8] = aura.radius as f32 / 10.;
-    }
-    x[9] = r.thorns as f32 / 10.;
-    x[10] = r.thorn_aura as f32 / 10.;
-    for (i, damage) in [DamageType::Blade, DamageType::Pierce, DamageType::Impact]
-        .into_iter()
-        .enumerate()
-    {
-        x[11 + i] = (r.damage_modifiers.get(damage)
-            + g.inventory(u)
-                .filter_map(|i| i.armor.as_ref())
-                .map(|a| a.get(damage))
-                .sum::<i32>()) as f32
-            / 10.;
-    }
-    for (i, category) in [Category::Melee, Category::Ranged].into_iter().enumerate() {
-        if let Some(w) = g
-            .weapons(u)
-            .filter(|w| w.category == category)
-            .max_by_key(|w| w.damage * i32::from(w.count))
+    let definition = g.unit_definition(u.kind);
+    x[0] = definition.max_hp as f32 / 30.;
+    x[1] = g.recruit_cost(u, u.kind) as f32 / 30.;
+    x[2] = g.movement_limit(u) as f32 / 10.;
+    x[3] = definition.level() as f32 / 5.;
+    let experience = u.experience.expect("resolved unit experience");
+    x[4] = if definition.max_xp == 0 {
+        0.
+    } else {
+        experience as f32 / definition.max_xp as f32
+    };
+    x[5] = f32::from(
+        definition.max_xp > 0
+            && experience >= definition.max_xp
+            && !definition.promotion_ids().is_empty(),
+    );
+    g.with_capabilities(u, u.tile, |caps| {
+        let profile = caps.neural_unit_features(
+            g.terrain_definition(u.tile),
+            Category::Melee,
+            DamageType::Blade,
+        );
+        x[6] = profile.owned_healing_bound as f32 / 10.;
+        x[7] = x[6];
+        let radius = caps
+            .effects()
+            .filter(|effect| matches!(effect.value(), EffectValue::Healing { power } if *power > 0))
+            .map(|effect| effect.scope().radius)
+            .max();
+        x[8] = match radius {
+            Some(radius) => f32::from(radius) / 10.,
+            None => 0.,
+        };
+        x[9] = profile.reflection_per_strike as f32 / 10.;
+        x[10] = profile.owned_thorn_aura_bound as f32 / 10.;
+        for (i, kind) in [DamageType::Blade, DamageType::Pierce, DamageType::Impact]
+            .into_iter()
+            .enumerate()
         {
-            weapon_features(w, &mut x[14 + i * 8..22 + i * 8]);
+            x[11 + i] = caps
+                .neural_unit_features(g.terrain_definition(u.tile), Category::Melee, kind)
+                .armour as f32
+                / 10.;
         }
-    }
-    x[30] = u.hp as f32 / r.hp.max(1) as f32;
-    x[31] = u.moved as u8 as f32;
-    x[32] = u.attack_spent as u8 as f32;
-    x[33] = u.is_leader() as u8 as f32;
+        for (i, category) in [Category::Melee, Category::Ranged].into_iter().enumerate() {
+            let attacks = caps.attacks();
+            if let Some(attack) = attacks
+                .into_iter()
+                .filter(|attack| attack.category() == category)
+                .max_by(|a, b| {
+                    let a = caps.neural_pure_attack_features(*a);
+                    let b = caps.neural_pure_attack_features(*b);
+                    (a.mean_damage * f64::from(a.strike_count))
+                        .total_cmp(&(b.mean_damage * f64::from(b.strike_count)))
+                })
+            {
+                weapon_features(caps, attack, &mut x[14 + i * 8..22 + i * 8]);
+            }
+        }
+    });
+    x[30] = u.hp as f32 / definition.max_hp.max(1) as f32;
+    x[31] = f32::from(u.moved);
+    x[32] = f32::from(u.attack_spent);
+    x[33] = f32::from(u.is_leader());
     x
 }
 fn terrain_features(g: &BattleView<'_, '_>, u: &Unit, tile: usize, x: &mut [f32]) {
-    let r = &g.rules().units[u.kind];
-    for (i, &v) in r.environment[g.terrain()[tile]]
-        .iter()
-        .flatten()
+    for (i, (category, damage)) in [Category::Melee, Category::Ranged]
+        .into_iter()
+        .flat_map(|c| {
+            [DamageType::Blade, DamageType::Pierce, DamageType::Impact].map(move |d| (c, d))
+        })
         .enumerate()
     {
-        x[i] = v as f32 / 10.;
+        x[i] = g.with_capabilities(u, tile, |caps| {
+            caps.neural_unit_features(g.terrain_definition(tile), category, damage)
+                .terrain
+        }) as f32
+            / 10.;
     }
-    let cost = g.cost(u.kind, tile);
+    let cost = g.step_cost(u, tile);
     x[6] = if cost == u16::MAX {
         -1.
     } else {
         cost as f32 / 10.
     };
-    x[7] = g.terrain_healing(tile) as f32 / 10.;
+    x[7] = g.terrain_healing_at(u, tile) as f32 / 10.;
     x[8] = g.is_keep(tile) as u8 as f32;
     x[9] = g.owns(tile, g.unit_faction(&u)) as u8 as f32;
 }
@@ -564,26 +612,50 @@ fn path_features(route: &[u16], from: usize, to: usize, movement: usize, x: &mut
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::logic::Game;
+    use crate::logic::BattleSession;
     #[test]
     fn observations_follow_current_stats_and_terrain_without_type_ids() {
-        let rules = Rules::load().unwrap();
-        let game = Game::new(&rules, "mirror");
+        let rules = Catalogue::load().unwrap();
+        let game = BattleSession::new(&rules, "mirror");
         let actor = game
             .units()
             .iter()
             .find(|u| u.phase == game.turn())
             .unwrap();
         let baseline = unit_features(&game.view(), actor);
-        let mut changed = rules.clone();
+        let mut changed = crate::catalogue_fixture::bundle();
         let kind = actor.kind;
-        changed.units[kind].hp += 7;
-        changed.units[kind].healing += 2;
-        changed.units[kind].damage_modifiers.blade -= 1;
+        let increased_healing = (baseline[6] * 10.).round() as i32 + 2;
+        crate::effect_fixture::healing_kind(
+            &mut changed,
+            kind,
+            Some((increased_healing, 1, false, HealingTargets::Allies)),
+        );
+        crate::catalogue_fixture::unit_kind(&mut changed, kind, |unit| {
+            let hp = unit["hp"].as_i64().unwrap();
+            unit["hp"] = serde_json::json!(hp + 7);
+            let blade = unit["damageModifiers"]["blade"].as_i64().unwrap();
+            unit["damageModifiers"]["blade"] = serde_json::json!(blade - 1);
+        });
         let tile = actor.tile;
-        let terrain = game.terrain()[tile];
-        changed.units[kind].environment[terrain][0][0] -= 2;
-        let altered = Game::from_state(&changed, game.state());
+        let terrain: serde_json::Value =
+            serde_json::from_str(&changed["game/terrain.json"]).unwrap();
+        let terrain_role = terrain
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|terrain| terrain["id"] == game.terrain_definition(tile).id().as_str())
+            .unwrap()["role"]
+            .as_str()
+            .unwrap()
+            .to_owned();
+        crate::catalogue_fixture::unit_kind(&mut changed, kind, |unit| {
+            let modifiers = unit["terrainModifiers"].as_object_mut().unwrap().entry(terrain_role).or_insert_with(|| serde_json::json!({"cost":0,"passable":null,"damageModifiers":{"melee":0,"ranged":0,"blade":0,"pierce":0,"impact":0}}));
+            let value = modifiers["damageModifiers"]["melee"].as_i64().unwrap();
+            modifiers["damageModifiers"]["melee"] = serde_json::json!(value - 2);
+        });
+        let altered_rules = crate::catalogue_fixture::frozen(&changed);
+        let altered = BattleSession::from_state(altered_rules, game.state());
         let altered_actor = altered.units().iter().find(|u| u.id == actor.id).unwrap();
         let after = unit_features(&altered.view(), altered_actor);
         assert_ne!(baseline[0], after[0]);
@@ -594,9 +666,12 @@ mod tests {
         terrain_features(&game.view(), actor, tile, &mut old_terrain);
         terrain_features(&altered.view(), altered_actor, tile, &mut new_terrain);
         assert_ne!(old_terrain[0], new_terrain[0]);
-        // Cosmetic identity does not enter the mechanical profile.
-        changed.units[kind].id = "renamed-for-observation-probe".into();
-        let renamed = Game::from_state(&changed, game.state());
+        // Cosmetic display metadata does not enter the mechanical profile.
+        crate::catalogue_fixture::unit_kind(&mut changed, kind, |unit| {
+            unit["name"] = serde_json::json!("Renamed observation probe")
+        });
+        let renamed_rules = crate::catalogue_fixture::frozen(&changed);
+        let renamed = BattleSession::from_state(renamed_rules, game.state());
         assert_eq!(
             after,
             unit_features(

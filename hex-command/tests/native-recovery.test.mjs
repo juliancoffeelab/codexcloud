@@ -61,7 +61,7 @@ test("Native entity lookups reject prototype names and derived queries stay empt
       assert.equal(Native.attack_details(view, id, actor.id, "missing-weapon"), undefined);
       assert.deepEqual(toArray(Native.promotion_options(view, id)), []);
       assert.deepEqual(toArray(Native.recruit_tiles(view, id, actor.type_)), []);
-      assert.equal(Native.movement_cost(view, id, id), Infinity);
+      assert.throws(() => Native.unit_details(view, id));
     }
   } finally {
     Native.dispose_factory(factory);

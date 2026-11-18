@@ -3,22 +3,53 @@
   "name": "Woodland",
   "terrainModifiers": {
     "forest": {
-      "cost": -1
+      "cost": -1,
+      "passable": null,
+      "damageModifiers": {
+        "melee": 0,
+        "ranged": 0,
+        "blade": 0,
+        "pierce": 0,
+        "impact": 0
+      }
     },
     "grove": {
-      "cost": -1
+      "cost": -1,
+      "passable": null,
+      "damageModifiers": {
+        "melee": 0,
+        "ranged": 0,
+        "blade": 0,
+        "pierce": 0,
+        "impact": 0
+      }
     },
     "marsh": {
       "cost": -1,
       "damageModifiers": {
         "melee": -1,
-        "ranged": -1
-      }
+        "ranged": -1,
+        "blade": 0,
+        "pierce": 0,
+        "impact": 0
+      },
+      "passable": null
     }
   },
   "damageModifiers": {
     "blade": 0,
     "pierce": 0,
     "impact": 0
-  }
+  },
+  "sight": {
+    "range": 0,
+    "unlimited": false,
+    "sightModifiers": {
+      "lit": 0,
+      "unlit": 0,
+      "darkness": 0
+    },
+    "penetrates": []
+  },
+  "abilities": []
 }

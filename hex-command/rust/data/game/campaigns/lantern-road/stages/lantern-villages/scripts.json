@@ -65,6 +65,33 @@
   ],
   "events": [
     {
+      "id": "company-survival",
+      "observer": null,
+      "priority": 2147483647,
+      "remembers": false,
+      "objective": null,
+      "when": {
+        "any": [
+          {
+            "not": {
+              "survives": {
+                "company": "player",
+                "allies": false,
+                "character": null,
+                "role": "leader",
+                "includeEvacuated": true
+              }
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The company cannot continue without its protected companions."
+        }
+      ]
+    },
+    {
       "id": "tollkeeper-waiting",
       "priority": 100,
       "when": {
@@ -74,7 +101,10 @@
         {
           "setFlag": "tollkeeper-waiting"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "objective": null
     },
     {
       "id": "tollkeeper-alerted",
@@ -85,13 +115,25 @@
           {
             "visibleUnits": {
               "faction": "toll-skeletons",
-              "character": "tollkeeper"
+              "character": "tollkeeper",
+              "role": null,
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
             "visibleUnits": {
               "faction": "toll-skeletons",
-              "aiGroup": "captive-guard"
+              "aiGroup": "captive-guard",
+              "character": null,
+              "role": null,
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "retreating": null
             }
           }
         ]
@@ -106,7 +148,9 @@
         {
           "setFlag": "tollkeeper-alerted"
         }
-      ]
+      ],
+      "remembers": true,
+      "objective": null
     },
     {
       "id": "prisoner-march",
@@ -123,7 +167,13 @@
               },
               "faction": "prisoners",
               "character": "villagers",
-              "through": true
+              "through": true,
+              "role": null,
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           }
         ]
@@ -143,10 +193,21 @@
               "location": "exit"
             },
             "faction": "prisoners",
-            "character": "villagers"
+            "character": "villagers",
+            "role": null,
+            "side": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": false
           }
         },
-        "playerMarker": null
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "optional": false,
+        "satisfiedWhen": null
       },
       "actions": [
         {
@@ -161,7 +222,9 @@
         {
           "defeat": "The captives were marched through the northern pass before the company could rescue them."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true
     },
     {
       "id": "deadline-0",
@@ -181,7 +244,11 @@
         {
           "defeat": "The Bellwarden's final toll seals the road. The company has run out of time."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "village-contact",
@@ -191,7 +258,16 @@
             "location": "shelter"
           },
           "radius": 1,
-          "side": "player"
+          "side": "player",
+          "target": null,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "through": true
         }
       },
       "actions": [
@@ -242,9 +318,14 @@
             "units": [
               {
                 "type": "warden",
-                "character": "sella"
+                "character": "sella",
+                "role": null,
+                "items": []
               }
-            ]
+            ],
+            "tile": null,
+            "radius": 2,
+            "aiGroup": null
           }
         },
         {
@@ -252,16 +333,20 @@
             "faction": "player",
             "units": [
               {
-                "unit": "swordsman"
+                "unit": "swordsman",
+                "cost": null
               },
               {
-                "unit": "spearman"
+                "unit": "spearman",
+                "cost": null
               },
               {
-                "unit": "archer"
+                "unit": "archer",
+                "cost": null
               },
               {
-                "unit": "scout"
+                "unit": "scout",
+                "cost": null
               }
             ]
           }
@@ -270,28 +355,38 @@
           "say": [
             {
               "portrait": "warden",
-              "text": "Easy. Living faces\u2014I\u2019d almost forgotten the sight. We kept the lamps dark so the dead on the road would pass us by.",
-              "character": "sella"
+              "text": "Easy. Living faces—I’d almost forgotten the sight. We kept the lamps dark so the dead on the road would pass us by.",
+              "character": "sella",
+              "speaker": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
               "text": "We came from the crossing. What happened here?",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             },
             {
               "portrait": "warden",
               "text": "A hooded figure commands the dead from the old pass fort. They call him the Tollkeeper. He had the roadside villages emptied. They've already marched one column east; the prisoners still at the fort will be next. Soon. We haven't the strength to fetch them.",
-              "character": "sella"
+              "character": "sella",
+              "speaker": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
-              "text": "Then we\u2019ll bring them here. Can you keep them safe?",
-              "character": "nera"
+              "text": "Then we’ll bring them here. Can you keep them safe?",
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             },
             {
               "portrait": "warden",
-              "text": "We can. I\u2019ll go with you. There are a few here who can take up arms; give us somewhere to muster.",
-              "character": "sella"
+              "text": "We can. I’ll go with you. There are a few here who can take up arms; give us somewhere to muster.",
+              "character": "sella",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -311,14 +406,31 @@
               "location": "shelter"
             },
             "radius": 1,
-            "side": "player"
+            "side": "player",
+            "target": null,
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": true
           }
         },
         "visibleWhen": {
           "always": true
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "optional": false,
+        "availableWhen": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "foothold-established",
@@ -356,8 +468,15 @@
         "visibleWhen": {
           "flag": "village-contact"
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "availableWhen": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "oren-lessons",
@@ -369,11 +488,26 @@
           {
             "proximity": {
               "target": {
-                "character": "oren"
+                "character": "oren",
+                "role": null,
+                "side": null,
+                "faction": null,
+                "unitType": null,
+                "unitTypes": [],
+                "aiGroup": null,
+                "retreating": null
               },
               "side": "player",
               "role": "leader",
-              "radius": 1
+              "radius": 1,
+              "tile": null,
+              "character": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null,
+              "through": true
             }
           }
         ]
@@ -384,7 +518,8 @@
             "faction": "player",
             "units": [
               {
-                "unit": "adept"
+                "unit": "adept",
+                "cost": null
               }
             ]
           }
@@ -393,25 +528,35 @@
           "say": [
             {
               "portrait": "adept",
-              "text": "That child by the hearth\u2014those marks on the slate aren\u2019t letters. Who taught you to draw them?",
-              "character": "oren"
+              "text": "That child by the hearth—those marks on the slate aren’t letters. Who taught you to draw them?",
+              "character": "oren",
+              "speaker": null,
+              "sound": null
             },
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "Nobody. They appear when I\u2019m trying to remember things."
+              "text": "Nobody. They appear when I’m trying to remember things.",
+              "character": null,
+              "sound": null
             },
             {
               "portrait": "adept",
-              "text": "A little training, then. We haven\u2019t an academy to hand, but this is better than leaving a gift untended. Stay with me; I\u2019ll show you how to keep it from burning your fingers.",
-              "character": "oren"
+              "text": "A little training, then. We haven’t an academy to hand, but this is better than leaving a gift untended. Stay with me; I’ll show you how to keep it from burning your fingers.",
+              "character": "oren",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
         {
           "setFlag": "oren-lessons"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "ferry-supplies",
@@ -429,15 +574,21 @@
           "say": [
             {
               "portrait": "swordsman",
-              "text": "The ferryman\u2019s purse will buy a few more hands. Let\u2019s make his coins count.",
-              "character": "nera"
+              "text": "The ferryman’s purse will buy a few more hands. Let’s make his coins count.",
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
         {
           "setFlag": "ferry-supplies"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "ferry-letter",
@@ -450,14 +601,20 @@
             {
               "portrait": "swordsman",
               "text": "He asked us to follow the people taken from the bank. This is their road.",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
         {
           "setFlag": "ferry-letter"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "prisoners-found",
@@ -471,10 +628,25 @@
             "proximity": {
               "target": {
                 "faction": "prisoners",
-                "character": "villagers"
+                "character": "villagers",
+                "role": null,
+                "side": null,
+                "unitType": null,
+                "unitTypes": [],
+                "aiGroup": null,
+                "retreating": null
               },
               "faction": "player",
-              "radius": 2
+              "radius": 2,
+              "tile": null,
+              "character": null,
+              "role": null,
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null,
+              "through": true
             }
           }
         ]
@@ -485,14 +657,19 @@
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "Help! Help us!"
+              "text": "Help! Help us!",
+              "character": null,
+              "sound": null
             }
           ]
         },
         {
           "setFlag": "prisoners-found"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "objective": null
     },
     {
       "id": "prisoners-found-guarded",
@@ -511,12 +688,25 @@
             "proximity": {
               "target": {
                 "faction": "prisoners",
-                "character": "villagers"
+                "character": "villagers",
+                "role": null,
+                "side": null,
+                "unitType": null,
+                "unitTypes": [],
+                "aiGroup": null,
+                "retreating": null
               },
               "faction": "toll-skeletons",
               "aiGroup": "captive-guard",
               "radius": 2,
-              "through": false
+              "through": false,
+              "tile": null,
+              "character": null,
+              "role": null,
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "retreating": null
             }
           }
         ]
@@ -527,24 +717,33 @@
             {
               "speaker": "Skeleton guard",
               "portrait": "skeleton",
-              "text": "Quiet."
+              "text": "Quiet.",
+              "character": null,
+              "sound": null
             },
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "Please\u2014before it\u2019s too late!"
+              "text": "Please—before it’s too late!",
+              "character": null,
+              "sound": null
             },
             {
               "speaker": "Skeleton guard",
               "portrait": "skeleton",
-              "text": "Silence. The Bell has no use for your tongue."
+              "text": "Silence. The Bell has no use for your tongue.",
+              "character": null,
+              "sound": null
             }
           ]
         },
         {
           "setFlag": "prisoners-found-guarded"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "objective": null
     },
     {
       "id": "prisoners-found-unguarded",
@@ -554,7 +753,13 @@
           {
             "hasUnits": {
               "side": "any",
-              "character": "villagers"
+              "character": "villagers",
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -572,25 +777,34 @@
           "say": [
             {
               "portrait": "swordsman",
-              "text": "Keep your heads down. We\u2019re getting you out.",
-              "character": "nera"
+              "text": "Keep your heads down. We’re getting you out.",
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             },
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "Please\u2014don\u2019t let them take us through the pass."
+              "text": "Please—don’t let them take us through the pass.",
+              "character": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
-              "text": "Stay together. We\u2019ll get you somewhere safe.",
-              "character": "nera"
+              "text": "Stay together. We’ll get you somewhere safe.",
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
         {
           "setFlag": "prisoners-found-unguarded"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "objective": null
     },
     {
       "id": "prisoners-freed",
@@ -604,10 +818,25 @@
             "proximity": {
               "target": {
                 "character": "villagers",
-                "faction": "prisoners"
+                "faction": "prisoners",
+                "role": null,
+                "side": null,
+                "unitType": null,
+                "unitTypes": [],
+                "aiGroup": null,
+                "retreating": null
               },
               "side": "player",
-              "radius": 1
+              "radius": 1,
+              "tile": null,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null,
+              "through": true
             }
           }
         ]
@@ -617,7 +846,13 @@
           "changeAllegiance": {
             "units": {
               "character": "villagers",
-              "faction": "prisoners"
+              "faction": "prisoners",
+              "role": null,
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             },
             "faction": "player"
           }
@@ -626,23 +861,31 @@
           "say": [
             {
               "portrait": "swordsman",
-              "text": "There\u2019s a village hidden in the western woods. Stay together. We\u2019ll take you there.",
-              "character": "nera"
+              "text": "There’s a village hidden in the western woods. Stay together. We’ll take you there.",
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             },
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "They took the others down the road. My brother, the children\u2014everyone who could still walk."
+              "text": "They took the others down the road. My brother, the children—everyone who could still walk.",
+              "character": null,
+              "sound": null
             },
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "We heard a bell somewhere ahead of the column. It kept ringing long after midnight."
+              "text": "We heard a bell somewhere ahead of the column. It kept ringing long after midnight.",
+              "character": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
               "text": "First we get you somewhere safe.",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -662,17 +905,39 @@
         "intent": {
           "approach": {
             "target": {
-              "character": "villagers"
+              "character": "villagers",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             },
             "side": "player",
-            "radius": 1
+            "radius": 1,
+            "tile": null,
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": true
           }
         },
         "availableWhen": {
           "flag": "village-contact"
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "optional": false,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true
     },
     {
       "id": "road-urgency",
@@ -688,20 +953,28 @@
                 {
                   "portrait": "adept",
                   "text": "A bell, and living prisoners. It sounds like a binding ritual. Get these people to shelter, then we must reach that bell before it claims the others.",
-                  "character": "oren"
+                  "character": "oren",
+                  "speaker": null,
+                  "sound": null
                 }
               ],
               "alternative": [
                 {
                   "portrait": "swordsman",
                   "text": "I don't like this. Taking people alive, driving them towards that bell... Get these people to shelter. Then we follow. Whatever's waiting down that road, I won't leave the others to it.",
-                  "character": "nera"
+                  "character": "nera",
+                  "speaker": null,
+                  "sound": null
                 }
               ]
             }
           ]
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "tollkeeper-provoked",
@@ -710,7 +983,13 @@
           {
             "hasUnits": {
               "side": "enemy",
-              "character": "tollkeeper"
+              "character": "tollkeeper",
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -724,7 +1003,16 @@
                     "location": "tollkeeper-keep"
                   },
                   "radius": 3,
-                  "side": "player"
+                  "side": "player",
+                  "target": null,
+                  "character": null,
+                  "role": null,
+                  "faction": null,
+                  "unitType": null,
+                  "unitTypes": [],
+                  "aiGroup": null,
+                  "retreating": null,
+                  "through": true
                 }
               }
             ]
@@ -736,15 +1024,21 @@
           "say": [
             {
               "portrait": "necromancer",
-              "text": "Living soldiers on my road? You\u2019ll pay for every step. Come closer\u2014I\u2019ll take the toll in bones.",
-              "character": "tollkeeper"
+              "text": "Living soldiers on my road? You’ll pay for every step. Come closer—I’ll take the toll in bones.",
+              "character": "tollkeeper",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
         {
           "setFlag": "tollkeeper-provoked"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "swamp-sighting",
@@ -759,7 +1053,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -771,7 +1072,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -783,7 +1091,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -795,7 +1110,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -807,7 +1129,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -819,7 +1148,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -831,7 +1167,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -843,7 +1186,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -855,7 +1205,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -867,7 +1224,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -879,7 +1243,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -891,7 +1262,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -903,7 +1281,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -915,7 +1300,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -927,7 +1319,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -939,7 +1338,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -951,7 +1357,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -963,7 +1376,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -975,7 +1395,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -987,7 +1414,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -999,7 +1433,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1011,7 +1452,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1023,7 +1471,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1035,7 +1490,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1047,7 +1509,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1059,7 +1528,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1071,7 +1547,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1083,7 +1566,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1095,7 +1585,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1107,7 +1604,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1119,7 +1623,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1131,7 +1642,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1143,7 +1661,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1155,7 +1680,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1167,7 +1699,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1179,7 +1718,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1191,7 +1737,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1203,7 +1756,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1215,7 +1775,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1227,7 +1794,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1239,7 +1813,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1251,7 +1832,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1263,7 +1851,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1275,7 +1870,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1287,7 +1889,14 @@
                 }
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           }
         ]
@@ -1298,19 +1907,27 @@
             {
               "portrait": "scout",
               "text": "I heard something moving in the reeds.",
-              "character": "ivo"
+              "character": "ivo",
+              "speaker": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
               "text": "Back onto firm ground. Let it come out where we can see it.",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
         {
           "setFlag": "swamp-sighting"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "oren-swamp",
@@ -1322,7 +1939,13 @@
           {
             "hasUnits": {
               "side": "player",
-              "character": "oren"
+              "character": "oren",
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           }
         ]
@@ -1332,25 +1955,35 @@
           "say": [
             {
               "portrait": "adept",
-              "text": "That smell. Something\u2019s wrong here, beyond the bodies. Edrin used to gather his medicines in this mire.",
-              "character": "oren"
+              "text": "That smell. Something’s wrong here, beyond the bodies. Edrin used to gather his medicines in this mire.",
+              "character": "oren",
+              "speaker": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
               "text": "A friend of yours?",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             },
             {
               "portrait": "adept",
               "text": "An old healer. A better one than most of my tutors. He had a house along this bank. I hope he had the sense to leave.",
-              "character": "oren"
+              "character": "oren",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
         {
           "setFlag": "oren-swamp"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "village-safe",
@@ -1363,7 +1996,13 @@
               },
               "side": "player",
               "through": false,
-              "character": "villagers"
+              "character": "villagers",
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1375,7 +2014,13 @@
         {
           "deleteUnit": {
             "side": "player",
-            "role": "captive"
+            "role": "captive",
+            "character": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
         {
@@ -1383,27 +2028,37 @@
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "Inside. There\u2019s broth, and room enough if we move the tables."
+              "text": "Inside. There’s broth, and room enough if we move the tables.",
+              "character": null,
+              "sound": null
             },
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "Thank you. The others are still out there. Please don\u2019t leave them to the dead."
+              "text": "Thank you. The others are still out there. Please don’t leave them to the dead.",
+              "character": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
               "text": "Send a runner back to the ferry. Tell them the dead are taking people east. We need reinforcements, and a watch along this road.",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             },
             {
               "speaker": "Villager",
               "portrait": "captives",
-              "text": "They\u2019ll have your message. I\u2019ll keep these people safe."
+              "text": "They’ll have your message. I’ll keep these people safe.",
+              "character": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
               "text": "The villagers are safe. We can make for the pass now.",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -1424,7 +2079,14 @@
               "location": "shelter"
             },
             "character": "villagers",
-            "side": "player"
+            "side": "player",
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": false
           }
         },
         "visibleWhen": {
@@ -1433,15 +2095,27 @@
         "availableWhen": {
           "flag": "prisoners-freed"
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "tollkeeper-fallen",
       "when": {
         "noUnits": {
           "faction": "toll-skeletons",
-          "character": "tollkeeper"
+          "character": "tollkeeper",
+          "role": null,
+          "side": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
         }
       },
       "actions": [
@@ -1459,19 +2133,25 @@
                 {
                   "character": "oren",
                   "portrait": "adept",
-                  "text": "They won\u2019t last long without their master."
+                  "text": "They won’t last long without their master.",
+                  "speaker": null,
+                  "sound": null
                 },
                 {
                   "character": "nera",
                   "portrait": "swordsman",
-                  "text": "Neither will we if we stay here. Keep moving."
+                  "text": "Neither will we if we stay here. Keep moving.",
+                  "speaker": null,
+                  "sound": null
                 }
               ],
               "alternative": [
                 {
                   "character": "nera",
                   "portrait": "swordsman",
-                  "text": "Their master is down. Keep moving\u2014we\u2019re running out of time."
+                  "text": "Their master is down. Keep moving—we’re running out of time.",
+                  "speaker": null,
+                  "sound": null
                 }
               ]
             }
@@ -1491,7 +2171,13 @@
         "intent": {
           "defeat": {
             "faction": "toll-skeletons",
-            "character": "tollkeeper"
+            "character": "tollkeeper",
+            "role": null,
+            "side": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
         "visibleWhen": {
@@ -1500,8 +2186,14 @@
         "availableWhen": {
           "flag": "village-contact"
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "eastern-departure",
@@ -1514,7 +2206,13 @@
               },
               "side": "player",
               "character": "nera",
-              "through": true
+              "through": true,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1540,7 +2238,14 @@
               "location": "exit"
             },
             "side": "player",
-            "character": "nera"
+            "character": "nera",
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": false
           }
         },
         "visibleWhen": {
@@ -1549,8 +2254,14 @@
         "availableWhen": {
           "flag": "village-safe"
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "oren-healer-fallen",
@@ -1561,13 +2272,25 @@
               {
                 "noUnits": {
                   "side": "enemy",
-                  "character": "edrin"
+                  "character": "edrin",
+                  "role": null,
+                  "faction": null,
+                  "unitType": null,
+                  "unitTypes": [],
+                  "aiGroup": null,
+                  "retreating": null
                 }
               },
               {
                 "hasUnits": {
                   "side": "player",
-                  "character": "oren"
+                  "character": "oren",
+                  "role": null,
+                  "faction": null,
+                  "unitType": null,
+                  "unitTypes": [],
+                  "aiGroup": null,
+                  "retreating": null
                 }
               }
             ]
@@ -1583,24 +2306,34 @@
             {
               "portrait": "adept",
               "text": "Edrin. Oh, my friend. So this is what they made of you.",
-              "character": "oren"
+              "character": "oren",
+              "speaker": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
-              "text": "Oren\u2026",
-              "character": "nera"
+              "text": "Oren…",
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             },
             {
               "portrait": "adept",
-              "text": "He spent his life keeping people out of graves. Let\u2019s leave him in peace, and see that those villagers get home.",
-              "character": "oren"
+              "text": "He spent his life keeping people out of graves. Let’s leave him in peace, and see that those villagers get home.",
+              "character": "oren",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
         {
           "setFlag": "oren-healer-fallen"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "mire-balm-found",
@@ -1609,7 +2342,13 @@
           {
             "noUnits": {
               "side": "enemy",
-              "character": "edrin"
+              "character": "edrin",
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -1622,21 +2361,34 @@
           "say": [
             {
               "portrait": "swordsman",
-              "text": "There\u2019s a stoppered bottle in that bag. Balm, by the smell. Keep it close; we may need it before this road is done.",
-              "character": "nera"
+              "text": "There’s a stoppered bottle in that bag. Balm, by the smell. Keep it close; we may need it before this road is done.",
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
         {
           "setFlag": "mire-balm-found"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "road-cleared",
       "when": {
         "noUnits": {
-          "side": "enemy"
+          "side": "enemy",
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
         }
       },
       "actions": [
@@ -1646,7 +2398,11 @@
         {
           "setFlag": "road-cleared"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "first-bell-toll",
@@ -1660,7 +2416,8 @@
               "speaker": "The company",
               "portrait": "captives",
               "text": "A deep bell rolls out of the valley. For a moment, the sound seems to come from beneath the ground.",
-              "sound": "bell"
+              "sound": "bell",
+              "character": null
             }
           ]
         },
@@ -1673,7 +2430,11 @@
         {
           "setFlag": "bell-tolled-before-arrival"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "road-bell-warning",
@@ -1689,26 +2450,44 @@
                 {
                   "portrait": "adept",
                   "text": "The ritual has started. Hurry! We have to reach the valley before the final toll.",
-                  "character": "oren"
+                  "character": "oren",
+                  "speaker": null,
+                  "sound": null
                 }
               ],
               "alternative": [
                 {
                   "portrait": "swordsman",
-                  "text": "They\u2019ve started. We cannot lose another moment. Hurry!",
-                  "character": "nera"
+                  "text": "They’ve started. We cannot lose another moment. Hurry!",
+                  "character": "nera",
+                  "speaker": null,
+                  "sound": null
                 }
               ]
             }
           ]
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "captives-lost",
       "when": {
         "killed": {
-          "character": "villagers"
+          "character": "villagers",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "initiatedBy": null,
+          "killedBy": null,
+          "defending": null
         }
       },
       "actions": [
@@ -1724,7 +2503,11 @@
         {
           "defeat": "The captives were killed before reaching safety."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "chapter-victory",
@@ -1745,7 +2528,14 @@
         {
           "victory": "Mission complete. The company can rest and regroup."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     }
-  ]
+  ],
+  "requiredCompanions": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false
 }

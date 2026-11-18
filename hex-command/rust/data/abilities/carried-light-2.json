@@ -1,0 +1,22 @@
+{
+  "id": "carried-light-2",
+  "name": "Carried light",
+  "description": "Illuminates nearby tiles.",
+  "effects": [
+    {
+      "scope": {
+        "radius": 0,
+        "includeSelf": true,
+        "targets": "allies"
+      },
+      "stacking": {
+        "group": "light",
+        "combine": "union"
+      },
+      "effect": {
+        "kind": "light",
+        "radius": 2
+      }
+    }
+  ]
+}

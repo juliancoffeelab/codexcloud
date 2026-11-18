@@ -1,14 +1,21 @@
-use hex_command_core::data::Hex;
+use hex_command_core::data;
+#[path = "../testing/catalogue.rs"]
+mod catalogue_fixture;
+#[path = "../testing/effects.rs"]
+mod effect_fixture;
 use hex_command_core::{
     ai::Policy,
-    data::{ArenaForces, ArenaScenario, ArenaVariant, Rules, TurnPhase},
+    data::{ArenaForces, ArenaScenario, ArenaVariant, Catalogue, TurnPhase},
     simulation::{ArenaConfig, Armies, run_arena},
 };
 
 #[test]
 fn authored_arena_uses_its_board_keeps_and_capture_targets() {
-    let mut rules = Rules::load().unwrap();
-    let source = rules.maps[&("mirror".into(), 1)].clone();
+    let mut bundle = catalogue_fixture::bundle();
+    let source = {
+        let rules = catalogue_fixture::frozen(&bundle);
+        hex_command_core::logic::BattleSession::new(rules, "mirror").state()
+    };
     let targets = vec![
         source
             .tiles
@@ -17,16 +24,24 @@ fn authored_arena_uses_its_board_keeps_and_capture_targets() {
             .unwrap()
             .hex(),
     ];
-    rules.arena.scenarios.push(ArenaScenario {
+    let scenario = ArenaScenario {
         id: "authored-fixture".into(),
         hold_turns: 4,
         variants: vec![ArenaVariant {
             map: source.map_id.clone(),
+            map_revision: 1,
             forces: ArenaForces::Selected { budget: 36 },
         }],
         territory: targets.clone(),
+    };
+    catalogue_fixture::edit(&mut bundle, "simulation/arena.json", |arena| {
+        arena["scenarios"]
+            .as_array_mut()
+            .unwrap()
+            .push(serde_json::to_value(scenario).unwrap())
     });
-    let army = rules.rosters[0].id.clone();
+    let rules = catalogue_fixture::frozen(&bundle);
+    let army = rules.meta().simulation.rosters[0].id.clone();
     let result = run_arena(
         &rules,
         ArenaConfig {
@@ -68,58 +83,42 @@ fn authored_arena_uses_its_board_keeps_and_capture_targets() {
 #[cfg(feature = "wasm")]
 #[test]
 fn non_human_scenarios_use_the_shared_map_registry() {
-    let mut bundle = hex_command_core::data::catalog::embedded_bundle();
+    let mut bundle = catalogue_fixture::bundle();
     let path = "game/scenario/mirror-v1/scenario.json";
     let mut descriptor: serde_json::Value = serde_json::from_str(&bundle[path]).unwrap();
     descriptor["tags"] = serde_json::json!(["simulation"]);
     bundle.insert(path.into(), descriptor.to_string());
-    let rules = Rules::from_json_bundle(&bundle).unwrap();
-    assert!(rules.maps.keys().any(|(id, _)| id == "mirror"));
-    assert!(
-        !rules
-            .map_definitions
-            .iter()
-            .find(|map| map.id == "mirror")
-            .unwrap()
-            .tags
-            .contains(&"human".to_owned())
-    );
-}
-
-#[cfg(feature = "wasm")]
-#[test]
-fn invalid_authored_layout_and_capture_references_are_rejected() {
-    for (map, targets, message) in [
-        ("missing-layout", vec![Hex::new(0, 0)], "unknown arena map"),
-        ("mirror", vec![Hex::new(999, 999)], "outside its map"),
-    ] {
-        let mut bundle = hex_command_core::data::catalog::embedded_bundle();
-        let mut arena: serde_json::Value =
-            serde_json::from_str(&bundle["simulation/arena.json"]).unwrap();
-        arena["scenarios"][0]["variants"][0]["map"] = serde_json::json!(map);
-        arena["scenarios"][0]["territory"] = serde_json::json!(targets);
-        bundle.insert("simulation/arena.json".into(), arena.to_string());
-        let error = Rules::from_json_bundle(&bundle).unwrap_err();
-        assert_eq!(error.path, "simulation/arena.json");
-        assert!(error.message.contains(message), "{}", error.message);
-    }
+    let rules = Catalogue::from_json_bundle(&bundle).unwrap();
+    assert!(rules.maps().any(|map| map.id() == "mirror"));
+    assert!(!rules.map("mirror", 1).tags().contains(&"human".to_owned()));
 }
 
 #[test]
 fn authored_combat_preserves_starting_forces_and_faction_gold() {
-    let mut rules = Rules::load().unwrap();
-    let source = rules.maps[&("mirror".into(), 1)].clone();
+    let mut bundle = catalogue_fixture::bundle();
+    let source = {
+        let rules = catalogue_fixture::frozen(&bundle);
+        hex_command_core::logic::BattleSession::new(rules, "mirror").state()
+    };
     let point = source.tiles[0].hex();
-    rules.arena.scenarios.push(ArenaScenario {
+    let scenario = ArenaScenario {
         id: "authored-forces".into(),
         hold_turns: 4,
         variants: vec![ArenaVariant {
             map: source.map_id.clone(),
+            map_revision: 1,
             forces: ArenaForces::Scenario,
         }],
         territory: vec![point],
+    };
+    catalogue_fixture::edit(&mut bundle, "simulation/arena.json", |arena| {
+        arena["scenarios"]
+            .as_array_mut()
+            .unwrap()
+            .push(serde_json::to_value(scenario).unwrap())
     });
-    let army = rules.rosters[0].id.clone();
+    let rules = catalogue_fixture::frozen(&bundle);
+    let army = rules.meta().simulation.rosters[0].id.clone();
     let result = run_arena(
         &rules,
         ArenaConfig {

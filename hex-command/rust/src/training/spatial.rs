@@ -4,14 +4,16 @@ use crate::{
     ai::{context::BattleView, orders::*},
     data::*,
 };
-use hex_command_battle::RuntimeCommand as Command;
+use hex_command_battle::RuntimeCommand;
 use serde::{Deserialize, Serialize};
 
-pub const SPATIAL_SCHEMA: u32 = 9;
+pub const SPATIAL_SCHEMA: u32 = 11;
 pub const DUTY_CHANNELS: usize = 62;
 pub const EMBEDDING: usize = 16;
 pub const LEGACY_CHANNELS: usize = 53;
-pub const CHANNELS: usize = LEGACY_CHANNELS + super::duties::CHANNEL_NAMES.len();
+pub const CAMPAIGN_CHANNELS: usize = LEGACY_CHANNELS + super::duties::CHANNEL_NAMES.len();
+pub const CHANNELS: usize = CAMPAIGN_CHANNELS + super::visibility::CHANNEL_NAMES.len();
+pub const ACTOR_CHANNELS: [usize; 14] = [68, 69, 70, 76, 78, 38, 39, 40, 44, 45, 46, 47, 48, 49];
 // (row, column) in axial coordinates q = col - floor(row/2), r = row.
 pub const KERNEL: [(i32, i32); 7] = [(0, 0), (0, 1), (1, 0), (1, -1), (0, -1), (-1, 0), (-1, 1)];
 pub fn channel_names() -> Vec<String> {
@@ -46,27 +48,42 @@ pub fn channel_names() -> Vec<String> {
         .map(String::from),
     );
     names.extend(super::duties::CHANNEL_NAMES.into_iter().map(String::from));
+    names.extend(
+        super::visibility::CHANNEL_NAMES
+            .into_iter()
+            .map(String::from),
+    );
     names
 }
 #[derive(Clone)]
-pub struct Board {
+pub struct ActorContext {
+    pub actor_site: usize,
+    pub values: Vec<f32>, // Actor-relative planes, in ACTOR_CHANNELS order.
+}
+#[derive(Clone)]
+pub struct SpatialBoard {
     pub height: usize,
     pub width: usize,
+    pub contexts: Vec<ActorContext>,
     pub values: Vec<f32>, // CHW; channel zero is the valid-tile mask.
 }
 #[derive(Clone)]
 pub struct Spatial {
-    pub board: Board,
+    pub board: SpatialBoard,
     pub indices: Vec<[i64; 3]>, // actor, destination, target; -1 means absent.
 }
-pub fn observe(g: &BattleView<'_, '_>, orders: &TacticalOrders, commands: &[Command]) -> Spatial {
+pub fn observe(
+    g: &BattleView<'_, '_>,
+    orders: &TacticalOrders,
+    commands: &[RuntimeCommand],
+) -> Spatial {
     let duties = super::duties::Duties::new(g, orders);
     observe_with_duties(g, orders, commands, &duties)
 }
 pub(super) fn observe_with_duties(
     g: &BattleView<'_, '_>,
     orders: &TacticalOrders,
-    commands: &[Command],
+    commands: &[RuntimeCommand],
     duties: &super::duties::Duties,
 ) -> Spatial {
     let axial: Vec<_> = g
@@ -103,25 +120,36 @@ pub(super) fn observe_with_duties(
                 values[(4 + i) * cells + site] = v;
             }
         }
-        let (cost, passable, modifiers) = g.base_terrain_properties(tile);
-        let terrain_values = [
-            cost as f32 / 10.,
-            passable as u8 as f32,
-            g.terrain_healing(tile) as f32 / 10.,
-            g.is_keep(tile) as u8 as f32,
-            g.owns(tile, g.observer_faction()) as u8 as f32,
-            g.owners()[tile].as_deref().is_some_and(|owner| {
-                g.faction_relation(g.observer_faction(), owner) == Relation::Hostile
-            }) as u8 as f32,
-            modifiers[0] as f32 / 10.,
-            modifiers[1] as f32 / 10.,
-            modifiers[2] as f32 / 10.,
-            modifiers[3] as f32 / 10.,
-            modifiers[4] as f32 / 10.,
-            modifiers[5] as f32 / 10.,
-        ];
-        for (i, v) in terrain_values.into_iter().enumerate() {
-            values[(38 + i) * cells + site] = v;
+        let at = g.at(tile);
+        let cover = at.map(|u| g.concealment_at(u, tile)).unwrap_or_default();
+        let sight = at.and_then(|u| g.sight_range(u));
+        for (channel, value) in [
+            (65, f32::from(g.terrain_remembered(tile))),
+            (66, f32::from(g.tile_in_sight(tile))),
+            (67, f32::from(g.possible_enemy_hide_place(tile))),
+            (71, f32::from(g.tile_insight_of_enemy(tile))),
+            (72, sight.map_or(0., |r| r as f32 / 20.)),
+            (73, f32::from(at.is_some() && sight.is_none())),
+            (74, f32::from(cover.available)),
+            (75, cover.reveal_distance as f32 / 20.),
+            (
+                77,
+                at.map_or(0., |u| g.friendly_detector_count(u) as f32 / 20.),
+            ),
+        ] {
+            values[channel * cells + site] = value;
+        }
+        for (channel, value) in [
+            (41, g.is_keep(tile)),
+            (42, g.owns(tile, g.observer_faction())),
+            (
+                43,
+                g.owners()[tile].as_deref().is_some_and(|owner| {
+                    g.faction_relation(g.observer_faction(), owner) == Relation::Hostile
+                }),
+            ),
+        ] {
+            values[channel * cells + site] = f32::from(value);
         }
     }
     for goal in &orders.targets {
@@ -138,15 +166,67 @@ pub(super) fn observe_with_duties(
         }
     }
     duties.paint(g, orders, &sites, &mut values, cells);
+    let mut contexts = Vec::new();
+    let mut actors = std::collections::BTreeSet::new();
+    for c in commands {
+        let id = match c {
+            RuntimeCommand::Move { unit, .. }
+            | RuntimeCommand::Attack { unit, .. }
+            | RuntimeCommand::Advance { unit, .. } => unit.0,
+            _ => continue,
+        };
+        if !actors.insert(id) {
+            continue;
+        }
+        let actor = g.unit(id).unwrap();
+        let mut planes = vec![0.; ACTOR_CHANNELS.len() * cells];
+        for (tile, &site) in sites.iter().enumerate() {
+            let cost = g.step_cost(actor, tile);
+            planes[5 * cells + site] = if cost == u16::MAX {
+                -1.
+            } else {
+                f32::from(cost) / 10.
+            };
+            planes[6 * cells + site] = f32::from(cost != u16::MAX);
+            planes[7 * cells + site] = g.terrain_healing_at(actor, tile) as f32 / 10.;
+            g.with_capabilities(actor, tile, |caps| {
+                for (index, (category, kind)) in [Category::Melee, Category::Ranged]
+                    .into_iter()
+                    .flat_map(|category| {
+                        [DamageType::Blade, DamageType::Pierce, DamageType::Impact]
+                            .map(move |kind| (category, kind))
+                    })
+                    .enumerate()
+                {
+                    planes[(8 + index) * cells + site] = caps
+                        .neural_unit_features(g.terrain_definition(tile), category, kind)
+                        .terrain as f32
+                        / 10.;
+                }
+            });
+            let cover = g.concealment_at(actor, tile);
+            planes[site] = f32::from(cover.available);
+            planes[cells + site] = cover.reveal_distance as f32 / 20.;
+            planes[2 * cells + site] = f32::from(g.can_observe_terrain(actor, tile));
+            if let Some(unit) = g.at(tile) {
+                planes[3 * cells + site] = f32::from(g.directly_detects(actor, unit));
+                planes[4 * cells + site] = f32::from(g.directly_detects(unit, actor));
+            }
+        }
+        contexts.push(ActorContext {
+            actor_site: sites[actor.tile],
+            values: planes,
+        });
+    }
     let indices = commands
         .iter()
         .map(|command| {
             let (id, dest, target) = match command {
-                Command::Move { unit, tile } => (unit.0, Some(tile.0), None),
-                Command::Attack { unit, target, .. } => {
+                RuntimeCommand::Move { unit, tile } => (unit.0, Some(tile.0), None),
+                RuntimeCommand::Attack { unit, target, .. } => {
                     (unit.0, None, g.unit(target.0).map(|u| u.tile))
                 }
-                Command::Advance { unit, .. } => (unit.0, None, None),
+                RuntimeCommand::Advance { unit, .. } => (unit.0, None, None),
                 _ => return [-1; 3],
             };
             let tile = g.unit(id).unwrap().tile;
@@ -158,15 +238,16 @@ pub(super) fn observe_with_duties(
         })
         .collect();
     Spatial {
-        board: Board {
+        board: SpatialBoard {
             height,
             width,
             values,
+            contexts,
         },
         indices,
     }
 }
-impl Board {
+impl SpatialBoard {
     pub fn validate(&self) -> Result<(), String> {
         let cells = self
             .height
@@ -193,10 +274,48 @@ impl Board {
                 return Err("nonzero board padding".into());
             }
         }
+        let mut actors = std::collections::BTreeSet::new();
+        for context in &self.contexts {
+            if context.actor_site >= cells
+                || self.values[context.actor_site] != 1.
+                || !actors.insert(context.actor_site)
+                || context.values.len() != ACTOR_CHANNELS.len() * cells
+                || context.values.iter().any(|v| !v.is_finite())
+                || context.values.chunks_exact(cells).any(|plane| {
+                    plane
+                        .iter()
+                        .zip(&self.values[..cells])
+                        .any(|(&v, &m)| m == 0. && v != 0.)
+                })
+            {
+                return Err("invalid actor spatial context".into());
+            }
+        }
         Ok(())
+    }
+    pub fn with_context(&self, context: &ActorContext) -> Self {
+        let cells = self.height * self.width;
+        let mut board = Self {
+            height: self.height,
+            width: self.width,
+            values: self.values.clone(),
+            contexts: vec![],
+        };
+        for (plane, &channel) in ACTOR_CHANNELS.iter().enumerate() {
+            board.values[channel * cells..(channel + 1) * cells]
+                .copy_from_slice(&context.values[plane * cells..(plane + 1) * cells]);
+        }
+        board
     }
     pub fn validate_indices(&self, indices: &[[i64; 3]]) -> Result<(), String> {
         let cells = self.height * self.width;
+        if !self.contexts.is_empty()
+            && indices
+                .iter()
+                .any(|ix| ix[0] >= 0 && !self.contexts.iter().any(|c| c.actor_site as i64 == ix[0]))
+        {
+            return Err("missing actor spatial context".into());
+        }
         if indices
             .iter()
             .flatten()
@@ -215,11 +334,11 @@ pub struct Convolution {
     pub bias: Vec<f32>,
 }
 #[derive(Clone, Deserialize, Serialize)]
-pub struct Encoder {
+pub struct SpatialEncoder {
     pub channel_names: Vec<String>,
     pub convolutions: Vec<Convolution>,
 }
-impl Encoder {
+impl SpatialEncoder {
     pub fn validate(&self) -> Result<(), String> {
         if self.channel_names != channel_names() || self.convolutions.len() != 2 {
             return Err("spatial encoder schema mismatch".into());
@@ -238,7 +357,7 @@ impl Encoder {
         }
         Ok(())
     }
-    pub fn encode(&self, board: &Board) -> Vec<f32> {
+    pub fn encode(&self, board: &SpatialBoard) -> Vec<f32> {
         let cells = board.height * board.width;
         let sites: Vec<_> = (0..cells).filter(|&i| board.values[i] == 1.).collect();
         let neighbors: Vec<[Option<usize>; 7]> = sites
@@ -278,10 +397,40 @@ impl Encoder {
     }
     pub fn inputs(
         &self,
-        board: &Board,
+        board: &SpatialBoard,
         indices: &[[i64; 3]],
         features: &[[f32; FEATURES]],
     ) -> Vec<Vec<f32>> {
+        if !board.contexts.is_empty() {
+            let mut inputs = vec![Vec::new(); features.len()];
+            for actor in
+                std::iter::once(-1).chain(board.contexts.iter().map(|c| c.actor_site as i64))
+            {
+                let selected: Vec<_> = indices
+                    .iter()
+                    .enumerate()
+                    .filter(|(_, ix)| ix[0] == actor)
+                    .map(|(i, _)| i)
+                    .collect();
+                if selected.is_empty() {
+                    continue;
+                }
+                let context = board.contexts.iter().find(|c| c.actor_site as i64 == actor);
+                let plain =
+                    context
+                        .map(|c| board.with_context(c))
+                        .unwrap_or_else(|| SpatialBoard {
+                            contexts: vec![],
+                            ..board.clone()
+                        });
+                let ix: Vec<_> = selected.iter().map(|&i| indices[i]).collect();
+                let x: Vec<_> = selected.iter().map(|&i| features[i]).collect();
+                for (i, row) in selected.into_iter().zip(self.inputs(&plain, &ix, &x)) {
+                    inputs[i] = row;
+                }
+            }
+            return inputs;
+        }
         let embedding = self.encode(board);
         let cells = board.height * board.width;
         let count = board.values[..cells].iter().sum::<f32>();
@@ -315,8 +464,8 @@ mod tests {
     use super::*;
     #[test]
     fn axial_kernel_matches_engine_adjacency_and_candidate_tiles() {
-        let rules = Rules::load().unwrap();
-        let game = crate::logic::Game::new(&rules, "mirror");
+        let rules = Catalogue::load().unwrap();
+        let game = crate::logic::BattleSession::new(&rules, "mirror");
         let view = game.view();
         let commands = super::super::candidates(&view, &TacticalOrders::default()).commands;
         let spatial = observe(&view, &TacticalOrders::default(), &commands);

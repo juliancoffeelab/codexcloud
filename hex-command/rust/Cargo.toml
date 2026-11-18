@@ -14,11 +14,17 @@ crate-type = ["rlib", "cdylib"]
 [[bin]]
 name = "hex-command-sim"
 path = "src/main.rs"
+required-features = ["simulation"]
 
 [features]
 # Include native learned inference and observation code in ordinary builds.
 default = ["training"]
 training = ["dep:gemm", "dep:pulp"]
+simulation = [
+    "hex-command-catalog/simulation", "hex-command-battle/simulation",
+    "dep:arrow-array", "dep:arrow-buffer", "dep:arrow-schema", "dep:arrow-ipc",
+    "dep:flate2", "dep:mimalloc", "dep:clap",
+]
 runtime-catalog = ["hex-command-catalog/runtime-catalog", "hex-command-battle/runtime-catalog"]
 wasm = ["dep:ocamljsify", "dep:ocamljs_bindgen", "hex-command-catalog/wasm", "hex-command-battle/wasm"]
 
@@ -35,16 +41,15 @@ sha2 = "0.10"
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 gemm = { version = "0.19", default-features = false, features = ["std"], optional = true }
 pulp = { version = "0.22", default-features = false, features = ["std", "x86-v3", "x86-v4"], optional = true }
-arrow-array = "57"
-arrow-buffer = "57"
-arrow-schema = "57"
-arrow-ipc = "57"
-flate2 = "1"
-mimalloc = { version = "0.1", default-features = false }
-clap = { version = "4.5", features = ["derive"] }
+arrow-array = { version = "57", optional = true }
+arrow-buffer = { version = "57", optional = true }
+arrow-schema = { version = "57", optional = true }
+arrow-ipc = { version = "57", optional = true }
+flate2 = { version = "1", optional = true }
+mimalloc = { version = "0.1", default-features = false, optional = true }
+clap = { version = "4.5", features = ["derive"], optional = true }
 
 [build-dependencies]
-hex-command-catalog={path="catalog",features=["bake"]}
 sha2 = "0.10"
 
 [profile.release]
@@ -81,3 +86,7 @@ panic = "abort"
 # Dependencies change rarely; keep their runtime cost low without optimizing edits.
 [profile.wasm-dev.package."*"]
 opt-level = 1
+
+[[test]]
+name = "authored_arena"
+required-features = ["simulation"]

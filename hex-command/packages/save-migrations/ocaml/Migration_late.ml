@@ -704,7 +704,8 @@ let v36 (value : V36.t) : V37.t =
 
 (* Undo patches are deliberately opaque data in the wire contract. Each patched
    full state is decoded as its historical version before the typed conversion. *)
-let convert_state_and_undo ~encode_old ~decode_old ~encode_new convert current undo =
+let convert_state_and_undo_with_codecs ~encode_change ~decode_change ~encode_old ~decode_old
+    ~encode_new convert current undo =
   let previous = ref (encode_old current) in
   let converted = ref (convert current) in
   let state = !converted in
@@ -714,17 +715,12 @@ let convert_state_and_undo ~encode_old ~decode_old ~encode_new convert current u
         Array.to_list steps |> List.rev
         |> List.map (fun (step : save34_undo_member1_item) ->
             Array.iter
-              (fun change ->
-                previous :=
-                  Migration_undo.apply !previous
-                    (Historical_codec.encode_save34_undo_member1_item_changes_item change)
-                    0)
+              (fun change -> previous := Migration_undo.apply !previous (encode_change change) 0)
               step.changes;
             let next = convert (decode_old !previous) in
             let changes =
               Migration_undo.changes (encode_new !converted) (encode_new next) []
-              |> List.map Historical_codec.read_save34_undo_member1_item_changes_item
-              |> Array.of_list
+              |> List.map decode_change |> Array.of_list
             in
             converted := next;
             { step with changes })
@@ -732,6 +728,12 @@ let convert_state_and_undo ~encode_old ~decode_old ~encode_new convert current u
       undo
   in
   (state, undo)
+
+let convert_state_and_undo ~encode_old ~decode_old ~encode_new convert current undo =
+  convert_state_and_undo_with_codecs
+    ~encode_change:Historical_codec.encode_save34_undo_member1_item_changes_item
+    ~decode_change:Historical_codec.read_save34_undo_member1_item_changes_item ~encode_old
+    ~decode_old ~encode_new convert current undo
 
 let state37 (old : V37.state) : V38.state =
   let names =

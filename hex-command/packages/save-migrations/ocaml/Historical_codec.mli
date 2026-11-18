@@ -3375,6 +3375,930 @@ val read_history5_entries : Js.Json.t -> history5_entries
 val encode_history5_entries : history5_entries -> Js.Json.t
 val read_history5 : Js.Json.t -> history5
 val encode_history5 : history5 -> Js.Json.t
+val read_save50_member0_checkpoint_state : Js.Json.t -> save50_member0_checkpoint_state
+val encode_save50_member0_checkpoint_state : save50_member0_checkpoint_state -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item :
+  Js.Json.t -> save50_member0_checkpoint_state_factions_item
+
+val encode_save50_member0_checkpoint_state_factions_item :
+  save50_member0_checkpoint_state_factions_item -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_controller :
+  Js.Json.t -> save50_member0_checkpoint_state_factions_item_controller
+
+val encode_save50_member0_checkpoint_state_factions_item_controller :
+  save50_member0_checkpoint_state_factions_item_controller -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_controller_member2_policy :
+  Js.Json.t -> save50_member0_checkpoint_state_factions_item_controller_member2_policy
+
+val encode_save50_member0_checkpoint_state_factions_item_controller_member2_policy :
+  save50_member0_checkpoint_state_factions_item_controller_member2_policy -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_controller_member2 :
+  Js.Json.t -> save50_member0_checkpoint_state_factions_item_controller_member2
+
+val encode_save50_member0_checkpoint_state_factions_item_controller_member2 :
+  save50_member0_checkpoint_state_factions_item_controller_member2 -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_recruits_member1_item :
+  Js.Json.t -> save50_member0_checkpoint_state_factions_item_recruits_member1_item
+
+val encode_save50_member0_checkpoint_state_factions_item_recruits_member1_item :
+  save50_member0_checkpoint_state_factions_item_recruits_member1_item -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_recruits_member1 :
+  Js.Json.t -> save50_member0_checkpoint_state_factions_item_recruits_member1
+
+val encode_save50_member0_checkpoint_state_factions_item_recruits_member1 :
+  save50_member0_checkpoint_state_factions_item_recruits_member1 -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_recruits :
+  Js.Json.t -> save50_member0_checkpoint_state_factions_item_recruits
+
+val encode_save50_member0_checkpoint_state_factions_item_recruits :
+  save50_member0_checkpoint_state_factions_item_recruits -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_transfer_member1 :
+  Js.Json.t -> save50_member0_checkpoint_state_factions_item_transfer_member1
+
+val encode_save50_member0_checkpoint_state_factions_item_transfer_member1 :
+  save50_member0_checkpoint_state_factions_item_transfer_member1 -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_transfer_member1_when_ :
+  Js.Json.t -> save50_member0_checkpoint_state_factions_item_transfer_member1_when_
+
+val encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when_ :
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when_ -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition :
+  Js.Json.t -> save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+
+val encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition :
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile :
+  Js.Json.t ->
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+
+val encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile :
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile ->
+  Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0 :
+  Js.Json.t ->
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0
+
+val encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0 :
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0 ->
+  Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1 :
+  Js.Json.t ->
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1
+
+val encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1 :
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1 ->
+  Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2 :
+  Js.Json.t ->
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2
+
+val encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2 :
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2 ->
+  Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3 :
+  Js.Json.t ->
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3
+
+val encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3 :
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3 ->
+  Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4 :
+  Js.Json.t ->
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4
+
+val encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4 :
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4 ->
+  Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions :
+  Js.Json.t ->
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+
+val encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions :
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions ->
+  Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9 :
+  Js.Json.t ->
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9
+
+val encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9 :
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9 ->
+  Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10 :
+  Js.Json.t ->
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10
+
+val encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10 :
+  save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10 ->
+  Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions_item_transfer :
+  Js.Json.t -> save50_member0_checkpoint_state_factions_item_transfer
+
+val encode_save50_member0_checkpoint_state_factions_item_transfer :
+  save50_member0_checkpoint_state_factions_item_transfer -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_factions :
+  Js.Json.t -> save50_member0_checkpoint_state_factions
+
+val encode_save50_member0_checkpoint_state_factions :
+  save50_member0_checkpoint_state_factions -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_ground_items_item :
+  Js.Json.t -> save50_member0_checkpoint_state_ground_items_item
+
+val encode_save50_member0_checkpoint_state_ground_items_item :
+  save50_member0_checkpoint_state_ground_items_item -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_ground_items_item_item :
+  Js.Json.t -> save50_member0_checkpoint_state_ground_items_item_item
+
+val encode_save50_member0_checkpoint_state_ground_items_item_item :
+  save50_member0_checkpoint_state_ground_items_item_item -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_ground_items_item_item_perception_member1 :
+  Js.Json.t -> save50_member0_checkpoint_state_ground_items_item_item_perception_member1
+
+val encode_save50_member0_checkpoint_state_ground_items_item_item_perception_member1 :
+  save50_member0_checkpoint_state_ground_items_item_item_perception_member1 -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_tiles_item_perception_concealment_item :
+  Js.Json.t -> save50_member0_checkpoint_state_tiles_item_perception_concealment_item
+
+val encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item :
+  save50_member0_checkpoint_state_tiles_item_perception_concealment_item -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires :
+  Js.Json.t -> save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires
+
+val encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires :
+  save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_tiles_item_perception_illumination :
+  Js.Json.t -> save50_member0_checkpoint_state_tiles_item_perception_illumination
+
+val encode_save50_member0_checkpoint_state_tiles_item_perception_illumination :
+  save50_member0_checkpoint_state_tiles_item_perception_illumination -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1 :
+  Js.Json.t ->
+  save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1
+
+val encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1 :
+  save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1 ->
+  Js.Json.t
+
+val read_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination :
+  Js.Json.t ->
+  save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination
+
+val encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination :
+  save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination ->
+  Js.Json.t
+
+val read_save50_member0_checkpoint_state_tiles_item_perception_concealment :
+  Js.Json.t -> save50_member0_checkpoint_state_tiles_item_perception_concealment
+
+val encode_save50_member0_checkpoint_state_tiles_item_perception_concealment :
+  save50_member0_checkpoint_state_tiles_item_perception_concealment -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_ground_items_item_item_perception :
+  Js.Json.t -> save50_member0_checkpoint_state_ground_items_item_item_perception
+
+val encode_save50_member0_checkpoint_state_ground_items_item_item_perception :
+  save50_member0_checkpoint_state_ground_items_item_item_perception -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_ground_items_item_item_armor :
+  Js.Json.t -> save50_member0_checkpoint_state_ground_items_item_item_armor
+
+val encode_save50_member0_checkpoint_state_ground_items_item_item_armor :
+  save50_member0_checkpoint_state_ground_items_item_item_armor -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_ground_items_item_item_healing_member1 :
+  Js.Json.t -> save50_member0_checkpoint_state_ground_items_item_item_healing_member1
+
+val encode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1 :
+  save50_member0_checkpoint_state_ground_items_item_item_healing_member1 -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets :
+  Js.Json.t -> save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets
+
+val encode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets :
+  save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets -> Js.Json.t
+
+val read_literal_own_faction : Js.Json.t -> literal_own_faction
+val encode_literal_own_faction : literal_own_faction -> Js.Json.t
+val read_literal_allies : Js.Json.t -> literal_allies
+val encode_literal_allies : literal_allies -> Js.Json.t
+val read_literal_enemies : Js.Json.t -> literal_enemies
+val encode_literal_enemies : literal_enemies -> Js.Json.t
+val read_literal_everyone : Js.Json.t -> literal_everyone
+val encode_literal_everyone : literal_everyone -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_ground_items_item_item_healing :
+  Js.Json.t -> save50_member0_checkpoint_state_ground_items_item_item_healing
+
+val encode_save50_member0_checkpoint_state_ground_items_item_item_healing :
+  save50_member0_checkpoint_state_ground_items_item_item_healing -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_ground_items :
+  Js.Json.t -> save50_member0_checkpoint_state_ground_items
+
+val encode_save50_member0_checkpoint_state_ground_items :
+  save50_member0_checkpoint_state_ground_items -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_armies :
+  Js.Json.t -> save50_member0_checkpoint_state_armies
+
+val encode_save50_member0_checkpoint_state_armies :
+  save50_member0_checkpoint_state_armies -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_tiles_item :
+  Js.Json.t -> save50_member0_checkpoint_state_tiles_item
+
+val encode_save50_member0_checkpoint_state_tiles_item :
+  save50_member0_checkpoint_state_tiles_item -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_tiles_item_connections :
+  Js.Json.t -> save50_member0_checkpoint_state_tiles_item_connections
+
+val encode_save50_member0_checkpoint_state_tiles_item_connections :
+  save50_member0_checkpoint_state_tiles_item_connections -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_tiles_item_perception :
+  Js.Json.t -> save50_member0_checkpoint_state_tiles_item_perception
+
+val encode_save50_member0_checkpoint_state_tiles_item_perception :
+  save50_member0_checkpoint_state_tiles_item_perception -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_tiles_item_light_member1 :
+  Js.Json.t -> save50_member0_checkpoint_state_tiles_item_light_member1
+
+val encode_save50_member0_checkpoint_state_tiles_item_light_member1 :
+  save50_member0_checkpoint_state_tiles_item_light_member1 -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_tiles_item_light_member1_color :
+  Js.Json.t -> save50_member0_checkpoint_state_tiles_item_light_member1_color
+
+val encode_save50_member0_checkpoint_state_tiles_item_light_member1_color :
+  save50_member0_checkpoint_state_tiles_item_light_member1_color -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_units_item_retreating :
+  Js.Json.t -> save50_member0_checkpoint_state_units_item_retreating
+
+val encode_save50_member0_checkpoint_state_units_item_retreating :
+  save50_member0_checkpoint_state_units_item_retreating -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_tiles_item_light_member1_when_ :
+  Js.Json.t -> save50_member0_checkpoint_state_tiles_item_light_member1_when_
+
+val encode_save50_member0_checkpoint_state_tiles_item_light_member1_when_ :
+  save50_member0_checkpoint_state_tiles_item_light_member1_when_ -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_tiles_item_light :
+  Js.Json.t -> save50_member0_checkpoint_state_tiles_item_light
+
+val encode_save50_member0_checkpoint_state_tiles_item_light :
+  save50_member0_checkpoint_state_tiles_item_light -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_tiles : Js.Json.t -> save50_member0_checkpoint_state_tiles
+
+val encode_save50_member0_checkpoint_state_tiles :
+  save50_member0_checkpoint_state_tiles -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_units_item :
+  Js.Json.t -> save50_member0_checkpoint_state_units_item
+
+val encode_save50_member0_checkpoint_state_units_item :
+  save50_member0_checkpoint_state_units_item -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_units_item_perception_effects_item :
+  Js.Json.t -> save50_member0_checkpoint_state_units_item_perception_effects_item
+
+val encode_save50_member0_checkpoint_state_units_item_perception_effects_item :
+  save50_member0_checkpoint_state_units_item_perception_effects_item -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_units_item_perception_effects :
+  Js.Json.t -> save50_member0_checkpoint_state_units_item_perception_effects
+
+val encode_save50_member0_checkpoint_state_units_item_perception_effects :
+  save50_member0_checkpoint_state_units_item_perception_effects -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_units_item_items :
+  Js.Json.t -> save50_member0_checkpoint_state_units_item_items
+
+val encode_save50_member0_checkpoint_state_units_item_items :
+  save50_member0_checkpoint_state_units_item_items -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_units : Js.Json.t -> save50_member0_checkpoint_state_units
+
+val encode_save50_member0_checkpoint_state_units :
+  save50_member0_checkpoint_state_units -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1 :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1
+
+val encode_save50_member0_checkpoint_state_campaign_member1 :
+  save50_member0_checkpoint_state_campaign_member1 -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_scripts_member1 :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_scripts_member1
+
+val encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1 :
+  save50_member0_checkpoint_state_campaign_member1_scripts_member1 -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+
+val encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment :
+  save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+
+val encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item :
+  save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+
+val encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks :
+  save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_scripts :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_scripts
+
+val encode_save50_member0_checkpoint_state_campaign_member1_scripts :
+  save50_member0_checkpoint_state_campaign_member1_scripts -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_evacuated_item :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_evacuated_item
+
+val encode_save50_member0_checkpoint_state_campaign_member1_evacuated_item :
+  save50_member0_checkpoint_state_campaign_member1_evacuated_item -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_evacuated :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_evacuated
+
+val encode_save50_member0_checkpoint_state_campaign_member1_evacuated :
+  save50_member0_checkpoint_state_campaign_member1_evacuated -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_veterans_member1_item :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_veterans_member1_item
+
+val encode_save50_member0_checkpoint_state_campaign_member1_veterans_member1_item :
+  save50_member0_checkpoint_state_campaign_member1_veterans_member1_item -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_veterans_member1 :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_veterans_member1
+
+val encode_save50_member0_checkpoint_state_campaign_member1_veterans_member1 :
+  save50_member0_checkpoint_state_campaign_member1_veterans_member1 -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_veterans :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_veterans
+
+val encode_save50_member0_checkpoint_state_campaign_member1_veterans :
+  save50_member0_checkpoint_state_campaign_member1_veterans -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_fallen_companions :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_fallen_companions
+
+val encode_save50_member0_checkpoint_state_campaign_member1_fallen_companions :
+  save50_member0_checkpoint_state_campaign_member1_fallen_companions -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_dialogue_item :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_dialogue_item
+
+val encode_save50_member0_checkpoint_state_campaign_member1_dialogue_item :
+  save50_member0_checkpoint_state_campaign_member1_dialogue_item -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_dialogue :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_dialogue
+
+val encode_save50_member0_checkpoint_state_campaign_member1_dialogue :
+  save50_member0_checkpoint_state_campaign_member1_dialogue -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_refuge :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_refuge
+
+val encode_save50_member0_checkpoint_state_campaign_member1_refuge :
+  save50_member0_checkpoint_state_campaign_member1_refuge -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_vigil :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_vigil
+
+val encode_save50_member0_checkpoint_state_campaign_member1_vigil :
+  save50_member0_checkpoint_state_campaign_member1_vigil -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign_member1_holds :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign_member1_holds
+
+val encode_save50_member0_checkpoint_state_campaign_member1_holds :
+  save50_member0_checkpoint_state_campaign_member1_holds -> Js.Json.t
+
+val read_save50_member0_checkpoint_state_campaign :
+  Js.Json.t -> save50_member0_checkpoint_state_campaign
+
+val encode_save50_member0_checkpoint_state_campaign :
+  save50_member0_checkpoint_state_campaign -> Js.Json.t
+
+val read_save50 : Js.Json.t -> save50
+val encode_save50 : save50 -> Js.Json.t
+val read_save50_member0 : Js.Json.t -> save50_member0
+val encode_save50_member0 : save50_member0 -> Js.Json.t
+val read_literal_50 : Js.Json.t -> literal_50
+val encode_literal_50 : literal_50 -> Js.Json.t
+val read_save50_member0_checkpoint : Js.Json.t -> save50_member0_checkpoint
+val encode_save50_member0_checkpoint : save50_member0_checkpoint -> Js.Json.t
+val read_save50_member1 : Js.Json.t -> save50_member1
+val encode_save50_member1 : save50_member1 -> Js.Json.t
+val read_save51_member0_checkpoint_state : Js.Json.t -> save51_member0_checkpoint_state
+val encode_save51_member0_checkpoint_state : save51_member0_checkpoint_state -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_map_modifiers :
+  Js.Json.t -> save51_member0_checkpoint_state_map_modifiers
+
+val encode_save51_member0_checkpoint_state_map_modifiers :
+  save51_member0_checkpoint_state_map_modifiers -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_map_modifiers_sight :
+  Js.Json.t -> save51_member0_checkpoint_state_map_modifiers_sight
+
+val encode_save51_member0_checkpoint_state_map_modifiers_sight :
+  save51_member0_checkpoint_state_map_modifiers_sight -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers :
+  Js.Json.t -> save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers
+
+val encode_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers :
+  save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value :
+  Js.Json.t -> save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value
+
+val encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value :
+  save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers :
+  Js.Json.t ->
+  save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers
+
+val encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers :
+  save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers ->
+  Js.Json.t
+
+val read_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers :
+  Js.Json.t -> save51_member0_checkpoint_state_map_modifiers_terrain_modifiers
+
+val encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers :
+  save51_member0_checkpoint_state_map_modifiers_terrain_modifiers -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_lighting :
+  Js.Json.t -> save51_member0_checkpoint_state_lighting
+
+val encode_save51_member0_checkpoint_state_lighting :
+  save51_member0_checkpoint_state_lighting -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_lighting_time :
+  Js.Json.t -> save51_member0_checkpoint_state_lighting_time
+
+val encode_save51_member0_checkpoint_state_lighting_time :
+  save51_member0_checkpoint_state_lighting_time -> Js.Json.t
+
+val read_literal_day : Js.Json.t -> literal_day
+val encode_literal_day : literal_day -> Js.Json.t
+val read_literal_night : Js.Json.t -> literal_night
+val encode_literal_night : literal_night -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_vision_groups_item :
+  Js.Json.t -> save51_member0_checkpoint_state_vision_groups_item
+
+val encode_save51_member0_checkpoint_state_vision_groups_item :
+  save51_member0_checkpoint_state_vision_groups_item -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_vision_groups_item_sight :
+  Js.Json.t -> save51_member0_checkpoint_state_vision_groups_item_sight
+
+val encode_save51_member0_checkpoint_state_vision_groups_item_sight :
+  save51_member0_checkpoint_state_vision_groups_item_sight -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_vision_groups_item_sight_range :
+  Js.Json.t -> save51_member0_checkpoint_state_vision_groups_item_sight_range
+
+val encode_save51_member0_checkpoint_state_vision_groups_item_sight_range :
+  save51_member0_checkpoint_state_vision_groups_item_sight_range -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_vision_groups :
+  Js.Json.t -> save51_member0_checkpoint_state_vision_groups
+
+val encode_save51_member0_checkpoint_state_vision_groups :
+  save51_member0_checkpoint_state_vision_groups -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_ground_items_item :
+  Js.Json.t -> save51_member0_checkpoint_state_ground_items_item
+
+val encode_save51_member0_checkpoint_state_ground_items_item :
+  save51_member0_checkpoint_state_ground_items_item -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_ground_items_item_item :
+  Js.Json.t -> save51_member0_checkpoint_state_ground_items_item_item
+
+val encode_save51_member0_checkpoint_state_ground_items_item_item :
+  save51_member0_checkpoint_state_ground_items_item_item -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_effects_item :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_effects_item
+
+val encode_save51_member0_checkpoint_state_tiles_item_effects_item :
+  save51_member0_checkpoint_state_tiles_item_effects_item -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_effects_item_scope :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_effects_item_scope
+
+val encode_save51_member0_checkpoint_state_tiles_item_effects_item_scope :
+  save51_member0_checkpoint_state_tiles_item_effects_item_scope -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_effects_item_stacking :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_effects_item_stacking
+
+val encode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking :
+  save51_member0_checkpoint_state_tiles_item_effects_item_stacking -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine
+
+val encode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine :
+  save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine -> Js.Json.t
+
+val read_literal_add : Js.Json.t -> literal_add
+val encode_literal_add : literal_add -> Js.Json.t
+val read_literal_max : Js.Json.t -> literal_max
+val encode_literal_max : literal_max -> Js.Json.t
+val read_literal_union : Js.Json.t -> literal_union
+val encode_literal_union : literal_union -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_effects_item_effect_ :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_effects_item_effect_
+
+val encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect_ :
+  save51_member0_checkpoint_state_tiles_item_effects_item_effect_ -> Js.Json.t
+
+val read_literal_healing : Js.Json.t -> literal_healing
+val encode_literal_healing : literal_healing -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0 :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0
+
+val encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0 :
+  save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0 -> Js.Json.t
+
+val read_literal_thorns : Js.Json.t -> literal_thorns
+val encode_literal_thorns : literal_thorns -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1 :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1
+
+val encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1 :
+  save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1 -> Js.Json.t
+
+val read_literal_sight : Js.Json.t -> literal_sight
+val encode_literal_sight : literal_sight -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2 :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2
+
+val encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2 :
+  save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2 -> Js.Json.t
+
+val read_literal_concealment : Js.Json.t -> literal_concealment
+val encode_literal_concealment : literal_concealment -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3 :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3
+
+val encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3 :
+  save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3 -> Js.Json.t
+
+val read_literal_light : Js.Json.t -> literal_light
+val encode_literal_light : literal_light -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4 :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4
+
+val encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4 :
+  save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4 -> Js.Json.t
+
+val read_literal_stat_modifiers : Js.Json.t -> literal_stat_modifiers
+val encode_literal_stat_modifiers : literal_stat_modifiers -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5 :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5
+
+val encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5 :
+  save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5 -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_effects :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_effects
+
+val encode_save51_member0_checkpoint_state_tiles_item_effects :
+  save51_member0_checkpoint_state_tiles_item_effects -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_ground_items :
+  Js.Json.t -> save51_member0_checkpoint_state_ground_items
+
+val encode_save51_member0_checkpoint_state_ground_items :
+  save51_member0_checkpoint_state_ground_items -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item
+
+val encode_save51_member0_checkpoint_state_tiles_item :
+  save51_member0_checkpoint_state_tiles_item -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_perception :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_perception
+
+val encode_save51_member0_checkpoint_state_tiles_item_perception :
+  save51_member0_checkpoint_state_tiles_item_perception -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_perception_illumination :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_perception_illumination
+
+val encode_save51_member0_checkpoint_state_tiles_item_perception_illumination :
+  save51_member0_checkpoint_state_tiles_item_perception_illumination -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_perception_sight_member1 :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_perception_sight_member1
+
+val encode_save51_member0_checkpoint_state_tiles_item_perception_sight_member1 :
+  save51_member0_checkpoint_state_tiles_item_perception_sight_member1 -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles_item_perception_sight :
+  Js.Json.t -> save51_member0_checkpoint_state_tiles_item_perception_sight
+
+val encode_save51_member0_checkpoint_state_tiles_item_perception_sight :
+  save51_member0_checkpoint_state_tiles_item_perception_sight -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_tiles : Js.Json.t -> save51_member0_checkpoint_state_tiles
+
+val encode_save51_member0_checkpoint_state_tiles :
+  save51_member0_checkpoint_state_tiles -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_units_item :
+  Js.Json.t -> save51_member0_checkpoint_state_units_item
+
+val encode_save51_member0_checkpoint_state_units_item :
+  save51_member0_checkpoint_state_units_item -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_units_item_perception_effects_item :
+  Js.Json.t -> save51_member0_checkpoint_state_units_item_perception_effects_item
+
+val encode_save51_member0_checkpoint_state_units_item_perception_effects_item :
+  save51_member0_checkpoint_state_units_item_perception_effects_item -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_units_item_perception_effects :
+  Js.Json.t -> save51_member0_checkpoint_state_units_item_perception_effects
+
+val encode_save51_member0_checkpoint_state_units_item_perception_effects :
+  save51_member0_checkpoint_state_units_item_perception_effects -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_units_item_items :
+  Js.Json.t -> save51_member0_checkpoint_state_units_item_items
+
+val encode_save51_member0_checkpoint_state_units_item_items :
+  save51_member0_checkpoint_state_units_item_items -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_units : Js.Json.t -> save51_member0_checkpoint_state_units
+
+val encode_save51_member0_checkpoint_state_units :
+  save51_member0_checkpoint_state_units -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_campaign_member1 :
+  Js.Json.t -> save51_member0_checkpoint_state_campaign_member1
+
+val encode_save51_member0_checkpoint_state_campaign_member1 :
+  save51_member0_checkpoint_state_campaign_member1 -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_campaign_member1_scripts_member1 :
+  Js.Json.t -> save51_member0_checkpoint_state_campaign_member1_scripts_member1
+
+val encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1 :
+  save51_member0_checkpoint_state_campaign_member1_scripts_member1 -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item :
+  Js.Json.t -> save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+
+val encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item :
+  save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks :
+  Js.Json.t -> save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+
+val encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks :
+  save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_campaign_member1_scripts :
+  Js.Json.t -> save51_member0_checkpoint_state_campaign_member1_scripts
+
+val encode_save51_member0_checkpoint_state_campaign_member1_scripts :
+  save51_member0_checkpoint_state_campaign_member1_scripts -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_campaign_member1_evacuated_item :
+  Js.Json.t -> save51_member0_checkpoint_state_campaign_member1_evacuated_item
+
+val encode_save51_member0_checkpoint_state_campaign_member1_evacuated_item :
+  save51_member0_checkpoint_state_campaign_member1_evacuated_item -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_campaign_member1_evacuated :
+  Js.Json.t -> save51_member0_checkpoint_state_campaign_member1_evacuated
+
+val encode_save51_member0_checkpoint_state_campaign_member1_evacuated :
+  save51_member0_checkpoint_state_campaign_member1_evacuated -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_campaign_member1_veterans_member1_item :
+  Js.Json.t -> save51_member0_checkpoint_state_campaign_member1_veterans_member1_item
+
+val encode_save51_member0_checkpoint_state_campaign_member1_veterans_member1_item :
+  save51_member0_checkpoint_state_campaign_member1_veterans_member1_item -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_campaign_member1_veterans_member1 :
+  Js.Json.t -> save51_member0_checkpoint_state_campaign_member1_veterans_member1
+
+val encode_save51_member0_checkpoint_state_campaign_member1_veterans_member1 :
+  save51_member0_checkpoint_state_campaign_member1_veterans_member1 -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_campaign_member1_veterans :
+  Js.Json.t -> save51_member0_checkpoint_state_campaign_member1_veterans
+
+val encode_save51_member0_checkpoint_state_campaign_member1_veterans :
+  save51_member0_checkpoint_state_campaign_member1_veterans -> Js.Json.t
+
+val read_save51_member0_checkpoint_state_campaign :
+  Js.Json.t -> save51_member0_checkpoint_state_campaign
+
+val encode_save51_member0_checkpoint_state_campaign :
+  save51_member0_checkpoint_state_campaign -> Js.Json.t
+
+val read_save51 : Js.Json.t -> save51
+val encode_save51 : save51 -> Js.Json.t
+val read_save51_member0 : Js.Json.t -> save51_member0
+val encode_save51_member0 : save51_member0 -> Js.Json.t
+val read_literal_51 : Js.Json.t -> literal_51
+val encode_literal_51 : literal_51 -> Js.Json.t
+val read_save51_member0_checkpoint : Js.Json.t -> save51_member0_checkpoint
+val encode_save51_member0_checkpoint : save51_member0_checkpoint -> Js.Json.t
+val read_save51_member1 : Js.Json.t -> save51_member1
+val encode_save51_member1 : save51_member1 -> Js.Json.t
+val read_save52 : Js.Json.t -> save52
+val encode_save52 : save52 -> Js.Json.t
+val read_save52_member0 : Js.Json.t -> save52_member0
+val encode_save52_member0 : save52_member0 -> Js.Json.t
+val read_literal_52 : Js.Json.t -> literal_52
+val encode_literal_52 : literal_52 -> Js.Json.t
+val read_save52_member0_checkpoint : Js.Json.t -> save52_member0_checkpoint
+val encode_save52_member0_checkpoint : save52_member0_checkpoint -> Js.Json.t
+val read_save52_member0_checkpoint_state : Js.Json.t -> save52_member0_checkpoint_state
+val encode_save52_member0_checkpoint_state : save52_member0_checkpoint_state -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_vision_groups :
+  Js.Json.t -> save52_member0_checkpoint_state_vision_groups
+
+val encode_save52_member0_checkpoint_state_vision_groups :
+  save52_member0_checkpoint_state_vision_groups -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_vision_groups_item :
+  Js.Json.t -> save52_member0_checkpoint_state_vision_groups_item
+
+val encode_save52_member0_checkpoint_state_vision_groups_item :
+  save52_member0_checkpoint_state_vision_groups_item -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_ground_items :
+  Js.Json.t -> save52_member0_checkpoint_state_ground_items
+
+val encode_save52_member0_checkpoint_state_ground_items :
+  save52_member0_checkpoint_state_ground_items -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_ground_items_item :
+  Js.Json.t -> save52_member0_checkpoint_state_ground_items_item
+
+val encode_save52_member0_checkpoint_state_ground_items_item :
+  save52_member0_checkpoint_state_ground_items_item -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_tiles : Js.Json.t -> save52_member0_checkpoint_state_tiles
+
+val encode_save52_member0_checkpoint_state_tiles :
+  save52_member0_checkpoint_state_tiles -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_tiles_item :
+  Js.Json.t -> save52_member0_checkpoint_state_tiles_item
+
+val encode_save52_member0_checkpoint_state_tiles_item :
+  save52_member0_checkpoint_state_tiles_item -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_tiles_item_perception :
+  Js.Json.t -> save52_member0_checkpoint_state_tiles_item_perception
+
+val encode_save52_member0_checkpoint_state_tiles_item_perception :
+  save52_member0_checkpoint_state_tiles_item_perception -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_units : Js.Json.t -> save52_member0_checkpoint_state_units
+
+val encode_save52_member0_checkpoint_state_units :
+  save52_member0_checkpoint_state_units -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_units_item :
+  Js.Json.t -> save52_member0_checkpoint_state_units_item
+
+val encode_save52_member0_checkpoint_state_units_item :
+  save52_member0_checkpoint_state_units_item -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_campaign :
+  Js.Json.t -> save52_member0_checkpoint_state_campaign
+
+val encode_save52_member0_checkpoint_state_campaign :
+  save52_member0_checkpoint_state_campaign -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_campaign_member1 :
+  Js.Json.t -> save52_member0_checkpoint_state_campaign_member1
+
+val encode_save52_member0_checkpoint_state_campaign_member1 :
+  save52_member0_checkpoint_state_campaign_member1 -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_campaign_member1_scripts :
+  Js.Json.t -> save52_member0_checkpoint_state_campaign_member1_scripts
+
+val encode_save52_member0_checkpoint_state_campaign_member1_scripts :
+  save52_member0_checkpoint_state_campaign_member1_scripts -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_campaign_member1_scripts_member1 :
+  Js.Json.t -> save52_member0_checkpoint_state_campaign_member1_scripts_member1
+
+val encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1 :
+  save52_member0_checkpoint_state_campaign_member1_scripts_member1 -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks :
+  Js.Json.t -> save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+
+val encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks :
+  save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item :
+  Js.Json.t -> save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+
+val encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item :
+  save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_campaign_member1_evacuated :
+  Js.Json.t -> save52_member0_checkpoint_state_campaign_member1_evacuated
+
+val encode_save52_member0_checkpoint_state_campaign_member1_evacuated :
+  save52_member0_checkpoint_state_campaign_member1_evacuated -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_campaign_member1_evacuated_item :
+  Js.Json.t -> save52_member0_checkpoint_state_campaign_member1_evacuated_item
+
+val encode_save52_member0_checkpoint_state_campaign_member1_evacuated_item :
+  save52_member0_checkpoint_state_campaign_member1_evacuated_item -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_campaign_member1_veterans :
+  Js.Json.t -> save52_member0_checkpoint_state_campaign_member1_veterans
+
+val encode_save52_member0_checkpoint_state_campaign_member1_veterans :
+  save52_member0_checkpoint_state_campaign_member1_veterans -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_campaign_member1_veterans_member1 :
+  Js.Json.t -> save52_member0_checkpoint_state_campaign_member1_veterans_member1
+
+val encode_save52_member0_checkpoint_state_campaign_member1_veterans_member1 :
+  save52_member0_checkpoint_state_campaign_member1_veterans_member1 -> Js.Json.t
+
+val read_save52_member0_checkpoint_state_campaign_member1_veterans_member1_item :
+  Js.Json.t -> save52_member0_checkpoint_state_campaign_member1_veterans_member1_item
+
+val encode_save52_member0_checkpoint_state_campaign_member1_veterans_member1_item :
+  save52_member0_checkpoint_state_campaign_member1_veterans_member1_item -> Js.Json.t
+
+val read_save52_member1 : Js.Json.t -> save52_member1
+val encode_save52_member1 : save52_member1 -> Js.Json.t
 
 module V2 : sig
   val of_json : Js.Json.t -> Historical_types.V2.t
@@ -3652,12 +4576,57 @@ module V49 : sig
   val to_json : Historical_types.V49.t -> Js.Json.t
   val of_legacy : Historical_types.V49.t -> Historical_types.V49.t
   val current_entry_to_json : Historical_types.V49.current_entry -> Js.Json.t
+  val current_entry_of_json : Js.Json.t -> Historical_types.V49.current_entry
   val turn_entry_to_json : Historical_types.V49.turn_entry -> Js.Json.t
+  val turn_entry_of_json : Js.Json.t -> Historical_types.V49.turn_entry
+  val current_state_to_json : Historical_types.V49.current_state -> Js.Json.t
+  val current_state_of_json : Js.Json.t -> Historical_types.V49.current_state
+  val current_changes_item_to_json : Historical_types.V49.current_changes_item -> Js.Json.t
+  val current_changes_item_of_json : Js.Json.t -> Historical_types.V49.current_changes_item
 end
 
 module History5 : sig
   val of_json : Js.Json.t -> Historical_types.History5.t
   val to_json : Historical_types.History5.t -> Js.Json.t
+end
+
+module V50 : sig
+  val of_json : Js.Json.t -> Historical_types.V50.t
+  val to_json : Historical_types.V50.t -> Js.Json.t
+  val current_entry_to_json : Historical_types.V50.current_entry -> Js.Json.t
+  val current_entry_of_json : Js.Json.t -> Historical_types.V50.current_entry
+  val turn_entry_to_json : Historical_types.V50.turn_entry -> Js.Json.t
+  val turn_entry_of_json : Js.Json.t -> Historical_types.V50.turn_entry
+  val current_state_to_json : Historical_types.V50.current_state -> Js.Json.t
+  val current_state_of_json : Js.Json.t -> Historical_types.V50.current_state
+  val current_changes_item_to_json : Historical_types.V50.current_changes_item -> Js.Json.t
+  val current_changes_item_of_json : Js.Json.t -> Historical_types.V50.current_changes_item
+end
+
+module V51 : sig
+  val of_json : Js.Json.t -> Historical_types.V51.t
+  val to_json : Historical_types.V51.t -> Js.Json.t
+  val current_entry_to_json : Historical_types.V51.current_entry -> Js.Json.t
+  val current_entry_of_json : Js.Json.t -> Historical_types.V51.current_entry
+  val turn_entry_to_json : Historical_types.V51.turn_entry -> Js.Json.t
+  val turn_entry_of_json : Js.Json.t -> Historical_types.V51.turn_entry
+  val current_state_to_json : Historical_types.V51.current_state -> Js.Json.t
+  val current_state_of_json : Js.Json.t -> Historical_types.V51.current_state
+  val current_changes_item_to_json : Historical_types.V51.current_changes_item -> Js.Json.t
+  val current_changes_item_of_json : Js.Json.t -> Historical_types.V51.current_changes_item
+end
+
+module V52 : sig
+  val of_json : Js.Json.t -> Historical_types.V52.t
+  val to_json : Historical_types.V52.t -> Js.Json.t
+  val current_entry_to_json : Historical_types.V52.current_entry -> Js.Json.t
+  val current_entry_of_json : Js.Json.t -> Historical_types.V52.current_entry
+  val turn_entry_to_json : Historical_types.V52.turn_entry -> Js.Json.t
+  val turn_entry_of_json : Js.Json.t -> Historical_types.V52.turn_entry
+  val current_state_to_json : Historical_types.V52.current_state -> Js.Json.t
+  val current_state_of_json : Js.Json.t -> Historical_types.V52.current_state
+  val current_changes_item_to_json : Historical_types.V52.current_changes_item -> Js.Json.t
+  val current_changes_item_of_json : Js.Json.t -> Historical_types.V52.current_changes_item
 end
 
 module Fragment : sig

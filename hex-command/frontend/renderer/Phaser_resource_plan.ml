@@ -26,7 +26,7 @@ let content_types ?(include_recruitment = false) catalog walk content =
   let found = Set.create () in
   let known = Set.create () in
   List.iter
-    (fun (rule : Domain.unit_rule) ->
+    (fun (rule : Domain.wiki_unit) ->
       let _ = Set.add known rule.id in
       ())
     (Catalog.units catalog);
@@ -50,7 +50,7 @@ let item_frame artwork id =
   | Some frame -> frame
   | None -> failwith {j|Missing item artwork: $(id)|j}
 
-let current_map_audio game catalog =
+let current_map_audio game _catalog =
   let state = Native.state game in
   let families = Set.create () in
   Array.iter
@@ -68,7 +68,7 @@ let current_map_audio game catalog =
   Array.iter
     (fun (unit : Domain.public_unit) ->
       List.iter
-        (fun (weapon : Domain.weapon) ->
+        (fun (weapon : Domain.attack_card) ->
           let family =
             Phaser_sound.sound_for_interaction
               {
@@ -82,7 +82,7 @@ let current_map_audio game catalog =
           in
           let _ = Set.add families family in
           ())
-        (Presentation.weapons catalog unit))
+        (Presentation.weapons game unit))
     (Native.units game);
   Array_ext.filter
     (fun (sample : Phaser_sound.sample) -> Set.has families sample.family)
@@ -96,14 +96,15 @@ let texture map_id revision =
 let initial_terrain catalog map_id revision artwork =
   let map =
     Array.find_opt
-      (fun (map : Domain.map_definition) -> map.id = map_id && map.revision = revision)
+      (fun (map : Domain.browser_map) -> map.id = map_id && map.revision = revision)
       (Catalog.raw catalog).maps
   in
   let map =
     match map with Some map -> map | None -> failwith {j|Missing authored map: $(map_id)|j}
   in
   (Terrain_plan.prepare ~roles:(Catalog.terrain_roles catalog) ~map_id
-     ~cols:(Int32.to_float map.cols) ~rows:(Int32.to_float map.rows) map.terrain artwork)
+     ~cols:(Int32.to_float map.state.cols) ~rows:(Int32.to_float map.state.rows) map.state.tiles
+     artwork)
     .tiles
 
 let prepare ~game ~catalog ~artwork =
@@ -184,7 +185,7 @@ let prepare ~game ~catalog ~artwork =
       state.campaign
   in
   let mission =
-    Option.bind campaign (fun ((campaign : Domain.campaign), progress) ->
+    Option.bind campaign (fun ((campaign : Domain.browser_campaign), progress) ->
         let index = int_of_float progress.mission in
         if index >= 0 && index < Array.length campaign.missions then Some campaign.missions.(index)
         else None)
@@ -247,13 +248,11 @@ let prepare ~game ~catalog ~artwork =
     (texture state.map_id state.map_revision).pages;
   Array.iter
     (fun (unit : Domain.public_unit) ->
-      Array.iter
-        (fun (item : Domain.item) -> add_frame ~hud:true 1 (item_frame artwork item.id))
-        unit.items)
+      Array.iter (fun item -> add_frame ~hud:true 1 (item_frame artwork item)) unit.items)
     (Native.units game);
   image {js|portrait_worker|js} 1;
   let current_map = Catalog.map catalog state.map_id in
-  let current_types = content_types catalog Domain_resource_walk.walk_map_definition current_map in
+  let current_types = content_types catalog Domain_resource_walk.walk_browser_map current_map in
   Array.iter
     (fun (unit : Domain.public_unit) ->
       let _ = Set.add current_types unit.type_ in
@@ -278,12 +277,32 @@ let prepare ~game ~catalog ~artwork =
               { Phaser_sound.interaction with terrain = Some terrain })
           (Set.values_array terrains)))
     1;
+  let known_items = Set.create () in
   Array.iter
-    (fun (item : Domain.item) -> add_frame ~hud:true 1 (item_frame artwork item.id))
+    (fun (item : Domain.wiki_item) ->
+      let _ = Set.add known_items item.id in
+      ())
     (Catalog.raw catalog).items;
+  let items walk content priority =
+    let rec visitor =
+      {
+        Domain_resource_walk.string =
+          (fun id ->
+            if Set.has known_items id then add_frame ~hud:true priority (item_frame artwork id));
+        field = (fun _ visit -> visit visitor);
+        terrain_change = (fun _ -> ());
+      }
+    in
+    walk visitor content
+  in
+  Array.iter
+    (fun (ground : Domain.ground_item) -> add_frame ~hud:true 1 (item_frame artwork ground.item))
+    state.ground_items;
+  items Domain_resource_walk.walk_browser_map current_map 1;
+  Option.iter (fun chapter -> items Domain_resource_walk.walk_browser_chapter chapter 1) mission;
   Option.iter
-    (fun (mission : Domain.mission) ->
-      let scripted = content_types catalog Domain_resource_walk.walk_mission mission in
+    (fun (mission : Domain.browser_chapter) ->
+      let scripted = content_types catalog Domain_resource_walk.walk_browser_chapter mission in
       Set.each scripted (fun[@u] kind ->
           let _ = Set.add current_types kind in
           ());
@@ -304,6 +323,7 @@ let prepare ~game ~catalog ~artwork =
           let types = Set.create () in
           Array.iter
             (fun veteran ->
+              items Domain_resource_walk.walk_veteran veteran 1;
               let found = content_types catalog Domain_resource_walk.walk_veteran veteran in
               Set.each found (fun[@u] kind ->
                   let _ = Set.add types kind in
@@ -316,6 +336,7 @@ let prepare ~game ~catalog ~artwork =
           let types = Set.create () in
           Array.iter
             (fun veteran ->
+              items Domain_resource_walk.walk_veteran veteran 1;
               let found = content_types catalog Domain_resource_walk.walk_veteran veteran in
               Set.each found (fun[@u] kind ->
                   let _ = Set.add types kind in
@@ -349,7 +370,7 @@ let prepare ~game ~catalog ~artwork =
                       (fun value ->
                         if
                           List.exists
-                            (fun (rule : Domain.unit_rule) -> rule.id = value)
+                            (fun (rule : Domain.wiki_unit) -> rule.id = value)
                             (Catalog.units catalog)
                         then
                           let _ = Set.add recruits value in
@@ -362,7 +383,7 @@ let prepare ~game ~catalog ~artwork =
               else visit collector);
         }
       in
-      Domain_resource_walk.walk_mission collector mission)
+      Domain_resource_walk.walk_browser_chapter collector mission)
     mission;
   units recruits 2;
   let promotions = Set.create () in
@@ -377,17 +398,19 @@ let prepare ~game ~catalog ~artwork =
         (fun next ->
           let _ = Set.add promotions next in
           ())
-        (Catalog.unit catalog kind).advances_to);
+        (Catalog.unit catalog kind).promotion_ids);
   units promotions 3;
   (match campaign with
   | Some (campaign, progress)
     when int_of_float progress.mission + 1 < Array.length campaign.missions ->
       let next = campaign.missions.(int_of_float progress.mission + 1) in
       let map = Catalog.mission_map catalog next in
+      items Domain_resource_walk.walk_browser_map map 4;
+      items Domain_resource_walk.walk_browser_chapter next 4;
       Array.iter
         (fun (page : Terrain_pages.page) -> add_frame 4 (Terrain_pages.frame page))
         (texture map.id map.revision).pages;
-      prepare_terrain map.terrain map.id Domain_resource_walk.walk_mission next 4;
+      prepare_terrain map.state.tiles map.id Domain_resource_walk.walk_browser_chapter next 4;
       let next_palettes = Set.create () in
       Set.each palettes (fun[@u] palette ->
           let _ = Set.add next_palettes palette in
@@ -403,7 +426,8 @@ let prepare ~game ~catalog ~artwork =
           | _ -> ())
         (Art.keys artwork);
       units ~sides:next_palettes
-        (content_types ~include_recruitment:true catalog Domain_resource_walk.walk_mission next)
+        (content_types ~include_recruitment:true catalog Domain_resource_walk.walk_browser_chapter
+           next)
         4;
       audio (Campaign_sound.mission next [||]) 4;
       audio
@@ -411,15 +435,14 @@ let prepare ~game ~catalog ~artwork =
            (fun (tile : Domain.tile) ->
              Phaser_sound.sound_for_interaction
                { Phaser_sound.interaction with terrain = Some tile.terrain })
-           map.terrain)
+           map.state.tiles)
         4
   | _ -> ());
   (match mission with
   | Some mission ->
-      prepare_terrain state.tiles state.map_id Domain_resource_walk.walk_mission mission 1
+      prepare_terrain state.tiles state.map_id Domain_resource_walk.walk_browser_chapter mission 1
   | None ->
-      prepare_terrain state.tiles state.map_id Domain_resource_walk.walk_map_definition current_map
-        1);
+      prepare_terrain state.tiles state.map_id Domain_resource_walk.walk_browser_map current_map 1);
   Array.iter
     (fun key ->
       match Array.to_list (Js.String.split ~sep:{js|_|js} key) with
@@ -431,7 +454,7 @@ let prepare ~game ~catalog ~artwork =
       | _ -> ())
     (Art.keys artwork);
   List.iter
-    (fun (terrain : Domain.terrain_definition) ->
+    (fun (terrain : Domain.wiki_terrain) ->
       Option.iter (add_frame ~hud:true 5)
         (Art.terrain_portrait artwork (Enum.string_of_terrain terrain.id)))
     (Catalog.terrain catalog);

@@ -15,10 +15,10 @@ type terrain_effect = {
 
 type unit_details = {
   unit : Domain.public_unit;
-  definition : Domain.unit_rule;
+  definition : Domain.unit_details;
   terrain_name : string;
   action_status : string;
-  promotions : Domain.unit_rule list;
+  promotions : Domain.unit_details list;
   ability : ability;
   terrain_effects : terrain_effect list;
 }
@@ -63,7 +63,7 @@ type combat_result = {
 }
 
 type attack = {
-  weapon : Domain.weapon;
+  weapon : Domain.attack_card;
   name : string;
   response_name : string;
   button_label : string;
@@ -77,17 +77,17 @@ val attacks : Catalog.t -> Native.view -> Domain.public_unit -> Domain.public_un
 val damage_equation : Domain.damage_detail -> string
 val signed_value : float -> string
 val terrain_damage_facts : int32 array array -> fact list
-val weapons : Catalog.t -> Domain.public_unit -> Domain.weapon list
-val ability : Catalog.t -> Domain.public_unit -> ability
+val weapons : Native.view -> Domain.public_unit -> Domain.attack_card list
+val ability : Native.view -> Domain.public_unit -> ability
 
 type modifier = { name : string; label : string; class_name : string }
 
-val armor : Catalog.t -> Domain.public_unit -> modifier list
-val weapon_damage : Domain.weapon -> string
-val weapon_range : Domain.weapon -> string
+val armor : Native.view -> Domain.public_unit -> modifier list
+val weapon_damage : Domain.attack_card -> string
+val weapon_range : Domain.attack_card -> string
 val damage_name : Domain.Damage_type.t -> string
 
-type recruit = { definition : Domain.unit_rule; cost : float; enabled : bool }
+type recruit = { definition : Domain.unit_details; cost : float; enabled : bool }
 type recruitment = { options : recruit list; hint : string }
 
 type terrain_panel = {

@@ -60,6 +60,8 @@ const cargo = [
   "rust/Cargo.toml",
   "--bin",
   "hex-command-sim",
+  "--features",
+  "simulation",
 ];
 mkdirSync(join(target, "release"), { recursive: true });
 if (!pgo) {

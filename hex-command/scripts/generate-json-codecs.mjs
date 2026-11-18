@@ -71,7 +71,7 @@ function ty(t, v, encode) {
   if (/^[ui](8|16)$/.test(t.name))
     return encode
       ? `Js.Json.number (float_of_int (${v}))`
-      : `int_of_float (${options["--strict"] ? `get_integer ${t.name[0] === "i" ? -Math.pow(2, Number(t.name.slice(1)) - 1) : 0}. ${t.name[0] === "i" ? Math.pow(2, Number(t.name.slice(1)) - 1) - 1 : Math.pow(2, Number(t.name.slice(1))) - 1}.` : "get_number"} (${v}))`;
+      : `int_of_float (${options["--strict"] ? `get_integer (${t.name[0] === "i" ? -Math.pow(2, Number(t.name.slice(1)) - 1) : 0}.) ${t.name[0] === "i" ? Math.pow(2, Number(t.name.slice(1)) - 1) - 1 : Math.pow(2, Number(t.name.slice(1))) - 1}.` : "get_number"} (${v}))`;
   if (/^u(32|size)$|^f(32|64)$/.test(t.name))
     return `${encode ? "Js.Json.number" : options["--strict"] && /^[u](32|size)$/.test(t.name) ? "get_integer 0. 4294967295." : "get_number"} (${v})`;
   if (t.name === "Option")
@@ -122,7 +122,7 @@ function jsDictionaryType(t, v, encode) {
     const bits = Number(t.name.slice(1));
     const min = t.name[0] === "i" ? -(2 ** (bits - 1)) : 0;
     const max = t.name[0] === "i" ? 2 ** (bits - 1) - 1 : 2 ** bits - 1;
-    return `${encode ? "Js.Json.number" : options["--strict"] ? `get_integer ${min}. ${max}.` : "get_number"} (${v})`;
+    return `${encode ? "Js.Json.number" : options["--strict"] ? `get_integer (${min}.) ${max}.` : "get_number"} (${v})`;
   }
   return ty(t, v, encode);
 }
@@ -203,6 +203,12 @@ function zero(t) {
 function body(e, b, encode, v, parent = e.serde) {
   if (b.style === "unit") return encode ? "Js.Json.null" : "()";
   if (e.transparent) return ty(b.fields[0].ty, v, encode);
+  if (e.kind === "struct" && b.style === "tuple" && b.fields.length === 1) {
+    const constructor = snake(e.name)[0].toUpperCase() + snake(e.name).slice(1) + "_value";
+    return encode
+      ? `(let (${constructor} inner) = ${v} in ${ty(b.fields[0].ty, "inner", true)})`
+      : `${constructor} (${ty(b.fields[0].ty, v, false)})`;
+  }
   if (b.style === "tuple") return ty({ kind: "tuple", args: b.fields.map((f) => f.ty) }, v, encode);
   const fields = b.fields.map((f) => {
     const name = renamed(f.name, f.serde, parent),

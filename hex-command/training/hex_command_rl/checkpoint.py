@@ -7,10 +7,16 @@ import hex_command_training as native
 
 
 def warm_start(model, path):
-    from .spatial import SpatialPlanner
-
     path = Path(path)
     state = torch.load(path, map_location="cpu", weights_only=True)
+    return expand_state(model, state) | dict(
+        path=str(path.resolve()), sha256=hashlib.sha256(path.read_bytes()).hexdigest()
+    )
+
+
+def expand_state(model, state):
+    from .spatial import SpatialPlanner
+
     target = model.state_dict()
     if state.keys() != target.keys():
         raise ValueError("checkpoint architecture or parameter names differ")
@@ -22,6 +28,7 @@ def warm_start(model, path):
         len(native.LEGACY_FEATURE_NAMES),
         len(native.DUTY_FEATURE_NAMES),
         len(native.DIPLOMACY_FEATURE_NAMES),
+        len(native.CAMPAIGN_FEATURE_NAMES),
         width,
     ):
         raise ValueError("unknown checkpoint feature width")
@@ -29,7 +36,14 @@ def warm_start(model, path):
     if spatial and (old_width, old_channels) not in (
         (len(native.LEGACY_FEATURE_NAMES), len(native.LEGACY_SPATIAL_CHANNEL_NAMES)),
         (len(native.DUTY_FEATURE_NAMES), len(native.DUTY_SPATIAL_CHANNEL_NAMES)),
-        (len(native.DIPLOMACY_FEATURE_NAMES), len(native.SPATIAL_CHANNEL_NAMES)),
+        (
+            len(native.DIPLOMACY_FEATURE_NAMES),
+            len(native.CAMPAIGN_SPATIAL_CHANNEL_NAMES),
+        ),
+        (
+            len(native.CAMPAIGN_FEATURE_NAMES),
+            len(native.CAMPAIGN_SPATIAL_CHANNEL_NAMES),
+        ),
         (width, len(native.SPATIAL_CHANNEL_NAMES)),
     ):
         raise ValueError("checkpoint feature/channel schemas differ")
@@ -58,8 +72,6 @@ def warm_start(model, path):
             copied[name] = source
     model.load_state_dict(copied)
     return dict(
-        path=str(path.resolve()),
-        sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
         source_features=old_width,
         source_channels=old_channels,
         optimizer="new Adam state",

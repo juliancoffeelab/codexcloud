@@ -138,6 +138,56 @@ function historicalTiles(input) {
   // old version onto the current phase, outcome or action representation.
   const historicalInput = structuredClone(input);
   const current = historicalInput.state ?? historicalInput;
+  // Explicit pre-v16 test writer: those serializers omitted absent optionals.
+  // Current snapshots emit them; old readers must still receive their frozen shape.
+  const oldOptionals = new Set([
+    "armies",
+    "campaign",
+    "lastCombat",
+    "location",
+    "connections",
+    "deadEnds",
+    "walls",
+    "floor",
+    "light",
+    "policy",
+    "name",
+    "recruits",
+    "transfer",
+    "cost",
+    "character",
+    "aiGroup",
+    "retreating",
+    "rebuilding",
+    "role",
+    "armor",
+    "healing",
+    "perception",
+    "sound",
+    "refuge",
+    "vigil",
+    "holds",
+    "when",
+    "color",
+    "fixture",
+    "dx",
+    "dy",
+  ]);
+  const omit = (value) => {
+    if (Array.isArray(value)) {
+      for (const entry of value) omit(entry);
+    } else if (value && typeof value === "object") {
+      for (const key of Object.keys(value)) {
+        if (value[key] === null && oldOptionals.has(key)) delete value[key];
+        else omit(value[key]);
+      }
+    }
+  };
+  omit(current);
+  if (current.campaign?.scripts)
+    current.campaign.scripts.active = current.campaign.scripts.active.filter(
+      (id) => id !== "company-survival",
+    );
   historicalFactions(current);
   if (current.visionGroups || current.units?.some((unit) => Object.hasOwn(unit, "attackSpent"))) {
     const phase = (value) => (value === "ai" ? "enemy" : value);
@@ -250,3 +300,12 @@ function historicalCharacters(input) {
   return state;
 }
 export { historicalCharacters, historicalTiles };
+
+// Older snapshots stored their ambient level on every tile. Migration preserves
+// those facts even when today's authored map uses a neutral local contribution.
+export function explicitAmbient(state) {
+  const result = structuredClone(state);
+  for (const tile of result.tiles)
+    tile.perception.illumination ??= result.lighting.time === "day" ? "lit" : "unlit";
+  return result;
+}

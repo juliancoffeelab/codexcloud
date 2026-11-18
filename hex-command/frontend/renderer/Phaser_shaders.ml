@@ -204,7 +204,7 @@ uniform float uNormalization;
 uniform vec2 uPackedSize;uniform vec2 uPackedShift;
 uniform float uDirect;uniform float uCount;
 uniform vec4 uLights[%count%];uniform vec3 uWarm[%count%];uniform vec3 uOffsetsDirect[%count%];
-uniform float uNight;
+
 uniform float uDay;
 uniform float uBrightness;
 uniform float uGround;
@@ -227,15 +227,15 @@ void main() {
   else if (mode.y == 2.0) source = ink;
   source.rgb *= uBrightness;
   if (source.a <= 0.0) { gl_FragColor = source; return; }
-  if (uNight < .5 && uDay < .5) { gl_FragColor=source; return; }
-  if (uGround > .5 && (uNight > .5 || uUnderground > .5)) {
+  if (uDay < .5) { gl_FragColor=source; return; }
+  if (uGround > .5 && uUnderground > .5) {
     vec3 rgb = source.rgb / source.a;
     rgb = vec3(dot(rgb,uRowR),dot(rgb,uRowG),dot(rgb,uRowB)) + uOffset;
     gl_FragColor = vec4(clamp(rgb,0.0,1.0)*source.a,source.a); return;
   }
   vec3 original=source.rgb/source.a;
   vec3 dayRGB=original;
-  float darkness=uNight;
+  float darkness=0.0;
   if(uUnderground>.5){
     vec2 zone=(worldPoint-uUndergroundBounds.xy)/uUndergroundBounds.zw;
     darkness=max(darkness,texture2D(uUndergroundMask,zone).r);

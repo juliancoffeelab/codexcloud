@@ -1,5 +1,5 @@
 type chapter = {
-  source : Domain.mission;
+  source : Domain.browser_chapter;
   briefing : string;
   debrief : string option;
   hints : string list;

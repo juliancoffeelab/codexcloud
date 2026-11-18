@@ -11382,6 +11382,1975 @@ and decode_history5 value : history5 =
     entries = decode_history5_entries (field value "entries");
   }
 
+and decode_save50_member0_checkpoint_state value : save50_member0_checkpoint_state =
+  {
+    wire =
+      wire_of_json
+        [
+          "visionGroups";
+          "factions";
+          "groundItems";
+          "armies";
+          "conditionMemory";
+          "mapId";
+          "mapRevision";
+          "cols";
+          "rows";
+          "round";
+          "turn";
+          "gold";
+          "winner";
+          "nextId";
+          "combatRng";
+          "log";
+          "tiles";
+          "units";
+          "campaign";
+          "lastCombat";
+        ]
+        value;
+    vision_groups =
+      decode_save41_member0_checkpoint_state_vision_groups (field value "visionGroups");
+    factions = decode_save50_member0_checkpoint_state_factions (field value "factions");
+    ground_items = decode_save50_member0_checkpoint_state_ground_items (field value "groundItems");
+    armies = decode_save50_member0_checkpoint_state_armies (field value "armies");
+    condition_memory = decode_fragments_native_state38_log (field value "conditionMemory");
+    map_id = decode_json_string (field value "mapId");
+    map_revision = decode_json_number (field value "mapRevision");
+    cols = decode_json_number (field value "cols");
+    rows = decode_json_number (field value "rows");
+    round = decode_json_number (field value "round");
+    turn = decode_save41_member0_setup_first (field value "turn");
+    gold = decode_fragments_native_state38_gold (field value "gold");
+    winner = decode_save41_member0_checkpoint_state_winner (field value "winner");
+    next_id = decode_json_number (field value "nextId");
+    combat_rng = decode_json_number (field value "combatRng");
+    log = decode_fragments_native_state38_log (field value "log");
+    tiles = decode_save50_member0_checkpoint_state_tiles (field value "tiles");
+    units = decode_save50_member0_checkpoint_state_units (field value "units");
+    campaign = decode_save50_member0_checkpoint_state_campaign (field value "campaign");
+    last_combat = decode_shape_735 (field value "lastCombat");
+  }
+
+and decode_save50_member0_checkpoint_state_factions_item value :
+    save50_member0_checkpoint_state_factions_item =
+  {
+    wire =
+      wire_of_json
+        [
+          "visionGroup";
+          "id";
+          "phase";
+          "controller";
+          "palette";
+          "name";
+          "recruits";
+          "relations";
+          "transfer";
+        ]
+        value;
+    vision_group = decode_json_string (field value "visionGroup");
+    id = decode_json_string (field value "id");
+    phase = decode_save41_member0_setup_first (field value "phase");
+    controller =
+      decode_save50_member0_checkpoint_state_factions_item_controller (field value "controller");
+    palette = decode_json_string (field value "palette");
+    name = decode_fragments_tiles11_item_owner (field value "name");
+    recruits =
+      decode_save50_member0_checkpoint_state_factions_item_recruits (field value "recruits");
+    relations =
+      decode_save41_member0_checkpoint_state_factions_item_relations_member1
+        (field value "relations");
+    transfer =
+      decode_save50_member0_checkpoint_state_factions_item_transfer (field value "transfer");
+  }
+
+and decode_save50_member0_checkpoint_state_factions_item_controller value :
+    save50_member0_checkpoint_state_factions_item_controller =
+  if Migration_reader.matches value 3481 then
+    `Human (decode_fragments_factions7_item_controller_member0 value)
+  else if Migration_reader.matches value 3483 then
+    `Passive (decode_fragments_factions7_item_controller_member1 value)
+  else if Migration_reader.matches value 3494 then
+    `Ai (decode_save50_member0_checkpoint_state_factions_item_controller_member2 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_factions_item_controller_member2_policy value :
+    save50_member0_checkpoint_state_factions_item_controller_member2_policy =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3486 then `Classic
+  else if Migration_reader.matches value 3487 then `Rush
+  else if Migration_reader.matches value 3488 then `Balanced
+  else if Migration_reader.matches value 3489 then `Rotated
+  else if Migration_reader.matches value 3490 then `Situational
+  else if Migration_reader.matches value 3491 then `Predictor
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_factions_item_controller_member2 value :
+    save50_member0_checkpoint_state_factions_item_controller_member2 =
+  {
+    wire = wire_of_json [ "kind"; "policy" ] value;
+    kind = decode_literal_ai (field value "kind");
+    policy =
+      decode_save50_member0_checkpoint_state_factions_item_controller_member2_policy
+        (field value "policy");
+  }
+
+and decode_save50_member0_checkpoint_state_factions_item_recruits_member1_item value :
+    save50_member0_checkpoint_state_factions_item_recruits_member1_item =
+  {
+    wire = wire_of_json [ "unit"; "cost" ] value;
+    unit_ = decode_json_string (field value "unit");
+    cost = decode_history5_entries_item_mission (field value "cost");
+  }
+
+and decode_save50_member0_checkpoint_state_factions_item_recruits_member1 value :
+    save50_member0_checkpoint_state_factions_item_recruits_member1 =
+  Array.map decode_save50_member0_checkpoint_state_factions_item_recruits_member1_item (array value)
+
+and decode_save50_member0_checkpoint_state_factions_item_recruits value :
+    save50_member0_checkpoint_state_factions_item_recruits =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3499 then
+    `Array (decode_save50_member0_checkpoint_state_factions_item_recruits_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_factions_item_transfer_member1 value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1 =
+  {
+    wire = wire_of_json [ "to"; "when" ] value;
+    to_ = decode_json_string (field value "to");
+    when_ =
+      decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when_
+        (field value "when");
+  }
+
+and decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when_ value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when_ =
+  {
+    wire = wire_of_json [ "observer"; "condition"; "remember" ] value;
+    observer = decode_fragments_tiles11_item_owner (field value "observer");
+    condition =
+      decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+        (field value "condition");
+    remember = decode_json_boolean (field value "remember");
+  }
+
+and decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition =
+  if Migration_reader.matches value 3523 then
+    `Owner
+      (decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0
+         value)
+  else if Migration_reader.matches value 3536 then
+    `Proximity
+      (decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1
+         value)
+  else if Migration_reader.matches value 3539 then
+    `Visible_units
+      (decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2
+         value)
+  else if Migration_reader.matches value 3544 then
+    `Has_units
+      (decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3
+         value)
+  else if Migration_reader.matches value 3548 then
+    `No_units
+      (decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4
+         value)
+  else if Migration_reader.matches value 3550 then
+    `Choice (decode_fragments_rule11_condition_member2 value)
+  else if Migration_reader.matches value 3552 then
+    `Flag (decode_fragments_rule11_condition_member3 value)
+  else if Migration_reader.matches value 3554 then
+    `Event (decode_fragments_rule11_condition_member4 value)
+  else if Migration_reader.matches value 3556 then
+    `Round (decode_fragments_rule11_condition_member5 value)
+  else if Migration_reader.matches value 3559 then
+    `All
+      (decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9
+         value)
+  else if Migration_reader.matches value 3562 then
+    `Any
+      (decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10
+         value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+    value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3513 then
+    `Location
+      (decode_save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member1
+         value)
+  else if Migration_reader.matches value 3514 then
+    `Object3
+      (decode_save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member2
+         value)
+  else if Migration_reader.matches value 3520 then
+    `Object4
+      (decode_save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member3
+         value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0 =
+  {
+    wire = wire_of_json [ "kind"; "tile"; "side" ] value;
+    kind = decode_literal_owner (field value "kind");
+    tile =
+      decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+        (field value "tile");
+    side = decode_json_string (field value "side");
+  }
+
+and decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1 =
+  {
+    wire =
+      wire_of_json [ "kind"; "unitTypes"; "tile"; "radius"; "side"; "unitType"; "character" ] value;
+    kind = decode_literal_proximity (field value "kind");
+    unit_types = decode_fragments_native_state38_log (field value "unitTypes");
+    tile =
+      decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+        (field value "tile");
+    radius = decode_json_number (field value "radius");
+    side =
+      decode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+        (field value "side");
+    unit_type = decode_fragments_tiles11_item_owner (field value "unitType");
+    character = decode_fragments_tiles11_item_owner (field value "character");
+  }
+
+and decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2 =
+  {
+    wire = wire_of_json [ "kind"; "side"; "unitTypes" ] value;
+    kind = decode_literal_visible_units (field value "kind");
+    side =
+      decode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+        (field value "side");
+    unit_types = decode_fragments_native_state38_log (field value "unitTypes");
+  }
+
+and decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3 =
+  {
+    wire = wire_of_json [ "kind"; "aiGroup"; "side"; "unitType"; "character" ] value;
+    kind = decode_literal_has_units (field value "kind");
+    ai_group = decode_fragments_tiles11_item_owner (field value "aiGroup");
+    side =
+      decode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+        (field value "side");
+    unit_type = decode_fragments_tiles11_item_owner (field value "unitType");
+    character = decode_fragments_tiles11_item_owner (field value "character");
+  }
+
+and decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4 =
+  {
+    wire = wire_of_json [ "kind"; "side"; "unitType"; "character" ] value;
+    kind = decode_literal_no_units (field value "kind");
+    side =
+      decode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+        (field value "side");
+    unit_type = decode_fragments_tiles11_item_owner (field value "unitType");
+    character = decode_fragments_tiles11_item_owner (field value "character");
+  }
+
+and decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+    value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+    =
+  Array.map decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+    (array value)
+
+and decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9 =
+  {
+    wire = wire_of_json [ "kind"; "conditions" ] value;
+    kind = decode_literal_all (field value "kind");
+    conditions =
+      decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+        (field value "conditions");
+  }
+
+and decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10
+    =
+  {
+    wire = wire_of_json [ "kind"; "conditions" ] value;
+    kind = decode_literal_any (field value "kind");
+    conditions =
+      decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+        (field value "conditions");
+  }
+
+and decode_save50_member0_checkpoint_state_factions_item_transfer value :
+    save50_member0_checkpoint_state_factions_item_transfer =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3507 then
+    `Object2 (decode_save50_member0_checkpoint_state_factions_item_transfer_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_factions value : save50_member0_checkpoint_state_factions
+    =
+  Array.map decode_save50_member0_checkpoint_state_factions_item (array value)
+
+and decode_save50_member0_checkpoint_state_ground_items_item value :
+    save50_member0_checkpoint_state_ground_items_item =
+  {
+    wire = wire_of_json [ "tile"; "item" ] value;
+    tile = decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    item = decode_save50_member0_checkpoint_state_ground_items_item_item (field value "item");
+  }
+
+and decode_save50_member0_checkpoint_state_ground_items_item_item value :
+    save50_member0_checkpoint_state_ground_items_item_item =
+  {
+    wire =
+      wire_of_json
+        [ "perception"; "armor"; "id"; "name"; "description"; "attacks"; "healing" ]
+        value;
+    perception =
+      decode_save50_member0_checkpoint_state_ground_items_item_item_perception
+        (field value "perception");
+    armor =
+      decode_save50_member0_checkpoint_state_ground_items_item_item_armor (field value "armor");
+    id = decode_json_string (field value "id");
+    name = decode_json_string (field value "name");
+    description = decode_json_string (field value "description");
+    attacks =
+      decode_save41_member0_checkpoint_state_ground_items_item_item_attacks (field value "attacks");
+    healing =
+      decode_save50_member0_checkpoint_state_ground_items_item_item_healing (field value "healing");
+  }
+
+and decode_save50_member0_checkpoint_state_ground_items_item_item_perception_member1 value :
+    save50_member0_checkpoint_state_ground_items_item_item_perception_member1 =
+  {
+    wire = wire_of_json [ "range"; "penetrates"; "concealment"; "light" ] value;
+    range =
+      decode_save41_member0_checkpoint_state_vision_groups_item_sight_range (field value "range");
+    penetrates =
+      decode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+        (field value "penetrates");
+    concealment =
+      decode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+        (field value "concealment");
+    light =
+      decode_save41_member0_checkpoint_state_tiles_item_light_member1_emission (field value "light");
+  }
+
+and decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item value :
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item =
+  {
+    wire = wire_of_json [ "kind"; "revealWithin"; "requires" ] value;
+    kind =
+      decode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates_item
+        (field value "kind");
+    reveal_within = decode_json_number (field value "revealWithin");
+    requires =
+      decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires
+        (field value "requires");
+  }
+
+and decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires value :
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires =
+  {
+    wire = wire_of_json [ "terrains"; "illumination" ] value;
+    terrains =
+      decode_save48_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_terrains
+        (field value "terrains");
+    illumination =
+      decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination
+        (field value "illumination");
+  }
+
+and decode_save50_member0_checkpoint_state_tiles_item_perception_illumination value :
+    save50_member0_checkpoint_state_tiles_item_perception_illumination =
+  if Migration_reader.matches value 3605 then `Lit
+  else if Migration_reader.matches value 3606 then `Unlit
+  else if Migration_reader.matches value 3607 then `Darkness
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1
+    value :
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1
+    =
+  Array.map decode_save50_member0_checkpoint_state_tiles_item_perception_illumination (array value)
+
+and decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination
+    value :
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3609 then
+    `Array
+      (decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1
+         value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_tiles_item_perception_concealment value :
+    save50_member0_checkpoint_state_tiles_item_perception_concealment =
+  Array.map decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item
+    (array value)
+
+and decode_save50_member0_checkpoint_state_ground_items_item_item_perception value :
+    save50_member0_checkpoint_state_ground_items_item_item_perception =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3568 then
+    `Object2
+      (decode_save50_member0_checkpoint_state_ground_items_item_item_perception_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_ground_items_item_item_armor value :
+    save50_member0_checkpoint_state_ground_items_item_item_armor =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3615 then
+    `Object2 (decode_fragments_native_state38_ground_items_item_item_armor_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1 value :
+    save50_member0_checkpoint_state_ground_items_item_item_healing_member1 =
+  {
+    wire = wire_of_json [ "power"; "radius"; "includeSelf"; "targets" ] value;
+    power = decode_json_number (field value "power");
+    radius = decode_json_number (field value "radius");
+    include_self = decode_json_boolean (field value "includeSelf");
+    targets =
+      decode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets
+        (field value "targets");
+  }
+
+and decode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets value :
+    save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets =
+  if Migration_reader.matches value 3630 then `Own_faction
+  else if Migration_reader.matches value 3631 then `Allies
+  else if Migration_reader.matches value 3632 then `Enemies
+  else if Migration_reader.matches value 3633 then `Everyone
+  else invalid "Invalid frozen union"
+
+and decode_literal_own_faction value : literal_own_faction = `Own_faction
+and decode_literal_allies value : literal_allies = `Allies
+and decode_literal_enemies value : literal_enemies = `Enemies
+and decode_literal_everyone value : literal_everyone = `Everyone
+
+and decode_save50_member0_checkpoint_state_ground_items_item_item_healing value :
+    save50_member0_checkpoint_state_ground_items_item_item_healing =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3628 then
+    `Object2 (decode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_ground_items value :
+    save50_member0_checkpoint_state_ground_items =
+  Array.map decode_save50_member0_checkpoint_state_ground_items_item (array value)
+
+and decode_save50_member0_checkpoint_state_armies value : save50_member0_checkpoint_state_armies =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3637 then
+    `Tuple (decode_fragments_native_state38_armies_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_tiles_item value :
+    save50_member0_checkpoint_state_tiles_item =
+  {
+    wire =
+      wire_of_json
+        [
+          "id";
+          "location";
+          "col";
+          "row";
+          "terrain";
+          "owner";
+          "connections";
+          "deadEnds";
+          "walls";
+          "floor";
+          "perception";
+          "light";
+        ]
+        value;
+    id = decode_json_string (field value "id");
+    location = decode_fragments_tiles11_item_owner (field value "location");
+    col = decode_json_number (field value "col");
+    row = decode_json_number (field value "row");
+    terrain = decode_json_string (field value "terrain");
+    owner = decode_fragments_tiles11_item_owner (field value "owner");
+    connections =
+      decode_save50_member0_checkpoint_state_tiles_item_connections (field value "connections");
+    dead_ends =
+      decode_save50_member0_checkpoint_state_tiles_item_connections (field value "deadEnds");
+    walls = decode_save50_member0_checkpoint_state_tiles_item_connections (field value "walls");
+    floor = decode_fragments_tiles11_item_owner (field value "floor");
+    perception =
+      decode_save50_member0_checkpoint_state_tiles_item_perception (field value "perception");
+    light = decode_save50_member0_checkpoint_state_tiles_item_light (field value "light");
+  }
+
+and decode_save50_member0_checkpoint_state_tiles_item_connections value :
+    save50_member0_checkpoint_state_tiles_item_connections =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3659 then
+    `Array (decode_fragments_tiles11_item_connections_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_tiles_item_perception value :
+    save50_member0_checkpoint_state_tiles_item_perception =
+  {
+    wire = wire_of_json [ "illumination"; "sight"; "remember"; "concealment" ] value;
+    illumination =
+      decode_save50_member0_checkpoint_state_tiles_item_perception_illumination
+        (field value "illumination");
+    sight = decode_save41_member0_checkpoint_state_tiles_item_perception_sight (field value "sight");
+    remember = decode_json_boolean (field value "remember");
+    concealment =
+      decode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+        (field value "concealment");
+  }
+
+and decode_save50_member0_checkpoint_state_tiles_item_light_member1 value :
+    save50_member0_checkpoint_state_tiles_item_light_member1 =
+  {
+    wire =
+      wire_of_json [ "emission"; "color"; "fixture"; "dx"; "dy"; "radius"; "power"; "when" ] value;
+    emission =
+      decode_save41_member0_checkpoint_state_tiles_item_light_member1_emission
+        (field value "emission");
+    color =
+      decode_save50_member0_checkpoint_state_tiles_item_light_member1_color (field value "color");
+    fixture = decode_save50_member0_checkpoint_state_units_item_retreating (field value "fixture");
+    dx = decode_history5_entries_item_mission (field value "dx");
+    dy = decode_history5_entries_item_mission (field value "dy");
+    radius = decode_json_number (field value "radius");
+    power = decode_json_number (field value "power");
+    when_ =
+      decode_save50_member0_checkpoint_state_tiles_item_light_member1_when_ (field value "when");
+  }
+
+and decode_save50_member0_checkpoint_state_tiles_item_light_member1_color value :
+    save50_member0_checkpoint_state_tiles_item_light_member1_color =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3672 then
+    `Tuple (decode_fragments_light23_color_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_units_item_retreating value :
+    save50_member0_checkpoint_state_units_item_retreating =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3455 then `Boolean (decode_json_boolean value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_tiles_item_light_member1_when_ value :
+    save50_member0_checkpoint_state_tiles_item_light_member1_when_ =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3508 then
+    `Object2 (decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when_ value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_tiles_item_light value :
+    save50_member0_checkpoint_state_tiles_item_light =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3670 then
+    `Object2 (decode_save50_member0_checkpoint_state_tiles_item_light_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_tiles value : save50_member0_checkpoint_state_tiles =
+  Array.map decode_save50_member0_checkpoint_state_tiles_item (array value)
+
+and decode_save50_member0_checkpoint_state_units_item value :
+    save50_member0_checkpoint_state_units_item =
+  {
+    wire =
+      wire_of_json
+        [
+          "revealedTo";
+          "perceptionEffects";
+          "faction";
+          "items";
+          "aiGroup";
+          "id";
+          "type";
+          "tile";
+          "hp";
+          "moved";
+          "attackSpent";
+          "experience";
+          "character";
+          "role";
+          "retreating";
+          "rebuilding";
+        ]
+        value;
+    revealed_to = decode_fragments_native_state38_log (field value "revealedTo");
+    perception_effects =
+      decode_save50_member0_checkpoint_state_units_item_perception_effects
+        (field value "perceptionEffects");
+    faction = decode_json_string (field value "faction");
+    items = decode_save50_member0_checkpoint_state_units_item_items (field value "items");
+    ai_group = decode_fragments_tiles11_item_owner (field value "aiGroup");
+    id = decode_json_string (field value "id");
+    type_ = decode_json_string (field value "type");
+    tile = decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    hp = decode_json_number (field value "hp");
+    moved = decode_json_boolean (field value "moved");
+    attack_spent = decode_json_boolean (field value "attackSpent");
+    experience = decode_history5_entries_item_mission (field value "experience");
+    character = decode_fragments_tiles11_item_owner (field value "character");
+    role =
+      decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+        (field value "role");
+    retreating =
+      decode_save50_member0_checkpoint_state_units_item_retreating (field value "retreating");
+    rebuilding =
+      decode_save50_member0_checkpoint_state_units_item_retreating (field value "rebuilding");
+  }
+
+and decode_save50_member0_checkpoint_state_units_item_perception_effects_item value :
+    save50_member0_checkpoint_state_units_item_perception_effects_item =
+  {
+    wire = wire_of_json [ "id"; "penetrates"; "concealment"; "light"; "expiresAt" ] value;
+    id = decode_json_string (field value "id");
+    penetrates =
+      decode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+        (field value "penetrates");
+    concealment =
+      decode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+        (field value "concealment");
+    light =
+      decode_save41_member0_checkpoint_state_tiles_item_light_member1_emission (field value "light");
+    expires_at =
+      decode_save41_member0_checkpoint_state_units_item_perception_effects_item_expires_at
+        (field value "expiresAt");
+  }
+
+and decode_save50_member0_checkpoint_state_units_item_perception_effects value :
+    save50_member0_checkpoint_state_units_item_perception_effects =
+  Array.map decode_save50_member0_checkpoint_state_units_item_perception_effects_item (array value)
+
+and decode_save50_member0_checkpoint_state_units_item_items value :
+    save50_member0_checkpoint_state_units_item_items =
+  Array.map decode_save50_member0_checkpoint_state_ground_items_item_item (array value)
+
+and decode_save50_member0_checkpoint_state_units value : save50_member0_checkpoint_state_units =
+  Array.map decode_save50_member0_checkpoint_state_units_item (array value)
+
+and decode_save50_member0_checkpoint_state_campaign_member1 value :
+    save50_member0_checkpoint_state_campaign_member1 =
+  {
+    wire =
+      wire_of_json
+        [
+          "scripts";
+          "evacuated";
+          "id";
+          "mission";
+          "recall";
+          "veterans";
+          "storyVeterans";
+          "fallenCompanions";
+          "carryGold";
+          "marks";
+          "dialogue";
+          "dialogueIndex";
+          "outcome";
+          "completed";
+          "refuge";
+          "vigil";
+          "holds";
+          "flags";
+        ]
+        value;
+    scripts =
+      decode_save50_member0_checkpoint_state_campaign_member1_scripts (field value "scripts");
+    evacuated =
+      decode_save50_member0_checkpoint_state_campaign_member1_evacuated (field value "evacuated");
+    id = decode_json_string (field value "id");
+    mission = decode_json_number (field value "mission");
+    recall = decode_fragments_native_state38_log (field value "recall");
+    veterans =
+      decode_save50_member0_checkpoint_state_campaign_member1_veterans (field value "veterans");
+    story_veterans =
+      decode_save50_member0_checkpoint_state_campaign_member1_veterans (field value "storyVeterans");
+    fallen_companions =
+      decode_save50_member0_checkpoint_state_campaign_member1_fallen_companions
+        (field value "fallenCompanions");
+    carry_gold = decode_json_number (field value "carryGold");
+    marks = decode_fragments_native_state38_log (field value "marks");
+    dialogue =
+      decode_save50_member0_checkpoint_state_campaign_member1_dialogue (field value "dialogue");
+    dialogue_index = decode_json_number (field value "dialogueIndex");
+    outcome = decode_fragments_tiles11_item_owner (field value "outcome");
+    completed = decode_json_boolean (field value "completed");
+    refuge = decode_save50_member0_checkpoint_state_campaign_member1_refuge (field value "refuge");
+    vigil = decode_save50_member0_checkpoint_state_campaign_member1_vigil (field value "vigil");
+    holds = decode_save50_member0_checkpoint_state_campaign_member1_holds (field value "holds");
+    flags = decode_fragments_native_state38_campaign_member1_flags (field value "flags");
+  }
+
+and decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1 value :
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1 =
+  {
+    wire =
+      wire_of_json
+        [
+          "failed";
+          "completed";
+          "revealed";
+          "recruitment";
+          "active";
+          "holds";
+          "marks";
+          "pending";
+          "nextMark";
+        ]
+        value;
+    failed = decode_fragments_native_state38_log (field value "failed");
+    completed = decode_fragments_native_state38_log (field value "completed");
+    revealed = decode_fragments_native_state38_log (field value "revealed");
+    recruitment =
+      decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+        (field value "recruitment");
+    active = decode_fragments_native_state38_log (field value "active");
+    holds =
+      decode_fragments_native_state38_campaign_member1_scripts_member1_holds (field value "holds");
+    marks =
+      decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+        (field value "marks");
+    pending =
+      decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending
+        (field value "pending");
+    next_mark = decode_json_number (field value "nextMark");
+  }
+
+and decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment value :
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment =
+  map_of_json decode_save50_member0_checkpoint_state_factions_item_recruits_member1 value
+
+and decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item value :
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item =
+  {
+    wire = wire_of_json [ "sight"; "lightRemembered"; "id"; "type"; "tile"; "light" ] value;
+    sight = decode_save41_member0_checkpoint_state_tiles_item_perception_sight (field value "sight");
+    light_remembered = decode_json_boolean (field value "lightRemembered");
+    id = decode_json_number (field value "id");
+    type_ = decode_json_string (field value "type");
+    tile = decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    light = decode_save50_member0_checkpoint_state_tiles_item_light (field value "light");
+  }
+
+and decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks value :
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks =
+  Array.map decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+    (array value)
+
+and decode_save50_member0_checkpoint_state_campaign_member1_scripts value :
+    save50_member0_checkpoint_state_campaign_member1_scripts =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3703 then
+    `Object2 (decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_campaign_member1_evacuated_item value :
+    save50_member0_checkpoint_state_campaign_member1_evacuated_item =
+  {
+    wire = wire_of_json [ "event"; "unit" ] value;
+    event = decode_json_string (field value "event");
+    unit_ = decode_save50_member0_checkpoint_state_units_item (field value "unit");
+  }
+
+and decode_save50_member0_checkpoint_state_campaign_member1_evacuated value :
+    save50_member0_checkpoint_state_campaign_member1_evacuated =
+  Array.map decode_save50_member0_checkpoint_state_campaign_member1_evacuated_item (array value)
+
+and decode_save50_member0_checkpoint_state_campaign_member1_veterans_member1_item value :
+    save50_member0_checkpoint_state_campaign_member1_veterans_member1_item =
+  {
+    wire = wire_of_json [ "items"; "type"; "experience"; "character"; "role" ] value;
+    items = decode_save50_member0_checkpoint_state_units_item_items (field value "items");
+    type_ = decode_json_string (field value "type");
+    experience = decode_json_number (field value "experience");
+    character = decode_fragments_tiles11_item_owner (field value "character");
+    role =
+      decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+        (field value "role");
+  }
+
+and decode_save50_member0_checkpoint_state_campaign_member1_veterans_member1 value :
+    save50_member0_checkpoint_state_campaign_member1_veterans_member1 =
+  Array.map decode_save50_member0_checkpoint_state_campaign_member1_veterans_member1_item
+    (array value)
+
+and decode_save50_member0_checkpoint_state_campaign_member1_veterans value :
+    save50_member0_checkpoint_state_campaign_member1_veterans =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3733 then
+    `Array (decode_save50_member0_checkpoint_state_campaign_member1_veterans_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_campaign_member1_fallen_companions value :
+    save50_member0_checkpoint_state_campaign_member1_fallen_companions =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3737 then
+    `Array (decode_fragments_native_state38_log value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_campaign_member1_dialogue_item value :
+    save50_member0_checkpoint_state_campaign_member1_dialogue_item =
+  {
+    wire = wire_of_json [ "sound"; "speaker"; "character"; "portrait"; "text" ] value;
+    sound = decode_fragments_tiles11_item_owner (field value "sound");
+    speaker = decode_json_string (field value "speaker");
+    character = decode_fragments_tiles11_item_owner (field value "character");
+    portrait = decode_json_string (field value "portrait");
+    text = decode_json_string (field value "text");
+  }
+
+and decode_save50_member0_checkpoint_state_campaign_member1_dialogue value :
+    save50_member0_checkpoint_state_campaign_member1_dialogue =
+  Array.map decode_save50_member0_checkpoint_state_campaign_member1_dialogue_item (array value)
+
+and decode_save50_member0_checkpoint_state_campaign_member1_refuge value :
+    save50_member0_checkpoint_state_campaign_member1_refuge =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3745 then
+    `Object2 (decode_fragments_native_state38_campaign_member1_refuge_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_campaign_member1_vigil value :
+    save50_member0_checkpoint_state_campaign_member1_vigil =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3747 then
+    `Object2 (decode_fragments_native_state38_campaign_member1_vigil_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_campaign_member1_holds value :
+    save50_member0_checkpoint_state_campaign_member1_holds =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3749 then
+    `Object2 (decode_fragments_native_state38_campaign_member1_holds_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0_checkpoint_state_campaign value : save50_member0_checkpoint_state_campaign
+    =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3702 then
+    `Object2 (decode_save50_member0_checkpoint_state_campaign_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50 value : save50 =
+  if Migration_reader.matches value 3759 then `Current (decode_save50_member0 value)
+  else if Migration_reader.matches value 3817 then `Turn (decode_save50_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save50_member0 value : save50_member0 =
+  {
+    wire =
+      wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = decode_json_boolean (field value "pendingEnemy");
+    undo = decode_save34_undo_member1 (field value "undo");
+    progress = decode_save49_member0_progress (field value "progress");
+    version = decode_literal_50 (field value "version");
+    checkpoint = decode_save50_member0_checkpoint (field value "checkpoint");
+    setup = decode_save42_member0_setup (field value "setup");
+  }
+
+and decode_literal_50 value : literal_50 = `V50
+
+and decode_save50_member0_checkpoint value : save50_member0_checkpoint =
+  {
+    wire = wire_of_json [ "seed"; "state" ] value;
+    seed = decode_json_number (field value "seed");
+    state = decode_save50_member0_checkpoint_state (field value "state");
+  }
+
+and decode_save50_member1 value : save50_member1 =
+  {
+    wire =
+      wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = decode_literal_false (field value "pendingEnemy");
+    undo =
+      (match get value "undo" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_json_undefined x));
+    progress = decode_save49_member1_progress (field value "progress");
+    version = decode_literal_50 (field value "version");
+    checkpoint = decode_save50_member0_checkpoint (field value "checkpoint");
+    setup = decode_save42_member0_setup (field value "setup");
+  }
+
+and decode_save51_member0_checkpoint_state value : save51_member0_checkpoint_state =
+  {
+    wire =
+      wire_of_json
+        [
+          "mapModifiers";
+          "lighting";
+          "visionGroups";
+          "factions";
+          "groundItems";
+          "armies";
+          "conditionMemory";
+          "mapId";
+          "mapRevision";
+          "cols";
+          "rows";
+          "round";
+          "turn";
+          "gold";
+          "winner";
+          "nextId";
+          "combatRng";
+          "log";
+          "tiles";
+          "units";
+          "campaign";
+          "lastCombat";
+        ]
+        value;
+    map_modifiers =
+      decode_save51_member0_checkpoint_state_map_modifiers (field value "mapModifiers");
+    lighting = decode_save51_member0_checkpoint_state_lighting (field value "lighting");
+    vision_groups =
+      decode_save51_member0_checkpoint_state_vision_groups (field value "visionGroups");
+    factions = decode_save50_member0_checkpoint_state_factions (field value "factions");
+    ground_items = decode_save51_member0_checkpoint_state_ground_items (field value "groundItems");
+    armies = decode_save50_member0_checkpoint_state_armies (field value "armies");
+    condition_memory = decode_fragments_native_state38_log (field value "conditionMemory");
+    map_id = decode_json_string (field value "mapId");
+    map_revision = decode_json_number (field value "mapRevision");
+    cols = decode_json_number (field value "cols");
+    rows = decode_json_number (field value "rows");
+    round = decode_json_number (field value "round");
+    turn = decode_save41_member0_setup_first (field value "turn");
+    gold = decode_fragments_native_state38_gold (field value "gold");
+    winner = decode_save41_member0_checkpoint_state_winner (field value "winner");
+    next_id = decode_json_number (field value "nextId");
+    combat_rng = decode_json_number (field value "combatRng");
+    log = decode_fragments_native_state38_log (field value "log");
+    tiles = decode_save51_member0_checkpoint_state_tiles (field value "tiles");
+    units = decode_save51_member0_checkpoint_state_units (field value "units");
+    campaign = decode_save51_member0_checkpoint_state_campaign (field value "campaign");
+    last_combat = decode_shape_735 (field value "lastCombat");
+  }
+
+and decode_save51_member0_checkpoint_state_map_modifiers value :
+    save51_member0_checkpoint_state_map_modifiers =
+  {
+    wire = wire_of_json [ "sight"; "damageModifiers"; "terrainModifiers" ] value;
+    sight = decode_save51_member0_checkpoint_state_map_modifiers_sight (field value "sight");
+    damage_modifiers =
+      decode_fragments_native_state38_ground_items_item_item_armor_member1
+        (field value "damageModifiers");
+    terrain_modifiers =
+      decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers
+        (field value "terrainModifiers");
+  }
+
+and decode_save51_member0_checkpoint_state_map_modifiers_sight value :
+    save51_member0_checkpoint_state_map_modifiers_sight =
+  {
+    wire = wire_of_json [ "range"; "unlimited"; "sightModifiers"; "penetrates" ] value;
+    range = decode_json_number (field value "range");
+    unlimited = decode_json_boolean (field value "unlimited");
+    sight_modifiers =
+      decode_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers
+        (field value "sightModifiers");
+    penetrates =
+      decode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+        (field value "penetrates");
+  }
+
+and decode_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers value :
+    save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers =
+  {
+    wire = wire_of_json [ "lit"; "unlit"; "darkness" ] value;
+    lit = decode_json_number (field value "lit");
+    unlit = decode_json_number (field value "unlit");
+    darkness = decode_json_number (field value "darkness");
+  }
+
+and decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value value :
+    save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value =
+  {
+    wire = wire_of_json [ "cost"; "passable"; "damageModifiers" ] value;
+    cost = decode_json_number (field value "cost");
+    passable = decode_save50_member0_checkpoint_state_units_item_retreating (field value "passable");
+    damage_modifiers =
+      decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers
+        (field value "damageModifiers");
+  }
+
+and decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers
+    value : save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers =
+  {
+    wire = wire_of_json [ "melee"; "ranged"; "blade"; "pierce"; "impact" ] value;
+    melee = decode_json_number (field value "melee");
+    ranged = decode_json_number (field value "ranged");
+    blade = decode_json_number (field value "blade");
+    pierce = decode_json_number (field value "pierce");
+    impact = decode_json_number (field value "impact");
+  }
+
+and decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers value :
+    save51_member0_checkpoint_state_map_modifiers_terrain_modifiers =
+  map_of_json decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value value
+
+and decode_save51_member0_checkpoint_state_lighting value : save51_member0_checkpoint_state_lighting
+    =
+  {
+    wire = wire_of_json [ "time" ] value;
+    time = decode_save51_member0_checkpoint_state_lighting_time (field value "time");
+  }
+
+and decode_save51_member0_checkpoint_state_lighting_time value :
+    save51_member0_checkpoint_state_lighting_time =
+  if Migration_reader.matches value 3844 then `Day
+  else if Migration_reader.matches value 3845 then `Night
+  else invalid "Invalid frozen union"
+
+and decode_literal_day value : literal_day = `Day
+and decode_literal_night value : literal_night = `Night
+
+and decode_save51_member0_checkpoint_state_vision_groups_item value :
+    save51_member0_checkpoint_state_vision_groups_item =
+  {
+    wire = wire_of_json [ "id"; "sight"; "explored" ] value;
+    id = decode_json_string (field value "id");
+    sight = decode_save51_member0_checkpoint_state_vision_groups_item_sight (field value "sight");
+    explored =
+      decode_save39_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_area
+        (field value "explored");
+  }
+
+and decode_save51_member0_checkpoint_state_vision_groups_item_sight value :
+    save51_member0_checkpoint_state_vision_groups_item_sight =
+  {
+    wire = wire_of_json [ "range"; "penetrates" ] value;
+    range =
+      decode_save51_member0_checkpoint_state_vision_groups_item_sight_range (field value "range");
+    penetrates =
+      decode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+        (field value "penetrates");
+  }
+
+and decode_save51_member0_checkpoint_state_vision_groups_item_sight_range value :
+    save51_member0_checkpoint_state_vision_groups_item_sight_range =
+  if Migration_reader.matches value 3851 then `Unlimited
+  else if Migration_reader.matches value 3824 then `Number (decode_json_number value)
+  else invalid "Invalid frozen union"
+
+and decode_save51_member0_checkpoint_state_vision_groups value :
+    save51_member0_checkpoint_state_vision_groups =
+  Array.map decode_save51_member0_checkpoint_state_vision_groups_item (array value)
+
+and decode_save51_member0_checkpoint_state_ground_items_item value :
+    save51_member0_checkpoint_state_ground_items_item =
+  {
+    wire = wire_of_json [ "tile"; "item" ] value;
+    tile = decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    item = decode_save51_member0_checkpoint_state_ground_items_item_item (field value "item");
+  }
+
+and decode_save51_member0_checkpoint_state_ground_items_item_item value :
+    save51_member0_checkpoint_state_ground_items_item_item =
+  {
+    wire =
+      wire_of_json [ "sight"; "effects"; "armor"; "id"; "name"; "description"; "attacks" ] value;
+    sight = decode_save51_member0_checkpoint_state_map_modifiers_sight (field value "sight");
+    effects = decode_save51_member0_checkpoint_state_tiles_item_effects (field value "effects");
+    armor =
+      decode_save50_member0_checkpoint_state_ground_items_item_item_armor (field value "armor");
+    id = decode_json_string (field value "id");
+    name = decode_json_string (field value "name");
+    description = decode_json_string (field value "description");
+    attacks =
+      decode_save41_member0_checkpoint_state_ground_items_item_item_attacks (field value "attacks");
+  }
+
+and decode_save51_member0_checkpoint_state_tiles_item_effects_item value :
+    save51_member0_checkpoint_state_tiles_item_effects_item =
+  {
+    wire = wire_of_json [ "scope"; "stacking"; "effect" ] value;
+    scope =
+      decode_save51_member0_checkpoint_state_tiles_item_effects_item_scope (field value "scope");
+    stacking =
+      decode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking
+        (field value "stacking");
+    effect_ =
+      decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect_ (field value "effect");
+  }
+
+and decode_save51_member0_checkpoint_state_tiles_item_effects_item_scope value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_scope =
+  {
+    wire = wire_of_json [ "radius"; "includeSelf"; "targets" ] value;
+    radius = decode_json_number (field value "radius");
+    include_self = decode_json_boolean (field value "includeSelf");
+    targets =
+      decode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets
+        (field value "targets");
+  }
+
+and decode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_stacking =
+  {
+    wire = wire_of_json [ "group"; "combine" ] value;
+    group = decode_json_string (field value "group");
+    combine =
+      decode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine
+        (field value "combine");
+  }
+
+and decode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine =
+  if Migration_reader.matches value 3962 then `Add
+  else if Migration_reader.matches value 3963 then `Max
+  else if Migration_reader.matches value 3964 then `Union
+  else invalid "Invalid frozen union"
+
+and decode_literal_add value : literal_add = `Add
+and decode_literal_max value : literal_max = `Max
+and decode_literal_union value : literal_union = `Union
+
+and decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect_ value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect_ =
+  if Migration_reader.matches value 3968 then
+    `Healing (decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0 value)
+  else if Migration_reader.matches value 3974 then
+    `Thorns (decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1 value)
+  else if Migration_reader.matches value 3977 then
+    `Sight (decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2 value)
+  else if Migration_reader.matches value 4019 then
+    `Concealment
+      (decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3 value)
+  else if Migration_reader.matches value 4021 then
+    `Light (decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4 value)
+  else if Migration_reader.matches value 4023 then
+    `Stat_modifiers
+      (decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5 value)
+  else invalid "Invalid frozen union"
+
+and decode_literal_healing value : literal_healing = `Healing
+
+and decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0 =
+  {
+    wire = wire_of_json [ "kind"; "power" ] value;
+    kind = decode_literal_healing (field value "kind");
+    power = decode_json_number (field value "power");
+  }
+
+and decode_literal_thorns value : literal_thorns = `Thorns
+
+and decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1 =
+  {
+    wire = wire_of_json [ "kind"; "damagePerStrike"; "incomingCategory" ] value;
+    kind = decode_literal_thorns (field value "kind");
+    damage_per_strike = decode_json_number (field value "damagePerStrike");
+    incoming_category =
+      decode_fragments_native_state38_ground_items_item_item_attacks_item_category
+        (field value "incomingCategory");
+  }
+
+and decode_literal_sight value : literal_sight = `Sight
+
+and decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2 =
+  {
+    wire = wire_of_json [ "kind"; "range"; "unlimited"; "sightModifiers"; "penetrates" ] value;
+    kind = decode_literal_sight (field value "kind");
+    range = decode_json_number (field value "range");
+    unlimited = decode_json_boolean (field value "unlimited");
+    sight_modifiers =
+      decode_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers
+        (field value "sightModifiers");
+    penetrates =
+      decode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+        (field value "penetrates");
+  }
+
+and decode_literal_concealment value : literal_concealment = `Concealment
+
+and decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3 =
+  {
+    wire = wire_of_json [ "kind"; "rule" ] value;
+    kind = decode_literal_concealment (field value "kind");
+    rule =
+      decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item
+        (field value "rule");
+  }
+
+and decode_literal_light value : literal_light = `Light
+
+and decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4 =
+  {
+    wire = wire_of_json [ "kind"; "radius" ] value;
+    kind = decode_literal_light (field value "kind");
+    radius = decode_json_number (field value "radius");
+  }
+
+and decode_literal_stat_modifiers value : literal_stat_modifiers = `Stat_modifiers
+
+and decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5 =
+  {
+    wire = wire_of_json [ "kind"; "modifiers" ] value;
+    kind = decode_literal_stat_modifiers (field value "kind");
+    modifiers = decode_save51_member0_checkpoint_state_map_modifiers (field value "modifiers");
+  }
+
+and decode_save51_member0_checkpoint_state_tiles_item_effects value :
+    save51_member0_checkpoint_state_tiles_item_effects =
+  Array.map decode_save51_member0_checkpoint_state_tiles_item_effects_item (array value)
+
+and decode_save51_member0_checkpoint_state_ground_items value :
+    save51_member0_checkpoint_state_ground_items =
+  Array.map decode_save51_member0_checkpoint_state_ground_items_item (array value)
+
+and decode_save51_member0_checkpoint_state_tiles_item value :
+    save51_member0_checkpoint_state_tiles_item =
+  {
+    wire =
+      wire_of_json
+        [
+          "effects";
+          "id";
+          "location";
+          "col";
+          "row";
+          "terrain";
+          "owner";
+          "connections";
+          "deadEnds";
+          "walls";
+          "floor";
+          "perception";
+          "light";
+        ]
+        value;
+    effects = decode_save51_member0_checkpoint_state_tiles_item_effects (field value "effects");
+    id = decode_json_string (field value "id");
+    location = decode_fragments_tiles11_item_owner (field value "location");
+    col = decode_json_number (field value "col");
+    row = decode_json_number (field value "row");
+    terrain = decode_json_string (field value "terrain");
+    owner = decode_fragments_tiles11_item_owner (field value "owner");
+    connections =
+      decode_save50_member0_checkpoint_state_tiles_item_connections (field value "connections");
+    dead_ends =
+      decode_save50_member0_checkpoint_state_tiles_item_connections (field value "deadEnds");
+    walls = decode_save50_member0_checkpoint_state_tiles_item_connections (field value "walls");
+    floor = decode_fragments_tiles11_item_owner (field value "floor");
+    perception =
+      decode_save51_member0_checkpoint_state_tiles_item_perception (field value "perception");
+    light = decode_save50_member0_checkpoint_state_tiles_item_light (field value "light");
+  }
+
+and decode_save51_member0_checkpoint_state_tiles_item_perception value :
+    save51_member0_checkpoint_state_tiles_item_perception =
+  {
+    wire = wire_of_json [ "illumination"; "sight"; "remember"; "concealment" ] value;
+    illumination =
+      decode_save51_member0_checkpoint_state_tiles_item_perception_illumination
+        (field value "illumination");
+    sight = decode_save51_member0_checkpoint_state_tiles_item_perception_sight (field value "sight");
+    remember = decode_json_boolean (field value "remember");
+    concealment =
+      decode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+        (field value "concealment");
+  }
+
+and decode_save51_member0_checkpoint_state_tiles_item_perception_illumination value :
+    save51_member0_checkpoint_state_tiles_item_perception_illumination =
+  if Migration_reader.matches value 3823 then `Null
+  else if Migration_reader.matches value 4013 then `Lit
+  else if Migration_reader.matches value 4014 then `Unlit
+  else if Migration_reader.matches value 4015 then `Darkness
+  else invalid "Invalid frozen union"
+
+and decode_save51_member0_checkpoint_state_tiles_item_perception_sight_member1 value :
+    save51_member0_checkpoint_state_tiles_item_perception_sight_member1 =
+  {
+    wire = wire_of_json [ "group"; "profile" ] value;
+    group = decode_json_string (field value "group");
+    profile =
+      decode_save51_member0_checkpoint_state_vision_groups_item_sight (field value "profile");
+  }
+
+and decode_save51_member0_checkpoint_state_tiles_item_perception_sight value :
+    save51_member0_checkpoint_state_tiles_item_perception_sight =
+  if Migration_reader.matches value 3823 then `Null
+  else if Migration_reader.matches value 4068 then
+    `Object2 (decode_save51_member0_checkpoint_state_tiles_item_perception_sight_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save51_member0_checkpoint_state_tiles value : save51_member0_checkpoint_state_tiles =
+  Array.map decode_save51_member0_checkpoint_state_tiles_item (array value)
+
+and decode_save51_member0_checkpoint_state_units_item value :
+    save51_member0_checkpoint_state_units_item =
+  {
+    wire =
+      wire_of_json
+        [
+          "revealedTo";
+          "perceptionEffects";
+          "faction";
+          "items";
+          "aiGroup";
+          "id";
+          "type";
+          "tile";
+          "hp";
+          "moved";
+          "attackSpent";
+          "experience";
+          "character";
+          "role";
+          "retreating";
+          "rebuilding";
+        ]
+        value;
+    revealed_to = decode_fragments_native_state38_log (field value "revealedTo");
+    perception_effects =
+      decode_save51_member0_checkpoint_state_units_item_perception_effects
+        (field value "perceptionEffects");
+    faction = decode_json_string (field value "faction");
+    items = decode_save51_member0_checkpoint_state_units_item_items (field value "items");
+    ai_group = decode_fragments_tiles11_item_owner (field value "aiGroup");
+    id = decode_json_string (field value "id");
+    type_ = decode_json_string (field value "type");
+    tile = decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    hp = decode_json_number (field value "hp");
+    moved = decode_json_boolean (field value "moved");
+    attack_spent = decode_json_boolean (field value "attackSpent");
+    experience = decode_history5_entries_item_mission (field value "experience");
+    character = decode_fragments_tiles11_item_owner (field value "character");
+    role =
+      decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+        (field value "role");
+    retreating =
+      decode_save50_member0_checkpoint_state_units_item_retreating (field value "retreating");
+    rebuilding =
+      decode_save50_member0_checkpoint_state_units_item_retreating (field value "rebuilding");
+  }
+
+and decode_save51_member0_checkpoint_state_units_item_perception_effects_item value :
+    save51_member0_checkpoint_state_units_item_perception_effects_item =
+  {
+    wire = wire_of_json [ "id"; "penetrates"; "concealment"; "light" ] value;
+    id = decode_json_string (field value "id");
+    penetrates =
+      decode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+        (field value "penetrates");
+    concealment =
+      decode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+        (field value "concealment");
+    light =
+      decode_save41_member0_checkpoint_state_tiles_item_light_member1_emission (field value "light");
+  }
+
+and decode_save51_member0_checkpoint_state_units_item_perception_effects value :
+    save51_member0_checkpoint_state_units_item_perception_effects =
+  Array.map decode_save51_member0_checkpoint_state_units_item_perception_effects_item (array value)
+
+and decode_save51_member0_checkpoint_state_units_item_items value :
+    save51_member0_checkpoint_state_units_item_items =
+  Array.map decode_save51_member0_checkpoint_state_ground_items_item_item (array value)
+
+and decode_save51_member0_checkpoint_state_units value : save51_member0_checkpoint_state_units =
+  Array.map decode_save51_member0_checkpoint_state_units_item (array value)
+
+and decode_save51_member0_checkpoint_state_campaign_member1 value :
+    save51_member0_checkpoint_state_campaign_member1 =
+  {
+    wire =
+      wire_of_json
+        [
+          "scripts";
+          "evacuated";
+          "id";
+          "mission";
+          "recall";
+          "veterans";
+          "storyVeterans";
+          "fallenCompanions";
+          "carryGold";
+          "marks";
+          "dialogue";
+          "dialogueIndex";
+          "outcome";
+          "completed";
+          "refuge";
+          "vigil";
+          "holds";
+          "flags";
+        ]
+        value;
+    scripts =
+      decode_save51_member0_checkpoint_state_campaign_member1_scripts (field value "scripts");
+    evacuated =
+      decode_save51_member0_checkpoint_state_campaign_member1_evacuated (field value "evacuated");
+    id = decode_json_string (field value "id");
+    mission = decode_json_number (field value "mission");
+    recall = decode_fragments_native_state38_log (field value "recall");
+    veterans =
+      decode_save51_member0_checkpoint_state_campaign_member1_veterans (field value "veterans");
+    story_veterans =
+      decode_save51_member0_checkpoint_state_campaign_member1_veterans (field value "storyVeterans");
+    fallen_companions =
+      decode_save50_member0_checkpoint_state_campaign_member1_fallen_companions
+        (field value "fallenCompanions");
+    carry_gold = decode_json_number (field value "carryGold");
+    marks = decode_fragments_native_state38_log (field value "marks");
+    dialogue =
+      decode_save50_member0_checkpoint_state_campaign_member1_dialogue (field value "dialogue");
+    dialogue_index = decode_json_number (field value "dialogueIndex");
+    outcome = decode_fragments_tiles11_item_owner (field value "outcome");
+    completed = decode_json_boolean (field value "completed");
+    refuge = decode_save50_member0_checkpoint_state_campaign_member1_refuge (field value "refuge");
+    vigil = decode_save50_member0_checkpoint_state_campaign_member1_vigil (field value "vigil");
+    holds = decode_save50_member0_checkpoint_state_campaign_member1_holds (field value "holds");
+    flags = decode_fragments_native_state38_campaign_member1_flags (field value "flags");
+  }
+
+and decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1 value :
+    save51_member0_checkpoint_state_campaign_member1_scripts_member1 =
+  {
+    wire =
+      wire_of_json
+        [
+          "failed";
+          "completed";
+          "revealed";
+          "recruitment";
+          "active";
+          "holds";
+          "marks";
+          "pending";
+          "nextMark";
+        ]
+        value;
+    failed = decode_fragments_native_state38_log (field value "failed");
+    completed = decode_fragments_native_state38_log (field value "completed");
+    revealed = decode_fragments_native_state38_log (field value "revealed");
+    recruitment =
+      decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+        (field value "recruitment");
+    active = decode_fragments_native_state38_log (field value "active");
+    holds =
+      decode_fragments_native_state38_campaign_member1_scripts_member1_holds (field value "holds");
+    marks =
+      decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+        (field value "marks");
+    pending =
+      decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending
+        (field value "pending");
+    next_mark = decode_json_number (field value "nextMark");
+  }
+
+and decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item value :
+    save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item =
+  {
+    wire = wire_of_json [ "sight"; "lightRemembered"; "id"; "type"; "tile"; "light" ] value;
+    sight = decode_save51_member0_checkpoint_state_tiles_item_perception_sight (field value "sight");
+    light_remembered = decode_json_boolean (field value "lightRemembered");
+    id = decode_json_number (field value "id");
+    type_ = decode_json_string (field value "type");
+    tile = decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    light = decode_save50_member0_checkpoint_state_tiles_item_light (field value "light");
+  }
+
+and decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks value :
+    save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks =
+  Array.map decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+    (array value)
+
+and decode_save51_member0_checkpoint_state_campaign_member1_scripts value :
+    save51_member0_checkpoint_state_campaign_member1_scripts =
+  if Migration_reader.matches value 3823 then `Null
+  else if Migration_reader.matches value 4104 then
+    `Object2 (decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save51_member0_checkpoint_state_campaign_member1_evacuated_item value :
+    save51_member0_checkpoint_state_campaign_member1_evacuated_item =
+  {
+    wire = wire_of_json [ "event"; "unit" ] value;
+    event = decode_json_string (field value "event");
+    unit_ = decode_save51_member0_checkpoint_state_units_item (field value "unit");
+  }
+
+and decode_save51_member0_checkpoint_state_campaign_member1_evacuated value :
+    save51_member0_checkpoint_state_campaign_member1_evacuated =
+  Array.map decode_save51_member0_checkpoint_state_campaign_member1_evacuated_item (array value)
+
+and decode_save51_member0_checkpoint_state_campaign_member1_veterans_member1_item value :
+    save51_member0_checkpoint_state_campaign_member1_veterans_member1_item =
+  {
+    wire = wire_of_json [ "items"; "type"; "experience"; "character"; "role" ] value;
+    items = decode_save51_member0_checkpoint_state_units_item_items (field value "items");
+    type_ = decode_json_string (field value "type");
+    experience = decode_json_number (field value "experience");
+    character = decode_fragments_tiles11_item_owner (field value "character");
+    role =
+      decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+        (field value "role");
+  }
+
+and decode_save51_member0_checkpoint_state_campaign_member1_veterans_member1 value :
+    save51_member0_checkpoint_state_campaign_member1_veterans_member1 =
+  Array.map decode_save51_member0_checkpoint_state_campaign_member1_veterans_member1_item
+    (array value)
+
+and decode_save51_member0_checkpoint_state_campaign_member1_veterans value :
+    save51_member0_checkpoint_state_campaign_member1_veterans =
+  if Migration_reader.matches value 3823 then `Null
+  else if Migration_reader.matches value 4134 then
+    `Array (decode_save51_member0_checkpoint_state_campaign_member1_veterans_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save51_member0_checkpoint_state_campaign value : save51_member0_checkpoint_state_campaign
+    =
+  if Migration_reader.matches value 3823 then `Null
+  else if Migration_reader.matches value 4103 then
+    `Object2 (decode_save51_member0_checkpoint_state_campaign_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save51 value : save51 =
+  if Migration_reader.matches value 4160 then `Current (decode_save51_member0 value)
+  else if Migration_reader.matches value 4218 then `Turn (decode_save51_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save51_member0 value : save51_member0 =
+  {
+    wire =
+      wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = decode_json_boolean (field value "pendingEnemy");
+    undo = decode_save34_undo_member1 (field value "undo");
+    progress = decode_save49_member0_progress (field value "progress");
+    version = decode_literal_51 (field value "version");
+    checkpoint = decode_save51_member0_checkpoint (field value "checkpoint");
+    setup = decode_save42_member0_setup (field value "setup");
+  }
+
+and decode_literal_51 value : literal_51 = `V51
+
+and decode_save51_member0_checkpoint value : save51_member0_checkpoint =
+  {
+    wire = wire_of_json [ "seed"; "state" ] value;
+    seed = decode_json_number (field value "seed");
+    state = decode_save51_member0_checkpoint_state (field value "state");
+  }
+
+and decode_save51_member1 value : save51_member1 =
+  {
+    wire =
+      wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = decode_literal_false (field value "pendingEnemy");
+    undo =
+      (match get value "undo" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_json_undefined x));
+    progress = decode_save49_member1_progress (field value "progress");
+    version = decode_literal_51 (field value "version");
+    checkpoint = decode_save51_member0_checkpoint (field value "checkpoint");
+    setup = decode_save42_member0_setup (field value "setup");
+  }
+
+and decode_save52 value : save52 =
+  if Migration_reader.matches value 4225 then `Current (decode_save52_member0 value)
+  else if Migration_reader.matches value 4577 then `Turn (decode_save52_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save52_member0 value : save52_member0 =
+  {
+    wire =
+      wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = decode_json_boolean (field value "pendingEnemy");
+    undo = decode_save34_undo_member1 (field value "undo");
+    progress = decode_save49_member0_progress (field value "progress");
+    version = decode_literal_52 (field value "version");
+    checkpoint = decode_save52_member0_checkpoint (field value "checkpoint");
+    setup = decode_save42_member0_setup (field value "setup");
+  }
+
+and decode_literal_52 value : literal_52 = `V52
+
+and decode_save52_member0_checkpoint value : save52_member0_checkpoint =
+  {
+    wire = wire_of_json [ "seed"; "state" ] value;
+    seed = decode_json_number (field value "seed");
+    state = decode_save52_member0_checkpoint_state (field value "state");
+  }
+
+and decode_save52_member0_checkpoint_state value : save52_member0_checkpoint_state =
+  {
+    wire =
+      wire_of_json
+        [
+          "mapModifiers";
+          "lighting";
+          "visionGroups";
+          "factions";
+          "groundItems";
+          "armies";
+          "conditionMemory";
+          "mapId";
+          "mapRevision";
+          "cols";
+          "rows";
+          "round";
+          "turn";
+          "gold";
+          "winner";
+          "nextId";
+          "combatRng";
+          "log";
+          "tiles";
+          "units";
+          "campaign";
+          "lastCombat";
+        ]
+        value;
+    map_modifiers =
+      decode_save51_member0_checkpoint_state_map_modifiers (field value "mapModifiers");
+    lighting = decode_save51_member0_checkpoint_state_lighting (field value "lighting");
+    vision_groups =
+      decode_save52_member0_checkpoint_state_vision_groups (field value "visionGroups");
+    factions = decode_save50_member0_checkpoint_state_factions (field value "factions");
+    ground_items = decode_save52_member0_checkpoint_state_ground_items (field value "groundItems");
+    armies = decode_save50_member0_checkpoint_state_armies (field value "armies");
+    condition_memory = decode_fragments_native_state38_log (field value "conditionMemory");
+    map_id = decode_json_string (field value "mapId");
+    map_revision = decode_json_number (field value "mapRevision");
+    cols = decode_json_number (field value "cols");
+    rows = decode_json_number (field value "rows");
+    round = decode_json_number (field value "round");
+    turn = decode_save41_member0_setup_first (field value "turn");
+    gold = decode_fragments_native_state38_gold (field value "gold");
+    winner = decode_save41_member0_checkpoint_state_winner (field value "winner");
+    next_id = decode_json_number (field value "nextId");
+    combat_rng = decode_json_number (field value "combatRng");
+    log = decode_fragments_native_state38_log (field value "log");
+    tiles = decode_save52_member0_checkpoint_state_tiles (field value "tiles");
+    units = decode_save52_member0_checkpoint_state_units (field value "units");
+    campaign = decode_save52_member0_checkpoint_state_campaign (field value "campaign");
+    last_combat = decode_shape_735 (field value "lastCombat");
+  }
+
+and decode_save52_member0_checkpoint_state_vision_groups value :
+    save52_member0_checkpoint_state_vision_groups =
+  Array.map decode_save52_member0_checkpoint_state_vision_groups_item (array value)
+
+and decode_save52_member0_checkpoint_state_vision_groups_item value :
+    save52_member0_checkpoint_state_vision_groups_item =
+  {
+    wire = wire_of_json [ "id"; "sight"; "explored" ] value;
+    id = decode_json_string (field value "id");
+    sight = decode_save51_member0_checkpoint_state_map_modifiers_sight (field value "sight");
+    explored =
+      decode_save39_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_area
+        (field value "explored");
+  }
+
+and decode_save52_member0_checkpoint_state_ground_items value :
+    save52_member0_checkpoint_state_ground_items =
+  Array.map decode_save52_member0_checkpoint_state_ground_items_item (array value)
+
+and decode_save52_member0_checkpoint_state_ground_items_item value :
+    save52_member0_checkpoint_state_ground_items_item =
+  {
+    wire = wire_of_json [ "tile"; "item" ] value;
+    tile = decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    item = decode_json_string (field value "item");
+  }
+
+and decode_save52_member0_checkpoint_state_tiles value : save52_member0_checkpoint_state_tiles =
+  Array.map decode_save52_member0_checkpoint_state_tiles_item (array value)
+
+and decode_save52_member0_checkpoint_state_tiles_item value :
+    save52_member0_checkpoint_state_tiles_item =
+  {
+    wire =
+      wire_of_json
+        [
+          "effects";
+          "id";
+          "location";
+          "col";
+          "row";
+          "terrain";
+          "owner";
+          "connections";
+          "deadEnds";
+          "walls";
+          "floor";
+          "perception";
+          "light";
+        ]
+        value;
+    effects = decode_save51_member0_checkpoint_state_tiles_item_effects (field value "effects");
+    id = decode_json_string (field value "id");
+    location = decode_fragments_tiles11_item_owner (field value "location");
+    col = decode_json_number (field value "col");
+    row = decode_json_number (field value "row");
+    terrain = decode_json_string (field value "terrain");
+    owner = decode_fragments_tiles11_item_owner (field value "owner");
+    connections =
+      decode_save50_member0_checkpoint_state_tiles_item_connections (field value "connections");
+    dead_ends =
+      decode_save50_member0_checkpoint_state_tiles_item_connections (field value "deadEnds");
+    walls = decode_save50_member0_checkpoint_state_tiles_item_connections (field value "walls");
+    floor = decode_fragments_tiles11_item_owner (field value "floor");
+    perception =
+      decode_save52_member0_checkpoint_state_tiles_item_perception (field value "perception");
+    light = decode_save50_member0_checkpoint_state_tiles_item_light (field value "light");
+  }
+
+and decode_save52_member0_checkpoint_state_tiles_item_perception value :
+    save52_member0_checkpoint_state_tiles_item_perception =
+  {
+    wire = wire_of_json [ "illumination"; "remember"; "concealment" ] value;
+    illumination =
+      decode_save51_member0_checkpoint_state_tiles_item_perception_illumination
+        (field value "illumination");
+    remember = decode_json_boolean (field value "remember");
+    concealment =
+      decode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+        (field value "concealment");
+  }
+
+and decode_save52_member0_checkpoint_state_units value : save52_member0_checkpoint_state_units =
+  Array.map decode_save52_member0_checkpoint_state_units_item (array value)
+
+and decode_save52_member0_checkpoint_state_units_item value :
+    save52_member0_checkpoint_state_units_item =
+  {
+    wire =
+      wire_of_json
+        [
+          "revealedTo";
+          "perceptionEffects";
+          "faction";
+          "items";
+          "aiGroup";
+          "id";
+          "type";
+          "tile";
+          "hp";
+          "moved";
+          "attackSpent";
+          "experience";
+          "character";
+          "role";
+          "retreating";
+          "rebuilding";
+        ]
+        value;
+    revealed_to = decode_fragments_native_state38_log (field value "revealedTo");
+    perception_effects =
+      decode_save51_member0_checkpoint_state_units_item_perception_effects
+        (field value "perceptionEffects");
+    faction = decode_json_string (field value "faction");
+    items = decode_fragments_native_state38_log (field value "items");
+    ai_group = decode_fragments_tiles11_item_owner (field value "aiGroup");
+    id = decode_json_string (field value "id");
+    type_ = decode_json_string (field value "type");
+    tile = decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    hp = decode_json_number (field value "hp");
+    moved = decode_json_boolean (field value "moved");
+    attack_spent = decode_json_boolean (field value "attackSpent");
+    experience = decode_history5_entries_item_mission (field value "experience");
+    character = decode_fragments_tiles11_item_owner (field value "character");
+    role =
+      decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+        (field value "role");
+    retreating =
+      decode_save50_member0_checkpoint_state_units_item_retreating (field value "retreating");
+    rebuilding =
+      decode_save50_member0_checkpoint_state_units_item_retreating (field value "rebuilding");
+  }
+
+and decode_save52_member0_checkpoint_state_campaign value : save52_member0_checkpoint_state_campaign
+    =
+  if Migration_reader.matches value 4264 then `Null
+  else if Migration_reader.matches value 4490 then
+    `Object2 (decode_save52_member0_checkpoint_state_campaign_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save52_member0_checkpoint_state_campaign_member1 value :
+    save52_member0_checkpoint_state_campaign_member1 =
+  {
+    wire =
+      wire_of_json
+        [
+          "scripts";
+          "evacuated";
+          "id";
+          "mission";
+          "recall";
+          "veterans";
+          "storyVeterans";
+          "fallenCompanions";
+          "carryGold";
+          "marks";
+          "dialogue";
+          "dialogueIndex";
+          "outcome";
+          "completed";
+          "refuge";
+          "vigil";
+          "holds";
+          "flags";
+        ]
+        value;
+    scripts =
+      decode_save52_member0_checkpoint_state_campaign_member1_scripts (field value "scripts");
+    evacuated =
+      decode_save52_member0_checkpoint_state_campaign_member1_evacuated (field value "evacuated");
+    id = decode_json_string (field value "id");
+    mission = decode_json_number (field value "mission");
+    recall = decode_fragments_native_state38_log (field value "recall");
+    veterans =
+      decode_save52_member0_checkpoint_state_campaign_member1_veterans (field value "veterans");
+    story_veterans =
+      decode_save52_member0_checkpoint_state_campaign_member1_veterans (field value "storyVeterans");
+    fallen_companions =
+      decode_save50_member0_checkpoint_state_campaign_member1_fallen_companions
+        (field value "fallenCompanions");
+    carry_gold = decode_json_number (field value "carryGold");
+    marks = decode_fragments_native_state38_log (field value "marks");
+    dialogue =
+      decode_save50_member0_checkpoint_state_campaign_member1_dialogue (field value "dialogue");
+    dialogue_index = decode_json_number (field value "dialogueIndex");
+    outcome = decode_fragments_tiles11_item_owner (field value "outcome");
+    completed = decode_json_boolean (field value "completed");
+    refuge = decode_save50_member0_checkpoint_state_campaign_member1_refuge (field value "refuge");
+    vigil = decode_save50_member0_checkpoint_state_campaign_member1_vigil (field value "vigil");
+    holds = decode_save50_member0_checkpoint_state_campaign_member1_holds (field value "holds");
+    flags = decode_fragments_native_state38_campaign_member1_flags (field value "flags");
+  }
+
+and decode_save52_member0_checkpoint_state_campaign_member1_scripts value :
+    save52_member0_checkpoint_state_campaign_member1_scripts =
+  if Migration_reader.matches value 4264 then `Null
+  else if Migration_reader.matches value 4492 then
+    `Object2 (decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1 value :
+    save52_member0_checkpoint_state_campaign_member1_scripts_member1 =
+  {
+    wire =
+      wire_of_json
+        [
+          "failed";
+          "completed";
+          "revealed";
+          "recruitment";
+          "active";
+          "holds";
+          "marks";
+          "pending";
+          "nextMark";
+        ]
+        value;
+    failed = decode_fragments_native_state38_log (field value "failed");
+    completed = decode_fragments_native_state38_log (field value "completed");
+    revealed = decode_fragments_native_state38_log (field value "revealed");
+    recruitment =
+      decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+        (field value "recruitment");
+    active = decode_fragments_native_state38_log (field value "active");
+    holds =
+      decode_fragments_native_state38_campaign_member1_scripts_member1_holds (field value "holds");
+    marks =
+      decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+        (field value "marks");
+    pending =
+      decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending
+        (field value "pending");
+    next_mark = decode_json_number (field value "nextMark");
+  }
+
+and decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks value :
+    save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks =
+  Array.map decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+    (array value)
+
+and decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item value :
+    save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item =
+  {
+    wire = wire_of_json [ "lightRemembered"; "id"; "type"; "tile"; "light" ] value;
+    light_remembered = decode_json_boolean (field value "lightRemembered");
+    id = decode_json_number (field value "id");
+    type_ = decode_json_string (field value "type");
+    tile = decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    light = decode_save50_member0_checkpoint_state_tiles_item_light (field value "light");
+  }
+
+and decode_save52_member0_checkpoint_state_campaign_member1_evacuated value :
+    save52_member0_checkpoint_state_campaign_member1_evacuated =
+  Array.map decode_save52_member0_checkpoint_state_campaign_member1_evacuated_item (array value)
+
+and decode_save52_member0_checkpoint_state_campaign_member1_evacuated_item value :
+    save52_member0_checkpoint_state_campaign_member1_evacuated_item =
+  {
+    wire = wire_of_json [ "event"; "unit" ] value;
+    event = decode_json_string (field value "event");
+    unit_ = decode_save52_member0_checkpoint_state_units_item (field value "unit");
+  }
+
+and decode_save52_member0_checkpoint_state_campaign_member1_veterans value :
+    save52_member0_checkpoint_state_campaign_member1_veterans =
+  if Migration_reader.matches value 4264 then `Null
+  else if Migration_reader.matches value 4517 then
+    `Array (decode_save52_member0_checkpoint_state_campaign_member1_veterans_member1 value)
+  else invalid "Invalid frozen union"
+
+and decode_save52_member0_checkpoint_state_campaign_member1_veterans_member1 value :
+    save52_member0_checkpoint_state_campaign_member1_veterans_member1 =
+  Array.map decode_save52_member0_checkpoint_state_campaign_member1_veterans_member1_item
+    (array value)
+
+and decode_save52_member0_checkpoint_state_campaign_member1_veterans_member1_item value :
+    save52_member0_checkpoint_state_campaign_member1_veterans_member1_item =
+  {
+    wire = wire_of_json [ "items"; "type"; "experience"; "character"; "role" ] value;
+    items = decode_fragments_native_state38_log (field value "items");
+    type_ = decode_json_string (field value "type");
+    experience = decode_json_number (field value "experience");
+    character = decode_fragments_tiles11_item_owner (field value "character");
+    role =
+      decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+        (field value "role");
+  }
+
+and decode_save52_member1 value : save52_member1 =
+  {
+    wire =
+      wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = decode_literal_false (field value "pendingEnemy");
+    undo =
+      (match get value "undo" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (decode_json_undefined x));
+    progress = decode_save49_member1_progress (field value "progress");
+    version = decode_literal_52 (field value "version");
+    checkpoint = decode_save52_member0_checkpoint (field value "checkpoint");
+    setup = decode_save42_member0_setup (field value "setup");
+  }
+
 let rec encode_save2 (value : save2) : Js.Json.t =
   wire_to_json
     ~known:[ "version"; "checkpoint"; "pendingEnemy"; "planner"; "setup"; "progress"; "undo" ]
@@ -22670,6 +24639,1946 @@ and encode_history5 (value : history5) : Js.Json.t =
       ("version", encode_literal_5 value.version); ("entries", encode_history5_entries value.entries);
     ]
 
+and encode_save50_member0_checkpoint_state (value : save50_member0_checkpoint_state) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "visionGroups";
+        "factions";
+        "groundItems";
+        "armies";
+        "conditionMemory";
+        "mapId";
+        "mapRevision";
+        "cols";
+        "rows";
+        "round";
+        "turn";
+        "gold";
+        "winner";
+        "nextId";
+        "combatRng";
+        "log";
+        "tiles";
+        "units";
+        "campaign";
+        "lastCombat";
+      ]
+    value.wire
+    [
+      ("visionGroups", encode_save41_member0_checkpoint_state_vision_groups value.vision_groups);
+      ("factions", encode_save50_member0_checkpoint_state_factions value.factions);
+      ("groundItems", encode_save50_member0_checkpoint_state_ground_items value.ground_items);
+      ("armies", encode_save50_member0_checkpoint_state_armies value.armies);
+      ("conditionMemory", encode_fragments_native_state38_log value.condition_memory);
+      ("mapId", encode_json_string value.map_id);
+      ("mapRevision", encode_json_number value.map_revision);
+      ("cols", encode_json_number value.cols);
+      ("rows", encode_json_number value.rows);
+      ("round", encode_json_number value.round);
+      ("turn", encode_save41_member0_setup_first value.turn);
+      ("gold", encode_fragments_native_state38_gold value.gold);
+      ("winner", encode_save41_member0_checkpoint_state_winner value.winner);
+      ("nextId", encode_json_number value.next_id);
+      ("combatRng", encode_json_number value.combat_rng);
+      ("log", encode_fragments_native_state38_log value.log);
+      ("tiles", encode_save50_member0_checkpoint_state_tiles value.tiles);
+      ("units", encode_save50_member0_checkpoint_state_units value.units);
+      ("campaign", encode_save50_member0_checkpoint_state_campaign value.campaign);
+      ("lastCombat", encode_shape_735 value.last_combat);
+    ]
+
+and encode_save50_member0_checkpoint_state_factions_item
+    (value : save50_member0_checkpoint_state_factions_item) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "visionGroup";
+        "id";
+        "phase";
+        "controller";
+        "palette";
+        "name";
+        "recruits";
+        "relations";
+        "transfer";
+      ]
+    value.wire
+    [
+      ("visionGroup", encode_json_string value.vision_group);
+      ("id", encode_json_string value.id);
+      ("phase", encode_save41_member0_setup_first value.phase);
+      ( "controller",
+        encode_save50_member0_checkpoint_state_factions_item_controller value.controller );
+      ("palette", encode_json_string value.palette);
+      ("name", encode_fragments_tiles11_item_owner value.name);
+      ("recruits", encode_save50_member0_checkpoint_state_factions_item_recruits value.recruits);
+      ( "relations",
+        encode_save41_member0_checkpoint_state_factions_item_relations_member1 value.relations );
+      ("transfer", encode_save50_member0_checkpoint_state_factions_item_transfer value.transfer);
+    ]
+
+and encode_save50_member0_checkpoint_state_factions_item_controller
+    (value : save50_member0_checkpoint_state_factions_item_controller) : Js.Json.t =
+  match value with
+  | `Human x -> encode_fragments_factions7_item_controller_member0 x
+  | `Passive x -> encode_fragments_factions7_item_controller_member1 x
+  | `Ai x -> encode_save50_member0_checkpoint_state_factions_item_controller_member2 x
+
+and encode_save50_member0_checkpoint_state_factions_item_controller_member2_policy
+    (value : save50_member0_checkpoint_state_factions_item_controller_member2_policy) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Classic -> Js.Json.parseExn "\"classic\""
+  | `Rush -> Js.Json.parseExn "\"rush\""
+  | `Balanced -> Js.Json.parseExn "\"balanced\""
+  | `Rotated -> Js.Json.parseExn "\"rotated\""
+  | `Situational -> Js.Json.parseExn "\"situational\""
+  | `Predictor -> Js.Json.parseExn "\"predictor\""
+
+and encode_save50_member0_checkpoint_state_factions_item_controller_member2
+    (value : save50_member0_checkpoint_state_factions_item_controller_member2) : Js.Json.t =
+  wire_to_json ~known:[ "kind"; "policy" ] value.wire
+    [
+      ("kind", encode_literal_ai value.kind);
+      ( "policy",
+        encode_save50_member0_checkpoint_state_factions_item_controller_member2_policy value.policy
+      );
+    ]
+
+and encode_save50_member0_checkpoint_state_factions_item_recruits_member1_item
+    (value : save50_member0_checkpoint_state_factions_item_recruits_member1_item) : Js.Json.t =
+  wire_to_json ~known:[ "unit"; "cost" ] value.wire
+    [
+      ("unit", encode_json_string value.unit_);
+      ("cost", encode_history5_entries_item_mission value.cost);
+    ]
+
+and encode_save50_member0_checkpoint_state_factions_item_recruits_member1
+    (value : save50_member0_checkpoint_state_factions_item_recruits_member1) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save50_member0_checkpoint_state_factions_item_recruits_member1_item value)
+
+and encode_save50_member0_checkpoint_state_factions_item_recruits
+    (value : save50_member0_checkpoint_state_factions_item_recruits) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Array x -> encode_save50_member0_checkpoint_state_factions_item_recruits_member1 x
+
+and encode_save50_member0_checkpoint_state_factions_item_transfer_member1
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1) : Js.Json.t =
+  wire_to_json ~known:[ "to"; "when" ] value.wire
+    [
+      ("to", encode_json_string value.to_);
+      ( "when",
+        encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when_ value.when_ );
+    ]
+
+and encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when_
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when_) : Js.Json.t =
+  wire_to_json
+    ~known:[ "observer"; "condition"; "remember" ]
+    value.wire
+    [
+      ("observer", encode_fragments_tiles11_item_owner value.observer);
+      ( "condition",
+        encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+          value.condition );
+      ("remember", encode_json_boolean value.remember);
+    ]
+
+and encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition) :
+    Js.Json.t =
+  match value with
+  | `Owner x ->
+      encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0
+        x
+  | `Proximity x ->
+      encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1
+        x
+  | `Visible_units x ->
+      encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2
+        x
+  | `Has_units x ->
+      encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3
+        x
+  | `No_units x ->
+      encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4
+        x
+  | `Choice x -> encode_fragments_rule11_condition_member2 x
+  | `Flag x -> encode_fragments_rule11_condition_member3 x
+  | `Event x -> encode_fragments_rule11_condition_member4 x
+  | `Round x -> encode_fragments_rule11_condition_member5 x
+  | `All x ->
+      encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9
+        x
+  | `Any x ->
+      encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10
+        x
+
+and encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+    (value :
+      save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile) :
+    Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Location x ->
+      encode_save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member1 x
+  | `Object3 x ->
+      encode_save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member2 x
+  | `Object4 x ->
+      encode_save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member3 x
+
+and encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0)
+    : Js.Json.t =
+  wire_to_json ~known:[ "kind"; "tile"; "side" ] value.wire
+    [
+      ("kind", encode_literal_owner value.kind);
+      ( "tile",
+        encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+          value.tile );
+      ("side", encode_json_string value.side);
+    ]
+
+and encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1)
+    : Js.Json.t =
+  wire_to_json
+    ~known:[ "kind"; "unitTypes"; "tile"; "radius"; "side"; "unitType"; "character" ]
+    value.wire
+    [
+      ("kind", encode_literal_proximity value.kind);
+      ("unitTypes", encode_fragments_native_state38_log value.unit_types);
+      ( "tile",
+        encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+          value.tile );
+      ("radius", encode_json_number value.radius);
+      ( "side",
+        encode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+          value.side );
+      ("unitType", encode_fragments_tiles11_item_owner value.unit_type);
+      ("character", encode_fragments_tiles11_item_owner value.character);
+    ]
+
+and encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2)
+    : Js.Json.t =
+  wire_to_json ~known:[ "kind"; "side"; "unitTypes" ] value.wire
+    [
+      ("kind", encode_literal_visible_units value.kind);
+      ( "side",
+        encode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+          value.side );
+      ("unitTypes", encode_fragments_native_state38_log value.unit_types);
+    ]
+
+and encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3)
+    : Js.Json.t =
+  wire_to_json
+    ~known:[ "kind"; "aiGroup"; "side"; "unitType"; "character" ]
+    value.wire
+    [
+      ("kind", encode_literal_has_units value.kind);
+      ("aiGroup", encode_fragments_tiles11_item_owner value.ai_group);
+      ( "side",
+        encode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+          value.side );
+      ("unitType", encode_fragments_tiles11_item_owner value.unit_type);
+      ("character", encode_fragments_tiles11_item_owner value.character);
+    ]
+
+and encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4)
+    : Js.Json.t =
+  wire_to_json
+    ~known:[ "kind"; "side"; "unitType"; "character" ]
+    value.wire
+    [
+      ("kind", encode_literal_no_units value.kind);
+      ( "side",
+        encode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+          value.side );
+      ("unitType", encode_fragments_tiles11_item_owner value.unit_type);
+      ("character", encode_fragments_tiles11_item_owner value.character);
+    ]
+
+and encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+    (value :
+      save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions)
+    : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+       value)
+
+and encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9)
+    : Js.Json.t =
+  wire_to_json ~known:[ "kind"; "conditions" ] value.wire
+    [
+      ("kind", encode_literal_all value.kind);
+      ( "conditions",
+        encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+          value.conditions );
+    ]
+
+and encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10
+    (value :
+      save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10) :
+    Js.Json.t =
+  wire_to_json ~known:[ "kind"; "conditions" ] value.wire
+    [
+      ("kind", encode_literal_any value.kind);
+      ( "conditions",
+        encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+          value.conditions );
+    ]
+
+and encode_save50_member0_checkpoint_state_factions_item_transfer
+    (value : save50_member0_checkpoint_state_factions_item_transfer) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_save50_member0_checkpoint_state_factions_item_transfer_member1 x
+
+and encode_save50_member0_checkpoint_state_factions
+    (value : save50_member0_checkpoint_state_factions) : Js.Json.t =
+  Js.Json.array (Array.map encode_save50_member0_checkpoint_state_factions_item value)
+
+and encode_save50_member0_checkpoint_state_ground_items_item
+    (value : save50_member0_checkpoint_state_ground_items_item) : Js.Json.t =
+  wire_to_json ~known:[ "tile"; "item" ] value.wire
+    [
+      ("tile", encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("item", encode_save50_member0_checkpoint_state_ground_items_item_item value.item);
+    ]
+
+and encode_save50_member0_checkpoint_state_ground_items_item_item
+    (value : save50_member0_checkpoint_state_ground_items_item_item) : Js.Json.t =
+  wire_to_json
+    ~known:[ "perception"; "armor"; "id"; "name"; "description"; "attacks"; "healing" ]
+    value.wire
+    [
+      ( "perception",
+        encode_save50_member0_checkpoint_state_ground_items_item_item_perception value.perception );
+      ("armor", encode_save50_member0_checkpoint_state_ground_items_item_item_armor value.armor);
+      ("id", encode_json_string value.id);
+      ("name", encode_json_string value.name);
+      ("description", encode_json_string value.description);
+      ( "attacks",
+        encode_save41_member0_checkpoint_state_ground_items_item_item_attacks value.attacks );
+      ( "healing",
+        encode_save50_member0_checkpoint_state_ground_items_item_item_healing value.healing );
+    ]
+
+and encode_save50_member0_checkpoint_state_ground_items_item_item_perception_member1
+    (value : save50_member0_checkpoint_state_ground_items_item_item_perception_member1) : Js.Json.t
+    =
+  wire_to_json
+    ~known:[ "range"; "penetrates"; "concealment"; "light" ]
+    value.wire
+    [
+      ("range", encode_save41_member0_checkpoint_state_vision_groups_item_sight_range value.range);
+      ( "penetrates",
+        encode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates value.penetrates
+      );
+      ( "concealment",
+        encode_save50_member0_checkpoint_state_tiles_item_perception_concealment value.concealment
+      );
+      ("light", encode_save41_member0_checkpoint_state_tiles_item_light_member1_emission value.light);
+    ]
+
+and encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item
+    (value : save50_member0_checkpoint_state_tiles_item_perception_concealment_item) : Js.Json.t =
+  wire_to_json
+    ~known:[ "kind"; "revealWithin"; "requires" ]
+    value.wire
+    [
+      ( "kind",
+        encode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates_item value.kind
+      );
+      ("revealWithin", encode_json_number value.reveal_within);
+      ( "requires",
+        encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires
+          value.requires );
+    ]
+
+and encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires
+    (value : save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires) :
+    Js.Json.t =
+  wire_to_json ~known:[ "terrains"; "illumination" ] value.wire
+    [
+      ( "terrains",
+        encode_save48_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_terrains
+          value.terrains );
+      ( "illumination",
+        encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination
+          value.illumination );
+    ]
+
+and encode_save50_member0_checkpoint_state_tiles_item_perception_illumination
+    (value : save50_member0_checkpoint_state_tiles_item_perception_illumination) : Js.Json.t =
+  match value with
+  | `Lit -> Js.Json.parseExn "\"lit\""
+  | `Unlit -> Js.Json.parseExn "\"unlit\""
+  | `Darkness -> Js.Json.parseExn "\"darkness\""
+
+and encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1
+    (value :
+      save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1)
+    : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save50_member0_checkpoint_state_tiles_item_perception_illumination value)
+
+and encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination
+    (value :
+      save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination)
+    : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Array x ->
+      encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1
+        x
+
+and encode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+    (value : save50_member0_checkpoint_state_tiles_item_perception_concealment) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item value)
+
+and encode_save50_member0_checkpoint_state_ground_items_item_item_perception
+    (value : save50_member0_checkpoint_state_ground_items_item_item_perception) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_save50_member0_checkpoint_state_ground_items_item_item_perception_member1 x
+
+and encode_save50_member0_checkpoint_state_ground_items_item_item_armor
+    (value : save50_member0_checkpoint_state_ground_items_item_item_armor) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_fragments_native_state38_ground_items_item_item_armor_member1 x
+
+and encode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1
+    (value : save50_member0_checkpoint_state_ground_items_item_item_healing_member1) : Js.Json.t =
+  wire_to_json
+    ~known:[ "power"; "radius"; "includeSelf"; "targets" ]
+    value.wire
+    [
+      ("power", encode_json_number value.power);
+      ("radius", encode_json_number value.radius);
+      ("includeSelf", encode_json_boolean value.include_self);
+      ( "targets",
+        encode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets
+          value.targets );
+    ]
+
+and encode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets
+    (value : save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets) :
+    Js.Json.t =
+  match value with
+  | `Own_faction -> Js.Json.parseExn "\"own-faction\""
+  | `Allies -> Js.Json.parseExn "\"allies\""
+  | `Enemies -> Js.Json.parseExn "\"enemies\""
+  | `Everyone -> Js.Json.parseExn "\"everyone\""
+
+and encode_literal_own_faction (value : literal_own_faction) : Js.Json.t =
+  Js.Json.parseExn "\"own-faction\""
+
+and encode_literal_allies (value : literal_allies) : Js.Json.t = Js.Json.parseExn "\"allies\""
+and encode_literal_enemies (value : literal_enemies) : Js.Json.t = Js.Json.parseExn "\"enemies\""
+and encode_literal_everyone (value : literal_everyone) : Js.Json.t = Js.Json.parseExn "\"everyone\""
+
+and encode_save50_member0_checkpoint_state_ground_items_item_item_healing
+    (value : save50_member0_checkpoint_state_ground_items_item_item_healing) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1 x
+
+and encode_save50_member0_checkpoint_state_ground_items
+    (value : save50_member0_checkpoint_state_ground_items) : Js.Json.t =
+  Js.Json.array (Array.map encode_save50_member0_checkpoint_state_ground_items_item value)
+
+and encode_save50_member0_checkpoint_state_armies (value : save50_member0_checkpoint_state_armies) :
+    Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Tuple x -> encode_fragments_native_state38_armies_member1 x
+
+and encode_save50_member0_checkpoint_state_tiles_item
+    (value : save50_member0_checkpoint_state_tiles_item) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "id";
+        "location";
+        "col";
+        "row";
+        "terrain";
+        "owner";
+        "connections";
+        "deadEnds";
+        "walls";
+        "floor";
+        "perception";
+        "light";
+      ]
+    value.wire
+    [
+      ("id", encode_json_string value.id);
+      ("location", encode_fragments_tiles11_item_owner value.location);
+      ("col", encode_json_number value.col);
+      ("row", encode_json_number value.row);
+      ("terrain", encode_json_string value.terrain);
+      ("owner", encode_fragments_tiles11_item_owner value.owner);
+      ( "connections",
+        encode_save50_member0_checkpoint_state_tiles_item_connections value.connections );
+      ("deadEnds", encode_save50_member0_checkpoint_state_tiles_item_connections value.dead_ends);
+      ("walls", encode_save50_member0_checkpoint_state_tiles_item_connections value.walls);
+      ("floor", encode_fragments_tiles11_item_owner value.floor);
+      ("perception", encode_save50_member0_checkpoint_state_tiles_item_perception value.perception);
+      ("light", encode_save50_member0_checkpoint_state_tiles_item_light value.light);
+    ]
+
+and encode_save50_member0_checkpoint_state_tiles_item_connections
+    (value : save50_member0_checkpoint_state_tiles_item_connections) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Array x -> encode_fragments_tiles11_item_connections_member1 x
+
+and encode_save50_member0_checkpoint_state_tiles_item_perception
+    (value : save50_member0_checkpoint_state_tiles_item_perception) : Js.Json.t =
+  wire_to_json
+    ~known:[ "illumination"; "sight"; "remember"; "concealment" ]
+    value.wire
+    [
+      ( "illumination",
+        encode_save50_member0_checkpoint_state_tiles_item_perception_illumination value.illumination
+      );
+      ("sight", encode_save41_member0_checkpoint_state_tiles_item_perception_sight value.sight);
+      ("remember", encode_json_boolean value.remember);
+      ( "concealment",
+        encode_save50_member0_checkpoint_state_tiles_item_perception_concealment value.concealment
+      );
+    ]
+
+and encode_save50_member0_checkpoint_state_tiles_item_light_member1
+    (value : save50_member0_checkpoint_state_tiles_item_light_member1) : Js.Json.t =
+  wire_to_json
+    ~known:[ "emission"; "color"; "fixture"; "dx"; "dy"; "radius"; "power"; "when" ]
+    value.wire
+    [
+      ( "emission",
+        encode_save41_member0_checkpoint_state_tiles_item_light_member1_emission value.emission );
+      ("color", encode_save50_member0_checkpoint_state_tiles_item_light_member1_color value.color);
+      ("fixture", encode_save50_member0_checkpoint_state_units_item_retreating value.fixture);
+      ("dx", encode_history5_entries_item_mission value.dx);
+      ("dy", encode_history5_entries_item_mission value.dy);
+      ("radius", encode_json_number value.radius);
+      ("power", encode_json_number value.power);
+      ("when", encode_save50_member0_checkpoint_state_tiles_item_light_member1_when_ value.when_);
+    ]
+
+and encode_save50_member0_checkpoint_state_tiles_item_light_member1_color
+    (value : save50_member0_checkpoint_state_tiles_item_light_member1_color) : Js.Json.t =
+  match value with `Null -> json_null | `Tuple x -> encode_fragments_light23_color_member1 x
+
+and encode_save50_member0_checkpoint_state_units_item_retreating
+    (value : save50_member0_checkpoint_state_units_item_retreating) : Js.Json.t =
+  match value with `Null -> json_null | `Boolean x -> encode_json_boolean x
+
+and encode_save50_member0_checkpoint_state_tiles_item_light_member1_when_
+    (value : save50_member0_checkpoint_state_tiles_item_light_member1_when_) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when_ x
+
+and encode_save50_member0_checkpoint_state_tiles_item_light
+    (value : save50_member0_checkpoint_state_tiles_item_light) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_save50_member0_checkpoint_state_tiles_item_light_member1 x
+
+and encode_save50_member0_checkpoint_state_tiles (value : save50_member0_checkpoint_state_tiles) :
+    Js.Json.t =
+  Js.Json.array (Array.map encode_save50_member0_checkpoint_state_tiles_item value)
+
+and encode_save50_member0_checkpoint_state_units_item
+    (value : save50_member0_checkpoint_state_units_item) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "revealedTo";
+        "perceptionEffects";
+        "faction";
+        "items";
+        "aiGroup";
+        "id";
+        "type";
+        "tile";
+        "hp";
+        "moved";
+        "attackSpent";
+        "experience";
+        "character";
+        "role";
+        "retreating";
+        "rebuilding";
+      ]
+    value.wire
+    [
+      ("revealedTo", encode_fragments_native_state38_log value.revealed_to);
+      ( "perceptionEffects",
+        encode_save50_member0_checkpoint_state_units_item_perception_effects
+          value.perception_effects );
+      ("faction", encode_json_string value.faction);
+      ("items", encode_save50_member0_checkpoint_state_units_item_items value.items);
+      ("aiGroup", encode_fragments_tiles11_item_owner value.ai_group);
+      ("id", encode_json_string value.id);
+      ("type", encode_json_string value.type_);
+      ("tile", encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("hp", encode_json_number value.hp);
+      ("moved", encode_json_boolean value.moved);
+      ("attackSpent", encode_json_boolean value.attack_spent);
+      ("experience", encode_history5_entries_item_mission value.experience);
+      ("character", encode_fragments_tiles11_item_owner value.character);
+      ( "role",
+        encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+          value.role );
+      ("retreating", encode_save50_member0_checkpoint_state_units_item_retreating value.retreating);
+      ("rebuilding", encode_save50_member0_checkpoint_state_units_item_retreating value.rebuilding);
+    ]
+
+and encode_save50_member0_checkpoint_state_units_item_perception_effects_item
+    (value : save50_member0_checkpoint_state_units_item_perception_effects_item) : Js.Json.t =
+  wire_to_json
+    ~known:[ "id"; "penetrates"; "concealment"; "light"; "expiresAt" ]
+    value.wire
+    [
+      ("id", encode_json_string value.id);
+      ( "penetrates",
+        encode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates value.penetrates
+      );
+      ( "concealment",
+        encode_save50_member0_checkpoint_state_tiles_item_perception_concealment value.concealment
+      );
+      ("light", encode_save41_member0_checkpoint_state_tiles_item_light_member1_emission value.light);
+      ( "expiresAt",
+        encode_save41_member0_checkpoint_state_units_item_perception_effects_item_expires_at
+          value.expires_at );
+    ]
+
+and encode_save50_member0_checkpoint_state_units_item_perception_effects
+    (value : save50_member0_checkpoint_state_units_item_perception_effects) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save50_member0_checkpoint_state_units_item_perception_effects_item value)
+
+and encode_save50_member0_checkpoint_state_units_item_items
+    (value : save50_member0_checkpoint_state_units_item_items) : Js.Json.t =
+  Js.Json.array (Array.map encode_save50_member0_checkpoint_state_ground_items_item_item value)
+
+and encode_save50_member0_checkpoint_state_units (value : save50_member0_checkpoint_state_units) :
+    Js.Json.t =
+  Js.Json.array (Array.map encode_save50_member0_checkpoint_state_units_item value)
+
+and encode_save50_member0_checkpoint_state_campaign_member1
+    (value : save50_member0_checkpoint_state_campaign_member1) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "scripts";
+        "evacuated";
+        "id";
+        "mission";
+        "recall";
+        "veterans";
+        "storyVeterans";
+        "fallenCompanions";
+        "carryGold";
+        "marks";
+        "dialogue";
+        "dialogueIndex";
+        "outcome";
+        "completed";
+        "refuge";
+        "vigil";
+        "holds";
+        "flags";
+      ]
+    value.wire
+    [
+      ("scripts", encode_save50_member0_checkpoint_state_campaign_member1_scripts value.scripts);
+      ( "evacuated",
+        encode_save50_member0_checkpoint_state_campaign_member1_evacuated value.evacuated );
+      ("id", encode_json_string value.id);
+      ("mission", encode_json_number value.mission);
+      ("recall", encode_fragments_native_state38_log value.recall);
+      ("veterans", encode_save50_member0_checkpoint_state_campaign_member1_veterans value.veterans);
+      ( "storyVeterans",
+        encode_save50_member0_checkpoint_state_campaign_member1_veterans value.story_veterans );
+      ( "fallenCompanions",
+        encode_save50_member0_checkpoint_state_campaign_member1_fallen_companions
+          value.fallen_companions );
+      ("carryGold", encode_json_number value.carry_gold);
+      ("marks", encode_fragments_native_state38_log value.marks);
+      ("dialogue", encode_save50_member0_checkpoint_state_campaign_member1_dialogue value.dialogue);
+      ("dialogueIndex", encode_json_number value.dialogue_index);
+      ("outcome", encode_fragments_tiles11_item_owner value.outcome);
+      ("completed", encode_json_boolean value.completed);
+      ("refuge", encode_save50_member0_checkpoint_state_campaign_member1_refuge value.refuge);
+      ("vigil", encode_save50_member0_checkpoint_state_campaign_member1_vigil value.vigil);
+      ("holds", encode_save50_member0_checkpoint_state_campaign_member1_holds value.holds);
+      ("flags", encode_fragments_native_state38_campaign_member1_flags value.flags);
+    ]
+
+and encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1
+    (value : save50_member0_checkpoint_state_campaign_member1_scripts_member1) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "failed";
+        "completed";
+        "revealed";
+        "recruitment";
+        "active";
+        "holds";
+        "marks";
+        "pending";
+        "nextMark";
+      ]
+    value.wire
+    [
+      ("failed", encode_fragments_native_state38_log value.failed);
+      ("completed", encode_fragments_native_state38_log value.completed);
+      ("revealed", encode_fragments_native_state38_log value.revealed);
+      ( "recruitment",
+        encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+          value.recruitment );
+      ("active", encode_fragments_native_state38_log value.active);
+      ("holds", encode_fragments_native_state38_campaign_member1_scripts_member1_holds value.holds);
+      ( "marks",
+        encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks value.marks );
+      ( "pending",
+        encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending
+          value.pending );
+      ("nextMark", encode_json_number value.next_mark);
+    ]
+
+and encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+    (value : save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment) :
+    Js.Json.t =
+  map_to_json encode_save50_member0_checkpoint_state_factions_item_recruits_member1 value
+
+and encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+    (value : save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item) :
+    Js.Json.t =
+  wire_to_json
+    ~known:[ "sight"; "lightRemembered"; "id"; "type"; "tile"; "light" ]
+    value.wire
+    [
+      ("sight", encode_save41_member0_checkpoint_state_tiles_item_perception_sight value.sight);
+      ("lightRemembered", encode_json_boolean value.light_remembered);
+      ("id", encode_json_number value.id);
+      ("type", encode_json_string value.type_);
+      ("tile", encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("light", encode_save50_member0_checkpoint_state_tiles_item_light value.light);
+    ]
+
+and encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+    (value : save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+       value)
+
+and encode_save50_member0_checkpoint_state_campaign_member1_scripts
+    (value : save50_member0_checkpoint_state_campaign_member1_scripts) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1 x
+
+and encode_save50_member0_checkpoint_state_campaign_member1_evacuated_item
+    (value : save50_member0_checkpoint_state_campaign_member1_evacuated_item) : Js.Json.t =
+  wire_to_json ~known:[ "event"; "unit" ] value.wire
+    [
+      ("event", encode_json_string value.event);
+      ("unit", encode_save50_member0_checkpoint_state_units_item value.unit_);
+    ]
+
+and encode_save50_member0_checkpoint_state_campaign_member1_evacuated
+    (value : save50_member0_checkpoint_state_campaign_member1_evacuated) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save50_member0_checkpoint_state_campaign_member1_evacuated_item value)
+
+and encode_save50_member0_checkpoint_state_campaign_member1_veterans_member1_item
+    (value : save50_member0_checkpoint_state_campaign_member1_veterans_member1_item) : Js.Json.t =
+  wire_to_json
+    ~known:[ "items"; "type"; "experience"; "character"; "role" ]
+    value.wire
+    [
+      ("items", encode_save50_member0_checkpoint_state_units_item_items value.items);
+      ("type", encode_json_string value.type_);
+      ("experience", encode_json_number value.experience);
+      ("character", encode_fragments_tiles11_item_owner value.character);
+      ( "role",
+        encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+          value.role );
+    ]
+
+and encode_save50_member0_checkpoint_state_campaign_member1_veterans_member1
+    (value : save50_member0_checkpoint_state_campaign_member1_veterans_member1) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save50_member0_checkpoint_state_campaign_member1_veterans_member1_item value)
+
+and encode_save50_member0_checkpoint_state_campaign_member1_veterans
+    (value : save50_member0_checkpoint_state_campaign_member1_veterans) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Array x -> encode_save50_member0_checkpoint_state_campaign_member1_veterans_member1 x
+
+and encode_save50_member0_checkpoint_state_campaign_member1_fallen_companions
+    (value : save50_member0_checkpoint_state_campaign_member1_fallen_companions) : Js.Json.t =
+  match value with `Null -> json_null | `Array x -> encode_fragments_native_state38_log x
+
+and encode_save50_member0_checkpoint_state_campaign_member1_dialogue_item
+    (value : save50_member0_checkpoint_state_campaign_member1_dialogue_item) : Js.Json.t =
+  wire_to_json
+    ~known:[ "sound"; "speaker"; "character"; "portrait"; "text" ]
+    value.wire
+    [
+      ("sound", encode_fragments_tiles11_item_owner value.sound);
+      ("speaker", encode_json_string value.speaker);
+      ("character", encode_fragments_tiles11_item_owner value.character);
+      ("portrait", encode_json_string value.portrait);
+      ("text", encode_json_string value.text);
+    ]
+
+and encode_save50_member0_checkpoint_state_campaign_member1_dialogue
+    (value : save50_member0_checkpoint_state_campaign_member1_dialogue) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save50_member0_checkpoint_state_campaign_member1_dialogue_item value)
+
+and encode_save50_member0_checkpoint_state_campaign_member1_refuge
+    (value : save50_member0_checkpoint_state_campaign_member1_refuge) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_fragments_native_state38_campaign_member1_refuge_member1 x
+
+and encode_save50_member0_checkpoint_state_campaign_member1_vigil
+    (value : save50_member0_checkpoint_state_campaign_member1_vigil) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_fragments_native_state38_campaign_member1_vigil_member1 x
+
+and encode_save50_member0_checkpoint_state_campaign_member1_holds
+    (value : save50_member0_checkpoint_state_campaign_member1_holds) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_fragments_native_state38_campaign_member1_holds_member1 x
+
+and encode_save50_member0_checkpoint_state_campaign
+    (value : save50_member0_checkpoint_state_campaign) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_save50_member0_checkpoint_state_campaign_member1 x
+
+and encode_save50 (value : save50) : Js.Json.t =
+  match value with `Current x -> encode_save50_member0 x | `Turn x -> encode_save50_member1 x
+
+and encode_save50_member0 (value : save50_member0) : Js.Json.t =
+  wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    [
+      ("pendingEnemy", encode_json_boolean value.pending_enemy);
+      ("undo", encode_save34_undo_member1 value.undo);
+      ("progress", encode_save49_member0_progress value.progress);
+      ("version", encode_literal_50 value.version);
+      ("checkpoint", encode_save50_member0_checkpoint value.checkpoint);
+      ("setup", encode_save42_member0_setup value.setup);
+    ]
+
+and encode_literal_50 (value : literal_50) : Js.Json.t = Js.Json.parseExn "50"
+
+and encode_save50_member0_checkpoint (value : save50_member0_checkpoint) : Js.Json.t =
+  wire_to_json ~known:[ "seed"; "state" ] value.wire
+    [
+      ("seed", encode_json_number value.seed);
+      ("state", encode_save50_member0_checkpoint_state value.state);
+    ]
+
+and encode_save50_member1 (value : save50_member1) : Js.Json.t =
+  wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    ([
+       ("pendingEnemy", encode_literal_false value.pending_enemy);
+       ("progress", encode_save49_member1_progress value.progress);
+       ("version", encode_literal_50 value.version);
+       ("checkpoint", encode_save50_member0_checkpoint value.checkpoint);
+       ("setup", encode_save42_member0_setup value.setup);
+     ]
+    @
+    match value.undo with
+    | None -> if List.mem "undo" value.wire.undefined_fields then [ ("undo", undefined) ] else []
+    | Some x -> [ ("undo", encode_json_undefined x) ])
+
+and encode_save51_member0_checkpoint_state (value : save51_member0_checkpoint_state) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "mapModifiers";
+        "lighting";
+        "visionGroups";
+        "factions";
+        "groundItems";
+        "armies";
+        "conditionMemory";
+        "mapId";
+        "mapRevision";
+        "cols";
+        "rows";
+        "round";
+        "turn";
+        "gold";
+        "winner";
+        "nextId";
+        "combatRng";
+        "log";
+        "tiles";
+        "units";
+        "campaign";
+        "lastCombat";
+      ]
+    value.wire
+    [
+      ("mapModifiers", encode_save51_member0_checkpoint_state_map_modifiers value.map_modifiers);
+      ("lighting", encode_save51_member0_checkpoint_state_lighting value.lighting);
+      ("visionGroups", encode_save51_member0_checkpoint_state_vision_groups value.vision_groups);
+      ("factions", encode_save50_member0_checkpoint_state_factions value.factions);
+      ("groundItems", encode_save51_member0_checkpoint_state_ground_items value.ground_items);
+      ("armies", encode_save50_member0_checkpoint_state_armies value.armies);
+      ("conditionMemory", encode_fragments_native_state38_log value.condition_memory);
+      ("mapId", encode_json_string value.map_id);
+      ("mapRevision", encode_json_number value.map_revision);
+      ("cols", encode_json_number value.cols);
+      ("rows", encode_json_number value.rows);
+      ("round", encode_json_number value.round);
+      ("turn", encode_save41_member0_setup_first value.turn);
+      ("gold", encode_fragments_native_state38_gold value.gold);
+      ("winner", encode_save41_member0_checkpoint_state_winner value.winner);
+      ("nextId", encode_json_number value.next_id);
+      ("combatRng", encode_json_number value.combat_rng);
+      ("log", encode_fragments_native_state38_log value.log);
+      ("tiles", encode_save51_member0_checkpoint_state_tiles value.tiles);
+      ("units", encode_save51_member0_checkpoint_state_units value.units);
+      ("campaign", encode_save51_member0_checkpoint_state_campaign value.campaign);
+      ("lastCombat", encode_shape_735 value.last_combat);
+    ]
+
+and encode_save51_member0_checkpoint_state_map_modifiers
+    (value : save51_member0_checkpoint_state_map_modifiers) : Js.Json.t =
+  wire_to_json
+    ~known:[ "sight"; "damageModifiers"; "terrainModifiers" ]
+    value.wire
+    [
+      ("sight", encode_save51_member0_checkpoint_state_map_modifiers_sight value.sight);
+      ( "damageModifiers",
+        encode_fragments_native_state38_ground_items_item_item_armor_member1 value.damage_modifiers
+      );
+      ( "terrainModifiers",
+        encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers
+          value.terrain_modifiers );
+    ]
+
+and encode_save51_member0_checkpoint_state_map_modifiers_sight
+    (value : save51_member0_checkpoint_state_map_modifiers_sight) : Js.Json.t =
+  wire_to_json
+    ~known:[ "range"; "unlimited"; "sightModifiers"; "penetrates" ]
+    value.wire
+    [
+      ("range", encode_json_number value.range);
+      ("unlimited", encode_json_boolean value.unlimited);
+      ( "sightModifiers",
+        encode_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers
+          value.sight_modifiers );
+      ( "penetrates",
+        encode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates value.penetrates
+      );
+    ]
+
+and encode_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers
+    (value : save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers) : Js.Json.t =
+  wire_to_json ~known:[ "lit"; "unlit"; "darkness" ] value.wire
+    [
+      ("lit", encode_json_number value.lit);
+      ("unlit", encode_json_number value.unlit);
+      ("darkness", encode_json_number value.darkness);
+    ]
+
+and encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value
+    (value : save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value) : Js.Json.t =
+  wire_to_json
+    ~known:[ "cost"; "passable"; "damageModifiers" ]
+    value.wire
+    [
+      ("cost", encode_json_number value.cost);
+      ("passable", encode_save50_member0_checkpoint_state_units_item_retreating value.passable);
+      ( "damageModifiers",
+        encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers
+          value.damage_modifiers );
+    ]
+
+and encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers
+    (value : save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers)
+    : Js.Json.t =
+  wire_to_json
+    ~known:[ "melee"; "ranged"; "blade"; "pierce"; "impact" ]
+    value.wire
+    [
+      ("melee", encode_json_number value.melee);
+      ("ranged", encode_json_number value.ranged);
+      ("blade", encode_json_number value.blade);
+      ("pierce", encode_json_number value.pierce);
+      ("impact", encode_json_number value.impact);
+    ]
+
+and encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers
+    (value : save51_member0_checkpoint_state_map_modifiers_terrain_modifiers) : Js.Json.t =
+  map_to_json encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value value
+
+and encode_save51_member0_checkpoint_state_lighting
+    (value : save51_member0_checkpoint_state_lighting) : Js.Json.t =
+  wire_to_json ~known:[ "time" ] value.wire
+    [ ("time", encode_save51_member0_checkpoint_state_lighting_time value.time) ]
+
+and encode_save51_member0_checkpoint_state_lighting_time
+    (value : save51_member0_checkpoint_state_lighting_time) : Js.Json.t =
+  match value with `Day -> Js.Json.parseExn "\"day\"" | `Night -> Js.Json.parseExn "\"night\""
+
+and encode_literal_day (value : literal_day) : Js.Json.t = Js.Json.parseExn "\"day\""
+and encode_literal_night (value : literal_night) : Js.Json.t = Js.Json.parseExn "\"night\""
+
+and encode_save51_member0_checkpoint_state_vision_groups_item
+    (value : save51_member0_checkpoint_state_vision_groups_item) : Js.Json.t =
+  wire_to_json ~known:[ "id"; "sight"; "explored" ] value.wire
+    [
+      ("id", encode_json_string value.id);
+      ("sight", encode_save51_member0_checkpoint_state_vision_groups_item_sight value.sight);
+      ( "explored",
+        encode_save39_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_area
+          value.explored );
+    ]
+
+and encode_save51_member0_checkpoint_state_vision_groups_item_sight
+    (value : save51_member0_checkpoint_state_vision_groups_item_sight) : Js.Json.t =
+  wire_to_json ~known:[ "range"; "penetrates" ] value.wire
+    [
+      ("range", encode_save51_member0_checkpoint_state_vision_groups_item_sight_range value.range);
+      ( "penetrates",
+        encode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates value.penetrates
+      );
+    ]
+
+and encode_save51_member0_checkpoint_state_vision_groups_item_sight_range
+    (value : save51_member0_checkpoint_state_vision_groups_item_sight_range) : Js.Json.t =
+  match value with
+  | `Unlimited -> Js.Json.parseExn "\"unlimited\""
+  | `Number x -> encode_json_number x
+
+and encode_save51_member0_checkpoint_state_vision_groups
+    (value : save51_member0_checkpoint_state_vision_groups) : Js.Json.t =
+  Js.Json.array (Array.map encode_save51_member0_checkpoint_state_vision_groups_item value)
+
+and encode_save51_member0_checkpoint_state_ground_items_item
+    (value : save51_member0_checkpoint_state_ground_items_item) : Js.Json.t =
+  wire_to_json ~known:[ "tile"; "item" ] value.wire
+    [
+      ("tile", encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("item", encode_save51_member0_checkpoint_state_ground_items_item_item value.item);
+    ]
+
+and encode_save51_member0_checkpoint_state_ground_items_item_item
+    (value : save51_member0_checkpoint_state_ground_items_item_item) : Js.Json.t =
+  wire_to_json
+    ~known:[ "sight"; "effects"; "armor"; "id"; "name"; "description"; "attacks" ]
+    value.wire
+    [
+      ("sight", encode_save51_member0_checkpoint_state_map_modifiers_sight value.sight);
+      ("effects", encode_save51_member0_checkpoint_state_tiles_item_effects value.effects);
+      ("armor", encode_save50_member0_checkpoint_state_ground_items_item_item_armor value.armor);
+      ("id", encode_json_string value.id);
+      ("name", encode_json_string value.name);
+      ("description", encode_json_string value.description);
+      ( "attacks",
+        encode_save41_member0_checkpoint_state_ground_items_item_item_attacks value.attacks );
+    ]
+
+and encode_save51_member0_checkpoint_state_tiles_item_effects_item
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item) : Js.Json.t =
+  wire_to_json ~known:[ "scope"; "stacking"; "effect" ] value.wire
+    [
+      ("scope", encode_save51_member0_checkpoint_state_tiles_item_effects_item_scope value.scope);
+      ( "stacking",
+        encode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking value.stacking );
+      ( "effect",
+        encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect_ value.effect_ );
+    ]
+
+and encode_save51_member0_checkpoint_state_tiles_item_effects_item_scope
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_scope) : Js.Json.t =
+  wire_to_json
+    ~known:[ "radius"; "includeSelf"; "targets" ]
+    value.wire
+    [
+      ("radius", encode_json_number value.radius);
+      ("includeSelf", encode_json_boolean value.include_self);
+      ( "targets",
+        encode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets
+          value.targets );
+    ]
+
+and encode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_stacking) : Js.Json.t =
+  wire_to_json ~known:[ "group"; "combine" ] value.wire
+    [
+      ("group", encode_json_string value.group);
+      ( "combine",
+        encode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine
+          value.combine );
+    ]
+
+and encode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine) : Js.Json.t =
+  match value with
+  | `Add -> Js.Json.parseExn "\"add\""
+  | `Max -> Js.Json.parseExn "\"max\""
+  | `Union -> Js.Json.parseExn "\"union\""
+
+and encode_literal_add (value : literal_add) : Js.Json.t = Js.Json.parseExn "\"add\""
+and encode_literal_max (value : literal_max) : Js.Json.t = Js.Json.parseExn "\"max\""
+and encode_literal_union (value : literal_union) : Js.Json.t = Js.Json.parseExn "\"union\""
+
+and encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect_
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_effect_) : Js.Json.t =
+  match value with
+  | `Healing x -> encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0 x
+  | `Thorns x -> encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1 x
+  | `Sight x -> encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2 x
+  | `Concealment x ->
+      encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3 x
+  | `Light x -> encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4 x
+  | `Stat_modifiers x ->
+      encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5 x
+
+and encode_literal_healing (value : literal_healing) : Js.Json.t = Js.Json.parseExn "\"healing\""
+
+and encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0) : Js.Json.t =
+  wire_to_json ~known:[ "kind"; "power" ] value.wire
+    [ ("kind", encode_literal_healing value.kind); ("power", encode_json_number value.power) ]
+
+and encode_literal_thorns (value : literal_thorns) : Js.Json.t = Js.Json.parseExn "\"thorns\""
+
+and encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1) : Js.Json.t =
+  wire_to_json
+    ~known:[ "kind"; "damagePerStrike"; "incomingCategory" ]
+    value.wire
+    [
+      ("kind", encode_literal_thorns value.kind);
+      ("damagePerStrike", encode_json_number value.damage_per_strike);
+      ( "incomingCategory",
+        encode_fragments_native_state38_ground_items_item_item_attacks_item_category
+          value.incoming_category );
+    ]
+
+and encode_literal_sight (value : literal_sight) : Js.Json.t = Js.Json.parseExn "\"sight\""
+
+and encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2) : Js.Json.t =
+  wire_to_json
+    ~known:[ "kind"; "range"; "unlimited"; "sightModifiers"; "penetrates" ]
+    value.wire
+    [
+      ("kind", encode_literal_sight value.kind);
+      ("range", encode_json_number value.range);
+      ("unlimited", encode_json_boolean value.unlimited);
+      ( "sightModifiers",
+        encode_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers
+          value.sight_modifiers );
+      ( "penetrates",
+        encode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates value.penetrates
+      );
+    ]
+
+and encode_literal_concealment (value : literal_concealment) : Js.Json.t =
+  Js.Json.parseExn "\"concealment\""
+
+and encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3) : Js.Json.t =
+  wire_to_json ~known:[ "kind"; "rule" ] value.wire
+    [
+      ("kind", encode_literal_concealment value.kind);
+      ( "rule",
+        encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item value.rule );
+    ]
+
+and encode_literal_light (value : literal_light) : Js.Json.t = Js.Json.parseExn "\"light\""
+
+and encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4) : Js.Json.t =
+  wire_to_json ~known:[ "kind"; "radius" ] value.wire
+    [ ("kind", encode_literal_light value.kind); ("radius", encode_json_number value.radius) ]
+
+and encode_literal_stat_modifiers (value : literal_stat_modifiers) : Js.Json.t =
+  Js.Json.parseExn "\"stat-modifiers\""
+
+and encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5) : Js.Json.t =
+  wire_to_json ~known:[ "kind"; "modifiers" ] value.wire
+    [
+      ("kind", encode_literal_stat_modifiers value.kind);
+      ("modifiers", encode_save51_member0_checkpoint_state_map_modifiers value.modifiers);
+    ]
+
+and encode_save51_member0_checkpoint_state_tiles_item_effects
+    (value : save51_member0_checkpoint_state_tiles_item_effects) : Js.Json.t =
+  Js.Json.array (Array.map encode_save51_member0_checkpoint_state_tiles_item_effects_item value)
+
+and encode_save51_member0_checkpoint_state_ground_items
+    (value : save51_member0_checkpoint_state_ground_items) : Js.Json.t =
+  Js.Json.array (Array.map encode_save51_member0_checkpoint_state_ground_items_item value)
+
+and encode_save51_member0_checkpoint_state_tiles_item
+    (value : save51_member0_checkpoint_state_tiles_item) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "effects";
+        "id";
+        "location";
+        "col";
+        "row";
+        "terrain";
+        "owner";
+        "connections";
+        "deadEnds";
+        "walls";
+        "floor";
+        "perception";
+        "light";
+      ]
+    value.wire
+    [
+      ("effects", encode_save51_member0_checkpoint_state_tiles_item_effects value.effects);
+      ("id", encode_json_string value.id);
+      ("location", encode_fragments_tiles11_item_owner value.location);
+      ("col", encode_json_number value.col);
+      ("row", encode_json_number value.row);
+      ("terrain", encode_json_string value.terrain);
+      ("owner", encode_fragments_tiles11_item_owner value.owner);
+      ( "connections",
+        encode_save50_member0_checkpoint_state_tiles_item_connections value.connections );
+      ("deadEnds", encode_save50_member0_checkpoint_state_tiles_item_connections value.dead_ends);
+      ("walls", encode_save50_member0_checkpoint_state_tiles_item_connections value.walls);
+      ("floor", encode_fragments_tiles11_item_owner value.floor);
+      ("perception", encode_save51_member0_checkpoint_state_tiles_item_perception value.perception);
+      ("light", encode_save50_member0_checkpoint_state_tiles_item_light value.light);
+    ]
+
+and encode_save51_member0_checkpoint_state_tiles_item_perception
+    (value : save51_member0_checkpoint_state_tiles_item_perception) : Js.Json.t =
+  wire_to_json
+    ~known:[ "illumination"; "sight"; "remember"; "concealment" ]
+    value.wire
+    [
+      ( "illumination",
+        encode_save51_member0_checkpoint_state_tiles_item_perception_illumination value.illumination
+      );
+      ("sight", encode_save51_member0_checkpoint_state_tiles_item_perception_sight value.sight);
+      ("remember", encode_json_boolean value.remember);
+      ( "concealment",
+        encode_save50_member0_checkpoint_state_tiles_item_perception_concealment value.concealment
+      );
+    ]
+
+and encode_save51_member0_checkpoint_state_tiles_item_perception_illumination
+    (value : save51_member0_checkpoint_state_tiles_item_perception_illumination) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Lit -> Js.Json.parseExn "\"lit\""
+  | `Unlit -> Js.Json.parseExn "\"unlit\""
+  | `Darkness -> Js.Json.parseExn "\"darkness\""
+
+and encode_save51_member0_checkpoint_state_tiles_item_perception_sight_member1
+    (value : save51_member0_checkpoint_state_tiles_item_perception_sight_member1) : Js.Json.t =
+  wire_to_json ~known:[ "group"; "profile" ] value.wire
+    [
+      ("group", encode_json_string value.group);
+      ("profile", encode_save51_member0_checkpoint_state_vision_groups_item_sight value.profile);
+    ]
+
+and encode_save51_member0_checkpoint_state_tiles_item_perception_sight
+    (value : save51_member0_checkpoint_state_tiles_item_perception_sight) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_save51_member0_checkpoint_state_tiles_item_perception_sight_member1 x
+
+and encode_save51_member0_checkpoint_state_tiles (value : save51_member0_checkpoint_state_tiles) :
+    Js.Json.t =
+  Js.Json.array (Array.map encode_save51_member0_checkpoint_state_tiles_item value)
+
+and encode_save51_member0_checkpoint_state_units_item
+    (value : save51_member0_checkpoint_state_units_item) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "revealedTo";
+        "perceptionEffects";
+        "faction";
+        "items";
+        "aiGroup";
+        "id";
+        "type";
+        "tile";
+        "hp";
+        "moved";
+        "attackSpent";
+        "experience";
+        "character";
+        "role";
+        "retreating";
+        "rebuilding";
+      ]
+    value.wire
+    [
+      ("revealedTo", encode_fragments_native_state38_log value.revealed_to);
+      ( "perceptionEffects",
+        encode_save51_member0_checkpoint_state_units_item_perception_effects
+          value.perception_effects );
+      ("faction", encode_json_string value.faction);
+      ("items", encode_save51_member0_checkpoint_state_units_item_items value.items);
+      ("aiGroup", encode_fragments_tiles11_item_owner value.ai_group);
+      ("id", encode_json_string value.id);
+      ("type", encode_json_string value.type_);
+      ("tile", encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("hp", encode_json_number value.hp);
+      ("moved", encode_json_boolean value.moved);
+      ("attackSpent", encode_json_boolean value.attack_spent);
+      ("experience", encode_history5_entries_item_mission value.experience);
+      ("character", encode_fragments_tiles11_item_owner value.character);
+      ( "role",
+        encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+          value.role );
+      ("retreating", encode_save50_member0_checkpoint_state_units_item_retreating value.retreating);
+      ("rebuilding", encode_save50_member0_checkpoint_state_units_item_retreating value.rebuilding);
+    ]
+
+and encode_save51_member0_checkpoint_state_units_item_perception_effects_item
+    (value : save51_member0_checkpoint_state_units_item_perception_effects_item) : Js.Json.t =
+  wire_to_json
+    ~known:[ "id"; "penetrates"; "concealment"; "light" ]
+    value.wire
+    [
+      ("id", encode_json_string value.id);
+      ( "penetrates",
+        encode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates value.penetrates
+      );
+      ( "concealment",
+        encode_save50_member0_checkpoint_state_tiles_item_perception_concealment value.concealment
+      );
+      ("light", encode_save41_member0_checkpoint_state_tiles_item_light_member1_emission value.light);
+    ]
+
+and encode_save51_member0_checkpoint_state_units_item_perception_effects
+    (value : save51_member0_checkpoint_state_units_item_perception_effects) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save51_member0_checkpoint_state_units_item_perception_effects_item value)
+
+and encode_save51_member0_checkpoint_state_units_item_items
+    (value : save51_member0_checkpoint_state_units_item_items) : Js.Json.t =
+  Js.Json.array (Array.map encode_save51_member0_checkpoint_state_ground_items_item_item value)
+
+and encode_save51_member0_checkpoint_state_units (value : save51_member0_checkpoint_state_units) :
+    Js.Json.t =
+  Js.Json.array (Array.map encode_save51_member0_checkpoint_state_units_item value)
+
+and encode_save51_member0_checkpoint_state_campaign_member1
+    (value : save51_member0_checkpoint_state_campaign_member1) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "scripts";
+        "evacuated";
+        "id";
+        "mission";
+        "recall";
+        "veterans";
+        "storyVeterans";
+        "fallenCompanions";
+        "carryGold";
+        "marks";
+        "dialogue";
+        "dialogueIndex";
+        "outcome";
+        "completed";
+        "refuge";
+        "vigil";
+        "holds";
+        "flags";
+      ]
+    value.wire
+    [
+      ("scripts", encode_save51_member0_checkpoint_state_campaign_member1_scripts value.scripts);
+      ( "evacuated",
+        encode_save51_member0_checkpoint_state_campaign_member1_evacuated value.evacuated );
+      ("id", encode_json_string value.id);
+      ("mission", encode_json_number value.mission);
+      ("recall", encode_fragments_native_state38_log value.recall);
+      ("veterans", encode_save51_member0_checkpoint_state_campaign_member1_veterans value.veterans);
+      ( "storyVeterans",
+        encode_save51_member0_checkpoint_state_campaign_member1_veterans value.story_veterans );
+      ( "fallenCompanions",
+        encode_save50_member0_checkpoint_state_campaign_member1_fallen_companions
+          value.fallen_companions );
+      ("carryGold", encode_json_number value.carry_gold);
+      ("marks", encode_fragments_native_state38_log value.marks);
+      ("dialogue", encode_save50_member0_checkpoint_state_campaign_member1_dialogue value.dialogue);
+      ("dialogueIndex", encode_json_number value.dialogue_index);
+      ("outcome", encode_fragments_tiles11_item_owner value.outcome);
+      ("completed", encode_json_boolean value.completed);
+      ("refuge", encode_save50_member0_checkpoint_state_campaign_member1_refuge value.refuge);
+      ("vigil", encode_save50_member0_checkpoint_state_campaign_member1_vigil value.vigil);
+      ("holds", encode_save50_member0_checkpoint_state_campaign_member1_holds value.holds);
+      ("flags", encode_fragments_native_state38_campaign_member1_flags value.flags);
+    ]
+
+and encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1
+    (value : save51_member0_checkpoint_state_campaign_member1_scripts_member1) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "failed";
+        "completed";
+        "revealed";
+        "recruitment";
+        "active";
+        "holds";
+        "marks";
+        "pending";
+        "nextMark";
+      ]
+    value.wire
+    [
+      ("failed", encode_fragments_native_state38_log value.failed);
+      ("completed", encode_fragments_native_state38_log value.completed);
+      ("revealed", encode_fragments_native_state38_log value.revealed);
+      ( "recruitment",
+        encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+          value.recruitment );
+      ("active", encode_fragments_native_state38_log value.active);
+      ("holds", encode_fragments_native_state38_campaign_member1_scripts_member1_holds value.holds);
+      ( "marks",
+        encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks value.marks );
+      ( "pending",
+        encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending
+          value.pending );
+      ("nextMark", encode_json_number value.next_mark);
+    ]
+
+and encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+    (value : save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item) :
+    Js.Json.t =
+  wire_to_json
+    ~known:[ "sight"; "lightRemembered"; "id"; "type"; "tile"; "light" ]
+    value.wire
+    [
+      ("sight", encode_save51_member0_checkpoint_state_tiles_item_perception_sight value.sight);
+      ("lightRemembered", encode_json_boolean value.light_remembered);
+      ("id", encode_json_number value.id);
+      ("type", encode_json_string value.type_);
+      ("tile", encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("light", encode_save50_member0_checkpoint_state_tiles_item_light value.light);
+    ]
+
+and encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+    (value : save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+       value)
+
+and encode_save51_member0_checkpoint_state_campaign_member1_scripts
+    (value : save51_member0_checkpoint_state_campaign_member1_scripts) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1 x
+
+and encode_save51_member0_checkpoint_state_campaign_member1_evacuated_item
+    (value : save51_member0_checkpoint_state_campaign_member1_evacuated_item) : Js.Json.t =
+  wire_to_json ~known:[ "event"; "unit" ] value.wire
+    [
+      ("event", encode_json_string value.event);
+      ("unit", encode_save51_member0_checkpoint_state_units_item value.unit_);
+    ]
+
+and encode_save51_member0_checkpoint_state_campaign_member1_evacuated
+    (value : save51_member0_checkpoint_state_campaign_member1_evacuated) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save51_member0_checkpoint_state_campaign_member1_evacuated_item value)
+
+and encode_save51_member0_checkpoint_state_campaign_member1_veterans_member1_item
+    (value : save51_member0_checkpoint_state_campaign_member1_veterans_member1_item) : Js.Json.t =
+  wire_to_json
+    ~known:[ "items"; "type"; "experience"; "character"; "role" ]
+    value.wire
+    [
+      ("items", encode_save51_member0_checkpoint_state_units_item_items value.items);
+      ("type", encode_json_string value.type_);
+      ("experience", encode_json_number value.experience);
+      ("character", encode_fragments_tiles11_item_owner value.character);
+      ( "role",
+        encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+          value.role );
+    ]
+
+and encode_save51_member0_checkpoint_state_campaign_member1_veterans_member1
+    (value : save51_member0_checkpoint_state_campaign_member1_veterans_member1) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save51_member0_checkpoint_state_campaign_member1_veterans_member1_item value)
+
+and encode_save51_member0_checkpoint_state_campaign_member1_veterans
+    (value : save51_member0_checkpoint_state_campaign_member1_veterans) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Array x -> encode_save51_member0_checkpoint_state_campaign_member1_veterans_member1 x
+
+and encode_save51_member0_checkpoint_state_campaign
+    (value : save51_member0_checkpoint_state_campaign) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_save51_member0_checkpoint_state_campaign_member1 x
+
+and encode_save51 (value : save51) : Js.Json.t =
+  match value with `Current x -> encode_save51_member0 x | `Turn x -> encode_save51_member1 x
+
+and encode_save51_member0 (value : save51_member0) : Js.Json.t =
+  wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    [
+      ("pendingEnemy", encode_json_boolean value.pending_enemy);
+      ("undo", encode_save34_undo_member1 value.undo);
+      ("progress", encode_save49_member0_progress value.progress);
+      ("version", encode_literal_51 value.version);
+      ("checkpoint", encode_save51_member0_checkpoint value.checkpoint);
+      ("setup", encode_save42_member0_setup value.setup);
+    ]
+
+and encode_literal_51 (value : literal_51) : Js.Json.t = Js.Json.parseExn "51"
+
+and encode_save51_member0_checkpoint (value : save51_member0_checkpoint) : Js.Json.t =
+  wire_to_json ~known:[ "seed"; "state" ] value.wire
+    [
+      ("seed", encode_json_number value.seed);
+      ("state", encode_save51_member0_checkpoint_state value.state);
+    ]
+
+and encode_save51_member1 (value : save51_member1) : Js.Json.t =
+  wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    ([
+       ("pendingEnemy", encode_literal_false value.pending_enemy);
+       ("progress", encode_save49_member1_progress value.progress);
+       ("version", encode_literal_51 value.version);
+       ("checkpoint", encode_save51_member0_checkpoint value.checkpoint);
+       ("setup", encode_save42_member0_setup value.setup);
+     ]
+    @
+    match value.undo with
+    | None -> if List.mem "undo" value.wire.undefined_fields then [ ("undo", undefined) ] else []
+    | Some x -> [ ("undo", encode_json_undefined x) ])
+
+and encode_save52 (value : save52) : Js.Json.t =
+  match value with `Current x -> encode_save52_member0 x | `Turn x -> encode_save52_member1 x
+
+and encode_save52_member0 (value : save52_member0) : Js.Json.t =
+  wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    [
+      ("pendingEnemy", encode_json_boolean value.pending_enemy);
+      ("undo", encode_save34_undo_member1 value.undo);
+      ("progress", encode_save49_member0_progress value.progress);
+      ("version", encode_literal_52 value.version);
+      ("checkpoint", encode_save52_member0_checkpoint value.checkpoint);
+      ("setup", encode_save42_member0_setup value.setup);
+    ]
+
+and encode_literal_52 (value : literal_52) : Js.Json.t = Js.Json.parseExn "52"
+
+and encode_save52_member0_checkpoint (value : save52_member0_checkpoint) : Js.Json.t =
+  wire_to_json ~known:[ "seed"; "state" ] value.wire
+    [
+      ("seed", encode_json_number value.seed);
+      ("state", encode_save52_member0_checkpoint_state value.state);
+    ]
+
+and encode_save52_member0_checkpoint_state (value : save52_member0_checkpoint_state) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "mapModifiers";
+        "lighting";
+        "visionGroups";
+        "factions";
+        "groundItems";
+        "armies";
+        "conditionMemory";
+        "mapId";
+        "mapRevision";
+        "cols";
+        "rows";
+        "round";
+        "turn";
+        "gold";
+        "winner";
+        "nextId";
+        "combatRng";
+        "log";
+        "tiles";
+        "units";
+        "campaign";
+        "lastCombat";
+      ]
+    value.wire
+    [
+      ("mapModifiers", encode_save51_member0_checkpoint_state_map_modifiers value.map_modifiers);
+      ("lighting", encode_save51_member0_checkpoint_state_lighting value.lighting);
+      ("visionGroups", encode_save52_member0_checkpoint_state_vision_groups value.vision_groups);
+      ("factions", encode_save50_member0_checkpoint_state_factions value.factions);
+      ("groundItems", encode_save52_member0_checkpoint_state_ground_items value.ground_items);
+      ("armies", encode_save50_member0_checkpoint_state_armies value.armies);
+      ("conditionMemory", encode_fragments_native_state38_log value.condition_memory);
+      ("mapId", encode_json_string value.map_id);
+      ("mapRevision", encode_json_number value.map_revision);
+      ("cols", encode_json_number value.cols);
+      ("rows", encode_json_number value.rows);
+      ("round", encode_json_number value.round);
+      ("turn", encode_save41_member0_setup_first value.turn);
+      ("gold", encode_fragments_native_state38_gold value.gold);
+      ("winner", encode_save41_member0_checkpoint_state_winner value.winner);
+      ("nextId", encode_json_number value.next_id);
+      ("combatRng", encode_json_number value.combat_rng);
+      ("log", encode_fragments_native_state38_log value.log);
+      ("tiles", encode_save52_member0_checkpoint_state_tiles value.tiles);
+      ("units", encode_save52_member0_checkpoint_state_units value.units);
+      ("campaign", encode_save52_member0_checkpoint_state_campaign value.campaign);
+      ("lastCombat", encode_shape_735 value.last_combat);
+    ]
+
+and encode_save52_member0_checkpoint_state_vision_groups
+    (value : save52_member0_checkpoint_state_vision_groups) : Js.Json.t =
+  Js.Json.array (Array.map encode_save52_member0_checkpoint_state_vision_groups_item value)
+
+and encode_save52_member0_checkpoint_state_vision_groups_item
+    (value : save52_member0_checkpoint_state_vision_groups_item) : Js.Json.t =
+  wire_to_json ~known:[ "id"; "sight"; "explored" ] value.wire
+    [
+      ("id", encode_json_string value.id);
+      ("sight", encode_save51_member0_checkpoint_state_map_modifiers_sight value.sight);
+      ( "explored",
+        encode_save39_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_area
+          value.explored );
+    ]
+
+and encode_save52_member0_checkpoint_state_ground_items
+    (value : save52_member0_checkpoint_state_ground_items) : Js.Json.t =
+  Js.Json.array (Array.map encode_save52_member0_checkpoint_state_ground_items_item value)
+
+and encode_save52_member0_checkpoint_state_ground_items_item
+    (value : save52_member0_checkpoint_state_ground_items_item) : Js.Json.t =
+  wire_to_json ~known:[ "tile"; "item" ] value.wire
+    [
+      ("tile", encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("item", encode_json_string value.item);
+    ]
+
+and encode_save52_member0_checkpoint_state_tiles (value : save52_member0_checkpoint_state_tiles) :
+    Js.Json.t =
+  Js.Json.array (Array.map encode_save52_member0_checkpoint_state_tiles_item value)
+
+and encode_save52_member0_checkpoint_state_tiles_item
+    (value : save52_member0_checkpoint_state_tiles_item) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "effects";
+        "id";
+        "location";
+        "col";
+        "row";
+        "terrain";
+        "owner";
+        "connections";
+        "deadEnds";
+        "walls";
+        "floor";
+        "perception";
+        "light";
+      ]
+    value.wire
+    [
+      ("effects", encode_save51_member0_checkpoint_state_tiles_item_effects value.effects);
+      ("id", encode_json_string value.id);
+      ("location", encode_fragments_tiles11_item_owner value.location);
+      ("col", encode_json_number value.col);
+      ("row", encode_json_number value.row);
+      ("terrain", encode_json_string value.terrain);
+      ("owner", encode_fragments_tiles11_item_owner value.owner);
+      ( "connections",
+        encode_save50_member0_checkpoint_state_tiles_item_connections value.connections );
+      ("deadEnds", encode_save50_member0_checkpoint_state_tiles_item_connections value.dead_ends);
+      ("walls", encode_save50_member0_checkpoint_state_tiles_item_connections value.walls);
+      ("floor", encode_fragments_tiles11_item_owner value.floor);
+      ("perception", encode_save52_member0_checkpoint_state_tiles_item_perception value.perception);
+      ("light", encode_save50_member0_checkpoint_state_tiles_item_light value.light);
+    ]
+
+and encode_save52_member0_checkpoint_state_tiles_item_perception
+    (value : save52_member0_checkpoint_state_tiles_item_perception) : Js.Json.t =
+  wire_to_json
+    ~known:[ "illumination"; "remember"; "concealment" ]
+    value.wire
+    [
+      ( "illumination",
+        encode_save51_member0_checkpoint_state_tiles_item_perception_illumination value.illumination
+      );
+      ("remember", encode_json_boolean value.remember);
+      ( "concealment",
+        encode_save50_member0_checkpoint_state_tiles_item_perception_concealment value.concealment
+      );
+    ]
+
+and encode_save52_member0_checkpoint_state_units (value : save52_member0_checkpoint_state_units) :
+    Js.Json.t =
+  Js.Json.array (Array.map encode_save52_member0_checkpoint_state_units_item value)
+
+and encode_save52_member0_checkpoint_state_units_item
+    (value : save52_member0_checkpoint_state_units_item) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "revealedTo";
+        "perceptionEffects";
+        "faction";
+        "items";
+        "aiGroup";
+        "id";
+        "type";
+        "tile";
+        "hp";
+        "moved";
+        "attackSpent";
+        "experience";
+        "character";
+        "role";
+        "retreating";
+        "rebuilding";
+      ]
+    value.wire
+    [
+      ("revealedTo", encode_fragments_native_state38_log value.revealed_to);
+      ( "perceptionEffects",
+        encode_save51_member0_checkpoint_state_units_item_perception_effects
+          value.perception_effects );
+      ("faction", encode_json_string value.faction);
+      ("items", encode_fragments_native_state38_log value.items);
+      ("aiGroup", encode_fragments_tiles11_item_owner value.ai_group);
+      ("id", encode_json_string value.id);
+      ("type", encode_json_string value.type_);
+      ("tile", encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("hp", encode_json_number value.hp);
+      ("moved", encode_json_boolean value.moved);
+      ("attackSpent", encode_json_boolean value.attack_spent);
+      ("experience", encode_history5_entries_item_mission value.experience);
+      ("character", encode_fragments_tiles11_item_owner value.character);
+      ( "role",
+        encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+          value.role );
+      ("retreating", encode_save50_member0_checkpoint_state_units_item_retreating value.retreating);
+      ("rebuilding", encode_save50_member0_checkpoint_state_units_item_retreating value.rebuilding);
+    ]
+
+and encode_save52_member0_checkpoint_state_campaign
+    (value : save52_member0_checkpoint_state_campaign) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_save52_member0_checkpoint_state_campaign_member1 x
+
+and encode_save52_member0_checkpoint_state_campaign_member1
+    (value : save52_member0_checkpoint_state_campaign_member1) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "scripts";
+        "evacuated";
+        "id";
+        "mission";
+        "recall";
+        "veterans";
+        "storyVeterans";
+        "fallenCompanions";
+        "carryGold";
+        "marks";
+        "dialogue";
+        "dialogueIndex";
+        "outcome";
+        "completed";
+        "refuge";
+        "vigil";
+        "holds";
+        "flags";
+      ]
+    value.wire
+    [
+      ("scripts", encode_save52_member0_checkpoint_state_campaign_member1_scripts value.scripts);
+      ( "evacuated",
+        encode_save52_member0_checkpoint_state_campaign_member1_evacuated value.evacuated );
+      ("id", encode_json_string value.id);
+      ("mission", encode_json_number value.mission);
+      ("recall", encode_fragments_native_state38_log value.recall);
+      ("veterans", encode_save52_member0_checkpoint_state_campaign_member1_veterans value.veterans);
+      ( "storyVeterans",
+        encode_save52_member0_checkpoint_state_campaign_member1_veterans value.story_veterans );
+      ( "fallenCompanions",
+        encode_save50_member0_checkpoint_state_campaign_member1_fallen_companions
+          value.fallen_companions );
+      ("carryGold", encode_json_number value.carry_gold);
+      ("marks", encode_fragments_native_state38_log value.marks);
+      ("dialogue", encode_save50_member0_checkpoint_state_campaign_member1_dialogue value.dialogue);
+      ("dialogueIndex", encode_json_number value.dialogue_index);
+      ("outcome", encode_fragments_tiles11_item_owner value.outcome);
+      ("completed", encode_json_boolean value.completed);
+      ("refuge", encode_save50_member0_checkpoint_state_campaign_member1_refuge value.refuge);
+      ("vigil", encode_save50_member0_checkpoint_state_campaign_member1_vigil value.vigil);
+      ("holds", encode_save50_member0_checkpoint_state_campaign_member1_holds value.holds);
+      ("flags", encode_fragments_native_state38_campaign_member1_flags value.flags);
+    ]
+
+and encode_save52_member0_checkpoint_state_campaign_member1_scripts
+    (value : save52_member0_checkpoint_state_campaign_member1_scripts) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1 x
+
+and encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1
+    (value : save52_member0_checkpoint_state_campaign_member1_scripts_member1) : Js.Json.t =
+  wire_to_json
+    ~known:
+      [
+        "failed";
+        "completed";
+        "revealed";
+        "recruitment";
+        "active";
+        "holds";
+        "marks";
+        "pending";
+        "nextMark";
+      ]
+    value.wire
+    [
+      ("failed", encode_fragments_native_state38_log value.failed);
+      ("completed", encode_fragments_native_state38_log value.completed);
+      ("revealed", encode_fragments_native_state38_log value.revealed);
+      ( "recruitment",
+        encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+          value.recruitment );
+      ("active", encode_fragments_native_state38_log value.active);
+      ("holds", encode_fragments_native_state38_campaign_member1_scripts_member1_holds value.holds);
+      ( "marks",
+        encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks value.marks );
+      ( "pending",
+        encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending
+          value.pending );
+      ("nextMark", encode_json_number value.next_mark);
+    ]
+
+and encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+    (value : save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+       value)
+
+and encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+    (value : save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item) :
+    Js.Json.t =
+  wire_to_json
+    ~known:[ "lightRemembered"; "id"; "type"; "tile"; "light" ]
+    value.wire
+    [
+      ("lightRemembered", encode_json_boolean value.light_remembered);
+      ("id", encode_json_number value.id);
+      ("type", encode_json_string value.type_);
+      ("tile", encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("light", encode_save50_member0_checkpoint_state_tiles_item_light value.light);
+    ]
+
+and encode_save52_member0_checkpoint_state_campaign_member1_evacuated
+    (value : save52_member0_checkpoint_state_campaign_member1_evacuated) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save52_member0_checkpoint_state_campaign_member1_evacuated_item value)
+
+and encode_save52_member0_checkpoint_state_campaign_member1_evacuated_item
+    (value : save52_member0_checkpoint_state_campaign_member1_evacuated_item) : Js.Json.t =
+  wire_to_json ~known:[ "event"; "unit" ] value.wire
+    [
+      ("event", encode_json_string value.event);
+      ("unit", encode_save52_member0_checkpoint_state_units_item value.unit_);
+    ]
+
+and encode_save52_member0_checkpoint_state_campaign_member1_veterans
+    (value : save52_member0_checkpoint_state_campaign_member1_veterans) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Array x -> encode_save52_member0_checkpoint_state_campaign_member1_veterans_member1 x
+
+and encode_save52_member0_checkpoint_state_campaign_member1_veterans_member1
+    (value : save52_member0_checkpoint_state_campaign_member1_veterans_member1) : Js.Json.t =
+  Js.Json.array
+    (Array.map encode_save52_member0_checkpoint_state_campaign_member1_veterans_member1_item value)
+
+and encode_save52_member0_checkpoint_state_campaign_member1_veterans_member1_item
+    (value : save52_member0_checkpoint_state_campaign_member1_veterans_member1_item) : Js.Json.t =
+  wire_to_json
+    ~known:[ "items"; "type"; "experience"; "character"; "role" ]
+    value.wire
+    [
+      ("items", encode_fragments_native_state38_log value.items);
+      ("type", encode_json_string value.type_);
+      ("experience", encode_json_number value.experience);
+      ("character", encode_fragments_tiles11_item_owner value.character);
+      ( "role",
+        encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+          value.role );
+    ]
+
+and encode_save52_member1 (value : save52_member1) : Js.Json.t =
+  wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    ([
+       ("pendingEnemy", encode_literal_false value.pending_enemy);
+       ("progress", encode_save49_member1_progress value.progress);
+       ("version", encode_literal_52 value.version);
+       ("checkpoint", encode_save52_member0_checkpoint value.checkpoint);
+       ("setup", encode_save42_member0_setup value.setup);
+     ]
+    @
+    match value.undo with
+    | None -> if List.mem "undo" value.wire.undefined_fields then [ ("undo", undefined) ] else []
+    | Some x -> [ ("undo", encode_json_undefined x) ])
+
 let read_save2 value : save2 =
   require (Migration_reader.matches value 0) "Invalid frozen save2";
   decode_save2 value
@@ -27417,6 +31326,1123 @@ let read_history5 value : history5 =
   require (Migration_reader.matches value 3451) "Invalid frozen history5";
   decode_history5 value
 
+let read_save50_member0_checkpoint_state value : save50_member0_checkpoint_state =
+  require (Migration_reader.matches value 3456) "Invalid frozen save50_member0_checkpoint_state";
+  decode_save50_member0_checkpoint_state value
+
+let read_save50_member0_checkpoint_state_factions_item value :
+    save50_member0_checkpoint_state_factions_item =
+  require
+    (Migration_reader.matches value 3474)
+    "Invalid frozen save50_member0_checkpoint_state_factions_item";
+  decode_save50_member0_checkpoint_state_factions_item value
+
+let read_save50_member0_checkpoint_state_factions_item_controller value :
+    save50_member0_checkpoint_state_factions_item_controller =
+  require
+    (Migration_reader.matches value 3479)
+    "Invalid frozen save50_member0_checkpoint_state_factions_item_controller";
+  decode_save50_member0_checkpoint_state_factions_item_controller value
+
+let read_save50_member0_checkpoint_state_factions_item_controller_member2_policy value :
+    save50_member0_checkpoint_state_factions_item_controller_member2_policy =
+  require
+    (Migration_reader.matches value 3493)
+    "Invalid frozen save50_member0_checkpoint_state_factions_item_controller_member2_policy";
+  decode_save50_member0_checkpoint_state_factions_item_controller_member2_policy value
+
+let read_save50_member0_checkpoint_state_factions_item_controller_member2 value :
+    save50_member0_checkpoint_state_factions_item_controller_member2 =
+  require
+    (Migration_reader.matches value 3494)
+    "Invalid frozen save50_member0_checkpoint_state_factions_item_controller_member2";
+  decode_save50_member0_checkpoint_state_factions_item_controller_member2 value
+
+let read_save50_member0_checkpoint_state_factions_item_recruits_member1_item value :
+    save50_member0_checkpoint_state_factions_item_recruits_member1_item =
+  require
+    (Migration_reader.matches value 3497)
+    "Invalid frozen save50_member0_checkpoint_state_factions_item_recruits_member1_item";
+  decode_save50_member0_checkpoint_state_factions_item_recruits_member1_item value
+
+let read_save50_member0_checkpoint_state_factions_item_recruits_member1 value :
+    save50_member0_checkpoint_state_factions_item_recruits_member1 =
+  require
+    (Migration_reader.matches value 3499)
+    "Invalid frozen save50_member0_checkpoint_state_factions_item_recruits_member1";
+  decode_save50_member0_checkpoint_state_factions_item_recruits_member1 value
+
+let read_save50_member0_checkpoint_state_factions_item_recruits value :
+    save50_member0_checkpoint_state_factions_item_recruits =
+  require
+    (Migration_reader.matches value 3500)
+    "Invalid frozen save50_member0_checkpoint_state_factions_item_recruits";
+  decode_save50_member0_checkpoint_state_factions_item_recruits value
+
+let read_save50_member0_checkpoint_state_factions_item_transfer_member1 value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1 =
+  require
+    (Migration_reader.matches value 3507)
+    "Invalid frozen save50_member0_checkpoint_state_factions_item_transfer_member1";
+  decode_save50_member0_checkpoint_state_factions_item_transfer_member1 value
+
+let read_save50_member0_checkpoint_state_factions_item_transfer_member1_when_ value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when_ =
+  require
+    (Migration_reader.matches value 3508)
+    "Invalid frozen save50_member0_checkpoint_state_factions_item_transfer_member1_when_";
+  decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when_ value
+
+let read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition =
+  require
+    (Migration_reader.matches value 3510)
+    "Invalid frozen save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition";
+  decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition value
+
+let read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+    value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile =
+  require
+    (Migration_reader.matches value 3522)
+    "Invalid frozen \
+     save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile";
+  decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+    value
+
+let read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0 =
+  require
+    (Migration_reader.matches value 3523)
+    "Invalid frozen \
+     save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0";
+  decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0
+    value
+
+let read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1 =
+  require
+    (Migration_reader.matches value 3536)
+    "Invalid frozen \
+     save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1";
+  decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1
+    value
+
+let read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2 =
+  require
+    (Migration_reader.matches value 3539)
+    "Invalid frozen \
+     save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2";
+  decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2
+    value
+
+let read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3 =
+  require
+    (Migration_reader.matches value 3544)
+    "Invalid frozen \
+     save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3";
+  decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3
+    value
+
+let read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4 =
+  require
+    (Migration_reader.matches value 3548)
+    "Invalid frozen \
+     save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4";
+  decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4
+    value
+
+let read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+    value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+    =
+  require
+    (Migration_reader.matches value 3558)
+    "Invalid frozen \
+     save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions";
+  decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+    value
+
+let read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9 =
+  require
+    (Migration_reader.matches value 3559)
+    "Invalid frozen \
+     save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9";
+  decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9
+    value
+
+let read_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10
+    =
+  require
+    (Migration_reader.matches value 3562)
+    "Invalid frozen \
+     save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10";
+  decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10
+    value
+
+let read_save50_member0_checkpoint_state_factions_item_transfer value :
+    save50_member0_checkpoint_state_factions_item_transfer =
+  require
+    (Migration_reader.matches value 3564)
+    "Invalid frozen save50_member0_checkpoint_state_factions_item_transfer";
+  decode_save50_member0_checkpoint_state_factions_item_transfer value
+
+let read_save50_member0_checkpoint_state_factions value : save50_member0_checkpoint_state_factions =
+  require
+    (Migration_reader.matches value 3565)
+    "Invalid frozen save50_member0_checkpoint_state_factions";
+  decode_save50_member0_checkpoint_state_factions value
+
+let read_save50_member0_checkpoint_state_ground_items_item value :
+    save50_member0_checkpoint_state_ground_items_item =
+  require
+    (Migration_reader.matches value 3566)
+    "Invalid frozen save50_member0_checkpoint_state_ground_items_item";
+  decode_save50_member0_checkpoint_state_ground_items_item value
+
+let read_save50_member0_checkpoint_state_ground_items_item_item value :
+    save50_member0_checkpoint_state_ground_items_item_item =
+  require
+    (Migration_reader.matches value 3567)
+    "Invalid frozen save50_member0_checkpoint_state_ground_items_item_item";
+  decode_save50_member0_checkpoint_state_ground_items_item_item value
+
+let read_save50_member0_checkpoint_state_ground_items_item_item_perception_member1 value :
+    save50_member0_checkpoint_state_ground_items_item_item_perception_member1 =
+  require
+    (Migration_reader.matches value 3568)
+    "Invalid frozen save50_member0_checkpoint_state_ground_items_item_item_perception_member1";
+  decode_save50_member0_checkpoint_state_ground_items_item_item_perception_member1 value
+
+let read_save50_member0_checkpoint_state_tiles_item_perception_concealment_item value :
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item =
+  require
+    (Migration_reader.matches value 3570)
+    "Invalid frozen save50_member0_checkpoint_state_tiles_item_perception_concealment_item";
+  decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item value
+
+let read_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires value :
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires =
+  require
+    (Migration_reader.matches value 3572)
+    "Invalid frozen save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires";
+  decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires value
+
+let read_save50_member0_checkpoint_state_tiles_item_perception_illumination value :
+    save50_member0_checkpoint_state_tiles_item_perception_illumination =
+  require
+    (Migration_reader.matches value 3604)
+    "Invalid frozen save50_member0_checkpoint_state_tiles_item_perception_illumination";
+  decode_save50_member0_checkpoint_state_tiles_item_perception_illumination value
+
+let read_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1
+    value :
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1
+    =
+  require
+    (Migration_reader.matches value 3609)
+    "Invalid frozen \
+     save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1";
+  decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1
+    value
+
+let read_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination
+    value :
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination =
+  require
+    (Migration_reader.matches value 3610)
+    "Invalid frozen \
+     save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination";
+  decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination
+    value
+
+let read_save50_member0_checkpoint_state_tiles_item_perception_concealment value :
+    save50_member0_checkpoint_state_tiles_item_perception_concealment =
+  require
+    (Migration_reader.matches value 3611)
+    "Invalid frozen save50_member0_checkpoint_state_tiles_item_perception_concealment";
+  decode_save50_member0_checkpoint_state_tiles_item_perception_concealment value
+
+let read_save50_member0_checkpoint_state_ground_items_item_item_perception value :
+    save50_member0_checkpoint_state_ground_items_item_item_perception =
+  require
+    (Migration_reader.matches value 3614)
+    "Invalid frozen save50_member0_checkpoint_state_ground_items_item_item_perception";
+  decode_save50_member0_checkpoint_state_ground_items_item_item_perception value
+
+let read_save50_member0_checkpoint_state_ground_items_item_item_armor value :
+    save50_member0_checkpoint_state_ground_items_item_item_armor =
+  require
+    (Migration_reader.matches value 3616)
+    "Invalid frozen save50_member0_checkpoint_state_ground_items_item_item_armor";
+  decode_save50_member0_checkpoint_state_ground_items_item_item_armor value
+
+let read_save50_member0_checkpoint_state_ground_items_item_item_healing_member1 value :
+    save50_member0_checkpoint_state_ground_items_item_item_healing_member1 =
+  require
+    (Migration_reader.matches value 3628)
+    "Invalid frozen save50_member0_checkpoint_state_ground_items_item_item_healing_member1";
+  decode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1 value
+
+let read_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets value :
+    save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets =
+  require
+    (Migration_reader.matches value 3629)
+    "Invalid frozen save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets";
+  decode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets value
+
+let read_literal_own_faction value : literal_own_faction =
+  require (Migration_reader.matches value 3630) "Invalid frozen literal_own_faction";
+  decode_literal_own_faction value
+
+let read_literal_allies value : literal_allies =
+  require (Migration_reader.matches value 3631) "Invalid frozen literal_allies";
+  decode_literal_allies value
+
+let read_literal_enemies value : literal_enemies =
+  require (Migration_reader.matches value 3632) "Invalid frozen literal_enemies";
+  decode_literal_enemies value
+
+let read_literal_everyone value : literal_everyone =
+  require (Migration_reader.matches value 3633) "Invalid frozen literal_everyone";
+  decode_literal_everyone value
+
+let read_save50_member0_checkpoint_state_ground_items_item_item_healing value :
+    save50_member0_checkpoint_state_ground_items_item_item_healing =
+  require
+    (Migration_reader.matches value 3635)
+    "Invalid frozen save50_member0_checkpoint_state_ground_items_item_item_healing";
+  decode_save50_member0_checkpoint_state_ground_items_item_item_healing value
+
+let read_save50_member0_checkpoint_state_ground_items value :
+    save50_member0_checkpoint_state_ground_items =
+  require
+    (Migration_reader.matches value 3636)
+    "Invalid frozen save50_member0_checkpoint_state_ground_items";
+  decode_save50_member0_checkpoint_state_ground_items value
+
+let read_save50_member0_checkpoint_state_armies value : save50_member0_checkpoint_state_armies =
+  require
+    (Migration_reader.matches value 3638)
+    "Invalid frozen save50_member0_checkpoint_state_armies";
+  decode_save50_member0_checkpoint_state_armies value
+
+let read_save50_member0_checkpoint_state_tiles_item value :
+    save50_member0_checkpoint_state_tiles_item =
+  require
+    (Migration_reader.matches value 3648)
+    "Invalid frozen save50_member0_checkpoint_state_tiles_item";
+  decode_save50_member0_checkpoint_state_tiles_item value
+
+let read_save50_member0_checkpoint_state_tiles_item_connections value :
+    save50_member0_checkpoint_state_tiles_item_connections =
+  require
+    (Migration_reader.matches value 3660)
+    "Invalid frozen save50_member0_checkpoint_state_tiles_item_connections";
+  decode_save50_member0_checkpoint_state_tiles_item_connections value
+
+let read_save50_member0_checkpoint_state_tiles_item_perception value :
+    save50_member0_checkpoint_state_tiles_item_perception =
+  require
+    (Migration_reader.matches value 3666)
+    "Invalid frozen save50_member0_checkpoint_state_tiles_item_perception";
+  decode_save50_member0_checkpoint_state_tiles_item_perception value
+
+let read_save50_member0_checkpoint_state_tiles_item_light_member1 value :
+    save50_member0_checkpoint_state_tiles_item_light_member1 =
+  require
+    (Migration_reader.matches value 3670)
+    "Invalid frozen save50_member0_checkpoint_state_tiles_item_light_member1";
+  decode_save50_member0_checkpoint_state_tiles_item_light_member1 value
+
+let read_save50_member0_checkpoint_state_tiles_item_light_member1_color value :
+    save50_member0_checkpoint_state_tiles_item_light_member1_color =
+  require
+    (Migration_reader.matches value 3673)
+    "Invalid frozen save50_member0_checkpoint_state_tiles_item_light_member1_color";
+  decode_save50_member0_checkpoint_state_tiles_item_light_member1_color value
+
+let read_save50_member0_checkpoint_state_units_item_retreating value :
+    save50_member0_checkpoint_state_units_item_retreating =
+  require
+    (Migration_reader.matches value 3674)
+    "Invalid frozen save50_member0_checkpoint_state_units_item_retreating";
+  decode_save50_member0_checkpoint_state_units_item_retreating value
+
+let read_save50_member0_checkpoint_state_tiles_item_light_member1_when_ value :
+    save50_member0_checkpoint_state_tiles_item_light_member1_when_ =
+  require
+    (Migration_reader.matches value 3677)
+    "Invalid frozen save50_member0_checkpoint_state_tiles_item_light_member1_when_";
+  decode_save50_member0_checkpoint_state_tiles_item_light_member1_when_ value
+
+let read_save50_member0_checkpoint_state_tiles_item_light value :
+    save50_member0_checkpoint_state_tiles_item_light =
+  require
+    (Migration_reader.matches value 3678)
+    "Invalid frozen save50_member0_checkpoint_state_tiles_item_light";
+  decode_save50_member0_checkpoint_state_tiles_item_light value
+
+let read_save50_member0_checkpoint_state_tiles value : save50_member0_checkpoint_state_tiles =
+  require
+    (Migration_reader.matches value 3679)
+    "Invalid frozen save50_member0_checkpoint_state_tiles";
+  decode_save50_member0_checkpoint_state_tiles value
+
+let read_save50_member0_checkpoint_state_units_item value :
+    save50_member0_checkpoint_state_units_item =
+  require
+    (Migration_reader.matches value 3680)
+    "Invalid frozen save50_member0_checkpoint_state_units_item";
+  decode_save50_member0_checkpoint_state_units_item value
+
+let read_save50_member0_checkpoint_state_units_item_perception_effects_item value :
+    save50_member0_checkpoint_state_units_item_perception_effects_item =
+  require
+    (Migration_reader.matches value 3682)
+    "Invalid frozen save50_member0_checkpoint_state_units_item_perception_effects_item";
+  decode_save50_member0_checkpoint_state_units_item_perception_effects_item value
+
+let read_save50_member0_checkpoint_state_units_item_perception_effects value :
+    save50_member0_checkpoint_state_units_item_perception_effects =
+  require
+    (Migration_reader.matches value 3688)
+    "Invalid frozen save50_member0_checkpoint_state_units_item_perception_effects";
+  decode_save50_member0_checkpoint_state_units_item_perception_effects value
+
+let read_save50_member0_checkpoint_state_units_item_items value :
+    save50_member0_checkpoint_state_units_item_items =
+  require
+    (Migration_reader.matches value 3689)
+    "Invalid frozen save50_member0_checkpoint_state_units_item_items";
+  decode_save50_member0_checkpoint_state_units_item_items value
+
+let read_save50_member0_checkpoint_state_units value : save50_member0_checkpoint_state_units =
+  require
+    (Migration_reader.matches value 3701)
+    "Invalid frozen save50_member0_checkpoint_state_units";
+  decode_save50_member0_checkpoint_state_units value
+
+let read_save50_member0_checkpoint_state_campaign_member1 value :
+    save50_member0_checkpoint_state_campaign_member1 =
+  require
+    (Migration_reader.matches value 3702)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1";
+  decode_save50_member0_checkpoint_state_campaign_member1 value
+
+let read_save50_member0_checkpoint_state_campaign_member1_scripts_member1 value :
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1 =
+  require
+    (Migration_reader.matches value 3703)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_scripts_member1";
+  decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1 value
+
+let read_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment value :
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment =
+  require
+    (Migration_reader.matches value 3708)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment";
+  decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment value
+
+let read_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item value :
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item =
+  require
+    (Migration_reader.matches value 3712)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item";
+  decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item value
+
+let read_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks value :
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks =
+  require
+    (Migration_reader.matches value 3715)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks";
+  decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks value
+
+let read_save50_member0_checkpoint_state_campaign_member1_scripts value :
+    save50_member0_checkpoint_state_campaign_member1_scripts =
+  require
+    (Migration_reader.matches value 3725)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_scripts";
+  decode_save50_member0_checkpoint_state_campaign_member1_scripts value
+
+let read_save50_member0_checkpoint_state_campaign_member1_evacuated_item value :
+    save50_member0_checkpoint_state_campaign_member1_evacuated_item =
+  require
+    (Migration_reader.matches value 3726)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_evacuated_item";
+  decode_save50_member0_checkpoint_state_campaign_member1_evacuated_item value
+
+let read_save50_member0_checkpoint_state_campaign_member1_evacuated value :
+    save50_member0_checkpoint_state_campaign_member1_evacuated =
+  require
+    (Migration_reader.matches value 3727)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_evacuated";
+  decode_save50_member0_checkpoint_state_campaign_member1_evacuated value
+
+let read_save50_member0_checkpoint_state_campaign_member1_veterans_member1_item value :
+    save50_member0_checkpoint_state_campaign_member1_veterans_member1_item =
+  require
+    (Migration_reader.matches value 3729)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_veterans_member1_item";
+  decode_save50_member0_checkpoint_state_campaign_member1_veterans_member1_item value
+
+let read_save50_member0_checkpoint_state_campaign_member1_veterans_member1 value :
+    save50_member0_checkpoint_state_campaign_member1_veterans_member1 =
+  require
+    (Migration_reader.matches value 3733)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_veterans_member1";
+  decode_save50_member0_checkpoint_state_campaign_member1_veterans_member1 value
+
+let read_save50_member0_checkpoint_state_campaign_member1_veterans value :
+    save50_member0_checkpoint_state_campaign_member1_veterans =
+  require
+    (Migration_reader.matches value 3734)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_veterans";
+  decode_save50_member0_checkpoint_state_campaign_member1_veterans value
+
+let read_save50_member0_checkpoint_state_campaign_member1_fallen_companions value :
+    save50_member0_checkpoint_state_campaign_member1_fallen_companions =
+  require
+    (Migration_reader.matches value 3738)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_fallen_companions";
+  decode_save50_member0_checkpoint_state_campaign_member1_fallen_companions value
+
+let read_save50_member0_checkpoint_state_campaign_member1_dialogue_item value :
+    save50_member0_checkpoint_state_campaign_member1_dialogue_item =
+  require
+    (Migration_reader.matches value 3740)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_dialogue_item";
+  decode_save50_member0_checkpoint_state_campaign_member1_dialogue_item value
+
+let read_save50_member0_checkpoint_state_campaign_member1_dialogue value :
+    save50_member0_checkpoint_state_campaign_member1_dialogue =
+  require
+    (Migration_reader.matches value 3743)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_dialogue";
+  decode_save50_member0_checkpoint_state_campaign_member1_dialogue value
+
+let read_save50_member0_checkpoint_state_campaign_member1_refuge value :
+    save50_member0_checkpoint_state_campaign_member1_refuge =
+  require
+    (Migration_reader.matches value 3746)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_refuge";
+  decode_save50_member0_checkpoint_state_campaign_member1_refuge value
+
+let read_save50_member0_checkpoint_state_campaign_member1_vigil value :
+    save50_member0_checkpoint_state_campaign_member1_vigil =
+  require
+    (Migration_reader.matches value 3748)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_vigil";
+  decode_save50_member0_checkpoint_state_campaign_member1_vigil value
+
+let read_save50_member0_checkpoint_state_campaign_member1_holds value :
+    save50_member0_checkpoint_state_campaign_member1_holds =
+  require
+    (Migration_reader.matches value 3750)
+    "Invalid frozen save50_member0_checkpoint_state_campaign_member1_holds";
+  decode_save50_member0_checkpoint_state_campaign_member1_holds value
+
+let read_save50_member0_checkpoint_state_campaign value : save50_member0_checkpoint_state_campaign =
+  require
+    (Migration_reader.matches value 3754)
+    "Invalid frozen save50_member0_checkpoint_state_campaign";
+  decode_save50_member0_checkpoint_state_campaign value
+
+let read_save50 value : save50 =
+  require (Migration_reader.matches value 3758) "Invalid frozen save50";
+  decode_save50 value
+
+let read_save50_member0 value : save50_member0 =
+  require (Migration_reader.matches value 3759) "Invalid frozen save50_member0";
+  decode_save50_member0 value
+
+let read_literal_50 value : literal_50 =
+  require (Migration_reader.matches value 3780) "Invalid frozen literal_50";
+  decode_literal_50 value
+
+let read_save50_member0_checkpoint value : save50_member0_checkpoint =
+  require (Migration_reader.matches value 3781) "Invalid frozen save50_member0_checkpoint";
+  decode_save50_member0_checkpoint value
+
+let read_save50_member1 value : save50_member1 =
+  require (Migration_reader.matches value 3817) "Invalid frozen save50_member1";
+  decode_save50_member1 value
+
+let read_save51_member0_checkpoint_state value : save51_member0_checkpoint_state =
+  require (Migration_reader.matches value 3827) "Invalid frozen save51_member0_checkpoint_state";
+  decode_save51_member0_checkpoint_state value
+
+let read_save51_member0_checkpoint_state_map_modifiers value :
+    save51_member0_checkpoint_state_map_modifiers =
+  require
+    (Migration_reader.matches value 3828)
+    "Invalid frozen save51_member0_checkpoint_state_map_modifiers";
+  decode_save51_member0_checkpoint_state_map_modifiers value
+
+let read_save51_member0_checkpoint_state_map_modifiers_sight value :
+    save51_member0_checkpoint_state_map_modifiers_sight =
+  require
+    (Migration_reader.matches value 3829)
+    "Invalid frozen save51_member0_checkpoint_state_map_modifiers_sight";
+  decode_save51_member0_checkpoint_state_map_modifiers_sight value
+
+let read_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers value :
+    save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers =
+  require
+    (Migration_reader.matches value 3830)
+    "Invalid frozen save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers";
+  decode_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers value
+
+let read_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value value :
+    save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value =
+  require
+    (Migration_reader.matches value 3838)
+    "Invalid frozen save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value";
+  decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value value
+
+let read_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers
+    value : save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers =
+  require
+    (Migration_reader.matches value 3840)
+    "Invalid frozen \
+     save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers";
+  decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers
+    value
+
+let read_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers value :
+    save51_member0_checkpoint_state_map_modifiers_terrain_modifiers =
+  require
+    (Migration_reader.matches value 3841)
+    "Invalid frozen save51_member0_checkpoint_state_map_modifiers_terrain_modifiers";
+  decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers value
+
+let read_save51_member0_checkpoint_state_lighting value : save51_member0_checkpoint_state_lighting =
+  require
+    (Migration_reader.matches value 3842)
+    "Invalid frozen save51_member0_checkpoint_state_lighting";
+  decode_save51_member0_checkpoint_state_lighting value
+
+let read_save51_member0_checkpoint_state_lighting_time value :
+    save51_member0_checkpoint_state_lighting_time =
+  require
+    (Migration_reader.matches value 3843)
+    "Invalid frozen save51_member0_checkpoint_state_lighting_time";
+  decode_save51_member0_checkpoint_state_lighting_time value
+
+let read_literal_day value : literal_day =
+  require (Migration_reader.matches value 3844) "Invalid frozen literal_day";
+  decode_literal_day value
+
+let read_literal_night value : literal_night =
+  require (Migration_reader.matches value 3845) "Invalid frozen literal_night";
+  decode_literal_night value
+
+let read_save51_member0_checkpoint_state_vision_groups_item value :
+    save51_member0_checkpoint_state_vision_groups_item =
+  require
+    (Migration_reader.matches value 3847)
+    "Invalid frozen save51_member0_checkpoint_state_vision_groups_item";
+  decode_save51_member0_checkpoint_state_vision_groups_item value
+
+let read_save51_member0_checkpoint_state_vision_groups_item_sight value :
+    save51_member0_checkpoint_state_vision_groups_item_sight =
+  require
+    (Migration_reader.matches value 3849)
+    "Invalid frozen save51_member0_checkpoint_state_vision_groups_item_sight";
+  decode_save51_member0_checkpoint_state_vision_groups_item_sight value
+
+let read_save51_member0_checkpoint_state_vision_groups_item_sight_range value :
+    save51_member0_checkpoint_state_vision_groups_item_sight_range =
+  require
+    (Migration_reader.matches value 3850)
+    "Invalid frozen save51_member0_checkpoint_state_vision_groups_item_sight_range";
+  decode_save51_member0_checkpoint_state_vision_groups_item_sight_range value
+
+let read_save51_member0_checkpoint_state_vision_groups value :
+    save51_member0_checkpoint_state_vision_groups =
+  require
+    (Migration_reader.matches value 3857)
+    "Invalid frozen save51_member0_checkpoint_state_vision_groups";
+  decode_save51_member0_checkpoint_state_vision_groups value
+
+let read_save51_member0_checkpoint_state_ground_items_item value :
+    save51_member0_checkpoint_state_ground_items_item =
+  require
+    (Migration_reader.matches value 3950)
+    "Invalid frozen save51_member0_checkpoint_state_ground_items_item";
+  decode_save51_member0_checkpoint_state_ground_items_item value
+
+let read_save51_member0_checkpoint_state_ground_items_item_item value :
+    save51_member0_checkpoint_state_ground_items_item_item =
+  require
+    (Migration_reader.matches value 3951)
+    "Invalid frozen save51_member0_checkpoint_state_ground_items_item_item";
+  decode_save51_member0_checkpoint_state_ground_items_item_item value
+
+let read_save51_member0_checkpoint_state_tiles_item_effects_item value :
+    save51_member0_checkpoint_state_tiles_item_effects_item =
+  require
+    (Migration_reader.matches value 3952)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_effects_item";
+  decode_save51_member0_checkpoint_state_tiles_item_effects_item value
+
+let read_save51_member0_checkpoint_state_tiles_item_effects_item_scope value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_scope =
+  require
+    (Migration_reader.matches value 3953)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_effects_item_scope";
+  decode_save51_member0_checkpoint_state_tiles_item_effects_item_scope value
+
+let read_save51_member0_checkpoint_state_tiles_item_effects_item_stacking value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_stacking =
+  require
+    (Migration_reader.matches value 3960)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_effects_item_stacking";
+  decode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking value
+
+let read_save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine =
+  require
+    (Migration_reader.matches value 3961)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine";
+  decode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine value
+
+let read_literal_add value : literal_add =
+  require (Migration_reader.matches value 3962) "Invalid frozen literal_add";
+  decode_literal_add value
+
+let read_literal_max value : literal_max =
+  require (Migration_reader.matches value 3963) "Invalid frozen literal_max";
+  decode_literal_max value
+
+let read_literal_union value : literal_union =
+  require (Migration_reader.matches value 3964) "Invalid frozen literal_union";
+  decode_literal_union value
+
+let read_save51_member0_checkpoint_state_tiles_item_effects_item_effect_ value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect_ =
+  require
+    (Migration_reader.matches value 3966)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_effects_item_effect_";
+  decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect_ value
+
+let read_literal_healing value : literal_healing =
+  require (Migration_reader.matches value 3967) "Invalid frozen literal_healing";
+  decode_literal_healing value
+
+let read_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0 =
+  require
+    (Migration_reader.matches value 3968)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0";
+  decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0 value
+
+let read_literal_thorns value : literal_thorns =
+  require (Migration_reader.matches value 3969) "Invalid frozen literal_thorns";
+  decode_literal_thorns value
+
+let read_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1 =
+  require
+    (Migration_reader.matches value 3974)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1";
+  decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1 value
+
+let read_literal_sight value : literal_sight =
+  require (Migration_reader.matches value 3975) "Invalid frozen literal_sight";
+  decode_literal_sight value
+
+let read_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2 =
+  require
+    (Migration_reader.matches value 3977)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2";
+  decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2 value
+
+let read_literal_concealment value : literal_concealment =
+  require (Migration_reader.matches value 3978) "Invalid frozen literal_concealment";
+  decode_literal_concealment value
+
+let read_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3 =
+  require
+    (Migration_reader.matches value 4019)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3";
+  decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3 value
+
+let read_literal_light value : literal_light =
+  require (Migration_reader.matches value 4020) "Invalid frozen literal_light";
+  decode_literal_light value
+
+let read_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4 =
+  require
+    (Migration_reader.matches value 4021)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4";
+  decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4 value
+
+let read_literal_stat_modifiers value : literal_stat_modifiers =
+  require (Migration_reader.matches value 4022) "Invalid frozen literal_stat_modifiers";
+  decode_literal_stat_modifiers value
+
+let read_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5 =
+  require
+    (Migration_reader.matches value 4023)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5";
+  decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5 value
+
+let read_save51_member0_checkpoint_state_tiles_item_effects value :
+    save51_member0_checkpoint_state_tiles_item_effects =
+  require
+    (Migration_reader.matches value 4025)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_effects";
+  decode_save51_member0_checkpoint_state_tiles_item_effects value
+
+let read_save51_member0_checkpoint_state_ground_items value :
+    save51_member0_checkpoint_state_ground_items =
+  require
+    (Migration_reader.matches value 4035)
+    "Invalid frozen save51_member0_checkpoint_state_ground_items";
+  decode_save51_member0_checkpoint_state_ground_items value
+
+let read_save51_member0_checkpoint_state_tiles_item value :
+    save51_member0_checkpoint_state_tiles_item =
+  require
+    (Migration_reader.matches value 4047)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item";
+  decode_save51_member0_checkpoint_state_tiles_item value
+
+let read_save51_member0_checkpoint_state_tiles_item_perception value :
+    save51_member0_checkpoint_state_tiles_item_perception =
+  require
+    (Migration_reader.matches value 4066)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_perception";
+  decode_save51_member0_checkpoint_state_tiles_item_perception value
+
+let read_save51_member0_checkpoint_state_tiles_item_perception_illumination value :
+    save51_member0_checkpoint_state_tiles_item_perception_illumination =
+  require
+    (Migration_reader.matches value 4067)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_perception_illumination";
+  decode_save51_member0_checkpoint_state_tiles_item_perception_illumination value
+
+let read_save51_member0_checkpoint_state_tiles_item_perception_sight_member1 value :
+    save51_member0_checkpoint_state_tiles_item_perception_sight_member1 =
+  require
+    (Migration_reader.matches value 4068)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_perception_sight_member1";
+  decode_save51_member0_checkpoint_state_tiles_item_perception_sight_member1 value
+
+let read_save51_member0_checkpoint_state_tiles_item_perception_sight value :
+    save51_member0_checkpoint_state_tiles_item_perception_sight =
+  require
+    (Migration_reader.matches value 4069)
+    "Invalid frozen save51_member0_checkpoint_state_tiles_item_perception_sight";
+  decode_save51_member0_checkpoint_state_tiles_item_perception_sight value
+
+let read_save51_member0_checkpoint_state_tiles value : save51_member0_checkpoint_state_tiles =
+  require
+    (Migration_reader.matches value 4081)
+    "Invalid frozen save51_member0_checkpoint_state_tiles";
+  decode_save51_member0_checkpoint_state_tiles value
+
+let read_save51_member0_checkpoint_state_units_item value :
+    save51_member0_checkpoint_state_units_item =
+  require
+    (Migration_reader.matches value 4082)
+    "Invalid frozen save51_member0_checkpoint_state_units_item";
+  decode_save51_member0_checkpoint_state_units_item value
+
+let read_save51_member0_checkpoint_state_units_item_perception_effects_item value :
+    save51_member0_checkpoint_state_units_item_perception_effects_item =
+  require
+    (Migration_reader.matches value 4084)
+    "Invalid frozen save51_member0_checkpoint_state_units_item_perception_effects_item";
+  decode_save51_member0_checkpoint_state_units_item_perception_effects_item value
+
+let read_save51_member0_checkpoint_state_units_item_perception_effects value :
+    save51_member0_checkpoint_state_units_item_perception_effects =
+  require
+    (Migration_reader.matches value 4089)
+    "Invalid frozen save51_member0_checkpoint_state_units_item_perception_effects";
+  decode_save51_member0_checkpoint_state_units_item_perception_effects value
+
+let read_save51_member0_checkpoint_state_units_item_items value :
+    save51_member0_checkpoint_state_units_item_items =
+  require
+    (Migration_reader.matches value 4090)
+    "Invalid frozen save51_member0_checkpoint_state_units_item_items";
+  decode_save51_member0_checkpoint_state_units_item_items value
+
+let read_save51_member0_checkpoint_state_units value : save51_member0_checkpoint_state_units =
+  require
+    (Migration_reader.matches value 4102)
+    "Invalid frozen save51_member0_checkpoint_state_units";
+  decode_save51_member0_checkpoint_state_units value
+
+let read_save51_member0_checkpoint_state_campaign_member1 value :
+    save51_member0_checkpoint_state_campaign_member1 =
+  require
+    (Migration_reader.matches value 4103)
+    "Invalid frozen save51_member0_checkpoint_state_campaign_member1";
+  decode_save51_member0_checkpoint_state_campaign_member1 value
+
+let read_save51_member0_checkpoint_state_campaign_member1_scripts_member1 value :
+    save51_member0_checkpoint_state_campaign_member1_scripts_member1 =
+  require
+    (Migration_reader.matches value 4104)
+    "Invalid frozen save51_member0_checkpoint_state_campaign_member1_scripts_member1";
+  decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1 value
+
+let read_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item value :
+    save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item =
+  require
+    (Migration_reader.matches value 4113)
+    "Invalid frozen save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item";
+  decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item value
+
+let read_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks value :
+    save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks =
+  require
+    (Migration_reader.matches value 4116)
+    "Invalid frozen save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks";
+  decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks value
+
+let read_save51_member0_checkpoint_state_campaign_member1_scripts value :
+    save51_member0_checkpoint_state_campaign_member1_scripts =
+  require
+    (Migration_reader.matches value 4126)
+    "Invalid frozen save51_member0_checkpoint_state_campaign_member1_scripts";
+  decode_save51_member0_checkpoint_state_campaign_member1_scripts value
+
+let read_save51_member0_checkpoint_state_campaign_member1_evacuated_item value :
+    save51_member0_checkpoint_state_campaign_member1_evacuated_item =
+  require
+    (Migration_reader.matches value 4127)
+    "Invalid frozen save51_member0_checkpoint_state_campaign_member1_evacuated_item";
+  decode_save51_member0_checkpoint_state_campaign_member1_evacuated_item value
+
+let read_save51_member0_checkpoint_state_campaign_member1_evacuated value :
+    save51_member0_checkpoint_state_campaign_member1_evacuated =
+  require
+    (Migration_reader.matches value 4128)
+    "Invalid frozen save51_member0_checkpoint_state_campaign_member1_evacuated";
+  decode_save51_member0_checkpoint_state_campaign_member1_evacuated value
+
+let read_save51_member0_checkpoint_state_campaign_member1_veterans_member1_item value :
+    save51_member0_checkpoint_state_campaign_member1_veterans_member1_item =
+  require
+    (Migration_reader.matches value 4130)
+    "Invalid frozen save51_member0_checkpoint_state_campaign_member1_veterans_member1_item";
+  decode_save51_member0_checkpoint_state_campaign_member1_veterans_member1_item value
+
+let read_save51_member0_checkpoint_state_campaign_member1_veterans_member1 value :
+    save51_member0_checkpoint_state_campaign_member1_veterans_member1 =
+  require
+    (Migration_reader.matches value 4134)
+    "Invalid frozen save51_member0_checkpoint_state_campaign_member1_veterans_member1";
+  decode_save51_member0_checkpoint_state_campaign_member1_veterans_member1 value
+
+let read_save51_member0_checkpoint_state_campaign_member1_veterans value :
+    save51_member0_checkpoint_state_campaign_member1_veterans =
+  require
+    (Migration_reader.matches value 4135)
+    "Invalid frozen save51_member0_checkpoint_state_campaign_member1_veterans";
+  decode_save51_member0_checkpoint_state_campaign_member1_veterans value
+
+let read_save51_member0_checkpoint_state_campaign value : save51_member0_checkpoint_state_campaign =
+  require
+    (Migration_reader.matches value 4155)
+    "Invalid frozen save51_member0_checkpoint_state_campaign";
+  decode_save51_member0_checkpoint_state_campaign value
+
+let read_save51 value : save51 =
+  require (Migration_reader.matches value 4159) "Invalid frozen save51";
+  decode_save51 value
+
+let read_save51_member0 value : save51_member0 =
+  require (Migration_reader.matches value 4160) "Invalid frozen save51_member0";
+  decode_save51_member0 value
+
+let read_literal_51 value : literal_51 =
+  require (Migration_reader.matches value 4181) "Invalid frozen literal_51";
+  decode_literal_51 value
+
+let read_save51_member0_checkpoint value : save51_member0_checkpoint =
+  require (Migration_reader.matches value 4182) "Invalid frozen save51_member0_checkpoint";
+  decode_save51_member0_checkpoint value
+
+let read_save51_member1 value : save51_member1 =
+  require (Migration_reader.matches value 4218) "Invalid frozen save51_member1";
+  decode_save51_member1 value
+
+let read_save52 value : save52 =
+  require (Migration_reader.matches value 4224) "Invalid frozen save52";
+  decode_save52 value
+
+let read_save52_member0 value : save52_member0 =
+  require (Migration_reader.matches value 4225) "Invalid frozen save52_member0";
+  decode_save52_member0 value
+
+let read_literal_52 value : literal_52 =
+  require (Migration_reader.matches value 4246) "Invalid frozen literal_52";
+  decode_literal_52 value
+
+let read_save52_member0_checkpoint value : save52_member0_checkpoint =
+  require (Migration_reader.matches value 4247) "Invalid frozen save52_member0_checkpoint";
+  decode_save52_member0_checkpoint value
+
+let read_save52_member0_checkpoint_state value : save52_member0_checkpoint_state =
+  require (Migration_reader.matches value 4249) "Invalid frozen save52_member0_checkpoint_state";
+  decode_save52_member0_checkpoint_state value
+
+let read_save52_member0_checkpoint_state_vision_groups value :
+    save52_member0_checkpoint_state_vision_groups =
+  require
+    (Migration_reader.matches value 4270)
+    "Invalid frozen save52_member0_checkpoint_state_vision_groups";
+  decode_save52_member0_checkpoint_state_vision_groups value
+
+let read_save52_member0_checkpoint_state_vision_groups_item value :
+    save52_member0_checkpoint_state_vision_groups_item =
+  require
+    (Migration_reader.matches value 4271)
+    "Invalid frozen save52_member0_checkpoint_state_vision_groups_item";
+  decode_save52_member0_checkpoint_state_vision_groups_item value
+
+let read_save52_member0_checkpoint_state_ground_items value :
+    save52_member0_checkpoint_state_ground_items =
+  require
+    (Migration_reader.matches value 4361)
+    "Invalid frozen save52_member0_checkpoint_state_ground_items";
+  decode_save52_member0_checkpoint_state_ground_items value
+
+let read_save52_member0_checkpoint_state_ground_items_item value :
+    save52_member0_checkpoint_state_ground_items_item =
+  require
+    (Migration_reader.matches value 4362)
+    "Invalid frozen save52_member0_checkpoint_state_ground_items_item";
+  decode_save52_member0_checkpoint_state_ground_items_item value
+
+let read_save52_member0_checkpoint_state_tiles value : save52_member0_checkpoint_state_tiles =
+  require
+    (Migration_reader.matches value 4371)
+    "Invalid frozen save52_member0_checkpoint_state_tiles";
+  decode_save52_member0_checkpoint_state_tiles value
+
+let read_save52_member0_checkpoint_state_tiles_item value :
+    save52_member0_checkpoint_state_tiles_item =
+  require
+    (Migration_reader.matches value 4372)
+    "Invalid frozen save52_member0_checkpoint_state_tiles_item";
+  decode_save52_member0_checkpoint_state_tiles_item value
+
+let read_save52_member0_checkpoint_state_tiles_item_perception value :
+    save52_member0_checkpoint_state_tiles_item_perception =
+  require
+    (Migration_reader.matches value 4457)
+    "Invalid frozen save52_member0_checkpoint_state_tiles_item_perception";
+  decode_save52_member0_checkpoint_state_tiles_item_perception value
+
+let read_save52_member0_checkpoint_state_units value : save52_member0_checkpoint_state_units =
+  require
+    (Migration_reader.matches value 4470)
+    "Invalid frozen save52_member0_checkpoint_state_units";
+  decode_save52_member0_checkpoint_state_units value
+
+let read_save52_member0_checkpoint_state_units_item value :
+    save52_member0_checkpoint_state_units_item =
+  require
+    (Migration_reader.matches value 4471)
+    "Invalid frozen save52_member0_checkpoint_state_units_item";
+  decode_save52_member0_checkpoint_state_units_item value
+
+let read_save52_member0_checkpoint_state_campaign value : save52_member0_checkpoint_state_campaign =
+  require
+    (Migration_reader.matches value 4489)
+    "Invalid frozen save52_member0_checkpoint_state_campaign";
+  decode_save52_member0_checkpoint_state_campaign value
+
+let read_save52_member0_checkpoint_state_campaign_member1 value :
+    save52_member0_checkpoint_state_campaign_member1 =
+  require
+    (Migration_reader.matches value 4490)
+    "Invalid frozen save52_member0_checkpoint_state_campaign_member1";
+  decode_save52_member0_checkpoint_state_campaign_member1 value
+
+let read_save52_member0_checkpoint_state_campaign_member1_scripts value :
+    save52_member0_checkpoint_state_campaign_member1_scripts =
+  require
+    (Migration_reader.matches value 4491)
+    "Invalid frozen save52_member0_checkpoint_state_campaign_member1_scripts";
+  decode_save52_member0_checkpoint_state_campaign_member1_scripts value
+
+let read_save52_member0_checkpoint_state_campaign_member1_scripts_member1 value :
+    save52_member0_checkpoint_state_campaign_member1_scripts_member1 =
+  require
+    (Migration_reader.matches value 4492)
+    "Invalid frozen save52_member0_checkpoint_state_campaign_member1_scripts_member1";
+  decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1 value
+
+let read_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks value :
+    save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks =
+  require
+    (Migration_reader.matches value 4501)
+    "Invalid frozen save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks";
+  decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks value
+
+let read_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item value :
+    save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item =
+  require
+    (Migration_reader.matches value 4502)
+    "Invalid frozen save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item";
+  decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item value
+
+let read_save52_member0_checkpoint_state_campaign_member1_evacuated value :
+    save52_member0_checkpoint_state_campaign_member1_evacuated =
+  require
+    (Migration_reader.matches value 4513)
+    "Invalid frozen save52_member0_checkpoint_state_campaign_member1_evacuated";
+  decode_save52_member0_checkpoint_state_campaign_member1_evacuated value
+
+let read_save52_member0_checkpoint_state_campaign_member1_evacuated_item value :
+    save52_member0_checkpoint_state_campaign_member1_evacuated_item =
+  require
+    (Migration_reader.matches value 4514)
+    "Invalid frozen save52_member0_checkpoint_state_campaign_member1_evacuated_item";
+  decode_save52_member0_checkpoint_state_campaign_member1_evacuated_item value
+
+let read_save52_member0_checkpoint_state_campaign_member1_veterans value :
+    save52_member0_checkpoint_state_campaign_member1_veterans =
+  require
+    (Migration_reader.matches value 4516)
+    "Invalid frozen save52_member0_checkpoint_state_campaign_member1_veterans";
+  decode_save52_member0_checkpoint_state_campaign_member1_veterans value
+
+let read_save52_member0_checkpoint_state_campaign_member1_veterans_member1 value :
+    save52_member0_checkpoint_state_campaign_member1_veterans_member1 =
+  require
+    (Migration_reader.matches value 4517)
+    "Invalid frozen save52_member0_checkpoint_state_campaign_member1_veterans_member1";
+  decode_save52_member0_checkpoint_state_campaign_member1_veterans_member1 value
+
+let read_save52_member0_checkpoint_state_campaign_member1_veterans_member1_item value :
+    save52_member0_checkpoint_state_campaign_member1_veterans_member1_item =
+  require
+    (Migration_reader.matches value 4518)
+    "Invalid frozen save52_member0_checkpoint_state_campaign_member1_veterans_member1_item";
+  decode_save52_member0_checkpoint_state_campaign_member1_veterans_member1_item value
+
+let read_save52_member1 value : save52_member1 =
+  require (Migration_reader.matches value 4577) "Invalid frozen save52_member1";
+  decode_save52_member1 value
+
 module V2 = struct
   let of_json value : Historical_types.V2.t =
     let _ = Migration_reader.read value "Save2" in
@@ -30129,6 +35155,12 @@ and js_decode_save41_member0_checkpoint_state_campaign_member1_dialogue value :
     save41_member0_checkpoint_state_campaign_member1_dialogue =
   Array.map js_decode_save41_member0_checkpoint_state_campaign_member1_dialogue_item (array value)
 
+and js_decode_shape_735 value : shape_735 =
+  if Migration_reader.matches value 1933 then `Null
+  else if Migration_reader.matches value 2341 then
+    `Object2 (js_decode_fragments_native_state38_last_combat_member2 value)
+  else invalid "Invalid frozen union"
+
 and js_decode_save42_member0_setup_player value : save42_member0_setup_player =
   if Migration_reader.matches value 9 then `Null
   else if Migration_reader.matches value 120 then `Classic
@@ -30976,6 +36008,2001 @@ and js_decode_history5 value : history5 =
     entries = js_decode_history5_entries (field value "entries");
   }
 
+and js_decode_save50_member0_checkpoint_state value : save50_member0_checkpoint_state =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "visionGroups";
+          "factions";
+          "groundItems";
+          "armies";
+          "conditionMemory";
+          "mapId";
+          "mapRevision";
+          "cols";
+          "rows";
+          "round";
+          "turn";
+          "gold";
+          "winner";
+          "nextId";
+          "combatRng";
+          "log";
+          "tiles";
+          "units";
+          "campaign";
+          "lastCombat";
+        ]
+        value;
+    vision_groups =
+      js_decode_save41_member0_checkpoint_state_vision_groups (field value "visionGroups");
+    factions = js_decode_save50_member0_checkpoint_state_factions (field value "factions");
+    ground_items =
+      js_decode_save50_member0_checkpoint_state_ground_items (field value "groundItems");
+    armies = js_decode_save50_member0_checkpoint_state_armies (field value "armies");
+    condition_memory = js_decode_fragments_native_state38_log (field value "conditionMemory");
+    map_id = js_decode_json_string (field value "mapId");
+    map_revision = js_decode_json_number (field value "mapRevision");
+    cols = js_decode_json_number (field value "cols");
+    rows = js_decode_json_number (field value "rows");
+    round = js_decode_json_number (field value "round");
+    turn = js_decode_save41_member0_setup_first (field value "turn");
+    gold = js_decode_fragments_native_state38_gold (field value "gold");
+    winner = js_decode_save41_member0_checkpoint_state_winner (field value "winner");
+    next_id = js_decode_json_number (field value "nextId");
+    combat_rng = js_decode_json_number (field value "combatRng");
+    log = js_decode_fragments_native_state38_log (field value "log");
+    tiles = js_decode_save50_member0_checkpoint_state_tiles (field value "tiles");
+    units = js_decode_save50_member0_checkpoint_state_units (field value "units");
+    campaign = js_decode_save50_member0_checkpoint_state_campaign (field value "campaign");
+    last_combat = js_decode_shape_735 (field value "lastCombat");
+  }
+
+and js_decode_save50_member0_checkpoint_state_factions_item value :
+    save50_member0_checkpoint_state_factions_item =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "visionGroup";
+          "id";
+          "phase";
+          "controller";
+          "palette";
+          "name";
+          "recruits";
+          "relations";
+          "transfer";
+        ]
+        value;
+    vision_group = js_decode_json_string (field value "visionGroup");
+    id = js_decode_json_string (field value "id");
+    phase = js_decode_save41_member0_setup_first (field value "phase");
+    controller =
+      js_decode_save50_member0_checkpoint_state_factions_item_controller (field value "controller");
+    palette = js_decode_json_string (field value "palette");
+    name = js_decode_fragments_tiles11_item_owner (field value "name");
+    recruits =
+      js_decode_save50_member0_checkpoint_state_factions_item_recruits (field value "recruits");
+    relations =
+      js_decode_save41_member0_checkpoint_state_factions_item_relations_member1
+        (field value "relations");
+    transfer =
+      js_decode_save50_member0_checkpoint_state_factions_item_transfer (field value "transfer");
+  }
+
+and js_decode_save50_member0_checkpoint_state_factions_item_controller value :
+    save50_member0_checkpoint_state_factions_item_controller =
+  if Migration_reader.matches value 3481 then
+    `Human (js_decode_fragments_factions7_item_controller_member0 value)
+  else if Migration_reader.matches value 3483 then
+    `Passive (js_decode_fragments_factions7_item_controller_member1 value)
+  else if Migration_reader.matches value 3494 then
+    `Ai (js_decode_save50_member0_checkpoint_state_factions_item_controller_member2 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_factions_item_controller_member2_policy value :
+    save50_member0_checkpoint_state_factions_item_controller_member2_policy =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3486 then `Classic
+  else if Migration_reader.matches value 3487 then `Rush
+  else if Migration_reader.matches value 3488 then `Balanced
+  else if Migration_reader.matches value 3489 then `Rotated
+  else if Migration_reader.matches value 3490 then `Situational
+  else if Migration_reader.matches value 3491 then `Predictor
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_factions_item_controller_member2 value :
+    save50_member0_checkpoint_state_factions_item_controller_member2 =
+  {
+    wire = js_wire_of_json [ "kind"; "policy" ] value;
+    kind = js_decode_literal_ai (field value "kind");
+    policy =
+      js_decode_save50_member0_checkpoint_state_factions_item_controller_member2_policy
+        (field value "policy");
+  }
+
+and js_decode_save50_member0_checkpoint_state_factions_item_recruits_member1_item value :
+    save50_member0_checkpoint_state_factions_item_recruits_member1_item =
+  {
+    wire = js_wire_of_json [ "unit"; "cost" ] value;
+    unit_ = js_decode_json_string (field value "unit");
+    cost = js_decode_history5_entries_item_mission (field value "cost");
+  }
+
+and js_decode_save50_member0_checkpoint_state_factions_item_recruits_member1 value :
+    save50_member0_checkpoint_state_factions_item_recruits_member1 =
+  Array.map js_decode_save50_member0_checkpoint_state_factions_item_recruits_member1_item
+    (array value)
+
+and js_decode_save50_member0_checkpoint_state_factions_item_recruits value :
+    save50_member0_checkpoint_state_factions_item_recruits =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3499 then
+    `Array (js_decode_save50_member0_checkpoint_state_factions_item_recruits_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1 value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1 =
+  {
+    wire = js_wire_of_json [ "to"; "when" ] value;
+    to_ = js_decode_json_string (field value "to");
+    when_ =
+      js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when_
+        (field value "when");
+  }
+
+and js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when_ value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when_ =
+  {
+    wire = js_wire_of_json [ "observer"; "condition"; "remember" ] value;
+    observer = js_decode_fragments_tiles11_item_owner (field value "observer");
+    condition =
+      js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+        (field value "condition");
+    remember = js_decode_json_boolean (field value "remember");
+  }
+
+and js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition =
+  if Migration_reader.matches value 3523 then
+    `Owner
+      (js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0
+         value)
+  else if Migration_reader.matches value 3536 then
+    `Proximity
+      (js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1
+         value)
+  else if Migration_reader.matches value 3539 then
+    `Visible_units
+      (js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2
+         value)
+  else if Migration_reader.matches value 3544 then
+    `Has_units
+      (js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3
+         value)
+  else if Migration_reader.matches value 3548 then
+    `No_units
+      (js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4
+         value)
+  else if Migration_reader.matches value 3550 then
+    `Choice (js_decode_fragments_rule11_condition_member2 value)
+  else if Migration_reader.matches value 3552 then
+    `Flag (js_decode_fragments_rule11_condition_member3 value)
+  else if Migration_reader.matches value 3554 then
+    `Event (js_decode_fragments_rule11_condition_member4 value)
+  else if Migration_reader.matches value 3556 then
+    `Round (js_decode_fragments_rule11_condition_member5 value)
+  else if Migration_reader.matches value 3559 then
+    `All
+      (js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9
+         value)
+  else if Migration_reader.matches value 3562 then
+    `Any
+      (js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10
+         value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+    value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3513 then
+    `Location
+      (js_decode_save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member1
+         value)
+  else if Migration_reader.matches value 3514 then
+    `Object3
+      (js_decode_save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member2
+         value)
+  else if Migration_reader.matches value 3520 then
+    `Object4
+      (js_decode_save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member3
+         value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0 =
+  {
+    wire = js_wire_of_json [ "kind"; "tile"; "side" ] value;
+    kind = js_decode_literal_owner (field value "kind");
+    tile =
+      js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+        (field value "tile");
+    side = js_decode_json_string (field value "side");
+  }
+
+and js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1 =
+  {
+    wire =
+      js_wire_of_json
+        [ "kind"; "unitTypes"; "tile"; "radius"; "side"; "unitType"; "character" ]
+        value;
+    kind = js_decode_literal_proximity (field value "kind");
+    unit_types = js_decode_fragments_native_state38_log (field value "unitTypes");
+    tile =
+      js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+        (field value "tile");
+    radius = js_decode_json_number (field value "radius");
+    side =
+      js_decode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+        (field value "side");
+    unit_type = js_decode_fragments_tiles11_item_owner (field value "unitType");
+    character = js_decode_fragments_tiles11_item_owner (field value "character");
+  }
+
+and js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2 =
+  {
+    wire = js_wire_of_json [ "kind"; "side"; "unitTypes" ] value;
+    kind = js_decode_literal_visible_units (field value "kind");
+    side =
+      js_decode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+        (field value "side");
+    unit_types = js_decode_fragments_native_state38_log (field value "unitTypes");
+  }
+
+and js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3 =
+  {
+    wire = js_wire_of_json [ "kind"; "aiGroup"; "side"; "unitType"; "character" ] value;
+    kind = js_decode_literal_has_units (field value "kind");
+    ai_group = js_decode_fragments_tiles11_item_owner (field value "aiGroup");
+    side =
+      js_decode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+        (field value "side");
+    unit_type = js_decode_fragments_tiles11_item_owner (field value "unitType");
+    character = js_decode_fragments_tiles11_item_owner (field value "character");
+  }
+
+and js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4 =
+  {
+    wire = js_wire_of_json [ "kind"; "side"; "unitType"; "character" ] value;
+    kind = js_decode_literal_no_units (field value "kind");
+    side =
+      js_decode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+        (field value "side");
+    unit_type = js_decode_fragments_tiles11_item_owner (field value "unitType");
+    character = js_decode_fragments_tiles11_item_owner (field value "character");
+  }
+
+and js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+    value :
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+    =
+  Array.map js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+    (array value)
+
+and js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9 =
+  {
+    wire = js_wire_of_json [ "kind"; "conditions" ] value;
+    kind = js_decode_literal_all (field value "kind");
+    conditions =
+      js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+        (field value "conditions");
+  }
+
+and js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10
+    value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10
+    =
+  {
+    wire = js_wire_of_json [ "kind"; "conditions" ] value;
+    kind = js_decode_literal_any (field value "kind");
+    conditions =
+      js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+        (field value "conditions");
+  }
+
+and js_decode_save50_member0_checkpoint_state_factions_item_transfer value :
+    save50_member0_checkpoint_state_factions_item_transfer =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3507 then
+    `Object2 (js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_factions value :
+    save50_member0_checkpoint_state_factions =
+  Array.map js_decode_save50_member0_checkpoint_state_factions_item (array value)
+
+and js_decode_save50_member0_checkpoint_state_ground_items_item value :
+    save50_member0_checkpoint_state_ground_items_item =
+  {
+    wire = js_wire_of_json [ "tile"; "item" ] value;
+    tile = js_decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    item = js_decode_save50_member0_checkpoint_state_ground_items_item_item (field value "item");
+  }
+
+and js_decode_save50_member0_checkpoint_state_ground_items_item_item value :
+    save50_member0_checkpoint_state_ground_items_item_item =
+  {
+    wire =
+      js_wire_of_json
+        [ "perception"; "armor"; "id"; "name"; "description"; "attacks"; "healing" ]
+        value;
+    perception =
+      js_decode_save50_member0_checkpoint_state_ground_items_item_item_perception
+        (field value "perception");
+    armor =
+      js_decode_save50_member0_checkpoint_state_ground_items_item_item_armor (field value "armor");
+    id = js_decode_json_string (field value "id");
+    name = js_decode_json_string (field value "name");
+    description = js_decode_json_string (field value "description");
+    attacks =
+      js_decode_save41_member0_checkpoint_state_ground_items_item_item_attacks
+        (field value "attacks");
+    healing =
+      js_decode_save50_member0_checkpoint_state_ground_items_item_item_healing
+        (field value "healing");
+  }
+
+and js_decode_save50_member0_checkpoint_state_ground_items_item_item_perception_member1 value :
+    save50_member0_checkpoint_state_ground_items_item_item_perception_member1 =
+  {
+    wire = js_wire_of_json [ "range"; "penetrates"; "concealment"; "light" ] value;
+    range =
+      js_decode_save41_member0_checkpoint_state_vision_groups_item_sight_range (field value "range");
+    penetrates =
+      js_decode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+        (field value "penetrates");
+    concealment =
+      js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+        (field value "concealment");
+    light =
+      js_decode_save41_member0_checkpoint_state_tiles_item_light_member1_emission
+        (field value "light");
+  }
+
+and js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item value :
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item =
+  {
+    wire = js_wire_of_json [ "kind"; "revealWithin"; "requires" ] value;
+    kind =
+      js_decode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates_item
+        (field value "kind");
+    reveal_within = js_decode_json_number (field value "revealWithin");
+    requires =
+      js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires
+        (field value "requires");
+  }
+
+and js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires value
+    : save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires =
+  {
+    wire = js_wire_of_json [ "terrains"; "illumination" ] value;
+    terrains =
+      js_decode_save48_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_terrains
+        (field value "terrains");
+    illumination =
+      js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination
+        (field value "illumination");
+  }
+
+and js_decode_save50_member0_checkpoint_state_tiles_item_perception_illumination value :
+    save50_member0_checkpoint_state_tiles_item_perception_illumination =
+  if Migration_reader.matches value 3605 then `Lit
+  else if Migration_reader.matches value 3606 then `Unlit
+  else if Migration_reader.matches value 3607 then `Darkness
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1
+    value :
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1
+    =
+  Array.map js_decode_save50_member0_checkpoint_state_tiles_item_perception_illumination
+    (array value)
+
+and js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination
+    value :
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3609 then
+    `Array
+      (js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1
+         value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment value :
+    save50_member0_checkpoint_state_tiles_item_perception_concealment =
+  Array.map js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item
+    (array value)
+
+and js_decode_save50_member0_checkpoint_state_ground_items_item_item_perception value :
+    save50_member0_checkpoint_state_ground_items_item_item_perception =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3568 then
+    `Object2
+      (js_decode_save50_member0_checkpoint_state_ground_items_item_item_perception_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_ground_items_item_item_armor value :
+    save50_member0_checkpoint_state_ground_items_item_item_armor =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3615 then
+    `Object2 (js_decode_fragments_native_state38_ground_items_item_item_armor_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1 value :
+    save50_member0_checkpoint_state_ground_items_item_item_healing_member1 =
+  {
+    wire = js_wire_of_json [ "power"; "radius"; "includeSelf"; "targets" ] value;
+    power = js_decode_json_number (field value "power");
+    radius = js_decode_json_number (field value "radius");
+    include_self = js_decode_json_boolean (field value "includeSelf");
+    targets =
+      js_decode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets
+        (field value "targets");
+  }
+
+and js_decode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets value :
+    save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets =
+  if Migration_reader.matches value 3630 then `Own_faction
+  else if Migration_reader.matches value 3631 then `Allies
+  else if Migration_reader.matches value 3632 then `Enemies
+  else if Migration_reader.matches value 3633 then `Everyone
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_ground_items_item_item_healing value :
+    save50_member0_checkpoint_state_ground_items_item_item_healing =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3628 then
+    `Object2
+      (js_decode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_ground_items value :
+    save50_member0_checkpoint_state_ground_items =
+  Array.map js_decode_save50_member0_checkpoint_state_ground_items_item (array value)
+
+and js_decode_save50_member0_checkpoint_state_armies value : save50_member0_checkpoint_state_armies
+    =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3637 then
+    `Tuple (js_decode_fragments_native_state38_armies_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_tiles_item value :
+    save50_member0_checkpoint_state_tiles_item =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "id";
+          "location";
+          "col";
+          "row";
+          "terrain";
+          "owner";
+          "connections";
+          "deadEnds";
+          "walls";
+          "floor";
+          "perception";
+          "light";
+        ]
+        value;
+    id = js_decode_json_string (field value "id");
+    location = js_decode_fragments_tiles11_item_owner (field value "location");
+    col = js_decode_json_number (field value "col");
+    row = js_decode_json_number (field value "row");
+    terrain = js_decode_json_string (field value "terrain");
+    owner = js_decode_fragments_tiles11_item_owner (field value "owner");
+    connections =
+      js_decode_save50_member0_checkpoint_state_tiles_item_connections (field value "connections");
+    dead_ends =
+      js_decode_save50_member0_checkpoint_state_tiles_item_connections (field value "deadEnds");
+    walls = js_decode_save50_member0_checkpoint_state_tiles_item_connections (field value "walls");
+    floor = js_decode_fragments_tiles11_item_owner (field value "floor");
+    perception =
+      js_decode_save50_member0_checkpoint_state_tiles_item_perception (field value "perception");
+    light = js_decode_save50_member0_checkpoint_state_tiles_item_light (field value "light");
+  }
+
+and js_decode_save50_member0_checkpoint_state_tiles_item_connections value :
+    save50_member0_checkpoint_state_tiles_item_connections =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3659 then
+    `Array (js_decode_fragments_tiles11_item_connections_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_tiles_item_perception value :
+    save50_member0_checkpoint_state_tiles_item_perception =
+  {
+    wire = js_wire_of_json [ "illumination"; "sight"; "remember"; "concealment" ] value;
+    illumination =
+      js_decode_save50_member0_checkpoint_state_tiles_item_perception_illumination
+        (field value "illumination");
+    sight =
+      js_decode_save41_member0_checkpoint_state_tiles_item_perception_sight (field value "sight");
+    remember = js_decode_json_boolean (field value "remember");
+    concealment =
+      js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+        (field value "concealment");
+  }
+
+and js_decode_save50_member0_checkpoint_state_tiles_item_light_member1 value :
+    save50_member0_checkpoint_state_tiles_item_light_member1 =
+  {
+    wire =
+      js_wire_of_json
+        [ "emission"; "color"; "fixture"; "dx"; "dy"; "radius"; "power"; "when" ]
+        value;
+    emission =
+      js_decode_save41_member0_checkpoint_state_tiles_item_light_member1_emission
+        (field value "emission");
+    color =
+      js_decode_save50_member0_checkpoint_state_tiles_item_light_member1_color (field value "color");
+    fixture =
+      js_decode_save50_member0_checkpoint_state_units_item_retreating (field value "fixture");
+    dx = js_decode_history5_entries_item_mission (field value "dx");
+    dy = js_decode_history5_entries_item_mission (field value "dy");
+    radius = js_decode_json_number (field value "radius");
+    power = js_decode_json_number (field value "power");
+    when_ =
+      js_decode_save50_member0_checkpoint_state_tiles_item_light_member1_when_ (field value "when");
+  }
+
+and js_decode_save50_member0_checkpoint_state_tiles_item_light_member1_color value :
+    save50_member0_checkpoint_state_tiles_item_light_member1_color =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3672 then
+    `Tuple (js_decode_fragments_light23_color_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_units_item_retreating value :
+    save50_member0_checkpoint_state_units_item_retreating =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3455 then `Boolean (js_decode_json_boolean value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_tiles_item_light_member1_when_ value :
+    save50_member0_checkpoint_state_tiles_item_light_member1_when_ =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3508 then
+    `Object2 (js_decode_save50_member0_checkpoint_state_factions_item_transfer_member1_when_ value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_tiles_item_light value :
+    save50_member0_checkpoint_state_tiles_item_light =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3670 then
+    `Object2 (js_decode_save50_member0_checkpoint_state_tiles_item_light_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_tiles value : save50_member0_checkpoint_state_tiles =
+  Array.map js_decode_save50_member0_checkpoint_state_tiles_item (array value)
+
+and js_decode_save50_member0_checkpoint_state_units_item value :
+    save50_member0_checkpoint_state_units_item =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "revealedTo";
+          "perceptionEffects";
+          "faction";
+          "items";
+          "aiGroup";
+          "id";
+          "type";
+          "tile";
+          "hp";
+          "moved";
+          "attackSpent";
+          "experience";
+          "character";
+          "role";
+          "retreating";
+          "rebuilding";
+        ]
+        value;
+    revealed_to = js_decode_fragments_native_state38_log (field value "revealedTo");
+    perception_effects =
+      js_decode_save50_member0_checkpoint_state_units_item_perception_effects
+        (field value "perceptionEffects");
+    faction = js_decode_json_string (field value "faction");
+    items = js_decode_save50_member0_checkpoint_state_units_item_items (field value "items");
+    ai_group = js_decode_fragments_tiles11_item_owner (field value "aiGroup");
+    id = js_decode_json_string (field value "id");
+    type_ = js_decode_json_string (field value "type");
+    tile = js_decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    hp = js_decode_json_number (field value "hp");
+    moved = js_decode_json_boolean (field value "moved");
+    attack_spent = js_decode_json_boolean (field value "attackSpent");
+    experience = js_decode_history5_entries_item_mission (field value "experience");
+    character = js_decode_fragments_tiles11_item_owner (field value "character");
+    role =
+      js_decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+        (field value "role");
+    retreating =
+      js_decode_save50_member0_checkpoint_state_units_item_retreating (field value "retreating");
+    rebuilding =
+      js_decode_save50_member0_checkpoint_state_units_item_retreating (field value "rebuilding");
+  }
+
+and js_decode_save50_member0_checkpoint_state_units_item_perception_effects_item value :
+    save50_member0_checkpoint_state_units_item_perception_effects_item =
+  {
+    wire = js_wire_of_json [ "id"; "penetrates"; "concealment"; "light"; "expiresAt" ] value;
+    id = js_decode_json_string (field value "id");
+    penetrates =
+      js_decode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+        (field value "penetrates");
+    concealment =
+      js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+        (field value "concealment");
+    light =
+      js_decode_save41_member0_checkpoint_state_tiles_item_light_member1_emission
+        (field value "light");
+    expires_at =
+      js_decode_save41_member0_checkpoint_state_units_item_perception_effects_item_expires_at
+        (field value "expiresAt");
+  }
+
+and js_decode_save50_member0_checkpoint_state_units_item_perception_effects value :
+    save50_member0_checkpoint_state_units_item_perception_effects =
+  Array.map js_decode_save50_member0_checkpoint_state_units_item_perception_effects_item
+    (array value)
+
+and js_decode_save50_member0_checkpoint_state_units_item_items value :
+    save50_member0_checkpoint_state_units_item_items =
+  Array.map js_decode_save50_member0_checkpoint_state_ground_items_item_item (array value)
+
+and js_decode_save50_member0_checkpoint_state_units value : save50_member0_checkpoint_state_units =
+  Array.map js_decode_save50_member0_checkpoint_state_units_item (array value)
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1 value :
+    save50_member0_checkpoint_state_campaign_member1 =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "scripts";
+          "evacuated";
+          "id";
+          "mission";
+          "recall";
+          "veterans";
+          "storyVeterans";
+          "fallenCompanions";
+          "carryGold";
+          "marks";
+          "dialogue";
+          "dialogueIndex";
+          "outcome";
+          "completed";
+          "refuge";
+          "vigil";
+          "holds";
+          "flags";
+        ]
+        value;
+    scripts =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_scripts (field value "scripts");
+    evacuated =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_evacuated (field value "evacuated");
+    id = js_decode_json_string (field value "id");
+    mission = js_decode_json_number (field value "mission");
+    recall = js_decode_fragments_native_state38_log (field value "recall");
+    veterans =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_veterans (field value "veterans");
+    story_veterans =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_veterans
+        (field value "storyVeterans");
+    fallen_companions =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_fallen_companions
+        (field value "fallenCompanions");
+    carry_gold = js_decode_json_number (field value "carryGold");
+    marks = js_decode_fragments_native_state38_log (field value "marks");
+    dialogue =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_dialogue (field value "dialogue");
+    dialogue_index = js_decode_json_number (field value "dialogueIndex");
+    outcome = js_decode_fragments_tiles11_item_owner (field value "outcome");
+    completed = js_decode_json_boolean (field value "completed");
+    refuge =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_refuge (field value "refuge");
+    vigil = js_decode_save50_member0_checkpoint_state_campaign_member1_vigil (field value "vigil");
+    holds = js_decode_save50_member0_checkpoint_state_campaign_member1_holds (field value "holds");
+    flags = js_decode_fragments_native_state38_campaign_member1_flags (field value "flags");
+  }
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1 value :
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1 =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "failed";
+          "completed";
+          "revealed";
+          "recruitment";
+          "active";
+          "holds";
+          "marks";
+          "pending";
+          "nextMark";
+        ]
+        value;
+    failed = js_decode_fragments_native_state38_log (field value "failed");
+    completed = js_decode_fragments_native_state38_log (field value "completed");
+    revealed = js_decode_fragments_native_state38_log (field value "revealed");
+    recruitment =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+        (field value "recruitment");
+    active = js_decode_fragments_native_state38_log (field value "active");
+    holds =
+      js_decode_fragments_native_state38_campaign_member1_scripts_member1_holds
+        (field value "holds");
+    marks =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+        (field value "marks");
+    pending =
+      js_decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending
+        (field value "pending");
+    next_mark = js_decode_json_number (field value "nextMark");
+  }
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment value :
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment =
+  js_map_of_json js_decode_save50_member0_checkpoint_state_factions_item_recruits_member1 value
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item value :
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item =
+  {
+    wire = js_wire_of_json [ "sight"; "lightRemembered"; "id"; "type"; "tile"; "light" ] value;
+    sight =
+      js_decode_save41_member0_checkpoint_state_tiles_item_perception_sight (field value "sight");
+    light_remembered = js_decode_json_boolean (field value "lightRemembered");
+    id = js_decode_json_number (field value "id");
+    type_ = js_decode_json_string (field value "type");
+    tile = js_decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    light = js_decode_save50_member0_checkpoint_state_tiles_item_light (field value "light");
+  }
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks value :
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks =
+  Array.map js_decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+    (array value)
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_scripts value :
+    save50_member0_checkpoint_state_campaign_member1_scripts =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3703 then
+    `Object2 (js_decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_evacuated_item value :
+    save50_member0_checkpoint_state_campaign_member1_evacuated_item =
+  {
+    wire = js_wire_of_json [ "event"; "unit" ] value;
+    event = js_decode_json_string (field value "event");
+    unit_ = js_decode_save50_member0_checkpoint_state_units_item (field value "unit");
+  }
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_evacuated value :
+    save50_member0_checkpoint_state_campaign_member1_evacuated =
+  Array.map js_decode_save50_member0_checkpoint_state_campaign_member1_evacuated_item (array value)
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_veterans_member1_item value :
+    save50_member0_checkpoint_state_campaign_member1_veterans_member1_item =
+  {
+    wire = js_wire_of_json [ "items"; "type"; "experience"; "character"; "role" ] value;
+    items = js_decode_save50_member0_checkpoint_state_units_item_items (field value "items");
+    type_ = js_decode_json_string (field value "type");
+    experience = js_decode_json_number (field value "experience");
+    character = js_decode_fragments_tiles11_item_owner (field value "character");
+    role =
+      js_decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+        (field value "role");
+  }
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_veterans_member1 value :
+    save50_member0_checkpoint_state_campaign_member1_veterans_member1 =
+  Array.map js_decode_save50_member0_checkpoint_state_campaign_member1_veterans_member1_item
+    (array value)
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_veterans value :
+    save50_member0_checkpoint_state_campaign_member1_veterans =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3733 then
+    `Array (js_decode_save50_member0_checkpoint_state_campaign_member1_veterans_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_fallen_companions value :
+    save50_member0_checkpoint_state_campaign_member1_fallen_companions =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3737 then
+    `Array (js_decode_fragments_native_state38_log value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_dialogue_item value :
+    save50_member0_checkpoint_state_campaign_member1_dialogue_item =
+  {
+    wire = js_wire_of_json [ "sound"; "speaker"; "character"; "portrait"; "text" ] value;
+    sound = js_decode_fragments_tiles11_item_owner (field value "sound");
+    speaker = js_decode_json_string (field value "speaker");
+    character = js_decode_fragments_tiles11_item_owner (field value "character");
+    portrait = js_decode_json_string (field value "portrait");
+    text = js_decode_json_string (field value "text");
+  }
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_dialogue value :
+    save50_member0_checkpoint_state_campaign_member1_dialogue =
+  Array.map js_decode_save50_member0_checkpoint_state_campaign_member1_dialogue_item (array value)
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_refuge value :
+    save50_member0_checkpoint_state_campaign_member1_refuge =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3745 then
+    `Object2 (js_decode_fragments_native_state38_campaign_member1_refuge_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_vigil value :
+    save50_member0_checkpoint_state_campaign_member1_vigil =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3747 then
+    `Object2 (js_decode_fragments_native_state38_campaign_member1_vigil_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_campaign_member1_holds value :
+    save50_member0_checkpoint_state_campaign_member1_holds =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3749 then
+    `Object2 (js_decode_fragments_native_state38_campaign_member1_holds_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0_checkpoint_state_campaign value :
+    save50_member0_checkpoint_state_campaign =
+  if Migration_reader.matches value 3452 then `Null
+  else if Migration_reader.matches value 3702 then
+    `Object2 (js_decode_save50_member0_checkpoint_state_campaign_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50 value : save50 =
+  if Migration_reader.matches value 3759 then `Current (js_decode_save50_member0 value)
+  else if Migration_reader.matches value 3817 then `Turn (js_decode_save50_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save50_member0 value : save50_member0 =
+  {
+    wire =
+      js_wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = js_decode_json_boolean (field value "pendingEnemy");
+    undo = js_decode_save34_undo_member1 (field value "undo");
+    progress = js_decode_save49_member0_progress (field value "progress");
+    version = js_decode_literal_50 (field value "version");
+    checkpoint = js_decode_save50_member0_checkpoint (field value "checkpoint");
+    setup = js_decode_save42_member0_setup (field value "setup");
+  }
+
+and js_decode_literal_50 value : literal_50 = `V50
+
+and js_decode_save50_member0_checkpoint value : save50_member0_checkpoint =
+  {
+    wire = js_wire_of_json [ "seed"; "state" ] value;
+    seed = js_decode_json_number (field value "seed");
+    state = js_decode_save50_member0_checkpoint_state (field value "state");
+  }
+
+and js_decode_save50_member1 value : save50_member1 =
+  {
+    wire =
+      js_wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = js_decode_literal_false (field value "pendingEnemy");
+    undo =
+      (match get value "undo" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (js_decode_json_undefined x));
+    progress = js_decode_save49_member1_progress (field value "progress");
+    version = js_decode_literal_50 (field value "version");
+    checkpoint = js_decode_save50_member0_checkpoint (field value "checkpoint");
+    setup = js_decode_save42_member0_setup (field value "setup");
+  }
+
+and js_decode_save51_member0_checkpoint_state value : save51_member0_checkpoint_state =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "mapModifiers";
+          "lighting";
+          "visionGroups";
+          "factions";
+          "groundItems";
+          "armies";
+          "conditionMemory";
+          "mapId";
+          "mapRevision";
+          "cols";
+          "rows";
+          "round";
+          "turn";
+          "gold";
+          "winner";
+          "nextId";
+          "combatRng";
+          "log";
+          "tiles";
+          "units";
+          "campaign";
+          "lastCombat";
+        ]
+        value;
+    map_modifiers =
+      js_decode_save51_member0_checkpoint_state_map_modifiers (field value "mapModifiers");
+    lighting = js_decode_save51_member0_checkpoint_state_lighting (field value "lighting");
+    vision_groups =
+      js_decode_save51_member0_checkpoint_state_vision_groups (field value "visionGroups");
+    factions = js_decode_save50_member0_checkpoint_state_factions (field value "factions");
+    ground_items =
+      js_decode_save51_member0_checkpoint_state_ground_items (field value "groundItems");
+    armies = js_decode_save50_member0_checkpoint_state_armies (field value "armies");
+    condition_memory = js_decode_fragments_native_state38_log (field value "conditionMemory");
+    map_id = js_decode_json_string (field value "mapId");
+    map_revision = js_decode_json_number (field value "mapRevision");
+    cols = js_decode_json_number (field value "cols");
+    rows = js_decode_json_number (field value "rows");
+    round = js_decode_json_number (field value "round");
+    turn = js_decode_save41_member0_setup_first (field value "turn");
+    gold = js_decode_fragments_native_state38_gold (field value "gold");
+    winner = js_decode_save41_member0_checkpoint_state_winner (field value "winner");
+    next_id = js_decode_json_number (field value "nextId");
+    combat_rng = js_decode_json_number (field value "combatRng");
+    log = js_decode_fragments_native_state38_log (field value "log");
+    tiles = js_decode_save51_member0_checkpoint_state_tiles (field value "tiles");
+    units = js_decode_save51_member0_checkpoint_state_units (field value "units");
+    campaign = js_decode_save51_member0_checkpoint_state_campaign (field value "campaign");
+    last_combat = js_decode_shape_735 (field value "lastCombat");
+  }
+
+and js_decode_save51_member0_checkpoint_state_map_modifiers value :
+    save51_member0_checkpoint_state_map_modifiers =
+  {
+    wire = js_wire_of_json [ "sight"; "damageModifiers"; "terrainModifiers" ] value;
+    sight = js_decode_save51_member0_checkpoint_state_map_modifiers_sight (field value "sight");
+    damage_modifiers =
+      js_decode_fragments_native_state38_ground_items_item_item_armor_member1
+        (field value "damageModifiers");
+    terrain_modifiers =
+      js_decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers
+        (field value "terrainModifiers");
+  }
+
+and js_decode_save51_member0_checkpoint_state_map_modifiers_sight value :
+    save51_member0_checkpoint_state_map_modifiers_sight =
+  {
+    wire = js_wire_of_json [ "range"; "unlimited"; "sightModifiers"; "penetrates" ] value;
+    range = js_decode_json_number (field value "range");
+    unlimited = js_decode_json_boolean (field value "unlimited");
+    sight_modifiers =
+      js_decode_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers
+        (field value "sightModifiers");
+    penetrates =
+      js_decode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+        (field value "penetrates");
+  }
+
+and js_decode_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers value :
+    save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers =
+  {
+    wire = js_wire_of_json [ "lit"; "unlit"; "darkness" ] value;
+    lit = js_decode_json_number (field value "lit");
+    unlit = js_decode_json_number (field value "unlit");
+    darkness = js_decode_json_number (field value "darkness");
+  }
+
+and js_decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value value :
+    save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value =
+  {
+    wire = js_wire_of_json [ "cost"; "passable"; "damageModifiers" ] value;
+    cost = js_decode_json_number (field value "cost");
+    passable =
+      js_decode_save50_member0_checkpoint_state_units_item_retreating (field value "passable");
+    damage_modifiers =
+      js_decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers
+        (field value "damageModifiers");
+  }
+
+and js_decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers
+    value : save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers =
+  {
+    wire = js_wire_of_json [ "melee"; "ranged"; "blade"; "pierce"; "impact" ] value;
+    melee = js_decode_json_number (field value "melee");
+    ranged = js_decode_json_number (field value "ranged");
+    blade = js_decode_json_number (field value "blade");
+    pierce = js_decode_json_number (field value "pierce");
+    impact = js_decode_json_number (field value "impact");
+  }
+
+and js_decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers value :
+    save51_member0_checkpoint_state_map_modifiers_terrain_modifiers =
+  js_map_of_json js_decode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value
+    value
+
+and js_decode_save51_member0_checkpoint_state_lighting value :
+    save51_member0_checkpoint_state_lighting =
+  {
+    wire = js_wire_of_json [ "time" ] value;
+    time = js_decode_save51_member0_checkpoint_state_lighting_time (field value "time");
+  }
+
+and js_decode_save51_member0_checkpoint_state_lighting_time value :
+    save51_member0_checkpoint_state_lighting_time =
+  if Migration_reader.matches value 3844 then `Day
+  else if Migration_reader.matches value 3845 then `Night
+  else invalid "Invalid frozen union"
+
+and js_decode_save51_member0_checkpoint_state_vision_groups_item value :
+    save51_member0_checkpoint_state_vision_groups_item =
+  {
+    wire = js_wire_of_json [ "id"; "sight"; "explored" ] value;
+    id = js_decode_json_string (field value "id");
+    sight = js_decode_save51_member0_checkpoint_state_vision_groups_item_sight (field value "sight");
+    explored =
+      js_decode_save39_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_area
+        (field value "explored");
+  }
+
+and js_decode_save51_member0_checkpoint_state_vision_groups_item_sight value :
+    save51_member0_checkpoint_state_vision_groups_item_sight =
+  {
+    wire = js_wire_of_json [ "range"; "penetrates" ] value;
+    range =
+      js_decode_save51_member0_checkpoint_state_vision_groups_item_sight_range (field value "range");
+    penetrates =
+      js_decode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+        (field value "penetrates");
+  }
+
+and js_decode_save51_member0_checkpoint_state_vision_groups_item_sight_range value :
+    save51_member0_checkpoint_state_vision_groups_item_sight_range =
+  if Migration_reader.matches value 3851 then `Unlimited
+  else if Migration_reader.matches value 3824 then `Number (js_decode_json_number value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save51_member0_checkpoint_state_vision_groups value :
+    save51_member0_checkpoint_state_vision_groups =
+  Array.map js_decode_save51_member0_checkpoint_state_vision_groups_item (array value)
+
+and js_decode_save51_member0_checkpoint_state_ground_items_item value :
+    save51_member0_checkpoint_state_ground_items_item =
+  {
+    wire = js_wire_of_json [ "tile"; "item" ] value;
+    tile = js_decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    item = js_decode_save51_member0_checkpoint_state_ground_items_item_item (field value "item");
+  }
+
+and js_decode_save51_member0_checkpoint_state_ground_items_item_item value :
+    save51_member0_checkpoint_state_ground_items_item_item =
+  {
+    wire =
+      js_wire_of_json [ "sight"; "effects"; "armor"; "id"; "name"; "description"; "attacks" ] value;
+    sight = js_decode_save51_member0_checkpoint_state_map_modifiers_sight (field value "sight");
+    effects = js_decode_save51_member0_checkpoint_state_tiles_item_effects (field value "effects");
+    armor =
+      js_decode_save50_member0_checkpoint_state_ground_items_item_item_armor (field value "armor");
+    id = js_decode_json_string (field value "id");
+    name = js_decode_json_string (field value "name");
+    description = js_decode_json_string (field value "description");
+    attacks =
+      js_decode_save41_member0_checkpoint_state_ground_items_item_item_attacks
+        (field value "attacks");
+  }
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_effects_item value :
+    save51_member0_checkpoint_state_tiles_item_effects_item =
+  {
+    wire = js_wire_of_json [ "scope"; "stacking"; "effect" ] value;
+    scope =
+      js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_scope (field value "scope");
+    stacking =
+      js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking
+        (field value "stacking");
+    effect_ =
+      js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect_
+        (field value "effect");
+  }
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_scope value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_scope =
+  {
+    wire = js_wire_of_json [ "radius"; "includeSelf"; "targets" ] value;
+    radius = js_decode_json_number (field value "radius");
+    include_self = js_decode_json_boolean (field value "includeSelf");
+    targets =
+      js_decode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets
+        (field value "targets");
+  }
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_stacking =
+  {
+    wire = js_wire_of_json [ "group"; "combine" ] value;
+    group = js_decode_json_string (field value "group");
+    combine =
+      js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine
+        (field value "combine");
+  }
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine =
+  if Migration_reader.matches value 3962 then `Add
+  else if Migration_reader.matches value 3963 then `Max
+  else if Migration_reader.matches value 3964 then `Union
+  else invalid "Invalid frozen union"
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect_ value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect_ =
+  if Migration_reader.matches value 3968 then
+    `Healing
+      (js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0 value)
+  else if Migration_reader.matches value 3974 then
+    `Thorns
+      (js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1 value)
+  else if Migration_reader.matches value 3977 then
+    `Sight (js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2 value)
+  else if Migration_reader.matches value 4019 then
+    `Concealment
+      (js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3 value)
+  else if Migration_reader.matches value 4021 then
+    `Light (js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4 value)
+  else if Migration_reader.matches value 4023 then
+    `Stat_modifiers
+      (js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_literal_healing value : literal_healing = `Healing
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0 =
+  {
+    wire = js_wire_of_json [ "kind"; "power" ] value;
+    kind = js_decode_literal_healing (field value "kind");
+    power = js_decode_json_number (field value "power");
+  }
+
+and js_decode_literal_thorns value : literal_thorns = `Thorns
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1 =
+  {
+    wire = js_wire_of_json [ "kind"; "damagePerStrike"; "incomingCategory" ] value;
+    kind = js_decode_literal_thorns (field value "kind");
+    damage_per_strike = js_decode_json_number (field value "damagePerStrike");
+    incoming_category =
+      js_decode_fragments_native_state38_ground_items_item_item_attacks_item_category
+        (field value "incomingCategory");
+  }
+
+and js_decode_literal_sight value : literal_sight = `Sight
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2 =
+  {
+    wire = js_wire_of_json [ "kind"; "range"; "unlimited"; "sightModifiers"; "penetrates" ] value;
+    kind = js_decode_literal_sight (field value "kind");
+    range = js_decode_json_number (field value "range");
+    unlimited = js_decode_json_boolean (field value "unlimited");
+    sight_modifiers =
+      js_decode_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers
+        (field value "sightModifiers");
+    penetrates =
+      js_decode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+        (field value "penetrates");
+  }
+
+and js_decode_literal_concealment value : literal_concealment = `Concealment
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3 =
+  {
+    wire = js_wire_of_json [ "kind"; "rule" ] value;
+    kind = js_decode_literal_concealment (field value "kind");
+    rule =
+      js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item
+        (field value "rule");
+  }
+
+and js_decode_literal_light value : literal_light = `Light
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4 =
+  {
+    wire = js_wire_of_json [ "kind"; "radius" ] value;
+    kind = js_decode_literal_light (field value "kind");
+    radius = js_decode_json_number (field value "radius");
+  }
+
+and js_decode_literal_stat_modifiers value : literal_stat_modifiers = `Stat_modifiers
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5 value :
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5 =
+  {
+    wire = js_wire_of_json [ "kind"; "modifiers" ] value;
+    kind = js_decode_literal_stat_modifiers (field value "kind");
+    modifiers = js_decode_save51_member0_checkpoint_state_map_modifiers (field value "modifiers");
+  }
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_effects value :
+    save51_member0_checkpoint_state_tiles_item_effects =
+  Array.map js_decode_save51_member0_checkpoint_state_tiles_item_effects_item (array value)
+
+and js_decode_save51_member0_checkpoint_state_ground_items value :
+    save51_member0_checkpoint_state_ground_items =
+  Array.map js_decode_save51_member0_checkpoint_state_ground_items_item (array value)
+
+and js_decode_save51_member0_checkpoint_state_tiles_item value :
+    save51_member0_checkpoint_state_tiles_item =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "effects";
+          "id";
+          "location";
+          "col";
+          "row";
+          "terrain";
+          "owner";
+          "connections";
+          "deadEnds";
+          "walls";
+          "floor";
+          "perception";
+          "light";
+        ]
+        value;
+    effects = js_decode_save51_member0_checkpoint_state_tiles_item_effects (field value "effects");
+    id = js_decode_json_string (field value "id");
+    location = js_decode_fragments_tiles11_item_owner (field value "location");
+    col = js_decode_json_number (field value "col");
+    row = js_decode_json_number (field value "row");
+    terrain = js_decode_json_string (field value "terrain");
+    owner = js_decode_fragments_tiles11_item_owner (field value "owner");
+    connections =
+      js_decode_save50_member0_checkpoint_state_tiles_item_connections (field value "connections");
+    dead_ends =
+      js_decode_save50_member0_checkpoint_state_tiles_item_connections (field value "deadEnds");
+    walls = js_decode_save50_member0_checkpoint_state_tiles_item_connections (field value "walls");
+    floor = js_decode_fragments_tiles11_item_owner (field value "floor");
+    perception =
+      js_decode_save51_member0_checkpoint_state_tiles_item_perception (field value "perception");
+    light = js_decode_save50_member0_checkpoint_state_tiles_item_light (field value "light");
+  }
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_perception value :
+    save51_member0_checkpoint_state_tiles_item_perception =
+  {
+    wire = js_wire_of_json [ "illumination"; "sight"; "remember"; "concealment" ] value;
+    illumination =
+      js_decode_save51_member0_checkpoint_state_tiles_item_perception_illumination
+        (field value "illumination");
+    sight =
+      js_decode_save51_member0_checkpoint_state_tiles_item_perception_sight (field value "sight");
+    remember = js_decode_json_boolean (field value "remember");
+    concealment =
+      js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+        (field value "concealment");
+  }
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_perception_illumination value :
+    save51_member0_checkpoint_state_tiles_item_perception_illumination =
+  if Migration_reader.matches value 3823 then `Null
+  else if Migration_reader.matches value 4013 then `Lit
+  else if Migration_reader.matches value 4014 then `Unlit
+  else if Migration_reader.matches value 4015 then `Darkness
+  else invalid "Invalid frozen union"
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_perception_sight_member1 value :
+    save51_member0_checkpoint_state_tiles_item_perception_sight_member1 =
+  {
+    wire = js_wire_of_json [ "group"; "profile" ] value;
+    group = js_decode_json_string (field value "group");
+    profile =
+      js_decode_save51_member0_checkpoint_state_vision_groups_item_sight (field value "profile");
+  }
+
+and js_decode_save51_member0_checkpoint_state_tiles_item_perception_sight value :
+    save51_member0_checkpoint_state_tiles_item_perception_sight =
+  if Migration_reader.matches value 3823 then `Null
+  else if Migration_reader.matches value 4068 then
+    `Object2 (js_decode_save51_member0_checkpoint_state_tiles_item_perception_sight_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save51_member0_checkpoint_state_tiles value : save51_member0_checkpoint_state_tiles =
+  Array.map js_decode_save51_member0_checkpoint_state_tiles_item (array value)
+
+and js_decode_save51_member0_checkpoint_state_units_item value :
+    save51_member0_checkpoint_state_units_item =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "revealedTo";
+          "perceptionEffects";
+          "faction";
+          "items";
+          "aiGroup";
+          "id";
+          "type";
+          "tile";
+          "hp";
+          "moved";
+          "attackSpent";
+          "experience";
+          "character";
+          "role";
+          "retreating";
+          "rebuilding";
+        ]
+        value;
+    revealed_to = js_decode_fragments_native_state38_log (field value "revealedTo");
+    perception_effects =
+      js_decode_save51_member0_checkpoint_state_units_item_perception_effects
+        (field value "perceptionEffects");
+    faction = js_decode_json_string (field value "faction");
+    items = js_decode_save51_member0_checkpoint_state_units_item_items (field value "items");
+    ai_group = js_decode_fragments_tiles11_item_owner (field value "aiGroup");
+    id = js_decode_json_string (field value "id");
+    type_ = js_decode_json_string (field value "type");
+    tile = js_decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    hp = js_decode_json_number (field value "hp");
+    moved = js_decode_json_boolean (field value "moved");
+    attack_spent = js_decode_json_boolean (field value "attackSpent");
+    experience = js_decode_history5_entries_item_mission (field value "experience");
+    character = js_decode_fragments_tiles11_item_owner (field value "character");
+    role =
+      js_decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+        (field value "role");
+    retreating =
+      js_decode_save50_member0_checkpoint_state_units_item_retreating (field value "retreating");
+    rebuilding =
+      js_decode_save50_member0_checkpoint_state_units_item_retreating (field value "rebuilding");
+  }
+
+and js_decode_save51_member0_checkpoint_state_units_item_perception_effects_item value :
+    save51_member0_checkpoint_state_units_item_perception_effects_item =
+  {
+    wire = js_wire_of_json [ "id"; "penetrates"; "concealment"; "light" ] value;
+    id = js_decode_json_string (field value "id");
+    penetrates =
+      js_decode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+        (field value "penetrates");
+    concealment =
+      js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+        (field value "concealment");
+    light =
+      js_decode_save41_member0_checkpoint_state_tiles_item_light_member1_emission
+        (field value "light");
+  }
+
+and js_decode_save51_member0_checkpoint_state_units_item_perception_effects value :
+    save51_member0_checkpoint_state_units_item_perception_effects =
+  Array.map js_decode_save51_member0_checkpoint_state_units_item_perception_effects_item
+    (array value)
+
+and js_decode_save51_member0_checkpoint_state_units_item_items value :
+    save51_member0_checkpoint_state_units_item_items =
+  Array.map js_decode_save51_member0_checkpoint_state_ground_items_item_item (array value)
+
+and js_decode_save51_member0_checkpoint_state_units value : save51_member0_checkpoint_state_units =
+  Array.map js_decode_save51_member0_checkpoint_state_units_item (array value)
+
+and js_decode_save51_member0_checkpoint_state_campaign_member1 value :
+    save51_member0_checkpoint_state_campaign_member1 =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "scripts";
+          "evacuated";
+          "id";
+          "mission";
+          "recall";
+          "veterans";
+          "storyVeterans";
+          "fallenCompanions";
+          "carryGold";
+          "marks";
+          "dialogue";
+          "dialogueIndex";
+          "outcome";
+          "completed";
+          "refuge";
+          "vigil";
+          "holds";
+          "flags";
+        ]
+        value;
+    scripts =
+      js_decode_save51_member0_checkpoint_state_campaign_member1_scripts (field value "scripts");
+    evacuated =
+      js_decode_save51_member0_checkpoint_state_campaign_member1_evacuated (field value "evacuated");
+    id = js_decode_json_string (field value "id");
+    mission = js_decode_json_number (field value "mission");
+    recall = js_decode_fragments_native_state38_log (field value "recall");
+    veterans =
+      js_decode_save51_member0_checkpoint_state_campaign_member1_veterans (field value "veterans");
+    story_veterans =
+      js_decode_save51_member0_checkpoint_state_campaign_member1_veterans
+        (field value "storyVeterans");
+    fallen_companions =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_fallen_companions
+        (field value "fallenCompanions");
+    carry_gold = js_decode_json_number (field value "carryGold");
+    marks = js_decode_fragments_native_state38_log (field value "marks");
+    dialogue =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_dialogue (field value "dialogue");
+    dialogue_index = js_decode_json_number (field value "dialogueIndex");
+    outcome = js_decode_fragments_tiles11_item_owner (field value "outcome");
+    completed = js_decode_json_boolean (field value "completed");
+    refuge =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_refuge (field value "refuge");
+    vigil = js_decode_save50_member0_checkpoint_state_campaign_member1_vigil (field value "vigil");
+    holds = js_decode_save50_member0_checkpoint_state_campaign_member1_holds (field value "holds");
+    flags = js_decode_fragments_native_state38_campaign_member1_flags (field value "flags");
+  }
+
+and js_decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1 value :
+    save51_member0_checkpoint_state_campaign_member1_scripts_member1 =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "failed";
+          "completed";
+          "revealed";
+          "recruitment";
+          "active";
+          "holds";
+          "marks";
+          "pending";
+          "nextMark";
+        ]
+        value;
+    failed = js_decode_fragments_native_state38_log (field value "failed");
+    completed = js_decode_fragments_native_state38_log (field value "completed");
+    revealed = js_decode_fragments_native_state38_log (field value "revealed");
+    recruitment =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+        (field value "recruitment");
+    active = js_decode_fragments_native_state38_log (field value "active");
+    holds =
+      js_decode_fragments_native_state38_campaign_member1_scripts_member1_holds
+        (field value "holds");
+    marks =
+      js_decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+        (field value "marks");
+    pending =
+      js_decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending
+        (field value "pending");
+    next_mark = js_decode_json_number (field value "nextMark");
+  }
+
+and js_decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item value :
+    save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item =
+  {
+    wire = js_wire_of_json [ "sight"; "lightRemembered"; "id"; "type"; "tile"; "light" ] value;
+    sight =
+      js_decode_save51_member0_checkpoint_state_tiles_item_perception_sight (field value "sight");
+    light_remembered = js_decode_json_boolean (field value "lightRemembered");
+    id = js_decode_json_number (field value "id");
+    type_ = js_decode_json_string (field value "type");
+    tile = js_decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    light = js_decode_save50_member0_checkpoint_state_tiles_item_light (field value "light");
+  }
+
+and js_decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks value :
+    save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks =
+  Array.map js_decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+    (array value)
+
+and js_decode_save51_member0_checkpoint_state_campaign_member1_scripts value :
+    save51_member0_checkpoint_state_campaign_member1_scripts =
+  if Migration_reader.matches value 3823 then `Null
+  else if Migration_reader.matches value 4104 then
+    `Object2 (js_decode_save51_member0_checkpoint_state_campaign_member1_scripts_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save51_member0_checkpoint_state_campaign_member1_evacuated_item value :
+    save51_member0_checkpoint_state_campaign_member1_evacuated_item =
+  {
+    wire = js_wire_of_json [ "event"; "unit" ] value;
+    event = js_decode_json_string (field value "event");
+    unit_ = js_decode_save51_member0_checkpoint_state_units_item (field value "unit");
+  }
+
+and js_decode_save51_member0_checkpoint_state_campaign_member1_evacuated value :
+    save51_member0_checkpoint_state_campaign_member1_evacuated =
+  Array.map js_decode_save51_member0_checkpoint_state_campaign_member1_evacuated_item (array value)
+
+and js_decode_save51_member0_checkpoint_state_campaign_member1_veterans_member1_item value :
+    save51_member0_checkpoint_state_campaign_member1_veterans_member1_item =
+  {
+    wire = js_wire_of_json [ "items"; "type"; "experience"; "character"; "role" ] value;
+    items = js_decode_save51_member0_checkpoint_state_units_item_items (field value "items");
+    type_ = js_decode_json_string (field value "type");
+    experience = js_decode_json_number (field value "experience");
+    character = js_decode_fragments_tiles11_item_owner (field value "character");
+    role =
+      js_decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+        (field value "role");
+  }
+
+and js_decode_save51_member0_checkpoint_state_campaign_member1_veterans_member1 value :
+    save51_member0_checkpoint_state_campaign_member1_veterans_member1 =
+  Array.map js_decode_save51_member0_checkpoint_state_campaign_member1_veterans_member1_item
+    (array value)
+
+and js_decode_save51_member0_checkpoint_state_campaign_member1_veterans value :
+    save51_member0_checkpoint_state_campaign_member1_veterans =
+  if Migration_reader.matches value 3823 then `Null
+  else if Migration_reader.matches value 4134 then
+    `Array (js_decode_save51_member0_checkpoint_state_campaign_member1_veterans_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save51_member0_checkpoint_state_campaign value :
+    save51_member0_checkpoint_state_campaign =
+  if Migration_reader.matches value 3823 then `Null
+  else if Migration_reader.matches value 4103 then
+    `Object2 (js_decode_save51_member0_checkpoint_state_campaign_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save51 value : save51 =
+  if Migration_reader.matches value 4160 then `Current (js_decode_save51_member0 value)
+  else if Migration_reader.matches value 4218 then `Turn (js_decode_save51_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save51_member0 value : save51_member0 =
+  {
+    wire =
+      js_wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = js_decode_json_boolean (field value "pendingEnemy");
+    undo = js_decode_save34_undo_member1 (field value "undo");
+    progress = js_decode_save49_member0_progress (field value "progress");
+    version = js_decode_literal_51 (field value "version");
+    checkpoint = js_decode_save51_member0_checkpoint (field value "checkpoint");
+    setup = js_decode_save42_member0_setup (field value "setup");
+  }
+
+and js_decode_literal_51 value : literal_51 = `V51
+
+and js_decode_save51_member0_checkpoint value : save51_member0_checkpoint =
+  {
+    wire = js_wire_of_json [ "seed"; "state" ] value;
+    seed = js_decode_json_number (field value "seed");
+    state = js_decode_save51_member0_checkpoint_state (field value "state");
+  }
+
+and js_decode_save51_member1 value : save51_member1 =
+  {
+    wire =
+      js_wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = js_decode_literal_false (field value "pendingEnemy");
+    undo =
+      (match get value "undo" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (js_decode_json_undefined x));
+    progress = js_decode_save49_member1_progress (field value "progress");
+    version = js_decode_literal_51 (field value "version");
+    checkpoint = js_decode_save51_member0_checkpoint (field value "checkpoint");
+    setup = js_decode_save42_member0_setup (field value "setup");
+  }
+
+and js_decode_save52 value : save52 =
+  if Migration_reader.matches value 4225 then `Current (js_decode_save52_member0 value)
+  else if Migration_reader.matches value 4577 then `Turn (js_decode_save52_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save52_member0 value : save52_member0 =
+  {
+    wire =
+      js_wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = js_decode_json_boolean (field value "pendingEnemy");
+    undo = js_decode_save34_undo_member1 (field value "undo");
+    progress = js_decode_save49_member0_progress (field value "progress");
+    version = js_decode_literal_52 (field value "version");
+    checkpoint = js_decode_save52_member0_checkpoint (field value "checkpoint");
+    setup = js_decode_save42_member0_setup (field value "setup");
+  }
+
+and js_decode_literal_52 value : literal_52 = `V52
+
+and js_decode_save52_member0_checkpoint value : save52_member0_checkpoint =
+  {
+    wire = js_wire_of_json [ "seed"; "state" ] value;
+    seed = js_decode_json_number (field value "seed");
+    state = js_decode_save52_member0_checkpoint_state (field value "state");
+  }
+
+and js_decode_save52_member0_checkpoint_state value : save52_member0_checkpoint_state =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "mapModifiers";
+          "lighting";
+          "visionGroups";
+          "factions";
+          "groundItems";
+          "armies";
+          "conditionMemory";
+          "mapId";
+          "mapRevision";
+          "cols";
+          "rows";
+          "round";
+          "turn";
+          "gold";
+          "winner";
+          "nextId";
+          "combatRng";
+          "log";
+          "tiles";
+          "units";
+          "campaign";
+          "lastCombat";
+        ]
+        value;
+    map_modifiers =
+      js_decode_save51_member0_checkpoint_state_map_modifiers (field value "mapModifiers");
+    lighting = js_decode_save51_member0_checkpoint_state_lighting (field value "lighting");
+    vision_groups =
+      js_decode_save52_member0_checkpoint_state_vision_groups (field value "visionGroups");
+    factions = js_decode_save50_member0_checkpoint_state_factions (field value "factions");
+    ground_items =
+      js_decode_save52_member0_checkpoint_state_ground_items (field value "groundItems");
+    armies = js_decode_save50_member0_checkpoint_state_armies (field value "armies");
+    condition_memory = js_decode_fragments_native_state38_log (field value "conditionMemory");
+    map_id = js_decode_json_string (field value "mapId");
+    map_revision = js_decode_json_number (field value "mapRevision");
+    cols = js_decode_json_number (field value "cols");
+    rows = js_decode_json_number (field value "rows");
+    round = js_decode_json_number (field value "round");
+    turn = js_decode_save41_member0_setup_first (field value "turn");
+    gold = js_decode_fragments_native_state38_gold (field value "gold");
+    winner = js_decode_save41_member0_checkpoint_state_winner (field value "winner");
+    next_id = js_decode_json_number (field value "nextId");
+    combat_rng = js_decode_json_number (field value "combatRng");
+    log = js_decode_fragments_native_state38_log (field value "log");
+    tiles = js_decode_save52_member0_checkpoint_state_tiles (field value "tiles");
+    units = js_decode_save52_member0_checkpoint_state_units (field value "units");
+    campaign = js_decode_save52_member0_checkpoint_state_campaign (field value "campaign");
+    last_combat = js_decode_shape_735 (field value "lastCombat");
+  }
+
+and js_decode_save52_member0_checkpoint_state_vision_groups value :
+    save52_member0_checkpoint_state_vision_groups =
+  Array.map js_decode_save52_member0_checkpoint_state_vision_groups_item (array value)
+
+and js_decode_save52_member0_checkpoint_state_vision_groups_item value :
+    save52_member0_checkpoint_state_vision_groups_item =
+  {
+    wire = js_wire_of_json [ "id"; "sight"; "explored" ] value;
+    id = js_decode_json_string (field value "id");
+    sight = js_decode_save51_member0_checkpoint_state_map_modifiers_sight (field value "sight");
+    explored =
+      js_decode_save39_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_area
+        (field value "explored");
+  }
+
+and js_decode_save52_member0_checkpoint_state_ground_items value :
+    save52_member0_checkpoint_state_ground_items =
+  Array.map js_decode_save52_member0_checkpoint_state_ground_items_item (array value)
+
+and js_decode_save52_member0_checkpoint_state_ground_items_item value :
+    save52_member0_checkpoint_state_ground_items_item =
+  {
+    wire = js_wire_of_json [ "tile"; "item" ] value;
+    tile = js_decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    item = js_decode_json_string (field value "item");
+  }
+
+and js_decode_save52_member0_checkpoint_state_tiles value : save52_member0_checkpoint_state_tiles =
+  Array.map js_decode_save52_member0_checkpoint_state_tiles_item (array value)
+
+and js_decode_save52_member0_checkpoint_state_tiles_item value :
+    save52_member0_checkpoint_state_tiles_item =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "effects";
+          "id";
+          "location";
+          "col";
+          "row";
+          "terrain";
+          "owner";
+          "connections";
+          "deadEnds";
+          "walls";
+          "floor";
+          "perception";
+          "light";
+        ]
+        value;
+    effects = js_decode_save51_member0_checkpoint_state_tiles_item_effects (field value "effects");
+    id = js_decode_json_string (field value "id");
+    location = js_decode_fragments_tiles11_item_owner (field value "location");
+    col = js_decode_json_number (field value "col");
+    row = js_decode_json_number (field value "row");
+    terrain = js_decode_json_string (field value "terrain");
+    owner = js_decode_fragments_tiles11_item_owner (field value "owner");
+    connections =
+      js_decode_save50_member0_checkpoint_state_tiles_item_connections (field value "connections");
+    dead_ends =
+      js_decode_save50_member0_checkpoint_state_tiles_item_connections (field value "deadEnds");
+    walls = js_decode_save50_member0_checkpoint_state_tiles_item_connections (field value "walls");
+    floor = js_decode_fragments_tiles11_item_owner (field value "floor");
+    perception =
+      js_decode_save52_member0_checkpoint_state_tiles_item_perception (field value "perception");
+    light = js_decode_save50_member0_checkpoint_state_tiles_item_light (field value "light");
+  }
+
+and js_decode_save52_member0_checkpoint_state_tiles_item_perception value :
+    save52_member0_checkpoint_state_tiles_item_perception =
+  {
+    wire = js_wire_of_json [ "illumination"; "remember"; "concealment" ] value;
+    illumination =
+      js_decode_save51_member0_checkpoint_state_tiles_item_perception_illumination
+        (field value "illumination");
+    remember = js_decode_json_boolean (field value "remember");
+    concealment =
+      js_decode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+        (field value "concealment");
+  }
+
+and js_decode_save52_member0_checkpoint_state_units value : save52_member0_checkpoint_state_units =
+  Array.map js_decode_save52_member0_checkpoint_state_units_item (array value)
+
+and js_decode_save52_member0_checkpoint_state_units_item value :
+    save52_member0_checkpoint_state_units_item =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "revealedTo";
+          "perceptionEffects";
+          "faction";
+          "items";
+          "aiGroup";
+          "id";
+          "type";
+          "tile";
+          "hp";
+          "moved";
+          "attackSpent";
+          "experience";
+          "character";
+          "role";
+          "retreating";
+          "rebuilding";
+        ]
+        value;
+    revealed_to = js_decode_fragments_native_state38_log (field value "revealedTo");
+    perception_effects =
+      js_decode_save51_member0_checkpoint_state_units_item_perception_effects
+        (field value "perceptionEffects");
+    faction = js_decode_json_string (field value "faction");
+    items = js_decode_fragments_native_state38_log (field value "items");
+    ai_group = js_decode_fragments_tiles11_item_owner (field value "aiGroup");
+    id = js_decode_json_string (field value "id");
+    type_ = js_decode_json_string (field value "type");
+    tile = js_decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    hp = js_decode_json_number (field value "hp");
+    moved = js_decode_json_boolean (field value "moved");
+    attack_spent = js_decode_json_boolean (field value "attackSpent");
+    experience = js_decode_history5_entries_item_mission (field value "experience");
+    character = js_decode_fragments_tiles11_item_owner (field value "character");
+    role =
+      js_decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+        (field value "role");
+    retreating =
+      js_decode_save50_member0_checkpoint_state_units_item_retreating (field value "retreating");
+    rebuilding =
+      js_decode_save50_member0_checkpoint_state_units_item_retreating (field value "rebuilding");
+  }
+
+and js_decode_save52_member0_checkpoint_state_campaign value :
+    save52_member0_checkpoint_state_campaign =
+  if Migration_reader.matches value 4264 then `Null
+  else if Migration_reader.matches value 4490 then
+    `Object2 (js_decode_save52_member0_checkpoint_state_campaign_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save52_member0_checkpoint_state_campaign_member1 value :
+    save52_member0_checkpoint_state_campaign_member1 =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "scripts";
+          "evacuated";
+          "id";
+          "mission";
+          "recall";
+          "veterans";
+          "storyVeterans";
+          "fallenCompanions";
+          "carryGold";
+          "marks";
+          "dialogue";
+          "dialogueIndex";
+          "outcome";
+          "completed";
+          "refuge";
+          "vigil";
+          "holds";
+          "flags";
+        ]
+        value;
+    scripts =
+      js_decode_save52_member0_checkpoint_state_campaign_member1_scripts (field value "scripts");
+    evacuated =
+      js_decode_save52_member0_checkpoint_state_campaign_member1_evacuated (field value "evacuated");
+    id = js_decode_json_string (field value "id");
+    mission = js_decode_json_number (field value "mission");
+    recall = js_decode_fragments_native_state38_log (field value "recall");
+    veterans =
+      js_decode_save52_member0_checkpoint_state_campaign_member1_veterans (field value "veterans");
+    story_veterans =
+      js_decode_save52_member0_checkpoint_state_campaign_member1_veterans
+        (field value "storyVeterans");
+    fallen_companions =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_fallen_companions
+        (field value "fallenCompanions");
+    carry_gold = js_decode_json_number (field value "carryGold");
+    marks = js_decode_fragments_native_state38_log (field value "marks");
+    dialogue =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_dialogue (field value "dialogue");
+    dialogue_index = js_decode_json_number (field value "dialogueIndex");
+    outcome = js_decode_fragments_tiles11_item_owner (field value "outcome");
+    completed = js_decode_json_boolean (field value "completed");
+    refuge =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_refuge (field value "refuge");
+    vigil = js_decode_save50_member0_checkpoint_state_campaign_member1_vigil (field value "vigil");
+    holds = js_decode_save50_member0_checkpoint_state_campaign_member1_holds (field value "holds");
+    flags = js_decode_fragments_native_state38_campaign_member1_flags (field value "flags");
+  }
+
+and js_decode_save52_member0_checkpoint_state_campaign_member1_scripts value :
+    save52_member0_checkpoint_state_campaign_member1_scripts =
+  if Migration_reader.matches value 4264 then `Null
+  else if Migration_reader.matches value 4492 then
+    `Object2 (js_decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1 value :
+    save52_member0_checkpoint_state_campaign_member1_scripts_member1 =
+  {
+    wire =
+      js_wire_of_json
+        [
+          "failed";
+          "completed";
+          "revealed";
+          "recruitment";
+          "active";
+          "holds";
+          "marks";
+          "pending";
+          "nextMark";
+        ]
+        value;
+    failed = js_decode_fragments_native_state38_log (field value "failed");
+    completed = js_decode_fragments_native_state38_log (field value "completed");
+    revealed = js_decode_fragments_native_state38_log (field value "revealed");
+    recruitment =
+      js_decode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+        (field value "recruitment");
+    active = js_decode_fragments_native_state38_log (field value "active");
+    holds =
+      js_decode_fragments_native_state38_campaign_member1_scripts_member1_holds
+        (field value "holds");
+    marks =
+      js_decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+        (field value "marks");
+    pending =
+      js_decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending
+        (field value "pending");
+    next_mark = js_decode_json_number (field value "nextMark");
+  }
+
+and js_decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks value :
+    save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks =
+  Array.map js_decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+    (array value)
+
+and js_decode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item value :
+    save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item =
+  {
+    wire = js_wire_of_json [ "lightRemembered"; "id"; "type"; "tile"; "light" ] value;
+    light_remembered = js_decode_json_boolean (field value "lightRemembered");
+    id = js_decode_json_number (field value "id");
+    type_ = js_decode_json_string (field value "type");
+    tile = js_decode_save39_member0_checkpoint_state_ground_items_item_tile (field value "tile");
+    light = js_decode_save50_member0_checkpoint_state_tiles_item_light (field value "light");
+  }
+
+and js_decode_save52_member0_checkpoint_state_campaign_member1_evacuated value :
+    save52_member0_checkpoint_state_campaign_member1_evacuated =
+  Array.map js_decode_save52_member0_checkpoint_state_campaign_member1_evacuated_item (array value)
+
+and js_decode_save52_member0_checkpoint_state_campaign_member1_evacuated_item value :
+    save52_member0_checkpoint_state_campaign_member1_evacuated_item =
+  {
+    wire = js_wire_of_json [ "event"; "unit" ] value;
+    event = js_decode_json_string (field value "event");
+    unit_ = js_decode_save52_member0_checkpoint_state_units_item (field value "unit");
+  }
+
+and js_decode_save52_member0_checkpoint_state_campaign_member1_veterans value :
+    save52_member0_checkpoint_state_campaign_member1_veterans =
+  if Migration_reader.matches value 4264 then `Null
+  else if Migration_reader.matches value 4517 then
+    `Array (js_decode_save52_member0_checkpoint_state_campaign_member1_veterans_member1 value)
+  else invalid "Invalid frozen union"
+
+and js_decode_save52_member0_checkpoint_state_campaign_member1_veterans_member1 value :
+    save52_member0_checkpoint_state_campaign_member1_veterans_member1 =
+  Array.map js_decode_save52_member0_checkpoint_state_campaign_member1_veterans_member1_item
+    (array value)
+
+and js_decode_save52_member0_checkpoint_state_campaign_member1_veterans_member1_item value :
+    save52_member0_checkpoint_state_campaign_member1_veterans_member1_item =
+  {
+    wire = js_wire_of_json [ "items"; "type"; "experience"; "character"; "role" ] value;
+    items = js_decode_fragments_native_state38_log (field value "items");
+    type_ = js_decode_json_string (field value "type");
+    experience = js_decode_json_number (field value "experience");
+    character = js_decode_fragments_tiles11_item_owner (field value "character");
+    role =
+      js_decode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+        (field value "role");
+  }
+
+and js_decode_save52_member1 value : save52_member1 =
+  {
+    wire =
+      js_wire_of_json [ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ] value;
+    pending_enemy = js_decode_literal_false (field value "pendingEnemy");
+    undo =
+      (match get value "undo" with
+      | None -> None
+      | Some x when is_undefined x -> None
+      | Some x -> Some (js_decode_json_undefined x));
+    progress = js_decode_save49_member1_progress (field value "progress");
+    version = js_decode_literal_52 (field value "version");
+    checkpoint = js_decode_save52_member0_checkpoint (field value "checkpoint");
+    setup = js_decode_save42_member0_setup (field value "setup");
+  }
+
 let rec js_encode_json_number (value : json_number) : Js.Json.t = n value
 and js_encode_json_undefined (value : json_undefined) : Js.Json.t = undefined
 
@@ -31821,6 +38848,11 @@ and js_encode_save41_member0_checkpoint_state_campaign_member1_dialogue
     (value : save41_member0_checkpoint_state_campaign_member1_dialogue) : Js.Json.t =
   Js.Json.array
     (Array.map js_encode_save41_member0_checkpoint_state_campaign_member1_dialogue_item value)
+
+and js_encode_shape_735 (value : shape_735) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_fragments_native_state38_last_combat_member2 x
 
 and js_encode_save42_member0_setup_player (value : save42_member0_setup_player) : Js.Json.t =
   match value with
@@ -32689,6 +39721,1980 @@ and js_encode_history5 (value : history5) : Js.Json.t =
       ("entries", js_encode_history5_entries value.entries);
     ]
 
+and js_encode_save50_member0_checkpoint_state (value : save50_member0_checkpoint_state) : Js.Json.t
+    =
+  js_wire_to_json
+    ~known:
+      [
+        "visionGroups";
+        "factions";
+        "groundItems";
+        "armies";
+        "conditionMemory";
+        "mapId";
+        "mapRevision";
+        "cols";
+        "rows";
+        "round";
+        "turn";
+        "gold";
+        "winner";
+        "nextId";
+        "combatRng";
+        "log";
+        "tiles";
+        "units";
+        "campaign";
+        "lastCombat";
+      ]
+    value.wire
+    [
+      ("visionGroups", js_encode_save41_member0_checkpoint_state_vision_groups value.vision_groups);
+      ("factions", js_encode_save50_member0_checkpoint_state_factions value.factions);
+      ("groundItems", js_encode_save50_member0_checkpoint_state_ground_items value.ground_items);
+      ("armies", js_encode_save50_member0_checkpoint_state_armies value.armies);
+      ("conditionMemory", js_encode_fragments_native_state38_log value.condition_memory);
+      ("mapId", js_encode_json_string value.map_id);
+      ("mapRevision", js_encode_json_number value.map_revision);
+      ("cols", js_encode_json_number value.cols);
+      ("rows", js_encode_json_number value.rows);
+      ("round", js_encode_json_number value.round);
+      ("turn", js_encode_save41_member0_setup_first value.turn);
+      ("gold", js_encode_fragments_native_state38_gold value.gold);
+      ("winner", js_encode_save41_member0_checkpoint_state_winner value.winner);
+      ("nextId", js_encode_json_number value.next_id);
+      ("combatRng", js_encode_json_number value.combat_rng);
+      ("log", js_encode_fragments_native_state38_log value.log);
+      ("tiles", js_encode_save50_member0_checkpoint_state_tiles value.tiles);
+      ("units", js_encode_save50_member0_checkpoint_state_units value.units);
+      ("campaign", js_encode_save50_member0_checkpoint_state_campaign value.campaign);
+      ("lastCombat", js_encode_shape_735 value.last_combat);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_factions_item
+    (value : save50_member0_checkpoint_state_factions_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:
+      [
+        "visionGroup";
+        "id";
+        "phase";
+        "controller";
+        "palette";
+        "name";
+        "recruits";
+        "relations";
+        "transfer";
+      ]
+    value.wire
+    [
+      ("visionGroup", js_encode_json_string value.vision_group);
+      ("id", js_encode_json_string value.id);
+      ("phase", js_encode_save41_member0_setup_first value.phase);
+      ( "controller",
+        js_encode_save50_member0_checkpoint_state_factions_item_controller value.controller );
+      ("palette", js_encode_json_string value.palette);
+      ("name", js_encode_fragments_tiles11_item_owner value.name);
+      ("recruits", js_encode_save50_member0_checkpoint_state_factions_item_recruits value.recruits);
+      ( "relations",
+        js_encode_save41_member0_checkpoint_state_factions_item_relations_member1 value.relations );
+      ("transfer", js_encode_save50_member0_checkpoint_state_factions_item_transfer value.transfer);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_factions_item_controller
+    (value : save50_member0_checkpoint_state_factions_item_controller) : Js.Json.t =
+  match value with
+  | `Human x -> js_encode_fragments_factions7_item_controller_member0 x
+  | `Passive x -> js_encode_fragments_factions7_item_controller_member1 x
+  | `Ai x -> js_encode_save50_member0_checkpoint_state_factions_item_controller_member2 x
+
+and js_encode_save50_member0_checkpoint_state_factions_item_controller_member2_policy
+    (value : save50_member0_checkpoint_state_factions_item_controller_member2_policy) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Classic -> Js.Json.parseExn "\"classic\""
+  | `Rush -> Js.Json.parseExn "\"rush\""
+  | `Balanced -> Js.Json.parseExn "\"balanced\""
+  | `Rotated -> Js.Json.parseExn "\"rotated\""
+  | `Situational -> Js.Json.parseExn "\"situational\""
+  | `Predictor -> Js.Json.parseExn "\"predictor\""
+
+and js_encode_save50_member0_checkpoint_state_factions_item_controller_member2
+    (value : save50_member0_checkpoint_state_factions_item_controller_member2) : Js.Json.t =
+  js_wire_to_json ~known:[ "kind"; "policy" ] value.wire
+    [
+      ("kind", js_encode_literal_ai value.kind);
+      ( "policy",
+        js_encode_save50_member0_checkpoint_state_factions_item_controller_member2_policy
+          value.policy );
+    ]
+
+and js_encode_save50_member0_checkpoint_state_factions_item_recruits_member1_item
+    (value : save50_member0_checkpoint_state_factions_item_recruits_member1_item) : Js.Json.t =
+  js_wire_to_json ~known:[ "unit"; "cost" ] value.wire
+    [
+      ("unit", js_encode_json_string value.unit_);
+      ("cost", js_encode_history5_entries_item_mission value.cost);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_factions_item_recruits_member1
+    (value : save50_member0_checkpoint_state_factions_item_recruits_member1) : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save50_member0_checkpoint_state_factions_item_recruits_member1_item value)
+
+and js_encode_save50_member0_checkpoint_state_factions_item_recruits
+    (value : save50_member0_checkpoint_state_factions_item_recruits) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Array x -> js_encode_save50_member0_checkpoint_state_factions_item_recruits_member1 x
+
+and js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1) : Js.Json.t =
+  js_wire_to_json ~known:[ "to"; "when" ] value.wire
+    [
+      ("to", js_encode_json_string value.to_);
+      ( "when",
+        js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when_ value.when_
+      );
+    ]
+
+and js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when_
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when_) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "observer"; "condition"; "remember" ]
+    value.wire
+    [
+      ("observer", js_encode_fragments_tiles11_item_owner value.observer);
+      ( "condition",
+        js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+          value.condition );
+      ("remember", js_encode_json_boolean value.remember);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition) :
+    Js.Json.t =
+  match value with
+  | `Owner x ->
+      js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0
+        x
+  | `Proximity x ->
+      js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1
+        x
+  | `Visible_units x ->
+      js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2
+        x
+  | `Has_units x ->
+      js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3
+        x
+  | `No_units x ->
+      js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4
+        x
+  | `Choice x -> js_encode_fragments_rule11_condition_member2 x
+  | `Flag x -> js_encode_fragments_rule11_condition_member3 x
+  | `Event x -> js_encode_fragments_rule11_condition_member4 x
+  | `Round x -> js_encode_fragments_rule11_condition_member5 x
+  | `All x ->
+      js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9
+        x
+  | `Any x ->
+      js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10
+        x
+
+and js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+    (value :
+      save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile) :
+    Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Location x ->
+      js_encode_save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member1
+        x
+  | `Object3 x ->
+      js_encode_save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member2
+        x
+  | `Object4 x ->
+      js_encode_save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member3
+        x
+
+and js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0)
+    : Js.Json.t =
+  js_wire_to_json ~known:[ "kind"; "tile"; "side" ] value.wire
+    [
+      ("kind", js_encode_literal_owner value.kind);
+      ( "tile",
+        js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+          value.tile );
+      ("side", js_encode_json_string value.side);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member1)
+    : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "kind"; "unitTypes"; "tile"; "radius"; "side"; "unitType"; "character" ]
+    value.wire
+    [
+      ("kind", js_encode_literal_proximity value.kind);
+      ("unitTypes", js_encode_fragments_native_state38_log value.unit_types);
+      ( "tile",
+        js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0_tile
+          value.tile );
+      ("radius", js_encode_json_number value.radius);
+      ( "side",
+        js_encode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+          value.side );
+      ("unitType", js_encode_fragments_tiles11_item_owner value.unit_type);
+      ("character", js_encode_fragments_tiles11_item_owner value.character);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member2)
+    : Js.Json.t =
+  js_wire_to_json ~known:[ "kind"; "side"; "unitTypes" ] value.wire
+    [
+      ("kind", js_encode_literal_visible_units value.kind);
+      ( "side",
+        js_encode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+          value.side );
+      ("unitTypes", js_encode_fragments_native_state38_log value.unit_types);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member3)
+    : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "kind"; "aiGroup"; "side"; "unitType"; "character" ]
+    value.wire
+    [
+      ("kind", js_encode_literal_has_units value.kind);
+      ("aiGroup", js_encode_fragments_tiles11_item_owner value.ai_group);
+      ( "side",
+        js_encode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+          value.side );
+      ("unitType", js_encode_fragments_tiles11_item_owner value.unit_type);
+      ("character", js_encode_fragments_tiles11_item_owner value.character);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member4)
+    : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "kind"; "side"; "unitType"; "character" ]
+    value.wire
+    [
+      ("kind", js_encode_literal_no_units value.kind);
+      ( "side",
+        js_encode_save40_member0_checkpoint_state_tiles_item_fog_member1_condition_member1_side
+          value.side );
+      ("unitType", js_encode_fragments_tiles11_item_owner value.unit_type);
+      ("character", js_encode_fragments_tiles11_item_owner value.character);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+    (value :
+      save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions)
+    : Js.Json.t =
+  Js.Json.array
+    (Array.map
+       js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+       value)
+
+and js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9
+    (value : save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9)
+    : Js.Json.t =
+  js_wire_to_json ~known:[ "kind"; "conditions" ] value.wire
+    [
+      ("kind", js_encode_literal_all value.kind);
+      ( "conditions",
+        js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+          value.conditions );
+    ]
+
+and js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10
+    (value :
+      save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member10) :
+    Js.Json.t =
+  js_wire_to_json ~known:[ "kind"; "conditions" ] value.wire
+    [
+      ("kind", js_encode_literal_any value.kind);
+      ( "conditions",
+        js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member9_conditions
+          value.conditions );
+    ]
+
+and js_encode_save50_member0_checkpoint_state_factions_item_transfer
+    (value : save50_member0_checkpoint_state_factions_item_transfer) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1 x
+
+and js_encode_save50_member0_checkpoint_state_factions
+    (value : save50_member0_checkpoint_state_factions) : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save50_member0_checkpoint_state_factions_item value)
+
+and js_encode_save50_member0_checkpoint_state_ground_items_item
+    (value : save50_member0_checkpoint_state_ground_items_item) : Js.Json.t =
+  js_wire_to_json ~known:[ "tile"; "item" ] value.wire
+    [
+      ("tile", js_encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("item", js_encode_save50_member0_checkpoint_state_ground_items_item_item value.item);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_ground_items_item_item
+    (value : save50_member0_checkpoint_state_ground_items_item_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "perception"; "armor"; "id"; "name"; "description"; "attacks"; "healing" ]
+    value.wire
+    [
+      ( "perception",
+        js_encode_save50_member0_checkpoint_state_ground_items_item_item_perception value.perception
+      );
+      ("armor", js_encode_save50_member0_checkpoint_state_ground_items_item_item_armor value.armor);
+      ("id", js_encode_json_string value.id);
+      ("name", js_encode_json_string value.name);
+      ("description", js_encode_json_string value.description);
+      ( "attacks",
+        js_encode_save41_member0_checkpoint_state_ground_items_item_item_attacks value.attacks );
+      ( "healing",
+        js_encode_save50_member0_checkpoint_state_ground_items_item_item_healing value.healing );
+    ]
+
+and js_encode_save50_member0_checkpoint_state_ground_items_item_item_perception_member1
+    (value : save50_member0_checkpoint_state_ground_items_item_item_perception_member1) : Js.Json.t
+    =
+  js_wire_to_json
+    ~known:[ "range"; "penetrates"; "concealment"; "light" ]
+    value.wire
+    [
+      ("range", js_encode_save41_member0_checkpoint_state_vision_groups_item_sight_range value.range);
+      ( "penetrates",
+        js_encode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+          value.penetrates );
+      ( "concealment",
+        js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+          value.concealment );
+      ( "light",
+        js_encode_save41_member0_checkpoint_state_tiles_item_light_member1_emission value.light );
+    ]
+
+and js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item
+    (value : save50_member0_checkpoint_state_tiles_item_perception_concealment_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "kind"; "revealWithin"; "requires" ]
+    value.wire
+    [
+      ( "kind",
+        js_encode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates_item
+          value.kind );
+      ("revealWithin", js_encode_json_number value.reveal_within);
+      ( "requires",
+        js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires
+          value.requires );
+    ]
+
+and js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires
+    (value : save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires) :
+    Js.Json.t =
+  js_wire_to_json ~known:[ "terrains"; "illumination" ] value.wire
+    [
+      ( "terrains",
+        js_encode_save48_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_terrains
+          value.terrains );
+      ( "illumination",
+        js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination
+          value.illumination );
+    ]
+
+and js_encode_save50_member0_checkpoint_state_tiles_item_perception_illumination
+    (value : save50_member0_checkpoint_state_tiles_item_perception_illumination) : Js.Json.t =
+  match value with
+  | `Lit -> Js.Json.parseExn "\"lit\""
+  | `Unlit -> Js.Json.parseExn "\"unlit\""
+  | `Darkness -> Js.Json.parseExn "\"darkness\""
+
+and js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1
+    (value :
+      save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1)
+    : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save50_member0_checkpoint_state_tiles_item_perception_illumination value)
+
+and js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination
+    (value :
+      save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination)
+    : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Array x ->
+      js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_illumination_member1
+        x
+
+and js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+    (value : save50_member0_checkpoint_state_tiles_item_perception_concealment) : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item
+       value)
+
+and js_encode_save50_member0_checkpoint_state_ground_items_item_item_perception
+    (value : save50_member0_checkpoint_state_ground_items_item_item_perception) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x ->
+      js_encode_save50_member0_checkpoint_state_ground_items_item_item_perception_member1 x
+
+and js_encode_save50_member0_checkpoint_state_ground_items_item_item_armor
+    (value : save50_member0_checkpoint_state_ground_items_item_item_armor) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_fragments_native_state38_ground_items_item_item_armor_member1 x
+
+and js_encode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1
+    (value : save50_member0_checkpoint_state_ground_items_item_item_healing_member1) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "power"; "radius"; "includeSelf"; "targets" ]
+    value.wire
+    [
+      ("power", js_encode_json_number value.power);
+      ("radius", js_encode_json_number value.radius);
+      ("includeSelf", js_encode_json_boolean value.include_self);
+      ( "targets",
+        js_encode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets
+          value.targets );
+    ]
+
+and js_encode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets
+    (value : save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets) :
+    Js.Json.t =
+  match value with
+  | `Own_faction -> Js.Json.parseExn "\"own-faction\""
+  | `Allies -> Js.Json.parseExn "\"allies\""
+  | `Enemies -> Js.Json.parseExn "\"enemies\""
+  | `Everyone -> Js.Json.parseExn "\"everyone\""
+
+and js_encode_save50_member0_checkpoint_state_ground_items_item_item_healing
+    (value : save50_member0_checkpoint_state_ground_items_item_item_healing) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1 x
+
+and js_encode_save50_member0_checkpoint_state_ground_items
+    (value : save50_member0_checkpoint_state_ground_items) : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save50_member0_checkpoint_state_ground_items_item value)
+
+and js_encode_save50_member0_checkpoint_state_armies
+    (value : save50_member0_checkpoint_state_armies) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Tuple x -> js_encode_fragments_native_state38_armies_member1 x
+
+and js_encode_save50_member0_checkpoint_state_tiles_item
+    (value : save50_member0_checkpoint_state_tiles_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:
+      [
+        "id";
+        "location";
+        "col";
+        "row";
+        "terrain";
+        "owner";
+        "connections";
+        "deadEnds";
+        "walls";
+        "floor";
+        "perception";
+        "light";
+      ]
+    value.wire
+    [
+      ("id", js_encode_json_string value.id);
+      ("location", js_encode_fragments_tiles11_item_owner value.location);
+      ("col", js_encode_json_number value.col);
+      ("row", js_encode_json_number value.row);
+      ("terrain", js_encode_json_string value.terrain);
+      ("owner", js_encode_fragments_tiles11_item_owner value.owner);
+      ( "connections",
+        js_encode_save50_member0_checkpoint_state_tiles_item_connections value.connections );
+      ("deadEnds", js_encode_save50_member0_checkpoint_state_tiles_item_connections value.dead_ends);
+      ("walls", js_encode_save50_member0_checkpoint_state_tiles_item_connections value.walls);
+      ("floor", js_encode_fragments_tiles11_item_owner value.floor);
+      ( "perception",
+        js_encode_save50_member0_checkpoint_state_tiles_item_perception value.perception );
+      ("light", js_encode_save50_member0_checkpoint_state_tiles_item_light value.light);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_tiles_item_connections
+    (value : save50_member0_checkpoint_state_tiles_item_connections) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Array x -> js_encode_fragments_tiles11_item_connections_member1 x
+
+and js_encode_save50_member0_checkpoint_state_tiles_item_perception
+    (value : save50_member0_checkpoint_state_tiles_item_perception) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "illumination"; "sight"; "remember"; "concealment" ]
+    value.wire
+    [
+      ( "illumination",
+        js_encode_save50_member0_checkpoint_state_tiles_item_perception_illumination
+          value.illumination );
+      ("sight", js_encode_save41_member0_checkpoint_state_tiles_item_perception_sight value.sight);
+      ("remember", js_encode_json_boolean value.remember);
+      ( "concealment",
+        js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+          value.concealment );
+    ]
+
+and js_encode_save50_member0_checkpoint_state_tiles_item_light_member1
+    (value : save50_member0_checkpoint_state_tiles_item_light_member1) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "emission"; "color"; "fixture"; "dx"; "dy"; "radius"; "power"; "when" ]
+    value.wire
+    [
+      ( "emission",
+        js_encode_save41_member0_checkpoint_state_tiles_item_light_member1_emission value.emission
+      );
+      ("color", js_encode_save50_member0_checkpoint_state_tiles_item_light_member1_color value.color);
+      ("fixture", js_encode_save50_member0_checkpoint_state_units_item_retreating value.fixture);
+      ("dx", js_encode_history5_entries_item_mission value.dx);
+      ("dy", js_encode_history5_entries_item_mission value.dy);
+      ("radius", js_encode_json_number value.radius);
+      ("power", js_encode_json_number value.power);
+      ("when", js_encode_save50_member0_checkpoint_state_tiles_item_light_member1_when_ value.when_);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_tiles_item_light_member1_color
+    (value : save50_member0_checkpoint_state_tiles_item_light_member1_color) : Js.Json.t =
+  match value with `Null -> json_null | `Tuple x -> js_encode_fragments_light23_color_member1 x
+
+and js_encode_save50_member0_checkpoint_state_units_item_retreating
+    (value : save50_member0_checkpoint_state_units_item_retreating) : Js.Json.t =
+  match value with `Null -> json_null | `Boolean x -> js_encode_json_boolean x
+
+and js_encode_save50_member0_checkpoint_state_tiles_item_light_member1_when_
+    (value : save50_member0_checkpoint_state_tiles_item_light_member1_when_) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_save50_member0_checkpoint_state_factions_item_transfer_member1_when_ x
+
+and js_encode_save50_member0_checkpoint_state_tiles_item_light
+    (value : save50_member0_checkpoint_state_tiles_item_light) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_save50_member0_checkpoint_state_tiles_item_light_member1 x
+
+and js_encode_save50_member0_checkpoint_state_tiles (value : save50_member0_checkpoint_state_tiles)
+    : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save50_member0_checkpoint_state_tiles_item value)
+
+and js_encode_save50_member0_checkpoint_state_units_item
+    (value : save50_member0_checkpoint_state_units_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:
+      [
+        "revealedTo";
+        "perceptionEffects";
+        "faction";
+        "items";
+        "aiGroup";
+        "id";
+        "type";
+        "tile";
+        "hp";
+        "moved";
+        "attackSpent";
+        "experience";
+        "character";
+        "role";
+        "retreating";
+        "rebuilding";
+      ]
+    value.wire
+    [
+      ("revealedTo", js_encode_fragments_native_state38_log value.revealed_to);
+      ( "perceptionEffects",
+        js_encode_save50_member0_checkpoint_state_units_item_perception_effects
+          value.perception_effects );
+      ("faction", js_encode_json_string value.faction);
+      ("items", js_encode_save50_member0_checkpoint_state_units_item_items value.items);
+      ("aiGroup", js_encode_fragments_tiles11_item_owner value.ai_group);
+      ("id", js_encode_json_string value.id);
+      ("type", js_encode_json_string value.type_);
+      ("tile", js_encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("hp", js_encode_json_number value.hp);
+      ("moved", js_encode_json_boolean value.moved);
+      ("attackSpent", js_encode_json_boolean value.attack_spent);
+      ("experience", js_encode_history5_entries_item_mission value.experience);
+      ("character", js_encode_fragments_tiles11_item_owner value.character);
+      ( "role",
+        js_encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+          value.role );
+      ( "retreating",
+        js_encode_save50_member0_checkpoint_state_units_item_retreating value.retreating );
+      ( "rebuilding",
+        js_encode_save50_member0_checkpoint_state_units_item_retreating value.rebuilding );
+    ]
+
+and js_encode_save50_member0_checkpoint_state_units_item_perception_effects_item
+    (value : save50_member0_checkpoint_state_units_item_perception_effects_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "id"; "penetrates"; "concealment"; "light"; "expiresAt" ]
+    value.wire
+    [
+      ("id", js_encode_json_string value.id);
+      ( "penetrates",
+        js_encode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+          value.penetrates );
+      ( "concealment",
+        js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+          value.concealment );
+      ( "light",
+        js_encode_save41_member0_checkpoint_state_tiles_item_light_member1_emission value.light );
+      ( "expiresAt",
+        js_encode_save41_member0_checkpoint_state_units_item_perception_effects_item_expires_at
+          value.expires_at );
+    ]
+
+and js_encode_save50_member0_checkpoint_state_units_item_perception_effects
+    (value : save50_member0_checkpoint_state_units_item_perception_effects) : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save50_member0_checkpoint_state_units_item_perception_effects_item value)
+
+and js_encode_save50_member0_checkpoint_state_units_item_items
+    (value : save50_member0_checkpoint_state_units_item_items) : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save50_member0_checkpoint_state_ground_items_item_item value)
+
+and js_encode_save50_member0_checkpoint_state_units (value : save50_member0_checkpoint_state_units)
+    : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save50_member0_checkpoint_state_units_item value)
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1
+    (value : save50_member0_checkpoint_state_campaign_member1) : Js.Json.t =
+  js_wire_to_json
+    ~known:
+      [
+        "scripts";
+        "evacuated";
+        "id";
+        "mission";
+        "recall";
+        "veterans";
+        "storyVeterans";
+        "fallenCompanions";
+        "carryGold";
+        "marks";
+        "dialogue";
+        "dialogueIndex";
+        "outcome";
+        "completed";
+        "refuge";
+        "vigil";
+        "holds";
+        "flags";
+      ]
+    value.wire
+    [
+      ("scripts", js_encode_save50_member0_checkpoint_state_campaign_member1_scripts value.scripts);
+      ( "evacuated",
+        js_encode_save50_member0_checkpoint_state_campaign_member1_evacuated value.evacuated );
+      ("id", js_encode_json_string value.id);
+      ("mission", js_encode_json_number value.mission);
+      ("recall", js_encode_fragments_native_state38_log value.recall);
+      ( "veterans",
+        js_encode_save50_member0_checkpoint_state_campaign_member1_veterans value.veterans );
+      ( "storyVeterans",
+        js_encode_save50_member0_checkpoint_state_campaign_member1_veterans value.story_veterans );
+      ( "fallenCompanions",
+        js_encode_save50_member0_checkpoint_state_campaign_member1_fallen_companions
+          value.fallen_companions );
+      ("carryGold", js_encode_json_number value.carry_gold);
+      ("marks", js_encode_fragments_native_state38_log value.marks);
+      ( "dialogue",
+        js_encode_save50_member0_checkpoint_state_campaign_member1_dialogue value.dialogue );
+      ("dialogueIndex", js_encode_json_number value.dialogue_index);
+      ("outcome", js_encode_fragments_tiles11_item_owner value.outcome);
+      ("completed", js_encode_json_boolean value.completed);
+      ("refuge", js_encode_save50_member0_checkpoint_state_campaign_member1_refuge value.refuge);
+      ("vigil", js_encode_save50_member0_checkpoint_state_campaign_member1_vigil value.vigil);
+      ("holds", js_encode_save50_member0_checkpoint_state_campaign_member1_holds value.holds);
+      ("flags", js_encode_fragments_native_state38_campaign_member1_flags value.flags);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1
+    (value : save50_member0_checkpoint_state_campaign_member1_scripts_member1) : Js.Json.t =
+  js_wire_to_json
+    ~known:
+      [
+        "failed";
+        "completed";
+        "revealed";
+        "recruitment";
+        "active";
+        "holds";
+        "marks";
+        "pending";
+        "nextMark";
+      ]
+    value.wire
+    [
+      ("failed", js_encode_fragments_native_state38_log value.failed);
+      ("completed", js_encode_fragments_native_state38_log value.completed);
+      ("revealed", js_encode_fragments_native_state38_log value.revealed);
+      ( "recruitment",
+        js_encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+          value.recruitment );
+      ("active", js_encode_fragments_native_state38_log value.active);
+      ( "holds",
+        js_encode_fragments_native_state38_campaign_member1_scripts_member1_holds value.holds );
+      ( "marks",
+        js_encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks value.marks
+      );
+      ( "pending",
+        js_encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending
+          value.pending );
+      ("nextMark", js_encode_json_number value.next_mark);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+    (value : save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment) :
+    Js.Json.t =
+  js_map_to_json js_encode_save50_member0_checkpoint_state_factions_item_recruits_member1 value
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+    (value : save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item) :
+    Js.Json.t =
+  js_wire_to_json
+    ~known:[ "sight"; "lightRemembered"; "id"; "type"; "tile"; "light" ]
+    value.wire
+    [
+      ("sight", js_encode_save41_member0_checkpoint_state_tiles_item_perception_sight value.sight);
+      ("lightRemembered", js_encode_json_boolean value.light_remembered);
+      ("id", js_encode_json_number value.id);
+      ("type", js_encode_json_string value.type_);
+      ("tile", js_encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("light", js_encode_save50_member0_checkpoint_state_tiles_item_light value.light);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+    (value : save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks) : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+       value)
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_scripts
+    (value : save50_member0_checkpoint_state_campaign_member1_scripts) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1 x
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_evacuated_item
+    (value : save50_member0_checkpoint_state_campaign_member1_evacuated_item) : Js.Json.t =
+  js_wire_to_json ~known:[ "event"; "unit" ] value.wire
+    [
+      ("event", js_encode_json_string value.event);
+      ("unit", js_encode_save50_member0_checkpoint_state_units_item value.unit_);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_evacuated
+    (value : save50_member0_checkpoint_state_campaign_member1_evacuated) : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save50_member0_checkpoint_state_campaign_member1_evacuated_item value)
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_veterans_member1_item
+    (value : save50_member0_checkpoint_state_campaign_member1_veterans_member1_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "items"; "type"; "experience"; "character"; "role" ]
+    value.wire
+    [
+      ("items", js_encode_save50_member0_checkpoint_state_units_item_items value.items);
+      ("type", js_encode_json_string value.type_);
+      ("experience", js_encode_json_number value.experience);
+      ("character", js_encode_fragments_tiles11_item_owner value.character);
+      ( "role",
+        js_encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+          value.role );
+    ]
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_veterans_member1
+    (value : save50_member0_checkpoint_state_campaign_member1_veterans_member1) : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save50_member0_checkpoint_state_campaign_member1_veterans_member1_item
+       value)
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_veterans
+    (value : save50_member0_checkpoint_state_campaign_member1_veterans) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Array x -> js_encode_save50_member0_checkpoint_state_campaign_member1_veterans_member1 x
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_fallen_companions
+    (value : save50_member0_checkpoint_state_campaign_member1_fallen_companions) : Js.Json.t =
+  match value with `Null -> json_null | `Array x -> js_encode_fragments_native_state38_log x
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_dialogue_item
+    (value : save50_member0_checkpoint_state_campaign_member1_dialogue_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "sound"; "speaker"; "character"; "portrait"; "text" ]
+    value.wire
+    [
+      ("sound", js_encode_fragments_tiles11_item_owner value.sound);
+      ("speaker", js_encode_json_string value.speaker);
+      ("character", js_encode_fragments_tiles11_item_owner value.character);
+      ("portrait", js_encode_json_string value.portrait);
+      ("text", js_encode_json_string value.text);
+    ]
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_dialogue
+    (value : save50_member0_checkpoint_state_campaign_member1_dialogue) : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save50_member0_checkpoint_state_campaign_member1_dialogue_item value)
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_refuge
+    (value : save50_member0_checkpoint_state_campaign_member1_refuge) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_fragments_native_state38_campaign_member1_refuge_member1 x
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_vigil
+    (value : save50_member0_checkpoint_state_campaign_member1_vigil) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_fragments_native_state38_campaign_member1_vigil_member1 x
+
+and js_encode_save50_member0_checkpoint_state_campaign_member1_holds
+    (value : save50_member0_checkpoint_state_campaign_member1_holds) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_fragments_native_state38_campaign_member1_holds_member1 x
+
+and js_encode_save50_member0_checkpoint_state_campaign
+    (value : save50_member0_checkpoint_state_campaign) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_save50_member0_checkpoint_state_campaign_member1 x
+
+and js_encode_save50 (value : save50) : Js.Json.t =
+  match value with
+  | `Current x -> js_encode_save50_member0 x
+  | `Turn x -> js_encode_save50_member1 x
+
+and js_encode_save50_member0 (value : save50_member0) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    [
+      ("pendingEnemy", js_encode_json_boolean value.pending_enemy);
+      ("undo", js_encode_save34_undo_member1 value.undo);
+      ("progress", js_encode_save49_member0_progress value.progress);
+      ("version", js_encode_literal_50 value.version);
+      ("checkpoint", js_encode_save50_member0_checkpoint value.checkpoint);
+      ("setup", js_encode_save42_member0_setup value.setup);
+    ]
+
+and js_encode_literal_50 (value : literal_50) : Js.Json.t = Js.Json.parseExn "50"
+
+and js_encode_save50_member0_checkpoint (value : save50_member0_checkpoint) : Js.Json.t =
+  js_wire_to_json ~known:[ "seed"; "state" ] value.wire
+    [
+      ("seed", js_encode_json_number value.seed);
+      ("state", js_encode_save50_member0_checkpoint_state value.state);
+    ]
+
+and js_encode_save50_member1 (value : save50_member1) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    ([
+       ("pendingEnemy", js_encode_literal_false value.pending_enemy);
+       ("progress", js_encode_save49_member1_progress value.progress);
+       ("version", js_encode_literal_50 value.version);
+       ("checkpoint", js_encode_save50_member0_checkpoint value.checkpoint);
+       ("setup", js_encode_save42_member0_setup value.setup);
+     ]
+    @
+    match value.undo with
+    | None -> if List.mem "undo" value.wire.undefined_fields then [ ("undo", undefined) ] else []
+    | Some x -> [ ("undo", js_encode_json_undefined x) ])
+
+and js_encode_save51_member0_checkpoint_state (value : save51_member0_checkpoint_state) : Js.Json.t
+    =
+  js_wire_to_json
+    ~known:
+      [
+        "mapModifiers";
+        "lighting";
+        "visionGroups";
+        "factions";
+        "groundItems";
+        "armies";
+        "conditionMemory";
+        "mapId";
+        "mapRevision";
+        "cols";
+        "rows";
+        "round";
+        "turn";
+        "gold";
+        "winner";
+        "nextId";
+        "combatRng";
+        "log";
+        "tiles";
+        "units";
+        "campaign";
+        "lastCombat";
+      ]
+    value.wire
+    [
+      ("mapModifiers", js_encode_save51_member0_checkpoint_state_map_modifiers value.map_modifiers);
+      ("lighting", js_encode_save51_member0_checkpoint_state_lighting value.lighting);
+      ("visionGroups", js_encode_save51_member0_checkpoint_state_vision_groups value.vision_groups);
+      ("factions", js_encode_save50_member0_checkpoint_state_factions value.factions);
+      ("groundItems", js_encode_save51_member0_checkpoint_state_ground_items value.ground_items);
+      ("armies", js_encode_save50_member0_checkpoint_state_armies value.armies);
+      ("conditionMemory", js_encode_fragments_native_state38_log value.condition_memory);
+      ("mapId", js_encode_json_string value.map_id);
+      ("mapRevision", js_encode_json_number value.map_revision);
+      ("cols", js_encode_json_number value.cols);
+      ("rows", js_encode_json_number value.rows);
+      ("round", js_encode_json_number value.round);
+      ("turn", js_encode_save41_member0_setup_first value.turn);
+      ("gold", js_encode_fragments_native_state38_gold value.gold);
+      ("winner", js_encode_save41_member0_checkpoint_state_winner value.winner);
+      ("nextId", js_encode_json_number value.next_id);
+      ("combatRng", js_encode_json_number value.combat_rng);
+      ("log", js_encode_fragments_native_state38_log value.log);
+      ("tiles", js_encode_save51_member0_checkpoint_state_tiles value.tiles);
+      ("units", js_encode_save51_member0_checkpoint_state_units value.units);
+      ("campaign", js_encode_save51_member0_checkpoint_state_campaign value.campaign);
+      ("lastCombat", js_encode_shape_735 value.last_combat);
+    ]
+
+and js_encode_save51_member0_checkpoint_state_map_modifiers
+    (value : save51_member0_checkpoint_state_map_modifiers) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "sight"; "damageModifiers"; "terrainModifiers" ]
+    value.wire
+    [
+      ("sight", js_encode_save51_member0_checkpoint_state_map_modifiers_sight value.sight);
+      ( "damageModifiers",
+        js_encode_fragments_native_state38_ground_items_item_item_armor_member1
+          value.damage_modifiers );
+      ( "terrainModifiers",
+        js_encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers
+          value.terrain_modifiers );
+    ]
+
+and js_encode_save51_member0_checkpoint_state_map_modifiers_sight
+    (value : save51_member0_checkpoint_state_map_modifiers_sight) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "range"; "unlimited"; "sightModifiers"; "penetrates" ]
+    value.wire
+    [
+      ("range", js_encode_json_number value.range);
+      ("unlimited", js_encode_json_boolean value.unlimited);
+      ( "sightModifiers",
+        js_encode_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers
+          value.sight_modifiers );
+      ( "penetrates",
+        js_encode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+          value.penetrates );
+    ]
+
+and js_encode_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers
+    (value : save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers) : Js.Json.t =
+  js_wire_to_json ~known:[ "lit"; "unlit"; "darkness" ] value.wire
+    [
+      ("lit", js_encode_json_number value.lit);
+      ("unlit", js_encode_json_number value.unlit);
+      ("darkness", js_encode_json_number value.darkness);
+    ]
+
+and js_encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value
+    (value : save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "cost"; "passable"; "damageModifiers" ]
+    value.wire
+    [
+      ("cost", js_encode_json_number value.cost);
+      ("passable", js_encode_save50_member0_checkpoint_state_units_item_retreating value.passable);
+      ( "damageModifiers",
+        js_encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers
+          value.damage_modifiers );
+    ]
+
+and js_encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers
+    (value : save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value_damage_modifiers)
+    : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "melee"; "ranged"; "blade"; "pierce"; "impact" ]
+    value.wire
+    [
+      ("melee", js_encode_json_number value.melee);
+      ("ranged", js_encode_json_number value.ranged);
+      ("blade", js_encode_json_number value.blade);
+      ("pierce", js_encode_json_number value.pierce);
+      ("impact", js_encode_json_number value.impact);
+    ]
+
+and js_encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers
+    (value : save51_member0_checkpoint_state_map_modifiers_terrain_modifiers) : Js.Json.t =
+  js_map_to_json js_encode_save51_member0_checkpoint_state_map_modifiers_terrain_modifiers_value
+    value
+
+and js_encode_save51_member0_checkpoint_state_lighting
+    (value : save51_member0_checkpoint_state_lighting) : Js.Json.t =
+  js_wire_to_json ~known:[ "time" ] value.wire
+    [ ("time", js_encode_save51_member0_checkpoint_state_lighting_time value.time) ]
+
+and js_encode_save51_member0_checkpoint_state_lighting_time
+    (value : save51_member0_checkpoint_state_lighting_time) : Js.Json.t =
+  match value with `Day -> Js.Json.parseExn "\"day\"" | `Night -> Js.Json.parseExn "\"night\""
+
+and js_encode_save51_member0_checkpoint_state_vision_groups_item
+    (value : save51_member0_checkpoint_state_vision_groups_item) : Js.Json.t =
+  js_wire_to_json ~known:[ "id"; "sight"; "explored" ] value.wire
+    [
+      ("id", js_encode_json_string value.id);
+      ("sight", js_encode_save51_member0_checkpoint_state_vision_groups_item_sight value.sight);
+      ( "explored",
+        js_encode_save39_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_area
+          value.explored );
+    ]
+
+and js_encode_save51_member0_checkpoint_state_vision_groups_item_sight
+    (value : save51_member0_checkpoint_state_vision_groups_item_sight) : Js.Json.t =
+  js_wire_to_json ~known:[ "range"; "penetrates" ] value.wire
+    [
+      ("range", js_encode_save51_member0_checkpoint_state_vision_groups_item_sight_range value.range);
+      ( "penetrates",
+        js_encode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+          value.penetrates );
+    ]
+
+and js_encode_save51_member0_checkpoint_state_vision_groups_item_sight_range
+    (value : save51_member0_checkpoint_state_vision_groups_item_sight_range) : Js.Json.t =
+  match value with
+  | `Unlimited -> Js.Json.parseExn "\"unlimited\""
+  | `Number x -> js_encode_json_number x
+
+and js_encode_save51_member0_checkpoint_state_vision_groups
+    (value : save51_member0_checkpoint_state_vision_groups) : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save51_member0_checkpoint_state_vision_groups_item value)
+
+and js_encode_save51_member0_checkpoint_state_ground_items_item
+    (value : save51_member0_checkpoint_state_ground_items_item) : Js.Json.t =
+  js_wire_to_json ~known:[ "tile"; "item" ] value.wire
+    [
+      ("tile", js_encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("item", js_encode_save51_member0_checkpoint_state_ground_items_item_item value.item);
+    ]
+
+and js_encode_save51_member0_checkpoint_state_ground_items_item_item
+    (value : save51_member0_checkpoint_state_ground_items_item_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "sight"; "effects"; "armor"; "id"; "name"; "description"; "attacks" ]
+    value.wire
+    [
+      ("sight", js_encode_save51_member0_checkpoint_state_map_modifiers_sight value.sight);
+      ("effects", js_encode_save51_member0_checkpoint_state_tiles_item_effects value.effects);
+      ("armor", js_encode_save50_member0_checkpoint_state_ground_items_item_item_armor value.armor);
+      ("id", js_encode_json_string value.id);
+      ("name", js_encode_json_string value.name);
+      ("description", js_encode_json_string value.description);
+      ( "attacks",
+        js_encode_save41_member0_checkpoint_state_ground_items_item_item_attacks value.attacks );
+    ]
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_effects_item
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item) : Js.Json.t =
+  js_wire_to_json ~known:[ "scope"; "stacking"; "effect" ] value.wire
+    [
+      ("scope", js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_scope value.scope);
+      ( "stacking",
+        js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking value.stacking );
+      ( "effect",
+        js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect_ value.effect_ );
+    ]
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_scope
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_scope) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "radius"; "includeSelf"; "targets" ]
+    value.wire
+    [
+      ("radius", js_encode_json_number value.radius);
+      ("includeSelf", js_encode_json_boolean value.include_self);
+      ( "targets",
+        js_encode_save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets
+          value.targets );
+    ]
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_stacking) : Js.Json.t =
+  js_wire_to_json ~known:[ "group"; "combine" ] value.wire
+    [
+      ("group", js_encode_json_string value.group);
+      ( "combine",
+        js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine
+          value.combine );
+    ]
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine) : Js.Json.t =
+  match value with
+  | `Add -> Js.Json.parseExn "\"add\""
+  | `Max -> Js.Json.parseExn "\"max\""
+  | `Union -> Js.Json.parseExn "\"union\""
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect_
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_effect_) : Js.Json.t =
+  match value with
+  | `Healing x ->
+      js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0 x
+  | `Thorns x -> js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1 x
+  | `Sight x -> js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2 x
+  | `Concealment x ->
+      js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3 x
+  | `Light x -> js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4 x
+  | `Stat_modifiers x ->
+      js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5 x
+
+and js_encode_literal_healing (value : literal_healing) : Js.Json.t = Js.Json.parseExn "\"healing\""
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0) : Js.Json.t =
+  js_wire_to_json ~known:[ "kind"; "power" ] value.wire
+    [ ("kind", js_encode_literal_healing value.kind); ("power", js_encode_json_number value.power) ]
+
+and js_encode_literal_thorns (value : literal_thorns) : Js.Json.t = Js.Json.parseExn "\"thorns\""
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "kind"; "damagePerStrike"; "incomingCategory" ]
+    value.wire
+    [
+      ("kind", js_encode_literal_thorns value.kind);
+      ("damagePerStrike", js_encode_json_number value.damage_per_strike);
+      ( "incomingCategory",
+        js_encode_fragments_native_state38_ground_items_item_item_attacks_item_category
+          value.incoming_category );
+    ]
+
+and js_encode_literal_sight (value : literal_sight) : Js.Json.t = Js.Json.parseExn "\"sight\""
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_effect__member2) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "kind"; "range"; "unlimited"; "sightModifiers"; "penetrates" ]
+    value.wire
+    [
+      ("kind", js_encode_literal_sight value.kind);
+      ("range", js_encode_json_number value.range);
+      ("unlimited", js_encode_json_boolean value.unlimited);
+      ( "sightModifiers",
+        js_encode_save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers
+          value.sight_modifiers );
+      ( "penetrates",
+        js_encode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+          value.penetrates );
+    ]
+
+and js_encode_literal_concealment (value : literal_concealment) : Js.Json.t =
+  Js.Json.parseExn "\"concealment\""
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3) : Js.Json.t =
+  js_wire_to_json ~known:[ "kind"; "rule" ] value.wire
+    [
+      ("kind", js_encode_literal_concealment value.kind);
+      ( "rule",
+        js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment_item value.rule
+      );
+    ]
+
+and js_encode_literal_light (value : literal_light) : Js.Json.t = Js.Json.parseExn "\"light\""
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4) : Js.Json.t =
+  js_wire_to_json ~known:[ "kind"; "radius" ] value.wire
+    [ ("kind", js_encode_literal_light value.kind); ("radius", js_encode_json_number value.radius) ]
+
+and js_encode_literal_stat_modifiers (value : literal_stat_modifiers) : Js.Json.t =
+  Js.Json.parseExn "\"stat-modifiers\""
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5
+    (value : save51_member0_checkpoint_state_tiles_item_effects_item_effect__member5) : Js.Json.t =
+  js_wire_to_json ~known:[ "kind"; "modifiers" ] value.wire
+    [
+      ("kind", js_encode_literal_stat_modifiers value.kind);
+      ("modifiers", js_encode_save51_member0_checkpoint_state_map_modifiers value.modifiers);
+    ]
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_effects
+    (value : save51_member0_checkpoint_state_tiles_item_effects) : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save51_member0_checkpoint_state_tiles_item_effects_item value)
+
+and js_encode_save51_member0_checkpoint_state_ground_items
+    (value : save51_member0_checkpoint_state_ground_items) : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save51_member0_checkpoint_state_ground_items_item value)
+
+and js_encode_save51_member0_checkpoint_state_tiles_item
+    (value : save51_member0_checkpoint_state_tiles_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:
+      [
+        "effects";
+        "id";
+        "location";
+        "col";
+        "row";
+        "terrain";
+        "owner";
+        "connections";
+        "deadEnds";
+        "walls";
+        "floor";
+        "perception";
+        "light";
+      ]
+    value.wire
+    [
+      ("effects", js_encode_save51_member0_checkpoint_state_tiles_item_effects value.effects);
+      ("id", js_encode_json_string value.id);
+      ("location", js_encode_fragments_tiles11_item_owner value.location);
+      ("col", js_encode_json_number value.col);
+      ("row", js_encode_json_number value.row);
+      ("terrain", js_encode_json_string value.terrain);
+      ("owner", js_encode_fragments_tiles11_item_owner value.owner);
+      ( "connections",
+        js_encode_save50_member0_checkpoint_state_tiles_item_connections value.connections );
+      ("deadEnds", js_encode_save50_member0_checkpoint_state_tiles_item_connections value.dead_ends);
+      ("walls", js_encode_save50_member0_checkpoint_state_tiles_item_connections value.walls);
+      ("floor", js_encode_fragments_tiles11_item_owner value.floor);
+      ( "perception",
+        js_encode_save51_member0_checkpoint_state_tiles_item_perception value.perception );
+      ("light", js_encode_save50_member0_checkpoint_state_tiles_item_light value.light);
+    ]
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_perception
+    (value : save51_member0_checkpoint_state_tiles_item_perception) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "illumination"; "sight"; "remember"; "concealment" ]
+    value.wire
+    [
+      ( "illumination",
+        js_encode_save51_member0_checkpoint_state_tiles_item_perception_illumination
+          value.illumination );
+      ("sight", js_encode_save51_member0_checkpoint_state_tiles_item_perception_sight value.sight);
+      ("remember", js_encode_json_boolean value.remember);
+      ( "concealment",
+        js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+          value.concealment );
+    ]
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_perception_illumination
+    (value : save51_member0_checkpoint_state_tiles_item_perception_illumination) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Lit -> Js.Json.parseExn "\"lit\""
+  | `Unlit -> Js.Json.parseExn "\"unlit\""
+  | `Darkness -> Js.Json.parseExn "\"darkness\""
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_perception_sight_member1
+    (value : save51_member0_checkpoint_state_tiles_item_perception_sight_member1) : Js.Json.t =
+  js_wire_to_json ~known:[ "group"; "profile" ] value.wire
+    [
+      ("group", js_encode_json_string value.group);
+      ("profile", js_encode_save51_member0_checkpoint_state_vision_groups_item_sight value.profile);
+    ]
+
+and js_encode_save51_member0_checkpoint_state_tiles_item_perception_sight
+    (value : save51_member0_checkpoint_state_tiles_item_perception_sight) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_save51_member0_checkpoint_state_tiles_item_perception_sight_member1 x
+
+and js_encode_save51_member0_checkpoint_state_tiles (value : save51_member0_checkpoint_state_tiles)
+    : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save51_member0_checkpoint_state_tiles_item value)
+
+and js_encode_save51_member0_checkpoint_state_units_item
+    (value : save51_member0_checkpoint_state_units_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:
+      [
+        "revealedTo";
+        "perceptionEffects";
+        "faction";
+        "items";
+        "aiGroup";
+        "id";
+        "type";
+        "tile";
+        "hp";
+        "moved";
+        "attackSpent";
+        "experience";
+        "character";
+        "role";
+        "retreating";
+        "rebuilding";
+      ]
+    value.wire
+    [
+      ("revealedTo", js_encode_fragments_native_state38_log value.revealed_to);
+      ( "perceptionEffects",
+        js_encode_save51_member0_checkpoint_state_units_item_perception_effects
+          value.perception_effects );
+      ("faction", js_encode_json_string value.faction);
+      ("items", js_encode_save51_member0_checkpoint_state_units_item_items value.items);
+      ("aiGroup", js_encode_fragments_tiles11_item_owner value.ai_group);
+      ("id", js_encode_json_string value.id);
+      ("type", js_encode_json_string value.type_);
+      ("tile", js_encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("hp", js_encode_json_number value.hp);
+      ("moved", js_encode_json_boolean value.moved);
+      ("attackSpent", js_encode_json_boolean value.attack_spent);
+      ("experience", js_encode_history5_entries_item_mission value.experience);
+      ("character", js_encode_fragments_tiles11_item_owner value.character);
+      ( "role",
+        js_encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+          value.role );
+      ( "retreating",
+        js_encode_save50_member0_checkpoint_state_units_item_retreating value.retreating );
+      ( "rebuilding",
+        js_encode_save50_member0_checkpoint_state_units_item_retreating value.rebuilding );
+    ]
+
+and js_encode_save51_member0_checkpoint_state_units_item_perception_effects_item
+    (value : save51_member0_checkpoint_state_units_item_perception_effects_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "id"; "penetrates"; "concealment"; "light" ]
+    value.wire
+    [
+      ("id", js_encode_json_string value.id);
+      ( "penetrates",
+        js_encode_save41_member0_checkpoint_state_vision_groups_item_sight_penetrates
+          value.penetrates );
+      ( "concealment",
+        js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+          value.concealment );
+      ( "light",
+        js_encode_save41_member0_checkpoint_state_tiles_item_light_member1_emission value.light );
+    ]
+
+and js_encode_save51_member0_checkpoint_state_units_item_perception_effects
+    (value : save51_member0_checkpoint_state_units_item_perception_effects) : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save51_member0_checkpoint_state_units_item_perception_effects_item value)
+
+and js_encode_save51_member0_checkpoint_state_units_item_items
+    (value : save51_member0_checkpoint_state_units_item_items) : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save51_member0_checkpoint_state_ground_items_item_item value)
+
+and js_encode_save51_member0_checkpoint_state_units (value : save51_member0_checkpoint_state_units)
+    : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save51_member0_checkpoint_state_units_item value)
+
+and js_encode_save51_member0_checkpoint_state_campaign_member1
+    (value : save51_member0_checkpoint_state_campaign_member1) : Js.Json.t =
+  js_wire_to_json
+    ~known:
+      [
+        "scripts";
+        "evacuated";
+        "id";
+        "mission";
+        "recall";
+        "veterans";
+        "storyVeterans";
+        "fallenCompanions";
+        "carryGold";
+        "marks";
+        "dialogue";
+        "dialogueIndex";
+        "outcome";
+        "completed";
+        "refuge";
+        "vigil";
+        "holds";
+        "flags";
+      ]
+    value.wire
+    [
+      ("scripts", js_encode_save51_member0_checkpoint_state_campaign_member1_scripts value.scripts);
+      ( "evacuated",
+        js_encode_save51_member0_checkpoint_state_campaign_member1_evacuated value.evacuated );
+      ("id", js_encode_json_string value.id);
+      ("mission", js_encode_json_number value.mission);
+      ("recall", js_encode_fragments_native_state38_log value.recall);
+      ( "veterans",
+        js_encode_save51_member0_checkpoint_state_campaign_member1_veterans value.veterans );
+      ( "storyVeterans",
+        js_encode_save51_member0_checkpoint_state_campaign_member1_veterans value.story_veterans );
+      ( "fallenCompanions",
+        js_encode_save50_member0_checkpoint_state_campaign_member1_fallen_companions
+          value.fallen_companions );
+      ("carryGold", js_encode_json_number value.carry_gold);
+      ("marks", js_encode_fragments_native_state38_log value.marks);
+      ( "dialogue",
+        js_encode_save50_member0_checkpoint_state_campaign_member1_dialogue value.dialogue );
+      ("dialogueIndex", js_encode_json_number value.dialogue_index);
+      ("outcome", js_encode_fragments_tiles11_item_owner value.outcome);
+      ("completed", js_encode_json_boolean value.completed);
+      ("refuge", js_encode_save50_member0_checkpoint_state_campaign_member1_refuge value.refuge);
+      ("vigil", js_encode_save50_member0_checkpoint_state_campaign_member1_vigil value.vigil);
+      ("holds", js_encode_save50_member0_checkpoint_state_campaign_member1_holds value.holds);
+      ("flags", js_encode_fragments_native_state38_campaign_member1_flags value.flags);
+    ]
+
+and js_encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1
+    (value : save51_member0_checkpoint_state_campaign_member1_scripts_member1) : Js.Json.t =
+  js_wire_to_json
+    ~known:
+      [
+        "failed";
+        "completed";
+        "revealed";
+        "recruitment";
+        "active";
+        "holds";
+        "marks";
+        "pending";
+        "nextMark";
+      ]
+    value.wire
+    [
+      ("failed", js_encode_fragments_native_state38_log value.failed);
+      ("completed", js_encode_fragments_native_state38_log value.completed);
+      ("revealed", js_encode_fragments_native_state38_log value.revealed);
+      ( "recruitment",
+        js_encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+          value.recruitment );
+      ("active", js_encode_fragments_native_state38_log value.active);
+      ( "holds",
+        js_encode_fragments_native_state38_campaign_member1_scripts_member1_holds value.holds );
+      ( "marks",
+        js_encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks value.marks
+      );
+      ( "pending",
+        js_encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending
+          value.pending );
+      ("nextMark", js_encode_json_number value.next_mark);
+    ]
+
+and js_encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+    (value : save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item) :
+    Js.Json.t =
+  js_wire_to_json
+    ~known:[ "sight"; "lightRemembered"; "id"; "type"; "tile"; "light" ]
+    value.wire
+    [
+      ("sight", js_encode_save51_member0_checkpoint_state_tiles_item_perception_sight value.sight);
+      ("lightRemembered", js_encode_json_boolean value.light_remembered);
+      ("id", js_encode_json_number value.id);
+      ("type", js_encode_json_string value.type_);
+      ("tile", js_encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("light", js_encode_save50_member0_checkpoint_state_tiles_item_light value.light);
+    ]
+
+and js_encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+    (value : save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks) : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+       value)
+
+and js_encode_save51_member0_checkpoint_state_campaign_member1_scripts
+    (value : save51_member0_checkpoint_state_campaign_member1_scripts) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_save51_member0_checkpoint_state_campaign_member1_scripts_member1 x
+
+and js_encode_save51_member0_checkpoint_state_campaign_member1_evacuated_item
+    (value : save51_member0_checkpoint_state_campaign_member1_evacuated_item) : Js.Json.t =
+  js_wire_to_json ~known:[ "event"; "unit" ] value.wire
+    [
+      ("event", js_encode_json_string value.event);
+      ("unit", js_encode_save51_member0_checkpoint_state_units_item value.unit_);
+    ]
+
+and js_encode_save51_member0_checkpoint_state_campaign_member1_evacuated
+    (value : save51_member0_checkpoint_state_campaign_member1_evacuated) : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save51_member0_checkpoint_state_campaign_member1_evacuated_item value)
+
+and js_encode_save51_member0_checkpoint_state_campaign_member1_veterans_member1_item
+    (value : save51_member0_checkpoint_state_campaign_member1_veterans_member1_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "items"; "type"; "experience"; "character"; "role" ]
+    value.wire
+    [
+      ("items", js_encode_save51_member0_checkpoint_state_units_item_items value.items);
+      ("type", js_encode_json_string value.type_);
+      ("experience", js_encode_json_number value.experience);
+      ("character", js_encode_fragments_tiles11_item_owner value.character);
+      ( "role",
+        js_encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+          value.role );
+    ]
+
+and js_encode_save51_member0_checkpoint_state_campaign_member1_veterans_member1
+    (value : save51_member0_checkpoint_state_campaign_member1_veterans_member1) : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save51_member0_checkpoint_state_campaign_member1_veterans_member1_item
+       value)
+
+and js_encode_save51_member0_checkpoint_state_campaign_member1_veterans
+    (value : save51_member0_checkpoint_state_campaign_member1_veterans) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Array x -> js_encode_save51_member0_checkpoint_state_campaign_member1_veterans_member1 x
+
+and js_encode_save51_member0_checkpoint_state_campaign
+    (value : save51_member0_checkpoint_state_campaign) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_save51_member0_checkpoint_state_campaign_member1 x
+
+and js_encode_save51 (value : save51) : Js.Json.t =
+  match value with
+  | `Current x -> js_encode_save51_member0 x
+  | `Turn x -> js_encode_save51_member1 x
+
+and js_encode_save51_member0 (value : save51_member0) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    [
+      ("pendingEnemy", js_encode_json_boolean value.pending_enemy);
+      ("undo", js_encode_save34_undo_member1 value.undo);
+      ("progress", js_encode_save49_member0_progress value.progress);
+      ("version", js_encode_literal_51 value.version);
+      ("checkpoint", js_encode_save51_member0_checkpoint value.checkpoint);
+      ("setup", js_encode_save42_member0_setup value.setup);
+    ]
+
+and js_encode_literal_51 (value : literal_51) : Js.Json.t = Js.Json.parseExn "51"
+
+and js_encode_save51_member0_checkpoint (value : save51_member0_checkpoint) : Js.Json.t =
+  js_wire_to_json ~known:[ "seed"; "state" ] value.wire
+    [
+      ("seed", js_encode_json_number value.seed);
+      ("state", js_encode_save51_member0_checkpoint_state value.state);
+    ]
+
+and js_encode_save51_member1 (value : save51_member1) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    ([
+       ("pendingEnemy", js_encode_literal_false value.pending_enemy);
+       ("progress", js_encode_save49_member1_progress value.progress);
+       ("version", js_encode_literal_51 value.version);
+       ("checkpoint", js_encode_save51_member0_checkpoint value.checkpoint);
+       ("setup", js_encode_save42_member0_setup value.setup);
+     ]
+    @
+    match value.undo with
+    | None -> if List.mem "undo" value.wire.undefined_fields then [ ("undo", undefined) ] else []
+    | Some x -> [ ("undo", js_encode_json_undefined x) ])
+
+and js_encode_save52 (value : save52) : Js.Json.t =
+  match value with
+  | `Current x -> js_encode_save52_member0 x
+  | `Turn x -> js_encode_save52_member1 x
+
+and js_encode_save52_member0 (value : save52_member0) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    [
+      ("pendingEnemy", js_encode_json_boolean value.pending_enemy);
+      ("undo", js_encode_save34_undo_member1 value.undo);
+      ("progress", js_encode_save49_member0_progress value.progress);
+      ("version", js_encode_literal_52 value.version);
+      ("checkpoint", js_encode_save52_member0_checkpoint value.checkpoint);
+      ("setup", js_encode_save42_member0_setup value.setup);
+    ]
+
+and js_encode_literal_52 (value : literal_52) : Js.Json.t = Js.Json.parseExn "52"
+
+and js_encode_save52_member0_checkpoint (value : save52_member0_checkpoint) : Js.Json.t =
+  js_wire_to_json ~known:[ "seed"; "state" ] value.wire
+    [
+      ("seed", js_encode_json_number value.seed);
+      ("state", js_encode_save52_member0_checkpoint_state value.state);
+    ]
+
+and js_encode_save52_member0_checkpoint_state (value : save52_member0_checkpoint_state) : Js.Json.t
+    =
+  js_wire_to_json
+    ~known:
+      [
+        "mapModifiers";
+        "lighting";
+        "visionGroups";
+        "factions";
+        "groundItems";
+        "armies";
+        "conditionMemory";
+        "mapId";
+        "mapRevision";
+        "cols";
+        "rows";
+        "round";
+        "turn";
+        "gold";
+        "winner";
+        "nextId";
+        "combatRng";
+        "log";
+        "tiles";
+        "units";
+        "campaign";
+        "lastCombat";
+      ]
+    value.wire
+    [
+      ("mapModifiers", js_encode_save51_member0_checkpoint_state_map_modifiers value.map_modifiers);
+      ("lighting", js_encode_save51_member0_checkpoint_state_lighting value.lighting);
+      ("visionGroups", js_encode_save52_member0_checkpoint_state_vision_groups value.vision_groups);
+      ("factions", js_encode_save50_member0_checkpoint_state_factions value.factions);
+      ("groundItems", js_encode_save52_member0_checkpoint_state_ground_items value.ground_items);
+      ("armies", js_encode_save50_member0_checkpoint_state_armies value.armies);
+      ("conditionMemory", js_encode_fragments_native_state38_log value.condition_memory);
+      ("mapId", js_encode_json_string value.map_id);
+      ("mapRevision", js_encode_json_number value.map_revision);
+      ("cols", js_encode_json_number value.cols);
+      ("rows", js_encode_json_number value.rows);
+      ("round", js_encode_json_number value.round);
+      ("turn", js_encode_save41_member0_setup_first value.turn);
+      ("gold", js_encode_fragments_native_state38_gold value.gold);
+      ("winner", js_encode_save41_member0_checkpoint_state_winner value.winner);
+      ("nextId", js_encode_json_number value.next_id);
+      ("combatRng", js_encode_json_number value.combat_rng);
+      ("log", js_encode_fragments_native_state38_log value.log);
+      ("tiles", js_encode_save52_member0_checkpoint_state_tiles value.tiles);
+      ("units", js_encode_save52_member0_checkpoint_state_units value.units);
+      ("campaign", js_encode_save52_member0_checkpoint_state_campaign value.campaign);
+      ("lastCombat", js_encode_shape_735 value.last_combat);
+    ]
+
+and js_encode_save52_member0_checkpoint_state_vision_groups
+    (value : save52_member0_checkpoint_state_vision_groups) : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save52_member0_checkpoint_state_vision_groups_item value)
+
+and js_encode_save52_member0_checkpoint_state_vision_groups_item
+    (value : save52_member0_checkpoint_state_vision_groups_item) : Js.Json.t =
+  js_wire_to_json ~known:[ "id"; "sight"; "explored" ] value.wire
+    [
+      ("id", js_encode_json_string value.id);
+      ("sight", js_encode_save51_member0_checkpoint_state_map_modifiers_sight value.sight);
+      ( "explored",
+        js_encode_save39_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_area
+          value.explored );
+    ]
+
+and js_encode_save52_member0_checkpoint_state_ground_items
+    (value : save52_member0_checkpoint_state_ground_items) : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save52_member0_checkpoint_state_ground_items_item value)
+
+and js_encode_save52_member0_checkpoint_state_ground_items_item
+    (value : save52_member0_checkpoint_state_ground_items_item) : Js.Json.t =
+  js_wire_to_json ~known:[ "tile"; "item" ] value.wire
+    [
+      ("tile", js_encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("item", js_encode_json_string value.item);
+    ]
+
+and js_encode_save52_member0_checkpoint_state_tiles (value : save52_member0_checkpoint_state_tiles)
+    : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save52_member0_checkpoint_state_tiles_item value)
+
+and js_encode_save52_member0_checkpoint_state_tiles_item
+    (value : save52_member0_checkpoint_state_tiles_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:
+      [
+        "effects";
+        "id";
+        "location";
+        "col";
+        "row";
+        "terrain";
+        "owner";
+        "connections";
+        "deadEnds";
+        "walls";
+        "floor";
+        "perception";
+        "light";
+      ]
+    value.wire
+    [
+      ("effects", js_encode_save51_member0_checkpoint_state_tiles_item_effects value.effects);
+      ("id", js_encode_json_string value.id);
+      ("location", js_encode_fragments_tiles11_item_owner value.location);
+      ("col", js_encode_json_number value.col);
+      ("row", js_encode_json_number value.row);
+      ("terrain", js_encode_json_string value.terrain);
+      ("owner", js_encode_fragments_tiles11_item_owner value.owner);
+      ( "connections",
+        js_encode_save50_member0_checkpoint_state_tiles_item_connections value.connections );
+      ("deadEnds", js_encode_save50_member0_checkpoint_state_tiles_item_connections value.dead_ends);
+      ("walls", js_encode_save50_member0_checkpoint_state_tiles_item_connections value.walls);
+      ("floor", js_encode_fragments_tiles11_item_owner value.floor);
+      ( "perception",
+        js_encode_save52_member0_checkpoint_state_tiles_item_perception value.perception );
+      ("light", js_encode_save50_member0_checkpoint_state_tiles_item_light value.light);
+    ]
+
+and js_encode_save52_member0_checkpoint_state_tiles_item_perception
+    (value : save52_member0_checkpoint_state_tiles_item_perception) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "illumination"; "remember"; "concealment" ]
+    value.wire
+    [
+      ( "illumination",
+        js_encode_save51_member0_checkpoint_state_tiles_item_perception_illumination
+          value.illumination );
+      ("remember", js_encode_json_boolean value.remember);
+      ( "concealment",
+        js_encode_save50_member0_checkpoint_state_tiles_item_perception_concealment
+          value.concealment );
+    ]
+
+and js_encode_save52_member0_checkpoint_state_units (value : save52_member0_checkpoint_state_units)
+    : Js.Json.t =
+  Js.Json.array (Array.map js_encode_save52_member0_checkpoint_state_units_item value)
+
+and js_encode_save52_member0_checkpoint_state_units_item
+    (value : save52_member0_checkpoint_state_units_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:
+      [
+        "revealedTo";
+        "perceptionEffects";
+        "faction";
+        "items";
+        "aiGroup";
+        "id";
+        "type";
+        "tile";
+        "hp";
+        "moved";
+        "attackSpent";
+        "experience";
+        "character";
+        "role";
+        "retreating";
+        "rebuilding";
+      ]
+    value.wire
+    [
+      ("revealedTo", js_encode_fragments_native_state38_log value.revealed_to);
+      ( "perceptionEffects",
+        js_encode_save51_member0_checkpoint_state_units_item_perception_effects
+          value.perception_effects );
+      ("faction", js_encode_json_string value.faction);
+      ("items", js_encode_fragments_native_state38_log value.items);
+      ("aiGroup", js_encode_fragments_tiles11_item_owner value.ai_group);
+      ("id", js_encode_json_string value.id);
+      ("type", js_encode_json_string value.type_);
+      ("tile", js_encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("hp", js_encode_json_number value.hp);
+      ("moved", js_encode_json_boolean value.moved);
+      ("attackSpent", js_encode_json_boolean value.attack_spent);
+      ("experience", js_encode_history5_entries_item_mission value.experience);
+      ("character", js_encode_fragments_tiles11_item_owner value.character);
+      ( "role",
+        js_encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+          value.role );
+      ( "retreating",
+        js_encode_save50_member0_checkpoint_state_units_item_retreating value.retreating );
+      ( "rebuilding",
+        js_encode_save50_member0_checkpoint_state_units_item_retreating value.rebuilding );
+    ]
+
+and js_encode_save52_member0_checkpoint_state_campaign
+    (value : save52_member0_checkpoint_state_campaign) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_save52_member0_checkpoint_state_campaign_member1 x
+
+and js_encode_save52_member0_checkpoint_state_campaign_member1
+    (value : save52_member0_checkpoint_state_campaign_member1) : Js.Json.t =
+  js_wire_to_json
+    ~known:
+      [
+        "scripts";
+        "evacuated";
+        "id";
+        "mission";
+        "recall";
+        "veterans";
+        "storyVeterans";
+        "fallenCompanions";
+        "carryGold";
+        "marks";
+        "dialogue";
+        "dialogueIndex";
+        "outcome";
+        "completed";
+        "refuge";
+        "vigil";
+        "holds";
+        "flags";
+      ]
+    value.wire
+    [
+      ("scripts", js_encode_save52_member0_checkpoint_state_campaign_member1_scripts value.scripts);
+      ( "evacuated",
+        js_encode_save52_member0_checkpoint_state_campaign_member1_evacuated value.evacuated );
+      ("id", js_encode_json_string value.id);
+      ("mission", js_encode_json_number value.mission);
+      ("recall", js_encode_fragments_native_state38_log value.recall);
+      ( "veterans",
+        js_encode_save52_member0_checkpoint_state_campaign_member1_veterans value.veterans );
+      ( "storyVeterans",
+        js_encode_save52_member0_checkpoint_state_campaign_member1_veterans value.story_veterans );
+      ( "fallenCompanions",
+        js_encode_save50_member0_checkpoint_state_campaign_member1_fallen_companions
+          value.fallen_companions );
+      ("carryGold", js_encode_json_number value.carry_gold);
+      ("marks", js_encode_fragments_native_state38_log value.marks);
+      ( "dialogue",
+        js_encode_save50_member0_checkpoint_state_campaign_member1_dialogue value.dialogue );
+      ("dialogueIndex", js_encode_json_number value.dialogue_index);
+      ("outcome", js_encode_fragments_tiles11_item_owner value.outcome);
+      ("completed", js_encode_json_boolean value.completed);
+      ("refuge", js_encode_save50_member0_checkpoint_state_campaign_member1_refuge value.refuge);
+      ("vigil", js_encode_save50_member0_checkpoint_state_campaign_member1_vigil value.vigil);
+      ("holds", js_encode_save50_member0_checkpoint_state_campaign_member1_holds value.holds);
+      ("flags", js_encode_fragments_native_state38_campaign_member1_flags value.flags);
+    ]
+
+and js_encode_save52_member0_checkpoint_state_campaign_member1_scripts
+    (value : save52_member0_checkpoint_state_campaign_member1_scripts) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Object2 x -> js_encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1 x
+
+and js_encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1
+    (value : save52_member0_checkpoint_state_campaign_member1_scripts_member1) : Js.Json.t =
+  js_wire_to_json
+    ~known:
+      [
+        "failed";
+        "completed";
+        "revealed";
+        "recruitment";
+        "active";
+        "holds";
+        "marks";
+        "pending";
+        "nextMark";
+      ]
+    value.wire
+    [
+      ("failed", js_encode_fragments_native_state38_log value.failed);
+      ("completed", js_encode_fragments_native_state38_log value.completed);
+      ("revealed", js_encode_fragments_native_state38_log value.revealed);
+      ( "recruitment",
+        js_encode_save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+          value.recruitment );
+      ("active", js_encode_fragments_native_state38_log value.active);
+      ( "holds",
+        js_encode_fragments_native_state38_campaign_member1_scripts_member1_holds value.holds );
+      ( "marks",
+        js_encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks value.marks
+      );
+      ( "pending",
+        js_encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending
+          value.pending );
+      ("nextMark", js_encode_json_number value.next_mark);
+    ]
+
+and js_encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks
+    (value : save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks) : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+       value)
+
+and js_encode_save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item
+    (value : save52_member0_checkpoint_state_campaign_member1_scripts_member1_marks_item) :
+    Js.Json.t =
+  js_wire_to_json
+    ~known:[ "lightRemembered"; "id"; "type"; "tile"; "light" ]
+    value.wire
+    [
+      ("lightRemembered", js_encode_json_boolean value.light_remembered);
+      ("id", js_encode_json_number value.id);
+      ("type", js_encode_json_string value.type_);
+      ("tile", js_encode_save39_member0_checkpoint_state_ground_items_item_tile value.tile);
+      ("light", js_encode_save50_member0_checkpoint_state_tiles_item_light value.light);
+    ]
+
+and js_encode_save52_member0_checkpoint_state_campaign_member1_evacuated
+    (value : save52_member0_checkpoint_state_campaign_member1_evacuated) : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save52_member0_checkpoint_state_campaign_member1_evacuated_item value)
+
+and js_encode_save52_member0_checkpoint_state_campaign_member1_evacuated_item
+    (value : save52_member0_checkpoint_state_campaign_member1_evacuated_item) : Js.Json.t =
+  js_wire_to_json ~known:[ "event"; "unit" ] value.wire
+    [
+      ("event", js_encode_json_string value.event);
+      ("unit", js_encode_save52_member0_checkpoint_state_units_item value.unit_);
+    ]
+
+and js_encode_save52_member0_checkpoint_state_campaign_member1_veterans
+    (value : save52_member0_checkpoint_state_campaign_member1_veterans) : Js.Json.t =
+  match value with
+  | `Null -> json_null
+  | `Array x -> js_encode_save52_member0_checkpoint_state_campaign_member1_veterans_member1 x
+
+and js_encode_save52_member0_checkpoint_state_campaign_member1_veterans_member1
+    (value : save52_member0_checkpoint_state_campaign_member1_veterans_member1) : Js.Json.t =
+  Js.Json.array
+    (Array.map js_encode_save52_member0_checkpoint_state_campaign_member1_veterans_member1_item
+       value)
+
+and js_encode_save52_member0_checkpoint_state_campaign_member1_veterans_member1_item
+    (value : save52_member0_checkpoint_state_campaign_member1_veterans_member1_item) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "items"; "type"; "experience"; "character"; "role" ]
+    value.wire
+    [
+      ("items", js_encode_fragments_native_state38_log value.items);
+      ("type", js_encode_json_string value.type_);
+      ("experience", js_encode_json_number value.experience);
+      ("character", js_encode_fragments_tiles11_item_owner value.character);
+      ( "role",
+        js_encode_save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+          value.role );
+    ]
+
+and js_encode_save52_member1 (value : save52_member1) : Js.Json.t =
+  js_wire_to_json
+    ~known:[ "pendingEnemy"; "undo"; "progress"; "version"; "checkpoint"; "setup" ]
+    value.wire
+    ([
+       ("pendingEnemy", js_encode_literal_false value.pending_enemy);
+       ("progress", js_encode_save49_member1_progress value.progress);
+       ("version", js_encode_literal_52 value.version);
+       ("checkpoint", js_encode_save52_member0_checkpoint value.checkpoint);
+       ("setup", js_encode_save42_member0_setup value.setup);
+     ]
+    @
+    match value.undo with
+    | None -> if List.mem "undo" value.wire.undefined_fields then [ ("undo", undefined) ] else []
+    | Some x -> [ ("undo", js_encode_json_undefined x) ])
+
 module V49 = struct
   let of_json value : Historical_types.V49.t =
     let _ = Migration_reader.read value "Save49" in
@@ -32697,7 +41703,121 @@ module V49 = struct
   let to_json = js_encode_save49
   let of_legacy = host_save49
   let current_entry_to_json = js_encode_save49_member0_progress_entry
+
+  let current_entry_of_json value =
+    require (Migration_reader.matches value 3443) "Invalid frozen state or change";
+    js_decode_save49_member0_progress_entry value
+
   let turn_entry_to_json = js_encode_history5_entries_item
+
+  let turn_entry_of_json value =
+    require (Migration_reader.matches value 3446) "Invalid frozen state or change";
+    js_decode_history5_entries_item value
+
+  let current_state_to_json = js_encode_save48_member0_checkpoint_state
+
+  let current_state_of_json value =
+    require (Migration_reader.matches value 2987) "Invalid frozen state or change";
+    js_decode_save48_member0_checkpoint_state value
+
+  let current_changes_item_to_json = js_encode_save34_undo_member1_item_changes_item
+
+  let current_changes_item_of_json value =
+    require (Migration_reader.matches value 2974) "Invalid frozen state or change";
+    js_decode_save34_undo_member1_item_changes_item value
+end
+
+module V50 = struct
+  let of_json value : Historical_types.V50.t =
+    let _ = Migration_reader.read value "Save50" in
+    js_decode_save50 value
+
+  let to_json = js_encode_save50
+  let current_entry_to_json = js_encode_save49_member0_progress_entry
+
+  let current_entry_of_json value =
+    require (Migration_reader.matches value 3774) "Invalid frozen state or change";
+    js_decode_save49_member0_progress_entry value
+
+  let turn_entry_to_json = js_encode_history5_entries_item
+
+  let turn_entry_of_json value =
+    require (Migration_reader.matches value 3820) "Invalid frozen state or change";
+    js_decode_history5_entries_item value
+
+  let current_state_to_json = js_encode_save50_member0_checkpoint_state
+
+  let current_state_of_json value =
+    require (Migration_reader.matches value 3456) "Invalid frozen state or change";
+    js_decode_save50_member0_checkpoint_state value
+
+  let current_changes_item_to_json = js_encode_save34_undo_member1_item_changes_item
+
+  let current_changes_item_of_json value =
+    require (Migration_reader.matches value 3766) "Invalid frozen state or change";
+    js_decode_save34_undo_member1_item_changes_item value
+end
+
+module V51 = struct
+  let of_json value : Historical_types.V51.t =
+    let _ = Migration_reader.read value "Save51" in
+    js_decode_save51 value
+
+  let to_json = js_encode_save51
+  let current_entry_to_json = js_encode_save49_member0_progress_entry
+
+  let current_entry_of_json value =
+    require (Migration_reader.matches value 4175) "Invalid frozen state or change";
+    js_decode_save49_member0_progress_entry value
+
+  let turn_entry_to_json = js_encode_history5_entries_item
+
+  let turn_entry_of_json value =
+    require (Migration_reader.matches value 4221) "Invalid frozen state or change";
+    js_decode_history5_entries_item value
+
+  let current_state_to_json = js_encode_save51_member0_checkpoint_state
+
+  let current_state_of_json value =
+    require (Migration_reader.matches value 3827) "Invalid frozen state or change";
+    js_decode_save51_member0_checkpoint_state value
+
+  let current_changes_item_to_json = js_encode_save34_undo_member1_item_changes_item
+
+  let current_changes_item_of_json value =
+    require (Migration_reader.matches value 4167) "Invalid frozen state or change";
+    js_decode_save34_undo_member1_item_changes_item value
+end
+
+module V52 = struct
+  let of_json value : Historical_types.V52.t =
+    let _ = Migration_reader.read value "Save52" in
+    js_decode_save52 value
+
+  let to_json = js_encode_save52
+  let current_entry_to_json = js_encode_save49_member0_progress_entry
+
+  let current_entry_of_json value =
+    require (Migration_reader.matches value 4240) "Invalid frozen state or change";
+    js_decode_save49_member0_progress_entry value
+
+  let turn_entry_to_json = js_encode_history5_entries_item
+
+  let turn_entry_of_json value =
+    require (Migration_reader.matches value 4580) "Invalid frozen state or change";
+    js_decode_history5_entries_item value
+
+  let current_state_to_json = js_encode_save52_member0_checkpoint_state
+
+  let current_state_of_json value =
+    require (Migration_reader.matches value 4249) "Invalid frozen state or change";
+    js_decode_save52_member0_checkpoint_state value
+
+  let current_changes_item_to_json = js_encode_save34_undo_member1_item_changes_item
+
+  let current_changes_item_of_json value =
+    require (Migration_reader.matches value 4232) "Invalid frozen state or change";
+    js_decode_save34_undo_member1_item_changes_item value
 end
 
 module History4 = struct

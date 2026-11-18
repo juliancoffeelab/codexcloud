@@ -93,13 +93,13 @@ impl Serialize for OwnershipSnapshot {
     fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         use serde::ser::SerializeSeq;
         #[derive(Serialize)]
-        struct Entry<'a> {
+        struct SummaryEntry<'a> {
             tile: &'a Hex,
             owner: Option<&'a str>,
         }
         let mut sequence = serializer.serialize_seq(Some(self.owners.len()))?;
         for (tile, owner) in self.tiles.iter().zip(&self.owners) {
-            sequence.serialize_element(&Entry {
+            sequence.serialize_element(&SummaryEntry {
                 tile,
                 owner: owner.as_deref(),
             })?;

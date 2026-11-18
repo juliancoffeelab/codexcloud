@@ -44,6 +44,9 @@ module Node = struct
   type buffer
   type file_info = < mtimeMs : float ; ctimeMs : float ; size : float ; ino : float > Js.t
 
+  external paths : string -> < recursive : bool > Js.t -> string array = "readdirSync"
+  [@@mel.module "node:fs"]
+
   external read_text : string -> string -> string = "readFileSync" [@@mel.module "node:fs"]
   external write : string -> buffer -> unit = "writeFileSync" [@@mel.module "node:fs"]
 
@@ -128,26 +131,6 @@ type terrain_layer = { key : string; canvas : C.canvas }
 
 let decoded_images : (string, decoded_image) Hashtbl.t = Hashtbl.create 32
 let terrain_layer : terrain_layer option ref = ref None
-let cached_roles : Domain.Terrain_role.t Js.Dict.t option ref = ref None
-
-let terrain_roles () =
-  match !cached_roles with
-  | Some roles -> roles
-  | None ->
-      let factory =
-        match Domain.NativeEngineFactory.create () with
-        | Ok factory -> factory
-        | Error error -> failwith (Native.message (Native.Engine error))
-      in
-      let roles =
-        Fun.protect
-          ~finally:(fun () -> Domain.NativeEngineFactory.dispose factory)
-          (fun () ->
-            Catalog.terrain_roles (Catalog.of_view (Domain.NativeEngineFactory.catalog factory)))
-      in
-      cached_roles := Some roles;
-      roles
-
 let sprite_bundle = ref None
 let sprite_sources = Hashtbl.create 32
 let used_images = Hashtbl.create 32
@@ -179,7 +162,7 @@ let frame_path root (frame : Art.frame) =
   else Node.absolute frame.url
 
 let help =
-  {js|Usage: node scripts/render-map.mjs [--watch] --map map.json [--overlay overlay.json] --output preview.png\nOptions: --grid [--grid-color COLOR] --artwork candidate-frames.json\n         --draw-order native|reverse-within-z|shuffle-within-z|reverse-all|shuffle-all\n         --order-seed 17 --order-terrain castle-wall,castle-bell\nStatic draft only: Rust resolves fog/lights; encounters and gameplay are not executed.|js}
+  {js|Usage: node scripts/render-map.mjs [--watch] --map map.json [--overlay overlay.json] --output preview.png\nOptions: --grid [--grid-color COLOR] --artwork candidate-frames.json\n         --draw-order native|reverse-within-z|shuffle-within-z|reverse-all|shuffle-all\n         --order-seed 17 --order-terrain castle-wall,castle-bell\nSupply a registered map/revision with its authored scenario or campaign roster.\nStatic draft only: Rust resolves perception; encounters and gameplay are not executed.|js}
 
 let options () =
   let flags = Hashtbl.create 12 in
@@ -225,12 +208,47 @@ let positive name value =
     invalid_arg {j|Expected positive integer $(name)|j};
   int_of_float n
 
-let normalize map overlay =
+(* Drafts use the same authored documents and setup path as a live map. The
+   devtool may read source files; Rust remains responsible for their mechanics. *)
+let draft_factory root map =
+  let data_root = Node.resolve root {js|rust/data|js} in
+  let wanted = J.text map {js|mapId|js} in
+  let revision = J.n map {js|mapRevision|js} in
+  let replaced = ref false in
+  let documents =
+    Array.fold_left
+      (fun documents path ->
+        if not (Js.String.endsWith ~suffix:{js|.json|js} path) then documents
+        else
+          let source_path = Node.resolve data_root path in
+          Hashtbl.replace used_files source_path ();
+          let text = Node.read_text source_path {js|utf8|js} in
+          let value = Js.Json.parseExn text in
+          let text =
+            if
+              J.has value {js|tiles|js} && J.has value {js|mapId|js}
+              && J.text value {js|mapId|js} = wanted
+              && J.n value {js|mapRevision|js} = revision
+            then (
+              replaced := true;
+              Js.Json.stringify map)
+            else text
+          in
+          Domain.Text_map.add path text documents)
+      Domain.Text_map.empty
+      (Node.paths data_root [%mel.obj { recursive = true }])
+  in
+  if not !replaced then
+    invalid_arg
+      {js|Draft must replace a registered map and revision; author its scenario/roster first|js};
+  match Domain.NativeEngineFactory.with_documents documents with
+  | Ok factory -> factory
+  | Error error -> failwith (Native.message (Native.Engine error))
+
+let normalize factory map overlay =
   let cols = positive {js|cols|js} (J.field map {js|cols|js})
   and rows = positive {js|rows|js} (J.field map {js|rows|js}) in
   let map_id = J.text map {js|mapId|js} in
-  if map_id = {js||js} then invalid_arg {js|Expected mapId|js};
-  let positions = Hashtbl.create (cols * rows) and locations = Hashtbl.create 16 in
   let coordinate value =
     let col = J.n value {js|col|js} and row = J.n value {js|row|js} in
     if
@@ -242,67 +260,45 @@ let normalize map overlay =
     then invalid_arg {js|Position outside draft map|js};
     (int_of_float col, int_of_float row)
   in
-  let address (col, row) =
-    let js_text_part_0 = string_of_int col in
-    let js_text_part_2 = string_of_int row in
-    {j|$(js_text_part_0),$(js_text_part_2)|j}
+  let catalog = Domain.NativeEngineFactory.catalog factory in
+  let prepared =
+    match
+      Array.find_opt
+        (fun (m : Domain.browser_map) -> m.id = map_id && m.revision = J.n map {js|mapRevision|js})
+        catalog.maps
+    with
+    | Some map -> map.state
+    | None -> invalid_arg {js|Unregistered draft map revision|js}
   in
-  let tiles = J.array (J.field map {js|tiles|js}) in
-  Array.iter
-    (fun tile ->
-      let key = address (coordinate tile) in
-      if Hashtbl.mem positions key then invalid_arg {j|Duplicate draft tile: $(key)|j};
-      let id = J.text_default tile {js|id|js} key in
-      if id <> key && J.has tile {js|location|js} && J.text tile {js|location|js} <> id then
-        invalid_arg {js|Conflicting authored tile identifiers|js};
-      let location =
-        if id <> key then Some id
-        else if J.has tile {js|location|js} then Some (J.text tile {js|location|js})
-        else None
-      in
-      Option.iter
-        (fun name ->
-          if
-            (not (Js.Re.test ~str:name (Js.Re.fromString {js|^[a-z0-9-]+$|js})))
-            || Hashtbl.mem locations name
-          then invalid_arg {j|Invalid or duplicate location: $(name)|j};
-          Hashtbl.add locations name ();
-          J.set tile {js|location|js} (J.str name))
-        location;
-      J.set tile {js|id|js} (J.str key);
-      Hashtbl.add positions key ())
-    tiles;
-  if Array.length tiles <> cols * rows then invalid_arg {js|Supply the complete draft tile grid|js};
-  let units =
-    if J.has overlay {js|units|js} then J.array (J.field overlay {js|units|js})
-    else J.list map {js|units|js}
-  in
-  Array.iter
-    (fun unit ->
-      let point = if J.has unit {js|tile|js} then J.field unit {js|tile|js} else unit in
-      let col, row = coordinate point in
-      J.set unit {js|tile|js}
-        (J.obj
-           [
-             ({js|col|js}, Js.Json.number (float_of_int col));
-             ({js|row|js}, Js.Json.number (float_of_int row));
-           ]))
-    units;
+  let state_json = Js.Json.parseExn (Domain.state_to_json prepared) in
+  if J.has overlay {js|units|js} then J.set state_json {js|units|js} (J.field overlay {js|units|js});
+  if J.has overlay {js|round|js} then J.set state_json {js|round|js} (J.field overlay {js|round|js});
+  let observer = J.default overlay {js|observer|js} (J.str {js|player|js}) in
+  (if J.has overlay {js|memory|js} then
+     let faction =
+       match
+         Array.find_opt
+           (fun value -> J.field value {js|id|js} = observer)
+           (J.array (J.field state_json {js|factions|js}))
+       with
+       | Some value -> value
+       | None -> invalid_arg {js|Unknown draft observer faction|js}
+     in
+     let group_id = J.field faction {js|visionGroup|js} in
+     Array.iter
+       (fun group ->
+         if J.field group {js|id|js} = group_id then
+           J.set group {js|explored|js} (J.field overlay {js|memory|js}))
+       (J.array (J.field state_json {js|visionGroups|js})));
+  let units = J.array (J.field state_json {js|units|js}) in
   let input =
     J.obj
       [
-        ({js|observer|js}, J.default overlay {js|observer|js} (J.str {js|player|js}));
-        ({js|tiles|js}, Js.Json.array tiles);
-        ({js|units|js}, Js.Json.array units);
-        ( {js|lighting|js},
-          J.default map {js|lighting|js} (J.obj [ ({js|time|js}, J.str {js|day|js}) ]) );
-        ({js|factions|js}, J.default map {js|factions|js} (Js.Json.array [||]));
-        ({js|visionGroups|js}, J.default map {js|visionGroups|js} (Js.Json.array [||]));
-        ({js|pending|js}, Js.Json.array [||]);
+        ({js|observer|js}, observer);
+        ({js|state|js}, state_json);
+        ({js|pending|js}, J.default overlay {js|pending|js} (Js.Json.array [||]));
         ({js|marks|js}, J.default overlay {js|marks|js} (Js.Json.array [||]));
         ({js|choices|js}, J.default overlay {js|choices|js} (Js.Json.array [||]));
-        ({js|memory|js}, J.default overlay {js|memory|js} (Js.Json.array [||]));
-        ({js|round|js}, J.default overlay {js|round|js} (Js.Json.number 1.));
       ]
   in
   (cols, rows, map_id, units, Map_draft_json.of_presentation_input input, coordinate)
@@ -413,9 +409,21 @@ let run root =
     let overlay =
       Option.fold ~none:(J.obj []) ~some:read_json (Hashtbl.find_opt flags {js|--overlay|js})
     in
-    let cols, rows, map_id, units, input, coordinate = normalize map overlay in
-    let resolved = Domain.preview_presentation input in
-    let roles = terrain_roles () in
+    let factory = draft_factory root map in
+    let cols, rows, map_id, units, input, coordinate, resolved, roles =
+      Fun.protect
+        ~finally:(fun () -> Domain.NativeEngineFactory.dispose factory)
+        (fun () ->
+          let cols, rows, map_id, units, input, coordinate = normalize factory map overlay in
+          ( cols,
+            rows,
+            map_id,
+            units,
+            input,
+            coordinate,
+            Domain.NativeEngineFactory.preview_presentation factory input,
+            Catalog.terrain_roles (Catalog.of_view (Domain.NativeEngineFactory.catalog factory)) ))
+    in
     let base = Art.current () in
     let overrides =
       Option.fold ~none:[||]
@@ -452,7 +460,7 @@ let run root =
     let artwork = Art.with_overrides base overrides in
     let plan =
       Terrain_plan.prepare ~roles ~map_id ~cols:(float_of_int cols) ~rows:(float_of_int rows)
-        input.tiles artwork
+        input.state.tiles artwork
     in
     let images = Js.Dict.empty () in
     let load_frame (frame : Art.frame) =
@@ -578,27 +586,25 @@ let run root =
     in
     let placements = Hashtbl.create (Array.length units) in
     Array.iteri
-      (fun i (unit : Domain.starting_unit) ->
+      (fun i (unit : Domain.public_unit) ->
         Hashtbl.replace placements (Hex.key unit.tile) (unit, units.(i)))
-      input.units;
-    let faction (unit : Domain.starting_unit) =
-      match Array.find_opt (fun (f : Domain.faction) -> f.id = unit.faction) input.factions with
-      | Some f -> f
+      input.state.units;
+    let faction (unit : Domain.public_unit) =
+      match
+        Array.find_opt (fun (f : Domain.faction) -> f.id = unit.faction) input.state.factions
+      with
+      | Some faction -> faction
       | None -> invalid_arg {js|Draft unit requires a declared faction|js}
     in
-    let hostile unit =
-      let f = faction unit in
-      let relation = Domain.Text_map.find_opt {js|player|js} f.relations in
-      relation = Some Domain.Relation.Hostile
-    in
+    let known_units = Hashtbl.create (Array.length resolved.visible_units) in
+    Array.iter (fun id -> Hashtbl.replace known_units id ()) resolved.visible_units;
     let visible =
       Array_ext.filter_map
         (fun (tile : Domain.tile) ->
           match Hashtbl.find_opt placements tile.id with
-          | Some (unit, raw) when (not (hostile unit)) || not (Hashtbl.mem fog tile.id) ->
-              Some (unit, raw)
+          | Some (unit, raw) when Hashtbl.mem known_units unit.id -> Some (unit, raw)
           | _ -> None)
-        input.tiles
+        input.state.tiles
     in
     let rec paint_unit i =
       if i = Array.length visible then return ()
@@ -659,7 +665,7 @@ let run root =
     in
     let* () = paint_unit 0 in
     Array.iter
-      (fun ((unit : Domain.starting_unit), _) ->
+      (fun ((unit : Domain.public_unit), _) ->
         let p =
           Geometry.center ~col:(Int32.to_int unit.tile.col) ~row:(Int32.to_int unit.tile.row)
         in

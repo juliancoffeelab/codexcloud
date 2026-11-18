@@ -3,7 +3,7 @@ use super::{SimulationError, types::*};
 use crate::{
     ai::{Blocks, Diplomacy, Policy},
     data::{Objective, State, TurnPhase},
-    logic::Game,
+    logic::BattleSession,
 };
 use serde::{Deserialize, Serialize};
 
@@ -83,7 +83,7 @@ impl Capture {
         })
     }
     /// Called after all turn transitions and before the phase's first planner.
-    pub fn observe(&mut self, game: &Game<'_>, goals: Option<&[Objective]>) {
+    pub fn observe(&mut self, game: &BattleSession<'_>, goals: Option<&[Objective]>) {
         if game.turn() != self.phase || !self.rounds.contains(&game.round()) {
             return;
         }

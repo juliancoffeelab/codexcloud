@@ -17,8 +17,8 @@ pub struct UnitQueue {
 fn priority_order(
     game: &BattleView<'_, '_>,
     mode: QueueMode,
-    candidates: &super::candidates::Workspace,
-    escort: &crate::ai::policies::escort::travel::Workspace,
+    candidates: &super::candidates::CandidateWorkspace,
+    escort: &crate::ai::policies::escort::travel::EscortTravelWorkspace,
 ) -> Vec<UnitId> {
     PriorityEvaluation(game).priority_order(mode, candidates, escort)
 }
@@ -33,8 +33,8 @@ impl PriorityEvaluation<'_, '_, '_> {
     fn priority_order(
         &self,
         policy: QueueMode,
-        cache: &super::candidates::Workspace,
-        escort: &crate::ai::policies::escort::travel::Workspace,
+        cache: &super::candidates::CandidateWorkspace,
+        escort: &crate::ai::policies::escort::travel::EscortTravelWorkspace,
     ) -> Vec<UnitId> {
         let goals = cache.goals();
         let clearing = cache.clearing();
@@ -53,11 +53,15 @@ impl PriorityEvaluation<'_, '_, '_> {
                     && self.can_act(u.id)
             })
             .map(|(index, unit)| {
-                let rule = &self.rules().units[unit.kind];
-                let movement = if unit.moved { 0 } else { rule.r#move };
-                let zero_cost = rule.costs.iter().any(|c| *c == Some(0));
+                let rule = self.unit_definition(unit.kind);
+                let movement = if unit.moved {
+                    0
+                } else {
+                    self.movement_limit(unit)
+                };
+                let zero_cost = self.has_free_movement(unit);
                 let range = self
-                    .weapons(unit)
+                    .attack_reaches(unit)
                     .map(|a| a.range as usize)
                     .max()
                     .unwrap_or(0);
@@ -65,12 +69,12 @@ impl PriorityEvaluation<'_, '_, '_> {
                     || cache.proximity()[unit.tile] as usize <= movement + range)
                     .then(|| self.threat_reach_blocked(unit, self.occupied_tiles().clone()));
                 let geometry: Vec<_> = self
-                    .weapons(unit)
+                    .attack_reaches(unit)
                     .map(|a| self.attack_origins(a.category, a.range))
                     .collect();
                 let mut offense = 0.0f64;
                 for &foe in &foes {
-                    for (weapon, attack) in self.weapons(unit).enumerate() {
+                    for (weapon, attack) in self.attack_reaches(unit).enumerate() {
                         if !zero_cost
                             && self.board().distance(unit.tile, foe.tile) as usize
                                 > movement + attack.range as usize
@@ -148,12 +152,14 @@ impl PriorityEvaluation<'_, '_, '_> {
                     for ally in self.units().iter().filter(|u| {
                         self.belongs_to_faction(u, self.observer_faction()) && u.id != unit.id
                     }) {
-                        if self.board().distance(unit.tile, ally.tile) as usize > movement + 1 {
+                        if self.board().distance(unit.tile, ally.tile) as usize
+                            > movement + self.healing_radius(unit)
+                        {
                             continue;
                         }
-                        let heal = rule
-                            .healing
-                            .min(self.rules().units[ally.kind].hp - ally.hp)
+                        let heal = self
+                            .with_owned_assessment(unit, |caps| caps.meta_healing_score() as i32)
+                            .min(self.unit_definition(ally.kind).max_hp - ally.hp)
                             .max(0) as f64;
                         score += heal
                             * if cache.orders().important(self, ally) {
@@ -181,12 +187,12 @@ impl PriorityEvaluation<'_, '_, '_> {
     }
 }
 #[derive(Default)]
-pub(in crate::ai) struct Session {
+pub(in crate::ai) struct QueuedPlannerSession {
     queue: Option<UnitQueue>,
-    candidates: super::candidates::Workspace,
-    search: super::search::Session,
+    candidates: super::candidates::CandidateWorkspace,
+    search: super::search::SearchPlannerSession,
 }
-impl Session {
+impl QueuedPlannerSession {
     pub(in crate::ai) fn replace_goals(&mut self, goals: Vec<crate::ai::orders::Target>) {
         self.search.replace_goals(goals);
     }
@@ -195,7 +201,7 @@ impl Session {
 pub(in crate::ai) fn next_plan<'a, 'catalog>(
     game: &'a BattleView<'a, 'catalog>,
     phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
-    session: &mut Session,
+    session: &mut QueuedPlannerSession,
     turn: &crate::ai::runtime::PlannerTurn<'_>,
     intents: &mut Vec<(u32, Option<bool>)>,
 ) -> Option<Plan> {
@@ -231,7 +237,7 @@ fn next_plan_inner<'a, 'catalog>(
     game: &'a BattleView<'a, 'catalog>,
     phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     policy: QueueMode,
-    session: &mut Session,
+    session: &mut QueuedPlannerSession,
     turn: &crate::ai::runtime::PlannerTurn<'_>,
     queue: &mut UnitQueue,
     intents: &mut Vec<(u32, Option<bool>)>,
@@ -290,7 +296,7 @@ fn next_plan_inner<'a, 'catalog>(
                 .iter()
                 .filter(|u| game.hostile_to_faction(u, game.observer_faction()))
                 .any(|target| {
-                    game.weapons(unit)
+                    game.attack_reaches(unit)
                         .enumerate()
                         .any(|(weapon, _)| game.can_attack(unit, unit.tile, target, weapon))
                 })
@@ -335,7 +341,7 @@ fn next_plan_inner<'a, 'catalog>(
 }
 
 fn finish_intents(
-    cache: &super::candidates::Workspace,
+    cache: &super::candidates::CandidateWorkspace,
     intents: &mut Vec<(u32, Option<bool>)>,
 ) -> Option<Plan> {
     if intents.is_empty() {
@@ -348,14 +354,22 @@ fn finish_intents(
 mod tests {
     use super::*;
     use crate::ai::{PlanningWorkspace, Policy};
-    use crate::logic::Game;
+    use crate::logic::BattleSession;
     #[test]
     fn campaign_rejects_arena_campaigner() {
-        let rules = Rules::load().unwrap();
-        let campaign =
-            Game::start_campaign(&rules, "mirror-night", 0, vec![], 0, vec![], vec![], vec![]);
+        let rules = Catalogue::load().unwrap();
+        let campaign = BattleSession::start_campaign(
+            &rules,
+            "mirror-night",
+            0,
+            vec![],
+            0,
+            vec![],
+            vec![],
+            vec![],
+        );
         let mut blocks = Policy::Balanced.blocks();
-        blocks.campaign = crate::ai::CampaignBlock::Arena;
+        blocks.campaign = crate::ai::CampaignerKind::Arena;
         let mut workspace = PlanningWorkspace::new(7, 0, None, crate::ai::Diplomacy::Unrestricted)
             .with_blocks(blocks);
         assert_eq!(
@@ -385,7 +399,7 @@ impl super::Planner for Queued {
 
 pub(super) fn prepare(
     phases: hex_command_battle::PhaseForecasts<'_, '_>,
-    session: &mut Session,
+    session: &mut QueuedPlannerSession,
     turn: &crate::ai::runtime::PlannerTurn<'_>,
 ) {
     super::search::prepare(phases, &mut session.search, turn);
@@ -393,7 +407,7 @@ pub(super) fn prepare(
 pub(super) fn choose<'a, 'catalog>(
     game: &'a BattleView<'a, 'catalog>,
     phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
-    session: &mut Session,
+    session: &mut QueuedPlannerSession,
     turn: &mut crate::ai::runtime::PlannerTurn<'_>,
 ) -> Result<(), CommandError> {
     super::search::initialize(game, &mut session.search, turn);
@@ -406,7 +420,7 @@ fn coordinated_step<'view, 'catalog>(
     game: &'view crate::ai::context::BattleView<'view, 'catalog>,
     phases: hex_command_battle::PhaseForecasts<'view, 'catalog>,
     actions: hex_command_battle::ActionForecastSource<'view, 'catalog>,
-    parts: &mut crate::ai::runtime::PlannerParts<'_, Session>,
+    parts: &mut crate::ai::runtime::PlannerParts<'_, QueuedPlannerSession>,
 ) -> Result<(), crate::data::CommandError> {
     if let Some(goals) = super::prepare_coordination(game, &mut parts.turn) {
         parts.session.replace_goals(goals);

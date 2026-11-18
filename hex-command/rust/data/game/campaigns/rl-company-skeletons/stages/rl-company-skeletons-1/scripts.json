@@ -2,6 +2,44 @@
   "requiredCompanions": ["charge"],
   "events": [
     {
+      "id": "company-survival",
+      "observer": null,
+      "priority": 2147483647,
+      "remembers": false,
+      "objective": null,
+      "when": {
+        "any": [
+          {
+            "not": {
+              "survives": {
+                "company": "player",
+                "allies": false,
+                "character": null,
+                "role": "leader",
+                "includeEvacuated": true
+              }
+            }
+          },
+          {
+            "not": {
+              "survives": {
+                "company": "player",
+                "allies": true,
+                "character": "charge",
+                "role": null,
+                "includeEvacuated": true
+              }
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The company cannot continue without its protected companions."
+        }
+      ]
+    },
+    {
       "id": "route-open",
       "when": {
         "own": {
@@ -11,7 +49,9 @@
               "row": 6
             }
           },
-          "faction": "player"
+          "faction": "player",
+          "turns": null,
+          "when": null
         }
       },
       "objective": {
@@ -33,13 +73,20 @@
         "playerMarker": null,
         "satisfiedWhen": {
           "flag": "route-open"
-        }
+        },
+        "id": null,
+        "preserveLives": null,
+        "optional": false,
+        "availableWhen": null
       },
       "actions": [
         {
           "setFlag": "route-open"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "arrival",
@@ -57,7 +104,14 @@
                 }
               },
               "character": "charge",
-              "through": true
+              "through": true,
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           }
         ]
@@ -77,16 +131,31 @@
               }
             },
             "character": "charge",
-            "through": true
+            "through": true,
+            "role": null,
+            "side": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
-        "playerMarker": null
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "optional": false,
+        "availableWhen": null,
+        "satisfiedWhen": null
       },
       "actions": [
         {
           "victory": "Task completed."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "reserve",
@@ -120,15 +189,28 @@
             ],
             "units": [
               {
-                "type": "wolf"
+                "type": "wolf",
+                "character": null,
+                "role": null,
+                "items": []
               },
               {
-                "type": "thorncaller"
+                "type": "thorncaller",
+                "character": null,
+                "role": null,
+                "items": []
               }
-            ]
+            ],
+            "tile": null,
+            "radius": 2,
+            "aiGroup": null
           }
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "supplies",
@@ -141,7 +223,14 @@
             }
           },
           "faction": "player",
-          "through": true
+          "through": true,
+          "character": null,
+          "role": null,
+          "side": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
         }
       },
       "objective": {
@@ -159,11 +248,22 @@
               }
             },
             "faction": "player",
-            "through": true
+            "through": true,
+            "character": null,
+            "role": null,
+            "side": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
         "playerMarker": null,
-        "optional": true
+        "optional": true,
+        "id": null,
+        "preserveLives": null,
+        "availableWhen": null,
+        "satisfiedWhen": null
       },
       "actions": [
         {
@@ -172,7 +272,10 @@
             "amount": 12
           }
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "deadline",
@@ -184,7 +287,13 @@
         {
           "defeat": "The deadline expired."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "objective": null
     }
-  ]
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false
 }

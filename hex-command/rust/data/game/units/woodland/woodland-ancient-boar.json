@@ -16,7 +16,8 @@
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "spread": 4
+      "spread": 4,
+      "drain": 0
     },
     {
       "id": "tusks",
@@ -27,7 +28,8 @@
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "spread": 2
+      "spread": 2,
+      "drain": 0
     }
   ],
   "damageModifiers": {
@@ -41,5 +43,16 @@
   "level": 3,
   "family": "boar",
   "advancesTo": [],
-  "experienceNeeded": 0
+  "experienceNeeded": 0,
+  "sight": {
+    "range": 0,
+    "unlimited": false,
+    "sightModifiers": {
+      "lit": 0,
+      "unlit": 0,
+      "darkness": 0
+    },
+    "penetrates": []
+  },
+  "abilities": []
 }

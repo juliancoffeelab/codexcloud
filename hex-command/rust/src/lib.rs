@@ -7,7 +7,7 @@ pub mod ai;
 pub mod data;
 pub mod logic;
 pub mod protocol;
-#[cfg(not(target_arch = "wasm32"))]
+#[cfg(all(feature = "simulation", not(target_arch = "wasm32")))]
 pub mod simulation;
 #[cfg(feature = "wasm")]
 mod undo;
@@ -21,3 +21,11 @@ mod sort;
 
 #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
 pub mod training;
+
+#[cfg(test)]
+#[path = "../testing/effects.rs"]
+mod effect_fixture;
+
+#[cfg(test)]
+#[path = "../testing/catalogue.rs"]
+mod catalogue_fixture;

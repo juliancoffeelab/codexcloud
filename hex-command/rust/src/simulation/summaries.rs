@@ -368,7 +368,7 @@ mod tests {
             };
             let unit = |id, kind, side| {
                 serde_json::from_value::<PublicUnit>(json!({
-                "id":id,"type":kind,"side":side,"tile":Hex::new(0, 0),"hp":20,"moved":true,"attackSpent":true,"faction":if side=="player" { "player" } else { "enemy" },"revealedTo":[],"perceptionEffects":[]
+                "id":id,"type":kind,"side":side,"items":[],"tile":Hex::new(0, 0),"hp":20,"moved":true,"attackSpent":true,"faction":if side=="player" { "player" } else { "enemy" },"revealedTo":[],"perceptionEffects":[]
             }))
             .unwrap()
             };
@@ -383,7 +383,7 @@ mod tests {
             serde_json::from_value(json!({
                 "unit":"u1","target":"u2","weapon":"hit","from":Hex::new(0, 0),"targetTile":Hex::new(0, 1),
                 "damage":8,"retaliation":reflected_or_weapon,"count":2,"damagePerHit":4,"retaliationCount":reply_count,
-                "retaliationPerHit":4,"mediationAtRisk":false
+                "retaliationPerHit":4,"mediationAtRisk":false,"rawRolls":[],"rolls":[],"responseRawRolls":[],"responseRolls":[],"thorns":null,"mitigation":null
             }))
             .unwrap(),
         ];
@@ -400,10 +400,12 @@ mod tests {
 
     fn fixture() -> MatchResult {
         let state = State {
+            map_modifiers: serde_json::from_value(json!({"sight":{"range":0,"unlimited":false,"sightModifiers":{"lit":0,"unlit":0,"darkness":0},"penetrates":[]},"damageModifiers":{"blade":0,"pierce":0,"impact":0},"terrainModifiers":{}})).unwrap(),
+            lighting: crate::data::MapLighting { time:crate::data::TimeOfDay::Day },
             vision_groups: vec![],
             factions: serde_json::from_value(json!([
-                {"id":"player","phase":"player","visionGroup":"player","controller":{"kind":"human"},"palette":"player"},
-                {"id":"enemy","phase":"ai","visionGroup":"enemy","controller":{"kind":"ai"},"palette":"enemy"}
+                {"id":"player","phase":"player","visionGroup":"player","controller":{"kind":"human"},"palette":"player","recruits":null,"transfer":null,"relations":{"player":"allied","enemy":"hostile"}},
+                {"id":"enemy","phase":"ai","visionGroup":"enemy","controller":{"kind":"ai","policy":null},"palette":"enemy","recruits":null,"transfer":null,"relations":{"enemy":"allied","player":"hostile"}}
             ])).unwrap(),
             ground_items: vec![],
             condition_memory: vec![],
@@ -514,7 +516,7 @@ mod tests {
         expected["stateHash"] = json!(sha256(&serde_json::to_vec(&expected["final"]).unwrap()));
         assert_eq!(value, expected);
         assert!(value["final"]["lastCombat"].is_null());
-        assert!(value["final"].get("campaign").is_none());
+        assert!(value["final"]["campaign"].is_null());
         let comparison = serde_json::to_value(borrowed_summary(&result, false).unwrap()).unwrap();
         assert!(comparison.get("stateHash").is_none());
         expected.as_object_mut().unwrap().remove("stateHash");
@@ -542,7 +544,7 @@ mod tests {
             unreachable!()
         };
         let mut final_state = arena.r#final;
-        final_state.campaign = Some(serde_json::from_value(json!({"id":"fixture","flags":{},"mission":0,"recall":[],"carryGold":0,"marks":[],"dialogue":[],"dialogueIndex":0,"outcome":null,"completed":false,"refuge":{"heldTurns":0,"lastCountedRound":0,"escalated":true}})).unwrap());
+        final_state.campaign = Some(serde_json::from_value(json!({"id":"fixture","evacuated":[],"flags":{},"mission":0,"recall":[],"carryGold":0,"marks":[],"dialogue":[],"dialogueIndex":0,"outcome":null,"completed":false,"refuge":{"heldTurns":0,"lastCountedRound":0,"escalated":true}})).unwrap());
         let result = MatchResult::Campaign(CampaignResult {
             config: CampaignConfig {
                 seed: 1,

@@ -1,10 +1,49 @@
 {
   "events": [
     {
+      "id": "company-survival",
+      "observer": null,
+      "priority": 2147483647,
+      "remembers": false,
+      "objective": null,
+      "when": {
+        "any": [
+          {
+            "not": {
+              "survives": {
+                "company": "player",
+                "allies": false,
+                "character": null,
+                "role": "leader",
+                "includeEvacuated": true
+              }
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The company cannot continue without its protected companions."
+        }
+      ]
+    },
+    {
       "id": "death-light",
       "priority": 100,
       "when": {
-        "killed": {}
+        "killed": {
+          "character": null,
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "initiatedBy": null,
+          "killedBy": null,
+          "defending": null
+        }
       },
       "remembers": false,
       "actions": [
@@ -18,30 +57,60 @@
               "radius": 62,
               "power": 0.75,
               "color": [255, 32, 32],
-              "fixture": false
+              "fixture": false,
+              "emission": null,
+              "dx": null,
+              "dy": null,
+              "when": null
             }
           }
         }
-      ]
+      ],
+      "observer": null,
+      "objective": null
     },
     {
       "id": "commander-lost",
       "when": {
         "killed": {
-          "character": "survey-captain"
+          "character": "survey-captain",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "initiatedBy": null,
+          "killedBy": null,
+          "defending": null
         }
       },
       "actions": [
         {
           "defeat": "Your survey captain fell. Restart Bell Night from Debug tools."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "rival-defeated",
       "when": {
         "killed": {
-          "character": "survey-rival"
+          "character": "survey-rival",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "initiatedBy": null,
+          "killedBy": null,
+          "defending": null
         }
       },
       "objective": {
@@ -49,19 +118,38 @@
         "label": "Defeat the rival when your survey is complete",
         "intent": {
           "defeat": {
-            "character": "survey-rival"
+            "character": "survey-rival",
+            "role": null,
+            "side": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
         "visibleWhen": {
           "always": true
         },
-        "playerMarker": null
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "optional": false,
+        "availableWhen": null,
+        "satisfiedWhen": null
       },
       "actions": [
         {
           "victory": "Survey complete. Restart Bell Night to test again."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     }
-  ]
+  ],
+  "enemyGroups": [],
+  "requiredCompanions": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false
 }

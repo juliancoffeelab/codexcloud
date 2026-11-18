@@ -2,6 +2,33 @@
   "requiredCompanions": [],
   "events": [
     {
+      "id": "company-survival",
+      "observer": null,
+      "priority": 2147483647,
+      "remembers": false,
+      "objective": null,
+      "when": {
+        "any": [
+          {
+            "not": {
+              "survives": {
+                "company": "player",
+                "allies": false,
+                "character": null,
+                "role": "leader",
+                "includeEvacuated": true
+              }
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The company cannot continue without its protected companions."
+        }
+      ]
+    },
+    {
       "id": "hold",
       "when": {
         "held": {
@@ -12,7 +39,15 @@
             }
           },
           "side": "player",
-          "turns": 3
+          "turns": 3,
+          "when": null,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
         }
       },
       "objective": {
@@ -30,16 +65,32 @@
               }
             },
             "side": "player",
-            "turns": 3
+            "turns": 3,
+            "when": null,
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
-        "playerMarker": null
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "optional": false,
+        "availableWhen": null,
+        "satisfiedWhen": null
       },
       "actions": [
         {
           "victory": "Task completed."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "deadline",
@@ -51,7 +102,13 @@
         {
           "defeat": "The deadline expired."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "objective": null
     }
-  ]
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false
 }

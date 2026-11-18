@@ -44,7 +44,6 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
     val mutable zone_mask : Underground.mask option = None
     val mutable map_width = 1.
     val mutable map_height = 1.
-    val mutable night = false
     val mutable origin_x = 0.
     val mutable origin_y = 0.
     val mutable lighting = Phaser_actor_lighting.daylight
@@ -92,7 +91,6 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
         map_height <- height;
         origin_x <- x;
         origin_y <- y;
-        night <- next.time <> Domain.Time_of_day.Day;
         lighting <- next;
         binding <- None;
         self#native##flush ();
@@ -121,12 +119,12 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
       resources#remove {js|underground-mask|js}
 
     method private configure_zones (next : Domain.battlefield_lighting) =
-      let key = Underground.key next.underground in
+      let key = Underground.key next.unlit_tiles in
       if key <> zone_signature then (
         self#native##flush ();
         self#release_zones;
         zone_signature <- key;
-        zone_mask <- Underground.get next.underground;
+        zone_mask <- Underground.get next.unlit_tiles;
         Option.iter
           (fun (mask : Underground.mask) ->
             let _ =
@@ -228,8 +226,7 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
       in
       let _ = native##set1f {js|uNativeScale|js} Geometry.native_pixel_scale in
       let _ = native##set1f {js|uNormalization|js} normalization in
-      let _ = native##set1f {js|uNight|js} (if night && not data.unlit then 1. else 0.) in
-      let _ = native##set1f {js|uDay|js} (if (not night) && not data.unlit then 1. else 0.) in
+      let _ = native##set1f {js|uDay|js} (if not data.unlit then 1. else 0.) in
       let _ = native##set1f {js|uBrightness|js} (Option.value ~default:1. data.brightness) in
       let _ = native##set1f {js|uGround|js} (if Option.is_some point then 1. else 0.) in
       (match point with
@@ -243,7 +240,7 @@ class lighting (game : Phaser.game) (camera : Phaser.camera)
       | _ -> ());
       let _ =
         native##set1f {js|uUnderground|js}
-          (if (not data.unlit) && (not night) && Option.is_some zone_mask then 1. else 0.)
+          (if (not data.unlit) && Option.is_some zone_mask then 1. else 0.)
       in
       (match zone_mask with
       | None ->

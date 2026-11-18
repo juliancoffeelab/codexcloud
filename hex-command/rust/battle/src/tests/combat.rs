@@ -1,44 +1,35 @@
 //! Native weapon legality, damage equations and retaliation behavior.
 use super::*;
+use crate::catalogue_fixture as fixture;
+use serde_json::json;
 
 // Isolate new mechanics from roster balance: one counted weapon, ample HP,
 // neutral terrain/resistance and two independent aura sources.
-fn ability_rules() -> Rules {
-    let mut rules = Rules::load().unwrap();
-    for id in ["soldier", "archer", "scout"] {
-        let kind = rules.types[id];
-        let rule = &mut rules.units[kind];
-        rule.hp = 100;
-        rule.environment.fill([[0; 3]; 2]);
-        rule.damage_modifiers = DamageModifiers {
-            blade: 0,
-            pierce: 0,
-            impact: 0,
-        };
-        rule.thorns = 0;
-        rule.thorn_aura = 0;
-        for attack in &mut rule.attacks {
-            attack.spread = 0;
-            attack.damage = 4;
-            attack.count = 2;
-            attack.drain = 0;
-        }
-    }
-    rules
+fn ability_rules() -> JsonBundle {
+    fixture::neutral_combat()
 }
 
 #[test]
 fn thorns_count_incoming_strikes_and_do_not_drain_or_require_a_surviving_defender() {
     for strikes in [1, 3] {
         let mut rules = ability_rules();
-        let attacker = rules.types["scout"];
-        let defender = rules.types["soldier"];
-        rules.units[attacker].attacks[0].count = strikes;
-        rules.units[defender].thorns = 3;
-        rules.units[defender].attacks.truncate(1);
-        rules.units[defender].attacks[0].count = 1;
-        rules.units[defender].attacks[0].drain = 50;
-        let mut game = Game::new(&rules, "mirror");
+        let attacker = "scout";
+        let defender = "soldier";
+        fixture::unit(&mut rules, attacker, |unit| {
+            unit["attacks"][0]["count"] = json!(strikes)
+        });
+        crate::effect_fixture::thorns(&mut rules, defender, 3);
+        fixture::unit(&mut rules, defender, |unit| {
+            unit["attacks"].as_array_mut().unwrap().truncate(1)
+        });
+        fixture::unit(&mut rules, defender, |unit| {
+            unit["attacks"][0]["count"] = json!(1)
+        });
+        fixture::unit(&mut rules, defender, |unit| {
+            unit["attacks"][0]["drain"] = json!(50)
+        });
+        let rules = Catalogue::from_json_bundle(&rules).unwrap();
+        let mut game = LiveBattle::new(&rules, "mirror");
         game.units.clear();
         game.roster_changed();
         let a = add(&mut game, "scout", "player", Hex::new(2, 3));
@@ -51,24 +42,33 @@ fn thorns_count_incoming_strikes_and_do_not_drain_or_require_a_surviving_defende
             game.preview(&actor, &target, 0, actor.tile).1,
             4 + 3 * i32::from(strikes)
         );
-        let inspection = game.inspect(0);
-        let details = inspection
-            .units
-            .iter()
-            .find(|u| u.unit == format!("u{a}"))
-            .unwrap()
-            .attacks
-            .iter()
-            .find(|c| {
-                c.target == format!("u{b}") && c.attack.id == rules.units[attacker].attacks[0].id
-            })
-            .unwrap();
-        assert_eq!(details.thorn_damage, 3 * i32::from(strikes));
-        assert_eq!(
-            details.retaliation_healing, 2,
-            "reflection never contributes drain healing"
-        );
-        let attack_id = rules.units[attacker].attacks[0].id.clone();
+        #[cfg(feature = "wasm")]
+        {
+            let inspection = crate::logic::inspection::inspect(&game, 0);
+            let details = inspection
+                .units
+                .iter()
+                .find(|u| u.unit == format!("u{a}"))
+                .unwrap()
+                .attacks
+                .iter()
+                .find(|c| {
+                    c.target == format!("u{b}")
+                        && c.attack.id
+                            == game.with_attack(game.unit(a).unwrap(), 0, |attack| {
+                                attack.id().to_owned()
+                            })
+                })
+                .unwrap();
+            assert_eq!(details.thorn_damage, 3 * i32::from(strikes));
+            assert_eq!(
+                details.retaliation_healing, 2,
+                "reflection never contributes drain healing"
+            );
+        }
+        let attack_id = game
+            .with_attack(game.unit(a).unwrap(), 0, |attack| attack.id().to_owned())
+            .clone();
         hit(&mut game, a, b, &attack_id);
         assert_eq!(game.unit(a).unwrap().hp, 100 - 4 - 3 * i32::from(strikes));
         assert_eq!(game.unit(b).unwrap().hp, 92 - 4 * i32::from(strikes));
@@ -85,10 +85,11 @@ fn thorns_count_incoming_strikes_and_do_not_drain_or_require_a_surviving_defende
 #[test]
 fn thorn_retaliation_stacks_own_shield_with_strongest_adjacent_friendly_aura() {
     let mut rules = ability_rules();
-    rules.units[rules.types["soldier"]].thorns = 2;
-    rules.units[rules.types["archer"]].thorn_aura = 1;
-    rules.units[rules.types["scout"]].thorn_aura = 3;
-    let mut game = Game::new(&rules, "mirror");
+    crate::effect_fixture::thorns(&mut rules, "soldier", 2);
+    crate::effect_fixture::thorn_aura(&mut rules, "archer", 1);
+    crate::effect_fixture::thorn_aura(&mut rules, "scout", 3);
+    let rules = Catalogue::from_json_bundle(&rules).unwrap();
+    let mut game = LiveBattle::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
     let a = add(&mut game, "soldier", "player", Hex::new(2, 3));
@@ -96,7 +97,7 @@ fn thorn_retaliation_stacks_own_shield_with_strongest_adjacent_friendly_aura() {
     add(&mut game, "archer", "enemy", Hex::new(4, 3));
     let aura = add(&mut game, "scout", "enemy", Hex::new(3, 4));
     add(&mut game, "scout", "player", Hex::new(2, 4));
-    let preview = |game: &Game<'_>| {
+    let preview = |game: &LiveBattle<'_>| {
         game.preview(
             game.unit(a).unwrap(),
             game.unit(b).unwrap(),
@@ -110,20 +111,23 @@ fn thorn_retaliation_stacks_own_shield_with_strongest_adjacent_friendly_aura() {
         "Thornshield never boosts initiating attacks"
     );
     assert_eq!(preview(&game).1, 18, "2 shield + strongest aura 3, per hit");
-    let inspected = game.inspect(0);
-    let choice = inspected
-        .units
-        .iter()
-        .find(|u| u.unit == format!("u{a}"))
-        .unwrap()
-        .attacks
-        .iter()
-        .find(|c| c.target == format!("u{b}") && c.attack.id == "sword")
-        .unwrap();
-    assert_eq!(
-        choice.retaliation_detail.as_ref().unwrap().total + choice.thorn_damage,
-        choice.retaliation
-    );
+    #[cfg(feature = "wasm")]
+    {
+        let inspected = crate::logic::inspection::inspect(&game, 0);
+        let choice = inspected
+            .units
+            .iter()
+            .find(|u| u.unit == format!("u{a}"))
+            .unwrap()
+            .attacks
+            .iter()
+            .find(|c| c.target == format!("u{b}") && c.attack.id == "sword")
+            .unwrap();
+        assert_eq!(
+            choice.retaliation_detail.as_ref().unwrap().total + choice.thorn_damage,
+            choice.retaliation
+        );
+    }
     hit(&mut game, a, b, "sword");
     assert_eq!(game.unit(a).unwrap().hp, 82);
     assert_eq!(game.unit(b).unwrap().hp, 92);
@@ -134,7 +138,7 @@ fn thorn_retaliation_stacks_own_shield_with_strongest_adjacent_friendly_aura() {
         14,
         "aura disappears when its source leaves"
     );
-    let mut restored = Game::try_from_state(&rules, game.state()).unwrap();
+    let mut restored = LiveBattle::try_from_state(&rules, game.state()).unwrap();
     let bi = restored.index(b).unwrap();
     restored.units[bi].hp = 1;
     assert_eq!(
@@ -147,10 +151,11 @@ fn thorn_retaliation_stacks_own_shield_with_strongest_adjacent_friendly_aura() {
 #[test]
 fn ranged_retaliation_never_gets_thorn_bonus() {
     let mut rules = ability_rules();
-    let kind = rules.types["archer"];
-    rules.units[kind].thorns = 20;
-    rules.units[kind].thorn_aura = 20;
-    let mut game = Game::new(&rules, "mirror");
+    let kind = "archer";
+    crate::effect_fixture::thorns(&mut rules, kind, 20);
+    crate::effect_fixture::thorn_aura(&mut rules, kind, 20);
+    let rules = Catalogue::from_json_bundle(&rules).unwrap();
+    let mut game = LiveBattle::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
     let a = add(&mut game, "archer", "player", Hex::new(2, 3));
@@ -170,28 +175,34 @@ fn ranged_retaliation_never_gets_thorn_bonus() {
 #[test]
 fn drain_uses_actual_hp_loss_before_reply_and_cannot_overheal_or_revive() {
     let mut rules = ability_rules();
-    let kind = rules.types["soldier"];
-    for attack in &mut rules.units[kind].attacks {
-        attack.drain = 50;
-    }
-    let mut game = Game::new(&rules, "mirror");
+    let kind = "soldier";
+    fixture::unit(&mut rules, kind, |unit| {
+        for attack in unit["attacks"].as_array_mut().unwrap() {
+            attack["drain"] = json!(50);
+        }
+    });
+    let rules = Catalogue::from_json_bundle(&rules).unwrap();
+    let mut game = LiveBattle::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
     let a = add(&mut game, "soldier", "player", Hex::new(2, 3));
     let b = add(&mut game, "soldier", "enemy", Hex::new(3, 3));
     let ai = game.index(a).unwrap();
     game.units[ai].hp = 5;
-    let inspected = game.inspect(0);
-    let choice = inspected
-        .units
-        .iter()
-        .find(|u| u.unit == format!("u{a}"))
-        .unwrap()
-        .attacks
-        .iter()
-        .find(|c| c.target == format!("u{b}") && c.attack.id == "sword")
-        .unwrap();
-    assert_eq!((choice.healing, choice.retaliation_healing), (4, 4));
+    #[cfg(feature = "wasm")]
+    {
+        let inspected = crate::logic::inspection::inspect(&game, 0);
+        let choice = inspected
+            .units
+            .iter()
+            .find(|u| u.unit == format!("u{a}"))
+            .unwrap()
+            .attacks
+            .iter()
+            .find(|c| c.target == format!("u{b}") && c.attack.id == "sword")
+            .unwrap();
+        assert_eq!((choice.healing, choice.retaliation_healing), (4, 4));
+    }
     hit(&mut game, a, b, "sword");
     assert_eq!(game.unit(a).unwrap().hp, 1, "heal 4 before taking reply 8");
     assert_eq!(
@@ -199,7 +210,7 @@ fn drain_uses_actual_hp_loss_before_reply_and_cannot_overheal_or_revive() {
         96,
         "surviving defender drains on retaliation"
     );
-    let mut restored = Game::try_from_state(&rules, game.state()).unwrap();
+    let mut restored = LiveBattle::try_from_state(&rules, game.state()).unwrap();
     restored.begin_turn(TurnPhase::Player);
     let bi = restored.index(b).unwrap();
     restored.units[bi].hp = 3;
@@ -235,7 +246,10 @@ fn zero_damage_attacks_consume_actions_without_xp_and_keep_retaliation() {
     let mut game = flat();
     let attacker = add(&mut game, "bonearcher", "player", Hex::new(2, 3));
     let target = add(&mut game, "soldier", "enemy", Hex::new(3, 3));
-    game.set_terrain(game.site(&Hex::new(3, 3)), game.rules.terrains["hill"]);
+    game.set_terrain(
+        game.site(&Hex::new(3, 3)),
+        game.definitions.terrain_name("hill"),
+    );
     let hp = game.unit(target).unwrap().hp;
     let attacker_hp = game.unit(attacker).unwrap().hp;
     hit(&mut game, attacker, target, "shard");
@@ -297,10 +311,10 @@ fn ranged_categories_and_intervening_cover_determine_legal_replies() {
             .filter(|&t| game.board.distance(t, defender.tile) == 1)
             .collect();
         for &tile in &blockers {
-            game.set_terrain(tile, game.rules.terrains[terrain]);
+            game.set_terrain(tile, game.definitions.terrain_name(terrain));
         }
         assert!(!game.can_attack(&archer, archer.tile, &defender, attack));
-        game.set_terrain(blockers[0], game.rules.terrains["plains"]);
+        game.set_terrain(blockers[0], game.definitions.terrain_name("plains"));
         assert!(game.can_attack(&archer, archer.tile, &defender, attack));
     }
 }
@@ -311,23 +325,33 @@ fn cover_and_exposure_apply_to_attacks_and_retaliation_and_clamp_at_zero() {
         let mut game = flat();
         let a = add(&mut game, "soldier", "player", Hex::new(2, 3));
         let b = add(&mut game, "soldier", "enemy", Hex::new(3, 3));
-        game.set_terrain(game.site(&Hex::new(2, 3)), game.rules.terrains[terrain]);
+        game.set_terrain(
+            game.site(&Hex::new(2, 3)),
+            game.definitions.terrain_name(terrain),
+        );
         let actor = game.unit(a).unwrap();
         let defender = game.unit(b).unwrap();
         let attack = weapon(&game, a, "sword");
         let (_, reply, _) = game.preview(actor, defender, attack, actor.tile);
-        let rule = &game.rules.units[actor.kind];
+        let source = fixture::deterministic();
+        let rule: serde_json::Value =
+            serde_json::from_str(&source[&fixture::unit_path(&source, "soldier")]).unwrap();
         let environment = match terrain {
             "hill" => -1,
             "ford" | "marsh" => 1,
             _ => 0,
         };
-        let expected = rule
-            .attacks
+        let expected = rule["attacks"]
+            .as_array()
+            .unwrap()
             .iter()
-            .map(|a| {
-                (a.damage + rule.damage_modifiers.get(a.damage_type) + environment).max(0)
-                    * i32::from(a.count)
+            .map(|attack| {
+                let kind = attack["damageType"].as_str().unwrap();
+                ((attack["damage"].as_i64().unwrap()
+                    + rule["damageModifiers"][kind].as_i64().unwrap()
+                    + i64::from(environment))
+                .max(0)
+                    * attack["count"].as_i64().unwrap()) as i32
             })
             .max()
             .unwrap();
@@ -336,7 +360,10 @@ fn cover_and_exposure_apply_to_attacks_and_retaliation_and_clamp_at_zero() {
     let mut game = flat();
     let a = add(&mut game, "bonearcher", "player", Hex::new(2, 3));
     let b = add(&mut game, "soldier", "enemy", Hex::new(3, 3));
-    game.set_terrain(game.site(&Hex::new(3, 3)), game.rules.terrains["hill"]);
+    game.set_terrain(
+        game.site(&Hex::new(3, 3)),
+        game.definitions.terrain_name("hill"),
+    );
     assert_eq!(
         game.damage(
             game.unit(a).unwrap(),
@@ -349,26 +376,18 @@ fn cover_and_exposure_apply_to_attacks_and_retaliation_and_clamp_at_zero() {
 
 #[test]
 fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
-    let mut rules = Rules::load().unwrap();
-    let kind = rules.types["soldier"];
-    let rule = &mut rules.units[kind];
-    rule.hp = 100;
-    rule.level = 1;
-    rule.experience_needed = Some(100);
-    rule.damage_modifiers = DamageModifiers {
-        blade: -1,
-        pierce: -1,
-        impact: -1,
-    };
-    rule.environment.fill([[0; 3]; 2]);
-    for attack in &mut rule.attacks {
-        attack.spread = 0;
-    }
-    rule.attacks[0].count = 3;
-    rule.attacks[0].damage = 2;
-    rule.attacks[1].count = 1;
-    rule.attacks[1].damage = 6;
-    let mut game = Game::new(&rules, "mirror");
+    let mut rules = fixture::neutral_combat();
+    fixture::unit(&mut rules, "soldier", |unit| {
+        unit["level"] = json!(1);
+        unit["experienceNeeded"] = json!(100);
+        unit["damageModifiers"] = json!({"blade":-1,"pierce":-1,"impact":-1});
+        unit["attacks"][0]["count"] = json!(3);
+        unit["attacks"][0]["damage"] = json!(2);
+        unit["attacks"][1]["count"] = json!(1);
+        unit["attacks"][1]["damage"] = json!(6);
+    });
+    let rules = Catalogue::from_json_bundle(&rules).unwrap();
+    let mut game = LiveBattle::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
     let a = add(&mut game, "soldier", "player", Hex::new(2, 3));
@@ -390,7 +409,7 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
         (recorded.count, recorded.damage_per_hit, recorded.damage),
         (3, 1, 3)
     );
-    let mut restored = Game::try_from_state(&rules, game.state()).unwrap();
+    let mut restored = LiveBattle::try_from_state(&rules, game.state()).unwrap();
     assert!(
         restored
             .execute(Command::Attack {
@@ -418,17 +437,34 @@ fn counted_damage_keeps_the_existing_attack_and_restore_flow() {
 }
 
 #[test]
+#[cfg(feature = "simulation")]
 fn reflected_damage_records_separate_own_aura_and_effective_damage() {
     let mut rules = ability_rules();
-    let soldier = rules.types["soldier"];
-    rules.units[soldier].thorns = 2;
-    rules.units[rules.types["scout"]].thorn_aura = 3;
-    let mut game = Game::new(&rules, "mirror");
+    let soldier = "soldier";
+    crate::effect_fixture::thorns(&mut rules, soldier, 2);
+    crate::effect_fixture::thorn_aura(&mut rules, "scout", 3);
+    crate::effect_fixture::thorn_aura(&mut rules, "archer", 1);
+    let rules = Catalogue::from_json_bundle(&rules).unwrap();
+    let mut game = LiveBattle::new(&rules, "mirror");
     game.units.clear();
     game.roster_changed();
     let a = add(&mut game, "soldier", "player", Hex::new(2, 3));
     let b = add(&mut game, "soldier", "enemy", Hex::new(3, 3));
     let aura = add(&mut game, "scout", "enemy", Hex::new(4, 3));
+    let mut sources = vec![format!("u{aura}")];
+    for kind in ["archer", "scout"] {
+        let site = game.board.adjacent[game.unit(b).unwrap().tile]
+            .iter()
+            .copied()
+            .find(|&tile| game.at(tile).is_none())
+            .unwrap();
+        let site = game.board.ids[site].clone();
+        let id = add(&mut game, kind, "enemy", site);
+        if kind == "scout" {
+            sources.push(format!("u{id}"));
+        }
+    }
+    sources.sort_unstable();
     let index = game.index(a).unwrap();
     game.units[index].hp = 10;
     game.recordings = Some(Records::default().into());
@@ -439,7 +475,7 @@ fn reflected_damage_records_separate_own_aura_and_effective_damage() {
         .unwrap();
     assert_eq!(thorns.damage, 10);
     assert_eq!(thorns.aura_damage, 6);
-    assert_eq!(thorns.aura_sources, vec![format!("u{aura}")]);
+    assert_eq!(thorns.aura_sources, sources);
     assert_eq!(thorns.effective_damage, 6); // first reflection 5, reply 4, final reflection 1
 }
 
@@ -453,18 +489,31 @@ fn mitigation_records_signed_stages_hp_caps_and_executed_weapon_retaliation() {
         (-12, 3, 100, (30, 0, 3), (30, -3)),
     ] {
         let mut rules = ability_rules();
-        let attacker = rules.types["scout"];
-        let defender = rules.types["soldier"];
-        rules.units[attacker].attacks[0].damage = 10;
-        rules.units[attacker].attacks[0].count = 3;
-        rules.units[attacker].attacks[0].drain = 50;
-        rules.units[attacker].damage_modifiers.blade = -1;
-        rules.units[attacker].damage_modifiers.impact = -1;
-        rules.units[attacker].environment.fill([[-1; 3]; 2]);
-        rules.units[defender].damage_modifiers.blade = armour;
-        rules.units[defender].environment.fill([[terrain; 3]; 2]);
-        rules.units[defender].thorns = 2;
-        let mut game = Game::new(&rules, "mirror");
+        let attacker = "scout";
+        let defender = "soldier";
+        fixture::unit(&mut rules, attacker, |unit| {
+            unit["attacks"][0]["damage"] = json!(10)
+        });
+        fixture::unit(&mut rules, attacker, |unit| {
+            unit["attacks"][0]["count"] = json!(3)
+        });
+        fixture::unit(&mut rules, attacker, |unit| {
+            unit["attacks"][0]["drain"] = json!(50)
+        });
+        fixture::unit(&mut rules, attacker, |unit| {
+            unit["damageModifiers"]["blade"] = json!(-1)
+        });
+        fixture::unit(&mut rules, attacker, |unit| {
+            unit["damageModifiers"]["impact"] = json!(-1)
+        });
+        fixture::environment(&mut rules, attacker, -1);
+        fixture::unit(&mut rules, defender, |unit| {
+            unit["damageModifiers"]["blade"] = json!(armour)
+        });
+        fixture::environment(&mut rules, defender, terrain);
+        crate::effect_fixture::thorns(&mut rules, defender, 2);
+        let rules = Catalogue::from_json_bundle(&rules).unwrap();
+        let mut game = LiveBattle::new(&rules, "mirror");
         game.units.clear();
         game.roster_changed();
         let a = add(&mut game, "scout", "player", Hex::new(2, 3));
@@ -516,33 +565,56 @@ fn mitigation_records_signed_stages_hp_caps_and_executed_weapon_retaliation() {
 
 #[test]
 fn independent_roll_distributions_include_clamping_and_exact_kill_odds() {
-    let mut rules = ability_rules();
-    let attack = &mut rules.units[rules.types["archer"]].attacks[0];
-    attack.damage = 1;
-    attack.spread = 1;
-    attack.count = 2;
-    let attack = &rules.units.mechanics().attacks(rules.types["archer"])[0];
-    let distribution = crate::logic::damage::distribution(attack, 0);
-    assert_eq!((distribution.min, distribution.max), (0, 4));
-    for (actual, expected) in distribution.probabilities.iter().zip([1., 2., 3., 2., 1.]) {
-        assert!((actual - expected / 9.).abs() < 1e-12);
+    for (armour, expected_bounds, expected_mean, threshold, chance) in [
+        (0, (0, 4), 2.0, 3, 1. / 3.),
+        (-1, (0, 2), 2. / 3., 1, 5. / 9.),
+    ] {
+        let mut bundle = fixture::neutral_combat();
+        fixture::unit(&mut bundle, "archer", |unit| {
+            unit["attacks"][0]["damage"] = json!(1);
+            unit["attacks"][0]["spread"] = json!(1);
+            unit["attacks"][0]["count"] = json!(2);
+        });
+        fixture::unit(&mut bundle, "soldier", |unit| {
+            unit["damageModifiers"]["pierce"] = json!(armour)
+        });
+        let rules = Catalogue::from_json_bundle(&bundle).unwrap();
+        let mut game = LiveBattle::new(&rules, "mirror");
+        game.units.clear();
+        game.roster_changed();
+        let a = add(&mut game, "archer", "player", Hex::new(2, 3));
+        let b = add(&mut game, "soldier", "enemy", Hex::new(3, 3));
+        let distribution = game.damage_distribution(
+            game.unit(a).unwrap(),
+            game.unit(b).unwrap(),
+            0,
+            game.unit(b).unwrap().tile,
+        );
+        assert_eq!((distribution.min, distribution.max), expected_bounds);
+        assert!((distribution.mean - expected_mean).abs() < 1e-12);
+        assert!((distribution.chance(threshold) - chance).abs() < 1e-12);
+        if armour == 0 {
+            for (actual, expected) in distribution.probabilities.iter().zip([1., 2., 3., 2., 1.]) {
+                assert!((actual - expected / 9.).abs() < 1e-12);
+            }
+        }
     }
-    assert!((distribution.chance(3) - 1. / 3.).abs() < 1e-12);
-    let protected = crate::logic::damage::distribution(attack, -1);
-    assert!((protected.mean - 2. / 3.).abs() < 1e-12);
-    assert!((protected.chance(1) - 5. / 9.).abs() < 1e-12);
-    assert_eq!((protected.min, protected.max), (0, 2));
 }
 
 #[test]
 fn seeded_strikes_restore_exactly_and_previews_never_consume_randomness() {
     let mut rules = ability_rules();
-    let kind = rules.types["archer"];
-    rules.units[kind].attacks[0].spread = 4;
-    rules.units[kind].attacks[0].count = 3;
+    let kind = "archer";
+    fixture::unit(&mut rules, kind, |unit| {
+        unit["attacks"][0]["spread"] = json!(4)
+    });
+    fixture::unit(&mut rules, kind, |unit| {
+        unit["attacks"][0]["count"] = json!(3)
+    });
     let mut observed = std::collections::BTreeSet::new();
     for seed in 0..32 {
-        let mut game = Game::new(&rules, "mirror");
+        let rules = Catalogue::from_json_bundle(&rules).unwrap();
+        let mut game = LiveBattle::new(&rules, "mirror");
         game.units.clear();
         game.roster_changed();
         game.combat_rng = seed;
@@ -550,10 +622,15 @@ fn seeded_strikes_restore_exactly_and_previews_never_consume_randomness() {
         let b = add(&mut game, "archer", "enemy", Hex::new(3, 3));
         game.recordings = Some(Records::default().into());
         let before = serde_json::to_value(game.state()).unwrap();
-        let first = serde_json::to_value(game.inspect(0)).unwrap();
-        assert_eq!(first, serde_json::to_value(game.inspect(0)).unwrap());
+        let actor = *game.unit(a).unwrap();
+        let target = *game.unit(b).unwrap();
+        let first = game.exchange(&actor, &target, 0, actor.tile);
+        assert_eq!(
+            first.damage,
+            game.exchange(&actor, &target, 0, actor.tile).damage
+        );
         assert_eq!(before, serde_json::to_value(game.state()).unwrap());
-        let mut restored = Game::try_from_state(&rules, game.state()).unwrap();
+        let mut restored = LiveBattle::try_from_state(&rules, game.state()).unwrap();
         hit(&mut game, a, b, "bow");
         hit(&mut restored, a, b, "bow");
         assert_eq!(

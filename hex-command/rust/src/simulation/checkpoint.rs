@@ -30,7 +30,7 @@ impl<'a> From<&'a ResultJournal> for Cursor<'a> {
 /// Small atomic progress snapshot; completed outcomes live only in the indexed journal.
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
-pub(crate) struct Progress<'a> {
+pub(crate) struct CheckpointProgress<'a> {
     schema: u8,
     status: &'a str,
     mode: Mode,
@@ -46,7 +46,7 @@ pub(crate) struct Progress<'a> {
     #[serde(skip_serializing_if = "Option::is_none")]
     error: Option<&'a str>,
 }
-impl<'a> Progress<'a> {
+impl<'a> CheckpointProgress<'a> {
     pub fn new(
         status: &'a str,
         mode: Mode,
@@ -82,7 +82,7 @@ pub fn recover_outcomes(
     expected: usize,
 ) -> Result<Vec<Option<Value>>, SimulationError> {
     #[derive(Deserialize)]
-    struct Entry {
+    struct CheckpointEntry {
         index: usize,
         outcome: Value,
     }
@@ -101,7 +101,7 @@ pub fn recover_outcomes(
         if bytes.last() != Some(&b'\n') {
             break;
         }
-        let entry: Entry = serde_json::from_slice(&bytes)?;
+        let entry: CheckpointEntry = serde_json::from_slice(&bytes)?;
         let slot = outcomes
             .get_mut(entry.index)
             .ok_or("Recovery index is outside the recorded schedule")?;

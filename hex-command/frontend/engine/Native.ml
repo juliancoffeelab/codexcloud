@@ -78,10 +78,7 @@ let tile_indices tiles =
   result
 
 (* Geometry and its frontend lookup representation have the same map lifetime. *)
-type topology = {
-  neighbors : string array Js.Dict.t;
-  movement_costs : int option Js.Dict.t Js.Dict.t;
-}
+type topology = { neighbors : string array Js.Dict.t }
 
 type view = {
   revision : float;
@@ -99,7 +96,6 @@ type view = {
   occupancy : Domain.public_unit Js.Dict.t;
   choices : Domain.unit_actions Js.Dict.t;
   neighbors : string array Js.Dict.t;
-  movement_costs : int option Js.Dict.t Js.Dict.t;
 }
 
 and factory = {
@@ -246,6 +242,8 @@ let publication ?previous ?inspection ?tiles ?indices ?(combat = None) factory i
              error here. Discarded equal faction graphs are never traversed. *)
                   {
                     Domain.faction;
+                    details = actions.details;
+                    promotion_details = actions.promotion_details;
                     name = actions.name;
                     unit = actions.unit;
                     reachable = actions.reachable;
@@ -272,7 +270,6 @@ let publication ?previous ?inspection ?tiles ?indices ?(combat = None) factory i
               {
                 neighbors =
                   Js.Dict.map ~f:(fun[@u] values -> Array.map Hex.key values) topology.neighbors;
-                movement_costs = topology.costs;
               }
             in
             factory.topologies <- (key, topology) :: factory.topologies;
@@ -362,12 +359,13 @@ let publication ?previous ?inspection ?tiles ?indices ?(combat = None) factory i
         occupancy = index (fun (unit : Domain.public_unit) -> Hex.key unit.tile) visible_units;
         choices;
         neighbors = topology.neighbors;
-        movement_costs = topology.movement_costs;
       })
 
 let frame_state (frame : Domain.state_frame) tiles : Domain.state =
   let {
-    Domain.vision_groups;
+    Domain.lighting;
+    map_modifiers;
+    vision_groups;
     factions;
     ground_items;
     armies;
@@ -390,7 +388,9 @@ let frame_state (frame : Domain.state_frame) tiles : Domain.state =
     frame
   in
   {
-    Domain.vision_groups;
+    Domain.lighting;
+    map_modifiers;
+    vision_groups;
     factions;
     ground_items;
     armies;
@@ -714,11 +714,21 @@ let recruit_tiles view id kind =
       tiles_for view
         (Array.map Hex.key (Option.value ~default:[||] (Js.Dict.get choices.recruitment kind)))
 
-let movement_cost view kind terrain =
-  match Js.Dict.get view.movement_costs kind with
-  | None -> infinity
-  | Some costs ->
-      Option.fold ~none:infinity ~some:float_of_int (Option.join (Js.Dict.get costs terrain))
+let unit_details view id =
+  match actions view id with
+  | Some choices -> choices.Domain.details
+  | None -> invalid_arg {j|No positioned unit details for $(id)|j}
+
+let promotion_details view id =
+  match actions view id with None -> [||] | Some choices -> choices.Domain.promotion_details
+
+let recruit_details view faction kind =
+  match
+    Option.bind (Domain.Text_map.find_opt faction view.inspection.recruit_details) (fun profiles ->
+        Array.find_opt (fun (profile : Domain.unit_details) -> profile.id = kind) profiles)
+  with
+  | Some profile -> profile
+  | None -> invalid_arg {j|No resolved recruit details for $(faction):$(kind)|j}
 
 let gold (value : Domain.gold) faction =
   Option.fold ~none:0. ~some:Int32.to_float (Domain.Text_map.find_opt faction value)
@@ -764,3 +774,19 @@ let enemy_step battle options = protect (fun () -> enemy_step battle options)
 let save battle = protect (fun () -> save battle)
 let save_json battle = protect (fun () -> save_json battle)
 let replace battle saved = protect (fun () -> replace battle saved)
+
+let preview_unit battle kind faction tile =
+  protect (fun () ->
+      if battle.released then raise (Rejected Disposed);
+      value
+        (Domain.NativeEngineFactory.preview_unit battle.factory.handle battle.id
+           battle.current.revision kind faction tile))
+
+let tile_details view id =
+  match
+    Array.find_opt
+      (fun (tile : Domain.tile_details) -> Hex.key tile.tile = id)
+      view.inspection.tiles
+  with
+  | Some details -> details
+  | None -> invalid_arg {j|No resolved terrain details for $(id)|j}

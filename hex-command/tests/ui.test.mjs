@@ -473,12 +473,13 @@ test.each(["complete", "cancel", "reduced", "no-op"])(
       const checkpoint = structuredClone(Native.save(battle));
       checkpoint.state.units = [
         {
+          items: [],
           experience: 0,
           id: "u1",
           type: "soldier",
           side: "player",
           tile: { col: 2, row: 3 },
-          hp: Catalog.unit(Native.catalog(factory), "soldier").hp,
+          hp: Native.preview_unit(battle, "soldier", "player", { col: 2, row: 3 }).hp,
           moved: false,
           attackSpent: false,
           faction: "player",
@@ -486,12 +487,13 @@ test.each(["complete", "cancel", "reduced", "no-op"])(
           perceptionEffects: [],
         },
         {
+          items: [],
           experience: 0,
           id: "u2",
           type: "soldier",
           side: "ai",
           tile: { col: 3, row: 3 },
-          hp: Catalog.unit(Native.catalog(factory), "soldier").hp,
+          hp: Native.preview_unit(battle, "soldier", "player", { col: 2, row: 3 }).hp,
           moved: false,
           attackSpent: false,
           faction: "enemy",
@@ -659,7 +661,7 @@ test.each(["scenario", "campaign"])(
       },
     });
     if (mode === "scenario") {
-      assert.equal(saved.checkpoint.state.armies, undefined);
+      assert.equal(saved.checkpoint.state.armies, null);
       const roster = (state) =>
         state.units.map(({ type, faction, tile }) => ({ type, faction, tile }));
       const authored = Native.save(

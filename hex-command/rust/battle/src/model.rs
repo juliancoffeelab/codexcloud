@@ -1,7 +1,14 @@
 //! Neutral battle observations shared by native and browser hosts.
 use crate::data::*;
-use hex_command_catalog::data::Text;
+use hex_command_catalog::Text;
 use serde::{Deserialize, Serialize};
+
+/// Current attack geometry, in the actor's attack-index order.
+#[derive(Clone, Copy, Debug)]
+pub struct AttackReach {
+    pub category: Category,
+    pub range: u8,
+}
 
 /// Per-command state fields. Terrain is carried separately and only when changed.
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -10,6 +17,8 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "wasm", derive(hex_catalog_freeze_derive::BorrowFields))]
 #[cfg_attr(feature = "wasm", borrow_from(crate::data::State))]
 pub struct StateFrame {
+    pub map_modifiers: StatModifiers,
+    pub lighting: MapLighting,
     pub vision_groups: Vec<VisionGroupState>,
     pub factions: Vec<Faction>,
     pub ground_items: Vec<GroundItem>,
@@ -46,6 +55,8 @@ impl StateFrame {
     /// from the browser publication when the core save contract evolves.
     pub fn split(state: State) -> (Self, Vec<Tile>) {
         let State {
+            map_modifiers,
+            lighting,
             vision_groups,
             factions,
             ground_items,
@@ -69,6 +80,8 @@ impl StateFrame {
         } = state;
         (
             Self {
+                map_modifiers,
+                lighting,
                 vision_groups,
                 factions,
                 ground_items,
@@ -104,10 +117,11 @@ pub enum TerrainUpdate {
 }
 /// Transient wire publication; never a saved game. Applying it to the matching
 /// prior revision reconstructs the complete immutable EngineView.
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize)]
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[cfg_attr(feature = "wasm", derive(ocamljs_bindgen::EncodeProjection))]
 #[serde(rename_all = "camelCase")]
+#[cfg(feature = "wasm")]
 pub struct DispatchUpdate {
     pub base_revision: u32,
     pub revision: u32,
@@ -119,50 +133,47 @@ pub struct DispatchUpdate {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub inspection: Option<BattleInspection>,
 }
-/// Immutable rule costs and board topology, loaded on entering a battlefield.
+/// Immutable board topology, loaded on entering a battlefield.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(map = "dict", borrow))]
 pub struct BoardInspection {
-    pub costs: std::collections::BTreeMap<String, std::collections::BTreeMap<String, Option<u16>>>,
     pub neighbors: std::collections::BTreeMap<String, Vec<Hex>>,
 }
 
-/// One resolved exchange for presentation; never retained in a checkpoint.
+/// Exact current-unit attack facts for display, before target protection.
+#[cfg(feature = "wasm")]
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
+pub struct AttackCard {
+    pub id: Text,
+    pub name: Text,
+    pub sound: Text,
+    pub damage: i32,
+    pub spread: i32,
+    pub count: u8,
+    pub drain: u8,
+    pub category: Category,
+    pub damage_type: DamageType,
+    pub range: u8,
+}
+/// One resolved exchange for presentation; never retained in a checkpoint.
+#[derive(Clone, Debug, Serialize)]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
+#[cfg(feature = "wasm")]
 pub struct CombatAnimation {
+    pub maximum_hp: [i32; 2],
+    pub weapons: [Vec<AttackCard>; 2],
     pub units: [crate::data::PublicUnit; 2],
     pub strikes: Vec<CombatStrike>,
 }
 
-/// The actual roll, modifiers and HP effects of one executed strike.
-#[derive(Clone, Debug, Serialize, Deserialize)]
-#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
-#[serde(rename_all = "camelCase")]
-pub struct CombatStrike {
-    pub weapon: Text,
-    /// Stable presentation identity; weapon remains the display label.
-    pub weapon_id: Text,
-    pub unit_id: Text,
-    pub roll_min: i32,
-    pub roll_max: i32,
-    pub raw: i32,
-    pub modifier: i32,
-    pub terrain: i32,
-    pub damage: i32,
-    pub effective: i32,
-    pub drain: u8,
-    pub healed: i32,
-    pub thorns: i32,
-    pub reflected: i32,
-    pub health: [i32; 2],
-}
+pub use crate::logic::CombatStrike;
 
 /// Reachable destination and its finite accumulated movement cost.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 pub struct ReachableTile {
-    pub tile: TileId,
+    pub tile: Hex,
     pub cost: u16,
 }
 
@@ -204,6 +215,7 @@ pub struct HpForecast {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
 #[serde(rename_all = "camelCase")]
+#[cfg(feature = "wasm")]
 pub struct AttackDetails {
     pub attacker_health: HpForecast,
     pub defender_health: HpForecast,
@@ -216,8 +228,8 @@ pub struct AttackDetails {
     pub retaliation_healing: i32,
     pub recommended: bool,
     pub target: Text,
-    pub attack: Weapon,
-    pub response: Option<Weapon>,
+    pub attack: AttackCard,
+    pub response: Option<AttackCard>,
     pub damage: i32,
     pub retaliation: i32,
     pub damage_detail: DamageDetail,
@@ -227,17 +239,64 @@ pub struct AttackDetails {
 // Explicit transport aliases select JS dictionaries without changing Rust's
 // ordered-map types or its native, non-Wasm build.
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(js_value("dict")))]
-pub type RecruitmentTiles = std::collections::BTreeMap<Text, Vec<Hex>>;
+pub type RecruitmentTiles = std::collections::BTreeMap<String, Vec<Hex>>;
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(js_value("dict")))]
 pub type RecruitmentNames = std::collections::BTreeMap<Text, Vec<Text>>;
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(js_value("dict")))]
 pub type RecruitmentPrices =
     std::collections::BTreeMap<Text, std::collections::BTreeMap<Text, i32>>;
 
+/// Physical facts resolved for one battlefield tile.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
+#[serde(rename_all = "camelCase")]
+pub struct TileDetails {
+    pub tile: Hex,
+    pub income: i32,
+    pub blocks_shots: bool,
+    pub capturable: bool,
+}
+
+/// Resolved mechanical information for one actual or hypothetical unit.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
+#[serde(rename_all = "camelCase")]
+#[cfg(feature = "wasm")]
+pub struct UnitDetails {
+    pub id: Text,
+    pub name: Text,
+    pub description: Text,
+    pub ability: Text,
+    pub level: u32,
+    pub hp: i32,
+    pub r#move: usize,
+    pub cost: i32,
+    pub experience_needed: Option<u32>,
+    pub attacks: Vec<AttackCard>,
+    pub damage_modifiers: DamageModifiers,
+    pub effects: Vec<ScopedEffect>,
+    pub terrain: Vec<UnitTileDetails>,
+}
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
+#[serde(rename_all = "camelCase")]
+pub struct UnitTileDetails {
+    pub tile: Hex,
+    pub terrain: Terrain,
+    pub name: Text,
+    pub cost: Option<u16>,
+    pub defense: [[i32; 3]; 2],
+    pub healing: i32,
+    pub income: i32,
+}
+
 /// Legal action choices at one immutable browser publication.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
+#[cfg(feature = "wasm")]
 pub struct UnitActions {
+    pub details: UnitDetails,
+    pub promotion_details: Vec<UnitDetails>,
     pub name: Option<Text>,
     pub faction: crate::data::UnitFaction,
     pub unit: Text,
@@ -251,7 +310,10 @@ pub struct UnitActions {
 /// Rendering performs only lookups against this data, never engine calls.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
+#[cfg(feature = "wasm")]
 pub struct BattleInspection {
+    pub tiles: Vec<TileDetails>,
+    pub recruit_details: std::collections::BTreeMap<Text, Vec<UnitDetails>>,
     pub story: Option<crate::data::ResolvedStory>,
     /// Current dialogue captions resolved from character IDs for display only.
     pub speakers: Vec<Text>,
@@ -282,7 +344,7 @@ impl ScopedOrder {
         if area.contains(&unit.tile) {
             return false;
         }
-        let routes = game.routes(unit.kind, &area);
+        let routes = game.routes(&unit, &area);
         routes[to] < routes[unit.tile]
     }
     pub fn allows_attack(

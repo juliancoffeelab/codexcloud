@@ -1,0 +1,29 @@
+{
+  "id": "darkcloak",
+  "name": "Darkcloak",
+  "description": "Conceals the unit in authored darkness until an observer approaches within one tile or penetrates darkness concealment.",
+  "effects": [
+    {
+      "scope": {
+        "radius": 0,
+        "includeSelf": true,
+        "targets": "allies"
+      },
+      "stacking": {
+        "group": "concealment",
+        "combine": "union"
+      },
+      "effect": {
+        "kind": "concealment",
+        "rule": {
+          "kind": "darkness",
+          "revealWithin": 1,
+          "requires": {
+            "illumination": ["darkness"],
+            "terrains": null
+          }
+        }
+      }
+    }
+  ]
+}

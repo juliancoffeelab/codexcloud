@@ -48,6 +48,21 @@ async function fixture() {
   const Json = await import("@frontend/Fixture_json");
   controlled.json = Json;
   const state = fromJSON("State", {
+    lighting: { time: "day" },
+    mapModifiers: {
+      sight: {
+        range: 0,
+        unlimited: false,
+        sightModifiers: { lit: 0, unlit: 0, darkness: 0 },
+        penetrates: [],
+      },
+      damageModifiers: { blade: 0, pierce: 0, impact: 0 },
+      terrainModifiers: {},
+    },
+    conditionMemory: [],
+    armies: null,
+    lastCombat: null,
+    campaign: null,
     combatRng: 17,
     visionGroups: [],
     factions: [],
@@ -62,9 +77,20 @@ async function fixture() {
     winner: null,
     nextId: 2,
     log: ["Ready"],
-    tiles: [{ id: "0,0", col: 0, row: 0, terrain: "keep", owner: "player" }],
+    tiles: [
+      {
+        effects: [],
+        perception: { illumination: "lit", sight: null, remember: false, concealment: [] },
+        id: "0,0",
+        col: 0,
+        row: 0,
+        terrain: "keep",
+        owner: "player",
+      },
+    ],
     units: [
       {
+        items: [],
         experience: 0,
         id: "u1",
         type: "commander",
@@ -84,7 +110,7 @@ async function fixture() {
       revision: 0,
       state: structuredClone(state),
       presentation: Json.of_battlefield_presentation({
-        lighting: { time: "day", lights: [] },
+        lighting: { unlit_tiles: [], lights: [] },
         fog: [],
         visible_units: ["u1"],
         unit_appearances: [],
@@ -105,6 +131,8 @@ async function fixture() {
       Json.of_catalog_view({
         maps: [],
         campaigns: [],
+        abilities: [],
+        environment_effects: [],
         items: [],
         units: [],
         terrain: [],
@@ -120,6 +148,9 @@ async function fixture() {
       Json.ok(
         Json.of_battle_inspection({
           revision: nextView.revision + (incoherent ? 1 : 0),
+          evacuated_details: {},
+          recruit_details: {},
+          tiles: [],
           units: [],
           speakers: [],
           recruitment_prices: {},
@@ -216,7 +247,7 @@ test("Native exposes detached Rust snapshots without duplicating publications", 
 
   state.gold.player = 8;
   assert.equal(Native.gold(view.gold, "player"), 3);
-  assert.equal(view.last_combat, undefined);
+  assert.equal(toJSON("State", view).lastCombat, null);
   assert.equal(toArray(view.units)[0].experience, 0);
   const checkpoint = structuredClone(Native.save(battle));
   checkpoint.state.last_combat = undefined;
@@ -226,7 +257,7 @@ test("Native exposes detached Rust snapshots without duplicating publications", 
     checkpoint,
     "Rust owns transfer decoding; OCaml avoids another full input copy",
   );
-  assert.equal(Native.state(Native.view(battle)).last_combat, void 0);
+  assert.equal(toJSON("State", Native.state(Native.view(battle))).lastCombat, null);
   Native.dispose_factory(factory);
 });
 test("Static rule data decodes once per factory and topology once per map revision", async () => {
@@ -268,27 +299,13 @@ test("Static rule data decodes once per factory and topology once per map revisi
   }
 });
 test("Explicit dictionary fixtures preserve prototype keys and Unicode through nested aliases", () => {
-  const costs = Object.fromEntries([
-    [
-      "constructor",
-      Object.fromEntries([
-        ["__proto__", 3],
-        ["λ🦀", null],
-      ]),
-    ],
-    ["λ🦀", { terrain: 0 }],
-  ]);
   const geometry = {
-    costs,
     neighbors: Object.fromEntries([
       ["__proto__", [{ col: 0, row: 1 }]],
       ["constructor", []],
     ]),
   };
   const native = fromJSON("BoardInspection", geometry);
-  assert.equal(Object.getPrototypeOf(native.costs), null);
-  for (const values of Object.values(native.costs))
-    assert.equal(Object.getPrototypeOf(values), null);
   assert.deepEqual(toJSON("BoardInspection", native), geometry);
 });
 test("Native forwards current revisions and rejects stale work without changing old views", async () => {
@@ -356,8 +373,11 @@ test("Incoherent accepted publications release their handle without corrupting d
   Native.dispose_factory(factory);
   assert.equal(failures.length, 1, "Further cleanup cannot notify the released owner again");
 });
-test("Catalog indexes detached metadata supplied through its exported constructor", () => {
+test("Catalog indexes detached metadata supplied through its exported constructor", async () => {
+  const { factory, state } = await fixture();
   const source = {
+    abilities: [],
+    environment_effects: [],
     items: [],
     units: [],
     terrain: [],
@@ -370,9 +390,9 @@ test("Catalog indexes detached metadata supplied through its exported constructo
         name: "Small map",
         description: "One owned tile",
         tags: ["human"],
-        lighting: { time: "day", lights: [] },
+        lighting: { time: "day" },
         presentation: {
-          lighting: { time: "day", lights: [] },
+          lighting: { unlit_tiles: [], lights: [] },
           fog: [],
           visible_units: [],
           unit_appearances: [],
@@ -382,6 +402,8 @@ test("Catalog indexes detached metadata supplied through its exported constructo
         units: [],
         terrain: [
           {
+            effects: [],
+            perception: { illumination: "lit", sight: null, remember: false, concealment: [] },
             id: "0,0",
             col: 0,
             row: 0,
@@ -393,21 +415,36 @@ test("Catalog indexes detached metadata supplied through its exported constructo
       },
     ],
   };
+  const map = source.maps[0];
+  map.state = {
+    ...toJSON("State", state),
+    mapId: map.id,
+    cols: map.cols,
+    rows: map.rows,
+    units: map.units,
+    tiles: map.terrain,
+  };
+  delete map.lighting;
+  delete map.cols;
+  delete map.rows;
+  delete map.units;
+  delete map.terrain;
   const input = fromJSON("CatalogView", structuredClone(source));
 
   const metadata = Catalog.of_view(input);
-  const map = Catalog.map(metadata, "small"),
-    tile = toArray(map.terrain)[0];
+  const selected = Catalog.map(metadata, "small"),
+    tile = toArray(selected.state.tiles)[0];
   assert(tile);
   assert.equal(
     Catalog.raw(metadata),
     input,
     "Publication indexes the detached source without another copy",
   );
-  assert.equal(listToArray(Catalog.maps(metadata))[0], map);
+  assert.equal(listToArray(Catalog.maps(metadata))[0], selected);
 
   assert.equal(Catalog.map(metadata, "small").name, "Small map");
-  assert.deepEqual(tile.connections, fromJSON("Tile", source.maps[0].terrain[0]).connections);
+  assert.deepEqual(tile.connections, fromJSON("Tile", source.maps[0].state.tiles[0]).connections);
+  Native.dispose_factory(factory);
 });
 
 test("An accepted update with the wrong base revision closes its owner and preserves retained data", async () => {

@@ -1,7 +1,12 @@
 //! Canonical transfer contract shared by native/WASM hosts and generated OCaml bindings.
 /// Transport options reuse the core policy and diplomacy vocabularies.
-pub use crate::ai::{Diplomacy as AiDiplomacy, Policy as AiPolicy};
+pub use crate::ai::{Diplomacy, Policy};
 use crate::data::Text;
+#[cfg(feature = "wasm")]
+use crate::data::{
+    BattlefieldPresentation, CampaignCarryover, Character, CompanionArrival, ConditionalHint,
+    ConditionalText, EnemyGroup, EnvironmentEffect, Race, ScriptEvent, Speech,
+};
 use crate::data::{Command, CommandError, State};
 use serde::{Deserialize, Serialize};
 
@@ -119,16 +124,21 @@ pub struct BattleHandle {
 }
 
 /// Coherent state publication from one successful command.
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, Serialize)]
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
+#[cfg(feature = "wasm")]
 pub struct DispatchResult {
     pub view: EngineView,
     pub combat: Option<CombatAnimation>,
 }
 
+#[cfg(feature = "wasm")]
 pub use hex_command_battle::model::{
-    AttackDetails, BattleInspection, BoardInspection, CombatAnimation, CombatStrike, DamageDetail,
-    DispatchUpdate, HpForecast, ReachableTile, StateFrame, TerrainUpdate, UnitActions,
+    AttackDetails, BattleInspection, CombatAnimation, DispatchUpdate, UnitActions,
+};
+pub use hex_command_battle::model::{
+    BoardInspection, CombatStrike, DamageDetail, HpForecast, ReachableTile, StateFrame,
+    TerrainUpdate,
 };
 
 /// Policy configuration retained for the current planning phase.
@@ -154,18 +164,74 @@ pub struct AiDecision {
     pub command: Command,
 }
 
-/// Owned, resolved catalog data available before a battle is created.
-/// Browser code formats this metadata; all rule composition stays in Rust.
-#[derive(Clone, Debug, Serialize, Deserialize)]
+/// Browser content publication uses explicit Wiki records and prepared map state.
+#[derive(Clone, Debug, Serialize)]
 #[cfg_attr(feature = "wasm", ocamljsify::ocamljsify(borrow))]
-#[serde(rename_all = "camelCase")]
+#[cfg(feature = "wasm")]
 pub struct CatalogView {
-    pub items: Vec<crate::data::Item>,
-    pub units: Vec<crate::data::UnitRule>,
-    pub terrain: Vec<crate::data::TerrainDefinition>,
-    pub races: Vec<crate::data::RaceDefinition>,
-    pub maps: Vec<crate::data::MapDefinition>,
-    pub campaigns: Vec<crate::data::Campaign>,
+    pub abilities: Vec<hex_command_catalog::wiki::WikiAbility>,
+    pub environment_effects: Vec<BrowserEnvironment>,
+    pub items: Vec<hex_command_catalog::wiki::WikiItem>,
+    pub units: Vec<hex_command_catalog::wiki::WikiUnit>,
+    pub terrain: Vec<hex_command_catalog::wiki::WikiTerrain>,
+    pub races: Vec<hex_command_catalog::wiki::WikiRace>,
+    pub maps: Vec<BrowserMap>,
+    pub campaigns: Vec<BrowserCampaign>,
+}
+#[cfg(feature = "wasm")]
+#[derive(Clone, Debug, Serialize)]
+#[ocamljsify::ocamljsify(borrow)]
+pub struct BrowserEnvironment {
+    pub id: Text,
+    pub name: Text,
+    pub description: Text,
+    pub effects: Vec<EnvironmentEffect>,
+}
+#[cfg(feature = "wasm")]
+#[derive(Clone, Debug, Serialize)]
+#[ocamljsify::ocamljsify(borrow)]
+pub struct BrowserMap {
+    pub id: Text,
+    pub revision: u32,
+    pub name: Text,
+    pub description: Text,
+    pub tags: Vec<Text>,
+    pub state: State,
+    pub presentation: BattlefieldPresentation,
+}
+#[cfg(feature = "wasm")]
+#[derive(Clone, Debug, Serialize)]
+#[ocamljsify::ocamljsify(borrow)]
+pub struct BrowserChapter {
+    pub id: Text,
+    pub map: BrowserMap,
+    pub subtitle: Text,
+    pub briefing: ConditionalText,
+    pub debrief: Option<ConditionalText>,
+    pub hints: Vec<ConditionalHint>,
+    pub intro: Vec<Speech>,
+    pub victory: Vec<Speech>,
+    pub scripted_events: Vec<ScriptEvent>,
+    pub required_companions: Vec<Text>,
+    pub arrivals: Vec<CompanionArrival>,
+    pub enemy_groups: Vec<EnemyGroup>,
+}
+#[cfg(feature = "wasm")]
+#[derive(Clone, Debug, Serialize)]
+#[ocamljsify::ocamljsify(borrow)]
+pub struct BrowserCampaign {
+    pub id: Text,
+    pub name: Text,
+    pub description: Text,
+    pub tagline: Text,
+    pub short_description: Text,
+    pub race: Race,
+    pub leader: Text,
+    pub tags: Vec<Text>,
+    pub characters: Vec<Character>,
+    pub missions: Vec<BrowserChapter>,
+    pub ending: Vec<Speech>,
+    pub carryover: CampaignCarryover,
 }
 
 #[cfg(feature = "wasm")]

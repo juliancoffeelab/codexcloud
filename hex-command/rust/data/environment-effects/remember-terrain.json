@@ -1,0 +1,11 @@
+{
+  "id": "remember-terrain",
+  "name": "Remember terrain",
+  "description": "Authored remember terrain effect.",
+  "effects": [
+    {
+      "kind": "remember-terrain",
+      "remember": true
+    }
+  ]
+}

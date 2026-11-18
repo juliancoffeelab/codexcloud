@@ -6,7 +6,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { checkMigrationBoundary } from "./check-migrations.mjs";
 checkMigrationBoundary(resolve("packages/save-migrations"));
-const frozen = JSON.parse(readFileSync("packages/save-migrations/ocaml/native-v48.json", "utf8"));
+const frozen = JSON.parse(readFileSync("packages/save-migrations/ocaml/native-v52.json", "utf8"));
 const live = JSON.parse(readFileSync(wasmPath("schema.json"), "utf8"));
 for (const [alias, primitive] of [
   ["Text", "String"],
@@ -31,12 +31,12 @@ function wireDefinition(value) {
 for (const [name, definition] of Object.entries(frozen)) {
   assert.deepStrictEqual(
     wireDefinition(live[name]),
-    definition,
+    wireDefinition(definition),
     `Live/frozen wire contract differs: ${name}; add a migration`,
   );
 }
 const bridgeInputs = [
-  "packages/save-migrations/ocaml/native-v48.json",
+  "packages/save-migrations/ocaml/native-v52.json",
   "packages/save-migrations/src/formats/readers.json",
   "scripts/generate-migration-native-contract.py",
   "scripts/historical_shapes.py",

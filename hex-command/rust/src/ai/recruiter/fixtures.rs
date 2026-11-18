@@ -1,7 +1,7 @@
 //! Test fixtures use the public checkpoint boundary, never mutable engine storage.
-use crate::{data::*, logic::Game};
+use crate::{data::*, logic::BattleSession};
 
-pub(in crate::ai) fn edit(game: &mut Game<'_>, change: impl FnOnce(&mut State)) {
+pub(in crate::ai) fn edit(game: &mut BattleSession<'_>, change: impl FnOnce(&mut State)) {
     let pools = game.pools().cloned();
     let first = game.arena_first();
     let mut state = game.state();
@@ -18,11 +18,11 @@ pub(in crate::ai) fn edit(game: &mut Game<'_>, change: impl FnOnce(&mut State)) 
             tile.walls = None;
         }
     }
-    *game = Game::try_from_state(game.catalogue(), state).unwrap();
+    *game = game.restored(state).unwrap();
     game.configure_arena(pools, first);
 }
 
-pub(in crate::ai) fn units(game: &mut Game<'_>, change: impl FnOnce(&mut Vec<Unit>)) {
+pub(in crate::ai) fn units(game: &mut BattleSession<'_>, change: impl FnOnce(&mut Vec<Unit>)) {
     let mut units = game.units().to_vec();
     change(&mut units);
     let next_id = units.iter().map(|u| u.id + 1).max().unwrap_or(0);
@@ -33,9 +33,16 @@ pub(in crate::ai) fn units(game: &mut Game<'_>, change: impl FnOnce(&mut Vec<Uni
     });
 }
 
-pub(in crate::ai) fn add(game: &mut Game<'_>, kind: usize, faction_id: &str, tile: usize) -> u32 {
+pub(in crate::ai) fn add(
+    game: &mut BattleSession<'_>,
+    kind: usize,
+    faction_id: &str,
+    tile: usize,
+) -> u32 {
     let id = game.state().next_id;
-    let hp = game.catalogue().units[kind].hp;
+    let hp = game
+        .prospective(kind, game.faction_identity(faction_id), tile)
+        .hp;
     let phase = game.faction(faction_id).expect("fixture faction").phase;
     let faction = game.faction_identity(faction_id);
     let vision_group = game.vision_group_identity(faction_id);
@@ -65,7 +72,14 @@ pub(in crate::ai) fn add(game: &mut Game<'_>, kind: usize, faction_id: &str, til
     id
 }
 
-pub(in crate::ai) fn terrain(game: &mut Game<'_>, tile: usize, kind: usize) {
-    let name = game.catalogue().terrain_names[kind].clone();
+pub(in crate::ai) fn terrain(game: &mut BattleSession<'_>, tile: usize, kind: usize) {
+    let name = game
+        .catalogue()
+        .terrains()
+        .nth(kind)
+        .unwrap()
+        .id()
+        .as_str()
+        .to_owned();
     edit(game, |state| state.tiles[tile].terrain = name);
 }

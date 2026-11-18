@@ -6,8 +6,9 @@ use crate::{
         runtime::tactic::PresetTactic,
     },
     data::*,
-    logic::Game,
+    logic::BattleSession,
 };
+use hex_command_battle::CampaignProgram;
 use rustc_hash::FxHashMap;
 use std::collections::HashSet;
 use std::sync::Arc;
@@ -21,7 +22,7 @@ struct RecordingCache {
     tiles: Option<Arc<Vec<Hex>>>,
 }
 impl RecordingCache {
-    fn units(&mut self, game: &Game<'_>) -> Result<Vec<Arc<PublicUnit>>, SimulationError> {
+    fn units(&mut self, game: &BattleSession<'_>) -> Result<Vec<Arc<PublicUnit>>, SimulationError> {
         game.authoritative_units()
             .iter()
             .map(|unit| {
@@ -35,7 +36,10 @@ impl RecordingCache {
             })
             .collect()
     }
-    fn ownership(&mut self, game: &Game<'_>) -> Result<Arc<OwnershipSnapshot>, SimulationError> {
+    fn ownership(
+        &mut self,
+        game: &BattleSession<'_>,
+    ) -> Result<Arc<OwnershipSnapshot>, SimulationError> {
         if let Some(encoded) = self.ownership.get(game.owners()) {
             return Ok(encoded.clone());
         }
@@ -54,11 +58,13 @@ impl RecordingCache {
 }
 
 pub(crate) fn create_arena<'catalog>(
-    rules: &'catalog Rules,
+    rules: &'catalog Catalogue,
     config: &ArenaConfig,
-) -> Result<Game<'catalog>, SimulationError> {
+) -> Result<BattleSession<'catalog>, SimulationError> {
     validate_arena(rules, config)?;
     let landscape = rules
+        .meta()
+        .simulation
         .arena
         .scenarios
         .iter()
@@ -67,14 +73,8 @@ pub(crate) fn create_arena<'catalog>(
     let variant =
         &landscape.variants[config.seed.saturating_sub(1) as usize % landscape.variants.len()];
     let map_id = &variant.map;
-    let mut state = rules
-        .maps
-        .iter()
-        .filter(|((id, _), _)| id == map_id)
-        .max_by_key(|((_, revision), _)| revision)
-        .ok_or("Arena layout is unavailable")?
-        .1
-        .clone();
+    let map = rules.map(map_id, variant.map_revision);
+    let mut state = BattleSession::from_map(rules, map).state();
     if matches!(variant.forces, ArenaForces::Scenario) {
         state.turn = config.first;
         state.round = 1;
@@ -82,7 +82,7 @@ pub(crate) fn create_arena<'catalog>(
         state.campaign = None;
         state.log.clear();
         state.last_combat = None;
-        let mut game = Game::from_state(rules, state);
+        let mut game = BattleSession::from_state(rules, state);
         game.set_combat_rng(config.seed);
         // None preserves each authored faction's own recruitment pool and gold.
         game.configure_arena(None, Some(config.first));
@@ -104,13 +104,17 @@ pub(crate) fn create_arena<'catalog>(
             .tiles
             .iter()
             .find(|tile| {
-                rules.terrain_roles[rules.terrains[&tile.terrain]] == TerrainRole::Keep
+                rules
+                    .terrains()
+                    .find(|terrain| terrain.id().as_str() == tile.terrain)
+                    .expect("authored terrain")
+                    .allows_recruitment()
                     && tile.owner.as_deref() == Some(faction)
             })
             .ok_or("Arena requires an owned keep for each side")?
             .hex();
-        let rule = &rules.units[rules.types[leader]];
-        starting_cost[seat] += rule.cost;
+        let rule = rules.unit(leader);
+        starting_cost[seat] += rule.recruitment_price(None);
         state.units.push(PublicUnit {
             faction: faction.into(),
             revealed_to: vec![],
@@ -120,7 +124,7 @@ pub(crate) fn create_arena<'catalog>(
             id: format!("u{}", state.next_id),
             r#type: leader.into(),
             tile: start.clone(),
-            hp: rule.hp,
+            hp: rule.max_hp,
             moved: false,
             attack_spent: false,
             experience: Some(0),
@@ -147,7 +151,7 @@ pub(crate) fn create_arena<'catalog>(
     state.log.clear();
     state.campaign = None;
     state.last_combat = None;
-    let mut game = Game::from_state(rules, state);
+    let mut game = BattleSession::from_state(rules, state);
     game.set_combat_rng(config.seed);
     let pools = Some([
         roster(rules, &config.armies.player)?
@@ -164,8 +168,13 @@ pub(crate) fn create_arena<'catalog>(
     game.configure_arena(pools, Some(config.first));
     Ok(game)
 }
-fn roster<'a>(rules: &'a Rules, id: &str) -> Result<&'a crate::data::ArmyRoster, SimulationError> {
+fn roster<'a>(
+    rules: &'a Catalogue,
+    id: &str,
+) -> Result<&'a crate::data::ArmyRoster, SimulationError> {
     rules
+        .meta()
+        .simulation
         .rosters
         .iter()
         .find(|roster| roster.id == id)
@@ -181,11 +190,13 @@ fn validate_limits(rounds: u32, recruits: Option<usize>) -> Result<(), Simulatio
     Ok(())
 }
 /// Validate roster, landscape and execution limits before constructing an arena.
-pub fn validate_arena(rules: &Rules, config: &ArenaConfig) -> Result<(), SimulationError> {
+pub fn validate_arena(rules: &Catalogue, config: &ArenaConfig) -> Result<(), SimulationError> {
     validate_limits(config.max_rounds, config.recruit_limit)?;
     roster(rules, &config.armies.player)?;
     roster(rules, &config.armies.enemy)?;
     if !rules
+        .meta()
+        .simulation
         .arena
         .scenarios
         .iter()
@@ -199,7 +210,7 @@ pub fn validate_arena(rules: &Rules, config: &ArenaConfig) -> Result<(), Simulat
     Ok(())
 }
 fn phase(
-    game: &mut Game<'_>,
+    game: &mut BattleSession<'_>,
     recording: &mut RecordingCache,
     policy: Policy,
     seed: u32,
@@ -306,11 +317,11 @@ fn phase(
     Ok(phase)
 }
 /// Execute one arena until victory or its cap, retaining every phase and endpoint.
-pub fn run_arena(rules: &Rules, config: ArenaConfig) -> Result<ArenaResult, SimulationError> {
+pub fn run_arena(rules: &Catalogue, config: ArenaConfig) -> Result<ArenaResult, SimulationError> {
     run_arena_capturing(rules, config, None)
 }
 pub(super) fn run_arena_capturing(
-    rules: &Rules,
+    rules: &Catalogue,
     config: ArenaConfig,
     mut capture: Option<&mut super::phase_fixtures::Capture>,
 ) -> Result<ArenaResult, SimulationError> {
@@ -326,6 +337,8 @@ pub(super) fn run_arena_capturing(
     let initial = game.state();
     game.begin_turn(config.first);
     let landscape = rules
+        .meta()
+        .simulation
         .arena
         .scenarios
         .iter()
@@ -358,7 +371,7 @@ pub(super) fn run_arena_capturing(
             )]
         };
         for tile in 0..game.terrain().len() {
-            if game.role_is(tile, TerrainRole::Village) && game.captures(tile, faction) {
+            if game.terrain_definition(tile).income() > 0 && game.captures(tile, faction) {
                 goals.push(objective(
                     &format!("village:{}", game.board().ids[tile]),
                     ObjectiveKind::Capture,
@@ -379,7 +392,7 @@ pub(super) fn run_arena_capturing(
         ));
         for tile in 0..game.terrain().len() {
             if !deathmatch
-                && game.role_is(tile, TerrainRole::Ruins)
+                && game.terrain_definition(tile).id() == Terrain::Ruins
                 && !visits[side.index()].contains(&game.board().ids[tile])
             {
                 goals.push(objective(
@@ -409,7 +422,7 @@ pub(super) fn run_arena_capturing(
         )?;
         for command in &record.records.actions {
             if let ActionRecord::Move { tile, .. } = command {
-                if game.role_is(game.site(tile), TerrainRole::Ruins) {
+                if (game.terrain_definition(game.site(tile)).id() == Terrain::Ruins) {
                     visits[side.index()].insert(tile.clone());
                 }
             }
@@ -468,26 +481,26 @@ pub(super) fn run_arena_capturing(
 }
 /// Execute reached campaign chapters with veteran carryover and no retries.
 pub fn run_campaign(
-    rules: &Rules,
+    rules: &Catalogue,
     config: CampaignConfig,
-    definition: &CampaignRules,
+    definition: &CampaignProgram,
 ) -> Result<CampaignResult, SimulationError> {
     run_campaign_capturing(rules, config, definition, None)
 }
 pub(super) fn run_campaign_capturing(
-    rules: &Rules,
+    rules: &Catalogue,
     config: CampaignConfig,
-    definition: &CampaignRules,
+    definition: &CampaignProgram,
     mut capture: Option<&mut super::phase_fixtures::Capture>,
 ) -> Result<CampaignResult, SimulationError> {
     validate_limits(config.max_rounds, config.recruit_limit)?;
-    if definition.id != config.campaign {
+    if definition.id() != config.campaign {
         return Err(SimulationError::InvalidConfig(
             "campaign definition does not match configuration".into(),
         ));
     }
-    let chapters = definition.missions.len();
-    let mut game = Game::start_campaign_from_definition(
+    let chapters = definition.chapter_count();
+    let mut game = BattleSession::start_campaign_from_definition(
         rules,
         definition,
         0,
@@ -546,7 +559,9 @@ pub(super) fn run_campaign_capturing(
         }
         missions.push(MissionResult {
             escalated: rules
-                .campaign_defaults
+                .meta()
+                .simulation
+                .campaign
                 .escalation_flags
                 .get(game.map_id())
                 .is_some_and(|flag| {
@@ -585,7 +600,7 @@ pub(super) fn run_campaign_capturing(
 }
 /// Dispatch a validated configuration to the corresponding complete match runner.
 pub fn run(
-    rules: &Rules,
+    rules: &Catalogue,
     config: MatchConfig,
     definitions: &super::CampaignDefinitions<'_>,
 ) -> Result<MatchResult, SimulationError> {
@@ -603,8 +618,8 @@ mod tests {
     use super::*;
     #[test]
     fn recruitment_defaults_match_classic_and_leave_player_tactics_uncapped() {
-        let rules = Rules::load().unwrap();
-        let base = Game::new(&rules, "mirror");
+        let rules = Catalogue::load().unwrap();
+        let base = BattleSession::new(&rules, "mirror");
         for (policy, limit) in [
             (Policy::Classic, None),
             (Policy::Balanced, None),
@@ -645,8 +660,8 @@ mod tests {
     }
     #[test]
     fn cached_boundaries_share_unchanged_values_and_detach_changed_state() {
-        let rules = Rules::load().unwrap();
-        let mut game = Game::new(&rules, "mirror");
+        let rules = Catalogue::load().unwrap();
+        let mut game = BattleSession::new(&rules, "mirror");
         let mut recording = RecordingCache::default();
         let before = recording.units(&game).unwrap();
         let same = recording.units(&game).unwrap();
@@ -683,7 +698,7 @@ mod tests {
 
     #[test]
     fn deathmatch_omits_holding_and_optional_objectives() {
-        let rules = Rules::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         let mut config: ArenaConfig = serde_json::from_value(serde_json::json!({
             "seed": 17, "armies": {"player": "human", "enemy": "skeletons"},
             "landscape": "open", "player": "balanced", "enemy": "balanced",
@@ -718,13 +733,13 @@ mod tests {
 
     #[test]
     fn wooded_arena_has_cover_and_crossings_have_fords_and_an_island_fort() {
-        let rules = Rules::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         let mut config = ArenaConfig {
             objective: Default::default(),
             seed: 61,
             armies: Armies {
-                player: rules.rosters[0].id.clone(),
-                enemy: rules.rosters[0].id.clone(),
+                player: rules.meta().simulation.rosters[0].id.clone(),
+                enemy: rules.meta().simulation.rosters[0].id.clone(),
             },
             landscape: "wooded".into(),
             player: Policy::Balanced,
@@ -738,7 +753,8 @@ mod tests {
         let woods = create_arena(&rules, &config).unwrap();
         let trees = (0..woods.terrain().len())
             .filter(|&tile| {
-                woods.role_is(tile, TerrainRole::Forest) || woods.role_is(tile, TerrainRole::Grove)
+                woods.terrain_definition(tile).id() == Terrain::Forest
+                    || woods.terrain_definition(tile).id() == Terrain::Grove
             })
             .count();
         assert!(trees * 3 >= woods.terrain().len() * 2);
@@ -746,16 +762,16 @@ mod tests {
         config.landscape = "crossings".into();
         let river = create_arena(&rules, &config).unwrap();
         let keeps: Vec<_> = (0..river.terrain().len())
-            .filter(|&tile| river.role_is(tile, TerrainRole::Keep))
+            .filter(|&tile| river.is_keep(tile))
             .collect();
         let reachable = |start, bridges: bool, fords: bool| {
             let mut visited = HashSet::from([start]);
             let mut pending = vec![start];
             while let Some(tile) = pending.pop() {
                 for &next in &river.board().adjacent[tile] {
-                    if !river.role_is(next, TerrainRole::Water)
-                        && (bridges || !river.role_is(next, TerrainRole::Bridge))
-                        && (fords || !river.role_is(next, TerrainRole::Ford))
+                    if river.terrain_definition(next).id() != Terrain::Water
+                        && (bridges || river.terrain_definition(next).id() != Terrain::Bridge)
+                        && (fords || river.terrain_definition(next).id() != Terrain::Ford)
                         && visited.insert(next)
                     {
                         pending.push(next);
@@ -772,8 +788,10 @@ mod tests {
             assert_eq!(
                 bank.iter()
                     .filter(|&&tile| {
-                        river.role_is(tile, TerrainRole::Village)
+                        river.terrain_definition(tile).income() > 0
                             && rules
+                                .meta()
+                                .simulation
                                 .arena
                                 .scenarios
                                 .iter()
@@ -787,20 +805,21 @@ mod tests {
             );
         }
         let fort = (0..river.terrain().len())
-            .find(|&tile| river.role_is(tile, TerrainRole::Fort))
+            .find(|&tile| river.terrain_definition(tile).id() == Terrain::Fort)
             .unwrap();
         assert!(river.board().adjacent[fort].iter().all(|&tile| {
-            river.role_is(tile, TerrainRole::Water) || river.role_is(tile, TerrainRole::Bridge)
+            river.terrain_definition(tile).id() == Terrain::Water
+                || river.terrain_definition(tile).id() == Terrain::Bridge
         }));
     }
 
     #[test]
     fn arena_starts_with_only_leaders_and_the_remaining_paired_budget() {
-        let rules = Rules::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         for seed in [0u32, 1, 2, 10] {
             for landscape in ["open", "wooded", "crossings", "islands"] {
-                for player in &rules.rosters {
-                    for enemy in &rules.rosters {
+                for player in &rules.meta().simulation.rosters {
+                    for enemy in &rules.meta().simulation.rosters {
                         let config = ArenaConfig {
                             objective: Default::default(),
                             seed,
@@ -824,11 +843,18 @@ mod tests {
                             assert_eq!(troops.len(), 1);
                             assert!(troops[0].is_leader());
                             game.gold_for_unit(troops[0])
-                                + troops.iter().map(|u| rules.units[u.kind].cost).sum::<i32>()
+                                + troops
+                                    .iter()
+                                    .map(|u| {
+                                        rules.units().nth(u.kind).unwrap().recruitment_price(None)
+                                    })
+                                    .sum::<i32>()
                         };
                         let budget = total(TurnPhase::Player);
                         assert_eq!(budget, total(TurnPhase::Ai));
                         let scenario = rules
+                            .meta()
+                            .simulation
                             .arena
                             .scenarios
                             .iter()

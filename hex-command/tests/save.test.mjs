@@ -12,7 +12,7 @@ import {
 } from "@migrations/Migration_api.js";
 import { repairImport } from "./persistence-adapter.mjs";
 import { readSave, storeSave } from "./persistence-adapter.mjs";
-import { historicalCharacters, historicalTiles } from "./legacy-save.mjs";
+import { historicalCharacters, historicalTiles, explicitAmbient } from "./legacy-save.mjs";
 import { historicalState } from "./historical-fixture.mjs";
 import assert from "node:assert/strict";
 import { beforeEach, test, vi } from "vitest";
@@ -32,6 +32,7 @@ for (const [cols, rows] of [
     const factory = createTestFactory();
     const game = LiveGame.create(factory, { kind: "scenario", map: "developer" });
     const checkpoint2 = structuredClone(nativeValue(game.checkpoint()));
+    checkpoint2.state = explicitAmbient(checkpoint2.state);
     const state = checkpoint2.state;
     Object.assign(state, { mapRevision: 1, cols, rows, round: 5 });
     state.tiles = state.tiles.filter((tile) => tile.col < cols && tile.row < rows);
@@ -51,8 +52,8 @@ for (const [cols, rows] of [
     assert(migrated.migrated);
     assert.deepEqual(old, before, "Migration stays pure");
     const expanded = migrated.save.checkpoint.state;
-    assert.equal(expanded.cols, MAPS.developer.cols);
-    assert.equal(expanded.rows, MAPS.developer.rows);
+    assert.equal(expanded.cols, MAPS.developer.state.cols);
+    assert.equal(expanded.rows, MAPS.developer.state.rows);
     assert.equal(expanded.mapRevision, MAPS.developer.revision);
     assert.equal(expanded.tiles.length, expanded.cols * expanded.rows);
     for (const tile of state.tiles)
@@ -63,7 +64,7 @@ for (const [cols, rows] of [
     assert.deepEqual(
       expanded.units,
       state.units.map((unit) =>
-        unit.role === void 0 && historicalLeaderTypes.includes(unit.type)
+        unit.role == null && historicalLeaderTypes.includes(unit.type)
           ? { ...unit, role: "leader" }
           : unit,
       ),
@@ -112,20 +113,16 @@ test("Live WASM catalog contains no historical save metadata", async () => {
   const catalog = result.value;
   assert(!catalog.maps.some((map) => map.id === "ashen-refuge" && map.revision === 1));
   for (const unit of catalog.units) assert.equal("terrainModifiers" in unit, false);
-  for (const campaign of catalog.campaigns)
-    for (const mission of campaign.missions) {
-      assert.equal("legacyDialogue" in mission, false);
-      for (const wave of mission.waves) {
-        assert.equal("legacyIndex" in wave, false);
-        assert.equal("previouslyDeployedBeforeRevision" in wave, false);
-      }
-    }
+  const serialized = JSON.stringify(catalog);
+  for (const retired of ["legacyDialogue", "legacyIndex", "previouslyDeployedBeforeRevision"])
+    assert.equal(serialized.includes(`"${retired}":`), false);
 });
 function checkpoint(start = { kind: "campaign", id: "mirror-night" }) {
   const factory = createTestFactory();
   const game = LiveGame.create(factory, start);
   const saved = structuredClone(nativeValue(game.checkpoint()));
   game.dispose();
+  saved.state = explicitAmbient(saved.state);
   return saved;
 }
 function oldSnapshot(input = historicalState("lantern-road", 0)) {
@@ -243,6 +240,7 @@ test("Version-four migration discards AI actions without executing the enemy tur
   game.endTurn();
   game.enemyStep();
   const checkpoint2 = nativeValue(game.checkpoint());
+  checkpoint2.state = explicitAmbient(checkpoint2.state);
   const old = {
     version: 4,
     pendingEnemy: false,

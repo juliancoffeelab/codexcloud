@@ -5,7 +5,7 @@ mod convolution;
 pub struct Evaluator {
     model: Model,
     weights: Vec<Vec<f32>>,
-    spatial: Option<convolution::Encoder>,
+    spatial: Option<convolution::ConvolutionEncoder>,
     input: Vec<f32>,
     output: Vec<f32>,
 }
@@ -18,7 +18,10 @@ impl Evaluator {
             .iter()
             .map(|layer| layer.weights.iter().flatten().copied().collect())
             .collect();
-        let spatial = model.spatial.as_ref().map(convolution::Encoder::new);
+        let spatial = model
+            .spatial
+            .as_ref()
+            .map(convolution::ConvolutionEncoder::new);
         Ok(Self {
             model,
             weights,
@@ -36,7 +39,7 @@ impl Evaluator {
     pub fn scores(
         &mut self,
         features: &[[f32; FEATURES]],
-        board: Option<(&spatial::Board, &[[i64; 3]])>,
+        board: Option<(&spatial::SpatialBoard, &[[i64; 3]])>,
     ) -> Vec<f64> {
         if features.is_empty() {
             return Vec::new();

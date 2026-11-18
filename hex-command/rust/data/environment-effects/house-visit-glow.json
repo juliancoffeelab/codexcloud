@@ -1,0 +1,27 @@
+{
+  "id": "house-visit-glow",
+  "name": "House visit glow",
+  "description": "Authored light effect.",
+  "effects": [
+    {
+      "kind": "light",
+      "light": {
+        "dy": 6,
+        "radius": 92,
+        "power": 0.9,
+        "when": {
+          "condition": {
+            "kind": "flag",
+            "flag": "house-visit"
+          },
+          "remember": false,
+          "observer": null
+        },
+        "emission": null,
+        "color": null,
+        "fixture": null,
+        "dx": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+//! Evaluated perception mechanics; never hidden occupancy or private enemy memory.
+pub const NAMES: [&str; 14] = [
+    "actor_concealment_available_before",
+    "actor_concealment_available_after",
+    "actor_concealment_reveal_distance_before",
+    "actor_concealment_reveal_distance_after",
+    "actor_detectable_by_known_enemy_count_before",
+    "actor_detectable_by_known_enemy_count_after",
+    "target_detectable_by_actor_before",
+    "target_detectable_by_actor_after",
+    "target_detectable_by_friendly_count_before",
+    "target_detectable_by_friendly_count_after",
+    "target_can_detect_actor_before",
+    "target_can_detect_actor_after",
+    "friendly_visible_enemy_count_before",
+    "friendly_visible_enemy_count_after",
+];
+pub const CHANNEL_NAMES: [&str; 14] = [
+    "tile_remembered",
+    "tile_in_sight",
+    "possible_enemy_hide_place",
+    "actor_concealment_available",
+    "actor_concealment_reveal_distance",
+    "actor_can_observe_terrain",
+    "tile_insight_of_enemy",
+    "unit_sight_range",
+    "unit_sight_unlimited",
+    "unit_concealment_available",
+    "unit_concealment_reveal_distance",
+    "unit_detectable_by_actor",
+    "unit_detectable_by_friendly_count",
+    "unit_can_detect_actor",
+];

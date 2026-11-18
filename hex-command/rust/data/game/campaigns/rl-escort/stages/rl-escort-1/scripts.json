@@ -2,6 +2,44 @@
   "requiredCompanions": ["charge"],
   "events": [
     {
+      "id": "company-survival",
+      "observer": null,
+      "priority": 2147483647,
+      "remembers": false,
+      "objective": null,
+      "when": {
+        "any": [
+          {
+            "not": {
+              "survives": {
+                "company": "player",
+                "allies": false,
+                "character": null,
+                "role": "leader",
+                "includeEvacuated": true
+              }
+            }
+          },
+          {
+            "not": {
+              "survives": {
+                "company": "player",
+                "allies": true,
+                "character": "charge",
+                "role": null,
+                "includeEvacuated": true
+              }
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The company cannot continue without its protected companions."
+        }
+      ]
+    },
+    {
       "id": "arrival",
       "when": {
         "stand": {
@@ -12,7 +50,14 @@
             }
           },
           "character": "charge",
-          "through": true
+          "through": true,
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
         }
       },
       "objective": {
@@ -30,16 +75,31 @@
               }
             },
             "character": "charge",
-            "through": true
+            "through": true,
+            "role": null,
+            "side": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
-        "playerMarker": null
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "optional": false,
+        "availableWhen": null,
+        "satisfiedWhen": null
       },
       "actions": [
         {
           "victory": "Task completed."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "deadline",
@@ -51,7 +111,13 @@
         {
           "defeat": "The deadline expired."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "objective": null
     }
-  ]
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false
 }

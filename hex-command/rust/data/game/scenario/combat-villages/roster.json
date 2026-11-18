@@ -3,7 +3,13 @@
     {
       "id": "player",
       "sight": {
-        "range": "unlimited",
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": ["fog"]
       },
       "explored": []
@@ -11,7 +17,13 @@
     {
       "id": "enemy",
       "sight": {
-        "range": "unlimited",
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": ["fog"]
       },
       "explored": []
@@ -19,7 +31,13 @@
     {
       "id": "swamp-dead",
       "sight": {
-        "range": "unlimited",
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": ["fog"]
       },
       "explored": []
@@ -36,25 +54,32 @@
       "gold": 14,
       "recruits": [
         {
-          "unit": "swordsman"
+          "unit": "swordsman",
+          "cost": null
         },
         {
-          "unit": "spearman"
+          "unit": "spearman",
+          "cost": null
         },
         {
-          "unit": "scout"
+          "unit": "scout",
+          "cost": null
         },
         {
-          "unit": "archer"
+          "unit": "archer",
+          "cost": null
         },
         {
-          "unit": "adept"
+          "unit": "adept",
+          "cost": null
         },
         {
-          "unit": "rider"
+          "unit": "rider",
+          "cost": null
         },
         {
-          "unit": "horse-archer"
+          "unit": "horse-archer",
+          "cost": null
         }
       ],
       "units": [
@@ -65,7 +90,17 @@
           "tile": {
             "col": 0,
             "row": 5
-          }
+          },
+          "id": "u1",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "scout",
@@ -73,7 +108,18 @@
           "tile": {
             "col": 0,
             "row": 4
-          }
+          },
+          "id": "u2",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "adept",
@@ -81,31 +127,50 @@
           "tile": {
             "col": 0,
             "row": 6
-          }
+          },
+          "id": "u3",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
       "relations": {
-        "enemy": "hostile"
+        "enemy": "hostile",
+        "player": "allied",
+        "swamp-dead": "hostile"
       },
-      "visionGroup": "player"
+      "visionGroup": "player",
+      "name": null,
+      "transfer": null
     },
     {
       "id": "enemy",
       "phase": "ai",
       "controller": {
-        "kind": "ai"
+        "kind": "ai",
+        "policy": null
       },
       "palette": "enemy",
       "gold": 6,
       "recruits": [
         {
-          "unit": "skeleton"
+          "unit": "skeleton",
+          "cost": null
         },
         {
-          "unit": "bonearcher"
+          "unit": "bonearcher",
+          "cost": null
         },
         {
-          "unit": "skeleton-impact-caster"
+          "unit": "skeleton-impact-caster",
+          "cost": null
         }
       ],
       "units": [
@@ -114,7 +179,19 @@
           "tile": {
             "col": 7,
             "row": 6
-          }
+          },
+          "id": "u4",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "necromancer",
@@ -123,24 +200,40 @@
           "tile": {
             "col": 15,
             "row": 7
-          }
+          },
+          "id": "u5",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
       "relations": {
-        "player": "hostile"
+        "player": "hostile",
+        "enemy": "allied",
+        "swamp-dead": "neutral"
       },
-      "visionGroup": "enemy"
+      "visionGroup": "enemy",
+      "name": null,
+      "transfer": null
     },
     {
       "id": "swamp-dead",
       "phase": "ai",
       "controller": {
-        "kind": "ai"
+        "kind": "ai",
+        "policy": null
       },
       "palette": "green",
       "relations": {
         "player": "hostile",
-        "enemy": "neutral"
+        "enemy": "neutral",
+        "swamp-dead": "allied"
       },
       "name": "Marsh dead",
       "recruits": [
@@ -163,10 +256,25 @@
           "tile": {
             "col": 12,
             "row": 12
-          }
+          },
+          "id": "u6",
+          "hp": "full",
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
-      "visionGroup": "swamp-dead"
+      "visionGroup": "swamp-dead",
+      "transfer": null
     }
-  ]
+  ],
+  "arrivals": [],
+  "round": 1,
+  "turn": "player",
+  "log": ["Capture villages for gold. Defeat the enemy commander."],
+  "combatRng": 1831565813
 }

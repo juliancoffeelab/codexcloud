@@ -2,7 +2,7 @@ import "./storage-fixture.mjs";
 import { createHeadlessSession } from "./headless-session.mjs";
 import * as Setup from "@frontend/Setup";
 import { cellKey } from "./hex-fixture.mjs";
-import { historicalTiles } from "./legacy-save.mjs";
+import { historicalTiles, explicitAmbient } from "./legacy-save.mjs";
 import assert from "node:assert/strict";
 import { test, beforeEach, vi } from "vitest";
 import * as Session from "@frontend/Session";
@@ -83,6 +83,7 @@ test("Native combat inspection feeds UI damage breakdowns and old saves migrate 
   const opening = createBattle({ kind: "scenario", map: "developer" });
   const current = Native.state(Native.view(opening));
   const checkpoint = structuredClone(Native.save(opening));
+  checkpoint.state = explicitAmbient(checkpoint.state);
   Object.assign(checkpoint.state, { mapRevision: 1, cols: 6, rows: 20 });
   checkpoint.state.tiles = checkpoint.state.tiles.filter((tile) => tile.col < 6 && tile.row < 20);
   Object.assign(required(checkpoint.state.tiles[0]), {
@@ -125,7 +126,9 @@ test("Native combat inspection feeds UI damage breakdowns and old saves migrate 
   assert.deepEqual(Native.tile(Native.view(game), "0,0"), checkpoint.state.tiles[0]);
   assert.deepEqual(
     Native.tile(Native.view(game), "8,2"),
-    Native.tile(Native.view(opening), "8,2"),
+    explicitAmbient(Native.state(Native.view(opening))).tiles.find(
+      (tile) => tile.col === 8 && tile.row === 2,
+    ),
     "New cells acquire the current authored directional artwork fields",
   );
   Native.dispose(opening);

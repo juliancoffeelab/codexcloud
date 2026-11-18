@@ -3,15 +3,10 @@ use super::*;
 
 #[test]
 fn authored_missions_have_valid_positions_and_restore_cleanly() {
-    for campaign in rules().campaigns.values() {
-        for (index, mission) in campaign.missions.iter().enumerate() {
-            let game = chapter(&campaign.id, index);
-            for wave in &mission.waves {
-                for unit in &wave.units {
-                    assert!(game.board.indices.contains_key(&unit.tile));
-                }
-            }
-            assert!(Game::try_from_state(rules(), game.state()).is_ok());
+    for campaign in rules().campaigns() {
+        for (index, _mission) in campaign.chapters().iter().enumerate() {
+            let game = chapter(campaign.id(), index);
+            assert!(LiveBattle::try_from_state(rules(), game.state()).is_ok());
         }
     }
 }
@@ -49,14 +44,14 @@ fn story_companions_are_not_eligible_for_explicit_recall() {
 
 #[test]
 fn native_restore_rejects_invalid_positions_hit_points_and_wrong_campaign_map() {
-    let state = Game::new(rules(), "developer").state();
+    let state = LiveBattle::new(rules(), "developer").state();
     let mut outside = state.clone();
     outside.units[0].tile = Hex::new(-1, -1);
-    assert!(Game::try_from_state(rules(), outside).is_err());
+    assert!(LiveBattle::try_from_state(rules(), outside).is_err());
     let mut hp = state.clone();
     hp.units[0].hp = 0;
-    assert!(Game::try_from_state(rules(), hp).is_err());
+    assert!(LiveBattle::try_from_state(rules(), hp).is_err());
     let mut attached = state.clone();
     attached.campaign = chapter("mirror-night", 0).state().campaign.map(Into::into);
-    assert!(Game::try_from_state(rules(), attached).is_err());
+    assert!(LiveBattle::try_from_state(rules(), attached).is_err());
 }

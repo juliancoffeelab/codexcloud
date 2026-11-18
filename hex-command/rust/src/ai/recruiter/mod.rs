@@ -1,5 +1,6 @@
 //! Recruitment selection and placement, independent of tactical planning.
-use hex_command_battle::RuntimeCommand as Command;
+use crate::ai::policies::recruitment::RecruitRolePolicy;
+use hex_command_battle::RuntimeCommand;
 #[cfg(test)]
 pub(in crate::ai) mod fixtures;
 use super::{
@@ -122,7 +123,7 @@ impl RecruiterKind {
         game: &BattleView<'_, '_>,
         seed: u32,
         orders: &super::orders::RecruitmentOrders,
-    ) -> Option<Command> {
+    ) -> Option<RuntimeCommand> {
         recruit_from_orders(game, self, seed, orders)
     }
 }
@@ -132,7 +133,7 @@ fn recruit_from_orders(
     recruiter: RecruiterKind,
     seed: u32,
     orders: &super::orders::RecruitmentOrders,
-) -> Option<Command> {
+) -> Option<RuntimeCommand> {
     match recruiter {
         RecruiterKind::Situational => return situational::choose(game, seed, orders),
         RecruiterKind::Predictor => {
@@ -144,7 +145,10 @@ fn recruit_from_orders(
                 seed,
                 orders,
                 true,
-                game.rules().recruitment.aggressive_predictor,
+                game.catalogue()
+                    .meta()
+                    .recruiter_weights
+                    .aggressive_predictor,
             );
         }
         RecruiterKind::Classic
@@ -163,7 +167,7 @@ fn recruit_for_leader(
     seed: u32,
     orders: &super::orders::RecruitmentOrders,
     leader: &Unit,
-) -> Option<Command> {
+) -> Option<RuntimeCommand> {
     let (rotation, frontline_only, balanced) = match recruiter {
         RecruiterKind::Classic | RecruiterKind::Rotation => (true, false, false),
         RecruiterKind::Frontline => (false, true, false),
@@ -233,8 +237,8 @@ fn recruit_for_leader(
                             allies
                                 .iter()
                                 .filter(|u| {
-                                    game.rules().units[u.kind].family
-                                        == game.rules().units[**kind].family
+                                    game.unit_definition(u.kind).family()
+                                        == game.unit_definition(**kind).family()
                                 })
                                 .count(),
                         )
@@ -244,7 +248,7 @@ fn recruit_for_leader(
             }]
         } else if game.units().iter().any(|u| {
             game.belongs_to_faction(u, game.observer_faction())
-                && game.rules().units[u.kind].family == Family::Archer
+                && game.unit_definition(u.kind).family() == Family::Archer
         }) {
             swordsman
         } else {
@@ -294,7 +298,8 @@ fn recruit_for_leader(
         {
             continue;
         }
-        let r = &game.rules().units[kind];
+        let recruit = game.prospective(kind, leader.faction, leader.tile);
+        let r = game.unit_definition(recruit.kind);
         let category = recruit_role(game, kind);
         let deficiency =
             shares[category.index()] * (represented + 1) as f64 - counts[category.index()] as f64;
@@ -304,78 +309,46 @@ fn recruit_for_leader(
                 if deficiency > 0.0 { 1.0 } else { 0.0 },
                 random(
                     seed,
-                    &format!("balanced:{:?}:{}:{}", side, represented, r.id),
+                    &format!("balanced:{:?}:{}:{}", side, represented, r.id()),
                 ),
             ));
             continue;
         }
-        let recruit = Unit {
-            field_available: true,
-            perception: PerceptionId(0),
-            vision_group: leader.vision_group,
-            id: 0,
-            kind,
-            phase: side,
-            tile: leader.tile,
-            hp: r.hp,
-            moved: true,
-            attack_spent: true,
-            experience: None,
-            role: None,
-            retreating: None,
-            rebuilding: None,
-            faction: leader.faction,
-            ai_group: None,
-            character: None,
-            inventory: InventoryId::default(),
+        let attack_category = if category.is_ranged() {
+            Category::Ranged
+        } else {
+            Category::Melee
         };
         let effectiveness = if opponents.is_empty() {
-            r.attacks
-                .iter()
-                .filter(|a| {
-                    a.category
-                        == if category.is_ranged() {
-                            Category::Ranged
-                        } else {
-                            Category::Melee
-                        }
-                })
-                .map(|a| a.damage * i32::from(a.count))
-                .max()
-                .unwrap_or(0) as f64
+            game.with_owned_assessment(&recruit, |caps| {
+                caps.meta_total_attack_score(Some(attack_category))
+            })
         } else {
             opponents
                 .iter()
                 .map(|target| {
-                    r.attacks
+                    game.attack_ranges(&recruit)
                         .iter()
                         .enumerate()
-                        .filter(|(_, w)| {
-                            w.category
-                                == if category.is_ranged() {
-                                    Category::Ranged
-                                } else {
-                                    Category::Melee
-                                }
-                        })
-                        .map(|(w, _)| game.damage(&recruit, target, w))
+                        .filter(|(_, (category, _))| *category == attack_category)
+                        .map(|(weapon, _)| game.damage(&recruit, target, weapon))
                         .max()
                         .unwrap_or(0) as f64
                 })
                 .sum::<f64>()
                 / opponents.len() as f64
         };
-        let efficiency = (r.hp as f64 * 0.35 + effectiveness * 1.5)
+        let efficiency = (r.max_hp as f64 * 0.35 + effectiveness * 1.5)
             / game.recruit_cost(&leader, kind).max(1) as f64;
         let score = if frontline_only {
-            efficiency * 5.0 + r.hp as f64 * 0.15
+            efficiency * 5.0 + r.max_hp as f64 * 0.15
         } else {
             efficiency * 2.0
         };
         choices.push((
             kind,
             0.0,
-            score + jitter(seed, &format!("recruit:{}:{}", game.round(), r.id)),
+            score + jitter(seed, &format!("recruit:{}:{}", game.round(), r.id())),
         ));
     }
     choices.order_by(|a, b| {
@@ -456,24 +429,19 @@ pub(crate) fn diagnostics(
         let options = if recruit {
             view.recruitment_options_for(unit)
         } else {
-            view.rules().units[unit.kind]
-                .advances_to
+            view.unit_definition(unit.kind)
+                .promotion_ids()
                 .iter()
                 .map(|id| view.kind(id))
                 .collect()
         };
         for kind in options {
-            let rule = &view.rules().units[kind];
-            let mut candidate = unit.clone();
-            candidate.kind = kind;
-            candidate.hp = if recruit {
-                rule.hp
+            let mut candidate = if recruit {
+                view.prospective(kind, unit.faction, unit.tile)
             } else {
-                (rule.hp - (view.rules().units[unit.kind].hp - unit.hp)).max(1)
+                view.promotion(unit, kind)
             };
-            if recruit {
-                candidate.id = 0;
-            }
+            let rule = view.unit_definition(candidate.kind);
             let tiles = if recruit {
                 view.placement_tiles(unit, kind, false)
             } else {
@@ -484,9 +452,12 @@ pub(crate) fn diagnostics(
             };
             candidate.tile = tile;
             let weights = if recruiter == RecruiterKind::AggressivePredictor {
-                view.rules().recruitment.aggressive_predictor
+                view.catalogue()
+                    .meta()
+                    .recruiter_weights
+                    .aggressive_predictor
             } else {
-                view.rules().recruitment.standard
+                view.catalogue().meta().recruiter_weights.standard
             };
             let assessment = evaluation::Assessment::with_weights(
                 view,
@@ -495,7 +466,7 @@ pub(crate) fn diagnostics(
                 if recruit {
                     weights
                 } else {
-                    view.rules().recruitment.standard
+                    view.catalogue().meta().recruiter_weights.standard
                 },
             );
             let copies = view
@@ -504,13 +475,13 @@ pub(crate) fn diagnostics(
                 .filter(|u| {
                     view.allied(u, unit)
                         && !u.is_leader()
-                        && view.rules().units[u.kind].family == rule.family
+                        && view.unit_definition(u.kind).family() == rule.family()
                 })
                 .count();
             let price = if recruit {
                 view.recruit_cost(unit, kind)
             } else {
-                rule.cost
+                view.recruit_cost(&candidate, candidate.kind)
             };
             let denominator = if recruit {
                 price.max(1) as f64
@@ -540,7 +511,7 @@ pub(crate) fn diagnostics(
                 }
             }
             if let Some((tile, score)) = best {
-                rows.push(serde_json::json!({"choice":if recruit {"recruit"} else {"promotion"},"actor":unit.id,"base":view.rules().units[unit.kind].id,"unit":rule.id,"tile":view.board().ids[tile],"hp":candidate.hp,"cost":price,"affordable":price <= view.gold_for_unit(unit),"eligible":recruit || view.promotion_options(unit).contains(&kind),"denominator":denominator,"score":score.total/denominator,"components":score}));
+                rows.push(serde_json::json!({"choice":if recruit {"recruit"} else {"promotion"},"actor":unit.id,"base":view.unit_definition(unit.kind).id(),"unit":rule.id(),"tile":view.board().ids[tile],"hp":candidate.hp,"cost":price,"affordable":price <= view.gold_for_unit(unit),"eligible":recruit || view.promotion_options(unit).contains(&kind),"denominator":denominator,"score":score.total/denominator,"components":score}));
             }
         }
     }
@@ -572,30 +543,35 @@ fn mixed_shares(roles: impl Iterator<Item = UnitRole>) -> [f64; 4] {
 mod tests {
     use super::*;
     use crate::ai::recruiter::fixtures;
-    use hex_command_battle::RuntimeCommand as Command;
+    use hex_command_battle::RuntimeCommand;
 
     #[test]
     fn balanced_draws_both_kinds_but_only_within_the_needed_role() {
-        let mut rules = Rules::load().unwrap();
-        let a = rules.types["swordsman"];
-        let b = rules.types["archer"];
-        rules.units[a].role = UnitRole::Warrior;
-        rules.units[b].role = UnitRole::Warrior;
-        let mut game = crate::logic::Game::new(&rules, "mirror");
+        let mut source = crate::catalogue_fixture::bundle();
+        let a = crate::catalogue_fixture::kind(&source, "swordsman");
+        let b = crate::catalogue_fixture::kind(&source, "archer");
+        crate::catalogue_fixture::unit_kind(&mut source, a, |unit| {
+            unit["role"] = serde_json::json!(UnitRole::Warrior)
+        });
+        crate::catalogue_fixture::unit_kind(&mut source, b, |unit| {
+            unit["role"] = serde_json::json!(UnitRole::Warrior)
+        });
+        let mut game =
+            crate::logic::BattleSession::new(crate::catalogue_fixture::frozen(&source), "mirror");
         fixtures::units(&mut game, |units| {
             units.retain(|u| u.is_leader());
         });
         game.configure_arena(Some([vec![a, b], vec![a, b]]), None);
         fixtures::edit(&mut game, |state| state.gold["player"] = 100);
         let orders = crate::ai::orders::RecruitmentOrders::default();
-        let draw = |game: &crate::logic::Game<'_>, seed| {
+        let draw = |game: &crate::logic::BattleSession<'_>, seed| {
             let result =
                 RecruiterKind::Balanced.choose_orders(&BattleView::new(game), seed, &orders);
             assert_eq!(
                 result,
                 RecruiterKind::Balanced.choose_orders(&BattleView::new(game), seed, &orders)
             );
-            let Command::Recruit { kind, .. } = result.unwrap() else {
+            let RuntimeCommand::Recruit { kind, .. } = result.unwrap() else {
                 panic!("expected recruit");
             };
             kind.0
@@ -604,8 +580,11 @@ mod tests {
             (0..64).map(|seed| draw(&game, seed)).collect();
         assert_eq!(outcomes.len(), 2);
         drop(game);
-        rules.units[b].role = UnitRole::Flank;
-        let mut game = crate::logic::Game::new(&rules, "mirror");
+        crate::catalogue_fixture::unit_kind(&mut source, b, |unit| {
+            unit["role"] = serde_json::json!(UnitRole::Flank)
+        });
+        let mut game =
+            crate::logic::BattleSession::new(crate::catalogue_fixture::frozen(&source), "mirror");
         fixtures::units(&mut game, |units| {
             units.retain(|u| u.is_leader());
         });
@@ -633,8 +612,9 @@ mod tests {
 
     #[test]
     fn rotation_fills_roles_in_cycle_order_before_repeating_and_skips_absent_roles() {
-        let mut rules = Rules::load().unwrap();
-        let kinds = ["scout", "swordsman", "archer", "adept"].map(|id| rules.types[id]);
+        let mut source = crate::catalogue_fixture::bundle();
+        let kinds = ["scout", "swordsman", "archer", "adept"]
+            .map(|id| crate::catalogue_fixture::kind(&source, id));
         let roles = [
             UnitRole::Flank,
             UnitRole::Warrior,
@@ -642,10 +622,15 @@ mod tests {
             UnitRole::Healer,
         ];
         for (&kind, role) in kinds.iter().zip(roles) {
-            rules.units[kind].role = role;
+            crate::catalogue_fixture::unit_kind(&mut source, kind, |unit| {
+                unit["role"] = serde_json::json!(role)
+            });
         }
         for available in [kinds.to_vec(), vec![kinds[1], kinds[2]]] {
-            let mut game = crate::logic::Game::new(&rules, "mirror");
+            let mut game = crate::logic::BattleSession::new(
+                crate::catalogue_fixture::frozen(&source),
+                "mirror",
+            );
             fixtures::units(&mut game, |units| {
                 units.retain(|u| u.is_leader());
             });
@@ -661,7 +646,7 @@ mod tests {
                         &crate::ai::orders::RecruitmentOrders::default(),
                     )
                     .unwrap();
-                let Command::Recruit { ref kind, .. } = command else {
+                let RuntimeCommand::Recruit { ref kind, .. } = command else {
                     panic!("expected recruit")
                 };
                 assert_eq!(kind.0, expected);
@@ -689,15 +674,17 @@ mod tests {
 
     #[test]
     fn explicit_arena_pool_rotates_through_expensive_units_instead_of_legacy_two_unit_mix() {
-        let rules = Rules::load().unwrap();
-        let mut game = crate::logic::Game::new(&rules, "mirror");
+        let source = crate::catalogue_fixture::bundle();
+        let rules = crate::catalogue_fixture::frozen(&source);
+        let mut game =
+            crate::logic::BattleSession::new(crate::catalogue_fixture::frozen(&source), "mirror");
         fixtures::units(&mut game, |units| {
             units.retain(|u| u.is_leader());
         });
         let pool = vec![
-            rules.types["swordsman"],
-            rules.types["archer"],
-            rules.types["rider"],
+            crate::catalogue_fixture::kind(&source, "swordsman"),
+            crate::catalogue_fixture::kind(&source, "archer"),
+            crate::catalogue_fixture::kind(&source, "rider"),
         ];
         game.configure_arena(Some([pool.clone(), pool]), None);
         let leader = game
@@ -706,16 +693,30 @@ mod tests {
             .find(|u| u.phase == TurnPhase::Player)
             .unwrap()
             .clone();
-        let sites = game.placement_tiles(&leader, rules.types["swordsman"], false);
-        fixtures::add(&mut game, rules.types["swordsman"], "player", sites[0]);
-        fixtures::add(&mut game, rules.types["archer"], "player", sites[1]);
+        let sites = game.placement_tiles(
+            &leader,
+            crate::catalogue_fixture::kind(&source, "swordsman"),
+            false,
+        );
+        fixtures::add(
+            &mut game,
+            crate::catalogue_fixture::kind(&source, "swordsman"),
+            "player",
+            sites[0],
+        );
+        fixtures::add(
+            &mut game,
+            crate::catalogue_fixture::kind(&source, "archer"),
+            "player",
+            sites[1],
+        );
         fixtures::edit(&mut game, |state| state.round = 3);
         fixtures::edit(&mut game, |state| {
-            state.gold["player"] = rules.units[rules.types["rider"]].cost
+            state.gold["player"] = rules.unit("rider").recruitment_price(None)
         });
         use crate::ai::campaigner::mission::{CampaignInput, MissionPolicy};
         let mission = MissionPolicy::new(game.campaign_view(), game.phase_forecasts());
-        let orders = crate::ai::CampaignBlock::Arena.campaign_orders(
+        let orders = crate::ai::CampaignerKind::Arena.campaign_orders(
             &mission,
             CampaignInput {
                 seed: 0,
@@ -734,28 +735,31 @@ mod tests {
         );
         fixtures::edit(&mut game, |state| state.round += 1);
         fixtures::edit(&mut game, |state| {
-            state.gold["player"] = rules.units[rules.types["rider"]].cost
+            state.gold["player"] = rules.unit("rider").recruitment_price(None)
         });
         let selected = RecruiterKind::Rotation
             .choose_orders(&BattleView::new(&game), 7, &orders.recruitment)
             .unwrap();
-        fn recruited(command: Command) -> Option<usize> {
+        fn recruited(command: RuntimeCommand) -> Option<usize> {
             match command {
-                Command::Recruit { kind, .. } => Some(kind.0),
-                Command::Move { .. }
-                | Command::Attack { .. }
-                | Command::Advance { .. }
-                | Command::SetUnitIntent { .. }
-                | Command::EndTurn
-                | Command::DismissDialogue
-                | Command::PreviousDialogue
-                | Command::SkipDialogue
-                | Command::RecallMission { .. }
-                | Command::DropItem { .. }
-                | Command::RetryMission => None,
+                RuntimeCommand::Recruit { kind, .. } => Some(kind.0),
+                RuntimeCommand::Move { .. }
+                | RuntimeCommand::Attack { .. }
+                | RuntimeCommand::Advance { .. }
+                | RuntimeCommand::SetUnitIntent { .. }
+                | RuntimeCommand::EndTurn
+                | RuntimeCommand::DismissDialogue
+                | RuntimeCommand::PreviousDialogue
+                | RuntimeCommand::SkipDialogue
+                | RuntimeCommand::RecallMission { .. }
+                | RuntimeCommand::DropItem { .. }
+                | RuntimeCommand::RetryMission => None,
             }
         }
-        assert_eq!(recruited(selected), Some(rules.types["rider"]));
+        assert_eq!(
+            recruited(selected),
+            Some(crate::catalogue_fixture::kind(&source, "rider"))
+        );
     }
 
     #[test]

@@ -397,9 +397,12 @@ test("Browser commands are player-only and previews cannot mutate rules", async 
   const preview = required(Native.actions(Session.view(session).interaction_game, "u2")).attacks[0];
   assert(preview);
   const copied = structuredClone(preview);
-  const damage = TYPES.soldier.attacks[0].damage;
+  const damage = preview.attack.damage;
   copied.attack.damage = 999;
-  assert.equal(TYPES.soldier.attacks[0].damage, damage);
+  assert.equal(
+    Native.actions(Session.view(session).interaction_game, "u2").attacks[0].attack.damage,
+    damage,
+  );
 
   const before = snapshot(session);
   move(session, enemy.id, "2,2");
@@ -643,15 +646,7 @@ test("Immediate render acknowledgement observes effects once and stale acknowled
 test("Optional browser tools share player commands and return detached JSON", async () => {
   const fixture = new Game(),
     enemy = fixture.addUnit("soldier", "enemy", "2,3");
-  fixture.unit("u3").items = [
-    {
-      id: "unicode-token",
-      name: "Nera’s λ🦀",
-      description: "A test token",
-      attacks: [],
-      armor: { blade: -1, pierce: 0, impact: 0 },
-    },
-  ];
+  fixture.unit("u3").items = ["church-mail"];
   await saveBattle(fixture);
   const session = await createController(),
     tools = new Map(),
@@ -682,7 +677,7 @@ test("Optional browser tools share player commands and return detached JSON", as
   assert.match(tools.get("recruit_unit").description, /mission’s/);
   const opening = await execute("get_battle_state"),
     actions = await execute("get_unit_actions", { unitId: "u3" });
-  assert.equal(opening.units.find((unit) => unit.id === "u3").items[0].name, "Nera’s λ🦀");
+  assert.equal(opening.units.find((unit) => unit.id === "u3").items[0], "church-mail");
   assert(Array.isArray(actions.moves));
   assert(
     actions.moves.every(
@@ -1182,28 +1177,20 @@ test("Dropping carried equipment preserves the unit turn and atomically persists
   const actor = required(
     game.units.find((unit) => unit.faction === "player" && unit.role !== "leader"),
   );
-  actor.items = [
-    {
-      id: "fixture-token",
-      name: "Token",
-      description: "A transferable token.",
-      attacks: [],
-      armor: { blade: -1, pierce: 0, impact: 0 },
-    },
-  ];
+  actor.items = ["church-mail"];
   const checkpoint = game.checkpoint();
   await Save.write(Save.create(), checkpoint, false);
   const session = await createController(),
     view = Session.view(session),
     before = required(Native.unit(view.game, actor.id));
-  Session.commands(session).drop(actor.id, "fixture-token");
+  Session.commands(session).drop(actor.id, "church-mail");
   const after = required(Native.unit(Session.view(session).interaction_game, actor.id));
   assert.deepEqual(after.items ?? [], []);
   assert.equal(after.moved, before.moved);
   assert.equal(after.attackSpent, before.attackSpent);
   assert.deepEqual(
-    state(session).groundItems.map(({ tile, item }) => [tile, item.id]),
-    [[actor.tile, "fixture-token"]],
+    state(session).groundItems.map(({ tile, item }) => [tile, item]),
+    [[actor.tile, "church-mail"]],
   );
   assert.match(Session.view(session).status, /Item dropped/);
   const persisted = JSON.parse(required(await readSave()));

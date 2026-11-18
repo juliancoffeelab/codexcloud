@@ -31,6 +31,33 @@ pub(super) type MovementMasks = Rc<RefCell<FxHashMap<usize, Rc<Vec<u128>>>>>;
 // distinguish a connected tile from a finite route.
 pub(super) type RegionCache = Rc<RefCell<FxHashMap<usize, Option<Rc<Vec<u16>>>>>>;
 
+/// Borrowed final movement costs for a single immutable battle query batch.
+/// Spatial movement rules retain the general per-tile calculation.
+pub struct MovementField<'a, 'catalog> {
+    game: &'a BattlePosition<'catalog>,
+    unit: Unit,
+    costs: Option<Rc<Vec<u16>>>,
+}
+impl<'a, 'catalog> MovementField<'a, 'catalog> {
+    pub(crate) fn new(game: &'a BattlePosition<'catalog>, unit: &Unit) -> Self {
+        Self {
+            game,
+            unit: *unit,
+            costs: game.movement_costs(unit),
+        }
+    }
+    #[inline]
+    pub fn cost_at(&self, tile: usize) -> u16 {
+        match &self.costs {
+            Some(costs) => costs[tile],
+            None => self.game.step_cost(&self.unit, tile),
+        }
+    }
+    pub fn costs(&self) -> impl ExactSizeIterator<Item = u16> + '_ {
+        (0..self.game.terrain.len()).map(|tile| self.cost_at(tile))
+    }
+}
+
 /// Terrain reachability without occupancy or a movement budget. Small distance
 /// bounds use connected components; large bounds retain weighted route fields.
 #[derive(Clone)]
@@ -66,15 +93,154 @@ pub(super) struct ValidatedMove {
 }
 
 impl<'catalog> BattlePosition<'catalog> {
-    pub(crate) fn reachability(&self, kind: usize, start: usize) -> Reachability {
-        let kind = self.rules.route_classes[kind];
+    /// Borrow the same final evaluated cost vector for a whole geometric batch.
+    pub(crate) fn movement_costs(&self, unit: &Unit) -> Option<Rc<Vec<u16>>> {
+        let cache = self.effect_sources.movement_cache.as_ref()?;
+        let identity = (
+            unit.kind,
+            unit.faction,
+            self.runtime.inventories.identity(unit.inventory),
+        );
+        if let Some(costs) = cache.costs.borrow().get(&identity) {
+            return Some(Rc::clone(costs));
+        }
+        // Without spatial movement effects, the same composed context answers
+        // every terrain query. Other effect kinds do not contribute to step_cost.
+        // Own effects of hypothetical kinds/equipment are still selected normally.
+        let costs = self.with_capabilities_at(unit, unit.tile, &[], &[], |caps| {
+            // A layout repeats terrain handles. Resolve each distinct handle
+            // once rather than recomposing the same step cost for every hex.
+            let mut terrain_costs = vec![None; self.catalogue.terrains().count()];
+            self.terrain
+                .iter()
+                .map(|&terrain| {
+                    *terrain_costs[terrain].get_or_insert_with(|| {
+                        match caps.step_cost(self.definitions.terrain(terrain)) {
+                            Some(cost) => cost,
+                            None => u16::MAX,
+                        }
+                    })
+                })
+                .collect::<Vec<_>>()
+        });
+        let costs = Rc::new(costs);
+        if cache.costs.borrow().len() >= 512 {
+            cache.costs.borrow_mut().clear();
+        }
+        cache.costs.borrow_mut().insert(identity, Rc::clone(&costs));
+        Some(costs)
+    }
+    #[inline]
+    pub(crate) fn step_cost(&self, unit: &Unit, tile: usize) -> u16 {
+        if let Some(costs) = self.movement_costs(unit) {
+            return costs[tile];
+        }
+        let providers: &[Unit] = if self.effect_sources.movement {
+            &self.units
+        } else {
+            &[]
+        };
+        self.with_capabilities_at(unit, tile, providers, &[], |caps| {
+            match caps.step_cost(self.terrain_definition(tile)) {
+                Some(cost) => cost,
+                None => u16::MAX,
+            }
+        })
+    }
+    /// Bound bucket storage by the final Catalogue fact and u16 path representation.
+    pub(crate) fn movement_limit(&self, unit: &Unit) -> usize {
+        let key = (
+            unit.kind,
+            unit.faction,
+            self.runtime.inventories.identity(unit.inventory),
+        );
+        if let Some(cache) = &self.effect_sources.movement_cache {
+            if let Some(limit) = cache.limits.borrow().get(&key) {
+                return *limit;
+            }
+        }
+        let limit = self.with_capabilities_at(unit, unit.tile, &self.units, &[], |caps| {
+            caps.path_cost_limit().min(usize::from(u16::MAX))
+        });
+        if let Some(cache) = &self.effect_sources.movement_cache {
+            if cache.limits.borrow().len() >= 4096 {
+                cache.limits.borrow_mut().clear();
+            }
+            cache.limits.borrow_mut().insert(key, limit);
+        }
+        limit
+    }
+    /// Classes index equal evaluated movement behavior, never raw Catalogue rows.
+    pub(crate) fn route_class(&self, unit: &Unit) -> usize {
+        self.intern_movement_class(unit, 0)
+    }
+    fn movement_class(&self, unit: &Unit) -> usize {
+        self.intern_movement_class(unit, self.movement_limit(unit))
+    }
+    fn intern_movement_class(&self, unit: &Unit, limit: usize) -> usize {
+        let identity = (
+            unit.kind,
+            unit.faction,
+            self.runtime.inventories.identity(unit.inventory),
+            limit,
+        );
+        if let Some(cache) = &self.effect_sources.movement_cache {
+            if let Some(class) = cache.classes.borrow().get(&identity) {
+                return *class;
+            }
+        }
+        let batch_costs = self.movement_costs(unit);
+        let cost_at = |tile: usize| match &batch_costs {
+            Some(costs) => costs[tile],
+            None => self.step_cost(unit, tile),
+        };
+        type ClassKey = (Vec<u16>, usize);
+        thread_local! {
+            static CLASSES: RefCell<(FxHashMap<ClassKey, usize>, usize)> = RefCell::new((FxHashMap::default(), 0));
+        }
+        let key = (
+            (0..self.terrain.len()).map(|tile| cost_at(tile)).collect(),
+            limit,
+        );
+        let class = CLASSES.with_borrow_mut(|(classes, next)| {
+            if let Some(id) = classes.get(&key) {
+                return *id;
+            }
+            if classes.len() >= 16384 {
+                classes.clear();
+            }
+            let id = *next;
+            *next = next.checked_add(1).expect("movement class identity space");
+            classes.insert(key, id);
+            id
+        });
+        if let Some(cache) = &self.effect_sources.movement_cache {
+            if cache.classes.borrow().len() >= 4096 {
+                cache.classes.borrow_mut().clear();
+            }
+            cache.classes.borrow_mut().insert(identity, class);
+        }
+        class
+    }
+    pub(crate) fn reachability(&self, unit: &Unit, start: usize) -> Reachability {
+        if self.effect_sources.movement {
+            return Reachability {
+                field: self.routes_from(unit, start),
+                component: None,
+                start,
+            };
+        }
+        let kind = self.route_class(unit);
         let cached = self.runtime.movement_regions.borrow().get(&kind).cloned();
         let regions = cached.unwrap_or_else(|| {
-            let maximum = self.rules.units[kind]
-                .costs
-                .iter()
-                .flatten()
-                .copied()
+            let batch_costs = self.movement_costs(unit);
+            let cost_at = |tile: usize| match &batch_costs {
+                Some(costs) => costs[tile],
+                None => self.step_cost(unit, tile),
+            };
+
+            let maximum = (0..self.terrain.len())
+                .map(|tile| cost_at(tile))
                 .filter(|&cost| cost != u16::MAX)
                 .max()
                 .unwrap_or(0);
@@ -88,14 +254,14 @@ impl<'catalog> BattlePosition<'catalog> {
                 let mut pending = Vec::new();
                 let mut component = 0;
                 for start in 0..tiles {
-                    if regions[start] != u16::MAX || self.cost(kind, start) == u16::MAX {
+                    if regions[start] != u16::MAX || cost_at(start) == u16::MAX {
                         continue;
                     }
                     regions[start] = component;
                     pending.push(start);
                     while let Some(tile) = pending.pop() {
                         for &next in &self.runtime.board.adjacent[tile] {
-                            if regions[next] == u16::MAX && self.cost(kind, next) != u16::MAX {
+                            if regions[next] == u16::MAX && cost_at(next) != u16::MAX {
                                 regions[next] = component;
                                 pending.push(next);
                             }
@@ -119,7 +285,7 @@ impl<'catalog> BattlePosition<'catalog> {
             }
         } else {
             Reachability {
-                field: self.routes_from(kind, start),
+                field: self.routes_from(unit, start),
                 component: None,
                 start,
             }
@@ -148,28 +314,34 @@ impl<'catalog> BattlePosition<'catalog> {
         if unit.moved || unit.attack_spent || self.runtime.winner.is_some() {
             return positions;
         }
-        let limit = self.mechanics.units[unit.kind].r#move;
+        if self.effect_sources.movement {
+            for &(tile, _) in self.effect_reachable(unit, &occupied).iter() {
+                positions.insert(tile);
+            }
+            return positions;
+        }
+        let batch_costs = self.movement_costs(unit);
+        let cost_at = |tile: usize| match &batch_costs {
+            Some(costs) => costs[tile],
+            None => self.step_cost(unit, tile),
+        };
+        let limit = self.movement_limit(unit);
         let TileSet::Small(blocked) = occupied else {
-            for &(tile, _) in self.reach_filtered(unit.kind, unit.tile, occupied).iter() {
+            for &(tile, _) in self.reach_filtered(unit, unit.tile, occupied).iter() {
                 positions.insert(tile);
             }
             return positions;
         };
-        if limit >= 64
-            || self.rules.units[unit.kind]
-                .costs
-                .iter()
-                .any(|cost| *cost == Some(0))
-        {
+        if limit >= 64 || (0..self.terrain.len()).any(|tile| cost_at(tile) == 0) {
             for &(tile, _) in self
-                .reach_filtered(unit.kind, unit.tile, TileSet::Small(blocked))
+                .reach_filtered(unit, unit.tile, TileSet::Small(blocked))
                 .iter()
             {
                 positions.insert(tile);
             }
             return positions;
         }
-        let movement_class = self.rules.movement_classes[unit.kind];
+        let movement_class = self.movement_class(unit);
         let key = (movement_class, unit.tile, blocked);
         if let Some(&bits) = self.runtime.threat_reach_cache.borrow().get(&key) {
             return TileSet::Small(bits);
@@ -183,7 +355,7 @@ impl<'catalog> BattlePosition<'catalog> {
         let costs = cached.unwrap_or_else(|| {
             let mut masks = vec![0u128; limit + 1];
             for tile in 0..self.runtime.terrain.len() {
-                let cost = self.cost(unit.kind, tile) as usize;
+                let cost = cost_at(tile) as usize;
                 if cost <= limit {
                     masks[cost] |= 1u128 << tile;
                 }
@@ -220,9 +392,69 @@ impl<'catalog> BattlePosition<'catalog> {
         TileSet::Small(reached)
     }
     #[inline]
-    pub(crate) fn cost(&self, kind: usize, tile: usize) -> u16 {
-        self.mechanics.costs[self.mechanics.units[kind].costs + self.runtime.terrain[tile]]
-            .unwrap_or(u16::MAX)
+    fn effect_distances(
+        &self,
+        unit: &Unit,
+        goals: &[usize],
+        reverse: bool,
+        occupied: Option<&TileSet>,
+        limit: u16,
+    ) -> Vec<u16> {
+        let mut costs = vec![u16::MAX; self.terrain.len()];
+        let mut queue = BinaryHeap::new();
+        for &goal in goals {
+            costs[goal] = 0;
+            queue.push(Reverse((0u16, goal)));
+        }
+        while let Some(Reverse((spent, current))) = queue.pop() {
+            if costs[current] != spent {
+                continue;
+            }
+            for &next in &self.board.adjacent[current] {
+                if occupied.is_some_and(|mask| mask.contains(next)) {
+                    continue;
+                }
+                let entry = self.step_cost(unit, if reverse { current } else { next });
+                if let Some(total) = spent
+                    .checked_add(entry)
+                    .filter(|value| *value <= limit && *value < costs[next])
+                {
+                    costs[next] = total;
+                    queue.push(Reverse((total, next)));
+                }
+            }
+        }
+        costs
+    }
+    fn effect_reachable(&self, unit: &Unit, occupied: &TileSet) -> Rc<Vec<(usize, u16)>> {
+        let costs = self.effect_distances(
+            unit,
+            &[unit.tile],
+            false,
+            Some(occupied),
+            self.movement_limit(unit) as u16,
+        );
+        Rc::new(
+            costs
+                .into_iter()
+                .enumerate()
+                .filter(|(tile, cost)| *tile != unit.tile && *cost != u16::MAX)
+                .collect(),
+        )
+    }
+    pub(crate) fn routes(&self, unit: &Unit, goals: &[usize]) -> Rc<Vec<u16>> {
+        if self.effect_sources.movement {
+            Rc::new(self.effect_distances(unit, goals, true, None, u16::MAX))
+        } else {
+            self.route_distances(unit, goals, false)
+        }
+    }
+    pub(crate) fn routes_from(&self, unit: &Unit, start: usize) -> Rc<Vec<u16>> {
+        if self.effect_sources.movement {
+            Rc::new(self.effect_distances(unit, &[start], false, None, u16::MAX))
+        } else {
+            self.route_distances(unit, &[start], true)
+        }
     }
     #[cfg(test)]
     pub(crate) fn reachable_with_occupancy(
@@ -239,26 +471,39 @@ impl<'catalog> BattlePosition<'catalog> {
                 occupied.insert(tile);
             }
         }
-        self.reach_filtered(unit.kind, unit.tile, occupied)
+        if self.effect_sources.movement {
+            self.effect_reachable(unit, &occupied)
+        } else {
+            self.reach_filtered(unit, unit.tile, occupied)
+        }
     }
     pub(crate) fn reachable(&self, unit: &Unit) -> Rc<Vec<(usize, u16)>> {
         if unit.moved || unit.attack_spent || self.runtime.winner.is_some() {
             return EMPTY_REACH.with(Clone::clone);
         }
-        self.reach_filtered(unit.kind, unit.tile, self.runtime.occupied_tiles.clone())
+        if self.effect_sources.movement {
+            self.effect_reachable(unit, &self.runtime.occupied_tiles)
+        } else {
+            self.reach_filtered(unit, unit.tile, self.runtime.occupied_tiles.clone())
+        }
     }
     fn reach_filtered(
         &self,
-        kind: usize,
+        unit: &Unit,
         start: usize,
         occupied: TileSet,
     ) -> Rc<Vec<(usize, u16)>> {
-        let key = (self.rules.movement_classes[kind], start, occupied);
+        let key = (self.movement_class(unit), start, occupied);
         if let Some(reachable) = self.runtime.reach_cache.borrow().get(&key) {
             return reachable.clone();
         }
+        let batch_costs = self.movement_costs(unit);
+        let cost_at = |tile: usize| match &batch_costs {
+            Some(costs) => costs[tile],
+            None => self.step_cost(unit, tile),
+        };
         let reachable = Rc::new(REACH_SCRATCH.with_borrow_mut(|scratch| {
-            let limit = self.mechanics.units[kind].r#move;
+            let limit = self.movement_limit(unit);
             scratch.costs.resize(self.runtime.terrain.len(), u16::MAX);
             scratch.costs.fill(u16::MAX);
             scratch.order.clear();
@@ -280,7 +525,7 @@ impl<'catalog> BattlePosition<'catalog> {
                         if key.2.contains(next) {
                             continue;
                         }
-                        let entry = self.cost(kind, next);
+                        let entry = cost_at(next);
                         if entry == u16::MAX {
                             continue;
                         }
@@ -309,15 +554,8 @@ impl<'catalog> BattlePosition<'catalog> {
         cache.insert(key, reachable.clone());
         reachable
     }
-    pub(crate) fn routes(&self, kind: usize, goals: &[usize]) -> Rc<Vec<u16>> {
-        self.route_distances(kind, goals, false)
-    }
-    /// Distances from one source, charging each destination's entry cost.
-    pub(crate) fn routes_from(&self, kind: usize, start: usize) -> Rc<Vec<u16>> {
-        self.route_distances(kind, &[start], true)
-    }
-    fn route_distances(&self, kind: usize, goals: &[usize], forward: bool) -> Rc<Vec<u16>> {
-        let kind = self.rules.route_classes[kind];
+    fn route_distances(&self, unit: &Unit, goals: &[usize], forward: bool) -> Rc<Vec<u16>> {
+        let kind = self.route_class(unit);
         let query = match goals {
             [tile] => RouteGoals::Tile(*tile),
             tiles => RouteGoals::Tiles(tiles.to_vec()),
@@ -326,6 +564,11 @@ impl<'catalog> BattlePosition<'catalog> {
         if let Some(route) = self.runtime.route_cache.borrow().get(&key) {
             return route.clone();
         }
+        let batch_costs = self.movement_costs(unit);
+        let cost_at = |tile: usize| match &batch_costs {
+            Some(costs) => costs[tile],
+            None => self.step_cost(unit, tile),
+        };
         let mut costs = vec![u16::MAX; self.runtime.terrain.len()];
         // Reverse movement costs run from each goal. Tile index breaks ties
         // deterministically; only the resulting distance field is observable.
@@ -341,12 +584,12 @@ impl<'catalog> BattlePosition<'catalog> {
             if spent != costs[current] {
                 continue;
             }
-            let entry = self.cost(kind, current);
+            let entry = cost_at(current);
             if entry == u16::MAX {
                 continue;
             }
             for &next in &self.runtime.board.adjacent[current] {
-                let next_entry = self.cost(kind, next);
+                let next_entry = cost_at(next);
                 if next_entry == u16::MAX {
                     continue;
                 }
@@ -383,8 +626,13 @@ impl<'catalog> BattlePosition<'catalog> {
         goals: &[usize],
         friendly_penalty: Option<u16>,
     ) -> Vec<u16> {
+        let batch_costs = self.movement_costs(unit);
+        let cost_at = |tile: usize| match &batch_costs {
+            Some(costs) => costs[tile],
+            None => self.step_cost(unit, tile),
+        };
         let entry = |tile: usize| {
-            let terrain = self.cost(unit.kind, tile);
+            let terrain = cost_at(tile);
             if terrain == u16::MAX {
                 return terrain;
             }
@@ -430,7 +678,7 @@ impl<'catalog> BattlePosition<'catalog> {
         if unit.moved || unit.attack_spent || self.winner.is_some() {
             return EMPTY_REACH.with(Clone::clone);
         }
-        self.reach_filtered(unit.kind, unit.tile, self.observed_occupancy(unit))
+        self.reach_filtered(unit, unit.tile, self.observed_occupancy(unit))
     }
     fn observed_occupancy(&self, unit: &Unit) -> TileSet {
         if !self.perception_sensitive() {
@@ -504,7 +752,7 @@ impl<'catalog> BattlePosition<'catalog> {
             for &previous in &self.board.adjacent[cursor] {
                 if next[previous] == usize::MAX
                     && costs[previous] != u16::MAX
-                    && costs[previous].checked_add(self.cost(actor.kind, cursor))
+                    && costs[previous].checked_add(self.step_cost(actor, cursor))
                         == Some(costs[cursor])
                 {
                     next[previous] = cursor;
@@ -573,19 +821,19 @@ impl<'catalog> BattlePosition<'catalog> {
         self.runtime.occupied_tiles.insert(tile);
         self.runtime.units[index].tile = tile;
         self.runtime.units[index].moved = true;
-        if self.terrain_role(tile).capturable()
+        if self.terrain_definition(tile).capturable()
             && self.runtime.owners[tile].as_deref().is_none_or(|owner| {
                 self.faction_relation(self.unit_faction(&actor), owner) == Relation::Hostile
             })
         {
             self.runtime.owners[tile] = Some(self.unit_faction(&actor).to_owned());
-            let unit_name = self.rules.units[actor.kind].name.to_lowercase();
-            let capture = if self.role_is(tile, TerrainRole::Village) {
+            let unit_name = self.definitions.unit(actor.kind).name().to_lowercase();
+            let capture = if self.terrain[tile] == self.definitions.terrain_name("village") {
                 "captured a village".to_owned()
             } else {
                 format!(
                     "claimed {}",
-                    self.rules.terrain_labels[self.runtime.terrain[tile]].to_lowercase()
+                    self.terrain_definition(tile).name().to_lowercase()
                 )
             };
             self.record(format!(
@@ -624,8 +872,8 @@ mod occupancy_tests {
     use super::*;
     #[test]
     fn occupancy_mask_follows_moves_roster_changes_and_independent_forks() {
-        let rules = Rules::load().unwrap();
-        let mut game = crate::logic::Game::new(&rules, "mirror");
+        let rules = Catalogue::load().unwrap();
+        let mut game = crate::logic::LiveBattle::new(&rules, "mirror");
         let forecast = game.fork();
         let (actor, destination) = game
             .units

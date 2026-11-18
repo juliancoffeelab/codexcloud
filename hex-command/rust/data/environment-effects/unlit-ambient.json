@@ -1,0 +1,11 @@
+{
+  "id": "unlit-ambient",
+  "name": "Unlit ambient",
+  "description": "Authored ambient light effect.",
+  "effects": [
+    {
+      "kind": "ambient-light",
+      "level": "unlit"
+    }
+  ]
+}

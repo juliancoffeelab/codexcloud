@@ -32,7 +32,7 @@ a composition or unit-strength conclusion.
 ## Battlefield presence and support effects
 
 ```sh
-node scripts/toolchain/with-toolchain.mjs cargo run --locked --manifest-path rust/Cargo.toml --profile simulation --bin hex-command-sim -- --unit-usage
+node scripts/toolchain/with-toolchain.mjs cargo run --locked --manifest-path rust/Cargo.toml --profile simulation --bin hex-command-sim --features simulation -- --unit-usage
 python3 .agents/skills/combat-simulation/scripts/report-combat.py artifacts/saved/report.json --out artifacts/saved/analytics --unit-usage
 ```
 

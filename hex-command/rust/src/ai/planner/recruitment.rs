@@ -43,7 +43,7 @@ pub(super) fn plan(
     let goal = rebuilding
         .iter()
         .find(|g| crate::ai::policies::objectives::actor_matches(&g.actor, unit.id))?;
-    let route = game.routes(unit.kind, &keeps);
+    let route = game.routes(&unit, &keeps);
     let mut best: Option<Plan> = None;
     for tile in destinations
         .into_iter()

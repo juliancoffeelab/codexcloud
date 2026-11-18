@@ -7,10 +7,10 @@ let prepare factory =
       let catalog = Catalog.of_view (Domain.NativeEngineFactory.catalog factory) in
       let roles = Catalog.terrain_roles catalog in
       Array.map
-        (fun (map : Domain.map_definition) ->
+        (fun (map : Domain.browser_map) ->
           let plan =
-            Terrain_plan.prepare ~roles ~map_id:map.id ~cols:(Int32.to_float map.cols)
-              ~rows:(Int32.to_float map.rows) map.terrain (Art.current ())
+            Terrain_plan.prepare ~roles ~map_id:map.id ~cols:(Int32.to_float map.state.cols)
+              ~rows:(Int32.to_float map.state.rows) map.state.tiles (Art.current ())
           in
           {
             map_id = map.id;

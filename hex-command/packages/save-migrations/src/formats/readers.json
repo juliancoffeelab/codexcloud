@@ -55,7 +55,10 @@
     "Save47": 2942,
     "Save48": 2966,
     "Save49": 3449,
-    "History5": 3451
+    "History5": 3451,
+    "Save50": 3758,
+    "Save51": 4159,
+    "Save52": 4224
   },
   "shapes": [
     {
@@ -39898,6 +39901,8563 @@
           "optional": false
         }
       }
+    },
+    {
+      "kind": "null"
+    },
+    {
+      "kind": "number"
+    },
+    {
+      "kind": "string"
+    },
+    {
+      "kind": "boolean"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "visionGroups": {
+          "type": 3473,
+          "optional": false
+        },
+        "factions": {
+          "type": 3565,
+          "optional": false
+        },
+        "groundItems": {
+          "type": 3636,
+          "optional": false
+        },
+        "armies": {
+          "type": 3638,
+          "optional": false
+        },
+        "conditionMemory": {
+          "type": 3639,
+          "optional": false
+        },
+        "mapId": {
+          "type": 3454,
+          "optional": false
+        },
+        "mapRevision": {
+          "type": 3453,
+          "optional": false
+        },
+        "cols": {
+          "type": 3453,
+          "optional": false
+        },
+        "rows": {
+          "type": 3453,
+          "optional": false
+        },
+        "round": {
+          "type": 3453,
+          "optional": false
+        },
+        "turn": {
+          "type": 3475,
+          "optional": false
+        },
+        "gold": {
+          "type": 3640,
+          "optional": false
+        },
+        "winner": {
+          "type": 3646,
+          "optional": false
+        },
+        "nextId": {
+          "type": 3453,
+          "optional": false
+        },
+        "combatRng": {
+          "type": 3453,
+          "optional": false
+        },
+        "log": {
+          "type": 3647,
+          "optional": false
+        },
+        "tiles": {
+          "type": 3679,
+          "optional": false
+        },
+        "units": {
+          "type": 3701,
+          "optional": false
+        },
+        "campaign": {
+          "type": 3754,
+          "optional": false
+        },
+        "lastCombat": {
+          "type": 3757,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "id": {
+          "type": 3454,
+          "optional": false
+        },
+        "sight": {
+          "type": 3458,
+          "optional": false
+        },
+        "explored": {
+          "type": 3472,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "range": {
+          "type": 3459,
+          "optional": false
+        },
+        "penetrates": {
+          "type": 3470,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3460, 3453]
+    },
+    {
+      "kind": "union",
+      "members": [3461, 3462]
+    },
+    {
+      "kind": "literal",
+      "value": "inherited"
+    },
+    {
+      "kind": "literal",
+      "value": "unlimited"
+    },
+    {
+      "kind": "union",
+      "members": [3461, 3462]
+    },
+    {
+      "kind": "union",
+      "members": [3460, 3453]
+    },
+    {
+      "kind": "union",
+      "members": [3466, 3467, 3468]
+    },
+    {
+      "kind": "literal",
+      "value": "fog"
+    },
+    {
+      "kind": "literal",
+      "value": "darkness"
+    },
+    {
+      "kind": "literal",
+      "value": "forest-camouflage"
+    },
+    {
+      "kind": "union",
+      "members": [3466, 3467, 3468]
+    },
+    {
+      "kind": "array",
+      "element": 3465
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "col": {
+          "type": 3453,
+          "optional": false
+        },
+        "row": {
+          "type": 3453,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3471
+    },
+    {
+      "kind": "array",
+      "element": 3457
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "visionGroup": {
+          "type": 3454,
+          "optional": false
+        },
+        "id": {
+          "type": 3454,
+          "optional": false
+        },
+        "phase": {
+          "type": 3475,
+          "optional": false
+        },
+        "controller": {
+          "type": 3479,
+          "optional": false
+        },
+        "palette": {
+          "type": 3454,
+          "optional": false
+        },
+        "name": {
+          "type": 3496,
+          "optional": false
+        },
+        "recruits": {
+          "type": 3500,
+          "optional": false
+        },
+        "relations": {
+          "type": 3506,
+          "optional": false
+        },
+        "transfer": {
+          "type": 3564,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3476, 3477]
+    },
+    {
+      "kind": "literal",
+      "value": "player"
+    },
+    {
+      "kind": "literal",
+      "value": "ai"
+    },
+    {
+      "kind": "union",
+      "members": [3476, 3477]
+    },
+    {
+      "kind": "union",
+      "members": [3481, 3483, 3494]
+    },
+    {
+      "kind": "literal",
+      "value": "human"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3480,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "passive"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3482,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "ai"
+    },
+    {
+      "kind": "union",
+      "members": [3486, 3487, 3488, 3489, 3490, 3491]
+    },
+    {
+      "kind": "literal",
+      "value": "classic"
+    },
+    {
+      "kind": "literal",
+      "value": "rush"
+    },
+    {
+      "kind": "literal",
+      "value": "balanced"
+    },
+    {
+      "kind": "literal",
+      "value": "rotated"
+    },
+    {
+      "kind": "literal",
+      "value": "situational"
+    },
+    {
+      "kind": "literal",
+      "value": "predictor"
+    },
+    {
+      "kind": "union",
+      "members": [3486, 3487, 3488, 3489, 3490, 3491]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3486, 3487, 3488, 3489, 3490, 3491]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3484,
+          "optional": false
+        },
+        "policy": {
+          "type": 3493,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3481, 3483, 3494]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "unit": {
+          "type": 3454,
+          "optional": false
+        },
+        "cost": {
+          "type": 3498,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3453]
+    },
+    {
+      "kind": "array",
+      "element": 3497
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3499]
+    },
+    {
+      "kind": "union",
+      "members": [3502, 3503, 3504]
+    },
+    {
+      "kind": "literal",
+      "value": "allied"
+    },
+    {
+      "kind": "literal",
+      "value": "neutral"
+    },
+    {
+      "kind": "literal",
+      "value": "hostile"
+    },
+    {
+      "kind": "union",
+      "members": [3502, 3503, 3504]
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 3501
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "to": {
+          "type": 3454,
+          "optional": false
+        },
+        "when": {
+          "type": 3508,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "observer": {
+          "type": 3509,
+          "optional": false
+        },
+        "condition": {
+          "type": 3510,
+          "optional": false
+        },
+        "remember": {
+          "type": 3455,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "union",
+      "members": [3523, 3536, 3539, 3544, 3548, 3550, 3552, 3554, 3556, 3559, 3562]
+    },
+    {
+      "kind": "literal",
+      "value": "owner"
+    },
+    {
+      "kind": "union",
+      "members": [3513, 3514, 3520]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "location": {
+          "type": 3454,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "hex": {
+          "type": 3471,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3516, 3517, 3518]
+    },
+    {
+      "kind": "literal",
+      "value": "unit"
+    },
+    {
+      "kind": "literal",
+      "value": "mark"
+    },
+    {
+      "kind": "literal",
+      "value": "death"
+    },
+    {
+      "kind": "union",
+      "members": [3516, 3517, 3518]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "binding": {
+          "type": 3515,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3513, 3514, 3520]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3513, 3514, 3520]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3511,
+          "optional": false
+        },
+        "tile": {
+          "type": 3522,
+          "optional": false
+        },
+        "side": {
+          "type": 3454,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "proximity"
+    },
+    {
+      "kind": "array",
+      "element": 3454
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3513, 3514, 3520]
+    },
+    {
+      "kind": "union",
+      "members": [3528, 3529, 3530, 3531, 3532]
+    },
+    {
+      "kind": "literal",
+      "value": "player"
+    },
+    {
+      "kind": "literal",
+      "value": "enemy"
+    },
+    {
+      "kind": "literal",
+      "value": "neutral"
+    },
+    {
+      "kind": "literal",
+      "value": "any"
+    },
+    {
+      "kind": "literal",
+      "value": "observer"
+    },
+    {
+      "kind": "union",
+      "members": [3528, 3529, 3530, 3531, 3532]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3524,
+          "optional": false
+        },
+        "unitTypes": {
+          "type": 3525,
+          "optional": false
+        },
+        "tile": {
+          "type": 3526,
+          "optional": false
+        },
+        "radius": {
+          "type": 3453,
+          "optional": false
+        },
+        "side": {
+          "type": 3527,
+          "optional": false
+        },
+        "unitType": {
+          "type": 3534,
+          "optional": false
+        },
+        "character": {
+          "type": 3535,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "visibleUnits"
+    },
+    {
+      "kind": "array",
+      "element": 3454
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3537,
+          "optional": false
+        },
+        "side": {
+          "type": 3527,
+          "optional": false
+        },
+        "unitTypes": {
+          "type": 3538,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "hasUnits"
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3540,
+          "optional": false
+        },
+        "aiGroup": {
+          "type": 3541,
+          "optional": false
+        },
+        "side": {
+          "type": 3527,
+          "optional": false
+        },
+        "unitType": {
+          "type": 3542,
+          "optional": false
+        },
+        "character": {
+          "type": 3543,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "noUnits"
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3545,
+          "optional": false
+        },
+        "side": {
+          "type": 3527,
+          "optional": false
+        },
+        "unitType": {
+          "type": 3546,
+          "optional": false
+        },
+        "character": {
+          "type": 3547,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "choice"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3549,
+          "optional": false
+        },
+        "choice": {
+          "type": 3454,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "flag"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3551,
+          "optional": false
+        },
+        "flag": {
+          "type": 3454,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "event"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3553,
+          "optional": false
+        },
+        "event": {
+          "type": 3454,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "round"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3555,
+          "optional": false
+        },
+        "round": {
+          "type": 3453,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "all"
+    },
+    {
+      "kind": "array",
+      "element": 3510
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3557,
+          "optional": false
+        },
+        "conditions": {
+          "type": 3558,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "any"
+    },
+    {
+      "kind": "array",
+      "element": 3510
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3560,
+          "optional": false
+        },
+        "conditions": {
+          "type": 3561,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3523, 3536, 3539, 3544, 3548, 3550, 3552, 3554, 3556, 3559, 3562]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3507]
+    },
+    {
+      "kind": "array",
+      "element": 3474
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "tile": {
+          "type": 3471,
+          "optional": false
+        },
+        "item": {
+          "type": 3567,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "perception": {
+          "type": 3614,
+          "optional": false
+        },
+        "armor": {
+          "type": 3616,
+          "optional": false
+        },
+        "id": {
+          "type": 3454,
+          "optional": false
+        },
+        "name": {
+          "type": 3454,
+          "optional": false
+        },
+        "description": {
+          "type": 3454,
+          "optional": false
+        },
+        "attacks": {
+          "type": 3627,
+          "optional": false
+        },
+        "healing": {
+          "type": 3635,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "range": {
+          "type": 3459,
+          "optional": false
+        },
+        "penetrates": {
+          "type": 3569,
+          "optional": false
+        },
+        "concealment": {
+          "type": 3611,
+          "optional": false
+        },
+        "light": {
+          "type": 3613,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3465
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3465,
+          "optional": false
+        },
+        "revealWithin": {
+          "type": 3453,
+          "optional": false
+        },
+        "requires": {
+          "type": 3572,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3465,
+          "optional": false
+        },
+        "revealWithin": {
+          "type": 3453,
+          "optional": false
+        },
+        "requires": {
+          "type": 3572,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "terrains": {
+          "type": 3603,
+          "optional": false
+        },
+        "illumination": {
+          "type": 3610,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [
+        3574, 3575, 3576, 3577, 3578, 3579, 3580, 3581, 3582, 3583, 3584, 3585, 3586, 3587, 3588,
+        3589, 3590, 3591, 3592, 3593, 3594, 3595, 3596, 3597, 3598, 3599, 3600
+      ]
+    },
+    {
+      "kind": "literal",
+      "value": "bridge"
+    },
+    {
+      "kind": "literal",
+      "value": "burned-village"
+    },
+    {
+      "kind": "literal",
+      "value": "mountain-mine"
+    },
+    {
+      "kind": "literal",
+      "value": "cave-wall"
+    },
+    {
+      "kind": "literal",
+      "value": "church"
+    },
+    {
+      "kind": "literal",
+      "value": "ferry"
+    },
+    {
+      "kind": "literal",
+      "value": "ford"
+    },
+    {
+      "kind": "literal",
+      "value": "forest"
+    },
+    {
+      "kind": "literal",
+      "value": "fort"
+    },
+    {
+      "kind": "literal",
+      "value": "fortification"
+    },
+    {
+      "kind": "literal",
+      "value": "graveyard"
+    },
+    {
+      "kind": "literal",
+      "value": "grove"
+    },
+    {
+      "kind": "literal",
+      "value": "hill"
+    },
+    {
+      "kind": "literal",
+      "value": "house"
+    },
+    {
+      "kind": "literal",
+      "value": "keep"
+    },
+    {
+      "kind": "literal",
+      "value": "landing"
+    },
+    {
+      "kind": "literal",
+      "value": "marsh"
+    },
+    {
+      "kind": "literal",
+      "value": "monastery"
+    },
+    {
+      "kind": "literal",
+      "value": "mountain"
+    },
+    {
+      "kind": "literal",
+      "value": "plains"
+    },
+    {
+      "kind": "literal",
+      "value": "ritual-spent"
+    },
+    {
+      "kind": "literal",
+      "value": "ritual-star"
+    },
+    {
+      "kind": "literal",
+      "value": "road"
+    },
+    {
+      "kind": "literal",
+      "value": "ruins"
+    },
+    {
+      "kind": "literal",
+      "value": "signpost"
+    },
+    {
+      "kind": "literal",
+      "value": "village"
+    },
+    {
+      "kind": "literal",
+      "value": "water"
+    },
+    {
+      "kind": "union",
+      "members": [
+        3574, 3575, 3576, 3577, 3578, 3579, 3580, 3581, 3582, 3583, 3584, 3585, 3586, 3587, 3588,
+        3589, 3590, 3591, 3592, 3593, 3594, 3595, 3596, 3597, 3598, 3599, 3600
+      ]
+    },
+    {
+      "kind": "array",
+      "element": 3573
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3602]
+    },
+    {
+      "kind": "union",
+      "members": [3605, 3606, 3607]
+    },
+    {
+      "kind": "literal",
+      "value": "lit"
+    },
+    {
+      "kind": "literal",
+      "value": "unlit"
+    },
+    {
+      "kind": "literal",
+      "value": "darkness"
+    },
+    {
+      "kind": "union",
+      "members": [3605, 3606, 3607]
+    },
+    {
+      "kind": "array",
+      "element": 3604
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3609]
+    },
+    {
+      "kind": "array",
+      "element": 3570
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "radius": {
+          "type": 3453,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3612]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3568]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "blade": {
+          "type": 3453,
+          "optional": false
+        },
+        "pierce": {
+          "type": 3453,
+          "optional": false
+        },
+        "impact": {
+          "type": 3453,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3615]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "id": {
+          "type": 3454,
+          "optional": false
+        },
+        "name": {
+          "type": 3454,
+          "optional": false
+        },
+        "damage": {
+          "type": 3453,
+          "optional": false
+        },
+        "spread": {
+          "type": 3453,
+          "optional": false
+        },
+        "count": {
+          "type": 3453,
+          "optional": false
+        },
+        "damageType": {
+          "type": 3618,
+          "optional": false
+        },
+        "category": {
+          "type": 3623,
+          "optional": false
+        },
+        "range": {
+          "type": 3453,
+          "optional": false
+        },
+        "sound": {
+          "type": 3454,
+          "optional": false
+        },
+        "drain": {
+          "type": 3453,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3619, 3620, 3621]
+    },
+    {
+      "kind": "literal",
+      "value": "blade"
+    },
+    {
+      "kind": "literal",
+      "value": "pierce"
+    },
+    {
+      "kind": "literal",
+      "value": "impact"
+    },
+    {
+      "kind": "union",
+      "members": [3619, 3620, 3621]
+    },
+    {
+      "kind": "union",
+      "members": [3624, 3625]
+    },
+    {
+      "kind": "literal",
+      "value": "melee"
+    },
+    {
+      "kind": "literal",
+      "value": "ranged"
+    },
+    {
+      "kind": "union",
+      "members": [3624, 3625]
+    },
+    {
+      "kind": "array",
+      "element": 3617
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "power": {
+          "type": 3453,
+          "optional": false
+        },
+        "radius": {
+          "type": 3453,
+          "optional": false
+        },
+        "includeSelf": {
+          "type": 3455,
+          "optional": false
+        },
+        "targets": {
+          "type": 3629,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3630, 3631, 3632, 3633]
+    },
+    {
+      "kind": "literal",
+      "value": "own-faction"
+    },
+    {
+      "kind": "literal",
+      "value": "allies"
+    },
+    {
+      "kind": "literal",
+      "value": "enemies"
+    },
+    {
+      "kind": "literal",
+      "value": "everyone"
+    },
+    {
+      "kind": "union",
+      "members": [3630, 3631, 3632, 3633]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3628]
+    },
+    {
+      "kind": "array",
+      "element": 3566
+    },
+    {
+      "kind": "tuple",
+      "items": [3454, 3454]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3637]
+    },
+    {
+      "kind": "array",
+      "element": 3454
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 3453
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 3453
+    },
+    {
+      "kind": "union",
+      "members": [3643, 3644]
+    },
+    {
+      "kind": "literal",
+      "value": "playerVictory"
+    },
+    {
+      "kind": "literal",
+      "value": "playerDefeat"
+    },
+    {
+      "kind": "union",
+      "members": [3643, 3644]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3643, 3644]
+    },
+    {
+      "kind": "array",
+      "element": 3454
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "id": {
+          "type": 3454,
+          "optional": false
+        },
+        "location": {
+          "type": 3649,
+          "optional": false
+        },
+        "col": {
+          "type": 3453,
+          "optional": false
+        },
+        "row": {
+          "type": 3453,
+          "optional": false
+        },
+        "terrain": {
+          "type": 3454,
+          "optional": false
+        },
+        "owner": {
+          "type": 3650,
+          "optional": false
+        },
+        "connections": {
+          "type": 3660,
+          "optional": false
+        },
+        "deadEnds": {
+          "type": 3662,
+          "optional": false
+        },
+        "walls": {
+          "type": 3664,
+          "optional": false
+        },
+        "floor": {
+          "type": 3665,
+          "optional": false
+        },
+        "perception": {
+          "type": 3666,
+          "optional": false
+        },
+        "light": {
+          "type": 3678,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "union",
+      "members": [3652, 3653, 3654, 3655, 3656, 3657]
+    },
+    {
+      "kind": "literal",
+      "value": "e"
+    },
+    {
+      "kind": "literal",
+      "value": "se"
+    },
+    {
+      "kind": "literal",
+      "value": "sw"
+    },
+    {
+      "kind": "literal",
+      "value": "w"
+    },
+    {
+      "kind": "literal",
+      "value": "nw"
+    },
+    {
+      "kind": "literal",
+      "value": "ne"
+    },
+    {
+      "kind": "union",
+      "members": [3652, 3653, 3654, 3655, 3656, 3657]
+    },
+    {
+      "kind": "array",
+      "element": 3651
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3659]
+    },
+    {
+      "kind": "array",
+      "element": 3651
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3661]
+    },
+    {
+      "kind": "array",
+      "element": 3651
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3663]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "illumination": {
+          "type": 3604,
+          "optional": false
+        },
+        "sight": {
+          "type": 3668,
+          "optional": false
+        },
+        "remember": {
+          "type": 3455,
+          "optional": false
+        },
+        "concealment": {
+          "type": 3669,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "group": {
+          "type": 3454,
+          "optional": false
+        },
+        "profile": {
+          "type": 3458,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3667]
+    },
+    {
+      "kind": "array",
+      "element": 3571
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "emission": {
+          "type": 3671,
+          "optional": false
+        },
+        "color": {
+          "type": 3673,
+          "optional": false
+        },
+        "fixture": {
+          "type": 3674,
+          "optional": false
+        },
+        "dx": {
+          "type": 3675,
+          "optional": false
+        },
+        "dy": {
+          "type": 3676,
+          "optional": false
+        },
+        "radius": {
+          "type": 3453,
+          "optional": false
+        },
+        "power": {
+          "type": 3453,
+          "optional": false
+        },
+        "when": {
+          "type": 3677,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3612]
+    },
+    {
+      "kind": "tuple",
+      "items": [3453, 3453, 3453]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3672]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3455]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3453]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3453]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3508]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3670]
+    },
+    {
+      "kind": "array",
+      "element": 3648
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "revealedTo": {
+          "type": 3681,
+          "optional": false
+        },
+        "perceptionEffects": {
+          "type": 3688,
+          "optional": false
+        },
+        "faction": {
+          "type": 3454,
+          "optional": false
+        },
+        "items": {
+          "type": 3689,
+          "optional": false
+        },
+        "aiGroup": {
+          "type": 3690,
+          "optional": false
+        },
+        "id": {
+          "type": 3454,
+          "optional": false
+        },
+        "type": {
+          "type": 3454,
+          "optional": false
+        },
+        "tile": {
+          "type": 3471,
+          "optional": false
+        },
+        "hp": {
+          "type": 3453,
+          "optional": false
+        },
+        "moved": {
+          "type": 3455,
+          "optional": false
+        },
+        "attackSpent": {
+          "type": 3455,
+          "optional": false
+        },
+        "experience": {
+          "type": 3691,
+          "optional": false
+        },
+        "character": {
+          "type": 3692,
+          "optional": false
+        },
+        "role": {
+          "type": 3698,
+          "optional": false
+        },
+        "retreating": {
+          "type": 3699,
+          "optional": false
+        },
+        "rebuilding": {
+          "type": 3700,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3454
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "id": {
+          "type": 3454,
+          "optional": false
+        },
+        "penetrates": {
+          "type": 3683,
+          "optional": false
+        },
+        "concealment": {
+          "type": 3684,
+          "optional": false
+        },
+        "light": {
+          "type": 3685,
+          "optional": false
+        },
+        "expiresAt": {
+          "type": 3687,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3465
+    },
+    {
+      "kind": "array",
+      "element": 3570
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3612]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "round": {
+          "type": 3453,
+          "optional": false
+        },
+        "phase": {
+          "type": 3475,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3686]
+    },
+    {
+      "kind": "array",
+      "element": 3682
+    },
+    {
+      "kind": "array",
+      "element": 3567
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3453]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "union",
+      "members": [3694, 3695, 3696]
+    },
+    {
+      "kind": "literal",
+      "value": "leader"
+    },
+    {
+      "kind": "literal",
+      "value": "courier"
+    },
+    {
+      "kind": "literal",
+      "value": "captive"
+    },
+    {
+      "kind": "union",
+      "members": [3694, 3695, 3696]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3694, 3695, 3696]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3455]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3455]
+    },
+    {
+      "kind": "array",
+      "element": 3680
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "scripts": {
+          "type": 3725,
+          "optional": false
+        },
+        "evacuated": {
+          "type": 3727,
+          "optional": false
+        },
+        "id": {
+          "type": 3454,
+          "optional": false
+        },
+        "mission": {
+          "type": 3453,
+          "optional": false
+        },
+        "recall": {
+          "type": 3728,
+          "optional": false
+        },
+        "veterans": {
+          "type": 3734,
+          "optional": false
+        },
+        "storyVeterans": {
+          "type": 3736,
+          "optional": false
+        },
+        "fallenCompanions": {
+          "type": 3738,
+          "optional": false
+        },
+        "carryGold": {
+          "type": 3453,
+          "optional": false
+        },
+        "marks": {
+          "type": 3739,
+          "optional": false
+        },
+        "dialogue": {
+          "type": 3743,
+          "optional": false
+        },
+        "dialogueIndex": {
+          "type": 3453,
+          "optional": false
+        },
+        "outcome": {
+          "type": 3744,
+          "optional": false
+        },
+        "completed": {
+          "type": 3455,
+          "optional": false
+        },
+        "refuge": {
+          "type": 3746,
+          "optional": false
+        },
+        "vigil": {
+          "type": 3748,
+          "optional": false
+        },
+        "holds": {
+          "type": 3750,
+          "optional": false
+        },
+        "flags": {
+          "type": 3753,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "failed": {
+          "type": 3704,
+          "optional": false
+        },
+        "completed": {
+          "type": 3705,
+          "optional": false
+        },
+        "revealed": {
+          "type": 3706,
+          "optional": false
+        },
+        "recruitment": {
+          "type": 3708,
+          "optional": false
+        },
+        "active": {
+          "type": 3709,
+          "optional": false
+        },
+        "holds": {
+          "type": 3711,
+          "optional": false
+        },
+        "marks": {
+          "type": 3715,
+          "optional": false
+        },
+        "pending": {
+          "type": 3724,
+          "optional": false
+        },
+        "nextMark": {
+          "type": 3453,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3454
+    },
+    {
+      "kind": "array",
+      "element": 3454
+    },
+    {
+      "kind": "array",
+      "element": 3454
+    },
+    {
+      "kind": "array",
+      "element": 3497
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 3707
+    },
+    {
+      "kind": "array",
+      "element": 3454
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "event": {
+          "type": 3454,
+          "optional": false
+        },
+        "predicate": {
+          "type": 3453,
+          "optional": false
+        },
+        "turns": {
+          "type": 3453,
+          "optional": false
+        },
+        "lastRound": {
+          "type": 3453,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3710
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "sight": {
+          "type": 3713,
+          "optional": false
+        },
+        "lightRemembered": {
+          "type": 3455,
+          "optional": false
+        },
+        "id": {
+          "type": 3453,
+          "optional": false
+        },
+        "type": {
+          "type": 3454,
+          "optional": false
+        },
+        "tile": {
+          "type": 3471,
+          "optional": false
+        },
+        "light": {
+          "type": 3714,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3667]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3670]
+    },
+    {
+      "kind": "array",
+      "element": 3712
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "area": {
+          "type": 3717,
+          "optional": false
+        },
+        "faction": {
+          "type": 3454,
+          "optional": false
+        },
+        "aiGroup": {
+          "type": 3718,
+          "optional": false
+        },
+        "units": {
+          "type": 3723,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3471
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "type": {
+          "type": 3454,
+          "optional": false
+        },
+        "character": {
+          "type": 3720,
+          "optional": false
+        },
+        "role": {
+          "type": 3721,
+          "optional": false
+        },
+        "items": {
+          "type": 3722,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3694, 3695, 3696]
+    },
+    {
+      "kind": "array",
+      "element": 3454
+    },
+    {
+      "kind": "array",
+      "element": 3719
+    },
+    {
+      "kind": "array",
+      "element": 3716
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3703]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "event": {
+          "type": 3454,
+          "optional": false
+        },
+        "unit": {
+          "type": 3680,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3726
+    },
+    {
+      "kind": "array",
+      "element": 3454
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "items": {
+          "type": 3730,
+          "optional": false
+        },
+        "type": {
+          "type": 3454,
+          "optional": false
+        },
+        "experience": {
+          "type": 3453,
+          "optional": false
+        },
+        "character": {
+          "type": 3731,
+          "optional": false
+        },
+        "role": {
+          "type": 3732,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3567
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3694, 3695, 3696]
+    },
+    {
+      "kind": "array",
+      "element": 3729
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3733]
+    },
+    {
+      "kind": "array",
+      "element": 3729
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3735]
+    },
+    {
+      "kind": "array",
+      "element": 3454
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3737]
+    },
+    {
+      "kind": "array",
+      "element": 3454
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "sound": {
+          "type": 3741,
+          "optional": false
+        },
+        "speaker": {
+          "type": 3454,
+          "optional": false
+        },
+        "character": {
+          "type": 3742,
+          "optional": false
+        },
+        "portrait": {
+          "type": 3454,
+          "optional": false
+        },
+        "text": {
+          "type": 3454,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "array",
+      "element": 3740
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3454]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "heldTurns": {
+          "type": 3453,
+          "optional": false
+        },
+        "lastCountedRound": {
+          "type": 3453,
+          "optional": false
+        },
+        "escalated": {
+          "type": 3455,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3745]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "heldTurns": {
+          "type": 3453,
+          "optional": false
+        },
+        "lastCountedRound": {
+          "type": 3453,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3747]
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 3747
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3749]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "state": {
+          "type": 3455,
+          "optional": false
+        },
+        "stage": {
+          "type": 3453,
+          "optional": false
+        },
+        "turn": {
+          "type": 3453,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3751
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 3752
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3702]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "attackerId": {
+          "type": 3454,
+          "optional": false
+        },
+        "attackId": {
+          "type": 3454,
+          "optional": false
+        },
+        "sound": {
+          "type": 3454,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3755]
+    },
+    {
+      "kind": "union",
+      "members": [3452, 3755]
+    },
+    {
+      "kind": "union",
+      "members": [3759, 3817]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "pendingEnemy": {
+          "type": 3760,
+          "optional": false
+        },
+        "undo": {
+          "type": 3761,
+          "optional": false
+        },
+        "progress": {
+          "type": 3773,
+          "optional": false
+        },
+        "version": {
+          "type": 3780,
+          "optional": false
+        },
+        "checkpoint": {
+          "type": 3781,
+          "optional": false
+        },
+        "setup": {
+          "type": 3783,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "boolean"
+    },
+    {
+      "kind": "array",
+      "element": 3762
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "round": {
+          "type": 3763,
+          "optional": false
+        },
+        "unitId": {
+          "type": 3764,
+          "optional": false
+        },
+        "changes": {
+          "type": 3765,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "number"
+    },
+    {
+      "kind": "string"
+    },
+    {
+      "kind": "array",
+      "element": 3766
+    },
+    {
+      "kind": "union",
+      "members": [3767, 3771]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "op": {
+          "type": 3768,
+          "optional": false
+        },
+        "path": {
+          "type": 3769,
+          "optional": false
+        },
+        "value": {
+          "type": 3770,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "set"
+    },
+    {
+      "kind": "array",
+      "element": 3764
+    },
+    {
+      "kind": "unknown"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "op": {
+          "type": 3772,
+          "optional": false
+        },
+        "path": {
+          "type": 3769,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "remove"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "entry": {
+          "type": 3774,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3775,
+          "optional": false
+        },
+        "id": {
+          "type": 3764,
+          "optional": false
+        },
+        "savedAt": {
+          "type": 3763,
+          "optional": false
+        },
+        "run": {
+          "type": 3764,
+          "optional": false
+        },
+        "mission": {
+          "type": 3776,
+          "optional": false
+        },
+        "round": {
+          "type": 3763,
+          "optional": false
+        },
+        "missionStart": {
+          "type": 3760,
+          "optional": false
+        },
+        "runId": {
+          "type": 3764,
+          "optional": false
+        },
+        "branchId": {
+          "type": 3764,
+          "optional": false
+        },
+        "checkpointId": {
+          "type": 3764,
+          "optional": false
+        },
+        "ordinal": {
+          "type": 3763,
+          "optional": false
+        },
+        "mapId": {
+          "type": 3779,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "flash"
+    },
+    {
+      "kind": "union",
+      "members": [3777, 3778]
+    },
+    {
+      "kind": "null"
+    },
+    {
+      "kind": "number"
+    },
+    {
+      "kind": "string"
+    },
+    {
+      "kind": "literal",
+      "value": 50
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "seed": {
+          "type": 3782,
+          "optional": false
+        },
+        "state": {
+          "type": 3456,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "number"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "first": {
+          "type": 3784,
+          "optional": false
+        },
+        "enemy": {
+          "type": 3787,
+          "optional": false
+        },
+        "player": {
+          "type": 3812,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3785, 3786]
+    },
+    {
+      "kind": "literal",
+      "value": "player"
+    },
+    {
+      "kind": "literal",
+      "value": "ai"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "blocks": {
+          "type": 3788,
+          "optional": true
+        },
+        "policy": {
+          "type": 3805,
+          "optional": false
+        },
+        "diplomacy": {
+          "type": 3808,
+          "optional": false
+        },
+        "recruitmentLimit": {
+          "type": 3811,
+          "optional": true
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3789, 3790]
+    },
+    {
+      "kind": "undefined"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "recruiter": {
+          "type": 3791,
+          "optional": false
+        },
+        "campaign": {
+          "type": 3799,
+          "optional": false
+        },
+        "planner": {
+          "type": 3802,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3792, 3793, 3794, 3795, 3796, 3797, 3798]
+    },
+    {
+      "kind": "literal",
+      "value": "classic"
+    },
+    {
+      "kind": "literal",
+      "value": "balanced"
+    },
+    {
+      "kind": "literal",
+      "value": "situational"
+    },
+    {
+      "kind": "literal",
+      "value": "predictor"
+    },
+    {
+      "kind": "literal",
+      "value": "rotation"
+    },
+    {
+      "kind": "literal",
+      "value": "frontline"
+    },
+    {
+      "kind": "literal",
+      "value": "aggressive-predictor"
+    },
+    {
+      "kind": "union",
+      "members": [3800, 3801]
+    },
+    {
+      "kind": "literal",
+      "value": "arena"
+    },
+    {
+      "kind": "literal",
+      "value": "mission"
+    },
+    {
+      "kind": "union",
+      "members": [3792, 3803, 3804]
+    },
+    {
+      "kind": "literal",
+      "value": "full"
+    },
+    {
+      "kind": "literal",
+      "value": "queued"
+    },
+    {
+      "kind": "union",
+      "members": [3792, 3806, 3793, 3807, 3794, 3795]
+    },
+    {
+      "kind": "literal",
+      "value": "rush"
+    },
+    {
+      "kind": "literal",
+      "value": "rotated"
+    },
+    {
+      "kind": "union",
+      "members": [3809, 3810]
+    },
+    {
+      "kind": "literal",
+      "value": "diplomatic"
+    },
+    {
+      "kind": "literal",
+      "value": "unrestricted"
+    },
+    {
+      "kind": "union",
+      "members": [3789, 3763]
+    },
+    {
+      "kind": "union",
+      "members": [3813, 3814, 3815, 3816]
+    },
+    {
+      "kind": "null"
+    },
+    {
+      "kind": "literal",
+      "value": "classic"
+    },
+    {
+      "kind": "literal",
+      "value": "situational"
+    },
+    {
+      "kind": "literal",
+      "value": "predictor"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "pendingEnemy": {
+          "type": 3818,
+          "optional": false
+        },
+        "undo": {
+          "type": 3789,
+          "optional": true
+        },
+        "progress": {
+          "type": 3819,
+          "optional": false
+        },
+        "version": {
+          "type": 3780,
+          "optional": false
+        },
+        "checkpoint": {
+          "type": 3781,
+          "optional": false
+        },
+        "setup": {
+          "type": 3783,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": false
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "entry": {
+          "type": 3820,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3821,
+          "optional": false
+        },
+        "manual": {
+          "type": 3760,
+          "optional": false
+        },
+        "parentId": {
+          "type": 3822,
+          "optional": true
+        },
+        "id": {
+          "type": 3764,
+          "optional": false
+        },
+        "savedAt": {
+          "type": 3763,
+          "optional": false
+        },
+        "run": {
+          "type": 3764,
+          "optional": false
+        },
+        "mission": {
+          "type": 3776,
+          "optional": false
+        },
+        "round": {
+          "type": 3763,
+          "optional": false
+        },
+        "missionStart": {
+          "type": 3760,
+          "optional": false
+        },
+        "runId": {
+          "type": 3764,
+          "optional": false
+        },
+        "branchId": {
+          "type": 3764,
+          "optional": false
+        },
+        "checkpointId": {
+          "type": 3764,
+          "optional": false
+        },
+        "ordinal": {
+          "type": 3763,
+          "optional": false
+        },
+        "mapId": {
+          "type": 3779,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "turn"
+    },
+    {
+      "kind": "union",
+      "members": [3789, 3764]
+    },
+    {
+      "kind": "null"
+    },
+    {
+      "kind": "number"
+    },
+    {
+      "kind": "string"
+    },
+    {
+      "kind": "boolean"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "mapModifiers": {
+          "type": 3828,
+          "optional": false
+        },
+        "lighting": {
+          "type": 3842,
+          "optional": false
+        },
+        "visionGroups": {
+          "type": 3857,
+          "optional": false
+        },
+        "factions": {
+          "type": 3949,
+          "optional": false
+        },
+        "groundItems": {
+          "type": 4035,
+          "optional": false
+        },
+        "armies": {
+          "type": 4037,
+          "optional": false
+        },
+        "conditionMemory": {
+          "type": 4038,
+          "optional": false
+        },
+        "mapId": {
+          "type": 3848,
+          "optional": false
+        },
+        "mapRevision": {
+          "type": 3824,
+          "optional": false
+        },
+        "cols": {
+          "type": 3824,
+          "optional": false
+        },
+        "rows": {
+          "type": 3824,
+          "optional": false
+        },
+        "round": {
+          "type": 3824,
+          "optional": false
+        },
+        "turn": {
+          "type": 3859,
+          "optional": false
+        },
+        "gold": {
+          "type": 4039,
+          "optional": false
+        },
+        "winner": {
+          "type": 4045,
+          "optional": false
+        },
+        "nextId": {
+          "type": 3824,
+          "optional": false
+        },
+        "combatRng": {
+          "type": 3824,
+          "optional": false
+        },
+        "log": {
+          "type": 4046,
+          "optional": false
+        },
+        "tiles": {
+          "type": 4081,
+          "optional": false
+        },
+        "units": {
+          "type": 4102,
+          "optional": false
+        },
+        "campaign": {
+          "type": 4155,
+          "optional": false
+        },
+        "lastCombat": {
+          "type": 4158,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "sight": {
+          "type": 3829,
+          "optional": false
+        },
+        "damageModifiers": {
+          "type": 3837,
+          "optional": false
+        },
+        "terrainModifiers": {
+          "type": 3841,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "range": {
+          "type": 3824,
+          "optional": false
+        },
+        "unlimited": {
+          "type": 3826,
+          "optional": false
+        },
+        "sightModifiers": {
+          "type": 3830,
+          "optional": false
+        },
+        "penetrates": {
+          "type": 3836,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "lit": {
+          "type": 3824,
+          "optional": false
+        },
+        "unlit": {
+          "type": 3824,
+          "optional": false
+        },
+        "darkness": {
+          "type": 3824,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3832, 3833, 3834]
+    },
+    {
+      "kind": "literal",
+      "value": "fog"
+    },
+    {
+      "kind": "literal",
+      "value": "darkness"
+    },
+    {
+      "kind": "literal",
+      "value": "forest-camouflage"
+    },
+    {
+      "kind": "union",
+      "members": [3832, 3833, 3834]
+    },
+    {
+      "kind": "array",
+      "element": 3831
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "blade": {
+          "type": 3824,
+          "optional": false
+        },
+        "pierce": {
+          "type": 3824,
+          "optional": false
+        },
+        "impact": {
+          "type": 3824,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "cost": {
+          "type": 3824,
+          "optional": false
+        },
+        "passable": {
+          "type": 3839,
+          "optional": false
+        },
+        "damageModifiers": {
+          "type": 3840,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3826]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "melee": {
+          "type": 3824,
+          "optional": false
+        },
+        "ranged": {
+          "type": 3824,
+          "optional": false
+        },
+        "blade": {
+          "type": 3824,
+          "optional": false
+        },
+        "pierce": {
+          "type": 3824,
+          "optional": false
+        },
+        "impact": {
+          "type": 3824,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 3838
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "time": {
+          "type": 3843,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3844, 3845]
+    },
+    {
+      "kind": "literal",
+      "value": "day"
+    },
+    {
+      "kind": "literal",
+      "value": "night"
+    },
+    {
+      "kind": "union",
+      "members": [3844, 3845]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "id": {
+          "type": 3848,
+          "optional": false
+        },
+        "sight": {
+          "type": 3849,
+          "optional": false
+        },
+        "explored": {
+          "type": 3856,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "string"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "range": {
+          "type": 3850,
+          "optional": false
+        },
+        "penetrates": {
+          "type": 3854,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3851, 3824]
+    },
+    {
+      "kind": "literal",
+      "value": "unlimited"
+    },
+    {
+      "kind": "literal",
+      "value": "unlimited"
+    },
+    {
+      "kind": "union",
+      "members": [3851, 3824]
+    },
+    {
+      "kind": "array",
+      "element": 3831
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "col": {
+          "type": 3824,
+          "optional": false
+        },
+        "row": {
+          "type": 3824,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3855
+    },
+    {
+      "kind": "array",
+      "element": 3847
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "visionGroup": {
+          "type": 3848,
+          "optional": false
+        },
+        "id": {
+          "type": 3848,
+          "optional": false
+        },
+        "phase": {
+          "type": 3859,
+          "optional": false
+        },
+        "controller": {
+          "type": 3863,
+          "optional": false
+        },
+        "palette": {
+          "type": 3848,
+          "optional": false
+        },
+        "name": {
+          "type": 3880,
+          "optional": false
+        },
+        "recruits": {
+          "type": 3884,
+          "optional": false
+        },
+        "relations": {
+          "type": 3890,
+          "optional": false
+        },
+        "transfer": {
+          "type": 3948,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3860, 3861]
+    },
+    {
+      "kind": "literal",
+      "value": "player"
+    },
+    {
+      "kind": "literal",
+      "value": "ai"
+    },
+    {
+      "kind": "union",
+      "members": [3860, 3861]
+    },
+    {
+      "kind": "union",
+      "members": [3865, 3867, 3878]
+    },
+    {
+      "kind": "literal",
+      "value": "human"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3864,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "passive"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3866,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "ai"
+    },
+    {
+      "kind": "union",
+      "members": [3870, 3871, 3872, 3873, 3874, 3875]
+    },
+    {
+      "kind": "literal",
+      "value": "classic"
+    },
+    {
+      "kind": "literal",
+      "value": "rush"
+    },
+    {
+      "kind": "literal",
+      "value": "balanced"
+    },
+    {
+      "kind": "literal",
+      "value": "rotated"
+    },
+    {
+      "kind": "literal",
+      "value": "situational"
+    },
+    {
+      "kind": "literal",
+      "value": "predictor"
+    },
+    {
+      "kind": "union",
+      "members": [3870, 3871, 3872, 3873, 3874, 3875]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3870, 3871, 3872, 3873, 3874, 3875]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3868,
+          "optional": false
+        },
+        "policy": {
+          "type": 3877,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3865, 3867, 3878]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "unit": {
+          "type": 3848,
+          "optional": false
+        },
+        "cost": {
+          "type": 3882,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3824]
+    },
+    {
+      "kind": "array",
+      "element": 3881
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3883]
+    },
+    {
+      "kind": "union",
+      "members": [3886, 3887, 3888]
+    },
+    {
+      "kind": "literal",
+      "value": "allied"
+    },
+    {
+      "kind": "literal",
+      "value": "neutral"
+    },
+    {
+      "kind": "literal",
+      "value": "hostile"
+    },
+    {
+      "kind": "union",
+      "members": [3886, 3887, 3888]
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 3885
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "to": {
+          "type": 3848,
+          "optional": false
+        },
+        "when": {
+          "type": 3892,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "observer": {
+          "type": 3893,
+          "optional": false
+        },
+        "condition": {
+          "type": 3894,
+          "optional": false
+        },
+        "remember": {
+          "type": 3826,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "union",
+      "members": [3907, 3920, 3923, 3928, 3932, 3934, 3936, 3938, 3940, 3943, 3946]
+    },
+    {
+      "kind": "literal",
+      "value": "owner"
+    },
+    {
+      "kind": "union",
+      "members": [3897, 3898, 3904]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "location": {
+          "type": 3848,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "hex": {
+          "type": 3855,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3900, 3901, 3902]
+    },
+    {
+      "kind": "literal",
+      "value": "unit"
+    },
+    {
+      "kind": "literal",
+      "value": "mark"
+    },
+    {
+      "kind": "literal",
+      "value": "death"
+    },
+    {
+      "kind": "union",
+      "members": [3900, 3901, 3902]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "binding": {
+          "type": 3899,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3897, 3898, 3904]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3897, 3898, 3904]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3895,
+          "optional": false
+        },
+        "tile": {
+          "type": 3906,
+          "optional": false
+        },
+        "side": {
+          "type": 3848,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "proximity"
+    },
+    {
+      "kind": "array",
+      "element": 3848
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3897, 3898, 3904]
+    },
+    {
+      "kind": "union",
+      "members": [3912, 3913, 3914, 3915, 3916]
+    },
+    {
+      "kind": "literal",
+      "value": "player"
+    },
+    {
+      "kind": "literal",
+      "value": "enemy"
+    },
+    {
+      "kind": "literal",
+      "value": "neutral"
+    },
+    {
+      "kind": "literal",
+      "value": "any"
+    },
+    {
+      "kind": "literal",
+      "value": "observer"
+    },
+    {
+      "kind": "union",
+      "members": [3912, 3913, 3914, 3915, 3916]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3908,
+          "optional": false
+        },
+        "unitTypes": {
+          "type": 3909,
+          "optional": false
+        },
+        "tile": {
+          "type": 3910,
+          "optional": false
+        },
+        "radius": {
+          "type": 3824,
+          "optional": false
+        },
+        "side": {
+          "type": 3911,
+          "optional": false
+        },
+        "unitType": {
+          "type": 3918,
+          "optional": false
+        },
+        "character": {
+          "type": 3919,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "visibleUnits"
+    },
+    {
+      "kind": "array",
+      "element": 3848
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3921,
+          "optional": false
+        },
+        "side": {
+          "type": 3911,
+          "optional": false
+        },
+        "unitTypes": {
+          "type": 3922,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "hasUnits"
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3924,
+          "optional": false
+        },
+        "aiGroup": {
+          "type": 3925,
+          "optional": false
+        },
+        "side": {
+          "type": 3911,
+          "optional": false
+        },
+        "unitType": {
+          "type": 3926,
+          "optional": false
+        },
+        "character": {
+          "type": 3927,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "noUnits"
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3929,
+          "optional": false
+        },
+        "side": {
+          "type": 3911,
+          "optional": false
+        },
+        "unitType": {
+          "type": 3930,
+          "optional": false
+        },
+        "character": {
+          "type": 3931,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "choice"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3933,
+          "optional": false
+        },
+        "choice": {
+          "type": 3848,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "flag"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3935,
+          "optional": false
+        },
+        "flag": {
+          "type": 3848,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "event"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3937,
+          "optional": false
+        },
+        "event": {
+          "type": 3848,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "round"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3939,
+          "optional": false
+        },
+        "round": {
+          "type": 3824,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "all"
+    },
+    {
+      "kind": "array",
+      "element": 3894
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3941,
+          "optional": false
+        },
+        "conditions": {
+          "type": 3942,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "any"
+    },
+    {
+      "kind": "array",
+      "element": 3894
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3944,
+          "optional": false
+        },
+        "conditions": {
+          "type": 3945,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3907, 3920, 3923, 3928, 3932, 3934, 3936, 3938, 3940, 3943, 3946]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3891]
+    },
+    {
+      "kind": "array",
+      "element": 3858
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "tile": {
+          "type": 3855,
+          "optional": false
+        },
+        "item": {
+          "type": 3951,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "sight": {
+          "type": 3829,
+          "optional": false
+        },
+        "effects": {
+          "type": 4025,
+          "optional": false
+        },
+        "armor": {
+          "type": 4027,
+          "optional": false
+        },
+        "id": {
+          "type": 3848,
+          "optional": false
+        },
+        "name": {
+          "type": 3848,
+          "optional": false
+        },
+        "description": {
+          "type": 3848,
+          "optional": false
+        },
+        "attacks": {
+          "type": 4034,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "scope": {
+          "type": 3953,
+          "optional": false
+        },
+        "stacking": {
+          "type": 3960,
+          "optional": false
+        },
+        "effect": {
+          "type": 3966,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "radius": {
+          "type": 3824,
+          "optional": false
+        },
+        "includeSelf": {
+          "type": 3826,
+          "optional": false
+        },
+        "targets": {
+          "type": 3954,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3955, 3956, 3957, 3958]
+    },
+    {
+      "kind": "literal",
+      "value": "own-faction"
+    },
+    {
+      "kind": "literal",
+      "value": "allies"
+    },
+    {
+      "kind": "literal",
+      "value": "enemies"
+    },
+    {
+      "kind": "literal",
+      "value": "everyone"
+    },
+    {
+      "kind": "union",
+      "members": [3955, 3956, 3957, 3958]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "group": {
+          "type": 3848,
+          "optional": false
+        },
+        "combine": {
+          "type": 3961,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3962, 3963, 3964]
+    },
+    {
+      "kind": "literal",
+      "value": "add"
+    },
+    {
+      "kind": "literal",
+      "value": "max"
+    },
+    {
+      "kind": "literal",
+      "value": "union"
+    },
+    {
+      "kind": "union",
+      "members": [3962, 3963, 3964]
+    },
+    {
+      "kind": "union",
+      "members": [3968, 3974, 3977, 4019, 4021, 4023]
+    },
+    {
+      "kind": "literal",
+      "value": "healing"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3967,
+          "optional": false
+        },
+        "power": {
+          "type": 3824,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "thorns"
+    },
+    {
+      "kind": "union",
+      "members": [3971, 3972]
+    },
+    {
+      "kind": "literal",
+      "value": "melee"
+    },
+    {
+      "kind": "literal",
+      "value": "ranged"
+    },
+    {
+      "kind": "union",
+      "members": [3971, 3972]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3969,
+          "optional": false
+        },
+        "damagePerStrike": {
+          "type": 3824,
+          "optional": false
+        },
+        "incomingCategory": {
+          "type": 3970,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "sight"
+    },
+    {
+      "kind": "array",
+      "element": 3831
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3975,
+          "optional": false
+        },
+        "range": {
+          "type": 3824,
+          "optional": false
+        },
+        "unlimited": {
+          "type": 3826,
+          "optional": false
+        },
+        "sightModifiers": {
+          "type": 3830,
+          "optional": false
+        },
+        "penetrates": {
+          "type": 3976,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "concealment"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3831,
+          "optional": false
+        },
+        "revealWithin": {
+          "type": 3824,
+          "optional": false
+        },
+        "requires": {
+          "type": 3980,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "terrains": {
+          "type": 4011,
+          "optional": false
+        },
+        "illumination": {
+          "type": 4018,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [
+        3982, 3983, 3984, 3985, 3986, 3987, 3988, 3989, 3990, 3991, 3992, 3993, 3994, 3995, 3996,
+        3997, 3998, 3999, 4000, 4001, 4002, 4003, 4004, 4005, 4006, 4007, 4008
+      ]
+    },
+    {
+      "kind": "literal",
+      "value": "bridge"
+    },
+    {
+      "kind": "literal",
+      "value": "burned-village"
+    },
+    {
+      "kind": "literal",
+      "value": "mountain-mine"
+    },
+    {
+      "kind": "literal",
+      "value": "cave-wall"
+    },
+    {
+      "kind": "literal",
+      "value": "church"
+    },
+    {
+      "kind": "literal",
+      "value": "ferry"
+    },
+    {
+      "kind": "literal",
+      "value": "ford"
+    },
+    {
+      "kind": "literal",
+      "value": "forest"
+    },
+    {
+      "kind": "literal",
+      "value": "fort"
+    },
+    {
+      "kind": "literal",
+      "value": "fortification"
+    },
+    {
+      "kind": "literal",
+      "value": "graveyard"
+    },
+    {
+      "kind": "literal",
+      "value": "grove"
+    },
+    {
+      "kind": "literal",
+      "value": "hill"
+    },
+    {
+      "kind": "literal",
+      "value": "house"
+    },
+    {
+      "kind": "literal",
+      "value": "keep"
+    },
+    {
+      "kind": "literal",
+      "value": "landing"
+    },
+    {
+      "kind": "literal",
+      "value": "marsh"
+    },
+    {
+      "kind": "literal",
+      "value": "monastery"
+    },
+    {
+      "kind": "literal",
+      "value": "mountain"
+    },
+    {
+      "kind": "literal",
+      "value": "plains"
+    },
+    {
+      "kind": "literal",
+      "value": "ritual-spent"
+    },
+    {
+      "kind": "literal",
+      "value": "ritual-star"
+    },
+    {
+      "kind": "literal",
+      "value": "road"
+    },
+    {
+      "kind": "literal",
+      "value": "ruins"
+    },
+    {
+      "kind": "literal",
+      "value": "signpost"
+    },
+    {
+      "kind": "literal",
+      "value": "village"
+    },
+    {
+      "kind": "literal",
+      "value": "water"
+    },
+    {
+      "kind": "union",
+      "members": [
+        3982, 3983, 3984, 3985, 3986, 3987, 3988, 3989, 3990, 3991, 3992, 3993, 3994, 3995, 3996,
+        3997, 3998, 3999, 4000, 4001, 4002, 4003, 4004, 4005, 4006, 4007, 4008
+      ]
+    },
+    {
+      "kind": "array",
+      "element": 3981
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4010]
+    },
+    {
+      "kind": "union",
+      "members": [4013, 4014, 4015]
+    },
+    {
+      "kind": "literal",
+      "value": "lit"
+    },
+    {
+      "kind": "literal",
+      "value": "unlit"
+    },
+    {
+      "kind": "literal",
+      "value": "darkness"
+    },
+    {
+      "kind": "union",
+      "members": [4013, 4014, 4015]
+    },
+    {
+      "kind": "array",
+      "element": 4012
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4017]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3978,
+          "optional": false
+        },
+        "rule": {
+          "type": 3979,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "light"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4020,
+          "optional": false
+        },
+        "radius": {
+          "type": 3824,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "stat-modifiers"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4022,
+          "optional": false
+        },
+        "modifiers": {
+          "type": 3828,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3968, 3974, 3977, 4019, 4021, 4023]
+    },
+    {
+      "kind": "array",
+      "element": 3952
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "blade": {
+          "type": 3824,
+          "optional": false
+        },
+        "pierce": {
+          "type": 3824,
+          "optional": false
+        },
+        "impact": {
+          "type": 3824,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4026]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "id": {
+          "type": 3848,
+          "optional": false
+        },
+        "name": {
+          "type": 3848,
+          "optional": false
+        },
+        "damage": {
+          "type": 3824,
+          "optional": false
+        },
+        "spread": {
+          "type": 3824,
+          "optional": false
+        },
+        "count": {
+          "type": 3824,
+          "optional": false
+        },
+        "damageType": {
+          "type": 4029,
+          "optional": false
+        },
+        "category": {
+          "type": 3970,
+          "optional": false
+        },
+        "range": {
+          "type": 3824,
+          "optional": false
+        },
+        "sound": {
+          "type": 3848,
+          "optional": false
+        },
+        "drain": {
+          "type": 3824,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4030, 4031, 4032]
+    },
+    {
+      "kind": "literal",
+      "value": "blade"
+    },
+    {
+      "kind": "literal",
+      "value": "pierce"
+    },
+    {
+      "kind": "literal",
+      "value": "impact"
+    },
+    {
+      "kind": "union",
+      "members": [4030, 4031, 4032]
+    },
+    {
+      "kind": "array",
+      "element": 4028
+    },
+    {
+      "kind": "array",
+      "element": 3950
+    },
+    {
+      "kind": "tuple",
+      "items": [3848, 3848]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4036]
+    },
+    {
+      "kind": "array",
+      "element": 3848
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 3824
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 3824
+    },
+    {
+      "kind": "union",
+      "members": [4042, 4043]
+    },
+    {
+      "kind": "literal",
+      "value": "playerVictory"
+    },
+    {
+      "kind": "literal",
+      "value": "playerDefeat"
+    },
+    {
+      "kind": "union",
+      "members": [4042, 4043]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4042, 4043]
+    },
+    {
+      "kind": "array",
+      "element": 3848
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "effects": {
+          "type": 4048,
+          "optional": false
+        },
+        "id": {
+          "type": 3848,
+          "optional": false
+        },
+        "location": {
+          "type": 4049,
+          "optional": false
+        },
+        "col": {
+          "type": 3824,
+          "optional": false
+        },
+        "row": {
+          "type": 3824,
+          "optional": false
+        },
+        "terrain": {
+          "type": 3848,
+          "optional": false
+        },
+        "owner": {
+          "type": 4050,
+          "optional": false
+        },
+        "connections": {
+          "type": 4060,
+          "optional": false
+        },
+        "deadEnds": {
+          "type": 4062,
+          "optional": false
+        },
+        "walls": {
+          "type": 4064,
+          "optional": false
+        },
+        "floor": {
+          "type": 4065,
+          "optional": false
+        },
+        "perception": {
+          "type": 4066,
+          "optional": false
+        },
+        "light": {
+          "type": 4080,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3952
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "union",
+      "members": [4052, 4053, 4054, 4055, 4056, 4057]
+    },
+    {
+      "kind": "literal",
+      "value": "e"
+    },
+    {
+      "kind": "literal",
+      "value": "se"
+    },
+    {
+      "kind": "literal",
+      "value": "sw"
+    },
+    {
+      "kind": "literal",
+      "value": "w"
+    },
+    {
+      "kind": "literal",
+      "value": "nw"
+    },
+    {
+      "kind": "literal",
+      "value": "ne"
+    },
+    {
+      "kind": "union",
+      "members": [4052, 4053, 4054, 4055, 4056, 4057]
+    },
+    {
+      "kind": "array",
+      "element": 4051
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4059]
+    },
+    {
+      "kind": "array",
+      "element": 4051
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4061]
+    },
+    {
+      "kind": "array",
+      "element": 4051
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4063]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "illumination": {
+          "type": 4067,
+          "optional": false
+        },
+        "sight": {
+          "type": 4069,
+          "optional": false
+        },
+        "remember": {
+          "type": 3826,
+          "optional": false
+        },
+        "concealment": {
+          "type": 4070,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4013, 4014, 4015]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "group": {
+          "type": 3848,
+          "optional": false
+        },
+        "profile": {
+          "type": 3849,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4068]
+    },
+    {
+      "kind": "array",
+      "element": 3979
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "emission": {
+          "type": 4073,
+          "optional": false
+        },
+        "color": {
+          "type": 4075,
+          "optional": false
+        },
+        "fixture": {
+          "type": 4076,
+          "optional": false
+        },
+        "dx": {
+          "type": 4077,
+          "optional": false
+        },
+        "dy": {
+          "type": 4078,
+          "optional": false
+        },
+        "radius": {
+          "type": 3824,
+          "optional": false
+        },
+        "power": {
+          "type": 3824,
+          "optional": false
+        },
+        "when": {
+          "type": 4079,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "radius": {
+          "type": 3824,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4072]
+    },
+    {
+      "kind": "tuple",
+      "items": [3824, 3824, 3824]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4074]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3826]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3824]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3824]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3892]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4071]
+    },
+    {
+      "kind": "array",
+      "element": 4047
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "revealedTo": {
+          "type": 4083,
+          "optional": false
+        },
+        "perceptionEffects": {
+          "type": 4089,
+          "optional": false
+        },
+        "faction": {
+          "type": 3848,
+          "optional": false
+        },
+        "items": {
+          "type": 4090,
+          "optional": false
+        },
+        "aiGroup": {
+          "type": 4091,
+          "optional": false
+        },
+        "id": {
+          "type": 3848,
+          "optional": false
+        },
+        "type": {
+          "type": 3848,
+          "optional": false
+        },
+        "tile": {
+          "type": 3855,
+          "optional": false
+        },
+        "hp": {
+          "type": 3824,
+          "optional": false
+        },
+        "moved": {
+          "type": 3826,
+          "optional": false
+        },
+        "attackSpent": {
+          "type": 3826,
+          "optional": false
+        },
+        "experience": {
+          "type": 4092,
+          "optional": false
+        },
+        "character": {
+          "type": 4093,
+          "optional": false
+        },
+        "role": {
+          "type": 4099,
+          "optional": false
+        },
+        "retreating": {
+          "type": 4100,
+          "optional": false
+        },
+        "rebuilding": {
+          "type": 4101,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3848
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "id": {
+          "type": 3848,
+          "optional": false
+        },
+        "penetrates": {
+          "type": 4085,
+          "optional": false
+        },
+        "concealment": {
+          "type": 4087,
+          "optional": false
+        },
+        "light": {
+          "type": 4088,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3831
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 3831,
+          "optional": false
+        },
+        "revealWithin": {
+          "type": 3824,
+          "optional": false
+        },
+        "requires": {
+          "type": 3980,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 4086
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4072]
+    },
+    {
+      "kind": "array",
+      "element": 4084
+    },
+    {
+      "kind": "array",
+      "element": 3951
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3824]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "union",
+      "members": [4095, 4096, 4097]
+    },
+    {
+      "kind": "literal",
+      "value": "leader"
+    },
+    {
+      "kind": "literal",
+      "value": "courier"
+    },
+    {
+      "kind": "literal",
+      "value": "captive"
+    },
+    {
+      "kind": "union",
+      "members": [4095, 4096, 4097]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4095, 4096, 4097]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3826]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3826]
+    },
+    {
+      "kind": "array",
+      "element": 4082
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "scripts": {
+          "type": 4126,
+          "optional": false
+        },
+        "evacuated": {
+          "type": 4128,
+          "optional": false
+        },
+        "id": {
+          "type": 3848,
+          "optional": false
+        },
+        "mission": {
+          "type": 3824,
+          "optional": false
+        },
+        "recall": {
+          "type": 4129,
+          "optional": false
+        },
+        "veterans": {
+          "type": 4135,
+          "optional": false
+        },
+        "storyVeterans": {
+          "type": 4137,
+          "optional": false
+        },
+        "fallenCompanions": {
+          "type": 4139,
+          "optional": false
+        },
+        "carryGold": {
+          "type": 3824,
+          "optional": false
+        },
+        "marks": {
+          "type": 4140,
+          "optional": false
+        },
+        "dialogue": {
+          "type": 4144,
+          "optional": false
+        },
+        "dialogueIndex": {
+          "type": 3824,
+          "optional": false
+        },
+        "outcome": {
+          "type": 4145,
+          "optional": false
+        },
+        "completed": {
+          "type": 3826,
+          "optional": false
+        },
+        "refuge": {
+          "type": 4147,
+          "optional": false
+        },
+        "vigil": {
+          "type": 4149,
+          "optional": false
+        },
+        "holds": {
+          "type": 4151,
+          "optional": false
+        },
+        "flags": {
+          "type": 4154,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "failed": {
+          "type": 4105,
+          "optional": false
+        },
+        "completed": {
+          "type": 4106,
+          "optional": false
+        },
+        "revealed": {
+          "type": 4107,
+          "optional": false
+        },
+        "recruitment": {
+          "type": 4109,
+          "optional": false
+        },
+        "active": {
+          "type": 4110,
+          "optional": false
+        },
+        "holds": {
+          "type": 4112,
+          "optional": false
+        },
+        "marks": {
+          "type": 4116,
+          "optional": false
+        },
+        "pending": {
+          "type": 4125,
+          "optional": false
+        },
+        "nextMark": {
+          "type": 3824,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3848
+    },
+    {
+      "kind": "array",
+      "element": 3848
+    },
+    {
+      "kind": "array",
+      "element": 3848
+    },
+    {
+      "kind": "array",
+      "element": 3881
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 4108
+    },
+    {
+      "kind": "array",
+      "element": 3848
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "event": {
+          "type": 3848,
+          "optional": false
+        },
+        "predicate": {
+          "type": 3824,
+          "optional": false
+        },
+        "turns": {
+          "type": 3824,
+          "optional": false
+        },
+        "lastRound": {
+          "type": 3824,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 4111
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "sight": {
+          "type": 4114,
+          "optional": false
+        },
+        "lightRemembered": {
+          "type": 3826,
+          "optional": false
+        },
+        "id": {
+          "type": 3824,
+          "optional": false
+        },
+        "type": {
+          "type": 3848,
+          "optional": false
+        },
+        "tile": {
+          "type": 3855,
+          "optional": false
+        },
+        "light": {
+          "type": 4115,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4068]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4071]
+    },
+    {
+      "kind": "array",
+      "element": 4113
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "area": {
+          "type": 4118,
+          "optional": false
+        },
+        "faction": {
+          "type": 3848,
+          "optional": false
+        },
+        "aiGroup": {
+          "type": 4119,
+          "optional": false
+        },
+        "units": {
+          "type": 4124,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3855
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "type": {
+          "type": 3848,
+          "optional": false
+        },
+        "character": {
+          "type": 4121,
+          "optional": false
+        },
+        "role": {
+          "type": 4122,
+          "optional": false
+        },
+        "items": {
+          "type": 4123,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4095, 4096, 4097]
+    },
+    {
+      "kind": "array",
+      "element": 3848
+    },
+    {
+      "kind": "array",
+      "element": 4120
+    },
+    {
+      "kind": "array",
+      "element": 4117
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4104]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "event": {
+          "type": 3848,
+          "optional": false
+        },
+        "unit": {
+          "type": 4082,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 4127
+    },
+    {
+      "kind": "array",
+      "element": 3848
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "items": {
+          "type": 4131,
+          "optional": false
+        },
+        "type": {
+          "type": 3848,
+          "optional": false
+        },
+        "experience": {
+          "type": 3824,
+          "optional": false
+        },
+        "character": {
+          "type": 4132,
+          "optional": false
+        },
+        "role": {
+          "type": 4133,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 3951
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4095, 4096, 4097]
+    },
+    {
+      "kind": "array",
+      "element": 4130
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4134]
+    },
+    {
+      "kind": "array",
+      "element": 4130
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4136]
+    },
+    {
+      "kind": "array",
+      "element": 3848
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4138]
+    },
+    {
+      "kind": "array",
+      "element": 3848
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "sound": {
+          "type": 4142,
+          "optional": false
+        },
+        "speaker": {
+          "type": 3848,
+          "optional": false
+        },
+        "character": {
+          "type": 4143,
+          "optional": false
+        },
+        "portrait": {
+          "type": 3848,
+          "optional": false
+        },
+        "text": {
+          "type": 3848,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "array",
+      "element": 4141
+    },
+    {
+      "kind": "union",
+      "members": [3823, 3848]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "heldTurns": {
+          "type": 3824,
+          "optional": false
+        },
+        "lastCountedRound": {
+          "type": 3824,
+          "optional": false
+        },
+        "escalated": {
+          "type": 3826,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4146]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "heldTurns": {
+          "type": 3824,
+          "optional": false
+        },
+        "lastCountedRound": {
+          "type": 3824,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4148]
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 4148
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4150]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "state": {
+          "type": 3826,
+          "optional": false
+        },
+        "stage": {
+          "type": 3824,
+          "optional": false
+        },
+        "turn": {
+          "type": 3824,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 4152
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 4153
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4103]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "attackerId": {
+          "type": 3848,
+          "optional": false
+        },
+        "attackId": {
+          "type": 3848,
+          "optional": false
+        },
+        "sound": {
+          "type": 3848,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4156]
+    },
+    {
+      "kind": "union",
+      "members": [3823, 4156]
+    },
+    {
+      "kind": "union",
+      "members": [4160, 4218]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "pendingEnemy": {
+          "type": 4161,
+          "optional": false
+        },
+        "undo": {
+          "type": 4162,
+          "optional": false
+        },
+        "progress": {
+          "type": 4174,
+          "optional": false
+        },
+        "version": {
+          "type": 4181,
+          "optional": false
+        },
+        "checkpoint": {
+          "type": 4182,
+          "optional": false
+        },
+        "setup": {
+          "type": 4184,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "boolean"
+    },
+    {
+      "kind": "array",
+      "element": 4163
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "round": {
+          "type": 4164,
+          "optional": false
+        },
+        "unitId": {
+          "type": 4165,
+          "optional": false
+        },
+        "changes": {
+          "type": 4166,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "number"
+    },
+    {
+      "kind": "string"
+    },
+    {
+      "kind": "array",
+      "element": 4167
+    },
+    {
+      "kind": "union",
+      "members": [4168, 4172]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "op": {
+          "type": 4169,
+          "optional": false
+        },
+        "path": {
+          "type": 4170,
+          "optional": false
+        },
+        "value": {
+          "type": 4171,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "set"
+    },
+    {
+      "kind": "array",
+      "element": 4165
+    },
+    {
+      "kind": "unknown"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "op": {
+          "type": 4173,
+          "optional": false
+        },
+        "path": {
+          "type": 4170,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "remove"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "entry": {
+          "type": 4175,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4176,
+          "optional": false
+        },
+        "id": {
+          "type": 4165,
+          "optional": false
+        },
+        "savedAt": {
+          "type": 4164,
+          "optional": false
+        },
+        "run": {
+          "type": 4165,
+          "optional": false
+        },
+        "mission": {
+          "type": 4177,
+          "optional": false
+        },
+        "round": {
+          "type": 4164,
+          "optional": false
+        },
+        "missionStart": {
+          "type": 4161,
+          "optional": false
+        },
+        "runId": {
+          "type": 4165,
+          "optional": false
+        },
+        "branchId": {
+          "type": 4165,
+          "optional": false
+        },
+        "checkpointId": {
+          "type": 4165,
+          "optional": false
+        },
+        "ordinal": {
+          "type": 4164,
+          "optional": false
+        },
+        "mapId": {
+          "type": 4180,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "flash"
+    },
+    {
+      "kind": "union",
+      "members": [4178, 4179]
+    },
+    {
+      "kind": "null"
+    },
+    {
+      "kind": "number"
+    },
+    {
+      "kind": "string"
+    },
+    {
+      "kind": "literal",
+      "value": 51
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "seed": {
+          "type": 4183,
+          "optional": false
+        },
+        "state": {
+          "type": 3827,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "number"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "first": {
+          "type": 4185,
+          "optional": false
+        },
+        "enemy": {
+          "type": 4188,
+          "optional": false
+        },
+        "player": {
+          "type": 4213,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4186, 4187]
+    },
+    {
+      "kind": "literal",
+      "value": "player"
+    },
+    {
+      "kind": "literal",
+      "value": "ai"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "blocks": {
+          "type": 4189,
+          "optional": true
+        },
+        "policy": {
+          "type": 4206,
+          "optional": false
+        },
+        "diplomacy": {
+          "type": 4209,
+          "optional": false
+        },
+        "recruitmentLimit": {
+          "type": 4212,
+          "optional": true
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4190, 4191]
+    },
+    {
+      "kind": "undefined"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "recruiter": {
+          "type": 4192,
+          "optional": false
+        },
+        "campaign": {
+          "type": 4200,
+          "optional": false
+        },
+        "planner": {
+          "type": 4203,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4193, 4194, 4195, 4196, 4197, 4198, 4199]
+    },
+    {
+      "kind": "literal",
+      "value": "classic"
+    },
+    {
+      "kind": "literal",
+      "value": "balanced"
+    },
+    {
+      "kind": "literal",
+      "value": "situational"
+    },
+    {
+      "kind": "literal",
+      "value": "predictor"
+    },
+    {
+      "kind": "literal",
+      "value": "rotation"
+    },
+    {
+      "kind": "literal",
+      "value": "frontline"
+    },
+    {
+      "kind": "literal",
+      "value": "aggressive-predictor"
+    },
+    {
+      "kind": "union",
+      "members": [4201, 4202]
+    },
+    {
+      "kind": "literal",
+      "value": "arena"
+    },
+    {
+      "kind": "literal",
+      "value": "mission"
+    },
+    {
+      "kind": "union",
+      "members": [4193, 4204, 4205]
+    },
+    {
+      "kind": "literal",
+      "value": "full"
+    },
+    {
+      "kind": "literal",
+      "value": "queued"
+    },
+    {
+      "kind": "union",
+      "members": [4193, 4207, 4194, 4208, 4195, 4196]
+    },
+    {
+      "kind": "literal",
+      "value": "rush"
+    },
+    {
+      "kind": "literal",
+      "value": "rotated"
+    },
+    {
+      "kind": "union",
+      "members": [4210, 4211]
+    },
+    {
+      "kind": "literal",
+      "value": "diplomatic"
+    },
+    {
+      "kind": "literal",
+      "value": "unrestricted"
+    },
+    {
+      "kind": "union",
+      "members": [4190, 4164]
+    },
+    {
+      "kind": "union",
+      "members": [4214, 4215, 4216, 4217]
+    },
+    {
+      "kind": "null"
+    },
+    {
+      "kind": "literal",
+      "value": "classic"
+    },
+    {
+      "kind": "literal",
+      "value": "situational"
+    },
+    {
+      "kind": "literal",
+      "value": "predictor"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "pendingEnemy": {
+          "type": 4219,
+          "optional": false
+        },
+        "undo": {
+          "type": 4190,
+          "optional": true
+        },
+        "progress": {
+          "type": 4220,
+          "optional": false
+        },
+        "version": {
+          "type": 4181,
+          "optional": false
+        },
+        "checkpoint": {
+          "type": 4182,
+          "optional": false
+        },
+        "setup": {
+          "type": 4184,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": false
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "entry": {
+          "type": 4221,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4222,
+          "optional": false
+        },
+        "manual": {
+          "type": 4161,
+          "optional": false
+        },
+        "parentId": {
+          "type": 4223,
+          "optional": true
+        },
+        "id": {
+          "type": 4165,
+          "optional": false
+        },
+        "savedAt": {
+          "type": 4164,
+          "optional": false
+        },
+        "run": {
+          "type": 4165,
+          "optional": false
+        },
+        "mission": {
+          "type": 4177,
+          "optional": false
+        },
+        "round": {
+          "type": 4164,
+          "optional": false
+        },
+        "missionStart": {
+          "type": 4161,
+          "optional": false
+        },
+        "runId": {
+          "type": 4165,
+          "optional": false
+        },
+        "branchId": {
+          "type": 4165,
+          "optional": false
+        },
+        "checkpointId": {
+          "type": 4165,
+          "optional": false
+        },
+        "ordinal": {
+          "type": 4164,
+          "optional": false
+        },
+        "mapId": {
+          "type": 4180,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "turn"
+    },
+    {
+      "kind": "union",
+      "members": [4190, 4165]
+    },
+    {
+      "kind": "union",
+      "members": [4225, 4577]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "pendingEnemy": {
+          "type": 4226,
+          "optional": false
+        },
+        "undo": {
+          "type": 4227,
+          "optional": false
+        },
+        "progress": {
+          "type": 4239,
+          "optional": false
+        },
+        "version": {
+          "type": 4246,
+          "optional": false
+        },
+        "checkpoint": {
+          "type": 4247,
+          "optional": false
+        },
+        "setup": {
+          "type": 4543,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "boolean"
+    },
+    {
+      "kind": "array",
+      "element": 4228
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "round": {
+          "type": 4229,
+          "optional": false
+        },
+        "unitId": {
+          "type": 4230,
+          "optional": false
+        },
+        "changes": {
+          "type": 4231,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "number"
+    },
+    {
+      "kind": "string"
+    },
+    {
+      "kind": "array",
+      "element": 4232
+    },
+    {
+      "kind": "union",
+      "members": [4233, 4237]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "op": {
+          "type": 4234,
+          "optional": false
+        },
+        "path": {
+          "type": 4235,
+          "optional": false
+        },
+        "value": {
+          "type": 4236,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "set"
+    },
+    {
+      "kind": "array",
+      "element": 4230
+    },
+    {
+      "kind": "unknown"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "op": {
+          "type": 4238,
+          "optional": false
+        },
+        "path": {
+          "type": 4235,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "remove"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "entry": {
+          "type": 4240,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4241,
+          "optional": false
+        },
+        "id": {
+          "type": 4230,
+          "optional": false
+        },
+        "savedAt": {
+          "type": 4229,
+          "optional": false
+        },
+        "run": {
+          "type": 4230,
+          "optional": false
+        },
+        "mission": {
+          "type": 4242,
+          "optional": false
+        },
+        "round": {
+          "type": 4229,
+          "optional": false
+        },
+        "missionStart": {
+          "type": 4226,
+          "optional": false
+        },
+        "runId": {
+          "type": 4230,
+          "optional": false
+        },
+        "branchId": {
+          "type": 4230,
+          "optional": false
+        },
+        "checkpointId": {
+          "type": 4230,
+          "optional": false
+        },
+        "ordinal": {
+          "type": 4229,
+          "optional": false
+        },
+        "mapId": {
+          "type": 4245,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "flash"
+    },
+    {
+      "kind": "union",
+      "members": [4243, 4244]
+    },
+    {
+      "kind": "null"
+    },
+    {
+      "kind": "number"
+    },
+    {
+      "kind": "string"
+    },
+    {
+      "kind": "literal",
+      "value": 52
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "seed": {
+          "type": 4248,
+          "optional": false
+        },
+        "state": {
+          "type": 4249,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "number"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "mapModifiers": {
+          "type": 4250,
+          "optional": false
+        },
+        "lighting": {
+          "type": 4266,
+          "optional": false
+        },
+        "visionGroups": {
+          "type": 4270,
+          "optional": false
+        },
+        "factions": {
+          "type": 4279,
+          "optional": false
+        },
+        "groundItems": {
+          "type": 4361,
+          "optional": false
+        },
+        "armies": {
+          "type": 4363,
+          "optional": false
+        },
+        "conditionMemory": {
+          "type": 4365,
+          "optional": false
+        },
+        "mapId": {
+          "type": 4272,
+          "optional": false
+        },
+        "mapRevision": {
+          "type": 4252,
+          "optional": false
+        },
+        "cols": {
+          "type": 4252,
+          "optional": false
+        },
+        "rows": {
+          "type": 4252,
+          "optional": false
+        },
+        "round": {
+          "type": 4252,
+          "optional": false
+        },
+        "turn": {
+          "type": 4281,
+          "optional": false
+        },
+        "gold": {
+          "type": 4366,
+          "optional": false
+        },
+        "winner": {
+          "type": 4367,
+          "optional": false
+        },
+        "nextId": {
+          "type": 4252,
+          "optional": false
+        },
+        "combatRng": {
+          "type": 4252,
+          "optional": false
+        },
+        "log": {
+          "type": 4370,
+          "optional": false
+        },
+        "tiles": {
+          "type": 4371,
+          "optional": false
+        },
+        "units": {
+          "type": 4470,
+          "optional": false
+        },
+        "campaign": {
+          "type": 4489,
+          "optional": false
+        },
+        "lastCombat": {
+          "type": 4541,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "sight": {
+          "type": 4251,
+          "optional": false
+        },
+        "damageModifiers": {
+          "type": 4260,
+          "optional": false
+        },
+        "terrainModifiers": {
+          "type": 4261,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "range": {
+          "type": 4252,
+          "optional": false
+        },
+        "unlimited": {
+          "type": 4253,
+          "optional": false
+        },
+        "sightModifiers": {
+          "type": 4254,
+          "optional": false
+        },
+        "penetrates": {
+          "type": 4255,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "number"
+    },
+    {
+      "kind": "boolean"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "lit": {
+          "type": 4252,
+          "optional": false
+        },
+        "unlit": {
+          "type": 4252,
+          "optional": false
+        },
+        "darkness": {
+          "type": 4252,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 4256
+    },
+    {
+      "kind": "union",
+      "members": [4257, 4258, 4259]
+    },
+    {
+      "kind": "literal",
+      "value": "fog"
+    },
+    {
+      "kind": "literal",
+      "value": "darkness"
+    },
+    {
+      "kind": "literal",
+      "value": "forest-camouflage"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "blade": {
+          "type": 4252,
+          "optional": false
+        },
+        "pierce": {
+          "type": 4252,
+          "optional": false
+        },
+        "impact": {
+          "type": 4252,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 4262
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "cost": {
+          "type": 4252,
+          "optional": false
+        },
+        "passable": {
+          "type": 4263,
+          "optional": false
+        },
+        "damageModifiers": {
+          "type": 4265,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4253]
+    },
+    {
+      "kind": "null"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "melee": {
+          "type": 4252,
+          "optional": false
+        },
+        "ranged": {
+          "type": 4252,
+          "optional": false
+        },
+        "blade": {
+          "type": 4252,
+          "optional": false
+        },
+        "pierce": {
+          "type": 4252,
+          "optional": false
+        },
+        "impact": {
+          "type": 4252,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "time": {
+          "type": 4267,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4268, 4269]
+    },
+    {
+      "kind": "literal",
+      "value": "day"
+    },
+    {
+      "kind": "literal",
+      "value": "night"
+    },
+    {
+      "kind": "array",
+      "element": 4271
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "id": {
+          "type": 4272,
+          "optional": false
+        },
+        "sight": {
+          "type": 4273,
+          "optional": false
+        },
+        "explored": {
+          "type": 4277,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "string"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "range": {
+          "type": 3824,
+          "optional": false
+        },
+        "unlimited": {
+          "type": 3826,
+          "optional": false
+        },
+        "sightModifiers": {
+          "type": 3830,
+          "optional": false
+        },
+        "penetrates": {
+          "type": 3836,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4275, 4252]
+    },
+    {
+      "kind": "literal",
+      "value": "unlimited"
+    },
+    {
+      "kind": "array",
+      "element": 4256
+    },
+    {
+      "kind": "array",
+      "element": 4278
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "col": {
+          "type": 4252,
+          "optional": false
+        },
+        "row": {
+          "type": 4252,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 4280
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "visionGroup": {
+          "type": 4272,
+          "optional": false
+        },
+        "id": {
+          "type": 4272,
+          "optional": false
+        },
+        "phase": {
+          "type": 4281,
+          "optional": false
+        },
+        "controller": {
+          "type": 4284,
+          "optional": false
+        },
+        "palette": {
+          "type": 4272,
+          "optional": false
+        },
+        "name": {
+          "type": 4298,
+          "optional": false
+        },
+        "recruits": {
+          "type": 4299,
+          "optional": false
+        },
+        "relations": {
+          "type": 4303,
+          "optional": false
+        },
+        "transfer": {
+          "type": 4308,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4282, 4283]
+    },
+    {
+      "kind": "literal",
+      "value": "player"
+    },
+    {
+      "kind": "literal",
+      "value": "ai"
+    },
+    {
+      "kind": "union",
+      "members": [4285, 4287, 4289]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4286,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "human"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4288,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "passive"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4290,
+          "optional": false
+        },
+        "policy": {
+          "type": 4291,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "ai"
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4292, 4293, 4294, 4295, 4296, 4297]
+    },
+    {
+      "kind": "literal",
+      "value": "classic"
+    },
+    {
+      "kind": "literal",
+      "value": "rush"
+    },
+    {
+      "kind": "literal",
+      "value": "balanced"
+    },
+    {
+      "kind": "literal",
+      "value": "rotated"
+    },
+    {
+      "kind": "literal",
+      "value": "situational"
+    },
+    {
+      "kind": "literal",
+      "value": "predictor"
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4300]
+    },
+    {
+      "kind": "array",
+      "element": 4301
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "unit": {
+          "type": 4272,
+          "optional": false
+        },
+        "cost": {
+          "type": 4302,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4252]
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 4304
+    },
+    {
+      "kind": "union",
+      "members": [4305, 4306, 4307]
+    },
+    {
+      "kind": "literal",
+      "value": "allied"
+    },
+    {
+      "kind": "literal",
+      "value": "neutral"
+    },
+    {
+      "kind": "literal",
+      "value": "hostile"
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4309]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "to": {
+          "type": 4272,
+          "optional": false
+        },
+        "when": {
+          "type": 4310,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "observer": {
+          "type": 4311,
+          "optional": false
+        },
+        "condition": {
+          "type": 4312,
+          "optional": false
+        },
+        "remember": {
+          "type": 4253,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4313, 4323, 4335, 4338, 4343, 4347, 4349, 4351, 4353, 4355, 4358]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4314,
+          "optional": false
+        },
+        "tile": {
+          "type": 4315,
+          "optional": false
+        },
+        "side": {
+          "type": 4272,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "owner"
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4316, 4317, 4318]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "location": {
+          "type": 4272,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "hex": {
+          "type": 4278,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "binding": {
+          "type": 4319,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4320, 4321, 4322]
+    },
+    {
+      "kind": "literal",
+      "value": "unit"
+    },
+    {
+      "kind": "literal",
+      "value": "mark"
+    },
+    {
+      "kind": "literal",
+      "value": "death"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4324,
+          "optional": false
+        },
+        "unitTypes": {
+          "type": 4325,
+          "optional": false
+        },
+        "tile": {
+          "type": 4326,
+          "optional": false
+        },
+        "radius": {
+          "type": 4252,
+          "optional": false
+        },
+        "side": {
+          "type": 4327,
+          "optional": false
+        },
+        "unitType": {
+          "type": 4333,
+          "optional": false
+        },
+        "character": {
+          "type": 4334,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "proximity"
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4316, 4317, 4318]
+    },
+    {
+      "kind": "union",
+      "members": [4328, 4329, 4330, 4331, 4332]
+    },
+    {
+      "kind": "literal",
+      "value": "player"
+    },
+    {
+      "kind": "literal",
+      "value": "enemy"
+    },
+    {
+      "kind": "literal",
+      "value": "neutral"
+    },
+    {
+      "kind": "literal",
+      "value": "any"
+    },
+    {
+      "kind": "literal",
+      "value": "observer"
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4336,
+          "optional": false
+        },
+        "side": {
+          "type": 4327,
+          "optional": false
+        },
+        "unitTypes": {
+          "type": 4337,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "visibleUnits"
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4339,
+          "optional": false
+        },
+        "aiGroup": {
+          "type": 4340,
+          "optional": false
+        },
+        "side": {
+          "type": 4327,
+          "optional": false
+        },
+        "unitType": {
+          "type": 4341,
+          "optional": false
+        },
+        "character": {
+          "type": 4342,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "hasUnits"
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4344,
+          "optional": false
+        },
+        "side": {
+          "type": 4327,
+          "optional": false
+        },
+        "unitType": {
+          "type": 4345,
+          "optional": false
+        },
+        "character": {
+          "type": 4346,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "noUnits"
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4348,
+          "optional": false
+        },
+        "choice": {
+          "type": 4272,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "choice"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4350,
+          "optional": false
+        },
+        "flag": {
+          "type": 4272,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "flag"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4352,
+          "optional": false
+        },
+        "event": {
+          "type": 4272,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "event"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4354,
+          "optional": false
+        },
+        "round": {
+          "type": 4252,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "round"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4356,
+          "optional": false
+        },
+        "conditions": {
+          "type": 4357,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "all"
+    },
+    {
+      "kind": "array",
+      "element": 4312
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4359,
+          "optional": false
+        },
+        "conditions": {
+          "type": 4360,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "any"
+    },
+    {
+      "kind": "array",
+      "element": 4312
+    },
+    {
+      "kind": "array",
+      "element": 4362
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "tile": {
+          "type": 4278,
+          "optional": false
+        },
+        "item": {
+          "type": 4272,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4364]
+    },
+    {
+      "kind": "tuple",
+      "items": [4272, 4272]
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 4252
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4368, 4369]
+    },
+    {
+      "kind": "literal",
+      "value": "playerVictory"
+    },
+    {
+      "kind": "literal",
+      "value": "playerDefeat"
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "array",
+      "element": 4372
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "effects": {
+          "type": 4373,
+          "optional": false
+        },
+        "id": {
+          "type": 4272,
+          "optional": false
+        },
+        "location": {
+          "type": 4441,
+          "optional": false
+        },
+        "col": {
+          "type": 4252,
+          "optional": false
+        },
+        "row": {
+          "type": 4252,
+          "optional": false
+        },
+        "terrain": {
+          "type": 4272,
+          "optional": false
+        },
+        "owner": {
+          "type": 4442,
+          "optional": false
+        },
+        "connections": {
+          "type": 4443,
+          "optional": false
+        },
+        "deadEnds": {
+          "type": 4452,
+          "optional": false
+        },
+        "walls": {
+          "type": 4454,
+          "optional": false
+        },
+        "floor": {
+          "type": 4456,
+          "optional": false
+        },
+        "perception": {
+          "type": 4457,
+          "optional": false
+        },
+        "light": {
+          "type": 4460,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 4374
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "scope": {
+          "type": 4375,
+          "optional": false
+        },
+        "stacking": {
+          "type": 4381,
+          "optional": false
+        },
+        "effect": {
+          "type": 4386,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "radius": {
+          "type": 4252,
+          "optional": false
+        },
+        "includeSelf": {
+          "type": 4253,
+          "optional": false
+        },
+        "targets": {
+          "type": 4376,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4377, 4378, 4379, 4380]
+    },
+    {
+      "kind": "literal",
+      "value": "own-faction"
+    },
+    {
+      "kind": "literal",
+      "value": "allies"
+    },
+    {
+      "kind": "literal",
+      "value": "enemies"
+    },
+    {
+      "kind": "literal",
+      "value": "everyone"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "group": {
+          "type": 4272,
+          "optional": false
+        },
+        "combine": {
+          "type": 4382,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4383, 4384, 4385]
+    },
+    {
+      "kind": "literal",
+      "value": "add"
+    },
+    {
+      "kind": "literal",
+      "value": "max"
+    },
+    {
+      "kind": "literal",
+      "value": "union"
+    },
+    {
+      "kind": "union",
+      "members": [4387, 4389, 4394, 4397, 4437, 4439]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4388,
+          "optional": false
+        },
+        "power": {
+          "type": 4252,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "healing"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4390,
+          "optional": false
+        },
+        "damagePerStrike": {
+          "type": 4252,
+          "optional": false
+        },
+        "incomingCategory": {
+          "type": 4391,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "thorns"
+    },
+    {
+      "kind": "union",
+      "members": [4392, 4393]
+    },
+    {
+      "kind": "literal",
+      "value": "melee"
+    },
+    {
+      "kind": "literal",
+      "value": "ranged"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4395,
+          "optional": false
+        },
+        "range": {
+          "type": 4252,
+          "optional": false
+        },
+        "unlimited": {
+          "type": 4253,
+          "optional": false
+        },
+        "sightModifiers": {
+          "type": 4254,
+          "optional": false
+        },
+        "penetrates": {
+          "type": 4396,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "sight"
+    },
+    {
+      "kind": "array",
+      "element": 4256
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4398,
+          "optional": false
+        },
+        "rule": {
+          "type": 4399,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "concealment"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4256,
+          "optional": false
+        },
+        "revealWithin": {
+          "type": 4252,
+          "optional": false
+        },
+        "requires": {
+          "type": 4400,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "terrains": {
+          "type": 4401,
+          "optional": false
+        },
+        "illumination": {
+          "type": 4431,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4402]
+    },
+    {
+      "kind": "array",
+      "element": 4403
+    },
+    {
+      "kind": "union",
+      "members": [
+        4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411, 4412, 4413, 4414, 4415, 4416, 4417, 4418,
+        4419, 4420, 4421, 4422, 4423, 4424, 4425, 4426, 4427, 4428, 4429, 4430
+      ]
+    },
+    {
+      "kind": "literal",
+      "value": "bridge"
+    },
+    {
+      "kind": "literal",
+      "value": "burned-village"
+    },
+    {
+      "kind": "literal",
+      "value": "mountain-mine"
+    },
+    {
+      "kind": "literal",
+      "value": "cave-wall"
+    },
+    {
+      "kind": "literal",
+      "value": "church"
+    },
+    {
+      "kind": "literal",
+      "value": "ferry"
+    },
+    {
+      "kind": "literal",
+      "value": "ford"
+    },
+    {
+      "kind": "literal",
+      "value": "forest"
+    },
+    {
+      "kind": "literal",
+      "value": "fort"
+    },
+    {
+      "kind": "literal",
+      "value": "fortification"
+    },
+    {
+      "kind": "literal",
+      "value": "graveyard"
+    },
+    {
+      "kind": "literal",
+      "value": "grove"
+    },
+    {
+      "kind": "literal",
+      "value": "hill"
+    },
+    {
+      "kind": "literal",
+      "value": "house"
+    },
+    {
+      "kind": "literal",
+      "value": "keep"
+    },
+    {
+      "kind": "literal",
+      "value": "landing"
+    },
+    {
+      "kind": "literal",
+      "value": "marsh"
+    },
+    {
+      "kind": "literal",
+      "value": "monastery"
+    },
+    {
+      "kind": "literal",
+      "value": "mountain"
+    },
+    {
+      "kind": "literal",
+      "value": "plains"
+    },
+    {
+      "kind": "literal",
+      "value": "ritual-spent"
+    },
+    {
+      "kind": "literal",
+      "value": "ritual-star"
+    },
+    {
+      "kind": "literal",
+      "value": "road"
+    },
+    {
+      "kind": "literal",
+      "value": "ruins"
+    },
+    {
+      "kind": "literal",
+      "value": "signpost"
+    },
+    {
+      "kind": "literal",
+      "value": "village"
+    },
+    {
+      "kind": "literal",
+      "value": "water"
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4432]
+    },
+    {
+      "kind": "array",
+      "element": 4433
+    },
+    {
+      "kind": "union",
+      "members": [4434, 4435, 4436]
+    },
+    {
+      "kind": "literal",
+      "value": "lit"
+    },
+    {
+      "kind": "literal",
+      "value": "unlit"
+    },
+    {
+      "kind": "literal",
+      "value": "darkness"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4438,
+          "optional": false
+        },
+        "radius": {
+          "type": 4252,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "light"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4440,
+          "optional": false
+        },
+        "modifiers": {
+          "type": 4250,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "stat-modifiers"
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4444]
+    },
+    {
+      "kind": "array",
+      "element": 4445
+    },
+    {
+      "kind": "union",
+      "members": [4446, 4447, 4448, 4449, 4450, 4451]
+    },
+    {
+      "kind": "literal",
+      "value": "e"
+    },
+    {
+      "kind": "literal",
+      "value": "se"
+    },
+    {
+      "kind": "literal",
+      "value": "sw"
+    },
+    {
+      "kind": "literal",
+      "value": "w"
+    },
+    {
+      "kind": "literal",
+      "value": "nw"
+    },
+    {
+      "kind": "literal",
+      "value": "ne"
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4453]
+    },
+    {
+      "kind": "array",
+      "element": 4445
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4455]
+    },
+    {
+      "kind": "array",
+      "element": 4445
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "illumination": {
+          "type": 4458,
+          "optional": false
+        },
+        "remember": {
+          "type": 4253,
+          "optional": false
+        },
+        "concealment": {
+          "type": 4459,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4434, 4435, 4436]
+    },
+    {
+      "kind": "array",
+      "element": 4399
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4461]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "emission": {
+          "type": 4462,
+          "optional": false
+        },
+        "color": {
+          "type": 4464,
+          "optional": false
+        },
+        "fixture": {
+          "type": 4466,
+          "optional": false
+        },
+        "dx": {
+          "type": 4467,
+          "optional": false
+        },
+        "dy": {
+          "type": 4468,
+          "optional": false
+        },
+        "radius": {
+          "type": 4252,
+          "optional": false
+        },
+        "power": {
+          "type": 4252,
+          "optional": false
+        },
+        "when": {
+          "type": 4469,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4463]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "radius": {
+          "type": 4252,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4465]
+    },
+    {
+      "kind": "tuple",
+      "items": [4252, 4252, 4252]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4253]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4252]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4252]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4310]
+    },
+    {
+      "kind": "array",
+      "element": 4471
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "revealedTo": {
+          "type": 4472,
+          "optional": false
+        },
+        "perceptionEffects": {
+          "type": 4473,
+          "optional": false
+        },
+        "faction": {
+          "type": 4272,
+          "optional": false
+        },
+        "items": {
+          "type": 4479,
+          "optional": false
+        },
+        "aiGroup": {
+          "type": 4480,
+          "optional": false
+        },
+        "id": {
+          "type": 4272,
+          "optional": false
+        },
+        "type": {
+          "type": 4272,
+          "optional": false
+        },
+        "tile": {
+          "type": 4278,
+          "optional": false
+        },
+        "hp": {
+          "type": 4252,
+          "optional": false
+        },
+        "moved": {
+          "type": 4253,
+          "optional": false
+        },
+        "attackSpent": {
+          "type": 4253,
+          "optional": false
+        },
+        "experience": {
+          "type": 4481,
+          "optional": false
+        },
+        "character": {
+          "type": 4482,
+          "optional": false
+        },
+        "role": {
+          "type": 4483,
+          "optional": false
+        },
+        "retreating": {
+          "type": 4487,
+          "optional": false
+        },
+        "rebuilding": {
+          "type": 4488,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "array",
+      "element": 4474
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "id": {
+          "type": 4272,
+          "optional": false
+        },
+        "penetrates": {
+          "type": 4475,
+          "optional": false
+        },
+        "concealment": {
+          "type": 4476,
+          "optional": false
+        },
+        "light": {
+          "type": 4478,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 4256
+    },
+    {
+      "kind": "array",
+      "element": 4477
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4256,
+          "optional": false
+        },
+        "revealWithin": {
+          "type": 4252,
+          "optional": false
+        },
+        "requires": {
+          "type": 4400,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4463]
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4252]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4484, 4485, 4486]
+    },
+    {
+      "kind": "literal",
+      "value": "leader"
+    },
+    {
+      "kind": "literal",
+      "value": "courier"
+    },
+    {
+      "kind": "literal",
+      "value": "captive"
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4253]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4253]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4490]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "scripts": {
+          "type": 4491,
+          "optional": false
+        },
+        "evacuated": {
+          "type": 4513,
+          "optional": false
+        },
+        "id": {
+          "type": 4272,
+          "optional": false
+        },
+        "mission": {
+          "type": 4252,
+          "optional": false
+        },
+        "recall": {
+          "type": 4515,
+          "optional": false
+        },
+        "veterans": {
+          "type": 4516,
+          "optional": false
+        },
+        "storyVeterans": {
+          "type": 4522,
+          "optional": false
+        },
+        "fallenCompanions": {
+          "type": 4524,
+          "optional": false
+        },
+        "carryGold": {
+          "type": 4252,
+          "optional": false
+        },
+        "marks": {
+          "type": 4526,
+          "optional": false
+        },
+        "dialogue": {
+          "type": 4527,
+          "optional": false
+        },
+        "dialogueIndex": {
+          "type": 4252,
+          "optional": false
+        },
+        "outcome": {
+          "type": 4531,
+          "optional": false
+        },
+        "completed": {
+          "type": 4253,
+          "optional": false
+        },
+        "refuge": {
+          "type": 4532,
+          "optional": false
+        },
+        "vigil": {
+          "type": 4534,
+          "optional": false
+        },
+        "holds": {
+          "type": 4536,
+          "optional": false
+        },
+        "flags": {
+          "type": 4538,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4492]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "failed": {
+          "type": 4493,
+          "optional": false
+        },
+        "completed": {
+          "type": 4494,
+          "optional": false
+        },
+        "revealed": {
+          "type": 4495,
+          "optional": false
+        },
+        "recruitment": {
+          "type": 4496,
+          "optional": false
+        },
+        "active": {
+          "type": 4498,
+          "optional": false
+        },
+        "holds": {
+          "type": 4499,
+          "optional": false
+        },
+        "marks": {
+          "type": 4501,
+          "optional": false
+        },
+        "pending": {
+          "type": 4504,
+          "optional": false
+        },
+        "nextMark": {
+          "type": 4252,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 4497
+    },
+    {
+      "kind": "array",
+      "element": 4301
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "array",
+      "element": 4500
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "event": {
+          "type": 4272,
+          "optional": false
+        },
+        "predicate": {
+          "type": 4252,
+          "optional": false
+        },
+        "turns": {
+          "type": 4252,
+          "optional": false
+        },
+        "lastRound": {
+          "type": 4252,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 4502
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "lightRemembered": {
+          "type": 4253,
+          "optional": false
+        },
+        "id": {
+          "type": 4252,
+          "optional": false
+        },
+        "type": {
+          "type": 4272,
+          "optional": false
+        },
+        "tile": {
+          "type": 4278,
+          "optional": false
+        },
+        "light": {
+          "type": 4503,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4461]
+    },
+    {
+      "kind": "array",
+      "element": 4505
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "area": {
+          "type": 4506,
+          "optional": false
+        },
+        "faction": {
+          "type": 4272,
+          "optional": false
+        },
+        "aiGroup": {
+          "type": 4507,
+          "optional": false
+        },
+        "units": {
+          "type": 4508,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 4278
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "array",
+      "element": 4509
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "type": {
+          "type": 4272,
+          "optional": false
+        },
+        "character": {
+          "type": 4510,
+          "optional": false
+        },
+        "role": {
+          "type": 4511,
+          "optional": false
+        },
+        "items": {
+          "type": 4512,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4484, 4485, 4486]
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "array",
+      "element": 4514
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "event": {
+          "type": 4272,
+          "optional": false
+        },
+        "unit": {
+          "type": 4471,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4517]
+    },
+    {
+      "kind": "array",
+      "element": 4518
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "items": {
+          "type": 4519,
+          "optional": false
+        },
+        "type": {
+          "type": 4272,
+          "optional": false
+        },
+        "experience": {
+          "type": 4252,
+          "optional": false
+        },
+        "character": {
+          "type": 4520,
+          "optional": false
+        },
+        "role": {
+          "type": 4521,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4484, 4485, 4486]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4523]
+    },
+    {
+      "kind": "array",
+      "element": 4518
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4525]
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "array",
+      "element": 4272
+    },
+    {
+      "kind": "array",
+      "element": 4528
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "sound": {
+          "type": 4529,
+          "optional": false
+        },
+        "speaker": {
+          "type": 4272,
+          "optional": false
+        },
+        "character": {
+          "type": 4530,
+          "optional": false
+        },
+        "portrait": {
+          "type": 4272,
+          "optional": false
+        },
+        "text": {
+          "type": 4272,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4272]
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4533]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "heldTurns": {
+          "type": 4252,
+          "optional": false
+        },
+        "lastCountedRound": {
+          "type": 4252,
+          "optional": false
+        },
+        "escalated": {
+          "type": 4253,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4535]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "heldTurns": {
+          "type": 4252,
+          "optional": false
+        },
+        "lastCountedRound": {
+          "type": 4252,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4537]
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 4535
+    },
+    {
+      "kind": "object",
+      "properties": {},
+      "index": 4539
+    },
+    {
+      "kind": "array",
+      "element": 4540
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "state": {
+          "type": 4253,
+          "optional": false
+        },
+        "stage": {
+          "type": 4252,
+          "optional": false
+        },
+        "turn": {
+          "type": 4252,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4264, 4542]
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "attackerId": {
+          "type": 4272,
+          "optional": false
+        },
+        "attackId": {
+          "type": 4272,
+          "optional": false
+        },
+        "sound": {
+          "type": 4272,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "first": {
+          "type": 4544,
+          "optional": false
+        },
+        "enemy": {
+          "type": 4547,
+          "optional": false
+        },
+        "player": {
+          "type": 4572,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4545, 4546]
+    },
+    {
+      "kind": "literal",
+      "value": "player"
+    },
+    {
+      "kind": "literal",
+      "value": "ai"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "blocks": {
+          "type": 4548,
+          "optional": true
+        },
+        "policy": {
+          "type": 4565,
+          "optional": false
+        },
+        "diplomacy": {
+          "type": 4568,
+          "optional": false
+        },
+        "recruitmentLimit": {
+          "type": 4571,
+          "optional": true
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4549, 4550]
+    },
+    {
+      "kind": "undefined"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "recruiter": {
+          "type": 4551,
+          "optional": false
+        },
+        "campaign": {
+          "type": 4559,
+          "optional": false
+        },
+        "planner": {
+          "type": 4562,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "union",
+      "members": [4552, 4553, 4554, 4555, 4556, 4557, 4558]
+    },
+    {
+      "kind": "literal",
+      "value": "classic"
+    },
+    {
+      "kind": "literal",
+      "value": "balanced"
+    },
+    {
+      "kind": "literal",
+      "value": "situational"
+    },
+    {
+      "kind": "literal",
+      "value": "predictor"
+    },
+    {
+      "kind": "literal",
+      "value": "rotation"
+    },
+    {
+      "kind": "literal",
+      "value": "frontline"
+    },
+    {
+      "kind": "literal",
+      "value": "aggressive-predictor"
+    },
+    {
+      "kind": "union",
+      "members": [4560, 4561]
+    },
+    {
+      "kind": "literal",
+      "value": "arena"
+    },
+    {
+      "kind": "literal",
+      "value": "mission"
+    },
+    {
+      "kind": "union",
+      "members": [4552, 4563, 4564]
+    },
+    {
+      "kind": "literal",
+      "value": "full"
+    },
+    {
+      "kind": "literal",
+      "value": "queued"
+    },
+    {
+      "kind": "union",
+      "members": [4552, 4566, 4553, 4567, 4554, 4555]
+    },
+    {
+      "kind": "literal",
+      "value": "rush"
+    },
+    {
+      "kind": "literal",
+      "value": "rotated"
+    },
+    {
+      "kind": "union",
+      "members": [4569, 4570]
+    },
+    {
+      "kind": "literal",
+      "value": "diplomatic"
+    },
+    {
+      "kind": "literal",
+      "value": "unrestricted"
+    },
+    {
+      "kind": "union",
+      "members": [4549, 4229]
+    },
+    {
+      "kind": "union",
+      "members": [4573, 4574, 4575, 4576]
+    },
+    {
+      "kind": "null"
+    },
+    {
+      "kind": "literal",
+      "value": "classic"
+    },
+    {
+      "kind": "literal",
+      "value": "situational"
+    },
+    {
+      "kind": "literal",
+      "value": "predictor"
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "pendingEnemy": {
+          "type": 4578,
+          "optional": false
+        },
+        "undo": {
+          "type": 4549,
+          "optional": true
+        },
+        "progress": {
+          "type": 4579,
+          "optional": false
+        },
+        "version": {
+          "type": 4246,
+          "optional": false
+        },
+        "checkpoint": {
+          "type": 4247,
+          "optional": false
+        },
+        "setup": {
+          "type": 4543,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": false
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "entry": {
+          "type": 4580,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "object",
+      "properties": {
+        "kind": {
+          "type": 4581,
+          "optional": false
+        },
+        "manual": {
+          "type": 4226,
+          "optional": false
+        },
+        "parentId": {
+          "type": 4582,
+          "optional": true
+        },
+        "id": {
+          "type": 4230,
+          "optional": false
+        },
+        "savedAt": {
+          "type": 4229,
+          "optional": false
+        },
+        "run": {
+          "type": 4230,
+          "optional": false
+        },
+        "mission": {
+          "type": 4242,
+          "optional": false
+        },
+        "round": {
+          "type": 4229,
+          "optional": false
+        },
+        "missionStart": {
+          "type": 4226,
+          "optional": false
+        },
+        "runId": {
+          "type": 4230,
+          "optional": false
+        },
+        "branchId": {
+          "type": 4230,
+          "optional": false
+        },
+        "checkpointId": {
+          "type": 4230,
+          "optional": false
+        },
+        "ordinal": {
+          "type": 4229,
+          "optional": false
+        },
+        "mapId": {
+          "type": 4245,
+          "optional": false
+        }
+      }
+    },
+    {
+      "kind": "literal",
+      "value": "turn"
+    },
+    {
+      "kind": "union",
+      "members": [4549, 4230]
     }
   ],
   "typeNames": {

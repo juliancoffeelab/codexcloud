@@ -9,7 +9,7 @@ for geometry fields and native frame profiles.
 
 For a new terrain, register its stable ID, typed role, name, movement cost,
 passability, description and protection in `rust/data/game/terrain.json`. Add the
-ID to `Terrain` and `as_str()` in `rust/catalog/src/data/ids.rs`.
+ID to `Terrain` and `as_str()` in `rust/catalog/src/schema/ids.rs`.
 
 The role owns gameplay meaning. Check inherited race/unit `terrainModifiers`
 before reusing a role; visual similarity does not establish compatible behavior.
@@ -26,7 +26,7 @@ Existing terrain revisions retain their registered geometry and native scale.
 
 For a new ID or changed connection set, register selection in
 `frontend/engine/Terrain_plan.ml` and keep native acceptance in
-`rust/catalog/src/data/state.rs` aligned with the artwork builder. Use
+`rust/battle/src/data/state.rs` aligned with the artwork builder. Use
 [connections](connections.md) for directional registries and supported stems.
 Register a stable inspection portrait in `frontend/engine/Art.ml` and a preview
 color in `frontend/engine/Geometry.ml` for new IDs. Artwork-only revisions reuse

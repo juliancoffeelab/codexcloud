@@ -37,10 +37,10 @@ slots have empty slices until reset; reset replaces the batch. Use independent
 one-slot environments to reset games individually. `close()` disconnects the
 controller and cancels its native rollout at the next decision boundary.
 
-Dense/tree schema 8 has 229 features: mechanical unit and weapon profiles,
+Dense/tree schema 10 has 243 features: mechanical unit and weapon profiles,
 terrain modifiers and movement/path costs, Campaigner duties, protected actors,
 escort/hold progress, diplomacy and known unconditional defeat deadlines. Spatial
-schema 9 adds 65 board channels. The hex CNN shares two seven-neighbor
+schema 11 supplies 79 board channels. The hex CNN shares two seven-neighbor
 convolutions across candidates, gathers actor/destination/target embeddings and a
 global pool, and scores candidates through a 64/64 head. The critic reuses the
 same pooled board encoding with its gradient detached from the policy.
@@ -59,6 +59,26 @@ selected existing recruiter. Moves and attacks are separate decisions. Scoped
 attack permissions are enforced before scoring. Survive and objective duties are
 observations; the model can still make unsafe or unproductive legal choices.
 
+The catalog crate owns JSON-derived definitions and their pure composition API.
+Its source records and numeric tables are private. Consumers obtain definition
+objects, opaque attacks, effect descriptors and resolved calculation outputs.
+A unit composes explicit current equipment, gained abilities, battle-selected
+effect occurrences, map modifiers and perception grants. Scoped effects are not
+automatically applied to their emitter and incoming effects are not re-emitted.
+Battle owns positions, effect recipients, diplomacy, legality, pathfinding,
+visibility, random rolls and execution. It supplies the current terrain and
+illumination for each hypothetical query. Recruitment, planners and CNN
+observations must consume that composed API rather than reconstructing stacking
+from authored contributions. Display metadata and readable own contributions do
+not expose complete source definitions.
+
+The 79 spatial channels retain their existing order. Movement cost, passability,
+terrain healing and six terrain defense planes are evaluated for the actor and
+its destination context. These nine planes join the five perception planes in
+the sparse actor-context overlay; they are not shared type-only terrain tables.
+Existing checkpoint shapes remain loadable, but these corrected observations
+can change their behavior without changing their weights.
+
 Unit/faction/terrain names are not learned identity embeddings. Live mechanical
 stats expose balance changes, but observation compatibility does not guarantee
 playing strength on new content. Travel-turn features are optimistic route-cost
@@ -68,6 +88,103 @@ clocks have a known flag and countdown; conditional deadlines remain unknown.
 The dense, tree and spatial native loaders validate schema names, shapes and
 finite parameters. Explicit legacy upgrades append zero weights to preserve old
 scores. Preserve old model files and write new versions separately.
+
+### Visibility observations
+
+The following inputs extend the existing mechanical and campaign inputs.
+Concealment inputs describe evaluated mechanics rather than forest-specific
+abilities: changing eligible terrain from forest to water or sand should produce
+equivalent inputs when the resulting concealment mechanics are equivalent.
+Use shared Rust perception queries, including terrain eligibility, equipment,
+effects, illumination, penetration and reveal distance. Separate availability
+from distance so a reveal distance of zero does not mean no concealment.
+
+Terrain channels:
+
+| Name                                | Meaning                                                                                                                |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `tile_remembered`                   | The observing faction retains persistent terrain knowledge of this tile.                                               |
+| `tile_in_sight`                     | At least one friendly sight source currently sees its terrain.                                                         |
+| `possible_enemy_hide_place`         | An enemy could remain concealed here, based on public catalog capabilities; does not indicate actual hidden occupancy. |
+| `actor_concealment_available`       | Concealment applies to the acting unit on this tile.                                                                   |
+| `actor_concealment_reveal_distance` | Reveal distance for the actor's applicable concealment, before observer-specific penetration.                          |
+| `actor_can_observe_terrain`         | The actor itself can see the tile's terrain, independently of friendly spotters.                                       |
+| `tile_insight_of_enemy`             | Estimated current terrain visibility from known hostile sight sources.                                                 |
+
+Remembered terrain and current sight are distinct. Persistent darkness with
+`remember: false` does not automatically record exploration history. Visible
+terrain can still contain concealed units. Do not add a separate
+`tile_illuminated` input initially: lighting already contributes to evaluated
+concealment and detection. Actor-relative channels use fourteen planes per candidate actor, selected by the
+actor tile index. Python shares the common first-convolution contribution, adds
+the actor contribution before ReLU, and batches the second convolution across
+contexts. Rust caches each actor context within the decision. EndTurn uses the
+actor-free encoding; the critic pools that shared encoding.
+
+Unit channels, populated for friendly units and currently visible enemies or
+neutral units:
+
+| Name                                | Meaning                                                                                       |
+| ----------------------------------- | --------------------------------------------------------------------------------------------- |
+| `unit_sight_range`                  | Base finite range after group, race, unit, map/weather, equipment and scoped-effect stacking; target lighting may modify it. |
+| `unit_sight_unlimited`              | Sight range is unlimited.                                                                     |
+| `unit_concealment_available`        | Concealment applies to this unit on its current tile, even if detection currently succeeds.   |
+| `unit_concealment_reveal_distance`  | Reveal distance for its applicable concealment, before observer-specific penetration.         |
+| `unit_detectable_by_actor`          | The actor can directly detect this unit without another friendly spotter.                     |
+| `unit_detectable_by_friendly_count` | Number of friendly sight sources that independently detect this unit.                         |
+| `unit_can_detect_actor`             | This known unit can directly detect the actor.                                                |
+
+Count independent detecting sources, not every unit receiving a shared faction
+sighting. A unit's camouflage can be active while proximity, penetration or a
+combat reveal makes it visible. Hidden enemies contribute no unit-channel
+occupancy, stats or capabilities.
+
+Dense candidate features:
+
+| Before                                         | After                                         |
+| ---------------------------------------------- | --------------------------------------------- |
+| `actor_concealment_available_before`           | `actor_concealment_available_after`           |
+| `actor_concealment_reveal_distance_before`     | `actor_concealment_reveal_distance_after`     |
+| `actor_detectable_by_known_enemy_count_before` | `actor_detectable_by_known_enemy_count_after` |
+| `target_detectable_by_actor_before`            | `target_detectable_by_actor_after`            |
+| `target_detectable_by_friendly_count_before`   | `target_detectable_by_friendly_count_after`   |
+| `target_can_detect_actor_before`               | `target_can_detect_actor_after`               |
+| `friendly_visible_enemy_count_before`          | `friendly_visible_enemy_count_after`          |
+
+Here `target` is the enemy attacked by the candidate; movement-only candidates
+have no attack target. Target-specific after-values assume that target survives;
+kill probability remains a separate existing input. Do not add detector-share
+features: detector counts and the existing enemy count already supply that
+information. Retain the target's before/after friendly detector counts initially,
+including changes to lighting and other friendly sight sources. These distinguish
+personal dark vision from establishing a persistent light that lets other allies
+maintain contact. The total visible-enemy counts also describe sightings gained or
+lost by movement candidates without an attack target.
+
+Enemy sight and detection estimates must use known sources and observable
+capabilities, not the enemy's actual exploration memory or unseen units. Apply
+the same information contract to rule-based threat forecasts, which assume that other groups already remember every rememberable tile. This
+conservative estimate is independent of their actual exploration history; hidden
+sight sources are excluded. Different penetration capabilities can defeat otherwise applicable
+concealment; a reveal-distance scalar alone is not a universal detection guarantee.
+
+Before/after values must reflect supported sight, concealment, combat-reveal and
+lighting effects. Existing mechanical forecasts do not execute campaign scripts;
+scripted effects such as lighting a village need an explicit forecast contract
+before being represented as known after-state facts. New input weights are zero-initialized when expanding older checkpoints,
+preserving the starting policy. Distances and sight-source counts are divided
+by 20; booleans are 0/1. Movement projections account for carried lights; attack
+projections account for weapon and retaliation reveals. Promotions retain the
+current perception profile in these after-values.
+
+### Native spatial array contract
+
+Spatial observations contain six owned NumPy arrays: board values (CHW), board
+value offsets, board shapes (N×2), candidate tile indices (M×3), actor context
+values (14 CHW planes), and context metadata (K×3: decision index, actor site,
+value offset). Shared actor-relative planes are zero. Contexts contain only actors
+present in the candidate list; neither path contains unseen enemy occupancy.
+Disk datasets retain the context arrays alongside the common board buffer.
 
 ## Entry points
 
@@ -230,6 +347,18 @@ relaunching processes; persisted optimizer/RNG state does not keep a process ali
 - `checkpoints/campaign-cnn-ppo-v2/` contains the diverse-environment continuation,
   selected on validation rather than the final update. It retains the same input
   schemas and network architecture. V1 remains available for comparisons.
+- `checkpoints/campaign-cnn-ppo-v3/` retains the experimental six-hour policy from
+  the nine-hour visibility continuation: 243 dense features, 79 spatial channels
+  and 34,609 actor parameters. New input weights were initially zero, preserving
+  the V2 policy before PPO. Validation still preferred frozen V2 overall; V3 is
+  retained for comparison rather than promoted as a stronger default.
+- `experiments/2026-11-15-visibility/experiment.json` records that continuation,
+  including hourly validation, unused final-test seeds, actor-conditioned input
+  diagrams, training curves, native rulebot comparisons and exact recovery data.
+  Its `selected_model` is the safe validation choice; `trained_model` identifies
+  the experimental continuation independently. Underground Lair diagnostics never
+  participate in selection. The archive preserves the three-hour and four-hour
+  policies that each completed one Lair case, alongside matched traces.
 - `experiments/2026-11-14-diverse/experiment.json` inventories nine accounted PPO
   hours across three phases, including the changed curriculum and recovery
   boundaries. The broader phase warm-started from V1. Its archive contains frozen

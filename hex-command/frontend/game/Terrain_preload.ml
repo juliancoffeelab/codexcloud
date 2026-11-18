@@ -3,7 +3,7 @@ open Browser_image
 
 let map catalog id =
   match
-    List.find_opt (fun (map : Domain.map_definition) -> map.id = id) (Catalog.scenario_maps catalog)
+    List.find_opt (fun (map : Domain.browser_map) -> map.id = id) (Catalog.scenario_maps catalog)
   with
   | Some map ->
       Option.iter
@@ -13,7 +13,7 @@ let map catalog id =
   | None ->
       (* Campaign maps are intentionally absent from the scenario picker. *)
       Array.iter
-        (fun (map : Domain.map_definition) ->
+        (fun (map : Domain.browser_map) ->
           if map.id = id then
             Option.iter
               (fun (sprite : Terrain_pages.sprite) ->

@@ -1,60 +1,18 @@
 //! Chapter initialization, generic survival and veteran carryover.
+use crate::CampaignProgram;
+use crate::logic::conditions::LiveContext;
 use crate::sort::SharedSort;
-use crate::{data::*, logic::battle::Game};
-impl<'catalog> Game<'catalog> {
-    pub(crate) fn campaign_companion_survives(&self, company: &str, character: &str) -> bool {
-        let eligible = |faction: &str| self.faction_relation(company, faction) == Relation::Allied;
-        self.units.iter().any(|unit| {
-            self.name(unit.character) == Some(character) && eligible(self.unit_faction(unit))
-        }) || self.story.campaign.as_ref().is_some_and(|state| {
-            state.evacuated.iter().any(|record| {
-                record.unit.character.as_deref() == Some(character)
-                    && eligible(&record.unit.faction)
-            })
-        })
-    }
-    pub(crate) fn campaign_leader_survives(&self, company: &str) -> bool {
-        self.units
-            .iter()
-            .any(|unit| unit.is_leader() && self.unit_faction(unit) == company)
-            || self.story.campaign.as_ref().is_some_and(|state| {
-                state.evacuated.iter().any(|record| {
-                    record.unit.role == Some(Role::Leader) && record.unit.faction == company
-                })
-            })
-    }
+use crate::{data::*, logic::battle::LiveBattle};
+impl<'catalog> LiveBattle<'catalog> {
     pub(crate) fn evaluate_campaign(&mut self, at_turn_start: bool, _entered: Option<usize>) {
         if self.story.campaign.is_none() || self.position.runtime.winner.is_some() {
             return;
         }
         self.apply_faction_transfers();
         self.evaluate_scripted_events(at_turn_start);
-        if self.position.runtime.winner.is_some() {
-            return;
-        }
-        let missing = self
-            .story
-            .mission
-            .as_ref()
-            .unwrap()
-            .required_companions
-            .iter()
-            .any(|id| !self.campaign_companion_survives("player", id));
-        if missing || !self.campaign_leader_survives("player") {
-            self.position.runtime.winner = Some(BattleResult::PlayerDefeat);
-            let message = "The company cannot continue without its protected companions.";
-            self.story.campaign.as_mut().unwrap().outcome = Some(message.into());
-            self.story.campaign.as_mut().unwrap().say([Dialogue {
-                character: None,
-                speaker: "The company".into(),
-                portrait: "worker".into(),
-                text: message.into(),
-                sound: None,
-            }]);
-        }
     }
     pub(crate) fn start_campaign(
-        rules: &'catalog Rules,
+        rules: &'catalog Catalogue,
         id: &str,
         index: usize,
         veterans: Vec<Veteran>,
@@ -65,7 +23,7 @@ impl<'catalog> Game<'catalog> {
     ) -> Self {
         Self::start_campaign_from_definition(
             rules,
-            &rules.campaigns[id],
+            &CampaignProgram::compile(rules, rules.campaign(id), None),
             index,
             veterans,
             carry,
@@ -87,8 +45,8 @@ impl<'catalog> Game<'catalog> {
         )
     }
     pub(crate) fn start_campaign_from_definition(
-        rules: &'catalog Rules,
-        definition: &CampaignRules,
+        rules: &'catalog Catalogue,
+        definition: &CampaignProgram,
         index: usize,
         veterans: Vec<Veteran>,
         carry: i32,
@@ -96,9 +54,14 @@ impl<'catalog> Game<'catalog> {
         story: Vec<Veteran>,
         fallen: Vec<String>,
     ) -> Self {
-        let id = definition.id.as_str();
-        let original = &definition.missions[index];
-        let mut game = Game::new_with_campaign(rules, &original.map.id, Some(definition));
+        assert!(
+            (0..=definition.carryover().gold_limit).contains(&carry),
+            "carryover gold must satisfy authored bounds"
+        );
+        let id = definition.id();
+        let original = &definition.chapters()[index];
+        let mut game =
+            LiveBattle::from_state_with_campaign(rules, original.initial_state(), Some(definition));
         game.story.campaign = Some(
             CampaignState {
                 scripts: None,
@@ -109,7 +72,7 @@ impl<'catalog> Game<'catalog> {
                 veterans: Some(veterans.clone()),
                 story_veterans: Some(story.clone()),
                 fallen_companions: Some(fallen.clone()),
-                carry_gold: carry.clamp(0, 8),
+                carry_gold: carry,
                 marks: vec![],
                 dialogue: vec![],
                 dialogue_index: 0,
@@ -141,7 +104,7 @@ impl<'catalog> Game<'catalog> {
         game.roster_changed();
 
         game.gold = original.gold.clone();
-        game.gold["player"] += carry.clamp(0, 8);
+        game.gold["player"] += carry;
         for veteran in story {
             if let Some(arrival) = original
                 .arrivals
@@ -151,7 +114,20 @@ impl<'catalog> Game<'catalog> {
                 let tile = game.site(&arrival.tile);
                 let kind = game.kind(&veteran.r#type);
                 let destination = (0..game.terrain.len())
-                    .filter(|&t| game.at(t).is_none() && game.cost(kind, t) != u16::MAX)
+                    .filter(|&t| {
+                        game.at(t).is_none()
+                            && !game
+                                .arrival_tiles(
+                                    kind,
+                                    game.runtime
+                                        .names
+                                        .find("player")
+                                        .expect("known player faction"),
+                                    &veteran.items,
+                                    &[t],
+                                )
+                                .is_empty()
+                    })
                     .min_by_key(|&t| game.board.distance(tile, t));
                 if let Some(destination) = destination {
                     let id = game.add(kind, "player", destination);
@@ -183,15 +159,21 @@ impl<'catalog> Game<'catalog> {
                             && game.name(u.character) == veteran.character.as_deref()
                     }
             }) {
-                if game.rules.units[game.position.runtime.units[index].kind].family
-                    == game.rules.units[kind].family
+                if game
+                    .definitions
+                    .unit(game.position.runtime.units[index].kind)
+                    .family()
+                    == game.definitions.unit(kind).family()
                 {
                     let id = game.position.runtime.units[index].id;
                     game.set_inventory(id, veteran.items.clone());
+                    let mut projected = game.position.runtime.units[index];
+                    projected.kind = kind;
+                    let maximum_hp = game.definitions.unit(projected.kind).max_hp;
                     let unit = &mut game.position.runtime.units[index];
                     unit.kind = kind;
                     unit.experience = Some(veteran.experience);
-                    unit.hp = rules.units[kind].hp;
+                    unit.hp = maximum_hp;
                 }
             }
         }
@@ -203,17 +185,30 @@ impl<'catalog> Game<'catalog> {
             .tile;
         game.roster_changed();
         let mut slots: Vec<_> = (0..game.terrain.len())
-            .filter(|&t| game.at(t).is_none() && game.board.distance(t, leader) <= 3)
+            .filter(|&t| {
+                game.at(t).is_none()
+                    && game.board.distance(t, leader) <= definition.carryover().deployment_radius
+            })
             .collect();
         slots.order_by_key(|&t| game.board.distance(t, leader));
         for veteran in veterans {
             let kind = game.kind(&veteran.r#type);
-            let Some(slot) = slots.iter().position(|&t| game.cost(kind, t) != u16::MAX) else {
+            let Some(slot) = slots.iter().position(|&t| {
+                !game
+                    .arrival_tiles(
+                        kind,
+                        game.runtime
+                            .names
+                            .find("player")
+                            .expect("known player faction"),
+                        &veteran.items,
+                        &[t],
+                    )
+                    .is_empty()
+            }) else {
                 // A changed map may not have a passable recall tile for this family.
-                game.record(format!(
-                    "No safe recall space for {}.",
-                    rules.units[kind].name
-                ));
+                let name = game.definitions.unit(kind).name().to_owned();
+                game.record(format!("No safe recall space for {name}."));
                 continue;
             };
             let tile = slots.remove(slot);
@@ -228,7 +223,7 @@ impl<'catalog> Game<'catalog> {
             unit.character = character;
         }
         for unit in game.position.runtime.units.clone() {
-            if game.terrain_role(unit.tile).capturable() {
+            if game.terrain_definition(unit.tile).capturable() {
                 game.position.runtime.owners[unit.tile] = Some(game.unit_faction(&unit).to_owned());
             }
         }
@@ -237,12 +232,13 @@ impl<'catalog> Game<'catalog> {
         game.story.event_opening = true;
         game.evaluate_campaign(true, None);
         let mut intro = vec![];
-        game.script_speech(&game.story.mission.as_ref().unwrap().intro, &mut intro);
+        LiveContext::new(&game, None, None)
+            .script_speech(&game.story.mission.as_ref().unwrap().intro, &mut intro);
         intro.extend(std::mem::take(
             &mut game.story.campaign.as_mut().unwrap().dialogue,
         ));
         game.story.campaign.as_mut().unwrap().dialogue = intro;
-        if let Some(story) = game.resolved_story() {
+        if let Some(story) = LiveContext::new(&game, None, None).resolved_story() {
             game.record(story.briefing);
         }
         game.sync_recruitment();
@@ -253,7 +249,7 @@ impl<'catalog> Game<'catalog> {
     pub(crate) fn returns_with_story(&self, u: &Unit) -> bool {
         let state = self.story.campaign.as_ref().unwrap();
         self.campaign_definition()
-            .missions
+            .chapters()
             .get(state.mission + 1)
             .is_some_and(|mission| {
                 mission
@@ -262,8 +258,8 @@ impl<'catalog> Game<'catalog> {
                     .any(|arrival| self.name(u.character) == Some(arrival.character.as_str()))
                     || mission.map.units.iter().any(|incoming| {
                         incoming.faction == "player"
-                            && self.rules.units[self.kind(&incoming.r#type)].family
-                                == self.rules.units[u.kind].family
+                            && self.definitions.unit(self.kind(&incoming.r#type)).family()
+                                == self.definitions.unit(u.kind).family()
                             && if u.role == Some(Role::Leader) {
                                 incoming.role == Some(Role::Leader)
                             } else {
@@ -301,18 +297,24 @@ impl<'catalog> Game<'catalog> {
                     && !self.returns_with_story(u)
             })
             .collect();
-        let value = |u: &Unit| {
-            let r = &self.rules.units[u.kind];
-            r.hp as f64
-                + r.damage as f64 * 2.0
-                + r.healing as f64 * 5.0
-                + r.level as f64 * 3.0
-                + u.experience.unwrap_or(0) as f64 / 3.0
+        let value = |unit: &Unit| {
+            let definition = self.definitions.unit(unit.kind);
+            let weights = &self.campaign_definition().carryover().weights;
+            let owned = self.definitions.owned(unit, &self.runtime.inventories);
+            let capabilities = &owned.assessment;
+            {
+                f64::from(definition.max_hp) * weights.hp
+                    + capabilities.meta_attack_score() * weights.damage
+                    + capabilities.meta_healing_score() * weights.healing
+                    + f64::from(definition.level()) * weights.level
+                    + f64::from(unit.experience.expect("resolved unit experience"))
+                        * weights.experience
+            }
         };
         eligible.order_by(|a, b| value(b).total_cmp(&value(a)));
         if let Some(selected) = selected {
             let mut recalled = Vec::new();
-            if selected.len() > 4 {
+            if selected.len() > self.campaign_definition().carryover().veteran_limit {
                 return Err(CommandError::NoNextMission);
             }
             for id in selected {
@@ -329,13 +331,17 @@ impl<'catalog> Game<'catalog> {
             eligible = recalled;
         }
         let veteran = |u: &Unit, role: bool| Veteran {
-            items: self.inventory(u).cloned().collect(),
-            r#type: self.rules.units[u.kind].id.clone(),
-            experience: u.experience.unwrap_or(0),
+            items: self
+                .inventories
+                .items(u.inventory)
+                .map(str::to_owned)
+                .collect(),
+            r#type: self.definitions.unit(u.kind).id().to_owned(),
+            experience: u.experience.expect("resolved unit experience"),
             character: self.name(u.character).map(str::to_owned),
             role: if role { u.role.clone() } else { None },
         };
-        eligible.truncate(4);
+        eligible.truncate(self.campaign_definition().carryover().veteran_limit);
         let overflow: Vec<_> = self
             .units
             .iter()
@@ -344,7 +350,7 @@ impl<'catalog> Game<'catalog> {
                     && !self.returns_with_story(unit)
                     && !eligible.iter().any(|selected| selected.id == unit.id)
             })
-            .flat_map(|unit| self.inventory(unit).cloned())
+            .flat_map(|unit| self.inventories.items(unit.inventory).map(str::to_owned))
             .collect();
         let veterans = eligible.into_iter().map(|u| veteran(u, false)).collect();
         let mut story: Vec<Veteran> = self
@@ -353,14 +359,14 @@ impl<'catalog> Game<'catalog> {
             .filter(|u| self.unit_faction(u) == "player" && self.returns_with_story(u))
             .map(|u| veteran(u, true))
             .collect();
-        if let Some(next) = self.campaign_definition().missions.get(state.mission + 1) {
+        if let Some(next) = self.campaign_definition().chapters().get(state.mission + 1) {
             for record in &state.evacuated {
                 let unit = &record.unit;
                 if unit.faction == "player"
                     && next.map.units.iter().any(|incoming| {
                         incoming.faction == "player"
-                            && self.rules.units[self.kind(&incoming.r#type)].family
-                                == self.rules.units[self.kind(&unit.r#type)].family
+                            && self.definitions.unit(self.kind(&incoming.r#type)).family()
+                                == self.definitions.unit(self.kind(&unit.r#type)).family()
                             && if unit.role == Some(Role::Leader) {
                                 incoming.role == Some(Role::Leader)
                             } else {
@@ -371,7 +377,7 @@ impl<'catalog> Game<'catalog> {
                     story.push(Veteran {
                         r#type: unit.r#type.clone(),
                         items: unit.items.clone(),
-                        experience: unit.experience.unwrap_or(0),
+                        experience: unit.experience.expect("resolved unit experience"),
                         character: unit.character.clone(),
                         role: unit.role,
                     });
@@ -379,7 +385,10 @@ impl<'catalog> Game<'catalog> {
             }
         }
         let flags = state.flags.clone();
-        let mut fallen = state.fallen_companions.clone().unwrap_or_default();
+        let mut fallen = state
+            .fallen_companions
+            .clone()
+            .expect("resolved campaign fallen_companions");
         for name in state
             .marks
             .iter()
@@ -410,11 +419,12 @@ impl<'catalog> Game<'catalog> {
             }
         }
         let mut next = Self::start_campaign_from_definition(
-            self.rules,
+            self.catalogue,
             self.campaign_definition(),
             state.mission + 1,
             veterans,
-            self.position.runtime.gold["player"],
+            self.position.runtime.gold["player"]
+                .min(self.campaign_definition().carryover().gold_limit),
             flags,
             story,
             fallen,
@@ -431,9 +441,13 @@ impl<'catalog> Game<'catalog> {
             }
             let unit = next.units.iter().find(|unit| unit.id == leader_id).unwrap();
             let leader = Veteran {
-                items: next.inventory(unit).cloned().collect(),
-                r#type: next.rules.units[unit.kind].id.clone(),
-                experience: unit.experience.unwrap_or(0),
+                items: next
+                    .inventories
+                    .items(unit.inventory)
+                    .map(str::to_owned)
+                    .collect(),
+                r#type: next.definitions.unit(unit.kind).id().to_owned(),
+                experience: unit.experience.expect("resolved unit experience"),
                 character: next.name(unit.character).map(str::to_owned),
                 role: unit.role,
             };

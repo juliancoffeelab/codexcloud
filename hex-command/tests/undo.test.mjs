@@ -85,11 +85,17 @@ for (const action of ["attack", "recruit", "endTurn", "reset"])
     const saved = checkpoint();
     if (action === "attack")
       saved.state.units.push({
+        items: [],
         id: `u${saved.state.nextId++}`,
         type: "soldier",
         side: "ai",
         tile: { col: 4, row: 1 },
-        hp: Catalog.unit(catalog, "soldier").hp,
+        hp: Native.preview_unit(
+          createBattle({ kind: "scenario", map: "mirror" }),
+          "soldier",
+          "enemy",
+          { col: 4, row: 1 },
+        ).hp,
         moved: false,
         attackSpent: false,
         faction: "enemy",

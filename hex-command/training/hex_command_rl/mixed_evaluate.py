@@ -126,7 +126,7 @@ def plot(root):
     import matplotlib.pyplot as plt
 
     root = Path(root)
-    history = read_jsonl(root / "evaluations.jsonl")
+    history = sorted(read_jsonl(root / "evaluations.jsonl"), key=lambda r: r["seconds"])
     metrics = read_jsonl(root / "metrics.jsonl")
     fig, axes = plt.subplots(2, 3, figsize=(14, 7))
     x = [r["seconds"] / 60 for r in history]

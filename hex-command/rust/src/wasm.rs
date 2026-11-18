@@ -4,7 +4,7 @@ use crate::sort::SharedSort;
 use crate::{
     ai::{self, PlanningWorkspace},
     data::*,
-    logic::{Game, battle::Board},
+    logic::{BattleSession, battle::Board},
     protocol::*,
 };
 use hex_command_battle::model::{DispatchUpdateProjection, TerrainUpdateProjection};
@@ -27,6 +27,8 @@ impl<'a> From<&'a State> for NativeFrame<'a> {
 impl ocamljs_bindgen::EncodeAs<StateFrame> for NativeFrame<'_> {
     fn encode_as(self, out: &mut ocamljs_bindgen::Encoder) {
         let State {
+            map_modifiers,
+            lighting,
             vision_groups,
             factions,
             ground_items,
@@ -49,6 +51,8 @@ impl ocamljs_bindgen::EncodeAs<StateFrame> for NativeFrame<'_> {
             tiles: _,
         } = self.0;
         out.nested(|out| {
+            ocamljs_bindgen::EncodeRef::encode_ref(map_modifiers, out);
+            ocamljs_bindgen::EncodeRef::encode_ref(lighting, out);
             ocamljs_bindgen::EncodeRef::encode_ref(vision_groups, out);
             ocamljs_bindgen::EncodeRef::encode_ref(factions, out);
             ocamljs_bindgen::EncodeRef::encode_ref(ground_items, out);
@@ -114,20 +118,23 @@ fn terrain_projection(tiles: &Vec<Tile>, delta: TerrainDelta) -> TerrainProjecti
 /// dropping it returns the same runtime data, including caches and continuation scope.
 struct RuntimeLoan<'a> {
     slot: std::cell::RefMut<'a, Option<hex_command_battle::BattleState>>,
-    game: Option<Game<'a>>,
+    game: Option<BattleSession<'a>>,
 }
 impl<'a> RuntimeLoan<'a> {
-    fn new(slot: &'a RefCell<Option<hex_command_battle::BattleState>>, rules: &'a Rules) -> Self {
+    fn new(
+        slot: &'a RefCell<Option<hex_command_battle::BattleState>>,
+        rules: &'a Catalogue,
+    ) -> Self {
         let mut slot = slot.borrow_mut();
         let runtime = slot.take().expect("non-reentrant battle operation");
         Self {
             slot,
-            game: Some(Game::from_runtime(rules, runtime)),
+            game: Some(BattleSession::from_runtime(rules, runtime)),
         }
     }
 }
 impl<'a> std::ops::Deref for RuntimeLoan<'a> {
-    type Target = Game<'a>;
+    type Target = BattleSession<'a>;
     fn deref(&self) -> &Self::Target {
         self.game.as_ref().unwrap()
     }
@@ -152,7 +159,7 @@ struct PublishedTerrain {
     board: Rc<Board>,
 }
 impl PublishedTerrain {
-    fn new(game: &Game<'_>) -> Self {
+    fn new(game: &BattleSession<'_>) -> Self {
         Self {
             map_id: game.map_id().to_owned(),
             map_revision: game.map_revision(),
@@ -173,14 +180,14 @@ struct Battle {
     pending: Option<Command>,
 }
 impl Battle {
-    fn game<'a>(&'a self, rules: &'a Rules) -> RuntimeLoan<'a> {
+    fn game<'a>(&'a self, rules: &'a Catalogue) -> RuntimeLoan<'a> {
         RuntimeLoan::new(&self.runtime, rules)
     }
-    fn snapshot(&self, rules: &Rules) -> State {
+    fn snapshot(&self, rules: &Catalogue) -> State {
         self.game(rules)
             .state_with_tiles(self.terrain.tiles.clone())
     }
-    fn view(&self, rules: &Rules) -> EngineView {
+    fn view(&self, rules: &Catalogue) -> EngineView {
         let game = self.game(rules);
         EngineView {
             presentation: game.presentation(),
@@ -202,7 +209,7 @@ impl Battle {
 
 #[ocamljs_bindgen::ocamljs_bindgen(opaque)]
 pub struct NativeEngineFactory {
-    rules: Rules,
+    rules: Catalogue,
     battles: HashMap<u32, Battle>,
     next_id: u32,
 }
@@ -211,18 +218,18 @@ pub struct NativeEngineFactory {
 pub fn new_factory() -> Result<NativeEngineFactory, EngineError> {
     #[cfg(target_arch = "wasm32")]
     {
-        factory_with_rules(Ok(crate::data::baked_rules()))
+        factory_with_rules(Ok(Catalogue::embedded()))
     }
     #[cfg(not(target_arch = "wasm32"))]
     {
-        factory_with_rules(Rules::load())
+        factory_with_rules(Catalogue::load())
     }
 }
 #[ocamljs_bindgen(module=NativeEngineFactory)]
 pub fn with_documents(documents: BTreeMap<Text, Text>) -> Result<NativeEngineFactory, EngineError> {
     #[cfg(any(not(target_arch = "wasm32"), feature = "runtime-catalog"))]
     {
-        factory_with_rules(Rules::from_json_bundle(&documents))
+        factory_with_rules(Catalogue::from_json_bundle(&documents))
     }
     #[cfg(all(target_arch = "wasm32", not(feature = "runtime-catalog")))]
     {
@@ -233,7 +240,7 @@ pub fn with_documents(documents: BTreeMap<Text, Text>) -> Result<NativeEngineFac
     }
 }
 fn factory_with_rules(
-    rules: Result<Rules, ContentError>,
+    rules: Result<Catalogue, ContentError>,
 ) -> Result<NativeEngineFactory, EngineError> {
     let rules = rules.map_err(|error| EngineError::Content {
         path: error.path,
@@ -247,24 +254,77 @@ fn factory_with_rules(
 }
 #[ocamljs_bindgen(module=NativeEngineFactory)]
 pub fn catalog(factory: &NativeEngineFactory) -> CatalogView {
-    let mut campaigns: Vec<_> = factory
-        .rules
-        .campaigns
-        .values()
-        .map(CampaignRules::snapshot)
-        .collect();
-    campaigns.order_by(|a, b| a.id.cmp(&b.id));
-    let mut items: Vec<_> = factory.rules.items.values().cloned().collect();
-    items.order_by(|a, b| a.id.cmp(&b.id));
+    let wiki = factory.rules.wiki();
+    let map_view = |map: &MapDefinition| {
+        let game = BattleSession::from_map(&factory.rules, map);
+        BrowserMap {
+            id: map.id().into(),
+            revision: map.revision(),
+            name: map.name().into(),
+            description: map.description().into(),
+            tags: map.tags().to_vec(),
+            state: game.state(),
+            presentation: game.presentation(),
+        }
+    };
     CatalogView {
-        items,
-        units: factory.rules.units.iter().cloned().collect(),
-        terrain: factory.rules.terrain_definitions.clone(),
-        races: factory.rules.race_definitions.clone(),
-        maps: factory.rules.map_definitions.clone(),
-        campaigns,
+        abilities: wiki.abilities().collect(),
+        items: wiki.items().collect(),
+        units: wiki.units().collect(),
+        terrain: wiki.terrains().collect(),
+        races: wiki.races().collect(),
+        environment_effects: wiki
+            .environment_effects()
+            .map(|effect| BrowserEnvironment {
+                id: effect.id().into(),
+                name: effect.name().into(),
+                description: effect.description().into(),
+                effects: effect.effects().to_vec(),
+            })
+            .collect(),
+        maps: wiki.maps().map(&map_view).collect(),
+        campaigns: wiki
+            .campaigns()
+            .map(|campaign| BrowserCampaign {
+                id: campaign.id().into(),
+                name: campaign.name().into(),
+                description: campaign.description().into(),
+                tagline: campaign.tagline().into(),
+                short_description: campaign.short_description().into(),
+                race: campaign.race(),
+                leader: campaign.leader_id().into(),
+                tags: campaign.tags().to_vec(),
+                characters: campaign.characters().to_vec(),
+                ending: campaign.ending().to_vec(),
+                carryover: campaign.carryover().clone(),
+                missions: campaign
+                    .chapters()
+                    .iter()
+                    .map(|chapter| {
+                        let story = chapter.story();
+                        let scripts = chapter.scripts();
+                        let map = factory.rules.map(chapter.map_id(), chapter.map_revision());
+                        BrowserChapter {
+                            id: chapter.id().into(),
+                            map: map_view(map),
+                            subtitle: story.subtitle.clone(),
+                            briefing: story.briefing.clone(),
+                            debrief: story.debrief.clone(),
+                            hints: story.hints.clone(),
+                            intro: story.intro.clone(),
+                            victory: story.victory.clone(),
+                            scripted_events: scripts.events.clone(),
+                            required_companions: scripts.required_companions.clone(),
+                            arrivals: map.roster().arrivals.clone(),
+                            enemy_groups: scripts.enemy_groups.clone(),
+                        }
+                    })
+                    .collect(),
+            })
+            .collect(),
     }
 }
+
 #[ocamljs_bindgen(module=NativeEngineFactory,name="new_battle")]
 pub fn create(
     factory: &mut NativeEngineFactory,
@@ -315,6 +375,39 @@ pub fn inspect(
         let game = battle.game(&factory.rules);
         crate::ai::policies::combat::inspect(game.view(), game.inspect(revision))
     })
+}
+#[ocamljs_bindgen(module=NativeEngineFactory)]
+pub fn preview_unit(
+    factory: &NativeEngineFactory,
+    id: u32,
+    revision: u32,
+    kind: Text,
+    faction: Text,
+    tile: Hex,
+) -> Result<hex_command_battle::model::UnitDetails, EngineError> {
+    let battle = factory.battle(id, revision)?;
+    let game = battle.game(&factory.rules);
+    let view = game.view();
+    let kind = factory
+        .rules
+        .units()
+        .position(|definition| definition.id() == kind)
+        .ok_or_else(|| EngineError::InvalidRequest {
+            message: format!("Unknown unit type: {kind}"),
+        })?;
+    let tile = *view
+        .board()
+        .indices
+        .get(&tile)
+        .ok_or_else(|| EngineError::InvalidRequest {
+            message: "Unknown projection tile".into(),
+        })?;
+    if view.faction(&faction).is_none() {
+        return Err(EngineError::InvalidRequest {
+            message: format!("Unknown faction: {faction}"),
+        });
+    }
+    Ok(game.preview_unit_details(kind, view.faction_identity(&faction), tile))
 }
 #[ocamljs_bindgen(module=NativeEngineFactory)]
 pub fn geometry(
@@ -437,11 +530,12 @@ pub fn state_to_json(value: State) -> Text {
 pub fn unit_actions_to_json(value: UnitActions) -> Text {
     serde_json::to_string(&value).expect("serializable actions")
 }
-#[ocamljs_bindgen]
+#[ocamljs_bindgen(module=NativeEngineFactory)]
 pub fn preview_presentation(
+    factory: &NativeEngineFactory,
     input: crate::logic::conditions::PresentationInput,
 ) -> BattlefieldPresentation {
-    crate::logic::conditions::resolve(&input).0
+    crate::logic::conditions::resolve(&factory.rules, &input)
 }
 impl NativeEngineFactory {
     fn apply(
@@ -571,7 +665,7 @@ impl NativeEngineFactory {
         })
     }
     fn restore_saved(&mut self, saved: SavedGame) -> Result<BattleHandle, EngineError> {
-        let game = Game::try_from_state(&self.rules, saved.state).map_err(|error| {
+        let game = BattleSession::try_from_state(&self.rules, saved.state).map_err(|error| {
             EngineError::InvalidSave {
                 message: error.to_string(),
             }
@@ -595,7 +689,7 @@ impl NativeEngineFactory {
             .next_id
             .checked_add(1)
             .expect("battle handle exhausted");
-        let game = Game::from_runtime(&self.rules, runtime);
+        let game = BattleSession::from_runtime(&self.rules, runtime);
         let terrain = PublishedTerrain::new(&game);
         let runtime = game.into_runtime();
         let battle = Battle {
@@ -611,7 +705,7 @@ impl NativeEngineFactory {
         self.battles.insert(id, battle);
         BattleHandle { id, view }
     }
-    fn start(&self, start: Start) -> Result<Game<'_>, EngineError> {
+    fn start(&self, start: Start) -> Result<BattleSession<'_>, EngineError> {
         match start {
             Start::Scenario {
                 map,
@@ -619,16 +713,16 @@ impl NativeEngineFactory {
                 armies,
                 first,
             } => {
-                let mut state = self
+                let definition = self
                     .rules
-                    .maps
-                    .iter()
-                    .filter(|((id, rev), _)| {
-                        id == &map && revision.is_none_or(|expected| expected == *rev)
+                    .maps()
+                    .filter(|definition| {
+                        definition.id() == map
+                            && revision.is_none_or(|expected| definition.revision() == expected)
                     })
-                    .max_by_key(|((_, revision), _)| revision)
-                    .map(|(_, state)| state.clone())
-                    .ok_or(EngineError::UnknownMap { map: map.clone() })?;
+                    .max_by_key(|definition| definition.revision())
+                    .ok_or_else(|| EngineError::UnknownMap { map: map.clone() })?;
+                let mut state = BattleSession::from_map(&self.rules, definition).state();
                 if let Some(armies) = armies {
                     if map == "developer" {
                         return Err(EngineError::InvalidRequest {
@@ -638,6 +732,8 @@ impl NativeEngineFactory {
                     for (seat, faction) in ["player", "enemy"].into_iter().enumerate() {
                         let roster = self
                             .rules
+                            .meta()
+                            .simulation
                             .rosters
                             .iter()
                             .find(|r| r.id == armies[seat])
@@ -645,7 +741,7 @@ impl NativeEngineFactory {
                                 message: "Unknown faction".into(),
                             })?;
                         for unit in state.units.iter_mut().filter(|u| u.faction == faction) {
-                            let original = &self.rules.units[self.rules.types[&unit.r#type]];
+                            let original = self.rules.unit(&unit.r#type);
                             let kind = if unit.role == Some(Role::Leader) {
                                 roster.leader.as_str()
                             } else if roster.id == "human" || roster.pool.contains(&unit.r#type) {
@@ -654,32 +750,32 @@ impl NativeEngineFactory {
                                 roster
                                     .pool
                                     .iter()
-                                    .find(|id| {
-                                        self.rules.units[self.rules.types[*id]].role
-                                            == original.role
-                                    })
-                                    .or_else(|| roster.pool.first())
+                                    // Preserve the existing composition policy: prefer the same
+                                    // role, otherwise use the first authored pool candidate.
+                                    .min_by_key(|id| self.rules.unit(id).role() != original.role())
                                     .ok_or_else(|| EngineError::InvalidRequest {
                                         message: "Faction has no unit for the starting army".into(),
                                     })?
                                     .as_str()
                             };
-                            let rule = &self.rules.units[self.rules.types[kind]];
+                            let rule = self.rules.unit(kind);
                             unit.r#type = kind.to_owned();
-                            unit.hp = rule.hp;
+                            unit.hp = rule.max_hp;
                             unit.experience = Some(0);
                         }
                     }
                     state.armies = Some(armies);
                 }
-                state.turn = first.unwrap_or(TurnPhase::Player);
-                Ok(Game::from_state(&self.rules, state))
+                if let Some(first) = first {
+                    state.turn = first;
+                }
+                Ok(BattleSession::from_state(&self.rules, state))
             }
             Start::Campaign { id } => {
-                if !self.rules.campaigns.contains_key(&id) {
+                if !self.rules.campaigns().any(|campaign| campaign.id() == id) {
                     return Err(EngineError::UnknownCampaign { id });
                 }
-                Ok(Game::start_campaign(
+                Ok(BattleSession::start_campaign(
                     &self.rules,
                     &id,
                     0,
@@ -772,17 +868,17 @@ mod tests {
     #[test]
     fn checkpoint_discards_unexecuted_plans_and_restores_resolved_state() {
         let mut factory = NativeEngineFactory {
-            rules: Rules::embedded().unwrap(),
+            rules: Catalogue::embedded(),
             battles: HashMap::new(),
             next_id: 1,
         };
-        let state = Game::new(&factory.rules, "mirror").state();
-        let runtime = Game::from_state(&factory.rules, state.clone()).into_runtime();
+        let state = BattleSession::new(&factory.rules, "mirror").state();
+        let runtime = BattleSession::from_state(&factory.rules, state.clone()).into_runtime();
         let original = factory.insert_runtime(runtime, 17);
         let options = AiOptions {
             blocks: None,
-            policy: AiPolicy::Balanced,
-            diplomacy: AiDiplomacy::Diplomatic,
+            policy: Policy::Balanced,
+            diplomacy: Diplomacy::Diplomatic,
             recruitment_limit: Some(2),
         };
         factory.decision(original.id, 0, options).unwrap();
@@ -819,12 +915,6 @@ mod tests {
     fn static_queries_are_detached_and_excluded_from_dynamic_publications() {
         let mut factory = new_factory().unwrap();
         let original = mirror(&mut factory);
-        let costs = geometry(&factory, original.id, 0).unwrap().costs;
-        for rule in &factory.rules.units {
-            for (terrain, cost) in factory.rules.terrain_names.iter().zip(&rule.costs) {
-                assert_eq!(costs[&rule.id][terrain], *cost);
-            }
-        }
         let board = geometry(&factory, original.id, 0).unwrap();
         let dynamic = inspect(&factory, original.id, 0).unwrap();
         let json = serde_json::to_value(&dynamic).unwrap();
@@ -841,7 +931,6 @@ mod tests {
             );
         }
         dispatch(&mut factory, original.id, 0, Command::EndTurn).unwrap();
-        assert_eq!(geometry(&factory, original.id, 1).unwrap().costs, costs);
         let next = geometry(&factory, original.id, 1).unwrap();
         assert_eq!(next.neighbors, board.neighbors);
         assert!(matches!(
@@ -884,7 +973,7 @@ mod tests {
     fn typed_custom_catalog_keeps_static_rules_and_topology_factory_local() {
         let mut default = new_factory().unwrap();
         let original = mirror(&mut default);
-        let mut documents = crate::data::catalog::embedded_bundle();
+        let mut documents = crate::catalogue_fixture::bundle();
         let mut terrain: serde_json::Value =
             serde_json::from_str(&documents["game/terrain.json"]).unwrap();
         terrain
@@ -908,8 +997,18 @@ mod tests {
         let mut custom = with_documents(documents).unwrap();
         let custom_battle = mirror(&mut custom);
         assert_ne!(
-            geometry(&default, original.id, 0).unwrap().costs,
-            geometry(&custom, custom_battle.id, 0).unwrap().costs
+            inspect(&default, original.id, 0).unwrap().units[0]
+                .details
+                .terrain
+                .iter()
+                .map(|t| t.cost)
+                .collect::<Vec<_>>(),
+            inspect(&custom, custom_battle.id, 0).unwrap().units[0]
+                .details
+                .terrain
+                .iter()
+                .map(|t| t.cost)
+                .collect::<Vec<_>>()
         );
         let old_topology = geometry(&default, original.id, 0).unwrap();
         let new_topology = geometry(&custom, custom_battle.id, 0).unwrap();
@@ -954,7 +1053,7 @@ mod tests {
     }
 }
 
-fn terrain_replaced(old: &PublishedTerrain, game: &Game<'_>) -> bool {
+fn terrain_replaced(old: &PublishedTerrain, game: &BattleSession<'_>) -> bool {
     old.map_id != game.map_id()
         || old.map_revision != game.map_revision()
         || old.cols != game.cols()

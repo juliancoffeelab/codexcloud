@@ -9,7 +9,7 @@ impl<'catalog> BattlePosition<'catalog> {
             .iter()
             .enumerate()
             .filter(|(_, owner)| owner.as_deref() == Some(faction))
-            .map(|(tile, _)| self.terrain_role(tile).income())
+            .map(|(tile, _)| self.terrain_definition(tile).income())
             .sum()
     }
     pub(crate) fn begin_turn(&mut self, side: TurnPhase) {
@@ -33,63 +33,74 @@ impl<'catalog> BattlePosition<'catalog> {
             if unit.phase == side {
                 facts.revealed_to.clear();
             }
-            facts.effects.retain(|e| {
-                e.expires_at.as_ref().is_none_or(|at| {
-                    at.round > self.runtime.round
-                        || (at.round == self.runtime.round && at.phase.index() > side.index())
-                })
-            });
         }
-        let names = &self.runtime.names;
-        for unit in &mut self.runtime.units {
+        for index in 0..self.runtime.units.len() {
+            let unit = self.runtime.units[index];
             if unit.phase != side {
                 continue;
             }
-            unit.moved = false;
-            unit.attack_spent = false;
-            let terrain = self.rules.terrain_roles[self.runtime.terrain[unit.tile]];
-            if self.runtime.owners[unit.tile].as_deref() == Some(names.get(unit.faction)) {
-                unit.hp = (unit.hp + terrain.healing()).min(self.rules.units[unit.kind].hp);
-            }
+            let healing = self.with_selected_capabilities_at(
+                &unit,
+                unit.tile,
+                &self.units,
+                &[],
+                |source, _, _| source.is_none(),
+                |caps| caps.healing(),
+            );
+            self.runtime.units[index].moved = false;
+            self.runtime.units[index].attack_spent = false;
+            self.runtime.units[index].hp =
+                (unit.hp + healing).min(self.definitions.unit(unit.kind).max_hp);
         }
         for index in 0..self.runtime.units.len() {
             if self.runtime.units[index].phase != side {
                 continue;
             }
-            let healing = self
-                .units
-                .iter()
-                .map(|ally| self.healing_from(ally, &self.runtime.units[index]))
-                .max()
-                .unwrap_or(0);
-            #[cfg(not(target_arch = "wasm32"))]
-            let amount = healing.min(
-                (self.rules.units[self.runtime.units[index].kind].hp
-                    - self.runtime.units[index].hp)
-                    .max(0),
-            );
-            #[cfg(not(target_arch = "wasm32"))]
-            if amount > 0 && self.runtime.recordings.is_some() {
-                let target = &self.runtime.units[index];
-                let providers = self
-                    .units
-                    .iter()
-                    .filter(|ally| self.healing_from(ally, target) == healing)
-                    .map(|ally| format!("u{}", ally.id))
-                    .collect();
-                self.runtime
-                    .recordings
-                    .as_mut()
-                    .unwrap()
-                    .healing
-                    .push(HealingRecord {
-                        target: format!("u{}", target.id),
-                        providers,
-                        amount,
-                    });
+            let target = &self.runtime.units[index];
+            let calculate_healing = || {
+                self.with_selected_capabilities_at(
+                    target,
+                    target.tile,
+                    &self.units,
+                    &[],
+                    |source, _, _| source.is_some(),
+                    |caps| caps.healing(),
+                )
+            };
+            #[cfg(all(feature = "simulation", not(target_arch = "wasm32")))]
+            let diagnostic = self.runtime.recordings.as_ref().map(|_| {
+                self.support_diagnostic(
+                    target,
+                    |source, _| source.is_some(),
+                    hex_command_catalog::diagnostics::healing,
+                )
+            });
+            #[cfg(all(feature = "simulation", not(target_arch = "wasm32")))]
+            let healing = match &diagnostic {
+                Some(diagnostic) => diagnostic.amount,
+                None => calculate_healing(),
+            };
+            #[cfg(any(not(feature = "simulation"), target_arch = "wasm32"))]
+            let healing = calculate_healing();
+            #[cfg(all(feature = "simulation", not(target_arch = "wasm32")))]
+            if let Some(diagnostic) = diagnostic {
+                let amount =
+                    healing.min((self.definitions.unit(target.kind).max_hp - target.hp).max(0));
+                if amount > 0 {
+                    self.runtime
+                        .recordings
+                        .as_mut()
+                        .expect("recording enabled")
+                        .healing
+                        .push(HealingRecord {
+                            target: format!("u{}", target.id),
+                            providers: diagnostic.source_names(None),
+                            amount,
+                        });
+                }
             }
             self.runtime.units[index].hp = (self.runtime.units[index].hp + healing)
-                .min(self.rules.units[self.runtime.units[index].kind].hp);
+                .min(self.definitions.unit(self.runtime.units[index].kind).max_hp);
         }
     }
     pub(crate) fn end_turn(&mut self) {

@@ -144,10 +144,6 @@ type unit_actor = {
 type ground_item = { key : string; x : float; y : float; url : string }
 type scene_data = { units : unit_actor array; items : ground_item array; fog : string array }
 
-(* A private cache identity over a closed, serializable OCaml value. This is
-   never used as a save/wire encoding, just as upstream uses JSON.stringify(item). *)
-external item_identity : Domain.item -> string = "stringify" [@@mel.scope "JSON"]
-
 let scene_data frame =
   let ongoing = (Native.state frame.view.game).winner = None in
   let fog = Set.create () in
@@ -218,10 +214,10 @@ let scene_data frame =
           let occurrences = Map.create () in
           Array.iteri
             (fun index (ground : Domain.ground_item) ->
-              let identity = item_identity ground.item in
+              let identity = ground.item in
               let occurrence = Option.value ~default:0 (Map.get occurrences identity) in
               let _ = Map.set occurrences identity (occurrence + 1) in
-              let frame = Phaser_resource_plan.item_frame frame.view.artwork ground.item.id in
+              let frame = Phaser_resource_plan.item_frame frame.view.artwork ground.item in
               let _ =
                 Array_ext.append_value items
                   {

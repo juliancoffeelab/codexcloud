@@ -2,9 +2,12 @@ open Ui;
 [@mel.scope {js|Math|js}] external random: unit => float = "random";
 module MapThumbnail = {
   [@react.component]
-  let make = (~map: Domain.map_definition, ~backdrop=false) => {
+  let make = (~map: Domain.browser_map, ~backdrop=false) => {
     let size =
-      Geometry.preview_dimensions(~cols=Int32.to_int(map.cols), ~rows=Int32.to_int(map.rows));
+      Geometry.preview_dimensions(
+        ~cols=Int32.to_int(map.state.cols),
+        ~rows=Int32.to_int(map.state.rows),
+      );
     let tiles =
       React.useMemo1(
         () => {
@@ -20,13 +23,13 @@ module MapThumbnail = {
                 },
                 tile.terrain,
               ),
-            map.terrain,
+            map.state.tiles,
           );
           List.init(
-            Int32.to_int(map.rows) * Int32.to_int(map.cols),
+            Int32.to_int(map.state.rows) * Int32.to_int(map.state.cols),
             index => {
-              let col = index mod Int32.to_int(map.cols);
-              let row = index / Int32.to_int(map.cols);
+              let col = index mod Int32.to_int(map.state.cols);
+              let row = index / Int32.to_int(map.state.cols);
               let point = Geometry.center(~col, ~row);
               let id = {
                 let js_text_part_0 = string_of_int(col);
@@ -48,7 +51,7 @@ module MapThumbnail = {
         [|map|],
       );
     let symmetric = backdrop && map.id == {js|mirror|js};
-    let axis = Geometry.center(~col=Int32.to_int(map.cols) / 2, ~row=0).x;
+    let axis = Geometry.center(~col=Int32.to_int(map.state.cols) / 2, ~row=0).x;
     <svg
       className={js|setup-map-preview|js}
       viewBox={
@@ -242,25 +245,28 @@ let make =
     selection == [] || Array.exists(tag => List.mem(tag, selection), tags);
   let allMaps =
     List.filter(
-      (map: Domain.map_definition) => permitted(map.tags),
+      (map: Domain.browser_map) => permitted(map.tags),
       Catalog.scenario_maps(view.catalog),
     );
   let allCampaigns =
-    List.filter((c: Domain.campaign) => permitted(c.tags), Catalog.campaigns(view.catalog));
+    List.filter(
+      (c: Domain.browser_campaign) => permitted(c.tags),
+      Catalog.campaigns(view.catalog),
+    );
   let maps =
     List.filter(
-      (map: Domain.map_definition) => !allowNonHumanMaps || matches(selectedTags, map.tags),
+      (map: Domain.browser_map) => !allowNonHumanMaps || matches(selectedTags, map.tags),
       allMaps,
     );
   let campaigns =
     List.filter(
-      (c: Domain.campaign) => !allowNonHumanMaps || matches(selectedTags, c.tags),
+      (c: Domain.browser_campaign) => !allowNonHumanMaps || matches(selectedTags, c.tags),
       allCampaigns,
     );
   let entries =
     mode == Setup.Campaign
-      ? List.map((c: Domain.campaign) => c.tags, allCampaigns)
-      : List.map((map: Domain.map_definition) => map.tags, allMaps);
+      ? List.map((c: Domain.browser_campaign) => c.tags, allCampaigns)
+      : List.map((map: Domain.browser_map) => map.tags, allMaps);
   let tagOptions =
     selectedTags
     @ List.concat_map(Array.to_list, entries)
@@ -288,15 +294,15 @@ let make =
     mode == Setup.Campaign
       ? Catalog.mission_map(view.catalog, campaign.missions[0])
       : Catalog.map(view.catalog, mapId);
-  let hasStartingArmies = Array.length(selectedMap.units) > 0;
-  let mapName = (map: Domain.map_definition) =>
+  let hasStartingArmies = Array.length(selectedMap.state.units) > 0;
+  let mapName = (map: Domain.browser_map) =>
     map.id == {js|river-valley|js} ? {js|River Valley|js} : map.name;
   let setDifficulty = policy => {
     let preset = Setup.preset(policy);
     setPlanner(_ => preset.planner);
     setRecruiter(_ => preset.recruiter);
   };
-  let preloadCampaign = (c: Domain.campaign) =>
+  let preloadCampaign = (c: Domain.browser_campaign) =>
     Terrain_preload.map(view.catalog, c.missions[0].map.id);
   let dismiss = () =>
     if (!view.awaiting_new_game && !starting) {
@@ -603,7 +609,7 @@ let make =
                         asChild=true>
                         <div className={js|ng-cards|js}>
                           {mode == Setup.Campaign
-                             ? eachList(campaigns, (c: Domain.campaign) =>
+                             ? eachList(campaigns, (c: Domain.browser_campaign) =>
                                  <button
                                    key={c.id}
                                    ariaCurrent={c.id == campaignId ? {js|true|js} : {js|false|js}}
@@ -647,7 +653,7 @@ let make =
                                    </small>
                                  </button>
                                )
-                             : eachList(maps, (map: Domain.map_definition) =>
+                             : eachList(maps, (map: Domain.browser_map) =>
                                  <button
                                    key={map.id}
                                    ariaCurrent={map.id == mapId ? {js|true|js} : {js|false|js}}

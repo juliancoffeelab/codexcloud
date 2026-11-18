@@ -8,28 +8,32 @@
           "forces": {
             "kind": "selected",
             "budget": 36
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "arena-plains-1",
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "arena-plains-1",
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "arena-plains-1",
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -56,28 +60,32 @@
           "forces": {
             "kind": "selected",
             "budget": 36
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "arena-forests-2",
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "arena-forests-3",
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "arena-forests-4",
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -104,28 +112,32 @@
           "forces": {
             "kind": "selected",
             "budget": 36
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "arena-crossing-2",
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "arena-crossing-3",
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "arena-crossing-4",
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -152,28 +164,32 @@
           "forces": {
             "kind": "selected",
             "budget": 36
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "arena-islands-2",
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "arena-islands-3",
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "arena-islands-4",
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -200,28 +216,32 @@
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "wood-edge",
           "forces": {
             "kind": "selected",
             "budget": 42
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "wood-edge",
           "forces": {
             "kind": "selected",
             "budget": 42
-          }
+          },
+          "mapRevision": 1
         },
         {
           "map": "wood-edge",
           "forces": {
             "kind": "selected",
             "budget": 42
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -247,7 +267,8 @@
           "map": "combat-villages",
           "forces": {
             "kind": "scenario"
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -265,7 +286,8 @@
           "map": "combat-sluice",
           "forces": {
             "kind": "scenario"
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -284,28 +306,32 @@
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 2
         },
         {
           "map": "river-valley",
           "forces": {
             "kind": "selected",
             "budget": 42
-          }
+          },
+          "mapRevision": 2
         },
         {
           "map": "river-valley",
           "forces": {
             "kind": "selected",
             "budget": 42
-          }
+          },
+          "mapRevision": 2
         },
         {
           "map": "river-valley",
           "forces": {
             "kind": "selected",
             "budget": 42
-          }
+          },
+          "mapRevision": 2
         }
       ],
       "territory": [
@@ -324,7 +350,8 @@
           "forces": {
             "kind": "selected",
             "budget": 36
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -343,7 +370,8 @@
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -362,7 +390,8 @@
           "forces": {
             "kind": "selected",
             "budget": 42
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -381,7 +410,8 @@
           "forces": {
             "kind": "selected",
             "budget": 36
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -400,7 +430,8 @@
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -419,7 +450,8 @@
           "forces": {
             "kind": "selected",
             "budget": 42
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -438,7 +470,8 @@
           "forces": {
             "kind": "selected",
             "budget": 36
-          }
+          },
+          "mapRevision": 2
         }
       ],
       "territory": [
@@ -457,7 +490,8 @@
           "forces": {
             "kind": "selected",
             "budget": 39
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -476,7 +510,8 @@
           "forces": {
             "kind": "selected",
             "budget": 54
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -495,7 +530,8 @@
           "forces": {
             "kind": "selected",
             "budget": 54
-          }
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -505,6 +541,82 @@
         }
       ],
       "holdTurns": 3
+    },
+    {
+      "id": "rl-dark-rooms",
+      "variants": [
+        {
+          "map": "rl-dark-rooms",
+          "forces": {
+            "kind": "scenario"
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 5,
+          "row": 3
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-twilight-ridge",
+      "variants": [
+        {
+          "map": "rl-twilight-ridge",
+          "forces": {
+            "kind": "scenario"
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 6,
+          "row": 3
+        }
+      ],
+      "holdTurns": 5
+    },
+    {
+      "id": "rl-mist-wetland",
+      "variants": [
+        {
+          "map": "rl-mist-wetland",
+          "forces": {
+            "kind": "scenario"
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 5,
+          "row": 4
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-lantern-forest",
+      "variants": [
+        {
+          "map": "rl-lantern-forest",
+          "forces": {
+            "kind": "scenario"
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 5,
+          "row": 4
+        }
+      ],
+      "holdTurns": 4
     }
   ],
   "defaultScenarios": ["open", "wooded", "crossings", "islands", "wood-edge"],
