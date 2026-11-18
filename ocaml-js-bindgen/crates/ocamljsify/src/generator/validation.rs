@@ -576,7 +576,18 @@ pub(super) fn instantiated(
     input: bool,
     seen: &mut BTreeSet<String>,
 ) -> Result<(), Error> {
-    if seen.len() > 128 {
+    instantiated_at_depth(s, t, input, seen, 0)
+}
+
+fn instantiated_at_depth(
+    s: &Schema,
+    t: &Ty,
+    input: bool,
+    seen: &mut BTreeSet<String>,
+    depth: usize,
+) -> Result<(), Error> {
+    // Bound recursively expanding instantiations, not the width of a valid schema.
+    if depth > 128 {
         return Err("ABI type expansion limit exceeded".into());
     }
     if t.kind == "ref" {
@@ -593,10 +604,10 @@ pub(super) fn instantiated(
         );
     }
     for a in &t.args {
-        instantiated(s, a, input, seen)?;
+        instantiated_at_depth(s, a, input, seen, depth + 1)?;
     }
     if let Some(i) = &t.inner {
-        instantiated(s, i, input, seen)?;
+        instantiated_at_depth(s, i, input, seen, depth + 1)?;
     }
     let Some(e) = s.entries.get(&t.name) else {
         return Ok(());
@@ -616,19 +627,58 @@ pub(super) fn instantiated(
         .zip(t.args.iter().cloned())
         .collect::<BTreeMap<_, _>>();
     if let Some(t) = &e.ty {
-        instantiated(s, &substitute(t, &bindings), input, seen)?;
+        instantiated_at_depth(s, &substitute(t, &bindings), input, seen, depth + 1)?;
     }
     if e.kind != "opaque" {
         if let Some(b) = &e.body {
             for f in &b.fields {
-                instantiated(s, &substitute(&f.ty, &bindings), input, seen)?;
+                instantiated_at_depth(s, &substitute(&f.ty, &bindings), input, seen, depth + 1)?;
             }
         }
         for v in &e.variants {
             for f in &v.body.fields {
-                instantiated(s, &substitute(&f.ty, &bindings), input, seen)?;
+                instantiated_at_depth(s, &substitute(&f.ty, &bindings), input, seen, depth + 1)?;
             }
         }
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn instantiation_budget_limits_depth_instead_of_schema_width() {
+        let named = |name: &str| serde_json::json!({"kind":"named", "name":name});
+        let mut entries = BTreeMap::new();
+        let mut fields = Vec::new();
+        for i in 0..160 {
+            let name = format!("Leaf{i}");
+            let entry: Entry = serde_json::from_value(serde_json::json!({
+                "kind":"alias", "name":name, "ty":named("i32")
+            }))
+            .unwrap();
+            entries.insert(name.clone(), entry);
+            fields.push(serde_json::json!({"name":format!("field_{i}"),"ty":named(&name)}));
+        }
+        entries.insert(
+            "Root".into(),
+            serde_json::from_value(serde_json::json!({
+                "kind":"struct", "name":"Root", "body":{"style":"named","fields":fields}
+            }))
+            .unwrap(),
+        );
+        let mut schema = Schema {
+            entries,
+            fingerprint: String::new(),
+        };
+        let root: Ty = serde_json::from_value(named("Root")).unwrap();
+        instantiated(&schema, &root, false, &mut BTreeSet::new()).unwrap();
+        for i in 0..159 {
+            schema.entries.get_mut(&format!("Leaf{i}")).unwrap().ty =
+                Some(serde_json::from_value(named(&format!("Leaf{}", i + 1))).unwrap());
+        }
+        assert!(instantiated(&schema, &root, false, &mut BTreeSet::new()).is_err());
+    }
 }
