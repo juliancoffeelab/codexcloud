@@ -1,0 +1,70 @@
+{
+  "kind": "native-planner-checkpoint",
+  "id": "campaign-cnn-ppo-v3",
+  "architecture": "hex-cnn",
+  "parameters": 34609,
+  "feature_count": 243,
+  "spatial_channels": 79,
+  "spatial_schema": 11,
+  "training_fingerprints": {
+    "content": "0cc5622e33b2ba9993bd011c89083bd438c3aa58117be287d0947aa83155e67b",
+    "engine": "e59191d6f0b1a308cd9ee9e9b052d8244bbaa707cddb482df16f7aadc39ecdd9"
+  },
+  "training_workload_sha256": "9460f638f97a56ea890e61c42505f6854998cc64e41c5c44d93a502f3885bd18",
+  "source_revision": "ad8fe563edc38b88d55f04b87dbbbfaace4aa029",
+  "selected_after_seconds": 21681.312437652996,
+  "total_run_seconds": 32400.092828406996,
+  "selection": {
+    "score": 0.5860460069444448,
+    "weighted_caps": 0.019639756944444458,
+    "wins": 434,
+    "caps": 15,
+    "runs": 656,
+    "checkpoint": "checkpoints/update-00009438-1794739163316868740",
+    "reliability_key": [0.38888888888888884, 0.5860460069444448, -0.019639756944444458],
+    "strata": {
+      "arena/classic": {
+        "score": 0.85546875,
+        "wins": 219,
+        "runs": 256,
+        "caps": 4
+      },
+      "arena/predictor": {
+        "score": 0.5859375,
+        "wins": 150,
+        "runs": 256,
+        "caps": 9
+      },
+      "campaign/classic": {
+        "score": 0.38888888888888884,
+        "wins": 28,
+        "runs": 72,
+        "caps": 2
+      },
+      "campaign/predictor": {
+        "score": 0.5138888888888888,
+        "wins": 37,
+        "runs": 72,
+        "caps": 0
+      }
+    },
+    "model_sha256": "ae4572f985ab37d3a890454fda940059fb96ee9b22ed8e7cc048123fe1d36f87",
+    "seconds": 21791.489595735,
+    "training_seconds": 21681.312437652996
+  },
+  "baseline_retained_by_safe_selection": true,
+  "published_checkpoint": "checkpoints/update-00009438-1794739163316868740",
+  "training_export_sha256": "ae4572f985ab37d3a890454fda940059fb96ee9b22ed8e7cc048123fe1d36f87",
+  "experiment": "../../experiments/2026-11-15-visibility/experiment.json",
+  "files": {
+    "planner.json": {
+      "bytes": 507023,
+      "sha256": "25c8999aee9857b39e18b33fd6fbe39caf958d32387565219470228a37d07c07"
+    },
+    "resume.pt": {
+      "bytes": 805698,
+      "sha256": "1647c630df0df67d05db3ced278b1412b904f7cb8e6b57178025047676b26fdc"
+    }
+  },
+  "usage": "Experimental best-trained checkpoint selected on validation; frozen v2 remains the preferred safe selection."
+}

@@ -1,0 +1,76 @@
+{
+  "safe": {
+    "checkpoint": "checkpoints/initial-1794717307193214179",
+    "reliability_key": [0.38888888888888884, 0.5891927083333335, -0.0475260416666667],
+    "strata": {
+      "arena/classic": {
+        "score": 0.85546875,
+        "wins": 219,
+        "runs": 256,
+        "caps": 1
+      },
+      "arena/predictor": {
+        "score": 0.66796875,
+        "wins": 171,
+        "runs": 256,
+        "caps": 5
+      },
+      "campaign/classic": {
+        "score": 0.4444444444444444,
+        "wins": 32,
+        "runs": 72,
+        "caps": 6
+      },
+      "campaign/predictor": {
+        "score": 0.38888888888888884,
+        "wins": 28,
+        "runs": 72,
+        "caps": 6
+      }
+    },
+    "candidates": 12,
+    "validation_runs": 656,
+    "test_seeds_used": false,
+    "criterion": "Worst stratum within 2.5 percentage points of best; then overall score and fewer caps; starting policy eligible"
+  },
+  "best_trained": {
+    "score": 0.5860460069444448,
+    "weighted_caps": 0.019639756944444458,
+    "wins": 434,
+    "caps": 15,
+    "runs": 656,
+    "checkpoint": "checkpoints/update-00009438-1794739163316868740",
+    "reliability_key": [0.38888888888888884, 0.5860460069444448, -0.019639756944444458],
+    "strata": {
+      "arena/classic": {
+        "score": 0.85546875,
+        "wins": 219,
+        "runs": 256,
+        "caps": 4
+      },
+      "arena/predictor": {
+        "score": 0.5859375,
+        "wins": 150,
+        "runs": 256,
+        "caps": 9
+      },
+      "campaign/classic": {
+        "score": 0.38888888888888884,
+        "wins": 28,
+        "runs": 72,
+        "caps": 2
+      },
+      "campaign/predictor": {
+        "score": 0.5138888888888888,
+        "wins": 37,
+        "runs": 72,
+        "caps": 0
+      }
+    },
+    "model_sha256": "ae4572f985ab37d3a890454fda940059fb96ee9b22ed8e7cc048123fe1d36f87",
+    "seconds": 21791.489595735,
+    "training_seconds": 21681.312437652996
+  },
+  "baseline_retained": true,
+  "test_seeds_used_for_selection": false
+}

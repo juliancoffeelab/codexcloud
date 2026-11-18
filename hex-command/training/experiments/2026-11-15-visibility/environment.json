@@ -1,0 +1,15 @@
+{
+  "python": "3.12.14",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "machine": "x86_64",
+  "torch": "2.15.0+cpu",
+  "numpy": "2.5.4",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "native_fingerprints": {
+    "content": "0cc5622e33b2ba9993bd011c89083bd438c3aa58117be287d0947aa83155e67b",
+    "engine": "e59191d6f0b1a308cd9ee9e9b052d8244bbaa707cddb482df16f7aadc39ecdd9"
+  },
+  "native_build": "maturin develop --release --manifest-path rust/training-python/Cargo.toml; CPU runtime SIMD dispatch",
+  "model_trainable_parameters": 34609,
+  "critic_trainable_parameters": 16705
+}

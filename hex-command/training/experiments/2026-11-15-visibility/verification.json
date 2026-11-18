@@ -1,0 +1,47 @@
+{
+  "source_commit": "c1ecb107e64fb3e0442e4dd619ad56a811124c37",
+  "checks": [
+    {
+      "command": "make full-verify",
+      "exit_code": 0,
+      "rust_tests": 166,
+      "frontend_tests": 263,
+      "repository_python_tests": 78
+    },
+    {
+      "command": "PYTHONPATH=training .venv/bin/python -m unittest discover -s training -p 'test_*.py'",
+      "exit_code": 0,
+      "tests": 24
+    },
+    {
+      "command": ".venv/bin/python -m ruff check training --select F",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m ruff format --check training",
+      "exit_code": 0
+    },
+    {
+      "command": "hex_command_rl.artifacts verify and extract-recovery; reconstruct archived engine fingerprint",
+      "exit_code": 0
+    }
+  ],
+  "checkpoint_expansion_probe": {
+    "candidates": 126,
+    "actors": 4,
+    "max_preserved_score_error": 2.86102294921875e-6,
+    "max_native_torch_error": 3.814697265625e-6
+  },
+  "fixture_trials": 240,
+  "remaining_engine_errors": 0,
+  "recovery_probe": {
+    "recovery_extract_verified": true,
+    "restored_actor_critic_optimizers_reference_rngs_sampler": true,
+    "source_files": 149,
+    "engine_fingerprint_reconstructed": "e59191d6f0b1a308cd9ee9e9b052d8244bbaa707cddb482df16f7aadc39ecdd9",
+    "elapsed": 32400.011899172,
+    "updates": 13966,
+    "episodes": 90887,
+    "decisions": 3574972
+  }
+}
