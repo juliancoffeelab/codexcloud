@@ -107,7 +107,6 @@ val promotion_options : view -> string -> string array
 val recruitment_options : view -> string -> string array
 val recruit_tiles : view -> string -> string -> Domain.tile array
 
-val movement_cost : view -> string -> string -> float
 (** Movement cost by authored unit type; impassable terrain returns infinity, matching the native
     inspection. Static costs are shared within their factory. *)
 
@@ -133,3 +132,9 @@ val project_units : view -> Domain.public_unit array -> view
 
 val units : view -> Domain.public_unit array
 (** Current visible unit publication, shared across presentation queries. *)
+
+val unit_details : view -> string -> Domain.unit_details
+val promotion_details : view -> string -> Domain.unit_details array
+val recruit_details : view -> string -> string -> Domain.unit_details
+val preview_unit : battle -> string -> string -> Domain.hex -> (Domain.unit_details, error) result
+val tile_details : view -> string -> Domain.tile_details

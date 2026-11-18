@@ -1,0 +1,20 @@
+{
+  "id": "glow-105-85",
+  "name": "Glow 105 85",
+  "description": "Authored light effect.",
+  "effects": [
+    {
+      "kind": "light",
+      "light": {
+        "radius": 105,
+        "power": 0.85,
+        "color": [255, 201, 143],
+        "fixture": false,
+        "dx": 0,
+        "dy": -8,
+        "emission": null,
+        "when": null
+      }
+    }
+  ]
+}

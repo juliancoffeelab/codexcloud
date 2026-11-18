@@ -11,14 +11,14 @@ static TIME: [AtomicU64; SLOTS] = [const { AtomicU64::new(0) }; SLOTS];
 static CALLS: [AtomicU64; SLOTS] = [const { AtomicU64::new(0) }; SLOTS];
 static TURN_TIME: [AtomicU64; SLOTS] = [const { AtomicU64::new(0) }; SLOTS];
 static TURNS: [AtomicU64; SLOTS] = [const { AtomicU64::new(0) }; SLOTS];
-const RECRUITERS: [super::Recruiter; 7] = [
-    super::Recruiter::Classic,
-    super::Recruiter::Rotation,
-    super::Recruiter::Frontline,
-    super::Recruiter::Balanced,
-    super::Recruiter::Situational,
-    super::Recruiter::Predictor,
-    super::Recruiter::AggressivePredictor,
+const RECRUITERS: [super::RecruiterKind; 7] = [
+    super::RecruiterKind::Classic,
+    super::RecruiterKind::Rotation,
+    super::RecruiterKind::Frontline,
+    super::RecruiterKind::Balanced,
+    super::RecruiterKind::Situational,
+    super::RecruiterKind::Predictor,
+    super::RecruiterKind::AggressivePredictor,
 ];
 const RECRUIT_SLOTS: usize = RECRUITERS.len() * 2;
 static RECRUIT_TIME: [AtomicU64; RECRUIT_SLOTS] = [const { AtomicU64::new(0) }; RECRUIT_SLOTS];
@@ -32,7 +32,7 @@ pub(crate) struct Recruitment {
 }
 impl Recruitment {
     #[inline]
-    pub(crate) fn start(kind: super::Recruiter, side: TurnPhase) -> Option<Self> {
+    pub(crate) fn start(kind: super::RecruiterKind, side: TurnPhase) -> Option<Self> {
         if !enabled() {
             return None;
         }

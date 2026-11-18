@@ -1,0 +1,23 @@
+{
+  "id": "external-thorns-6",
+  "name": "Thorn Aura",
+  "description": "Reflects damage per incoming melee strike.",
+  "effects": [
+    {
+      "scope": {
+        "radius": 1,
+        "includeSelf": false,
+        "targets": "allies"
+      },
+      "stacking": {
+        "group": "external-thorns",
+        "combine": "max"
+      },
+      "effect": {
+        "kind": "thorns",
+        "damagePerStrike": 6,
+        "incomingCategory": "melee"
+      }
+    }
+  ]
+}

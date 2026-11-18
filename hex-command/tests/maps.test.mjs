@@ -63,7 +63,7 @@ test("Developer units use ordinary movement, combat and turns", async () => {
   });
   assert(
     Native.unit(Native.view(developerBattle), enemySoldier.id).hp <
-      Catalog.unit(catalog, "soldier").hp,
+      Native.unit_details(Native.view(developerBattle), enemySoldier.id).hp,
   );
   assert(Native.unit(Native.view(developerBattle), soldier.id).attackSpent);
   Native.dispatch(developerBattle, { kind: "endTurn" });
@@ -77,7 +77,7 @@ test("Developer saves remain noncampaign and round-trip", async () => {
   const loaded = await loadBattle();
   assert.deepEqual(loaded.game.snapshot(), showcase.snapshot());
   assert.equal(loaded.pendingEnemy, false);
-  assert.equal(loaded.game.campaign, void 0);
+  assert.equal(loaded.game.campaign, null);
 });
 for (const [type, destination] of [["scout", "5,1"]]) {
   test(

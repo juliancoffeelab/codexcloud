@@ -2,13 +2,44 @@
 use super::battle::BattlePosition;
 use crate::data::*;
 impl BattlePosition<'_> {
-    #[inline]
-    pub(crate) fn equipment_modifier(&self, unit: &Unit, damage: DamageType) -> i32 {
-        if unit.inventory.0 == 0 {
-            0
-        } else {
-            self.runtime.inventories.modifier(unit.inventory, damage)
+    pub(crate) fn can_equip(&self, target: &Unit, equipment: &[&ItemDefinition]) -> bool {
+        let mut ids = std::collections::HashSet::new();
+        if !equipment.iter().all(|item| ids.insert(item.id())) {
+            return false;
         }
+        let capabilities = self.definitions.unit(target.kind).compose(UnitInputs {
+            vision_group_sight: &self.vision_groups[target.vision_group.0].sight,
+            equipment,
+            gained_abilities: &[],
+            selected_effects: &[],
+            map_modifiers: &self.map_modifiers,
+            perception_contributions: &[],
+        });
+        let mut ids = std::collections::HashSet::new();
+        capabilities.attacks().all(|attack| ids.insert(attack.id()))
+    }
+    pub(crate) fn arrival_tiles(
+        &self,
+        kind: usize,
+        faction: NameKey,
+        items: &[String],
+        tiles: &[usize],
+    ) -> Vec<usize> {
+        let mut projection = self.fork();
+        let inventory =
+            std::sync::Arc::make_mut(&mut projection.runtime.inventories).load(items.to_vec());
+        tiles
+            .iter()
+            .copied()
+            .filter(|&tile| {
+                let mut unit = projection.prospective(kind, faction, tile);
+                unit.inventory = inventory;
+                projection.with_capabilities_at(&unit, tile, &projection.units, &[], |caps| {
+                    caps.step_cost(projection.terrain_definition(tile))
+                        .is_some()
+                })
+            })
+            .collect()
     }
     pub(crate) fn collect_items(&mut self, id: u32) {
         let index = self.index(id).unwrap();
@@ -16,19 +47,18 @@ impl BattlePosition<'_> {
         let mut position = 0;
         while position < self.runtime.ground_items.len() {
             let ground = self.runtime.ground_items[position];
-            let allowed = ground.tile == tile
-                && validate_equipment(
-                    self.inventory(&self.runtime.units[index])
-                        .chain(std::iter::once(self.runtime.inventories.item(ground.item))),
-                    &self.rules.units[self.runtime.units[index].kind].attacks,
-                    "pickup",
-                )
-                .is_ok();
+            let target = &self.runtime.units[index];
+            let incoming = self
+                .catalogue
+                .item(self.runtime.inventories.item(ground.item));
+            let mut equipment: Vec<_> = self.inventory(target).collect();
+            equipment.push(incoming);
+            let allowed = ground.tile == tile && self.can_equip(target, &equipment);
             if allowed {
                 self.record(format!(
                     "{} picked up {}.",
                     self.unit_name(&self.runtime.units[index]),
-                    self.runtime.inventories.item(ground.item).name
+                    incoming.name()
                 ));
                 self.give_existing_item(id, ground.item);
                 self.runtime.ground_items.remove(position);
@@ -36,23 +66,5 @@ impl BattlePosition<'_> {
                 position += 1;
             }
         }
-    }
-    pub(crate) fn healing_from(&self, provider: &Unit, target: &Unit) -> i32 {
-        if !self.allied(provider, target) {
-            return 0;
-        }
-        let distance = self.runtime.board.distance(provider.tile, target.tile);
-        let innate = if provider.id != target.id && distance == 1 {
-            self.mechanics.units[provider.kind].healing
-        } else {
-            0
-        };
-        self.inventory(provider)
-            .filter_map(|item| item.healing.as_ref())
-            .filter(|aura| distance <= aura.radius)
-            .map(|aura| aura.amount)
-            .max()
-            .unwrap_or(0)
-            .max(innate)
     }
 }

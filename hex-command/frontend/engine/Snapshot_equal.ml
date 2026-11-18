@@ -5,7 +5,6 @@ module Damage_type = Domain.Damage_type
 module Relation = Domain.Relation
 module Role = Domain.Role
 module Side = Domain.Turn_phase
-module Time_of_day = Domain.Time_of_day
 
 (* No physical-identity shortcut: a snapshot containing NaN is unequal to itself. *)
 open Domain
@@ -30,14 +29,8 @@ let rec battlefield_light (left : battlefield_light) (right : battlefield_light)
   && option (fun left right -> condition_rule left right) left.when_ right.when_
 
 and battlefield_lighting (left : battlefield_lighting) (right : battlefield_lighting) =
-  time_of_day left.time right.time
-  && sequence Hex.equal left.underground right.underground
+  sequence Hex.equal left.unlit_tiles right.unlit_tiles
   && sequence (fun left right -> battlefield_light left right) left.lights right.lights
-
-and category (left : Category.t) (right : Category.t) =
-  match left with
-  | Category.Melee -> ( match right with Category.Melee -> true | _ -> false)
-  | Category.Ranged -> ( match right with Category.Ranged -> true | _ -> false)
 
 and condition (left : Condition.t) (right : Condition.t) =
   match left with
@@ -143,41 +136,17 @@ and condition_side (left : Condition_side.t) (right : Condition_side.t) =
   | Condition_side.Any -> ( match right with Condition_side.Any -> true | _ -> false)
   | Condition_side.Observer -> ( match right with Condition_side.Observer -> true | _ -> false)
 
-and damage_type (left : Damage_type.t) (right : Damage_type.t) =
-  match left with
-  | Damage_type.Blade -> ( match right with Damage_type.Blade -> true | _ -> false)
-  | Damage_type.Pierce -> ( match right with Damage_type.Pierce -> true | _ -> false)
-  | Damage_type.Impact -> ( match right with Damage_type.Impact -> true | _ -> false)
-
-and item (left : item) (right : item) =
-  option (fun left right -> item_armor left right) left.armor right.armor
-  && left.id = right.id && left.name = right.name
-  && left.description = right.description
-  && sequence (fun left right -> weapon left right) left.attacks right.attacks
-  && option (fun left right -> item_healing left right) left.healing right.healing
-  && option (fun left right -> left = right) left.perception right.perception
-
-and item_armor (left : item_armor) (right : item_armor) =
-  left.blade = right.blade && left.pierce = right.pierce && left.impact = right.impact
-
-and item_healing (left : item_healing) (right : item_healing) =
-  left.amount = right.amount && left.radius = right.radius
-
 and perception_effect (left : perception_effect) (right : perception_effect) =
   left.id = right.id
   && sequence ( = ) left.penetrates right.penetrates
   && sequence ( = ) left.concealment right.concealment
   && option ( = ) left.light right.light
-  && option
-       (fun (left : turn_stamp) (right : turn_stamp) ->
-         left.round = right.round && side left.phase right.phase)
-       left.expires_at right.expires_at
 
 and public_unit (left : public_unit) (right : public_unit) =
   left.faction = right.faction
   && sequence ( = ) left.revealed_to right.revealed_to
   && sequence perception_effect left.perception_effects right.perception_effects
-  && sequence (fun left right -> item left right) left.items right.items
+  && sequence ( = ) left.items right.items
   && option (fun left right -> left = right) left.ai_group right.ai_group
   && left.id = right.id && left.type_ = right.type_ && Hex.equal left.tile right.tile
   && left.hp = right.hp && left.moved = right.moved
@@ -205,20 +174,8 @@ and side (left : Side.t) (right : Side.t) =
   | Side.Player -> ( match right with Side.Player -> true | _ -> false)
   | Side.Ai -> ( match right with Side.Ai -> true | _ -> false)
 
-and time_of_day (left : Time_of_day.t) (right : Time_of_day.t) =
-  match left with
-  | Time_of_day.Day -> ( match right with Time_of_day.Day -> true | _ -> false)
-  | Time_of_day.Night -> ( match right with Time_of_day.Night -> true | _ -> false)
-
 and unit_faction (left : unit_faction) (right : unit_faction) =
   left.id = right.id && left.palette = right.palette
   && relation left.relation right.relation
   && left.controllable = right.controllable
   && side left.phase right.phase
-
-and weapon (left : weapon) (right : weapon) =
-  left.id = right.id && left.name = right.name && left.damage = right.damage
-  && left.spread = right.spread && left.count = right.count
-  && damage_type left.damage_type right.damage_type
-  && category left.category right.category
-  && left.range = right.range && left.sound = right.sound && left.drain = right.drain

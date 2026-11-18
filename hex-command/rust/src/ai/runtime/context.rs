@@ -7,9 +7,9 @@ use crate::{
         recruiter::{Recruiter, RecruiterKind},
     },
     data::*,
-    logic::Game,
+    logic::BattleSession,
 };
-use hex_command_battle::RuntimeCommand as Command;
+use hex_command_battle::RuntimeCommand;
 use hex_command_battle::{ActionForecast, ActionForecastSource, BattleView, PhaseForecasts};
 
 /// Execution-only recruiter information. Evaluators receive EstimateInput instead.
@@ -23,7 +23,7 @@ pub(super) struct RecruitmentOpportunity {
 fn recruit(
     draft: &mut ActionForecast<'_>,
     opportunity: &RecruitmentOpportunity,
-) -> Result<(Vec<Command>, RecruitmentReport), CommandError> {
+) -> Result<(Vec<RuntimeCommand>, RecruitmentReport), CommandError> {
     let mut commands = Vec::new();
     let mut kind = opportunity.kind;
     let report = kind.recruit(
@@ -38,12 +38,16 @@ fn recruit(
     Ok((commands, report))
 }
 
-pub(crate) struct CampaignView<'a, 'catalog> {
+/// Read-only inputs supplied to the top-level Campaigner block.
+pub(crate) struct CampaignerContext<'a, 'catalog> {
     mission: MissionPolicy<'a, 'catalog>,
     input: CampaignInput<'a>,
 }
-impl<'a, 'catalog> CampaignView<'a, 'catalog> {
-    pub(in crate::ai) fn new(game: &'a Game<'catalog>, config: super::TurnConfig<'a>) -> Self {
+impl<'a, 'catalog> CampaignerContext<'a, 'catalog> {
+    pub(in crate::ai) fn new(
+        game: &'a BattleSession<'catalog>,
+        config: super::TurnConfig<'a>,
+    ) -> Self {
         Self {
             mission: MissionPolicy::new(game.campaign_view(), game.phase_forecasts()),
             input: CampaignInput {
@@ -63,11 +67,11 @@ impl<'a, 'catalog> CampaignView<'a, 'catalog> {
 /// Exactly one isolated engine state for recruitment and tactical execution.
 pub(super) struct PlanningContext<'catalog> {
     draft: ActionForecast<'catalog>,
-    commands: Vec<Command>,
+    commands: Vec<RuntimeCommand>,
     recruitment: RecruitmentReport,
 }
 impl<'catalog> PlanningContext<'catalog> {
-    pub(super) fn fork(game: &Game<'catalog>) -> Self {
+    pub(super) fn fork(game: &BattleSession<'catalog>) -> Self {
         Self {
             draft: game.action_forecasts().fork(),
             commands: Vec::new(),
@@ -107,7 +111,7 @@ impl<'catalog> PlanningContext<'catalog> {
     #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
     pub(super) fn record_stop(&self, orders: &TacticalOrders) {
         if self.draft.winner().is_none() {
-            crate::training::record(&self.draft, orders, &Command::EndTurn);
+            crate::training::record(&self.draft, orders, &RuntimeCommand::EndTurn);
         }
     }
     pub(super) fn finish(
@@ -129,7 +133,7 @@ impl<'catalog> PlanningContext<'catalog> {
 }
 pub(crate) struct RecruitmentContext<'a, 'catalog> {
     draft: &'a mut ActionForecast<'catalog>,
-    commands: &'a mut Vec<Command>,
+    commands: &'a mut Vec<RuntimeCommand>,
     seed: u32,
     budget: Option<usize>,
 }
@@ -143,7 +147,7 @@ impl<'context, 'catalog> RecruitmentContext<'context, 'catalog> {
     pub(in crate::ai) fn battle(&self) -> &BattleView<'_, 'catalog> {
         self.draft
     }
-    pub(in crate::ai) fn emit(&mut self, command: Command) -> Result<(), CommandError> {
+    pub(in crate::ai) fn emit(&mut self, command: RuntimeCommand) -> Result<(), CommandError> {
         if !self.draft.permits_runtime(&command) {
             return Err(CommandError::IllegalIntent);
         }
@@ -156,7 +160,7 @@ pub(crate) struct TacticalContext<'a, 'catalog> {
     pub(super) combat_boundary: bool,
     recruitment: &'a mut RecruitmentReport,
     draft: &'a mut ActionForecast<'catalog>,
-    commands: &'a mut Vec<Command>,
+    commands: &'a mut Vec<RuntimeCommand>,
     workspace: &'a mut PlanningWorkspace,
 }
 impl<'context, 'catalog> TacticalContext<'context, 'catalog> {
@@ -173,7 +177,7 @@ impl<'context, 'catalog> TacticalContext<'context, 'catalog> {
         &BattleView<'_, 'catalog>,
         PhaseForecasts<'_, 'catalog>,
         ActionForecastSource<'_, 'catalog>,
-        super::PlannerParts<'_, crate::ai::planner::classic::Session>,
+        super::PlannerParts<'_, crate::ai::planner::classic::ClassicPlannerSession>,
     ) {
         (
             &*self.draft,
@@ -188,7 +192,7 @@ impl<'context, 'catalog> TacticalContext<'context, 'catalog> {
         &BattleView<'_, 'catalog>,
         PhaseForecasts<'_, 'catalog>,
         ActionForecastSource<'_, 'catalog>,
-        super::PlannerParts<'_, crate::ai::planner::search::Session>,
+        super::PlannerParts<'_, crate::ai::planner::search::SearchPlannerSession>,
     ) {
         (
             &*self.draft,
@@ -203,7 +207,7 @@ impl<'context, 'catalog> TacticalContext<'context, 'catalog> {
         &BattleView<'_, 'catalog>,
         PhaseForecasts<'_, 'catalog>,
         ActionForecastSource<'_, 'catalog>,
-        super::PlannerParts<'_, crate::ai::planner::queued::Session>,
+        super::PlannerParts<'_, crate::ai::planner::queued::QueuedPlannerSession>,
     ) {
         (
             &*self.draft,
@@ -223,7 +227,7 @@ impl<'context, 'catalog> TacticalContext<'context, 'catalog> {
             .as_ref()
             .expect("observation orders")
     }
-    pub(in crate::ai) fn emit(&mut self, command: Command) -> Result<(), CommandError> {
+    pub(in crate::ai) fn emit(&mut self, command: RuntimeCommand) -> Result<(), CommandError> {
         if !self.draft.permits_runtime(&command) {
             return Err(CommandError::IllegalIntent);
         }
@@ -240,12 +244,13 @@ impl<'context, 'catalog> TacticalContext<'context, 'catalog> {
         );
         let before = self.draft.control_roster();
         self.draft.execute_runtime(command.clone())?;
-        let control_changed = command != Command::EndTurn && before != self.draft.control_roster();
+        let control_changed =
+            command != RuntimeCommand::EndTurn && before != self.draft.control_roster();
         self.combat_boundary = command.is_attack() || control_changed;
         if control_changed {
             self.workspace.state_mut().finished = false;
         }
-        let moved = if let Command::Move { unit, .. } = &command {
+        let moved = if let RuntimeCommand::Move { unit, .. } = &command {
             self.draft
                 .unit(unit.0)
                 .is_some_and(|u| u.is_leader() && self.draft.is_keep(u.tile))
@@ -314,7 +319,7 @@ impl<'context, 'catalog> TacticalContext<'context, 'catalog> {
                     actor.attack_spent,
                 ))?;
             }
-            self.emit(Command::Attack {
+            self.emit(RuntimeCommand::Attack {
                 unit,
                 target,
                 weapon,

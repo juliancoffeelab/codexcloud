@@ -169,7 +169,9 @@ def main():
         policy.load_state_dict(old["policy"])
     else:
         warm = load_resume(a.warm_start or root / "posttune")
-        policy.load_state_dict(warm["policy"])
+        from .checkpoint import expand_state
+
+        expand_state(policy, warm["policy"])
     ac = ActorCritic(policy).eval()
     reference = SpatialPlanner().eval().requires_grad_(False)
     reference.load_state_dict(old["reference"] if old else policy.state_dict())
@@ -246,6 +248,9 @@ def main():
             temperature=a.temperature,
             envs=a.envs,
             horizon=a.horizon,
+            minibatch_size=8,
+            optimization_epochs=3,
+            max_gradient_norm=0.5,
             actor_lr=5e-6,
             critic_lr=1e-3,
             gamma=0.999,
@@ -409,10 +414,10 @@ def main():
                 stats = []
                 for epoch in range(3):
                     order = rng.permutation(len(flat))
-                    for first in range(0, len(flat), 64):
+                    for first in range(0, len(flat), 8):
                         if time.monotonic() >= deadline:
                             break
-                        batch = [flat[i] for i in order[first : first + 64]]
+                        batch = [flat[i] for i in order[first : first + 8]]
                         tensors = pack([s["observation"] for s in batch])
                         dist, value = ac(*tensors, a.temperature)
                         acts = torch.tensor([s["action"] for s in batch])

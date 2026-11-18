@@ -1,0 +1,25 @@
+{
+  "id": "settlement-healing",
+  "name": "Settlement healing",
+  "description": "Restores health to an occupant belonging to the settlement owner.",
+  "effects": [
+    {
+      "kind": "unit",
+      "effect": {
+        "scope": {
+          "radius": 0,
+          "includeSelf": false,
+          "targets": "own-faction"
+        },
+        "stacking": {
+          "group": "terrain-healing",
+          "combine": "max"
+        },
+        "effect": {
+          "kind": "healing",
+          "power": 4
+        }
+      }
+    }
+  ]
+}

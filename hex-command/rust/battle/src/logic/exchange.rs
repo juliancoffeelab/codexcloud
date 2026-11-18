@@ -1,23 +1,23 @@
 //! Alternating-strike state transitions and exact, cached combat forecasts.
-use super::damage::{DamageDistribution, rolls};
-use rustc_hash::FxHashMap as HashMap;
+use super::damage::{DamageDistribution, for_strikes};
+use hex_command_catalog::AttackOutcomes;
+use rustc_hash::FxHashMap;
 use std::{cell::RefCell, rc::Rc};
 
 #[derive(Clone, Copy, Debug, Hash, PartialEq, Eq)]
-pub(super) struct Strikes {
-    pub damage: i32,
-    pub spread: i32,
+pub(crate) struct Strikes {
+    pub outcomes: AttackOutcomes,
     pub count: u8,
-    pub modifier: i32,
-    pub drain: u8,
     pub maximum_hp: i32,
     pub reflection: i32,
 }
 #[derive(Default, Debug)]
-pub(super) struct StrikeEffect {
+pub(crate) struct StrikeEffect {
     pub effective: i32,
     pub healed: i32,
     pub reflected: i32,
+    #[cfg(feature = "wasm")]
+    pub thorns: i32,
 }
 impl Strikes {
     /// Damage, then drain, then reflection; a killing hit can still reflect.
@@ -25,8 +25,8 @@ impl Strikes {
         let other = 1 - side;
         let effective = damage.min(hp[other]);
         hp[other] = (hp[other] - damage).max(0);
-        let healed =
-            (effective * i32::from(self.drain) / 100).min((self.maximum_hp - hp[side]).max(0));
+        let healed = (effective * i32::from(self.outcomes.drain_percent()) / 100)
+            .min((self.maximum_hp - hp[side]).max(0));
         hp[side] += healed;
         let reflected = self.reflection.min(hp[side]);
         hp[side] = (hp[side] - self.reflection).max(0);
@@ -34,10 +34,12 @@ impl Strikes {
             effective,
             healed,
             reflected,
+            #[cfg(feature = "wasm")]
+            thorns: self.reflection,
         }
     }
     fn distribution(self) -> Rc<DamageDistribution> {
-        rolls(self.damage, self.spread, 1, self.modifier)
+        for_strikes(self.outcomes, 1)
     }
 }
 
@@ -58,33 +60,50 @@ pub struct ExchangeForecast {
     pub death: [f64; 2],
 }
 #[derive(Clone, Copy, PartialEq, Eq)]
-struct Key([u64; 7]);
-impl std::hash::Hash for Key {
+struct ExchangeCacheKey {
+    hp: [i32; 2],
+    strikes: [ForecastStrikeKey; 2],
+}
+impl std::hash::Hash for ExchangeCacheKey {
     #[inline]
     fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
-        // Keep the integer-hasher path: Hash for a word array otherwise hashes
-        // a byte slice, doing unnecessary byte-mixing for these numeric facts.
-        for word in self.0 {
-            state.write_u64(word);
+        state.write_u64(u64::from(self.hp[0] as u32) | (u64::from(self.hp[1] as u32) << 32));
+        for strike in &self.strikes {
+            std::hash::Hash::hash(strike, state);
         }
     }
 }
-#[inline]
-fn pair(first: i32, second: i32) -> u64 {
-    u64::from(first as u32) | (u64::from(second as u32) << 32)
+#[derive(Clone, Copy, PartialEq, Eq)]
+struct ForecastStrikeKey {
+    damage: hex_command_catalog::StrikeDistributionKey,
+    count: u8,
+    drain: u8,
+    maximum_hp: i32,
+    reflection: i32,
 }
-impl Strikes {
+impl std::hash::Hash for ForecastStrikeKey {
     #[inline]
-    fn cache_words(self) -> [u64; 3] {
-        // Lossless fields, including every bit of negative signed modifiers.
-        // Hash whole words rather than mixing each byte-sized field separately.
-        [
-            pair(self.damage, self.spread),
-            pair(self.modifier, self.maximum_hp),
-            u64::from(self.reflection as u32)
-                | (u64::from(self.count) << 32)
-                | (u64::from(self.drain) << 40),
-        ]
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        std::hash::Hash::hash(&self.damage, state);
+        // Fold metadata for hashing only. Equality retains every original
+        // bit, including full-width HP/reflection; collisions are ordinary misses.
+        state.write_u64(
+            (u64::from(self.maximum_hp as u32) | (u64::from(self.reflection as u32) << 32))
+                ^ (u64::from(self.count) << 16)
+                ^ (u64::from(self.drain) << 24),
+        );
+    }
+}
+impl From<Strikes> for ForecastStrikeKey {
+    #[inline]
+    fn from(strike: Strikes) -> Self {
+        Self {
+            damage: strike.outcomes.distribution_key(),
+            count: strike.count,
+            drain: strike.outcomes.drain_percent(),
+            maximum_hp: strike.maximum_hp,
+            reflection: strike.reflection,
+        }
     }
 }
 #[derive(Clone, Copy)]
@@ -94,21 +113,15 @@ struct Node {
     maximum: [i32; 2],
 }
 thread_local! {
-    static CACHE: RefCell<HashMap<Key, Rc<ExchangeForecast>>> = RefCell::new(HashMap::default());
+    static CACHE: RefCell<FxHashMap<ExchangeCacheKey, Rc<ExchangeForecast>>> = RefCell::new(FxHashMap::default());
 }
 
-pub(super) fn forecast(hp: [i32; 2], strikes: [Strikes; 2]) -> Rc<ExchangeForecast> {
+pub(crate) fn forecast(hp: [i32; 2], strikes: [Strikes; 2]) -> Rc<ExchangeForecast> {
     let cache = &CACHE;
-    let words = strikes.map(Strikes::cache_words);
-    let key = Key([
-        pair(hp[0], hp[1]),
-        words[0][0],
-        words[0][1],
-        words[0][2],
-        words[1][0],
-        words[1][1],
-        words[1][2],
-    ]);
+    let key = ExchangeCacheKey {
+        hp,
+        strikes: strikes.map(ForecastStrikeKey::from),
+    };
     if let Some(cached) = cache.with_borrow(|cache| cache.get(&key).cloned()) {
         return cached;
     }
@@ -125,7 +138,7 @@ pub(super) fn forecast(hp: [i32; 2], strikes: [Strikes; 2]) -> Rc<ExchangeForeca
 
 fn calculate_sparse(hp: [i32; 2], strikes: [Strikes; 2]) -> ExchangeForecast {
     let mut result = ExchangeForecast::default();
-    let mut states = HashMap::default();
+    let mut states = FxHashMap::default();
     states.insert(
         hp,
         Node {
@@ -140,7 +153,7 @@ fn calculate_sparse(hp: [i32; 2], strikes: [Strikes; 2]) -> ExchangeForecast {
             if index >= strikes[side].count {
                 continue;
             }
-            let mut next = HashMap::<[i32; 2], Node>::default();
+            let mut next = FxHashMap::<[i32; 2], Node>::default();
             for (hp, state) in states {
                 let alive = hp.iter().all(|&h| h > 0);
                 let mut advance = |damage, probability| {

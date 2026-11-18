@@ -2,7 +2,12 @@ open Domain
 
 let dictionary : unit -> 'a Js.Dict.t = [%mel.raw {js|() => Object.create(null)|js}]
 
-type chapter = { source : mission; briefing : string; debrief : string option; hints : string list }
+type chapter = {
+  source : browser_chapter;
+  briefing : string;
+  debrief : string option;
+  hints : string list;
+}
 
 let mission catalog view (state : campaign_state) =
   let source =
@@ -65,7 +70,7 @@ let returns_with_story catalog (state : campaign_state) (unit : public_unit) =
            (fun (arrival : companion_arrival) -> arrival.character = character)
            mission.arrivals
          || Array.exists
-              (fun (incoming : starting_unit) ->
+              (fun (incoming : public_unit) ->
                 incoming.faction = {js|player|js} && incoming.character = Some character)
-              mission.map.units)
+              mission.map.state.units)
        unit.character

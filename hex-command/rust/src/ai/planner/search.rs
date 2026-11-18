@@ -1,8 +1,8 @@
 use super::proposal::Plan;
 use crate::ai::TacticalRole;
-use crate::ai::orders::target as objective;
-use crate::ai::orders::{Target as Objective, TargetKind as ObjectiveKind};
-use crate::ai::policies::escort::scoring as escort_scoring;
+use crate::ai::orders::target;
+use crate::ai::orders::{Target, TargetKind};
+use crate::ai::policies::escort::scoring;
 use crate::ai::policies::objectives::actor_matches;
 use crate::ai::policies::tie_breaking::action_jitter;
 use crate::ai::roles::role;
@@ -14,7 +14,7 @@ use crate::{
     ai::policies::threat::Threats,
     data::*,
 };
-use rustc_hash::FxHashMap as HashMap;
+use rustc_hash::FxHashMap;
 use std::borrow::Cow;
 /// Exact zero operations need no outward adjustment. Avoid introducing the
 /// smallest subnormal into otherwise ordinary score arithmetic: those operands
@@ -37,10 +37,9 @@ pub(super) fn best_plan<'a, 'catalog, const BOUNDED: bool, const FOCUSED: bool>(
     game: &'a BattleView<'a, 'catalog>,
     phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
     orders: &crate::ai::orders::TacticalOrders,
-    escort: &crate::ai::policies::escort::travel::Workspace,
+    escort: &crate::ai::policies::escort::travel::EscortTravelWorkspace,
     seed: u32,
-    prepared_goals: Option<&[Objective]>,
-    routes: &mut HashMap<(usize, Vec<usize>), std::rc::Rc<Vec<u16>>>,
+    prepared_goals: Option<&[Target]>,
     commitments: &mut Commitments,
     intents: &mut Vec<(u32, Option<bool>)>,
     threat_workspace: &mut crate::ai::policies::threat::ArenaThreatWorkspace,
@@ -52,7 +51,6 @@ pub(super) fn best_plan<'a, 'catalog, const BOUNDED: bool, const FOCUSED: bool>(
         escort,
         seed,
         prepared_goals,
-        routes,
         commitments,
         intents,
         threat_workspace,
@@ -75,10 +73,9 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
     pub(super) fn best_plan<const BOUNDED: bool, const FOCUSED: bool>(
         &self,
         orders: &crate::ai::orders::TacticalOrders,
-        escort: &crate::ai::policies::escort::travel::Workspace,
+        escort: &crate::ai::policies::escort::travel::EscortTravelWorkspace,
         seed: u32,
-        prepared_goals: Option<&[Objective]>,
-        routes: &mut HashMap<(usize, Vec<usize>), std::rc::Rc<Vec<u16>>>,
+        prepared_goals: Option<&[Target]>,
         commitments: &mut Commitments,
         intents: &mut Vec<(u32, Option<bool>)>,
         threat_workspace: &mut crate::ai::policies::threat::ArenaThreatWorkspace,
@@ -92,7 +89,6 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 escort,
                 seed,
                 prepared_goals,
-                routes,
                 commitments,
                 intents,
                 threat_workspace,
@@ -108,7 +104,6 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 escort,
                 seed,
                 prepared_goals,
-                routes,
                 commitments,
                 intents,
                 threat_workspace,
@@ -122,10 +117,9 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
     fn best_plan_impl<const BOUNDED: bool, const FOCUSED: bool>(
         &self,
         orders: &crate::ai::orders::TacticalOrders,
-        escort: &crate::ai::policies::escort::travel::Workspace,
+        escort: &crate::ai::policies::escort::travel::EscortTravelWorkspace,
         seed: u32,
-        prepared_goals: Option<&[Objective]>,
-        routes: &mut HashMap<(usize, Vec<usize>), std::rc::Rc<Vec<u16>>>,
+        prepared_goals: Option<&[Target]>,
         commitments: &mut Commitments,
         intents: &mut Vec<(u32, Option<bool>)>,
         threat_workspace: &mut crate::ai::policies::threat::ArenaThreatWorkspace,
@@ -137,7 +131,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
         let focused = _focused;
         #[cfg(not(target_arch = "wasm32"))]
         let focused = FOCUSED;
-        let objectives: Cow<'_, [Objective]> = if let Some(prepared) = prepared_goals {
+        let objectives: Cow<'_, [Target]> = if let Some(prepared) = prepared_goals {
             let rebuilding = orders.rebuild_objectives(self);
             if rebuilding.is_empty() {
                 Cow::Borrowed(prepared)
@@ -154,7 +148,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
             Cow::Owned(orders.targets.clone())
         };
         let escort_lanes = orders.clearing(self);
-        let rebuilds: HashMap<_, _> = self
+        let rebuilds: FxHashMap<_, _> = self
             .units()
             .iter()
             .filter(|u| {
@@ -214,7 +208,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
         let range_to_foe = |tile: usize| foe_ranges[tile];
         let maximum_range = allies
             .iter()
-            .flat_map(|u| self.weapons(u))
+            .flat_map(|u| self.attack_reaches(u))
             .map(|a| a.range as u16)
             .max()
             .unwrap_or(0);
@@ -270,20 +264,17 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 let movement = if unit.moved {
                     0
                 } else {
-                    self.rules().units[unit.kind].r#move
+                    self.movement_limit(&unit)
                 };
                 let terminal_objective = orders
                     .terminal_arrivals
                     .iter()
                     .any(|(actor, _)| actor.0 == unit.id);
-                let zero_cost = self.rules().units[unit.kind]
-                    .costs
-                    .iter()
-                    .any(|c| *c == Some(0));
+                let zero_cost = self.has_free_movement(&unit);
                 let mut offense = 0.0f64;
                 let mut maximum_combat = 0.0f64;
                 for &target in &foes {
-                    for (weapon, attack) in self.weapons(unit).enumerate() {
+                    for (weapon, attack) in self.attack_reaches(unit).enumerate() {
                         let distant = board.distance(unit.tile, target.tile) as usize
                             > movement + attack.range as usize;
                         if distant && !zero_cost {
@@ -392,9 +383,9 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                     .any(|&k| !self.placement_tiles(&unit, k, true).is_empty());
             let mut rebuild_goals = vec![];
             if !rebuilding.is_empty() {
-                let mut g = objective(
+                let mut g = target(
                     "rebuild",
-                    ObjectiveKind::Capture,
+                    TargetKind::Capture,
                     rebuilding
                         .iter()
                         .map(|&t| self.board().ids[t].clone())
@@ -404,13 +395,13 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 g.actor = Some(format!("u{}", unit.id));
                 rebuild_goals.push(g);
             }
-            let goals: &[Objective] = if rebuilding.is_empty() {
+            let goals: &[Target] = if rebuilding.is_empty() {
                 &objectives
             } else {
                 &rebuild_goals
             };
             struct Duty<'a> {
-                goal: Cow<'a, Objective>,
+                goal: Cow<'a, Target>,
                 route: std::rc::Rc<Vec<u16>>,
                 before: u16,
                 assigned: bool,
@@ -421,7 +412,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 if orders.assigned_elsewhere(unit.id, original) {
                     continue;
                 }
-                if original.kind == ObjectiveKind::Capture
+                if original.kind == TargetKind::Capture
                     && original.actor.is_none()
                     && original.tiles.iter().all(|t| {
                         let tile = self.site(t);
@@ -458,15 +449,12 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 {
                     let occupied = self.occupied_routes(unit, &tiles, false);
                     if occupied[unit.tile] == u16::MAX {
-                        self.routes(unit.kind, &tiles)
+                        self.routes(&unit, &tiles)
                     } else {
                         std::rc::Rc::new(occupied)
                     }
                 } else {
-                    routes
-                        .entry((unit.kind, tiles.clone()))
-                        .or_insert_with(|| self.routes(unit.kind, &tiles))
-                        .clone()
+                    self.routes(&unit, &tiles)
                 };
                 let before = route[unit.tile];
                 if before == u16::MAX || goal.tiles.is_empty() {
@@ -484,7 +472,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 duties.retain(|d| d.assigned);
             }
             let order = tile_order_context.for_unit(self, &unit);
-            let nearest = |goal: &Objective| {
+            let nearest = |goal: &Target| {
                 goal.tiles
                     .iter()
                     .map(|t| self.site(t))
@@ -514,7 +502,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
             } else {
                 commitments.remove(&unit.id);
             }
-            let escortee = escort_scoring::subject(orders, &unit);
+            let escortee = scoring::subject(orders, &unit);
             let improvement_weight = if escortee {
                 0.0
             } else if important {
@@ -525,7 +513,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 0.2
             };
             let danger_weight = if escortee {
-                escort_scoring::EXPOSURE / unit.hp.max(1) as f64
+                scoring::EXPOSURE / unit.hp.max(1) as f64
             } else if orders.protects(unit.id) {
                 // A finite cost for the fraction of remaining life at risk.
                 40.0 / unit.hp.max(1) as f64
@@ -552,7 +540,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                     let movement = if unit.moved {
                         0
                     } else {
-                        self.rules().units[unit.kind].r#move
+                        self.movement_limit(&unit)
                     };
                     let progress = d.before.min(movement.min(u16::MAX as usize) as u16) as f64;
                     if escortee {
@@ -574,20 +562,19 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 }
                 ceiling = add(
                     ceiling,
-                    (self.rules().units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0,
+                    (self.unit_definition(unit.kind).max_hp - unit.hp).max(0) as f64 * 2.0,
                 );
                 ceiling = add(ceiling, 3.0);
                 {
                     if category == TacticalRole::Healer {
-                        let healing = self.rules().units[unit.kind].healing;
                         for ally in &allies {
-                            if ally.id == unit.id {
-                                continue;
-                            }
+                            // Ignore reachability for a conservative ceiling, but include
+                            // all effective effects and their target/self eligibility.
+                            let healing = self.healing_from_at(&unit, ally, ally.tile);
                             ceiling = add(
                                 ceiling,
                                 healing
-                                    .min(self.rules().units[ally.kind].hp - ally.hp)
+                                    .min(self.unit_definition(ally.kind).max_hp - ally.hp)
                                     .max(0) as f64
                                     * 3.0,
                             );
@@ -649,25 +636,6 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
             destinations.push(original_unit.tile);
             destinations.extend(reachable.iter().copied().map(|(t, _)| t));
             destinations = orders.authored_destinations(self, original_unit, destinations);
-            let other_healing: Vec<_> = if category == TacticalRole::Healer {
-                allies
-                    .iter()
-                    .map(|ally| {
-                        allies
-                            .iter()
-                            .filter(|o| {
-                                o.id != unit.id
-                                    && o.id != ally.id
-                                    && self.board().distance(o.tile, ally.tile) == 1
-                            })
-                            .map(|o| self.rules().units[o.kind].healing)
-                            .max()
-                            .unwrap_or(0)
-                    })
-                    .collect()
-            } else {
-                Vec::new()
-            };
             let mut wait_score = f64::NEG_INFINITY;
             let mut tiles = vec![unit.tile];
             tiles.extend(destinations.iter().copied().filter(|&t| t != unit.tile));
@@ -691,7 +659,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                         continue;
                     }
                     if escortee {
-                        positioning += escort_scoring::progress(
+                        positioning += scoring::progress(
                             d.before,
                             after,
                             d.goal.tiles.contains(&self.board().ids[unit.tile]),
@@ -721,29 +689,31 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                 {
                     positioning -= 24.0;
                 }
-                let healing_tile = (self.role_is(tile, TerrainRole::Village)
-                    || self.role_is(tile, TerrainRole::Grove))
-                    && (self.owns(tile, self.observer_faction()) || self.at(tile).is_none());
+                let terrain_healing = self.terrain_healing_at(&unit, tile);
+                let healing_tile = terrain_healing > 0;
                 if healing_tile {
-                    positioning += (self.rules().units[unit.kind].hp - unit.hp).min(4) as f64 * 2.0;
+                    positioning += (self.unit_definition(unit.kind).max_hp - unit.hp)
+                        .min(terrain_healing) as f64
+                        * 2.0;
                 }
-                if self.role_is(tile, TerrainRole::Village)
+                if self.terrain_definition(tile).income() > 0
                     && self.captures(tile, self.observer_faction())
                 {
                     positioning += 3.0;
                 }
                 {
                     if category == TacticalRole::Healer {
-                        let healing = self.rules().units[unit.kind].healing;
                         let mut value = 0.0;
-                        for (ally_index, ally) in allies.iter().enumerate() {
-                            if ally.id == unit.id || self.board().distance(tile, ally.tile) != 1 {
+                        for ally in &allies {
+                            let healing = self.healing_from_at(&unit, ally, tile);
+                            if healing == 0 {
                                 continue;
                             }
-                            let other = other_healing[ally_index];
-                            value += (healing - other)
+                            value += self
+                                .support_contribution(&unit, ally, tile, Category::Melee)
+                                .0
                                 .max(0)
-                                .min(self.rules().units[ally.kind].hp - ally.hp)
+                                .min(self.unit_definition(ally.kind).max_hp - ally.hp)
                                 as f64
                                 * 3.0;
                             if role(self, ally.kind) == TacticalRole::Frontline
@@ -758,7 +728,8 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                         }
                         positioning += value
                             * if movable_screens
-                                && unit.hp as f64 > self.rules().units[unit.kind].hp as f64 / 2.0
+                                && unit.hp as f64
+                                    > self.unit_definition(unit.kind).max_hp as f64 / 2.0
                             {
                                 0.25
                             } else {
@@ -804,7 +775,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                     nearby_foes[nearby_offsets[tile]..nearby_offsets[tile + 1]]
                         .iter()
                         .flat_map(|&target| {
-                            (0..self.weapons(unit).count())
+                            (0..self.attack_count(unit))
                                 .filter_map(move |weapon| Some((Some(target), Some(weapon))))
                         }),
                 );
@@ -846,13 +817,11 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                             combat += 4.0 + 14.0 * kill_chance;
                         }
                         if killed
-                            && self.rules().units[unit.kind].experience_needed.is_some_and(
-                                |needed| {
-                                    unit.experience.unwrap_or(0)
-                                        + 6 * self.rules().units[target.kind].level
-                                        >= needed
-                                },
-                            )
+                            && self.experience_limit(&unit).is_some_and(|needed| {
+                                unit.experience.unwrap_or(0)
+                                    + 6 * self.unit_definition(target.kind).level()
+                                    >= needed
+                            })
                         {
                             combat += 3.0;
                         }
@@ -943,7 +912,7 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
                     let withdrawing = self.faction_relation("player", self.unit_faction(&unit))
                         == Relation::Hostile
                         && target.is_none()
-                        && unit.hp < self.rules().units[unit.kind].hp
+                        && unit.hp < self.unit_definition(unit.kind).max_hp
                         && range_to_foe(tile) > range_to_foe(unit.tile)
                         && (incoming < before_risk
                             || healing_tile
@@ -989,42 +958,74 @@ impl<'view, 'game, 'catalog> Evaluation<'view, 'game, 'catalog> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::logic::Game;
-    use hex_command_battle::RuntimeCommand as Command;
+    use crate::logic::BattleSession;
+    use hex_command_battle::RuntimeCommand;
     #[test]
     fn whole_unit_bounds_preserve_plans_and_commitments_through_live_actions() {
-        fn is_command_endturn(value: &Command) -> bool {
+        fn is_command_endturn(value: &RuntimeCommand) -> bool {
             match value {
-                Command::EndTurn => true,
-                Command::Move { .. }
-                | Command::Attack { .. }
-                | Command::Recruit { .. }
-                | Command::Advance { .. }
-                | Command::DismissDialogue
-                | Command::RecallMission { .. }
-                | Command::RetryMission
-                | Command::PreviousDialogue
-                | Command::SkipDialogue
-                | Command::DropItem { .. }
-                | Command::SetUnitIntent { .. } => false,
+                RuntimeCommand::EndTurn => true,
+                RuntimeCommand::Move { .. }
+                | RuntimeCommand::Attack { .. }
+                | RuntimeCommand::Recruit { .. }
+                | RuntimeCommand::Advance { .. }
+                | RuntimeCommand::DismissDialogue
+                | RuntimeCommand::RecallMission { .. }
+                | RuntimeCommand::RetryMission
+                | RuntimeCommand::PreviousDialogue
+                | RuntimeCommand::SkipDialogue
+                | RuntimeCommand::DropItem { .. }
+                | RuntimeCommand::SetUnitIntent { .. } => false,
             }
         }
 
-        let rules = Rules::load().unwrap();
+        let mut source = crate::catalogue_fixture::bundle();
+        let maximum_hp = Catalogue::load()
+            .unwrap()
+            .units()
+            .map(|u| u.max_hp)
+            .max()
+            .unwrap();
+        crate::catalogue_fixture::edit(&mut source, "abilities/restorative-aura.json", |ability| {
+            for effect in ability["effects"].as_array_mut().unwrap() {
+                if effect["effect"]["kind"] == "healing" {
+                    effect["effect"]["power"] = serde_json::json!(maximum_hp);
+                }
+            }
+        });
+        let rules = crate::catalogue_fixture::frozen(&source);
+        let mut state = BattleSession::new(rules, "mirror").state();
+        state.units[0].r#type = "tidesage".into();
+        state.units[0].hp = rules.unit("tidesage").max_hp;
+        state.units[0].items = vec!["healing-bottle".into()];
+        for ally in &mut state.units[1..3] {
+            ally.hp = 1;
+        }
+        for tile in &mut state.tiles {
+            tile.terrain = "plains".into();
+        }
         for mut game in [
-            Game::new(&rules, "mirror"),
-            Game::start_campaign(&rules, "mirror-night", 0, vec![], 0, vec![], vec![], vec![]),
+            BattleSession::from_state(&rules, state),
+            BattleSession::new(&rules, "mirror"),
+            BattleSession::start_campaign(
+                &rules,
+                "mirror-night",
+                0,
+                vec![],
+                0,
+                vec![],
+                vec![],
+                vec![],
+            ),
         ] {
             let workspace = || {
                 crate::ai::PlanningWorkspace::new(7, 1, None, crate::ai::Diplomacy::Unrestricted)
                     .with_blocks(crate::ai::Blocks {
-                        planner: crate::ai::Planner::Full,
+                        planner: crate::ai::PlannerKind::Full,
                         ..crate::ai::Policy::Balanced.blocks()
                     })
             };
             let mut actual = workspace();
-            let mut left_routes = HashMap::default();
-            let mut right_routes = HashMap::default();
             let mut left_commitments = Commitments::default();
             let mut right_commitments = Commitments::default();
             let mut left_threats = crate::ai::policies::threat::ArenaThreatWorkspace::default();
@@ -1040,17 +1041,17 @@ mod tests {
                         goals: None,
                         diplomacy: crate::ai::Diplomacy::Unrestricted,
                     };
-                    let orders = crate::ai::CampaignBlock::Mission.campaign_orders(&mission, input);
+                    let orders =
+                        crate::ai::CampaignerKind::Mission.campaign_orders(&mission, input);
                     let mut left_intents = vec![];
                     let mut right_intents = vec![];
                     let left = best_plan::<true, false>(
                         &game.view(),
                         game.phase_forecasts(),
                         &orders.tactics,
-                        &crate::ai::policies::escort::travel::Workspace::default(),
+                        &crate::ai::policies::escort::travel::EscortTravelWorkspace::default(),
                         7,
                         None,
-                        &mut left_routes,
                         &mut left_commitments,
                         &mut left_intents,
                         &mut left_threats,
@@ -1061,10 +1062,9 @@ mod tests {
                         &game.view(),
                         game.phase_forecasts(),
                         &orders.tactics,
-                        &crate::ai::policies::escort::travel::Workspace::default(),
+                        &crate::ai::policies::escort::travel::EscortTravelWorkspace::default(),
                         7,
                         None,
-                        &mut right_routes,
                         &mut right_commitments,
                         &mut right_intents,
                         &mut right_threats,
@@ -1082,7 +1082,7 @@ mod tests {
                     if game.winner().is_some() {
                         break;
                     }
-                    game.execute_runtime(Command::EndTurn).unwrap();
+                    game.execute_runtime(RuntimeCommand::EndTurn).unwrap();
                     actual = workspace();
                 } else {
                     game.execute_runtime(command).unwrap();
@@ -1093,7 +1093,7 @@ mod tests {
 }
 
 #[derive(Default, Debug, PartialEq)]
-pub(in crate::ai::planner) struct Commitments(HashMap<u32, String>);
+pub(in crate::ai::planner) struct Commitments(FxHashMap<u32, String>);
 impl Commitments {
     pub(super) fn get(&self, actor: &u32) -> Option<&String> {
         self.0.get(actor)
@@ -1106,22 +1106,21 @@ impl Commitments {
     }
 }
 pub(super) struct CandidateShared<'a> {
-    pub escort: &'a crate::ai::policies::escort::travel::Workspace,
+    pub escort: &'a crate::ai::policies::escort::travel::EscortTravelWorkspace,
     pub commitments: &'a mut Commitments,
     pub threats: &'a mut crate::ai::policies::threat::ArenaThreatWorkspace,
 }
 /// Search state is shared deliberately by Full evaluation and Queued's focused fallback.
 #[derive(Default)]
-pub(in crate::ai) struct Session {
-    prepared_goals: Option<Vec<Objective>>,
-    routes: HashMap<(usize, Vec<usize>), std::rc::Rc<Vec<u16>>>,
+pub(in crate::ai) struct SearchPlannerSession {
+    prepared_goals: Option<Vec<Target>>,
     commitments: Commitments,
     threats: crate::ai::policies::threat::ArenaThreatWorkspace,
-    escort: crate::ai::policies::escort::travel::Workspace,
+    escort: crate::ai::policies::escort::travel::EscortTravelWorkspace,
     remaining: Option<usize>,
 }
-impl Session {
-    pub(in crate::ai) fn replace_goals(&mut self, goals: Vec<Objective>) {
+impl SearchPlannerSession {
+    pub(in crate::ai) fn replace_goals(&mut self, goals: Vec<Target>) {
         self.prepared_goals = Some(goals);
     }
     pub(super) fn exhausted(&self) -> bool {
@@ -1140,7 +1139,7 @@ impl Session {
             threats: &mut self.threats,
         }
     }
-    pub(super) fn escort(&self) -> &crate::ai::policies::escort::travel::Workspace {
+    pub(super) fn escort(&self) -> &crate::ai::policies::escort::travel::EscortTravelWorkspace {
         &self.escort
     }
     pub(super) fn focused<'a, 'catalog>(
@@ -1157,7 +1156,6 @@ impl Session {
             &self.escort,
             turn.seed,
             self.prepared_goals.as_deref(),
-            &mut self.routes,
             &mut self.commitments,
             &mut Vec::new(),
             &mut self.threats,
@@ -1169,7 +1167,7 @@ impl Session {
 
 pub(super) fn prepare(
     phases: hex_command_battle::PhaseForecasts<'_, '_>,
-    session: &mut Session,
+    session: &mut SearchPlannerSession,
     turn: &crate::ai::runtime::PlannerTurn<'_>,
 ) {
     session
@@ -1179,7 +1177,7 @@ pub(super) fn prepare(
 
 pub(super) fn initialize(
     game: &BattleView<'_, '_>,
-    session: &mut Session,
+    session: &mut SearchPlannerSession,
     turn: &crate::ai::runtime::PlannerTurn<'_>,
 ) {
     session.remaining.get_or_insert_with(|| {
@@ -1207,7 +1205,7 @@ pub(super) fn initialize(
 pub(super) fn choose<'a, 'catalog>(
     game: &'a BattleView<'a, 'catalog>,
     phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
-    session: &mut Session,
+    session: &mut SearchPlannerSession,
     turn: &mut crate::ai::runtime::PlannerTurn<'_>,
 ) -> Result<(), CommandError> {
     initialize(game, session, turn);
@@ -1224,7 +1222,6 @@ pub(super) fn choose<'a, 'catalog>(
         &session.escort,
         turn.seed,
         session.prepared_goals.as_deref(),
-        &mut session.routes,
         &mut session.commitments,
         &mut intents,
         &mut session.threats,
@@ -1274,7 +1271,7 @@ pub(super) fn publish_plan(
                 *turn.attack_continuation = Some((
                     UnitId(plan.unit),
                     UnitId(target),
-                    game.weapon(actor, weapon).key(),
+                    game.weapon_key(actor, weapon),
                 ));
             }
         }

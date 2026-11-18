@@ -1,0 +1,23 @@
+{
+  "id": "personal-thorns-8",
+  "name": "Thornshield",
+  "description": "Reflects damage per incoming melee strike.",
+  "effects": [
+    {
+      "scope": {
+        "radius": 0,
+        "includeSelf": true,
+        "targets": "allies"
+      },
+      "stacking": {
+        "group": "personal-thorns",
+        "combine": "max"
+      },
+      "effect": {
+        "kind": "thorns",
+        "damagePerStrike": 8,
+        "incomingCategory": "melee"
+      }
+    }
+  ]
+}

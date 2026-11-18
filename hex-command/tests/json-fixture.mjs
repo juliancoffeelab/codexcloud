@@ -10,6 +10,7 @@ const snake = (s) =>
     .toLowerCase();
 const keyword = new Set([
   "type",
+  "effect",
   "from",
   "default",
   "done",

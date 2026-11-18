@@ -1,13 +1,15 @@
 //! Route policies are authored in the simulation catalog, never inferred from missions.
-use crate::{data::*, logic::Game};
-pub(super) fn player_goals(game: &Game<'_>, route: &str) -> Option<Vec<Objective>> {
+use crate::{data::*, logic::BattleSession};
+pub(super) fn player_goals(game: &BattleSession<'_>, route: &str) -> Option<Vec<Objective>> {
     if game.turn() != TurnPhase::Player {
         return None;
     }
     let campaign = game.campaign_state()?;
     let plan = game
         .catalogue()
-        .campaign_defaults
+        .meta()
+        .simulation
+        .campaign
         .campaigns
         .get(&campaign.id)?
         .routes

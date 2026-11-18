@@ -1,0 +1,27 @@
+{
+  "id": "village-contact-glow",
+  "name": "Village contact glow",
+  "description": "Authored light effect.",
+  "effects": [
+    {
+      "kind": "light",
+      "light": {
+        "radius": 100,
+        "power": 0.8,
+        "when": {
+          "condition": {
+            "kind": "flag",
+            "flag": "village-contact"
+          },
+          "remember": false,
+          "observer": null
+        },
+        "emission": null,
+        "color": null,
+        "fixture": null,
+        "dx": null,
+        "dy": null
+      }
+    }
+  ]
+}

@@ -38,7 +38,7 @@ module Campaign: {
 
 module GroundItems: {
   [@react.component]
-  let make: (~artwork: Art.t, ~items: array(Domain.item)) => React.element;
+  let make: (~artwork: Art.t, ~items: array(Domain.wiki_item)) => React.element;
 };
 
 module Defeat: {

@@ -12,7 +12,7 @@ type content =
 type contents = {
   content : content;
   terrain : Presentation.terrain_panel option;
-  ground_items : Domain.item array;
+  ground_items : Domain.wiki_item array;
 }
 
 type t = Closed | Open of contents
@@ -34,7 +34,8 @@ let resolve catalog game details revision =
   let ground_items =
     Native.ground_items game
     |> Array_ext.filter_map (fun (ground : Domain.ground_item) ->
-        if Some (Hex.key ground.tile) = focus.inspected then Some ground.item else None)
+        if Some (Hex.key ground.tile) = focus.inspected then Some (Catalog.item catalog ground.item)
+        else None)
   in
   let content =
     match report with

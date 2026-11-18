@@ -96,10 +96,47 @@
   ],
   "events": [
     {
+      "id": "company-survival",
+      "observer": null,
+      "priority": 2147483647,
+      "remembers": false,
+      "objective": null,
+      "when": {
+        "any": [
+          {
+            "not": {
+              "survives": {
+                "company": "player",
+                "allies": false,
+                "character": null,
+                "role": "leader",
+                "includeEvacuated": true
+              }
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The company cannot continue without its protected companions."
+        }
+      ]
+    },
+    {
       "id": "captive-death",
       "when": {
         "killed": {
-          "role": "captive"
+          "role": "captive",
+          "character": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "initiatedBy": null,
+          "killedBy": null,
+          "defending": null
         }
       },
       "remembers": false,
@@ -114,116 +151,246 @@
               "radius": 62,
               "power": 0.75,
               "color": [255, 32, 32],
-              "fixture": false
+              "fixture": false,
+              "emission": null,
+              "dx": null,
+              "dy": null,
+              "when": null
             }
           }
         }
-      ]
+      ],
+      "observer": null,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "lost-southern-captives",
       "when": {
         "killed": {
-          "character": "southern-captives"
+          "character": "southern-captives",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "initiatedBy": null,
+          "killedBy": null,
+          "defending": null
         }
       },
       "actions": [
         {
           "failObjective": "southern-freed"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "lost-eastern-captives",
       "when": {
         "killed": {
-          "character": "eastern-captives"
+          "character": "eastern-captives",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "initiatedBy": null,
+          "killedBy": null,
+          "defending": null
         }
       },
       "actions": [
         {
           "failObjective": "eastern-freed"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "lost-northern-captives",
       "when": {
         "killed": {
-          "character": "northern-captives"
+          "character": "northern-captives",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "initiatedBy": null,
+          "killedBy": null,
+          "defending": null
         }
       },
       "actions": [
         {
           "failObjective": "northern-freed"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "rescue-southern-captives",
       "when": {
         "proximity": {
           "target": {
-            "character": "southern-captives"
+            "character": "southern-captives",
+            "role": null,
+            "side": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           },
           "side": "player",
-          "radius": 1
+          "radius": 1,
+          "tile": null,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "through": true
         }
       },
       "actions": [
         {
           "changeAllegiance": {
             "units": {
-              "character": "southern-captives"
+              "character": "southern-captives",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             },
             "faction": "player"
           }
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "rescue-eastern-captives",
       "when": {
         "proximity": {
           "target": {
-            "character": "eastern-captives"
+            "character": "eastern-captives",
+            "role": null,
+            "side": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           },
           "side": "player",
-          "radius": 1
+          "radius": 1,
+          "tile": null,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "through": true
         }
       },
       "actions": [
         {
           "changeAllegiance": {
             "units": {
-              "character": "eastern-captives"
+              "character": "eastern-captives",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             },
             "faction": "player"
           }
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "rescue-northern-captives",
       "when": {
         "proximity": {
           "target": {
-            "character": "northern-captives"
+            "character": "northern-captives",
+            "role": null,
+            "side": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           },
           "side": "player",
-          "radius": 1
+          "radius": 1,
+          "tile": null,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "through": true
         }
       },
       "actions": [
         {
           "changeAllegiance": {
             "units": {
-              "character": "northern-captives"
+              "character": "northern-captives",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             },
             "faction": "player"
           }
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "monastery-lead",
@@ -232,7 +399,13 @@
           {
             "hasUnits": {
               "side": "player",
-              "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
+              "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"],
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -251,14 +424,18 @@
                 {
                   "portrait": "adept",
                   "text": "The monastery is on the hill to the north. Get me there, and I can use its wards to clear this fog.",
-                  "character": "oren"
+                  "character": "oren",
+                  "speaker": null,
+                  "sound": null
                 }
               ],
               "alternative": [
                 {
                   "speaker": "Storm mage",
                   "portrait": "mage",
-                  "text": "The monastery is on the hill to the north. Its wards can help us clear this fog. Get one of us there."
+                  "text": "The monastery is on the hill to the north. Its wards can help us clear this fog. Get one of us there.",
+                  "character": null,
+                  "sound": null
                 }
               ]
             }
@@ -270,7 +447,11 @@
         {
           "setFlag": "monastery-lead"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "monastery-start",
@@ -281,7 +462,13 @@
           },
           "side": "player",
           "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"],
-          "through": false
+          "through": false,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "aiGroup": null,
+          "retreating": null
         }
       },
       "actions": [
@@ -323,12 +510,20 @@
             "aiGroup": "monastery-wolves",
             "units": [
               {
-                "type": "skeletal-hound"
+                "type": "skeletal-hound",
+                "character": null,
+                "role": null,
+                "items": []
               },
               {
-                "type": "skeletal-hound"
+                "type": "skeletal-hound",
+                "character": null,
+                "role": null,
+                "items": []
               }
-            ]
+            ],
+            "tile": null,
+            "radius": 2
           }
         },
         {
@@ -336,7 +531,9 @@
             {
               "speaker": "The company",
               "portrait": "adept",
-              "text": "The stones answer the mage’s touch. The mist is bound here; three uninterrupted turns in the circle can break it. Shapes stir among the trees below."
+              "text": "The stones answer the mage’s touch. The mist is bound here; three uninterrupted turns in the circle can break it. Shapes stir among the trees below.",
+              "character": null,
+              "sound": null
             },
             {
               "with": "oren",
@@ -344,14 +541,18 @@
                 {
                   "portrait": "adept",
                   "text": "Keep them back. I need three turns here to break the veil.",
-                  "character": "oren"
+                  "character": "oren",
+                  "speaker": null,
+                  "sound": null
                 }
               ],
               "alternative": [
                 {
                   "speaker": "Storm mage",
                   "portrait": "mage",
-                  "text": "Keep them back. I need three turns here to break the veil."
+                  "text": "Keep them back. I need three turns here to break the veil.",
+                  "character": null,
+                  "sound": null
                 }
               ]
             }
@@ -363,7 +564,11 @@
         {
           "setFlag": "monastery-start"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "fog-cleared",
@@ -376,7 +581,14 @@
               },
               "turns": 3,
               "side": "player",
-              "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
+              "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"],
+              "when": null,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -390,7 +602,9 @@
             {
               "speaker": "The company",
               "portrait": "adept",
-              "text": "The fog thins and lifts. The keep and the burial grounds lie exposed below."
+              "text": "The fog thins and lifts. The keep and the burial grounds lie exposed below.",
+              "character": null,
+              "sound": null
             }
           ]
         },
@@ -418,7 +632,14 @@
             },
             "side": "player",
             "turns": 3,
-            "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
+            "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"],
+            "when": null,
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "aiGroup": null,
+            "retreating": null
           }
         },
         "visibleWhen": {
@@ -441,8 +662,14 @@
             }
           ]
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "bell-sighted",
@@ -452,7 +679,13 @@
           {
             "hasUnits": {
               "side": "enemy",
-              "character": "bellwarden"
+              "character": "bellwarden",
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -464,7 +697,13 @@
                 "skeleton-impact-caster",
                 "skeleton-axeman",
                 "skeleton-rider"
-              ]
+              ],
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "aiGroup": null,
+              "retreating": null
             }
           }
         ]
@@ -475,12 +714,16 @@
             {
               "portrait": "lich",
               "text": "More names for the bell.",
-              "character": "bellwarden"
+              "character": "bellwarden",
+              "speaker": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
               "text": "You’ll have no more of them.",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -490,7 +733,10 @@
         {
           "setFlag": "bell-sighted"
         }
-      ]
+      ],
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "toll-warning",
@@ -502,7 +748,16 @@
                 "location": "northern-ritual-mark"
               },
               "faction": "player",
-              "radius": 3
+              "radius": 3,
+              "target": null,
+              "character": null,
+              "role": null,
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null,
+              "through": true
             }
           },
           {
@@ -511,7 +766,16 @@
                 "location": "eastern-ritual-mark"
               },
               "faction": "player",
-              "radius": 3
+              "radius": 3,
+              "target": null,
+              "character": null,
+              "role": null,
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null,
+              "through": true
             }
           },
           {
@@ -520,13 +784,28 @@
                 "location": "southern-ritual-mark"
               },
               "faction": "player",
-              "radius": 3
+              "radius": 3,
+              "target": null,
+              "character": null,
+              "role": null,
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null,
+              "through": true
             }
           },
           {
             "visibleUnits": {
               "faction": "bell-host",
-              "character": "bellwarden"
+              "character": "bellwarden",
+              "role": null,
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           }
         ]
@@ -540,14 +819,18 @@
                 {
                   "character": "oren",
                   "portrait": "adept",
-                  "text": "It's a raising rite. The bell is bound to the marked stones. Anyone left on them when it tolls will be killed and raised for its master. Get the prisoners clear\u2014cutting their bonds won't be enough."
+                  "text": "It's a raising rite. The bell is bound to the marked stones. Anyone left on them when it tolls will be killed and raised for its master. Get the prisoners clear—cutting their bonds won't be enough.",
+                  "speaker": null,
+                  "sound": null
                 }
               ],
               "alternative": [
                 {
                   "character": "nera",
                   "portrait": "swordsman",
-                  "text": "Those marks are part of whatever that bell is doing. Get the prisoners clear of them. I'm not leaving anyone there to find out what happens when it rings."
+                  "text": "Those marks are part of whatever that bell is doing. Get the prisoners clear of them. I'm not leaving anyone there to find out what happens when it rings.",
+                  "speaker": null,
+                  "sound": null
                 }
               ]
             }
@@ -560,7 +843,10 @@
           "setFlag": "toll-warning"
         }
       ],
-      "observer": "player"
+      "observer": "player",
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "church-sighted",
@@ -570,7 +856,16 @@
             "location": "church"
           },
           "side": "player",
-          "radius": 2
+          "radius": 2,
+          "target": null,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "through": true
         }
       },
       "actions": [
@@ -579,7 +874,9 @@
             {
               "portrait": "scout",
               "text": "A church beyond the trees. The door is open.",
-              "character": "ivo"
+              "character": "ivo",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -589,7 +886,11 @@
         {
           "setFlag": "church-sighted"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "church-armor",
@@ -599,7 +900,14 @@
             "location": "church"
           },
           "side": "player",
-          "through": false
+          "through": false,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
         }
       },
       "actions": [
@@ -609,7 +917,14 @@
             "tile": {
               "location": "church"
             },
-            "side": "player"
+            "side": "player",
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
         {
@@ -617,12 +932,16 @@
             {
               "speaker": "The company",
               "portrait": "spearman",
-              "text": "A shirt of mail beneath the bench. No rust, and silver runes worked into the links."
+              "text": "A shirt of mail beneath the bench. No rust, and silver runes worked into the links.",
+              "character": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
               "text": "Take what we can use. Leave the door unbarred for anyone coming after us.",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -632,7 +951,11 @@
         {
           "setFlag": "church-armor"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "northern-sighted",
@@ -644,13 +967,28 @@
                 "location": "northern-ritual-mark"
               },
               "side": "player",
-              "radius": 3
+              "radius": 3,
+              "target": null,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null,
+              "through": true
             }
           },
           {
             "hasUnits": {
               "side": "any",
-              "character": "northern-captives"
+              "character": "northern-captives",
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           }
         ]
@@ -661,8 +999,9 @@
             {
               "speaker": "Captive",
               "portrait": "captives",
-              "text": "Here! Please\u2014before it rings again!",
-              "character": "northern-captives"
+              "text": "Here! Please—before it rings again!",
+              "character": "northern-captives",
+              "sound": null
             }
           ]
         },
@@ -672,7 +1011,11 @@
         {
           "setFlag": "northern-sighted"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "northern-freed",
@@ -681,7 +1024,13 @@
           {
             "hasUnits": {
               "side": "player",
-              "character": "northern-captives"
+              "character": "northern-captives",
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -696,12 +1045,15 @@
               "speaker": "Captive",
               "portrait": "captives",
               "text": "Our hands are free. Where do we go?",
-              "character": "northern-captives"
+              "character": "northern-captives",
+              "sound": null
             },
             {
               "portrait": "swordsman",
               "text": "Off the marked stones. Stay clear of the fighting.",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -721,7 +1073,15 @@
             "tile": {
               "location": "northern-ritual-mark"
             },
-            "side": "player"
+            "side": "player",
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": false
           }
         },
         "visibleWhen": {
@@ -730,8 +1090,14 @@
         "availableWhen": {
           "flag": "northern-sighted"
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "eastern-sighted",
@@ -743,13 +1109,28 @@
                 "location": "eastern-ritual-mark"
               },
               "side": "player",
-              "radius": 3
+              "radius": 3,
+              "target": null,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null,
+              "through": true
             }
           },
           {
             "hasUnits": {
               "side": "any",
-              "character": "eastern-captives"
+              "character": "eastern-captives",
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           }
         ]
@@ -760,8 +1141,9 @@
             {
               "speaker": "Captive",
               "portrait": "captives",
-              "text": "Here! Please\u2014before it rings again!",
-              "character": "eastern-captives"
+              "text": "Here! Please—before it rings again!",
+              "character": "eastern-captives",
+              "sound": null
             }
           ]
         },
@@ -771,7 +1153,11 @@
         {
           "setFlag": "eastern-sighted"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "eastern-freed",
@@ -780,7 +1166,13 @@
           {
             "hasUnits": {
               "side": "player",
-              "character": "eastern-captives"
+              "character": "eastern-captives",
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -795,12 +1187,15 @@
               "speaker": "Captive",
               "portrait": "captives",
               "text": "Our hands are free. Where do we go?",
-              "character": "eastern-captives"
+              "character": "eastern-captives",
+              "sound": null
             },
             {
               "portrait": "swordsman",
               "text": "Off the marked stones. Stay clear of the fighting.",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -820,7 +1215,15 @@
             "tile": {
               "location": "eastern-ritual-mark"
             },
-            "side": "player"
+            "side": "player",
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": false
           }
         },
         "visibleWhen": {
@@ -829,8 +1232,14 @@
         "availableWhen": {
           "flag": "eastern-sighted"
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "southern-sighted",
@@ -842,13 +1251,28 @@
                 "location": "southern-ritual-mark"
               },
               "side": "player",
-              "radius": 3
+              "radius": 3,
+              "target": null,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null,
+              "through": true
             }
           },
           {
             "hasUnits": {
               "side": "any",
-              "character": "southern-captives"
+              "character": "southern-captives",
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           }
         ]
@@ -859,8 +1283,9 @@
             {
               "speaker": "Captive",
               "portrait": "captives",
-              "text": "Here! Please\u2014before it rings again!",
-              "character": "southern-captives"
+              "text": "Here! Please—before it rings again!",
+              "character": "southern-captives",
+              "sound": null
             }
           ]
         },
@@ -870,7 +1295,11 @@
         {
           "setFlag": "southern-sighted"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "southern-freed",
@@ -879,7 +1308,13 @@
           {
             "hasUnits": {
               "side": "player",
-              "character": "southern-captives"
+              "character": "southern-captives",
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -894,12 +1329,15 @@
               "speaker": "Captive",
               "portrait": "captives",
               "text": "Our hands are free. Where do we go?",
-              "character": "southern-captives"
+              "character": "southern-captives",
+              "sound": null
             },
             {
               "portrait": "swordsman",
               "text": "Off the marked stones. Stay clear of the fighting.",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -919,7 +1357,15 @@
             "tile": {
               "location": "southern-ritual-mark"
             },
-            "side": "player"
+            "side": "player",
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": false
           }
         },
         "visibleWhen": {
@@ -928,8 +1374,14 @@
         "availableWhen": {
           "flag": "southern-sighted"
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "bellwarden-demands-captives",
@@ -938,7 +1390,13 @@
           {
             "hasUnits": {
               "side": "enemy",
-              "character": "bellwarden"
+              "character": "bellwarden",
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -946,19 +1404,37 @@
               {
                 "hasUnits": {
                   "side": "player",
-                  "character": "northern-captives"
+                  "character": "northern-captives",
+                  "role": null,
+                  "faction": null,
+                  "unitType": null,
+                  "unitTypes": [],
+                  "aiGroup": null,
+                  "retreating": null
                 }
               },
               {
                 "hasUnits": {
                   "side": "player",
-                  "character": "eastern-captives"
+                  "character": "eastern-captives",
+                  "role": null,
+                  "faction": null,
+                  "unitType": null,
+                  "unitTypes": [],
+                  "aiGroup": null,
+                  "retreating": null
                 }
               },
               {
                 "hasUnits": {
                   "side": "player",
-                  "character": "southern-captives"
+                  "character": "southern-captives",
+                  "role": null,
+                  "faction": null,
+                  "unitType": null,
+                  "unitTypes": [],
+                  "aiGroup": null,
+                  "retreating": null
                 }
               }
             ]
@@ -971,14 +1447,20 @@
             {
               "portrait": "lich",
               "text": "Bring them back. Alive or dead—their blood will serve the ritual just the same.",
-              "character": "bellwarden"
+              "character": "bellwarden",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
         {
           "setFlag": "bellwarden-demands-captives"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "tollkeeper-pursuit",
@@ -1033,15 +1515,26 @@
             "units": [
               {
                 "type": "necromancer",
-                "character": "tollkeeper"
+                "character": "tollkeeper",
+                "role": null,
+                "items": []
               },
               {
-                "type": "skeleton"
+                "type": "skeleton",
+                "character": null,
+                "role": null,
+                "items": []
               },
               {
-                "type": "bonearcher"
+                "type": "bonearcher",
+                "character": null,
+                "role": null,
+                "items": []
               }
-            ]
+            ],
+            "tile": null,
+            "radius": 2,
+            "aiGroup": null
           }
         },
         {
@@ -1049,12 +1542,16 @@
             {
               "character": "tollkeeper",
               "portrait": "necromancer",
-              "text": "Did you think the mist would hide you from me? My toll is still unpaid. I'll have it in bones."
+              "text": "Did you think the mist would hide you from me? My toll is still unpaid. I'll have it in bones.",
+              "speaker": null,
+              "sound": null
             },
             {
               "character": "nera",
               "portrait": "swordsman",
-              "text": "Behind us. Keep the company together\u2014we're not turning back."
+              "text": "Behind us. Keep the company together—we're not turning back.",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -1064,7 +1561,11 @@
         {
           "setFlag": "tollkeeper-pursuit"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "opened-graveyard-sighted",
@@ -1079,13 +1580,28 @@
                 "location": "northern-ritual-mark"
               },
               "radius": 3,
-              "side": "player"
+              "side": "player",
+              "target": null,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null,
+              "through": true
             }
           },
           {
             "noUnits": {
               "side": "any",
-              "character": "northern-captives"
+              "character": "northern-captives",
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           }
         ]
@@ -1096,7 +1612,9 @@
             {
               "speaker": "The company",
               "portrait": "captives",
-              "text": "The graves stand open. The first toll reached these prisoners before we did."
+              "text": "The graves stand open. The first toll reached these prisoners before we did.",
+              "character": null,
+              "sound": null
             }
           ]
         },
@@ -1106,7 +1624,11 @@
         {
           "setFlag": "opened-graveyard-sighted"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "first-toll",
@@ -1137,7 +1659,14 @@
               "role": "captive",
               "tile": {
                 "location": "northern-ritual-mark"
-              }
+              },
+              "character": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             },
             "actions": [
               {
@@ -1154,7 +1683,8 @@
                     "location": "northern-ritual-mark"
                   },
                   "radius": 2,
-                  "units": ["skeleton", "skeleton", "bonearcher"]
+                  "units": ["skeleton", "skeleton", "bonearcher"],
+                  "area": []
                 }
               }
             ]
@@ -1174,7 +1704,8 @@
                     "binding": "mark"
                   },
                   "radius": 2,
-                  "units": ["skeleton", "skeleton", "bonearcher"]
+                  "units": ["skeleton", "skeleton", "bonearcher"],
+                  "area": []
                 }
               },
               {
@@ -1197,7 +1728,11 @@
         {
           "setFlag": "first-toll"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "second-toll",
@@ -1228,7 +1763,14 @@
               "role": "captive",
               "tile": {
                 "location": "eastern-ritual-mark"
-              }
+              },
+              "character": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             },
             "actions": [
               {
@@ -1245,7 +1787,8 @@
                     "location": "eastern-ritual-mark"
                   },
                   "radius": 2,
-                  "units": ["skeleton", "skeleton", "bonearcher"]
+                  "units": ["skeleton", "skeleton", "bonearcher"],
+                  "area": []
                 }
               }
             ]
@@ -1265,7 +1808,8 @@
                     "binding": "mark"
                   },
                   "radius": 2,
-                  "units": ["skeleton", "skeleton", "bonearcher"]
+                  "units": ["skeleton", "skeleton", "bonearcher"],
+                  "area": []
                 }
               },
               {
@@ -1288,7 +1832,11 @@
         {
           "setFlag": "second-toll"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "third-toll",
@@ -1314,7 +1862,14 @@
               "role": "captive",
               "tile": {
                 "location": "southern-ritual-mark"
-              }
+              },
+              "character": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             },
             "actions": [
               {
@@ -1331,7 +1886,8 @@
                     "location": "southern-ritual-mark"
                   },
                   "radius": 2,
-                  "units": ["skeleton", "skeleton", "bonearcher"]
+                  "units": ["skeleton", "skeleton", "bonearcher"],
+                  "area": []
                 }
               }
             ]
@@ -1351,7 +1907,8 @@
                     "binding": "mark"
                   },
                   "radius": 2,
-                  "units": ["skeleton", "skeleton", "bonearcher"]
+                  "units": ["skeleton", "skeleton", "bonearcher"],
+                  "area": []
                 }
               },
               {
@@ -1374,13 +1931,27 @@
         {
           "setFlag": "third-toll"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "bell-silenced",
       "when": {
         "killed": {
-          "character": "bellwarden"
+          "character": "bellwarden",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "initiatedBy": null,
+          "killedBy": null,
+          "defending": null
         }
       },
       "actions": [
@@ -1394,14 +1965,28 @@
         "optional": false,
         "intent": {
           "defeat": {
-            "character": "bellwarden"
+            "character": "bellwarden",
+            "role": null,
+            "side": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
         "visibleWhen": {
           "always": true
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "availableWhen": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "chapter-victory",
@@ -1416,7 +2001,11 @@
         {
           "victory": "Mission complete. The company can rest and regroup."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "western-reinforcements",
@@ -1436,9 +2025,14 @@
             "radius": 2,
             "units": [
               {
-                "type": "lancer"
+                "type": "lancer",
+                "character": null,
+                "role": null,
+                "items": []
               }
-            ]
+            ],
+            "area": [],
+            "aiGroup": null
           }
         },
         {
@@ -1453,9 +2047,14 @@
             "radius": 2,
             "units": [
               {
-                "type": "mage"
+                "type": "mage",
+                "character": null,
+                "role": null,
+                "items": []
               }
-            ]
+            ],
+            "area": [],
+            "aiGroup": null
           }
         },
         {
@@ -1470,9 +2069,14 @@
             "radius": 2,
             "units": [
               {
-                "type": "healer"
+                "type": "healer",
+                "character": null,
+                "role": null,
+                "items": []
               }
-            ]
+            ],
+            "area": [],
+            "aiGroup": null
           }
         },
         {
@@ -1480,19 +2084,27 @@
             {
               "speaker": "Reinforcements",
               "portrait": "lancer",
-              "text": "Captain! Your runner reached the ferry. We followed your trail."
+              "text": "Captain! Your runner reached the ferry. We followed your trail.",
+              "character": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
               "text": "Good timing. Join the company—we need to silence that bell.",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
         {
           "log": "Reinforcements from the ferry arrive from the west."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "monastery-interrupted",
@@ -1505,7 +2117,14 @@
                 "location": "monastery"
               },
               "side": "player",
-              "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"]
+              "unitTypes": ["adept", "mage", "archmage", "healer", "high-healer"],
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "aiGroup": null,
+              "retreating": null,
+              "through": false
             }
           },
           {
@@ -1523,19 +2142,31 @@
               "dialogue": [
                 {
                   "character": "oren",
-                  "text": "The connection broke. I’ll have to start again."
+                  "text": "The connection broke. I’ll have to start again.",
+                  "speaker": null,
+                  "portrait": null,
+                  "sound": null
                 }
               ],
               "alternative": [
                 {
                   "character": "nera",
-                  "text": "We’ll have to try again."
+                  "text": "We’ll have to try again.",
+                  "speaker": null,
+                  "portrait": null,
+                  "sound": null
                 }
               ]
             }
           ]
         }
-      ]
+      ],
+      "observer": null,
+      "priority": 0,
+      "objective": null
     }
-  ]
+  ],
+  "requiredCompanions": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false
 }

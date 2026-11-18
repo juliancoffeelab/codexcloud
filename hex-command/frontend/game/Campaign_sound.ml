@@ -1,4 +1,4 @@
-let mission (mission : Domain.mission) ending =
+let mission (mission : Domain.browser_chapter) ending =
   let found = Host_collections.Set.create () in
   let add cue =
     let _ = Host_collections.Set.add found cue in

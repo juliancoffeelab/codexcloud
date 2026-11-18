@@ -1,0 +1,20 @@
+{
+  "id": "glow-75-70",
+  "name": "Glow 75 70",
+  "description": "Authored light effect.",
+  "effects": [
+    {
+      "kind": "light",
+      "light": {
+        "radius": 75,
+        "power": 0.7,
+        "color": [255, 201, 143],
+        "fixture": false,
+        "emission": null,
+        "dx": null,
+        "dy": null,
+        "when": null
+      }
+    }
+  ]
+}

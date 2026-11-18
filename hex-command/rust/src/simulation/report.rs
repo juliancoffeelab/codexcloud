@@ -418,7 +418,7 @@ pub fn markdown(report: &Value) -> String {
         format!("seeds {first}–{}", first + count - 1)
     };
     let mut text = format!(
-        "# Seeded AI {} results\n\nSource: `{}`. Rules/policy fingerprint: `{}`.\n\n{} games, {}, {:.1} seconds.\n\n",
+        "# Seeded AI {} results\n\nSource: `{}`. Catalogue/policy fingerprint: `{}`.\n\n{} games, {}, {:.1} seconds.\n\n",
         report["mode"].as_str().unwrap_or(""),
         report["sourceCommit"].as_str().unwrap_or(""),
         report["fingerprint"].as_str().unwrap_or(""),

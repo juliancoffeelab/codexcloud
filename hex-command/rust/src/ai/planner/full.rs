@@ -20,7 +20,7 @@ impl super::Planner for Full {
 
 pub(super) fn prepare<'a, 'catalog>(
     phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
-    session: &mut super::search::Session,
+    session: &mut super::search::SearchPlannerSession,
     turn: &crate::ai::runtime::PlannerTurn<'_>,
 ) {
     super::search::prepare(phases, session, turn);
@@ -28,7 +28,7 @@ pub(super) fn prepare<'a, 'catalog>(
 pub(super) fn choose<'a, 'catalog>(
     game: &'a crate::ai::context::BattleView<'a, 'catalog>,
     phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
-    session: &mut super::search::Session,
+    session: &mut super::search::SearchPlannerSession,
     turn: &mut crate::ai::runtime::PlannerTurn<'_>,
 ) -> Result<(), crate::data::CommandError> {
     super::search::choose(game, phases, session, turn)
@@ -38,7 +38,7 @@ fn coordinated_step<'view, 'catalog>(
     game: &'view crate::ai::context::BattleView<'view, 'catalog>,
     phases: hex_command_battle::PhaseForecasts<'view, 'catalog>,
     actions: hex_command_battle::ActionForecastSource<'view, 'catalog>,
-    parts: &mut crate::ai::runtime::PlannerParts<'_, super::search::Session>,
+    parts: &mut crate::ai::runtime::PlannerParts<'_, super::search::SearchPlannerSession>,
 ) -> Result<(), crate::data::CommandError> {
     if let Some(goals) = super::prepare_coordination(game, &mut parts.turn) {
         parts.session.replace_goals(goals);

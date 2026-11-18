@@ -170,6 +170,7 @@ def refine_rl_selection(root):
         history[0]["checkpoint"],
         json.loads((run / "latest.json").read_text())["path"],
     ]
+    paths += [str(p.relative_to(run)) for p in (run / "checkpoints").glob("initial-*")]
     cache = run / "selection-validation"
     cache.mkdir(exist_ok=True)
     # Extending a smoke run must not discard a candidate already validated on

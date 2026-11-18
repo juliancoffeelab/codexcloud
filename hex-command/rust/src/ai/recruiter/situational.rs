@@ -2,7 +2,7 @@
 use super::{Recruiter, RecruiterKind};
 use crate::ai::{context::BattleView, orders::RecruitmentOrders};
 use crate::data::*;
-use hex_command_battle::RuntimeCommand as Command;
+use hex_command_battle::RuntimeCommand;
 
 pub(super) struct Situational;
 impl Recruiter for Situational {
@@ -22,7 +22,7 @@ pub(super) fn choose(
     game: &BattleView<'_, '_>,
     seed: u32,
     orders: &RecruitmentOrders,
-) -> Option<Command> {
+) -> Option<RuntimeCommand> {
     choose_with_forecast(game, seed, orders, false)
 }
 
@@ -31,13 +31,13 @@ pub(super) fn choose_with_forecast(
     seed: u32,
     orders: &RecruitmentOrders,
     predict: bool,
-) -> Option<Command> {
+) -> Option<RuntimeCommand> {
     choose_with_weights(
         game,
         seed,
         orders,
         predict,
-        game.rules().recruitment.standard,
+        game.catalogue().meta().recruiter_weights.standard,
     )
 }
 
@@ -47,8 +47,7 @@ pub(super) fn choose_with_weights(
     orders: &RecruitmentOrders,
     predict: bool,
     weights: RecruitmentWeights,
-) -> Option<Command> {
-    let side = game.turn();
+) -> Option<RuntimeCommand> {
     let required = orders.requirements.iter().find(|r| r.deficit(game) > 0);
     let reserved: rustc_hash::FxHashSet<_> =
         orders.reserved.iter().map(|t| game.site(&t.0)).collect();
@@ -93,30 +92,11 @@ pub(super) fn choose_with_weights(
     let mut best: Option<(f64, &Unit, usize, usize)> = None;
     for (leader, kind, tiles, price, gold) in candidates {
         let tile = tiles[0];
-        let rule = &game.rules().units[kind];
         if price > gold && income == 0 {
             continue;
         }
-        let mut recruit = Unit {
-            field_available: true,
-            perception: PerceptionId(0),
-            vision_group: leader.vision_group,
-            id: 0,
-            kind,
-            phase: side,
-            tile,
-            hp: rule.hp,
-            moved: true,
-            attack_spent: true,
-            experience: None,
-            role: None,
-            retreating: None,
-            rebuilding: None,
-            faction: leader.faction,
-            ai_group: None,
-            character: None,
-            inventory: InventoryId::default(),
-        };
+        let mut recruit = game.prospective(kind, leader.faction, tile);
+        let rule = game.unit_definition(recruit.kind);
         if forecast_leader != Some(leader.id) {
             forecasts = Some(std::rc::Rc::new(super::evaluation::AssessmentScene::new(
                 game,
@@ -134,13 +114,13 @@ pub(super) fn choose_with_weights(
         );
         let copies = company
             .iter()
-            .filter(|u| game.rules().units[u.kind].family == rule.family)
+            .filter(|u| game.unit_definition(u.kind).family() == rule.family())
             .count();
         // An unaffordable unit must justify the income spent waiting rather
         // than fielding an available alternative now.
         let wait = f64::from((price - gold).max(0)) / f64::from(income.max(1));
         let draw =
-            crate::ai::policies::tie_breaking::RecruitmentDraw::new(seed, game.round(), &rule.id);
+            crate::ai::policies::tie_breaking::RecruitmentDraw::new(seed, game.round(), rule.id());
         for tile in tiles {
             recruit.tile = tile;
             let score = assessment.recruitment_score(game, &recruit)
@@ -167,42 +147,33 @@ pub(super) fn choose_with_weights(
 mod tests {
     use super::*;
     use crate::ai::recruiter::fixtures;
-    use crate::logic::Game;
-    use hex_command_battle::RuntimeCommand as Command;
+    use crate::logic::BattleSession;
+    use hex_command_battle::RuntimeCommand;
 
     // Controlled alternatives test the decision, independent of authored balance.
-    fn fixture() -> (Rules, usize, usize) {
-        let mut rules = Rules::load().unwrap();
-        let a = rules.types["swordsman"];
-        let b = rules.types["archer"];
-        let mut alternative = rules.units[a].clone();
-        alternative.hp = 40;
-        alternative.cost = 10;
-        alternative.healing = 0;
-        alternative.attacks.truncate(1);
-        alternative.attacks[0].damage = 10;
-        alternative.attacks[0].count = 1;
-        alternative.attacks[0].category = Category::Melee;
-        alternative.attacks[0].range = 1;
-        alternative.damage_modifiers = DamageModifiers {
-            blade: 0,
-            pierce: 0,
-            impact: 0,
-        };
-        for environment in &mut alternative.environment {
-            *environment = [[0; 3]; 2];
-        }
-        alternative.id = rules.units[a].id.clone();
-        rules.units[a] = alternative.clone();
-        alternative.id = rules.units[b].id.clone();
-        rules.units[b] = alternative;
-        rules.route_classes[a] = a;
-        rules.route_classes[b] = b;
-        (rules, a, b)
+    fn fixture() -> (JsonBundle, usize, usize) {
+        let mut bundle = crate::catalogue_fixture::neutral_combat();
+        let a = crate::catalogue_fixture::kind(&bundle, "swordsman");
+        let b = crate::catalogue_fixture::kind(&bundle, "archer");
+        crate::catalogue_fixture::unit_kind(&mut bundle, a, |unit| {
+            unit["hp"] = serde_json::json!(40);
+            unit["cost"] = serde_json::json!(10);
+            unit["damageModifiers"] = serde_json::json!({"blade":0,"pierce":0,"impact":0});
+            unit["attacks"].as_array_mut().unwrap().truncate(1);
+            unit["attacks"][0]["damage"] = serde_json::json!(10);
+            unit["attacks"][0]["count"] = serde_json::json!(1);
+            unit["attacks"][0]["category"] = serde_json::json!("melee");
+            unit["attacks"][0]["range"] = serde_json::json!(1);
+        });
+        crate::effect_fixture::healing(&mut bundle, "swordsman", None);
+        crate::catalogue_fixture::environment(&mut bundle, "swordsman", 0);
+        crate::catalogue_fixture::copy_unit(&mut bundle, a, b);
+        (bundle, a, b)
     }
 
-    fn battle(rules: &Rules, a: usize, b: usize) -> Game<'_> {
-        let mut game = Game::new(rules, "mirror");
+    fn battle(bundle: &JsonBundle, a: usize, b: usize) -> BattleSession<'static> {
+        let rules = crate::catalogue_fixture::frozen(bundle);
+        let mut game = BattleSession::new(rules, "mirror");
         fixtures::units(&mut game, |units| {
             units.retain(|u| u.is_leader());
         });
@@ -211,9 +182,9 @@ mod tests {
         game
     }
 
-    fn selected(game: &Game<'_>, orders: &RecruitmentOrders) -> Option<usize> {
+    fn selected(game: &BattleSession<'_>, orders: &RecruitmentOrders) -> Option<usize> {
         choose(&BattleView::new(game), 7, orders).map(|command| {
-            let Command::Recruit { kind, .. } = command else {
+            let RuntimeCommand::Recruit { kind, .. } = command else {
                 panic!("recruiter emitted a non-recruit command");
             };
             kind.0
@@ -223,17 +194,37 @@ mod tests {
     #[test]
     fn one_strike_is_preferred_to_equal_damage_multiple_strikes_against_thorns() {
         let (mut rules, a, b) = fixture();
-        rules.units[a].attacks[0].damage = 6;
-        rules.units[a].attacks[0].count = 3;
-        rules.units[b].attacks[0].damage = 18;
+        {
+            let fixture_value = serde_json::json!(6);
+            crate::catalogue_fixture::unit_kind(&mut rules, a, |unit| {
+                unit["attacks"][0]["damage"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(3);
+            crate::catalogue_fixture::unit_kind(&mut rules, a, |unit| {
+                unit["attacks"][0]["count"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(18);
+            crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| {
+                unit["attacks"][0]["damage"] = fixture_value
+            });
+        }
         let enemy = battle(&rules, a, b)
             .units()
             .iter()
             .find(|u| u.phase == TurnPhase::Ai)
             .unwrap()
             .kind;
-        rules.units[enemy].hp = 100;
-        rules.units[enemy].thorns = 4;
+        {
+            let fixture_value = serde_json::json!(100);
+            crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                unit["hp"] = fixture_value
+            });
+        }
+        crate::effect_fixture::thorns_kind(&mut rules, enemy, 4);
         assert_eq!(
             selected(&battle(&rules, a, b), &RecruitmentOrders::default()),
             Some(b)
@@ -245,9 +236,14 @@ mod tests {
         for armor in [false, true] {
             let (mut rules, a, b) = fixture();
             if armor {
-                rules.units[b].damage_modifiers.blade = -6;
+                {
+                    let fixture_value = serde_json::json!(-6);
+                    crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| {
+                        unit["damageModifiers"]["blade"] = fixture_value
+                    });
+                }
             } else {
-                rules.units[b].thorns = 12;
+                crate::effect_fixture::thorns_kind(&mut rules, b, 12);
             }
             let enemy = battle(&rules, a, b)
                 .units()
@@ -255,12 +251,39 @@ mod tests {
                 .find(|u| u.phase == TurnPhase::Ai)
                 .unwrap()
                 .kind;
-            rules.units[enemy].attacks.truncate(1);
-            rules.units[enemy].attacks[0].category = Category::Melee;
-            rules.units[enemy].attacks[0].range = 1;
-            rules.units[enemy].attacks[0].damage_type = DamageType::Blade;
-            rules.units[enemy].attacks[0].damage = 8;
-            rules.units[enemy].attacks[0].count = 3;
+            crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                unit["attacks"].as_array_mut().unwrap().truncate(1)
+            });
+            {
+                let fixture_value = serde_json::json!(Category::Melee);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["attacks"][0]["category"] = fixture_value
+                });
+            }
+            {
+                let fixture_value = serde_json::json!(1);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["attacks"][0]["range"] = fixture_value
+                });
+            }
+            {
+                let fixture_value = serde_json::json!(DamageType::Blade);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["attacks"][0]["damageType"] = fixture_value
+                });
+            }
+            {
+                let fixture_value = serde_json::json!(8);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["attacks"][0]["damage"] = fixture_value
+                });
+            }
+            {
+                let fixture_value = serde_json::json!(3);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["attacks"][0]["count"] = fixture_value
+                });
+            }
             assert_eq!(
                 selected(&battle(&rules, a, b), &RecruitmentOrders::default()),
                 Some(b)
@@ -271,15 +294,31 @@ mod tests {
     #[test]
     fn valuable_expensive_recruit_can_wait_for_income() {
         let (mut rules, a, b) = fixture();
-        rules.units[b].cost = 12;
-        rules.units[b].hp = 80;
-        rules.units[b].attacks[0].damage = 20;
+        {
+            let fixture_value = serde_json::json!(12);
+            crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| unit["cost"] = fixture_value);
+        }
+        {
+            let fixture_value = serde_json::json!(80);
+            crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| unit["hp"] = fixture_value);
+        }
+        {
+            let fixture_value = serde_json::json!(20);
+            crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| {
+                unit["attacks"][0]["damage"] = fixture_value
+            });
+        }
         let mut game = battle(&rules, a, b);
         let village = game
             .terrain()
             .iter()
             .enumerate()
-            .find(|(_, t)| **t == rules.terrains["village"])
+            .find(|(_, t)| {
+                **t == crate::catalogue_fixture::frozen(&rules)
+                    .terrains()
+                    .position(|terrain| terrain.id().as_str() == "village")
+                    .unwrap()
+            })
             .unwrap()
             .0;
         fixtures::edit(&mut game, |state| {
@@ -299,14 +338,25 @@ mod tests {
     #[test]
     fn modest_upgrade_does_not_delay_an_affordable_recruit() {
         let (mut rules, a, b) = fixture();
-        rules.units[b].cost = 12;
-        rules.units[b].hp = 54;
+        {
+            let fixture_value = serde_json::json!(12);
+            crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| unit["cost"] = fixture_value);
+        }
+        {
+            let fixture_value = serde_json::json!(54);
+            crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| unit["hp"] = fixture_value);
+        }
         let mut game = battle(&rules, a, b);
         let village = game
             .terrain()
             .iter()
             .enumerate()
-            .find(|(_, t)| **t == rules.terrains["village"])
+            .find(|(_, t)| {
+                **t == crate::catalogue_fixture::frozen(&rules)
+                    .terrains()
+                    .position(|terrain| terrain.id().as_str() == "village")
+                    .unwrap()
+            })
             .unwrap()
             .0;
         fixtures::edit(&mut game, |state| {
@@ -320,28 +370,71 @@ mod tests {
     #[test]
     fn movement_and_armor_per_strike_affect_matchups() {
         let (mut rules, a, b) = fixture();
-        rules.units[b].r#move = rules.units[a].r#move * 2;
+        {
+            let fixture_value = serde_json::json!(
+                (crate::catalogue_fixture::value(&rules, a)["move"]
+                    .as_i64()
+                    .unwrap() as usize)
+                    * 2
+            );
+            crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| unit["move"] = fixture_value);
+        }
         assert_eq!(
             selected(&battle(&rules, a, b), &RecruitmentOrders::default()),
             Some(b)
         );
-        rules.units[b].r#move = rules.units[a].r#move;
-        rules.units[a].attacks[0].damage = 6;
-        rules.units[a].attacks[0].count = 3;
-        rules.units[b].attacks[0].damage = 18;
+        {
+            let fixture_value = serde_json::json!(
+                (crate::catalogue_fixture::value(&rules, a)["move"]
+                    .as_i64()
+                    .unwrap() as usize)
+            );
+            crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| unit["move"] = fixture_value);
+        }
+        {
+            let fixture_value = serde_json::json!(6);
+            crate::catalogue_fixture::unit_kind(&mut rules, a, |unit| {
+                unit["attacks"][0]["damage"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(3);
+            crate::catalogue_fixture::unit_kind(&mut rules, a, |unit| {
+                unit["attacks"][0]["count"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(18);
+            crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| {
+                unit["attacks"][0]["damage"] = fixture_value
+            });
+        }
         let enemy = battle(&rules, a, b)
             .units()
             .iter()
             .find(|u| u.phase == TurnPhase::Ai)
             .unwrap()
             .kind;
-        let damage_type = rules.units[a].attacks[0].damage_type;
-        rules.units[b].attacks[0].damage_type = damage_type;
-        rules.units[enemy].damage_modifiers = DamageModifiers {
-            blade: -4,
-            pierce: -4,
-            impact: -4,
-        };
+        let damage_type = serde_json::from_value::<DamageType>(
+            crate::catalogue_fixture::value(&rules, a)["attacks"][0]["damageType"].clone(),
+        )
+        .unwrap();
+        {
+            let fixture_value = serde_json::json!(damage_type);
+            crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| {
+                unit["attacks"][0]["damageType"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(DamageModifiers {
+                blade: -4,
+                pierce: -4,
+                impact: -4,
+            });
+            crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                unit["damageModifiers"] = fixture_value
+            });
+        }
         assert_eq!(
             selected(&battle(&rules, a, b), &RecruitmentOrders::default()),
             Some(b)
@@ -351,8 +444,18 @@ mod tests {
     #[test]
     fn enemy_resistance_changes_selection() {
         let (mut rules, a, b) = fixture();
-        rules.units[a].attacks[0].damage_type = DamageType::Blade;
-        rules.units[b].attacks[0].damage_type = DamageType::Pierce;
+        {
+            let fixture_value = serde_json::json!(DamageType::Blade);
+            crate::catalogue_fixture::unit_kind(&mut rules, a, |unit| {
+                unit["attacks"][0]["damageType"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(DamageType::Pierce);
+            crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| {
+                unit["attacks"][0]["damageType"] = fixture_value
+            });
+        }
         let enemy = battle(&rules, a, b)
             .units()
             .iter()
@@ -360,10 +463,21 @@ mod tests {
             .unwrap()
             .kind;
         for (blade, pierce, expected) in [(-10, 0, b), (0, -10, a)] {
-            rules.units[enemy].damage_modifiers.blade = blade;
-            rules.units[enemy].damage_modifiers.pierce = pierce;
-            for environment in &mut rules.units[enemy].environment {
-                *environment = [[0; 3]; 2];
+            {
+                let fixture_value = serde_json::json!(blade);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["damageModifiers"]["blade"] = fixture_value
+                });
+            }
+            {
+                let fixture_value = serde_json::json!(pierce);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["damageModifiers"]["pierce"] = fixture_value
+                });
+            }
+            {
+                let id = crate::catalogue_fixture::id(&rules, enemy);
+                crate::catalogue_fixture::environment(&mut rules, &id, 0);
             }
             assert_eq!(
                 selected(&battle(&rules, a, b), &RecruitmentOrders::default()),
@@ -375,9 +489,18 @@ mod tests {
     #[test]
     fn terrain_access_and_campaign_requirements_override_free_selection() {
         let (mut rules, a, b) = fixture();
-        let water = rules.terrains["water"];
-        rules.units[a].costs[water] = None;
-        rules.units[b].costs[water] = Some(1);
+        let water = crate::catalogue_fixture::frozen(&rules)
+            .terrains()
+            .position(|terrain| terrain.id().as_str() == "water")
+            .unwrap();
+        crate::catalogue_fixture::unit_kind(&mut rules, a, |unit| {
+            unit["terrainModifiers"]["water"]["passable"] = serde_json::json!(false);
+            unit["terrainModifiers"]["water"]["cost"] = serde_json::json!(0);
+        });
+        crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| {
+            unit["terrainModifiers"]["water"]["passable"] = serde_json::json!(true);
+            unit["terrainModifiers"]["water"]["cost"] = serde_json::json!(0);
+        });
         let mut game = battle(&rules, a, b);
         let leader = game
             .units()
@@ -393,18 +516,47 @@ mod tests {
             .clone();
         fixtures::edit(&mut game, |state| {
             for tile in &mut state.tiles {
-                tile.terrain = rules.terrain_names[water].clone();
+                tile.terrain = crate::catalogue_fixture::frozen(&rules)
+                    .terrains()
+                    .nth(water)
+                    .unwrap()
+                    .id()
+                    .as_str()
+                    .into();
             }
         });
-        fixtures::terrain(&mut game, leader.tile, rules.terrains["keep"]);
-        fixtures::terrain(&mut game, enemy.tile, rules.terrains["keep"]);
+        fixtures::terrain(
+            &mut game,
+            leader.tile,
+            crate::catalogue_fixture::frozen(&rules)
+                .terrains()
+                .position(|terrain| terrain.id().as_str() == "keep")
+                .unwrap(),
+        );
+        fixtures::terrain(
+            &mut game,
+            enemy.tile,
+            crate::catalogue_fixture::frozen(&rules)
+                .terrains()
+                .position(|terrain| terrain.id().as_str() == "keep")
+                .unwrap(),
+        );
         for tile in game.board().adjacent[leader.tile].clone() {
-            fixtures::terrain(&mut game, tile, rules.terrains["plains"]);
+            fixtures::terrain(
+                &mut game,
+                tile,
+                crate::catalogue_fixture::frozen(&rules)
+                    .terrains()
+                    .position(|terrain| terrain.id().as_str() == "plains")
+                    .unwrap(),
+            );
         }
         assert_eq!(selected(&game, &RecruitmentOrders::default()), Some(b));
         let mut orders = RecruitmentOrders {
             requirements: vec![crate::ai::orders::RecruitRequirement::EnsureUnits {
-                selector: crate::ai::orders::UnitSelector::Type(rules.units[a].id.as_str().into()),
+                selector: crate::ai::orders::UnitSelector::Type(
+                    crate::catalogue_fixture::id(&rules, a).as_str().into(),
+                ),
                 count: 1,
             }],
             ..Default::default()
@@ -424,8 +576,17 @@ mod tests {
     #[test]
     fn wounded_company_creates_healing_demand() {
         let (mut rules, a, b) = fixture();
-        rules.units[b].healing = 20;
-        rules.units[b].attacks[0].damage = 0;
+        crate::effect_fixture::healing_kind(
+            &mut rules,
+            b,
+            (20 > 0).then_some((20, 1, false, crate::data::HealingTargets::Allies)),
+        );
+        {
+            let fixture_value = serde_json::json!(0);
+            crate::catalogue_fixture::unit_kind(&mut rules, b, |unit| {
+                unit["attacks"][0]["damage"] = fixture_value
+            });
+        }
         let mut game = battle(&rules, a, b);
         let leader = game
             .units()
@@ -439,9 +600,11 @@ mod tests {
         let mut healer = leader.clone();
         healer.id = 0;
         healer.kind = b;
-        healer.hp = rules.units[b].hp;
+        healer.hp = (crate::catalogue_fixture::value(&rules, b)["hp"]
+            .as_i64()
+            .unwrap() as i32);
         healer.tile = game.placement_tiles(&leader, b, true)[0];
-        let assess = |game: &Game<'_>| {
+        let assess = |game: &BattleSession<'_>| {
             let view = BattleView::new(game);
             crate::ai::recruiter::evaluation::Assessment::new(&view, &healer)
                 .recruitment_breakdown(&view, &healer)

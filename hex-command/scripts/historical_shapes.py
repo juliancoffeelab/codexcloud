@@ -35,7 +35,7 @@ for i,c in enumerate(part):reps.setdefault(c,i)
 def snake(s):
  s=re.sub(r'([A-Z]+)([A-Z][a-z])',r'\1_\2',s);s=re.sub(r'([a-z0-9])([A-Z])',r'\1_\2',s)
  return re.sub(r'[^a-zA-Z0-9_]', '_',s).lower()
-reserved=set('and as assert asr begin class constraint do done downto else end exception external false for fun function functor if in include inherit initializer land lazy let lor lsl lsr lxor match method mod module mutable new nonrec object of open or private rec sig struct then to true try type val virtual when while with unit'.split())
+reserved=set('effect and as assert asr begin class constraint do done downto else end exception external false for fun function functor if in include inherit initializer land lazy let lor lsl lsr lxor match method mod module mutable new nonrec object of open or private rec sig struct then to true try type val virtual when while with unit'.split())
 def field(s):
  n=snake(s)
  if n in reserved:n+='_' 

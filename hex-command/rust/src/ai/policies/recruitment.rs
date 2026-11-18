@@ -42,7 +42,8 @@ pub(in crate::ai) fn estimate_capacity(
             .iter()
             .filter(|&&site| {
                 (site == actor.tile || game.at(site).is_none())
-                    && game.cost(kind, site) != u16::MAX
+                    && game.step_cost(&game.prospective(kind, actor.faction, site), site)
+                        != u16::MAX
                     && !input
                         .orders
                         .reserved
@@ -62,4 +63,35 @@ pub(in crate::ai) fn estimate_capacity(
     let average = cost_sum / cost_count;
     let capacity = slots.min(input.remaining_budget.unwrap_or(usize::MAX));
     Some(gold.min((capacity as i32).saturating_mul(average)))
+}
+
+/// Composition policy helpers, independent of Catalogue mechanics.
+pub(crate) trait RecruitRolePolicy: Sized {
+    const ALL: [Self; 4];
+    fn index(self) -> usize;
+    fn weight(self) -> f64;
+    fn is_ranged(self) -> bool;
+}
+impl RecruitRolePolicy for UnitRole {
+    const ALL: [Self; 4] = [Self::Warrior, Self::Flank, Self::Ranger, Self::Healer];
+    fn index(self) -> usize {
+        match self {
+            Self::Warrior => 0,
+            Self::Flank => 1,
+            Self::Ranger => 2,
+            Self::Healer => 3,
+        }
+    }
+    fn weight(self) -> f64 {
+        match self {
+            Self::Warrior => 0.3,
+            Self::Flank | Self::Ranger | Self::Healer => 0.2,
+        }
+    }
+    fn is_ranged(self) -> bool {
+        match self {
+            Self::Ranger | Self::Healer => true,
+            Self::Warrior | Self::Flank => false,
+        }
+    }
 }

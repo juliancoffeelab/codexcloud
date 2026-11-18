@@ -1,7 +1,7 @@
 //! Terrain-dependent attack geometry shared by forecasts of the same battle.
 use super::BattlePosition;
-use crate::data::Category;
-use rustc_hash::FxHashMap as HashMap;
+use crate::data::{Category, Unit};
+use rustc_hash::FxHashMap;
 use std::{cell::RefCell, rc::Rc};
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum TileSet {
@@ -103,8 +103,8 @@ impl TileSet {
         }
     }
 }
-pub(super) type AttackGeometry = Rc<RefCell<HashMap<(usize, u8), Rc<Vec<TileSet>>>>>;
-pub(super) type AttackMasks = Rc<RefCell<HashMap<(usize, u8), Rc<Vec<u128>>>>>;
+pub(super) type AttackGeometry = Rc<RefCell<FxHashMap<(usize, u8), Rc<Vec<TileSet>>>>>;
+pub(super) type AttackMasks = Rc<RefCell<FxHashMap<(usize, u8), Rc<Vec<u128>>>>>;
 /// Consecutive legal origins with equal terrain and distance to the target.
 /// The representative preserves every retaliation range/line-of-fire input;
 /// count retains multiplicity without changing the original origin order.
@@ -116,18 +116,24 @@ pub struct AttackOriginRun {
     pub count: usize,
 }
 pub(super) type OriginRunCache =
-    Rc<RefCell<HashMap<(usize, usize, usize, u8, usize), Rc<Vec<AttackOriginRun>>>>>;
+    Rc<RefCell<FxHashMap<(usize, usize, usize, u8, usize), Rc<Vec<AttackOriginRun>>>>>;
 impl BattlePosition<'_> {
     pub(crate) fn attack_origin_runs(
         &self,
-        kind: usize,
+        unit: &Unit,
         from: usize,
         category: Category,
         range: u8,
         target: usize,
     ) -> Rc<Vec<AttackOriginRun>> {
-        let kind = self.rules.route_classes[kind];
-        let reachable = self.reachability(kind, from);
+        let kind = self.route_class(unit);
+        let reachable = self.reachability(unit, from);
+        let positional = self.effect_sources.damage
+            || self.perception_sensitive()
+            || !self.effect_sources.units[super::effect_index::EffectKind::Thorns as usize]
+                .is_empty()
+            || !self.effect_sources.terrain[super::effect_index::EffectKind::Thorns as usize]
+                .is_empty();
         let key = (
             kind,
             reachable.source_key(),
@@ -135,19 +141,31 @@ impl BattlePosition<'_> {
             range,
             target,
         );
-        if let Some(runs) = self.runtime.origin_runs.borrow().get(&key) {
+        if let Some(runs) = self
+            .runtime
+            .origin_runs
+            .borrow()
+            .get(&key)
+            .filter(|_| !positional)
+        {
             return runs.clone();
         }
         let origins = self.attack_origins(category, range);
         let mut runs: Vec<AttackOriginRun> = Vec::new();
+        let batch_costs = self.movement_costs(unit);
         origins[target].for_each(|tile| {
-            if !reachable.contains(tile) || self.cost(kind, tile) == u16::MAX {
+            if !reachable.contains(tile)
+                || batch_costs
+                    .as_ref()
+                    .map_or_else(|| self.step_cost(unit, tile), |costs| costs[tile])
+                    == u16::MAX
+            {
                 return;
             }
             let terrain = self.runtime.terrain[tile];
             let distance = self.runtime.board.distance(tile, target);
             if let Some(last) = runs.last_mut() {
-                if last.terrain == terrain && last.distance == distance {
+                if !positional && last.terrain == terrain && last.distance == distance {
                     last.count += 1;
                     return;
                 }
@@ -160,6 +178,9 @@ impl BattlePosition<'_> {
             });
         });
         let runs = Rc::new(runs);
+        if positional {
+            return runs;
+        }
         let mut cache = self.runtime.origin_runs.borrow_mut();
         if cache.len() >= 512 {
             cache.clear();
@@ -206,7 +227,7 @@ impl BattlePosition<'_> {
             || gap != 2
             || self.runtime.board.adjacent[from].iter().any(|&between| {
                 self.runtime.board.distance(between, target) == 1
-                    && !self.terrain_role(between).blocks_shots()
+                    && !self.terrain_definition(between).blocks_shots()
             })
     }
     pub fn attack_origins(&self, category: Category, range: u8) -> Rc<Vec<TileSet>> {
@@ -263,10 +284,10 @@ mod tests {
     }
     #[test]
     fn terrain_changes_detach_forecast_geometry_and_preserve_the_parent() {
-        let rules = crate::data::Catalog::load().unwrap();
-        let mut game = super::super::Game::new(&rules, "mirror").position;
+        let rules = crate::data::Catalogue::load().unwrap();
+        let mut game = super::super::LiveBattle::new(&rules, "mirror").position;
         for tile in 0..game.terrain.len() {
-            game.set_terrain(tile, rules.terrains["plains"]);
+            game.set_terrain(tile, game.definitions.terrain_name("plains"));
         }
         let from = game.site(&Hex::new(3, 4));
         let target = game.site(&Hex::new(5, 4));
@@ -282,18 +303,18 @@ mod tests {
             .copied()
             .filter(|&t| game.board.distance(t, target) == 1)
         {
-            forecast.set_terrain(tile, rules.terrains["forest"]);
+            forecast.set_terrain(tile, game.definitions.terrain_name("forest"));
         }
         assert!(!forecast.attack_origins(Category::Ranged, 2)[target].contains(from));
         assert!(game.attack_origins(Category::Ranged, 2)[target].contains(from));
     }
     #[test]
     fn attack_geometry_is_reciprocal_including_blocked_ranged_paths() {
-        let rules = crate::data::Catalog::load().unwrap();
-        let mut game = super::super::Game::new(&rules, "mirror").position;
+        let rules = crate::data::Catalogue::load().unwrap();
+        let mut game = super::super::LiveBattle::new(&rules, "mirror").position;
         for terrain in ["plains", "forest", "hill", "grove"] {
             for tile in (0..game.terrain.len()).step_by(3) {
-                game.set_terrain(tile, rules.terrains[terrain]);
+                game.set_terrain(tile, game.definitions.terrain_name(terrain));
             }
             for category in [Category::Melee, Category::Ranged] {
                 for range in 1..=3 {

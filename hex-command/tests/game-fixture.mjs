@@ -97,19 +97,23 @@ class Game {
   }
   addUnit(type, faction, tile) {
     const unit = {
+      items: [],
       id: `u${this.nextId++}`,
       type,
       faction,
       revealedTo: [],
       perceptionEffects: [],
       tile: hex(this.tile(tile) ?? tile),
-      hp: Catalog.unit(catalog, type).hp,
+      hp: Native.preview_unit(this.#battle, type, faction, hex(this.tile(tile) ?? tile)).hp,
       experience: 0,
       moved: false,
       attackSpent: false,
     };
     this.units.push(unit);
     return unit;
+  }
+  profile(unit) {
+    return Native.unit_details(this.publishedView(), unit.id);
   }
   record(message) {
     this.log = [message, ...this.log].slice(0, 8);
@@ -148,7 +152,11 @@ class Game {
     return Native.neighbors(this.publishedView(), id).map((tile) => this.tile(tile.id));
   }
   cost(unit, tile) {
-    return Native.movement_cost(Native.view(this.#battle), unit.type, tile.terrain);
+    return (
+      Native.unit_details(Native.view(this.#battle), unit.id).terrain.find(
+        (row) => cellKey(row.tile) === cellKey(tile),
+      ).cost ?? Infinity
+    );
   }
   reachable(id) {
     return new Map(Object.entries(Native.reachable(this.publishedView(), id ?? "")));

@@ -16,7 +16,8 @@
       "category": "melee",
       "range": 1,
       "sound": "attack-melee",
-      "spread": 3
+      "spread": 3,
+      "drain": 0
     },
     {
       "id": "stones",
@@ -27,7 +28,8 @@
       "category": "ranged",
       "range": 2,
       "sound": "attack-magic",
-      "spread": 7
+      "spread": 7,
+      "drain": 0
     }
   ],
   "damageModifiers": {
@@ -38,9 +40,19 @@
   "terrainModifiers": {},
   "ability": "Command",
   "description": "A master forest guardian who commands with heavy bough attacks, thrown stones and an adjacent thorn aura.",
-  "thornAura": 3,
   "level": 3,
   "family": "wildkeeper",
   "advancesTo": [],
-  "experienceNeeded": 0
+  "experienceNeeded": 0,
+  "sight": {
+    "range": 0,
+    "unlimited": false,
+    "sightModifiers": {
+      "lit": 0,
+      "unlit": 0,
+      "darkness": 0
+    },
+    "penetrates": []
+  },
+  "abilities": ["external-thorns-3"]
 }

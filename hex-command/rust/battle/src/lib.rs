@@ -1,17 +1,15 @@
 //! Private-storage mechanical battle engine. Hosts lend a catalog and own sessions.
-pub mod data {
-    pub use hex_command_catalog::data::*;
-}
 mod command;
+pub mod data;
 mod logic;
 pub use command::{ActionProposal, ProposalOutcome, RuntimeCommand};
 pub mod model;
+pub use logic::campaign_program::CampaignProgram;
 mod sort;
 mod view;
 pub use logic::battle::{BattleState, Board, hex_distance};
-pub use logic::combat::CombatMatchup;
 pub use logic::geometry::{AttackOriginRun, TileSet};
-pub use logic::movement::Reachability;
+pub use logic::movement::{MovementField, Reachability};
 pub use logic::{StateError, validate_state};
 pub use logic::{conditions, damage, exchange, geometry};
 #[cfg(not(target_arch = "wasm32"))]
@@ -34,3 +32,11 @@ impl BattleScope {
         std::rc::Rc::ptr_eq(&self.0, &other.0)
     }
 }
+
+#[cfg(test)]
+#[path = "../../testing/effects.rs"]
+mod effect_fixture;
+
+#[cfg(test)]
+#[path = "../../testing/catalogue.rs"]
+mod catalogue_fixture;

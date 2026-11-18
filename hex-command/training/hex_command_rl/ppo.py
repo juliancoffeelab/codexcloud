@@ -26,7 +26,7 @@ def save_json(path, value):
 
 def unpack(obs, spatial):
     features, offsets = obs[:2]
-    boards, bounds, shapes, indices = spatial
+    boards, bounds, shapes, indices, values, metadata = spatial
     return {
         i: (
             features[offsets[i] : offsets[i + 1]].copy(),
@@ -34,6 +34,19 @@ def unpack(obs, spatial):
             .reshape(len(native.SPATIAL_CHANNEL_NAMES), *shapes[i])
             .copy(),
             indices[offsets[i] : offsets[i + 1]].copy(),
+            [
+                (
+                    int(site),
+                    values[
+                        offset : offset
+                        + len(native.ACTOR_SPATIAL_CHANNELS) * int(np.prod(shapes[i]))
+                    ]
+                    .reshape(len(native.ACTOR_SPATIAL_CHANNELS), *shapes[i])
+                    .copy(),
+                )
+                for owner, site, offset in metadata
+                if owner == i
+            ],
         )
         for i in range(len(shapes))
         if offsets[i + 1] > offsets[i]
@@ -50,14 +63,41 @@ def pack(samples):
     )
     positions = np.full((len(samples), count, 3), -1, np.int64)
     mask = np.zeros((len(samples), count), bool)
-    for row, (features, b, ix) in enumerate(samples):
+    context_values, owners, sites = [], [], []
+    for row, sample in enumerate(samples):
+        features, b, ix = sample[:3]
+        contexts = sample[3] if len(sample) > 3 else []
         n = len(features)
         h, w = b.shape[1:]
-        x[row, :n] = features
-        board[row, :, :h, :w] = b
+        x[row, :n, : features.shape[1]] = features
+        board[row, : b.shape[0], :h, :w] = b
         positions[row, :n] = np.where(ix < 0, -1, (ix // w) * width + ix % w)
         mask[row, :n] = True
-    return tuple(torch.from_numpy(v) for v in (x, board, positions, mask))
+        # Context zero is the actor-free board for EndTurn and critic pooling.
+        for site, planes in [(-1, None), *contexts]:
+            padded = np.zeros(
+                (len(native.ACTOR_SPATIAL_CHANNELS), height, width), np.float32
+            )
+            if planes is not None:
+                padded[:, :h, :w] = planes
+            context_values.append(padded)
+            owners.append(row)
+            sites.append(-1 if site < 0 else (site // w) * width + site % w)
+    bundle = tuple(
+        torch.from_numpy(v)
+        for v in (
+            board,
+            np.stack(context_values),
+            np.asarray(owners, np.int64),
+            np.asarray(sites, np.int64),
+        )
+    )
+    return (
+        torch.from_numpy(x),
+        bundle,
+        torch.from_numpy(positions),
+        torch.from_numpy(mask),
+    )
 
 
 def categorical(scores, mask, temperature):

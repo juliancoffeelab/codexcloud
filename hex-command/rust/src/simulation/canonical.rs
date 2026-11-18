@@ -23,28 +23,34 @@ impl Serialize for Canonical<'_, State> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let s = self.0;
         let mut map = serializer.serialize_map(None)?;
-        if let Some(armies) = &s.armies {
-            map.serialize_entry("armies", armies)?;
-        }
-        if let Some(campaign) = &s.campaign {
-            let value = serde_json::to_value(campaign).map_err(serde::ser::Error::custom)?;
-            map.serialize_entry("campaign", &value)?;
-        }
+        map.serialize_entry("armies", &s.armies)?;
+        let campaign = serde_json::to_value(&s.campaign).map_err(serde::ser::Error::custom)?;
+        map.serialize_entry("campaign", &campaign)?;
         map.serialize_entry("cols", &s.cols)?;
         map.serialize_entry("combatRng", &s.combat_rng)?;
-        if !s.condition_memory.is_empty() {
-            map.serialize_entry("conditionMemory", &s.condition_memory)?;
-        }
+        map.serialize_entry("conditionMemory", &s.condition_memory)?;
         let factions = serde_json::to_value(&s.factions).map_err(serde::ser::Error::custom)?;
         map.serialize_entry("factions", &factions)?;
         map.serialize_entry("gold", &Canonical(&s.gold))?;
         let ground = serde_json::to_value(&s.ground_items).map_err(serde::ser::Error::custom)?;
         map.serialize_entry("groundItems", &ground)?;
-        if let Some(combat) = &s.last_combat {
-            map.serialize_entry("lastCombat", &combat.as_ref().map(Canonical))?;
-        }
+        map.serialize_entry(
+            "lastCombat",
+            &s.last_combat
+                .as_ref()
+                .and_then(|combat| combat.as_ref())
+                .map(Canonical),
+        )?;
+        map.serialize_entry(
+            "lighting",
+            &serde_json::to_value(&s.lighting).map_err(serde::ser::Error::custom)?,
+        )?;
         map.serialize_entry("log", &s.log)?;
         map.serialize_entry("mapId", &s.map_id)?;
+        map.serialize_entry(
+            "mapModifiers",
+            &serde_json::to_value(&s.map_modifiers).map_err(serde::ser::Error::custom)?,
+        )?;
         map.serialize_entry("mapRevision", &s.map_revision)?;
         map.serialize_entry("nextId", &s.next_id)?;
         map.serialize_entry("round", &s.round)?;
@@ -65,25 +71,19 @@ impl Serialize for Canonical<'_, Tile> {
         let t = self.0;
         let mut map = serializer.serialize_map(None)?;
         map.serialize_entry("col", &t.col)?;
-        if let Some(value) = &t.connections {
-            map.serialize_entry("connections", value)?;
-        }
-        if let Some(value) = &t.dead_ends {
-            map.serialize_entry("deadEnds", value)?;
-        }
-        if let Some(value) = &t.floor {
-            map.serialize_entry("floor", value)?;
-        }
+        map.serialize_entry("connections", &t.connections)?;
+        map.serialize_entry("deadEnds", &t.dead_ends)?;
+        map.serialize_entry(
+            "effects",
+            &serde_json::to_value(&t.effects).map_err(serde::ser::Error::custom)?,
+        )?;
+        map.serialize_entry("floor", &t.floor)?;
         map.serialize_entry("id", &t.id)?;
-        if let Some(light) = &t.light {
-            map.serialize_entry(
-                "light",
-                &serde_json::to_value(light).map_err(serde::ser::Error::custom)?,
-            )?;
-        }
-        if let Some(location) = &t.location {
-            map.serialize_entry("location", location)?;
-        }
+        map.serialize_entry(
+            "light",
+            &serde_json::to_value(&t.light).map_err(serde::ser::Error::custom)?,
+        )?;
+        map.serialize_entry("location", &t.location)?;
         map.serialize_entry("owner", &t.owner)?;
         map.serialize_entry(
             "perception",
@@ -91,9 +91,7 @@ impl Serialize for Canonical<'_, Tile> {
         )?;
         map.serialize_entry("row", &t.row)?;
         map.serialize_entry("terrain", &t.terrain)?;
-        if let Some(walls) = &t.walls {
-            map.serialize_entry("walls", walls)?;
-        }
+        map.serialize_entry("walls", &t.walls)?;
         map.end()
     }
 }
@@ -101,41 +99,27 @@ impl Serialize for Canonical<'_, PublicUnit> {
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let u = self.0;
         let mut map = serializer.serialize_map(None)?;
-        if let Some(group) = &u.ai_group {
-            map.serialize_entry("aiGroup", group)?;
-        }
+        map.serialize_entry("aiGroup", &u.ai_group)?;
         map.serialize_entry("attackSpent", &u.attack_spent)?;
-        if let Some(value) = &u.character {
-            map.serialize_entry("character", value)?;
-        }
+        map.serialize_entry("character", &u.character)?;
 
-        if let Some(value) = &u.experience {
-            map.serialize_entry("experience", value)?;
-        }
+        map.serialize_entry("experience", &u.experience)?;
         map.serialize_entry("faction", &u.faction)?;
         map.serialize_entry("hp", &u.hp)?;
         map.serialize_entry("id", &u.id)?;
-        if !u.items.is_empty() {
-            map.serialize_entry(
-                "items",
-                &serde_json::to_value(&u.items).map_err(serde::ser::Error::custom)?,
-            )?;
-        }
+        map.serialize_entry(
+            "items",
+            &serde_json::to_value(&u.items).map_err(serde::ser::Error::custom)?,
+        )?;
         map.serialize_entry("moved", &u.moved)?;
         map.serialize_entry(
             "perceptionEffects",
             &serde_json::to_value(&u.perception_effects).map_err(serde::ser::Error::custom)?,
         )?;
-        if let Some(value) = &u.rebuilding {
-            map.serialize_entry("rebuilding", value)?;
-        }
-        if let Some(value) = &u.retreating {
-            map.serialize_entry("retreating", value)?;
-        }
+        map.serialize_entry("rebuilding", &u.rebuilding)?;
+        map.serialize_entry("retreating", &u.retreating)?;
         map.serialize_entry("revealedTo", &u.revealed_to)?;
-        if let Some(value) = &u.role {
-            map.serialize_entry("role", value)?;
-        }
+        map.serialize_entry("role", &u.role)?;
         map.serialize_entry("tile", &u.tile)?;
         map.serialize_entry("type", &u.r#type)?;
         map.end()
@@ -167,16 +151,25 @@ pub(super) fn state_bytes(state: &State) -> Result<Vec<u8>, serde_json::Error> {
 mod tests {
     use super::*;
     use crate::{
-        data::{Catalog, HexDirection},
-        logic::Game,
+        data::{Catalogue, HexDirection},
+        logic::BattleSession,
     };
     #[test]
     fn streamed_bytes_match_sorted_objects_with_optional_and_campaign_fields() {
-        let rules = Catalog::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         let mut states = vec![
-            Game::new(&rules, "mirror").state(),
-            Game::start_campaign(&rules, "mirror-night", 0, vec![], 0, vec![], vec![], vec![])
-                .state(),
+            BattleSession::new(&rules, "mirror").state(),
+            BattleSession::start_campaign(
+                &rules,
+                "mirror-night",
+                0,
+                vec![],
+                0,
+                vec![],
+                vec![],
+                vec![],
+            )
+            .state(),
         ];
         for s in &mut states {
             s.tiles[0].connections = Some(vec![HexDirection::E]);

@@ -40,8 +40,8 @@ const details = (v) => ({
     })),
   }),
   unit: to("PublicUnit", v.unit),
-  definition: to("UnitRule", v.definition),
-  promotions: toArray(v.promotions).map((x) => to("UnitRule", x)),
+  definition: to("UnitDetails", v.definition),
+  promotions: toArray(v.promotions).map((x) => to("UnitDetails", x)),
 });
 const forecast = (v) => host(v);
 export const unit_panel = (...args) => {
@@ -54,7 +54,7 @@ export const unit_panel = (...args) => {
 export const attacks = (c, v, u, t) =>
   toArray(P.attacks(c, v, from("PublicUnit", u), from("PublicUnit", t))).map((x) => ({
     ...host(x),
-    weapon: to("Weapon", x.weapon),
+    weapon: to("AttackCard", x.weapon),
     result: x.result && {
       ...host(x.result),
       player: forecast(x.result.player),
@@ -65,7 +65,7 @@ export const ability = (c, u) => abilityView(P.ability(c, from("PublicUnit", u))
 export const armor = (c, u) => host(toArray(P.armor(c, from("PublicUnit", u))));
 export const terrain_damage_facts = (values) =>
   host(toArray(P.terrain_damage_facts(fromArray(values.map(fromArray)))));
-export const weapon_range = (w) => P.weapon_range(from("Weapon", w));
+export const weapon_range = (w) => P.weapon_range(from("AttackCard", w));
 export const damage_name = (d) => P.damage_name(from("DamageType", d.toLowerCase()));
 export const damage_equation = (d) => P.damage_equation(from("DamageDetail", d));
 export const terrain_panel = (...args) => {
@@ -79,7 +79,7 @@ export const terrain_panel = (...args) => {
         ...v.recruitment,
         options: toArray(v.recruitment.options).map((x) => ({
           ...x,
-          definition: to("UnitRule", x.definition),
+          definition: to("UnitDetails", x.definition),
         })),
       },
     }

@@ -11,7 +11,7 @@ test = false
 doctest = false
 
 [dependencies]
-hex-command-simulation = { path = "..", features = ["training"] }
+hex-command-simulation = { path = "..", features = ["training", "simulation"] }
 pyo3 = { version = "0.27", features = ["extension-module"] }
 numpy = "0.27"
 serde_json = "1"

@@ -1,9 +1,10 @@
 //! Live orchestration consumes physical results. Forecasts own BattlePosition
-//! instead of Game and therefore cannot reach this campaign boundary.
-use super::{Game, battle::BattlePosition};
+//! instead of LiveBattle and therefore cannot reach this campaign boundary.
+use super::{LiveBattle, battle::BattlePosition};
+use crate::logic::event_conditions::{ConditionTree, ScriptTree};
 use crate::{RuntimeCommand, data::*};
 use std::rc::Rc;
-impl Game<'_> {
+impl LiveBattle<'_> {
     #[cfg(test)]
     pub(crate) fn move_unit(&mut self, id: u32, tile: usize) {
         self.execute_runtime(RuntimeCommand::Move {
@@ -14,7 +15,7 @@ impl Game<'_> {
     }
     #[cfg(test)]
     pub(crate) fn attack(&mut self, id: u32, target: u32, weapon: usize) {
-        let weapon = self.weapon(self.unit(id).unwrap(), weapon).key();
+        let weapon = self.weapon_key(self.unit(id).unwrap(), weapon);
         self.execute_runtime(RuntimeCommand::Attack {
             unit: UnitId(id),
             target: UnitId(target),
@@ -34,6 +35,7 @@ impl Game<'_> {
             .expect("unfinished battle");
     }
     pub(crate) fn refresh_planning_facts(&mut self) {
+        self.position.refresh_effect_sources();
         self.position.refresh_perception_flags();
         self.position.runtime.campaign_battle = self.story.campaign.is_some();
         self.position.runtime.tracks_path = self
@@ -74,42 +76,15 @@ impl Game<'_> {
     }
     pub(crate) fn refresh_perception_sources_with_marks(&mut self, marks: &[MapMark]) {
         use crate::data::presentation;
-        if self.terrain_emitters.is_empty()
-            && marks.iter().all(|m| m.sight.is_none() && m.light.is_none())
-        {
+        if self.terrain_emitters.is_empty() && marks.iter().all(|m| m.light.is_none()) {
             if !self.fixed_lights.is_empty() {
                 self.position.runtime.fixed_lights = Rc::new(vec![]);
-            }
-            if !self.fixed_sights.is_empty() {
-                self.position.runtime.fixed_sights = Rc::new(vec![]);
             }
             return;
         }
         let context = self.condition_context();
         let mut lights = Vec::new();
-        let mut sights = Vec::new();
-        let mut sight = |tile, emission: &SightEmission| {
-            let group = VisionGroupKey(
-                self.vision_groups
-                    .iter()
-                    .position(|g| g.id == emission.group)
-                    .expect("validated source group"),
-            );
-            let base = &self.vision_groups[group.0].sight;
-            sights.push((
-                tile,
-                group,
-                ResolvedSightProfile {
-                    range: emission.profile.range.resolve(base.range.resolve(None)),
-                    penetrates: ConcealmentMask::of(&base.penetrates)
-                        .union(ConcealmentMask::of(&emission.profile.penetrates)),
-                },
-            ));
-        };
         for &tile in self.terrain_emitters.iter() {
-            if let Some(source) = &self.tile_perception[tile].sight {
-                sight(tile, source);
-            }
             if let Some(light) = self.light[tile].as_ref() {
                 if light.when.as_ref().is_none_or(|r| {
                     (r.remember
@@ -134,9 +109,6 @@ impl Game<'_> {
         }
         for mark in marks {
             let tile = self.board.indices[&mark.tile];
-            if let Some(source) = &mark.sight {
-                sight(tile, source);
-            }
             if let Some(light) = mark.light.as_ref() {
                 if mark.light_remembered
                     || light.when.as_ref().is_none_or(|r| {
@@ -154,9 +126,6 @@ impl Game<'_> {
         }
         if *self.fixed_lights != lights {
             self.position.runtime.fixed_lights = Rc::new(lights);
-        }
-        if *self.fixed_sights != sights {
-            self.position.runtime.fixed_sights = Rc::new(sights);
         }
     }
     pub(crate) fn accept_combat_deaths(&mut self, attacker: Unit, target: Unit, mediated: bool) {
@@ -260,19 +229,6 @@ impl<'catalog> BattlePosition<'catalog> {
             }
             position.runtime.observed_light = Rc::new(footprint);
         }
-        if self
-            .fixed_sights
-            .iter()
-            .any(|(origin, g, _)| *g != group && !visible(*origin))
-        {
-            position.runtime.fixed_sights = Rc::new(
-                self.fixed_sights
-                    .iter()
-                    .filter(|(origin, g, _)| *g == group || visible(*origin))
-                    .copied()
-                    .collect(),
-            );
-        }
         if self.fixed_lights.iter().any(|light| !visible(light.tile)) {
             position.runtime.fixed_lights = Rc::new(
                 self.fixed_lights
@@ -281,6 +237,32 @@ impl<'catalog> BattlePosition<'catalog> {
                     .cloned()
                     .collect(),
             );
+        }
+        // Opponent exploration is private. Forecasts conservatively assume every
+        // rememberable tile is already known to other vision groups. This is a
+        // fixed estimate, independent of their authoritative exploration history.
+        let estimated: Vec<_> = position
+            .tile_perception
+            .iter()
+            .enumerate()
+            .filter_map(|(tile, rule)| rule.remember.then_some(tile))
+            .collect();
+        let mut bits = vec![0u64; position.terrain.len().div_ceil(64)];
+        for &tile in &estimated {
+            bits[tile / 64] |= 1 << (tile % 64);
+        }
+        let hexes: Vec<_> = estimated
+            .iter()
+            .map(|&tile| position.board.ids[tile])
+            .collect();
+        let runtime = &mut position.runtime;
+        let groups = Rc::make_mut(&mut runtime.vision_groups);
+        let memory = Rc::make_mut(&mut runtime.fog_memory);
+        for (index, other) in groups.iter_mut().enumerate() {
+            if index != group.0 {
+                other.explored = hexes.clone();
+                memory.insert(other.id.clone(), bits.clone());
+            }
         }
         position.runtime.tracks_path = false;
         position.runtime.traversal = None;
@@ -292,7 +274,7 @@ impl<'catalog> BattlePosition<'catalog> {
 }
 // Explicit mutation facades preserve Rust's ordinary two-phase receiver borrows
 // for live orchestration. The physical implementation remains single-owned.
-impl Game<'_> {
+impl LiveBattle<'_> {
     pub(crate) fn add(&mut self, kind: usize, faction: &str, tile: usize) -> u32 {
         let faction = self.position.intern_name(faction);
         self.position.add(kind, faction, tile)

@@ -1,7 +1,7 @@
 //! Authored campaign reasoning is the only source of mission-specific orders.
-use super::{context::CampaignView, orders::CampaignOrders};
+use super::{context::CampaignerContext, orders::CampaignOrders};
 pub(crate) trait Campaigner {
-    fn objectives(&mut self, view: CampaignView<'_, '_>) -> CampaignOrders;
+    fn objectives(&mut self, view: CampaignerContext<'_, '_>) -> CampaignOrders;
 }
 
 mod arena;
@@ -17,10 +17,10 @@ pub enum CampaignerKind {
     Mission,
 }
 impl Campaigner for CampaignerKind {
-    fn objectives(&mut self, view: CampaignView<'_, '_>) -> CampaignOrders {
+    fn objectives(&mut self, view: CampaignerContext<'_, '_>) -> CampaignOrders {
         match self {
             Self::Arena => arena::Arena.objectives(view),
-            Self::Mission => mission::Mission.objectives(view),
+            Self::Mission => mission::MissionCampaigner.objectives(view),
         }
     }
 }
@@ -28,7 +28,7 @@ impl Campaigner for CampaignerKind {
 /// Authored campaign goals for host diagnostics and route evaluation.
 #[cfg(not(target_arch = "wasm32"))]
 pub(crate) fn authored_goals<'a, 'catalog>(
-    authored: hex_command_battle::CampaignView<'a, 'catalog>,
+    authored: hex_command_battle::CampaignObservation<'a, 'catalog>,
     phases: hex_command_battle::PhaseForecasts<'a, 'catalog>,
 ) -> Vec<crate::data::Objective> {
     mission::MissionPolicy::new(authored, phases).objectives()

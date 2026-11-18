@@ -25,17 +25,6 @@ fn main() {
     // Browser builds depend on Cargo's actual Rust inputs and the baked catalog.
     if std::env::var("CARGO_CFG_TARGET_ARCH").as_deref() == Ok("wasm32") {
         println!("cargo:rerun-if-changed=build.rs");
-        if std::env::var_os("CARGO_FEATURE_WASM").is_some() {
-            println!("cargo:rerun-if-changed=data");
-            let root = PathBuf::from(std::env::var_os("CARGO_MANIFEST_DIR").unwrap());
-            let generated = hex_command_catalog::compiler::compile(&root.join("data"))
-                .expect("valid campaign catalog");
-            let output = PathBuf::from(std::env::var_os("OUT_DIR").unwrap());
-            let path = output.join("catalog_baked.rs");
-            if fs::read(&path).ok().as_deref() != Some(generated.as_bytes()) {
-                fs::write(path, generated).unwrap();
-            }
-        }
         return;
     }
     println!("cargo:rerun-if-env-changed=HEX_SIM_PROFILE_KEY");
@@ -57,7 +46,6 @@ fn main() {
     println!("cargo:rerun-if-changed=battle");
     sources(&root, &root.join("catalog/src"), &mut files);
     files.push(PathBuf::from("catalog/Cargo.toml"));
-    files.push(PathBuf::from("catalog/build.rs"));
     sources(&root, &root.join("freeze-derive/src"), &mut files);
     files.push(PathBuf::from("freeze-derive/Cargo.toml"));
     files.push(PathBuf::from(

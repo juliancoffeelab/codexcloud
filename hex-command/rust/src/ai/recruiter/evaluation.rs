@@ -168,7 +168,7 @@ impl DefenseCache {
     ) -> Self {
         Self {
             identity,
-            reachable: game.reachability(enemy.kind, enemy.tile),
+            reachable: game.reachability(enemy, enemy.tile),
             last: None,
             averages: [None, None],
             next_average: 0,
@@ -304,11 +304,7 @@ impl AssessmentScene {
                     / commanders as f64;
                 if forecast_weight > 0.0 {
                     for kind in options {
-                        let mut forecast = (*leader).clone();
-                        forecast.inventory = InventoryId::default();
-                        forecast.kind = kind;
-                        forecast.hp = game.rules().mechanics.units[kind].hp;
-                        forecast.id = 0;
+                        let forecast = game.recruit_forecast(leader, kind);
                         units.push(forecast);
                         weights_by_unit.push(forecast_weight);
                     }
@@ -342,7 +338,12 @@ impl Assessment {
         Self::with_forecast(game, unit, false)
     }
     pub(super) fn with_forecast(game: &BattleView<'_, '_>, unit: &Unit, predict: bool) -> Self {
-        Self::with_weights(game, unit, predict, game.rules().recruitment.standard)
+        Self::with_weights(
+            game,
+            unit,
+            predict,
+            game.catalogue().meta().recruiter_weights.standard,
+        )
     }
     pub(super) fn with_weights(
         game: &BattleView<'_, '_>,
@@ -364,23 +365,23 @@ impl Assessment {
         weights: RecruitmentWeights,
         scene: Rc<AssessmentScene>,
     ) -> Self {
-        let rule = &game.rules().mechanics.units[unit.kind];
+        let movement = game.movement_field(unit);
         let enemies = || scene.observed.iter().map(|&index| &game.units()[index]);
         let allies = || scene.allies.iter().map(|&index| &game.units()[index]);
-        let weapon_count = game.weapons(unit).count();
+        let weapon_count = game.attack_count(unit);
         let mut approaches =
             Vec::with_capacity((scene.observed.len() + scene.units.len()) * weapon_count);
         for enemy in enemies().chain(scene.units.iter()) {
-            for (weapon, attack) in game.weapons(unit).enumerate() {
+            for (weapon, attack) in game.attack_reaches(unit).enumerate() {
                 let routes = (weights.leader_pressure > 0.0).then(|| {
                     let all = game.attack_origins(attack.category, attack.range);
                     let mut origins = Vec::new();
                     all[enemy.tile].for_each(|tile| {
-                        if game.cost(unit.kind, tile) != u16::MAX {
+                        if movement.cost_at(tile) != u16::MAX {
                             origins.push(tile);
                         }
                     });
-                    game.routes(unit.kind, &origins)
+                    game.routes(&unit, &origins)
                 });
                 approaches.push(Approach {
                     weapon,
@@ -389,8 +390,8 @@ impl Assessment {
                 });
             }
         }
-        // An existing provider cannot support itself. Treat remote providers'
-        // future coverage as independent; current adjacent coverage is exact.
+        // Treat remote providers' future coverage as independent. Current
+        // coverage and self eligibility come from the shared physical queries.
         let overlap_probability = (weights.support_recipients
             / scene.allies.len().saturating_sub(1).max(1) as f64
             * weights.healing_overlap)
@@ -400,43 +401,89 @@ impl Assessment {
             * weights.aura_overlap)
             .min(1.0);
         let mut support = Vec::new();
-        if rule.healing > 0 || rule.thorn_aura > 0 {
+        if game.with_owned_assessment(unit, |caps| caps.meta_healing_score() as i32) > 0
+            || game.emits_thorn_aura(unit)
+        {
             for ally in allies() {
-                let ally_rule = &game.rules().mechanics.units[ally.kind];
-                let mut covered = 0;
-                let mut aura = 0;
+                let ally_rule = game.unit_definition(ally.kind);
                 let mut remote_healing = Vec::new();
                 let mut remote_auras = Vec::new();
                 for other in allies() {
-                    if other.id == ally.id {
-                        continue;
+                    let current_healing = game.healing_from_at(other, ally, other.tile);
+                    if current_healing == 0
+                        && other.id != ally.id
+                        && game
+                            .with_owned_assessment(other, |caps| caps.meta_healing_score() as i32)
+                            > 0
+                    {
+                        let strength = game.healing_from_at(other, ally, ally.tile);
+                        if game.healing_radius(other) > 0 && strength > 0 {
+                            remote_healing.push(strength);
+                        }
                     }
-                    let other_rule = &game.rules().mechanics.units[other.kind];
-                    if game.board().distance(other.tile, ally.tile) == 1 {
-                        covered = covered.max(other_rule.healing);
-                        aura = aura.max(other_rule.thorn_aura);
-                    } else {
-                        if other_rule.healing > 0 {
-                            remote_healing.push(other_rule.healing);
-                        }
-                        if other_rule.thorn_aura > 0 {
-                            remote_auras.push(other_rule.thorn_aura);
-                        }
+                    if other.id != ally.id
+                        && game.thorns_from_at(other, ally, other.tile, Category::Melee) == 0
+                        && game.emits_thorn_aura(other)
+                    {
+                        remote_auras.push(game.thorns_from_at(
+                            other,
+                            ally,
+                            ally.tile,
+                            Category::Melee,
+                        ));
                     }
                 }
+                let radius = game.healing_radius(&unit);
+                let origins: Vec<_> = if radius <= 1 {
+                    game.board().adjacent[ally.tile].clone()
+                } else {
+                    (0..game.board().ids.len())
+                        .filter(|&tile| {
+                            tile != ally.tile
+                                && usize::from(game.board().distance(tile, ally.tile)) <= radius
+                        })
+                        .collect()
+                };
+                let healing_goals: Vec<_> = origins
+                    .into_iter()
+                    .filter(|&tile| {
+                        movement.cost_at(tile) != u16::MAX
+                            && game.healing_from_at(&unit, ally, tile) > 0
+                    })
+                    .collect();
+                let candidate_healing = healing_goals
+                    .iter()
+                    .max_by_key(|&&tile| game.healing_from_at(unit, ally, tile))
+                    .map_or(0, |&tile| {
+                        game.support_contribution(unit, ally, tile, Category::Melee)
+                            .0
+                            .max(0)
+                    });
                 // Anticipate support use without a nearby-enemy gate.
                 let healing = expected_marginal_support(
-                    (ally_rule.hp - ally.hp).max(0) as f64
-                        + ally_rule.hp as f64 * weights.future_wounds,
-                    covered,
-                    rule.healing,
+                    (ally_rule.max_hp - ally.hp).max(0) as f64
+                        + ally_rule.max_hp as f64 * weights.future_wounds,
+                    0,
+                    candidate_healing,
                     &mut remote_healing,
                     overlap_probability,
                 );
+                let (support_origin, extra_aura) = (0..game.terrain().len())
+                    .filter(|&tile| movement.cost_at(tile) != u16::MAX)
+                    .map(|tile| (tile, game.thorns_from_at(unit, ally, tile, Category::Melee)))
+                    .max_by_key(|(_, gain)| *gain)
+                    .unwrap_or((unit.tile, 0));
+                let extra_aura = if extra_aura > 0 {
+                    game.support_contribution(unit, ally, support_origin, Category::Melee)
+                        .1
+                        .max(0)
+                } else {
+                    0
+                };
                 let extra_aura = expected_marginal_support(
-                    f64::from(rule.thorn_aura),
-                    aura,
-                    rule.thorn_aura,
+                    f64::from(extra_aura),
+                    0,
+                    extra_aura,
                     &mut remote_auras,
                     aura_overlap_probability,
                 );
@@ -451,7 +498,7 @@ impl Assessment {
                                         game,
                                         enemy,
                                         ally,
-                                        Some(aura.max(rule.thorn_aura)),
+                                        Some((*unit, support_origin)),
                                     )
                                     .map(|count| {
                                         (
@@ -473,13 +520,22 @@ impl Assessment {
                 let goals: Vec<_> = game.board().adjacent[ally.tile]
                     .iter()
                     .copied()
-                    .filter(|&t| game.cost(unit.kind, t) != u16::MAX)
+                    .filter(|&t| movement.cost_at(t) != u16::MAX)
                     .collect();
-                support.push(Support {
-                    healing,
-                    thorns,
-                    routes: game.routes(unit.kind, &goals),
-                });
+                if healing > 0.0 {
+                    support.push(Support {
+                        healing,
+                        thorns: 0.0,
+                        routes: game.routes(&unit, &healing_goals),
+                    });
+                }
+                if thorns > 0.0 {
+                    support.push(Support {
+                        healing: 0.0,
+                        thorns,
+                        routes: game.routes(&unit, &goals),
+                    });
+                }
             }
         }
         let captures = game
@@ -488,22 +544,21 @@ impl Assessment {
             .enumerate()
             .filter(|(tile, _owner)| {
                 game.captures(*tile, game.unit_faction(&unit))
-                    && game.role_is(*tile, TerrainRole::Village)
+                    && game.terrain_definition(*tile).income() > 0
             })
             .map(|(tile, _)| {
                 let covered = allies()
                     .map(|ally| {
-                        let route = game.routes(ally.kind, &[tile])[ally.tile];
+                        let route = game.routes(&ally, &[tile])[ally.tile];
                         if route == u16::MAX {
                             0.0
                         } else {
                             1.0 / (1.0
-                                + f64::from(route)
-                                    / game.rules().mechanics.units[ally.kind].r#move.max(1) as f64)
+                                + f64::from(route) / game.movement_limit(&ally).max(1) as f64)
                         }
                     })
                     .fold(0.0, f64::max);
-                (game.routes(unit.kind, &[tile]), covered)
+                (game.routes(&unit, &[tile]), covered)
             })
             .collect();
         let defenses = (0..scene.observed.len() + scene.units.len())
@@ -547,7 +602,6 @@ impl Assessment {
     ) -> O {
         // Recruitment can reward village capture and configured mobility; earned
         // promotions retain village value. Enemy relevance never depends on distance.
-        let rule = &game.rules().mechanics.units[unit.kind];
         let enemy_count = self.scene.observed.len();
         let enemies = || {
             self.scene
@@ -573,19 +627,7 @@ impl Assessment {
         let mut weights = 0.0;
         let mut thorn_enemies = 0.0;
         let mut thorn_strikes = 0.0;
-        let reachable = game.reachability(unit.kind, unit.tile);
-        // All observed/forecast enemies are hostile: their hypothetical origins
-        // cannot move an allied aura provider. Query the actual melee reflection
-        // once for this placement and reuse its aura component across enemies.
-        let defense_aura = enemies().chain(self.scene.units.iter()).find_map(|enemy| {
-            game.weapons(enemy)
-                .enumerate()
-                .find(|(_, attack)| attack.category == Category::Melee)
-                .map(|(weapon, attack)| {
-                    game.thorn_damage(enemy, unit, weapon, enemy.tile) / i32::from(attack.count)
-                        - rule.thorns
-                })
-        });
+        let reachable = game.reachability(unit, unit.tile);
         for (index, enemy) in enemies().chain(self.scene.units.iter()).enumerate() {
             let weight = if index >= enemy_count {
                 self.scene.weights[index - enemy_count]
@@ -618,9 +660,13 @@ impl Assessment {
                 let (value, leader_damage, origin_count) = if let Some(cached) = cached {
                     cached
                 } else {
-                    let attack = game.weapon(unit, approach.weapon);
+                    let attack = game
+                        .attack_reaches(unit)
+                        .nth(approach.weapon)
+                        .expect("candidate attack index");
+                    let outcomes = game.attack_outcomes(unit, enemy, approach.weapon, unit.tile);
                     let runs = game.attack_origin_runs(
-                        unit.kind,
+                        unit,
                         unit.tile,
                         attack.category,
                         attack.range,
@@ -634,12 +680,13 @@ impl Assessment {
                     let mut leader_damage = 0.0;
                     let matchup = game.combat_matchup(unit, enemy);
                     for run in runs.iter() {
-                        let reflection = game.thorn_damage(unit, enemy, approach.weapon, run.tile)
-                            / i32::from(attack.count);
+                        let reflection = matchup.meta_thorn_score_at(attack.category, run.tile);
                         let forecast = matchup.at_origin(approach.weapon, run, reflection);
                         let damage = forecast.damage[0].round() as i32;
                         let response = forecast.damage[1].round() as i32;
-                        let drain = damage.min(enemy.hp) as f64 * f64::from(attack.drain) / 100.0;
+                        let drain = damage.min(enemy.hp) as f64
+                            * f64::from(outcomes.drain_percent())
+                            / 100.0;
                         let exchange = forecast.effective[0] + drain * coefficients.drain
                             - response.min(unit.hp) as f64 * coefficients.exchange_retaliation
                             + forecast.death[1] * coefficients.kill
@@ -669,7 +716,7 @@ impl Assessment {
                     (value, leader_damage, origin_count)
                 };
                 if recruitment && coefficients.leader_pressure > 0.0 && enemy.is_leader() {
-                    let turns = f64::from(route) / rule.r#move.max(1) as f64;
+                    let turns = f64::from(route) / game.movement_limit(unit).max(1) as f64;
                     let fraction = leader_damage / origin_count as f64 / enemy.hp.max(1) as f64;
                     leader_pressure = leader_pressure.max(fraction.min(1.0) / (1.0 + turns));
                 }
@@ -681,36 +728,41 @@ impl Assessment {
             // A common unarmoured, terrain-neutral target takes the enemy's
             // strongest raw attack. This reference cannot change when armour,
             // retaliation or thorns makes that enemy switch weapons.
-            let reference = game
-                .weapons(enemy)
-                .map(|a| a.damage * i32::from(a.count))
-                .max()
-                .unwrap_or(0);
-            raw += f64::from(reference.max(1)) * weight;
+            let reference =
+                game.with_owned_assessment(enemy, |caps| caps.meta_total_attack_score(None));
+            raw += reference.max(1.0) * weight;
             if let Some(preferred) = preferred_attack_cached(
                 game,
                 enemy,
                 unit,
-                defense_aura,
+                None,
                 Some(&self.defenses[index]),
                 Some(&identity),
                 Some((&self.exchanges, index)),
             ) {
-                if rule.thorns > 0
-                    && game.weapon(enemy, preferred.weapon).category == Category::Melee
+                if game.meta_thorn_score(unit, Category::Melee) > 0
+                    && game
+                        .attack_reaches(enemy)
+                        .nth(preferred.weapon)
+                        .expect("preferred attack index")
+                        .category
+                        == Category::Melee
                     && preferred.strikes > 0.0
                     && weight > 0.0
                 {
                     thorn_enemies += weight;
                     thorn_strikes += preferred.strikes * weight;
                 }
-                let attack = game.weapon(enemy, preferred.weapon);
+                let attack = game
+                    .attack_reaches(enemy)
+                    .nth(preferred.weapon)
+                    .expect("preferred attack index");
                 incoming += preferred.damage * weight;
                 // Own reflection is valued separately by army pressure.
                 // Preserve ordinary retaliation and existing friendly aura.
                 let response = preferred.response
                     - if attack.category == Category::Melee {
-                        f64::from(rule.thorns) * preferred.strikes
+                        f64::from(game.meta_thorn_score(unit, Category::Melee)) * preferred.strikes
                     } else {
                         0.0
                     };
@@ -725,10 +777,7 @@ impl Assessment {
             raw /= weights;
             incoming /= weights;
         } else {
-            offense = game
-                .weapons(unit)
-                .map(|a| (a.damage * i32::from(a.count)) as f64)
-                .fold(0.0, f64::max);
+            offense = game.with_owned_assessment(unit, |caps| caps.meta_total_attack_score(None));
             access = 1.0;
             raw = 1.0;
             incoming = 1.0;
@@ -754,12 +803,14 @@ impl Assessment {
             .iter()
             .filter(|(routes, _)| routes[unit.tile] != u16::MAX)
             .map(|(routes, covered)| {
-                (1.0 / (1.0 + f64::from(routes[unit.tile]) / rule.r#move.max(1) as f64) - covered)
+                (1.0 / (1.0
+                    + f64::from(routes[unit.tile]) / game.movement_limit(unit).max(1) as f64)
+                    - covered)
                     .max(0.0)
             })
             .sum::<f64>();
         let thorns = if thorn_enemies > 0.0 {
-            f64::from(rule.thorns)
+            f64::from(game.meta_thorn_score(unit, Category::Melee))
                 * ((thorn_enemies / self.friendly_count.max(1) as f64).min(6.0) * thorn_strikes
                     / thorn_enemies)
         } else {
@@ -817,13 +868,15 @@ impl Assessment {
 
 // Intrinsic speed uses typical traversable terrain cost, not distance to troops.
 fn terrain_speed(game: &BattleView<'_, '_>, unit: &Unit) -> f64 {
-    let costs: Vec<_> = (0..game.board().ids.len())
-        .map(|t| game.cost(unit.kind, t))
+    let movement = game.movement_field(unit);
+    let (total, count) = movement
+        .costs()
         .filter(|&c| c != u16::MAX)
-        .collect();
-    let mean = costs.iter().map(|&x| f64::from(x)).sum::<f64>() / costs.len().max(1) as f64;
-    ((game.rules().mechanics.units[unit.kind].r#move as f64 / mean.max(1.0) - 3.0) / 3.0)
-        .clamp(0.0, 1.0)
+        .fold((0.0, 0usize), |(total, count), cost| {
+            (total + f64::from(cost), count + 1)
+        });
+    let mean = total / count.max(1) as f64;
+    ((game.movement_limit(unit) as f64 / mean.max(1.0) - 3.0) / 3.0).clamp(0.0, 1.0)
 }
 
 // Speed and leader delivery describe alternative uses of the same mobility.
@@ -861,10 +914,13 @@ fn dominant_melee_strikes(
     game: &BattleView<'_, '_>,
     enemy: &Unit,
     target: &Unit,
-    aura: Option<i32>,
+    aura: Option<(Unit, usize)>,
 ) -> Option<f64> {
     preferred_attack(game, enemy, target, aura).map(|preferred| {
-        let attack = game.weapon(enemy, preferred.weapon);
+        let attack = game
+            .attack_reaches(enemy)
+            .nth(preferred.weapon)
+            .expect("preferred attack index");
         if attack.category == Category::Melee {
             preferred.strikes
         } else {
@@ -902,7 +958,7 @@ fn preferred_attack(
     game: &BattleView<'_, '_>,
     enemy: &Unit,
     target: &Unit,
-    aura: Option<i32>,
+    aura: Option<(Unit, usize)>,
 ) -> Option<PreferredAttack> {
     preferred_attack_cached(game, enemy, target, aura, None, None, None)
 }
@@ -911,7 +967,7 @@ fn preferred_attack_cached(
     game: &BattleView<'_, '_>,
     enemy: &Unit,
     target: &Unit,
-    aura: Option<i32>,
+    aura: Option<(Unit, usize)>,
     cache: Option<&RefCell<Option<DefenseCache>>>,
     identity: Option<&CombatIdentity>,
     exchanges: Option<(&RefCell<rustc_hash::FxHashMap<u128, ExchangeValue>>, usize)>,
@@ -932,38 +988,37 @@ fn preferred_attack_cached(
         }
     }
 
-    let matchup = game.combat_matchup(enemy, target);
+    let movement = game.movement_field(enemy);
     let mut best = None;
     let reachable = cache
         .as_ref()
         .map(|cache| cache.as_ref().unwrap().reachable.clone())
-        .unwrap_or_else(|| game.reachability(enemy.kind, enemy.tile));
+        .unwrap_or_else(|| game.reachability(enemy, enemy.tile));
     let mut reply_ranges = [ReplyRanges::default(); 2];
-    for reply in game.weapons(target) {
+    for reply in game.attack_reaches(target) {
         reply_ranges[reply.category.index()].insert(reply.range);
     }
-    for (weapon, attack) in game.weapons(enemy).enumerate() {
-        let fixed_reflection = if let Some(aura) = aura {
-            Some(if attack.category == Category::Melee {
-                game.rules().mechanics.units[target.kind].thorns + aura
-            } else {
-                0
-            })
-        } else if !game.allied(enemy, target) {
-            // A hostile attacker cannot also be an allied aura provider. Moving
-            // its hypothetical origin therefore cannot change reflection.
-            Some(game.thorn_damage(enemy, target, weapon, enemy.tile) / i32::from(attack.count))
+    let matchup = std::cell::OnceCell::new();
+    for (weapon, attack) in game.attack_reaches(enemy).enumerate() {
+        let fixed_reflection = if aura.is_none()
+            && !game.position_dependent_combat(enemy)
+            && !game.position_dependent_combat(target)
+            && !game.allied(enemy, target)
+        {
+            Some(game.meta_thorn_score_at(enemy, target, attack.category, enemy.tile))
         } else {
             None
         };
         let reflection_at = |origin| {
             fixed_reflection.unwrap_or_else(|| {
-                game.thorn_damage(enemy, target, weapon, origin) / i32::from(attack.count)
+                matchup
+                    .get_or_init(|| game.combat_matchup(enemy, target))
+                    .meta_thorn_score_at(attack.category, origin)
             })
         };
         let grouped = fixed_reflection.map(|_| {
             game.attack_origin_runs(
-                enemy.kind,
+                enemy,
                 enemy.tile,
                 attack.category,
                 attack.range,
@@ -1010,7 +1065,9 @@ fn preferred_attack_cached(
             let runs = grouped.as_ref().unwrap();
             for run in runs.iter() {
                 let calculate = || {
-                    let forecast = matchup.at_origin(weapon, run, reflection);
+                    let forecast = matchup
+                        .get_or_init(|| game.combat_matchup(enemy, target))
+                        .at_origin(weapon, run, reflection);
                     ExchangeValue::from_forecast(&forecast)
                 };
                 let value = if let Some(cache) = cache.as_mut() {
@@ -1049,12 +1106,23 @@ fn preferred_attack_cached(
         } else {
             let origins = game.attack_origins(attack.category, attack.range);
             origins[target.tile].for_each(|origin| {
-                if !reachable.contains(origin) || game.cost(enemy.kind, origin) == u16::MAX {
+                if !reachable.contains(origin) || movement.cost_at(origin) == u16::MAX {
                     return;
                 }
                 origin_count += 1;
-                let forecast =
-                    game.exchange_with_thorns(enemy, target, weapon, origin, reflection_at(origin));
+                let forecast = match aura {
+                    Some((provider, support_origin)) => game.exchange_with_support(
+                        &provider,
+                        support_origin,
+                        enemy,
+                        target,
+                        weapon,
+                        origin,
+                    ),
+                    None => matchup
+                        .get_or_init(|| game.combat_matchup(enemy, target))
+                        .at_tile(weapon, origin, reflection_at(origin)),
+                };
                 let value = ExchangeValue::from_forecast(&forecast);
                 let values = [value.value, value.damage, value.response, value.strikes];
                 for lane in 0..4 {
@@ -1138,7 +1206,12 @@ mod tests {
     fn movement_controls_are_optional_separate_and_share_a_cap() {
         let (mut rules, target, enemy) = thorn_fixture();
 
-        rules.units[target].r#move = 6;
+        {
+            let fixture_value = serde_json::json!(6);
+            crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                unit["move"] = fixture_value
+            });
+        }
         let (mut game, target_id, enemy_id) = thorn_battle(&rules, target, enemy);
         fixtures::units(&mut game, |units| {
             units
@@ -1165,14 +1238,25 @@ mod tests {
         let score = |weights| {
             Assessment::with_weights(&view, unit, false, weights).recruitment_breakdown(&view, unit)
         };
-        let baseline = score(RecruitmentWeights::default());
+        let baseline = score(
+            crate::catalogue_fixture::frozen(&rules)
+                .meta()
+                .recruiter_weights
+                .standard,
+        );
         let speed = score(RecruitmentWeights {
             speed: 0.5,
-            ..RecruitmentWeights::default()
+            ..crate::catalogue_fixture::frozen(&rules)
+                .meta()
+                .recruiter_weights
+                .standard
         });
         let leader = score(RecruitmentWeights {
             leader_pressure: 2.0,
-            ..RecruitmentWeights::default()
+            ..crate::catalogue_fixture::frozen(&rules)
+                .meta()
+                .recruiter_weights
+                .standard
         });
         assert_eq!(baseline.movement_bonus, 0.0);
         assert!(speed.movement_bonus > 0.0 && leader.movement_bonus > 0.0);
@@ -1184,7 +1268,10 @@ mod tests {
             speed: 100.0,
             leader_pressure: 100.0,
             movement_cap: Some(0.25),
-            ..RecruitmentWeights::default()
+            ..crate::catalogue_fixture::frozen(&rules)
+                .meta()
+                .recruiter_weights
+                .standard
         });
         assert_eq!(capped.movement_bonus, 0.25);
         assert_eq!(
@@ -1195,7 +1282,10 @@ mod tests {
                 RecruitmentWeights {
                     speed: 0.4,
                     leader_pressure: 0.4,
-                    ..RecruitmentWeights::default()
+                    ..crate::catalogue_fixture::frozen(&rules)
+                        .meta()
+                        .recruiter_weights
+                        .standard
                 }
             ),
             0.4
@@ -1226,43 +1316,43 @@ mod tests {
         assert_eq!(expected_weighted_thorn_triggers([].into_iter(), 1), 0.0);
     }
 
-    fn thorn_fixture() -> (Rules, usize, usize) {
-        let mut rules = Rules::load().unwrap();
-        let target = rules.types["swordsman"];
-        let enemy = rules.types["archer"];
+    fn thorn_fixture() -> (JsonBundle, usize, usize) {
+        let mut bundle = crate::catalogue_fixture::neutral_combat();
+        let target = crate::catalogue_fixture::kind(&bundle, "swordsman");
+        let enemy = crate::catalogue_fixture::kind(&bundle, "archer");
         for kind in [target, enemy] {
-            let rule = &mut rules.units[kind];
-            rule.hp = 100;
-            rule.thorns = 0;
-            rule.thorn_aura = 0;
-            rule.healing = 0;
-            rule.attacks.truncate(1);
-            rule.attacks[0].category = Category::Melee;
-            rule.attacks[0].range = 1;
-            rule.attacks[0].damage_type = DamageType::Blade;
-            rule.attacks[0].damage = 2;
-            rule.attacks[0].count = 1;
-            rule.attacks[0].drain = 0;
-            rule.damage_modifiers = DamageModifiers {
-                blade: 0,
-                pierce: 0,
-                impact: 0,
-            };
-            for environment in &mut rule.environment {
-                *environment = [[0; 3]; 2];
-            }
+            let id = crate::catalogue_fixture::id(&bundle, kind);
+            crate::effect_fixture::thorns(&mut bundle, &id, 0);
+            crate::effect_fixture::thorn_aura(&mut bundle, &id, 0);
+            crate::effect_fixture::healing(&mut bundle, &id, None);
+            crate::catalogue_fixture::unit_kind(&mut bundle, kind, |unit| {
+                unit["hp"] = serde_json::json!(100);
+                unit["damageModifiers"] = serde_json::json!({"blade":0,"pierce":0,"impact":0});
+                unit["attacks"].as_array_mut().unwrap().truncate(1);
+                let attack = &mut unit["attacks"][0];
+                attack["category"] = serde_json::json!("melee");
+                attack["range"] = serde_json::json!(1);
+                attack["damageType"] = serde_json::json!("blade");
+                attack["damage"] = serde_json::json!(2);
+                attack["count"] = serde_json::json!(1);
+                attack["drain"] = serde_json::json!(0);
+            });
+            crate::catalogue_fixture::environment(&mut bundle, &id, 0);
         }
-        rules.units[enemy].attacks[0].damage = 8;
-        rules.units[enemy].attacks[0].count = 3;
-        (rules, target, enemy)
+        crate::catalogue_fixture::unit_kind(&mut bundle, enemy, |unit| {
+            unit["attacks"][0]["damage"] = serde_json::json!(8);
+            unit["attacks"][0]["count"] = serde_json::json!(3);
+        });
+        (bundle, target, enemy)
     }
 
     fn thorn_battle(
-        rules: &Rules,
+        bundle: &JsonBundle,
         target: usize,
         enemy: usize,
-    ) -> (crate::logic::Game<'_>, u32, u32) {
-        let mut game = crate::logic::Game::new(rules, "mirror");
+    ) -> (crate::logic::BattleSession<'static>, u32, u32) {
+        let rules = crate::catalogue_fixture::frozen(bundle);
+        let mut game = crate::logic::BattleSession::new(rules, "mirror");
         fixtures::units(&mut game, |units| {
             units.clear();
         });
@@ -1276,19 +1366,27 @@ mod tests {
     #[test]
     fn defensive_exchange_cache_preserves_placements_ranges_auras_and_wounds() {
         let (mut rules, target, enemy) = thorn_fixture();
-        let mut ranged = rules.units[enemy].attacks[0].clone();
-        ranged.id = "test-ranged".into();
-        ranged.category = Category::Ranged;
-        ranged.range = 2;
-        rules.units[enemy].attacks.push(ranged.clone());
-        rules.units[target].attacks.push(ranged.clone());
-        ranged.id = "test-short-reply".into();
-        ranged.range = 1;
-        ranged.damage += 3;
-        rules.units[target].attacks.push(ranged);
-        rules.units[target].thorns = 2;
-        rules.units[target].thorn_aura = 3;
-        rules.units[target].environment[rules.terrains["forest"]][0][0] = -3;
+        let mut ranged = crate::catalogue_fixture::value(&rules, enemy)["attacks"][0].clone();
+        ranged["id"] = serde_json::json!("test-ranged");
+        ranged["category"] = serde_json::json!(Category::Ranged);
+        ranged["range"] = serde_json::json!(2);
+        crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+            unit["attacks"].as_array_mut().unwrap().push(ranged.clone())
+        });
+        crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+            unit["attacks"].as_array_mut().unwrap().push(ranged.clone())
+        });
+        ranged["id"] = serde_json::json!("test-short-reply");
+        ranged["range"] = serde_json::json!(1);
+        ranged["damage"] = serde_json::json!(ranged["damage"].as_i64().unwrap() + 3);
+        crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+            unit["attacks"].as_array_mut().unwrap().push(ranged)
+        });
+        crate::effect_fixture::thorns_kind(&mut rules, target, 2);
+        crate::effect_fixture::thorn_aura_kind(&mut rules, target, 3);
+        crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+            unit["terrainModifiers"]["forest"]["damageModifiers"]["melee"] = serde_json::json!(-3)
+        });
         let (mut game, target_id, enemy_id) = thorn_battle(&rules, target, enemy);
         let tile = game.site(&Hex::new(4, 5));
         fixtures::add(&mut game, target, "player", tile);
@@ -1313,7 +1411,12 @@ mod tests {
             target.hp = hp;
             for tile in 0..game.board().ids.len() {
                 target.tile = tile;
-                for aura in [None, Some(7)] {
+                let mut provider = target;
+                provider.id = 0;
+                for aura in [
+                    None,
+                    Some((provider, view.board().adjacent[target.tile][0])),
+                ] {
                     assert_eq!(
                         signature(preferred_attack_cached(
                             &view,
@@ -1335,14 +1438,17 @@ mod tests {
     #[test]
     fn dominant_attack_accounts_for_ranged_alternatives_armor_and_proposed_aura() {
         let (mut rules, target, enemy) = thorn_fixture();
-        let mut ranged = rules.units[enemy].attacks[0].clone();
-        ranged.id = "test-ranged-alternative".into();
-        ranged.category = Category::Ranged;
-        ranged.range = 2;
-        ranged.damage_type = DamageType::Pierce;
-        ranged.damage = 20;
-        ranged.count = 1;
-        rules.units[enemy].attacks.push(ranged);
+        crate::effect_fixture::thorn_aura_kind(&mut rules, target, 2);
+        let mut ranged = crate::catalogue_fixture::value(&rules, enemy)["attacks"][0].clone();
+        ranged["id"] = serde_json::json!("test-ranged-alternative");
+        ranged["category"] = serde_json::json!(Category::Ranged);
+        ranged["range"] = serde_json::json!(2);
+        ranged["damageType"] = serde_json::json!(DamageType::Pierce);
+        ranged["damage"] = serde_json::json!(20);
+        ranged["count"] = serde_json::json!(1);
+        crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+            unit["attacks"].as_array_mut().unwrap().push(ranged)
+        });
         {
             let (game, target, enemy) = thorn_battle(&rules, target, enemy);
             let view = BattleView::new(&game);
@@ -1353,11 +1459,28 @@ mod tests {
             );
             // The buff makes melee a worse exchange, so the enemy avoids it.
             assert_eq!(
-                dominant_melee_strikes(&view, enemy, target, Some(2)),
+                dominant_melee_strikes(
+                    &view,
+                    enemy,
+                    target,
+                    Some((
+                        {
+                            let mut provider = *target;
+                            provider.id = 0;
+                            provider
+                        },
+                        view.board().adjacent[target.tile][0]
+                    ))
+                ),
                 Some(0.0)
             );
         }
-        rules.units[target].damage_modifiers.blade = -2;
+        {
+            let fixture_value = serde_json::json!(-2);
+            crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                unit["damageModifiers"]["blade"] = fixture_value
+            });
+        }
         let (game, target, enemy) = thorn_battle(&rules, target, enemy);
         let view = BattleView::new(&game);
         assert_eq!(
@@ -1375,19 +1498,41 @@ mod tests {
     fn recruitment_anticipates_legal_enemy_rosters_until_observed_troops_replace_them() {
         let (mut rules, target, enemy) = thorn_fixture();
 
-        rules.units[target].attacks[0].category = Category::Ranged;
-        rules.units[target].attacks[0].range = 2;
-        rules.units[target].attacks[0].damage = 12;
-        rules.units[target].attacks[0].spread = 0;
-        let resistant = rules.types["scout"];
-        let observed = rules.types["spearman"];
-        for kind in [resistant, observed] {
-            let mut rule = rules.units[enemy].clone();
-            rule.id = rules.units[kind].id.clone();
-            rules.units[kind] = rule;
-            rules.route_classes[kind] = kind;
+        {
+            let fixture_value = serde_json::json!(Category::Ranged);
+            crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                unit["attacks"][0]["category"] = fixture_value
+            });
         }
-        rules.units[resistant].damage_modifiers.blade = -8;
+        {
+            let fixture_value = serde_json::json!(2);
+            crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                unit["attacks"][0]["range"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(12);
+            crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                unit["attacks"][0]["damage"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(0);
+            crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                unit["attacks"][0]["spread"] = fixture_value
+            });
+        }
+        let resistant = crate::catalogue_fixture::kind(&rules, "scout");
+        let observed = crate::catalogue_fixture::kind(&rules, "spearman");
+        for kind in [resistant, observed] {
+            crate::catalogue_fixture::copy_unit(&mut rules, enemy, kind);
+        }
+        {
+            let fixture_value = serde_json::json!(-8);
+            crate::catalogue_fixture::unit_kind(&mut rules, resistant, |unit| {
+                unit["damageModifiers"]["blade"] = fixture_value
+            });
+        }
         let (mut game, target, _) = thorn_battle(&rules, target, enemy);
         fixtures::units(&mut game, |units| {
             units
@@ -1401,7 +1546,7 @@ mod tests {
                 tile.owner = Some("player".into());
             }
         });
-        let assess = |game: &crate::logic::Game<'_>| {
+        let assess = |game: &crate::logic::BattleSession<'_>| {
             let view = BattleView::new(game);
             let unit = game.unit(target).unwrap();
             let assessment = Assessment::with_forecast(&view, unit, true);
@@ -1440,15 +1585,25 @@ mod tests {
     fn only_predictor_credits_thorns_against_future_melee_troops() {
         for aura in [false, true] {
             let (mut rules, target, enemy) = thorn_fixture();
-            let melee = rules.types["scout"];
-            rules.units[melee] = rules.units[enemy].clone();
+            let melee = crate::catalogue_fixture::kind(&rules, "scout");
+            crate::catalogue_fixture::copy_unit(&mut rules, enemy, melee);
 
-            rules.units[enemy].attacks[0].category = Category::Ranged;
-            rules.units[enemy].attacks[0].range = 2;
+            {
+                let fixture_value = serde_json::json!(Category::Ranged);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["attacks"][0]["category"] = fixture_value
+                });
+            }
+            {
+                let fixture_value = serde_json::json!(2);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["attacks"][0]["range"] = fixture_value
+                });
+            }
             if aura {
-                rules.units[target].thorn_aura = 4;
+                crate::effect_fixture::thorn_aura_kind(&mut rules, target, 4);
             } else {
-                rules.units[target].thorns = 4;
+                crate::effect_fixture::thorns_kind(&mut rules, target, 4);
             }
             let (mut game, target_id, _) = thorn_battle(&rules, target, enemy);
             fixtures::units(&mut game, |units| {
@@ -1481,18 +1636,35 @@ mod tests {
     #[test]
     fn effective_hp_and_thorn_weapon_preferences_do_not_choose_the_nearest_terrain() {
         let (mut rules, target, enemy) = thorn_fixture();
-        rules.units[target].attacks[0].spread = 0;
-        rules.units[enemy].attacks[0].spread = 0;
-        let mut ranged = rules.units[enemy].attacks[0].clone();
-        ranged.id = "test-ranged-alternative".into();
-        ranged.category = Category::Ranged;
-        ranged.range = 2;
-        ranged.damage = 20;
-        ranged.count = 1;
-        rules.units[enemy].attacks.push(ranged);
-        let forest = rules.terrains["forest"];
-        rules.units[enemy].environment[forest][Category::Melee.index()]
-            [DamageType::Blade.index()] = 10;
+        crate::effect_fixture::thorn_aura_kind(&mut rules, target, 1);
+        {
+            let fixture_value = serde_json::json!(0);
+            crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                unit["attacks"][0]["spread"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(0);
+            crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                unit["attacks"][0]["spread"] = fixture_value
+            });
+        }
+        let mut ranged = crate::catalogue_fixture::value(&rules, enemy)["attacks"][0].clone();
+        ranged["id"] = serde_json::json!("test-ranged-alternative");
+        ranged["category"] = serde_json::json!(Category::Ranged);
+        ranged["range"] = serde_json::json!(2);
+        ranged["damage"] = serde_json::json!(20);
+        ranged["count"] = serde_json::json!(1);
+        crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+            unit["attacks"].as_array_mut().unwrap().push(ranged)
+        });
+        let forest = crate::catalogue_fixture::frozen(&rules)
+            .terrains()
+            .position(|terrain| terrain.id().as_str() == "forest")
+            .unwrap();
+        crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+            unit["terrainModifiers"]["forest"]["damageModifiers"]["melee"] = serde_json::json!(10)
+        });
         let (mut game, target, enemy) = thorn_battle(&rules, target, enemy);
         fixtures::edit(&mut game, |state| {
             for tile in &mut state.tiles {
@@ -1518,9 +1690,21 @@ mod tests {
                 0
             );
             assert_eq!(
-                preferred_attack(&view, attacker, defender, Some(1))
-                    .unwrap()
-                    .weapon,
+                preferred_attack(
+                    &view,
+                    attacker,
+                    defender,
+                    Some((
+                        {
+                            let mut provider = *defender;
+                            provider.id = 0;
+                            provider
+                        },
+                        view.board().adjacent[defender.tile][0]
+                    ))
+                )
+                .unwrap()
+                .weapon,
                 1
             );
             health.push(
@@ -1535,16 +1719,23 @@ mod tests {
     #[test]
     fn effective_hp_keeps_a_common_reference_when_armour_changes_preferred_weapon() {
         let (mut rules, target, enemy) = thorn_fixture();
-        let mut ranged = rules.units[enemy].attacks[0].clone();
-        ranged.id = "test-ranged-alternative".into();
-        ranged.category = Category::Ranged;
-        ranged.range = 2;
-        ranged.damage_type = DamageType::Pierce;
-        ranged.damage = 20;
-        ranged.count = 1;
-        rules.units[enemy].attacks.push(ranged);
+        let mut ranged = crate::catalogue_fixture::value(&rules, enemy)["attacks"][0].clone();
+        ranged["id"] = serde_json::json!("test-ranged-alternative");
+        ranged["category"] = serde_json::json!(Category::Ranged);
+        ranged["range"] = serde_json::json!(2);
+        ranged["damageType"] = serde_json::json!(DamageType::Pierce);
+        ranged["damage"] = serde_json::json!(20);
+        ranged["count"] = serde_json::json!(1);
+        crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+            unit["attacks"].as_array_mut().unwrap().push(ranged)
+        });
         for (blade, expected_weapon, expected_hp) in [(0, 0, 100.0), (-2, 1, 120.0)] {
-            rules.units[target].damage_modifiers.blade = blade;
+            {
+                let fixture_value = serde_json::json!(blade);
+                crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                    unit["damageModifiers"]["blade"] = fixture_value
+                });
+            }
             let (game, target, enemy) = thorn_battle(&rules, target, enemy);
             let view = BattleView::new(&game);
             let unit = game.unit(target).unwrap();
@@ -1562,18 +1753,48 @@ mod tests {
     #[test]
     fn effective_hp_values_repeated_ranged_attacks_and_per_strike_armour() {
         let (mut rules, target, enemy) = thorn_fixture();
-        rules.units[target].hp = 40;
-        rules.units[enemy].attacks[0].category = Category::Ranged;
-        rules.units[enemy].attacks[0].range = 2;
+        {
+            let fixture_value = serde_json::json!(40);
+            crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                unit["hp"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(Category::Ranged);
+            crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                unit["attacks"][0]["category"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(2);
+            crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                unit["attacks"][0]["range"] = fixture_value
+            });
+        }
         for (damage, count, armour, expected) in [
             (10, 1, 0, 40.0),
             (10, 1, -2, 50.0),
             (5, 2, -2, 40.0 * 10.0 / 6.0),
             (5, 2, -5, 200.0),
         ] {
-            rules.units[enemy].attacks[0].damage = damage;
-            rules.units[enemy].attacks[0].count = count;
-            rules.units[target].damage_modifiers.blade = armour;
+            {
+                let fixture_value = serde_json::json!(damage);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["attacks"][0]["damage"] = fixture_value
+                });
+            }
+            {
+                let fixture_value = serde_json::json!(count);
+                crate::catalogue_fixture::unit_kind(&mut rules, enemy, |unit| {
+                    unit["attacks"][0]["count"] = fixture_value
+                });
+            }
+            {
+                let fixture_value = serde_json::json!(armour);
+                crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                    unit["damageModifiers"]["blade"] = fixture_value
+                });
+            }
             let (game, target, _) = thorn_battle(&rules, target, enemy);
             let view = BattleView::new(&game);
             let unit = game.unit(target).unwrap();
@@ -1589,12 +1810,19 @@ mod tests {
         // Recruiting should instead value the useful damage it can sustain.
         for (hp, damage) in [(100, 2), (30, 8)] {
             let (mut rules, target, enemy) = thorn_fixture();
-            rules.units[target].hp = hp;
-            let attack = &mut rules.units[target].attacks[0];
-            attack.category = Category::Ranged;
-            attack.range = 2;
-            attack.damage = damage;
-            attack.spread = 0;
+            {
+                let fixture_value = serde_json::json!(hp);
+                crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                    unit["hp"] = fixture_value
+                });
+            }
+            crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                let attack = &mut unit["attacks"][0];
+                attack["category"] = serde_json::json!(Category::Ranged);
+                attack["range"] = serde_json::json!(2);
+                attack["damage"] = serde_json::json!(damage);
+                attack["spread"] = serde_json::json!(0);
+            });
             let (game, target, _) = thorn_battle(&rules, target, enemy);
             let view = BattleView::new(&game);
             let unit = game.unit(target).unwrap();
@@ -1613,12 +1841,19 @@ mod tests {
         let mut scores = Vec::new();
         for hp in [40, 80] {
             let (mut rules, target, enemy) = thorn_fixture();
-            rules.units[target].hp = 80;
-            let attack = &mut rules.units[target].attacks[0];
-            attack.category = Category::Ranged;
-            attack.range = 2;
-            attack.damage = 8;
-            attack.spread = 0;
+            {
+                let fixture_value = serde_json::json!(80);
+                crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                    unit["hp"] = fixture_value
+                });
+            }
+            crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                let attack = &mut unit["attacks"][0];
+                attack["category"] = serde_json::json!(Category::Ranged);
+                attack["range"] = serde_json::json!(2);
+                attack["damage"] = serde_json::json!(8);
+                attack["spread"] = serde_json::json!(0);
+            });
             let (mut game, target_id, _) = thorn_battle(&rules, target, enemy);
             fixtures::units(&mut game, |units| {
                 units.iter_mut().find(|u| u.id == target_id).unwrap().hp = hp;
@@ -1642,22 +1877,75 @@ mod tests {
     #[test]
     fn recruitment_combat_and_future_healing_ignore_enemy_proximity() {
         let (mut rules, target, enemy) = thorn_fixture();
-        rules.units[target].attacks[0].category = Category::Ranged;
-        rules.units[target].attacks[0].range = 2;
-        rules.units[target].attacks[0].damage = 12;
-        rules.units[target].healing = 4;
-        rules.units[target].damage_modifiers.blade = -2;
-        let other = rules.types["scout"];
-        rules.units[other] = rules.units[enemy].clone();
-        rules.units[other].damage_modifiers.blade = -8;
-        rules.units[other].attacks[0].damage = 20;
-        rules.units[other].attacks[0].count = 1;
-        rules.units[other].attacks[0].damage_type = DamageType::Pierce;
+        {
+            let fixture_value = serde_json::json!(Category::Ranged);
+            crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                unit["attacks"][0]["category"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(2);
+            crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                unit["attacks"][0]["range"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(12);
+            crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                unit["attacks"][0]["damage"] = fixture_value
+            });
+        }
+        crate::effect_fixture::healing_kind(
+            &mut rules,
+            target,
+            (4 > 0).then_some((4, 1, false, crate::data::HealingTargets::Allies)),
+        );
+        {
+            let fixture_value = serde_json::json!(-2);
+            crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                unit["damageModifiers"]["blade"] = fixture_value
+            });
+        }
+        let other = crate::catalogue_fixture::kind(&rules, "scout");
+        crate::catalogue_fixture::copy_unit(&mut rules, enemy, other);
+        {
+            let fixture_value = serde_json::json!(-8);
+            crate::catalogue_fixture::unit_kind(&mut rules, other, |unit| {
+                unit["damageModifiers"]["blade"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(20);
+            crate::catalogue_fixture::unit_kind(&mut rules, other, |unit| {
+                unit["attacks"][0]["damage"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(1);
+            crate::catalogue_fixture::unit_kind(&mut rules, other, |unit| {
+                unit["attacks"][0]["count"] = fixture_value
+            });
+        }
+        {
+            let fixture_value = serde_json::json!(DamageType::Pierce);
+            crate::catalogue_fixture::unit_kind(&mut rules, other, |unit| {
+                unit["attacks"][0]["damageType"] = fixture_value
+            });
+        }
         let (mut game, target, enemy) = thorn_battle(&rules, target, enemy);
-        let plains = rules.terrains["plains"];
+        let plains = crate::catalogue_fixture::frozen(&rules)
+            .terrains()
+            .position(|terrain| terrain.id().as_str() == "plains")
+            .unwrap();
         fixtures::edit(&mut game, |state| {
             for tile in &mut state.tiles {
-                tile.terrain = rules.terrain_names[plains].clone();
+                tile.terrain = crate::catalogue_fixture::frozen(&rules)
+                    .terrains()
+                    .nth(plains)
+                    .unwrap()
+                    .id()
+                    .as_str()
+                    .into();
             }
         });
         fixtures::edit(&mut game, |state| {
@@ -1703,8 +1991,22 @@ mod tests {
             let mut samples = Vec::new();
             for movement in [1, 6] {
                 let (mut rules, target, enemy) = thorn_fixture();
-                rules.units[target].r#move = movement;
-                rules.units[target].healing = healing;
+                {
+                    let fixture_value = serde_json::json!(movement);
+                    crate::catalogue_fixture::unit_kind(&mut rules, target, |unit| {
+                        unit["move"] = fixture_value
+                    });
+                }
+                crate::effect_fixture::healing_kind(
+                    &mut rules,
+                    target,
+                    (healing > 0).then_some((
+                        healing,
+                        1,
+                        false,
+                        crate::data::HealingTargets::Allies,
+                    )),
+                );
                 let (mut game, target_id, enemy_id) = thorn_battle(&rules, target, enemy);
                 let start = game.site(&Hex::new(1, 4));
                 let end = game.site(&Hex::new(8, 4));
@@ -1740,7 +2042,7 @@ mod tests {
                 assert_eq!(recruit.captures, 0.0);
                 let village = (0..game.terrain().len())
                     .find(|&tile| {
-                        game.role_is(tile, TerrainRole::Village)
+                        game.terrain_definition(tile).income() > 0
                             && game.board().distance(start, tile) > 2
                     })
                     .unwrap();
@@ -1765,7 +2067,7 @@ mod tests {
     #[test]
     fn intrinsic_thorns_use_pressure_without_also_counting_as_weapon_retaliation() {
         let (mut rules, target, enemy) = thorn_fixture();
-        rules.units[target].thorns = 3;
+        crate::effect_fixture::thorns_kind(&mut rules, target, 3);
         let (game, target, _) = thorn_battle(&rules, target, enemy);
         let unit = game.unit(target).unwrap();
         let view = BattleView::new(&game);

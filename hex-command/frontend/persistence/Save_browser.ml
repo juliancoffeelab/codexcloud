@@ -2,10 +2,12 @@ open Save_json
 
 let run_name catalog entry =
   let id = text entry {js|run|js} in
-  match List.find_opt (fun (c : Domain.campaign) -> c.id = id) (Catalog.campaigns catalog) with
+  match
+    List.find_opt (fun (c : Domain.browser_campaign) -> c.id = id) (Catalog.campaigns catalog)
+  with
   | Some c -> c.name
   | None -> (
-      match List.find_opt (fun (m : Domain.map_definition) -> m.id = id) (Catalog.maps catalog) with
+      match List.find_opt (fun (m : Domain.browser_map) -> m.id = id) (Catalog.maps catalog) with
       | Some m -> m.name
       | None -> {js|Saved game|js})
 

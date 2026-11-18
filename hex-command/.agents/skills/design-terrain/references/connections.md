@@ -17,7 +17,7 @@ knows nothing about the generator.
   the runtime artwork selector uses the supplied connections.
 - Follow the [terrain contract](../SKILL.md#terrain-contract) for explicit geometry
   and source filenames. Read supported masks from
-  `frontend/engine/Terrain_plan.ml`, `rust/catalog/src/data/state.rs`
+  `frontend/engine/Terrain_plan.ml`, `rust/battle/src/data/state.rs`
   and the terrain's variant registry. Persist authoring results in map data.
 - An explicitly supplied empty connection array means mask 0 where supported.
   Authoring tools may compute and persist connections before runtime.

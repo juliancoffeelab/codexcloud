@@ -1,10 +1,10 @@
 //! Fixed block composition. Each turn uses one draft and returns engine commands.
-use super::context::{CampaignView, PlanningContext};
+use super::context::{CampaignerContext, PlanningContext};
 use crate::ai::{
     PlanningWorkspace, campaigner::Campaigner, orders::TurnPlan, planner::Planner,
     recruiter::Recruiter,
 };
-use crate::logic::{CommandError, Game};
+use crate::logic::{BattleSession, CommandError};
 
 pub(crate) struct Tactic<R, C, P> {
     recruiter: R,
@@ -21,13 +21,13 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
     }
     pub(crate) fn run_turn(
         &mut self,
-        game: &Game<'_>,
+        game: &BattleSession<'_>,
         workspace: &mut PlanningWorkspace,
     ) -> Result<TurnPlan, CommandError> {
         workspace.refresh_control(game);
         let mut orders = workspace.state.orders.clone().unwrap_or_else(|| {
             self.campaigner
-                .objectives(CampaignView::new(game, workspace.config()))
+                .objectives(CampaignerContext::new(game, workspace.config()))
         });
         let mut draft = PlanningContext::fork(game);
         draft.restrict_actors(&orders.tactics.inactive);
@@ -93,7 +93,7 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
 
 #[cfg(not(target_arch = "wasm32"))]
 pub(crate) type PresetTactic =
-    Tactic<crate::ai::Recruiter, crate::ai::CampaignBlock, crate::ai::Planner>;
+    Tactic<crate::ai::RecruiterKind, crate::ai::CampaignerKind, crate::ai::PlannerKind>;
 #[cfg(not(target_arch = "wasm32"))]
 impl PresetTactic {
     #[cfg(test)]
@@ -116,7 +116,7 @@ impl PresetTactic {
 mod tests {
     use super::*;
     use crate::{
-        ai::{Diplomacy, Recruiter, context::TacticalContext, orders::*},
+        ai::{Diplomacy, RecruiterKind, context::TacticalContext, orders::*},
         data::*,
     };
     use std::{cell::Cell, rc::Rc};
@@ -126,7 +126,7 @@ mod tests {
         calls: Rc<Cell<usize>>,
     }
     impl Campaigner for Orders {
-        fn objectives(&mut self, _view: CampaignView<'_, '_>) -> CampaignOrders {
+        fn objectives(&mut self, _view: CampaignerContext<'_, '_>) -> CampaignOrders {
             self.calls.set(self.calls.get() + 1);
             CampaignOrders {
                 recruitment: RecruitmentOrders {
@@ -163,8 +163,8 @@ mod tests {
     }
     #[test]
     fn recruitment_and_planning_share_a_validated_draft_with_fixed_components() {
-        let rules = Rules::load().unwrap();
-        let mut game = Game::new(&rules, "mirror");
+        let rules = Catalogue::load().unwrap();
+        let mut game = BattleSession::new(&rules, "mirror");
         let mut checkpoint = game.state();
         checkpoint.units.retain(|unit| {
             game.units()
@@ -172,19 +172,21 @@ mod tests {
                 .any(|u| format!("u{}", u.id) == unit.id && u.is_leader())
         });
         checkpoint.gold["player"] = 1000;
-        game = Game::try_from_state(&rules, checkpoint).unwrap();
+        game = BattleSession::try_from_state(&rules, checkpoint).unwrap();
         let kind = game.recruitment_options_for_faction(game.observer_faction())[0];
         let calls = Rc::new(Cell::new(0));
         let mut tactic = Tactic::new(
-            Recruiter::Rotation,
+            RecruiterKind::Rotation,
             Orders {
                 requirements: vec![
                     RecruitRequirement::EnsureUnits {
-                        selector: UnitSelector::Type(UnitTypeId(rules.units[kind].id.clone())),
+                        selector: UnitSelector::Type(UnitTypeId(
+                            rules.units().nth(kind).unwrap().id().into(),
+                        )),
                         count: 1,
                     },
                     RecruitRequirement::EnsureUnits {
-                        selector: UnitSelector::Family(rules.units[kind].family),
+                        selector: UnitSelector::Family(rules.units().nth(kind).unwrap().family()),
                         count: 1,
                     },
                 ],

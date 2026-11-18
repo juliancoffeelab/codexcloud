@@ -529,6 +529,42 @@
           "enemy": "woodland"
         }
       ]
+    },
+    {
+      "id": "rl-dark-rooms",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        }
+      ]
+    },
+    {
+      "id": "rl-twilight-ridge",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        }
+      ]
+    },
+    {
+      "id": "rl-mist-wetland",
+      "pairs": [
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ]
+    },
+    {
+      "id": "rl-lantern-forest",
+      "pairs": [
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        }
+      ]
     }
   ],
   "campaigns": {
@@ -611,6 +647,30 @@
       }
     ],
     "rl-company-coastal": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-dark-escort": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-forest-evacuation": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-twilight-hold": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      }
+    ],
+    "rl-mist-reach": [
       {
         "objective": "authored",
         "diplomacy": "unrestricted"

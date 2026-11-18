@@ -20,7 +20,7 @@ def collect_one(task):
         [json.dumps(c) for c in configs], 1000000, side="player"
     )
     x, offsets, labels, missing = dense
-    boards, board_offsets, shapes, indices = spatial
+    boards, board_offsets, shapes, indices, context_values, contexts = spatial
     if missing or len(labels) >= 1000000:
         raise RuntimeError("incomplete teacher shard")
     temporary = path.with_suffix(".tmp")
@@ -34,6 +34,8 @@ def collect_one(task):
             board_offsets=board_offsets,
             shapes=shapes,
             indices=indices,
+            context_values=context_values,
+            contexts=contexts,
         )
         f.flush()
         os.fsync(f.fileno())
@@ -107,5 +109,7 @@ def load(path):
         offsets=a["board_offsets"],
         shapes=a["shapes"],
         indices=a["indices"],
+        context_values=a.get("context_values", np.empty(0, np.float32)),
+        contexts=a.get("contexts", np.empty((0, 3), np.int64)),
         channels=len(native.SPATIAL_CHANNEL_NAMES),
     )

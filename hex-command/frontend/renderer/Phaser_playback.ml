@@ -24,7 +24,7 @@ type state = Idle | Waiting of pending | Playing of playing | Complete of Domain
 
 let same_combat a b = a == b
 
-class playback (audio : Phaser_sound.t) (catalog : unit -> Catalog.t)
+class playback (audio : Phaser_sound.t) (_catalog : unit -> Catalog.t)
   ~(windup : string -> float -> unit) ~(impact : Domain.combat_animation -> int -> float -> unit)
   ~(invalidate : unit -> unit) ~(fail : exn -> unit) =
   object (self)
@@ -173,7 +173,7 @@ class playback (audio : Phaser_sound.t) (catalog : unit -> Catalog.t)
                   Some
                     (38.
                     *. Int32.to_float playing.health.(i)
-                    /. Int32.to_float (Catalog.unit (catalog ()) unit.type_).hp))
+                    /. Int32.to_float playing.pending.source.combat.maximum_hp.(i)))
             playing.pending.source.combat.units;
           !found
       | _ -> None
@@ -223,8 +223,8 @@ class playback (audio : Phaser_sound.t) (catalog : unit -> Catalog.t)
       let weapon =
         match
           List.find_opt
-            (fun (weapon : Domain.weapon) -> weapon.id = strike.weapon_id)
-            (Presentation.weapons (catalog ()) actor)
+            (fun (weapon : Domain.attack_card) -> weapon.id = strike.weapon_id)
+            (Array.to_list combat.weapons.(if combat.units.(0).id = actor.id then 0 else 1))
         with
         | Some weapon -> weapon
         | None ->

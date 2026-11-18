@@ -74,3 +74,9 @@ export const promotion_options = (v, id) => toArray(Native.promotion_options(v, 
 export const income = (v, side) => Native.income(v, side);
 
 export const campaign = (view) => to("CampaignState", Native.campaign(view));
+
+export const unit_details = (v, id) => to("UnitDetails", Native.unit_details(v, id));
+export const recruit_details = (v, faction, kind) =>
+  to("UnitDetails", Native.recruit_details(v, faction, kind));
+export const preview_unit = (b, kind, faction, tile) =>
+  to("UnitDetails", requireResult(Native.preview_unit(b, kind, faction, from("Hex", tile))));

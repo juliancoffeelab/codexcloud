@@ -1,0 +1,20 @@
+{
+  "id": "glow-110-80",
+  "name": "Glow 110 80",
+  "description": "Authored light effect.",
+  "effects": [
+    {
+      "kind": "light",
+      "light": {
+        "radius": 110,
+        "power": 0.8,
+        "emission": null,
+        "color": null,
+        "fixture": null,
+        "dx": null,
+        "dy": null,
+        "when": null
+      }
+    }
+  ]
+}

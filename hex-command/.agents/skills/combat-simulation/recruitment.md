@@ -2,9 +2,10 @@
 
 `rust/data/game/recruitment.json` contains `standard` and
 `aggressivePredictor` profiles. Read effective values from that file and report metadata. Each accepts the camelCase fields below;
-omitted fields use the defaults in `rust/catalog/src/data/recruitment.rs`. Unknown
-fields, negative coefficients and nonpositive endurance normalization fail
-catalog validation. Catalog fingerprints include this document. Reports also record the effective
+all fields are required by `RecruitmentWeights` in `rust/catalog/src/meta.rs`,
+including explicit `null` for an uncapped `movementCap`. Missing or unknown fields
+fail parsing; negative coefficients and nonpositive endurance normalization fail
+catalog validation tests. Catalog fingerprints include this document. Reports also record the effective
 profiles in `recruitmentProfiles`, retained in analysis metadata.
 
 Situational and Predictor use `standard`. Their difference is observed enemies
@@ -69,7 +70,7 @@ providers use a probability clamped to [0,1].
 To compare a profile without changing normal recruiters:
 
 ```sh
-node scripts/toolchain/with-toolchain.mjs cargo run --locked --manifest-path rust/Cargo.toml --profile simulation --bin hex-command-sim -- --mode arena --policies predictor --with aggressive-predictor,-,queued --vs predictor --seeds 50 --unit-usage
+node scripts/toolchain/with-toolchain.mjs cargo run --locked --manifest-path rust/Cargo.toml --profile simulation --bin hex-command-sim --features simulation -- --mode arena --policies predictor --with aggressive-predictor,-,queued --vs predictor --seeds 50 --unit-usage
 ```
 
 Tune in an ignored catalog copy with `--data-dir`. Change one field at a time;

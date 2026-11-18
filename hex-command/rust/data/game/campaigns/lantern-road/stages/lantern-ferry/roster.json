@@ -3,7 +3,13 @@
     {
       "id": "player",
       "sight": {
-        "range": "unlimited",
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": []
       },
       "explored": []
@@ -11,7 +17,13 @@
     {
       "id": "enemy",
       "sight": {
-        "range": "unlimited",
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": ["fog"]
       },
       "explored": []
@@ -19,7 +31,13 @@
     {
       "id": "wildlife",
       "sight": {
-        "range": "unlimited",
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": ["fog"]
       },
       "explored": []
@@ -43,7 +61,17 @@
           "tile": {
             "col": 3,
             "row": 8
-          }
+          },
+          "id": "u1",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "scout",
@@ -51,14 +79,37 @@
           "tile": {
             "col": 3,
             "row": 9
-          }
+          },
+          "id": "u2",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "archer",
           "tile": {
             "col": 4,
             "row": 8
-          }
+          },
+          "id": "u3",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "adept",
@@ -66,19 +117,35 @@
           "tile": {
             "col": 4,
             "row": 9
-          }
+          },
+          "id": "u4",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
       "relations": {
-        "road-skeletons": "hostile"
+        "road-skeletons": "hostile",
+        "player": "allied",
+        "wildlife": "hostile"
       },
-      "visionGroup": "player"
+      "visionGroup": "player",
+      "name": null,
+      "transfer": null
     },
     {
       "id": "road-skeletons",
       "phase": "ai",
       "controller": {
-        "kind": "ai"
+        "kind": "ai",
+        "policy": null
       },
       "palette": "enemy",
       "gold": 0,
@@ -90,7 +157,18 @@
           "tile": {
             "col": 18,
             "row": 9
-          }
+          },
+          "id": "u5",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "skeleton",
@@ -98,13 +176,28 @@
           "tile": {
             "col": 19,
             "row": 10
-          }
+          },
+          "id": "u6",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
       "relations": {
-        "player": "hostile"
+        "player": "hostile",
+        "road-skeletons": "allied",
+        "wildlife": "neutral"
       },
-      "visionGroup": "enemy"
+      "visionGroup": "enemy",
+      "name": null,
+      "transfer": null
     },
     {
       "id": "wildlife",
@@ -115,12 +208,21 @@
       },
       "palette": "enemy",
       "relations": {
-        "player": "hostile"
+        "player": "hostile",
+        "road-skeletons": "neutral",
+        "wildlife": "allied"
       },
       "gold": 0,
       "recruits": [],
       "units": [],
-      "visionGroup": "wildlife"
+      "visionGroup": "wildlife",
+      "name": null,
+      "transfer": null
     }
-  ]
+  ],
+  "arrivals": [],
+  "round": 1,
+  "turn": "player",
+  "log": ["Capture villages for gold. Defeat the enemy commander."],
+  "combatRng": 1831565813
 }

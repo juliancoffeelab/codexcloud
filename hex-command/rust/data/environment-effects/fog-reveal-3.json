@@ -1,0 +1,18 @@
+{
+  "id": "fog-reveal-3",
+  "name": "Fog reveal 3",
+  "description": "Authored concealment effect.",
+  "effects": [
+    {
+      "kind": "concealment",
+      "rule": {
+        "kind": "fog",
+        "revealWithin": 3,
+        "requires": {
+          "terrains": null,
+          "illumination": null
+        }
+      }
+    }
+  ]
+}

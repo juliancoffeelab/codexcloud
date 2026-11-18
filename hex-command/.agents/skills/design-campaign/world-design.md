@@ -160,7 +160,7 @@ When choosing units and developing their gameplay, each of these checks is manda
 - Read the [game definitions](../../../rust/data/game/units/) for implemented unit rules.
 - Read the relevant [visual lineups](../../../pixel/art/units/lineups/) for the full roster and promotion branches.
 - View the relevant [unit artwork](../../../pixel/art/units/), including higher-level forms, with an image-viewing tool. Reading descriptions or lineup files does not replace viewing the pictures.
-- Inspect the available building blocks: [unit rules, attacks, equipment and advancement](../../../rust/catalog/src/data/units.rs), [perception effects](../../../rust/catalog/src/data/perception.rs), and [event actions](../../../rust/catalog/src/data/events.rs).
+- Inspect the available building blocks: [unit rules, attacks, equipment and advancement](../../../rust/catalog/src/schema/units.rs), [perception](../../../rust/catalog/src/schema/perception.rs), [scoped effects](../../../rust/catalog/src/schema/effects.rs), and [event actions](../../../rust/catalog/src/schema/events.rs).
 
 Use the artwork and roster to explore what these mechanics could make fun: combat roles, abilities, progression, enemies and interactions between them. Propose definitions for pictured units using supported mechanics; identify additional mechanics when the concept needs them. An absent unit definition does not itself require engine changes.
 

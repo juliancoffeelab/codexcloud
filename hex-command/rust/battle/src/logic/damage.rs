@@ -1,6 +1,6 @@
 //! Exact independent-strike distributions, shared by UI and policy forecasts.
-use crate::data::WeaponRules;
-use rustc_hash::FxHashMap as HashMap;
+use hex_command_catalog::AttackOutcomes;
+use rustc_hash::FxHashMap;
 use std::{cell::RefCell, rc::Rc};
 
 #[derive(Debug)]
@@ -39,27 +39,24 @@ impl DamageDistribution {
             .map(|(i, &p)| (self.min + i as i32, p))
     }
 }
-type Key = (i32, i32, u8, i32);
+type DamageCacheKey = (hex_command_catalog::StrikeDistributionKey, u8);
 thread_local! {
-    static CACHE: RefCell<HashMap<Key, Rc<DamageDistribution>>> = RefCell::new(HashMap::default());
+    static CACHE: RefCell<FxHashMap<DamageCacheKey, Rc<DamageDistribution>>> = RefCell::new(FxHashMap::default());
 }
-pub fn distribution(attack: &WeaponRules, modifier: i32) -> Rc<DamageDistribution> {
-    rolls(attack.damage, attack.spread, attack.count, modifier)
+pub fn distribution(outcomes: AttackOutcomes) -> Rc<DamageDistribution> {
+    for_strikes(outcomes, outcomes.strike_count())
 }
-pub(super) fn rolls(damage: i32, spread: i32, count: u8, modifier: i32) -> Rc<DamageDistribution> {
-    let key = (damage, spread, count, modifier);
+pub(super) fn for_strikes(outcomes: AttackOutcomes, count: u8) -> Rc<DamageDistribution> {
+    let key = (outcomes.distribution_key(), count);
     CACHE.with_borrow_mut(|cache| {
         if let Some(result) = cache.get(&key) {
             return result.clone();
         }
-        let low = (damage - spread).max(0);
-        let high = damage + spread;
-        let minimum = (low + modifier).max(0);
-        let maximum = (high + modifier).max(0);
+        let (low, high) = outcomes.bounds();
+        let minimum = low.damage;
+        let maximum = high.damage;
         let mut single = vec![0.0; (maximum - minimum + 1) as usize];
-        for raw in low..=high {
-            single[((raw + modifier).max(0) - minimum) as usize] += 1.0 / f64::from(high - low + 1);
-        }
+        outcomes.fill_probabilities(&mut single);
         let mut probabilities = vec![1.0];
         for _ in 0..count {
             let mut next = vec![0.0; probabilities.len() + single.len() - 1];

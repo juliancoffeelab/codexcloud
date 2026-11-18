@@ -1,6 +1,9 @@
 //! Compiled mission clocks and private runtime indices; saved identities stay unchanged.
 use super::{battle::Shared, event_queries::EventFacts};
+use crate::CampaignProgram;
 use crate::data::*;
+use crate::logic::campaign_program::ChapterProgram;
+use crate::logic::event_conditions::{ConditionTree, ScriptTree};
 use std::{collections::BTreeMap, ops::Deref, rc::Rc};
 
 #[derive(Clone, Copy, Debug)]
@@ -17,14 +20,14 @@ struct ClockDescriptor {
 }
 #[derive(Debug)]
 pub(crate) struct CompiledMission {
-    mission: Mission,
+    mission: ChapterProgram,
     clocks: Vec<Vec<ClockDescriptor>>,
     clock_count: usize,
     event_indices: rustc_hash::FxHashMap<String, usize>,
     objective_indices: rustc_hash::FxHashMap<String, usize>,
 }
 impl CompiledMission {
-    pub(super) fn new(mut mission: Mission) -> Self {
+    pub(super) fn new(mut mission: ChapterProgram) -> Self {
         for event in &mut mission.scripted_events {
             event.when.index_holds();
         }
@@ -79,8 +82,8 @@ impl CompiledMission {
     }
 }
 impl Deref for CompiledMission {
-    type Target = Mission;
-    fn deref(&self) -> &Mission {
+    type Target = ChapterProgram;
+    fn deref(&self) -> &ChapterProgram {
         &self.mission
     }
 }
@@ -102,7 +105,7 @@ impl Deref for EventProgress {
     }
 }
 impl EventProgress {
-    pub(super) fn update_holds(state: &mut Shared<Self>, game: &super::Game<'_>, tick: bool) {
+    pub(super) fn update_holds(state: &mut Shared<Self>, game: &super::LiveBattle<'_>, tick: bool) {
         let plan = state.plan();
         let active = state.scan_indices();
         for &event in active.iter() {

@@ -1,0 +1,29 @@
+{
+  "id": "forestcloak",
+  "name": "Forestcloak",
+  "description": "Conceals the unit in forest until an observer approaches within one tile or penetrates forest camouflage.",
+  "effects": [
+    {
+      "scope": {
+        "radius": 0,
+        "includeSelf": true,
+        "targets": "allies"
+      },
+      "stacking": {
+        "group": "concealment",
+        "combine": "union"
+      },
+      "effect": {
+        "kind": "concealment",
+        "rule": {
+          "kind": "forest-camouflage",
+          "revealWithin": 1,
+          "requires": {
+            "terrains": ["forest"],
+            "illumination": null
+          }
+        }
+      }
+    }
+  ]
+}

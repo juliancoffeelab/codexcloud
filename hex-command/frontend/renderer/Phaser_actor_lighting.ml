@@ -15,7 +15,7 @@ module Pipeline_data = Phaser_pipeline.Data (struct
 end)
 
 let identity = [| 1.; 1.; 1.; 0.; 0.; 0.; 0.; 0.; 0.; 0. |]
-let daylight = { Domain.time = Domain.Time_of_day.Day; underground = [||]; lights = [||] }
+let daylight = { Domain.unlit_tiles = [||]; lights = [||] }
 
 let bucket_key x y =
   let js_text_part_0 = string_of_int (int_of_float (floor (x /. 128.))) in
@@ -107,8 +107,7 @@ class actor_lighting (game : Phaser.game) =
           in
           Map.each samples (fun[@u] sample anchor ->
               if
-                previous.time <> next.time
-                || previous.underground <> next.underground
+                previous.unlit_tiles <> next.unlit_tiles
                 || Array.exists
                      (fun (bounds : Phaser_spatial.bounds) ->
                        sample.x >= bounds.left && sample.x <= bounds.right && sample.y >= bounds.top

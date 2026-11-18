@@ -28,7 +28,7 @@ module UnitCard = {
         ~showProgress=false,
         ~hp: option(float)=?,
       ) => {
-    let definition = Catalog.unit(view.catalog, unit.type_);
+    let definition = Native.unit_details(Option.value(~default=view.game, game), unit.id);
     let faction = Native.faction(Option.value(~default=view.game, game), unit.id);
     let health = Option.value(~default=Int32.to_float(unit.hp), hp);
     let level = number(definition.level);
@@ -128,10 +128,11 @@ module UnitCard = {
 };
 module ItemList = {
   [@react.component]
-  let make = (~items: array(Domain.item), ~artwork: Art.t, ~onDrop: option(string => unit)=?) =>
+  let make =
+      (~items: array(Domain.wiki_item), ~artwork: Art.t, ~onDrop: option(string => unit)=?) =>
     <ul className={js|item-list|js}>
       {items
-       |> Array.mapi((index, item: Domain.item) =>
+       |> Array.mapi((index, item: Domain.wiki_item) =>
             <li
               key={
                     let js_text_part_0 = item.id;
@@ -182,7 +183,7 @@ module ItemList = {
 };
 module GroundItems = {
   [@react.component]
-  let make = (~artwork: Art.t, ~items: array(Domain.item)) =>
+  let make = (~artwork: Art.t, ~items: array(Domain.wiki_item)) =>
     <section
       id={js|ground-items-panel|js}
       className={js|panel|js}
@@ -201,7 +202,11 @@ module Arsenal = {
          ? React.null
          : <section className={js|equipment|js} ariaLabel={js|Equipment|js}>
              <h3> {text({js|Equipment|js})} </h3>
-             <ItemList items={unit.items} artwork={view.artwork} ?onDrop />
+             <ItemList
+               items={Array.map(Catalog.item(view.catalog), unit.items)}
+               artwork={view.artwork}
+               ?onDrop
+             />
            </section>}
       <div className={js|arsenal|js}>
         <h3> {text({js|Attacks|js})} </h3>
@@ -214,7 +219,7 @@ module Arsenal = {
             </tr>
           </thead>
           <tbody>
-            {eachList(Presentation.weapons(view.catalog, unit), weapon =>
+            {eachList(Presentation.weapons(view.game, unit), weapon =>
                <tr key={weapon.Domain.id}>
                  <th scope={js|row|js}>
                    <span className={js|weapon-name|js}>
@@ -250,7 +255,7 @@ module Arsenal = {
       <div className={js|resistances|js}>
         <h3> {text({js|Damage received|js})} </h3>
         <div className={js|resistance-list|js}>
-          {eachList(Presentation.armor(view.catalog, unit), modifier =>
+          {eachList(Presentation.armor(view.game, unit), modifier =>
              <span
                key={modifier.Presentation.name}
                className={
@@ -1219,7 +1224,7 @@ module Campaign = {
                                                let js_text_part_0 =
                                                  number(Int32.to_float(unit.hp));
                                                let js_text_part_2 =
-                                                 number(Int32.to_float(rule.hp));
+                                                 number(Int32.to_float(rule.max_hp));
                                                {j|$(js_text_part_0) / $(js_text_part_2) HP|j};
                                              },
                                            )}
@@ -1229,10 +1234,11 @@ module Campaign = {
                                              {
                                                let js_text_part_1 = number(rule.level);
                                                let js_text_part_3 =
-                                                 switch (rule.experience_needed) {
-                                                 | None => {js|Fully advanced|js}
+                                                 switch (Array.length(rule.promotion_ids)) {
+                                                 | 0 => {js|Fully advanced|js}
 
-                                                 | Some(needed) =>
+                                                 | _ =>
+                                                   let needed = rule.max_xp;
                                                    let js_text_part_0 =
                                                      number(
                                                        Option.value(~default=0., unit.experience),

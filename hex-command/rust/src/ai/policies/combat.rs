@@ -23,7 +23,7 @@ pub(crate) fn best_attack(
 }
 
 /// Decorate mechanical inspection output without putting scoring in the engine.
-#[cfg(any(feature = "wasm", test))]
+#[cfg(feature = "wasm")]
 pub(crate) fn inspect(
     view: &BattleView<'_, '_>,
     mut result: crate::protocol::BattleInspection,

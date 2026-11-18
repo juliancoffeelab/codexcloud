@@ -76,7 +76,7 @@ fn prepare_priorities_and_recovery(
                 .belongs_to_faction(unit, context.battle().observer_faction())
                 && context.battle().can_act(unit.id)
                 && unit.retreating == Some(true)
-                && unit.hp == context.battle().rules().units[unit.kind].hp
+                && unit.hp == context.battle().unit_definition(unit.kind).max_hp
         })
         .cloned()
         .collect();

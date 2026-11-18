@@ -90,7 +90,11 @@ def load_dataset(directory):
         manifest["schema"] == 6
         and manifest["feature_names"] == native.DIPLOMACY_FEATURE_NAMES
     )
-    if not current and not legacy and not duties and not diplomacy:
+    campaign = (
+        manifest["schema"] == 8
+        and manifest["feature_names"] == native.CAMPAIGN_FEATURE_NAMES
+    )
+    if not current and not legacy and not duties and not diplomacy and not campaign:
         raise ValueError("dataset feature schema mismatch")
     if not current and any("campaign" in c for c in manifest["configs"]):
         raise ValueError(

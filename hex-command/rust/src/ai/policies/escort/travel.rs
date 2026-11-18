@@ -9,14 +9,14 @@ use hex_command_battle::PhaseForecasts;
 use rustc_hash::FxHashMap;
 
 #[derive(Default)]
-pub(in crate::ai) struct Workspace {
+pub(in crate::ai) struct EscortTravelWorkspace {
     signature: Vec<(u32, usize, usize, i32, bool, bool)>,
     terrain: Vec<usize>,
     owners: Vec<Option<String>>,
-    fields: FxHashMap<u32, Field>,
+    fields: FxHashMap<u32, EscortTravelField>,
     assignments: Vec<(UnitId, Vec<UnitId>, Option<(usize, usize)>)>,
 }
-struct Field {
+struct EscortTravelField {
     positions: Vec<f64>,
     threats: FxHashMap<u32, i32>,
 }
@@ -24,7 +24,7 @@ fn pressure(board: &BattleView<'_, '_>, actor: &Unit, enemy: &Unit, blockers: Ti
     let reach = board.threat_reach_blocked(enemy, blockers);
     let coverage = Threats::coverage(board, enemy, &reach);
     board
-        .weapons(enemy)
+        .attack_reaches(enemy)
         .enumerate()
         .filter(|(weapon, _)| {
             coverage[*weapon].contains(actor.tile)
@@ -34,7 +34,7 @@ fn pressure(board: &BattleView<'_, '_>, actor: &Unit, enemy: &Unit, blockers: Ti
         .max()
         .unwrap_or(0)
 }
-impl Workspace {
+impl EscortTravelWorkspace {
     pub(in crate::ai) fn prepare(
         &mut self,
         phases: PhaseForecasts<'_, '_>,
@@ -63,16 +63,16 @@ impl Workspace {
                                     | TacticalObjective::Escort { .. }
                                     | TacticalObjective::ClearPassage { .. } => None,
                                 })?;
-                        let route = game.routes(unit.kind, &[destination]);
-                        let home = game.routes(unit.kind, &[unit.tile]);
-                        let budget = game.rules().units[unit.kind].r#move as u16
-                            + game.cost(unit.kind, unit.tile);
+                        let route = game.routes(&unit, &[destination]);
+                        let home = game.routes(&unit, &[unit.tile]);
+                        let budget =
+                            game.movement_limit(&unit) as u16 + game.step_cost(&unit, unit.tile);
                         // Reverse entry costs differ only at the endpoints.
                         // Allow allies to yield when predicting the next step.
                         (0..game.terrain().len())
                             .filter(|&tile| {
                                 home[tile] != u16::MAX
-                                    && home[tile].saturating_add(game.cost(unit.kind, tile))
+                                    && home[tile].saturating_add(game.step_cost(&unit, tile))
                                         <= budget
                                     && game.at(tile).is_none_or(|other| game.allied(unit, other))
                             })
@@ -176,27 +176,27 @@ impl Workspace {
                             game.board().distance(site, tile) <= 2
                                 && tile != site
                                 && tile != actor.tile
-                                && game.cost(unit.kind, tile) != u16::MAX
+                                && game.step_cost(&unit, tile) != u16::MAX
                         })
                         .collect();
                     // Supporting positions should leave the traveller's shortest
                     // approaches open. Narrow passages retain the same fallback.
-                    let home = game.routes(actor.kind, &[actor.tile]);
-                    let onward = game.routes(actor.kind, &[destination]);
+                    let home = game.routes(&actor, &[actor.tile]);
+                    let onward = game.routes(&actor, &[destination]);
                     let direct =
-                        onward[actor.tile].saturating_add(game.cost(actor.kind, actor.tile));
+                        onward[actor.tile].saturating_add(game.step_cost(&actor, actor.tile));
                     let aside: Vec<_> = tiles
                         .iter()
                         .copied()
                         .filter(|&tile| {
                             home[tile]
                                 .saturating_add(onward[tile])
-                                .saturating_add(game.cost(actor.kind, tile))
+                                .saturating_add(game.step_cost(&actor, tile))
                                 > direct
                         })
                         .collect();
                     let targets = if aside.is_empty() { &tiles } else { &aside };
-                    (!targets.is_empty()).then(|| game.routes(unit.kind, targets))
+                    (!targets.is_empty()).then(|| game.routes(&unit, targets))
                 });
                 let mut positions: Vec<_> = std::iter::once(unit.tile)
                     .chain(game.reachable(unit).iter().map(|&(tile, _)| tile))
@@ -256,7 +256,7 @@ impl Workspace {
                 }
                 self.fields.insert(
                     unit.id,
-                    Field {
+                    EscortTravelField {
                         positions: scores,
                         threats: threats.clone(),
                     },
@@ -303,12 +303,12 @@ mod tests {
     use super::*;
     use crate::ai::orders::{DutyReport, PlanningStatus};
     use crate::data::Hex;
-    use crate::logic::Game;
+    use crate::logic::BattleSession;
 
     #[test]
     fn escorts_reward_threat_removal_and_real_screens_without_adjacency_goals() {
-        let rules = Rules::load().unwrap();
-        let mut state = Game::new(&rules, "mirror").state();
+        let rules = Catalogue::load().unwrap();
+        let mut state = BattleSession::new(&rules, "mirror").state();
         state.units.retain(|u| u.role == Some(Role::Leader));
         let actor = state
             .units
@@ -323,7 +323,7 @@ mod tests {
         state.next_id += 1;
         guard.r#type = "archer".into();
         guard.tile = Hex::new(3, 3).into();
-        guard.hp = rules.units[rules.types["archer"]].hp;
+        guard.hp = rules.unit("archer").max_hp;
         guard.character = None;
         guard.role = None;
         let mut enemy = guard.clone();
@@ -331,7 +331,7 @@ mod tests {
         enemy.id = format!("u{enemy_id}");
         state.next_id += 1;
         enemy.r#type = "swordsman".into();
-        enemy.hp = rules.units[rules.types["swordsman"]].hp;
+        enemy.hp = rules.unit("swordsman").max_hp;
         enemy.faction = "enemy".into();
         enemy.tile = Hex::new(5, 3).into();
         state.units.extend([guard, enemy]);
@@ -345,7 +345,7 @@ mod tests {
                 "water".into()
             };
         }
-        let game = Game::try_from_state(&rules, state).unwrap();
+        let game = BattleSession::try_from_state(&rules, state).unwrap();
         let actor = actor_id;
         let actor_tile = game.site(&Hex::new(1, 3));
         let branch = game.site(&Hex::new(3, 2));
@@ -360,7 +360,7 @@ mod tests {
             }],
             ..PlanningReport::default()
         };
-        let mut escort = Workspace::default();
+        let mut escort = EscortTravelWorkspace::default();
         escort.prepare(game.phase_forecasts(), &report, &TacticalOrders::default());
         let screen = game.site(&Hex::new(4, 3));
         assert!(game.board().distance(screen, actor_tile) > 1);

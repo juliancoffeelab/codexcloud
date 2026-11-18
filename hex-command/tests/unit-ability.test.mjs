@@ -1,7 +1,8 @@
 import { test } from "vitest";
 import assert from "node:assert/strict";
-import { catalog, Catalog, Presentation } from "./presentation-fixture.mjs";
+import { board, catalog, Catalog, Native, Presentation } from "./presentation-fixture.mjs";
 const unit = {
+  items: [],
   experience: 0,
   id: "u1",
   type: "scout",
@@ -15,7 +16,9 @@ const unit = {
   perceptionEffects: [],
 };
 test("Leader ability explains the loss condition", () => {
-  assert.deepEqual(Presentation.ability(catalog, { ...unit, role: "leader" }), {
+  const game = board();
+  game.edit((s) => (s.units = [{ ...unit, role: "leader" }]));
+  assert.deepEqual(Presentation.ability(game.view, { ...unit, role: "leader" }), {
     name: "Command",
     description: Catalog.unit(catalog, unit.type).description,
     facts: ["Losing this unit ends the battle."],
@@ -23,16 +26,22 @@ test("Leader ability explains the loss condition", () => {
 });
 test("Ordinary ability information uses resolved native metadata", () => {
   const definition = Catalog.unit(catalog, "scout");
-  assert.deepEqual(Presentation.ability(catalog, unit), {
-    name: definition.ability,
+  const game = board();
+  game.edit((s) => (s.units = [unit]));
+  assert.deepEqual(Presentation.ability(game.view, unit), {
+    name: definition.abilityLabel,
     description: definition.description,
     facts: [],
   });
 });
 test("Healing facts use the native numeric value", () => {
+  const game = board();
+  game.edit((s) => (s.units = [{ ...unit, type: "tidesage" }]));
   assert(
-    Presentation.ability(catalog, { ...unit, type: "tidesage" }).facts.some((fact) =>
-      fact.includes(`${Catalog.unit(catalog, "tidesage").healing} HP`),
+    Presentation.ability(game.view, { ...unit, type: "tidesage" }).facts.some((fact) =>
+      fact.includes(
+        `${Native.unit_details(game.view, unit.id).effects.find((e) => e.effect.kind === "healing").effect.power} HP`,
+      ),
     ),
   );
 });

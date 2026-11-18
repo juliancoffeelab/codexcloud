@@ -4,161 +4,71 @@ use super::battle::BattlePosition;
 use super::exchange::{self, ExchangeForecast, Strikes};
 use crate::data::*;
 use std::rc::Rc;
-struct ResolvedStrike {
-    raw: i32,
-    damage: i32,
-    #[cfg(not(target_arch = "wasm32"))]
-    mitigation: DamageMitigationRecord,
-}
-/// Borrowed combat inputs resolved once for a batch of geometric origin queries.
-/// Neither actor owns or clones any unit, inventory, weapon or string data.
-pub struct CombatMatchup<'a> {
-    actors: [CombatInputs<'a>; 2],
-    target_terrain: usize,
-    reply_allowed: bool,
-}
-struct CombatInputs<'a> {
-    hp: i32,
-    maximum_hp: i32,
-    modifiers: [i32; 3],
-    environment: &'a [[[i32; 3]; 2]],
-    weapons: [&'a [WeaponRules]; 2],
-}
-impl CombatInputs<'_> {
-    #[inline(always)]
-    fn weapon(&self, index: usize) -> &WeaponRules {
-        if index < self.weapons[0].len() {
-            &self.weapons[0][index]
-        } else {
-            &self.weapons[1][index - self.weapons[0].len()]
-        }
-    }
-    #[inline(always)]
-    fn modifier(&self, attack: &WeaponRules, terrain: usize) -> i32 {
-        self.modifiers[attack.damage_type.index()]
-            + self.environment[terrain][attack.category.index()][attack.damage_type.index()]
-    }
-    #[inline(always)]
-    fn strikes(&self, target: &Self, weapon: usize, terrain: usize, reflection: i32) -> Strikes {
-        let attack = self.weapon(weapon);
-        Strikes {
-            damage: attack.damage,
-            spread: attack.spread,
-            count: attack.count,
-            modifier: target.modifier(attack, terrain),
-            drain: attack.drain,
-            maximum_hp: self.maximum_hp,
-            reflection,
-        }
-    }
-}
-impl CombatMatchup<'_> {
-    /// `origin` must come from attack_origin_runs for these actors and weapon.
-    #[inline]
-    pub fn at_origin(
-        &self,
-        weapon: usize,
-        origin: &super::geometry::AttackOriginRun,
-        reflection: i32,
-    ) -> Rc<ExchangeForecast> {
-        let [unit, target] = &self.actors;
-        let selected = unit.weapon(weapon);
-        let attack = unit.strikes(target, weapon, self.target_terrain, reflection);
-        let mut response = None;
-        let mut response_mean = 0.0;
-        if self.reply_allowed {
-            for (slot, reply) in target.weapons[0]
-                .iter()
-                .chain(target.weapons[1].iter())
-                .enumerate()
-            {
-                if reply.category != selected.category || u16::from(reply.range) < origin.distance {
-                    continue;
-                }
-                if response.is_none() {
-                    response = Some(slot);
-                    continue;
-                }
-                if response_mean == 0.0 {
-                    let previous = target.weapon(response.unwrap());
-                    response_mean = super::damage::distribution(
-                        previous,
-                        unit.modifier(previous, origin.terrain),
-                    )
-                    .mean;
-                }
-                let mean =
-                    super::damage::distribution(reply, unit.modifier(reply, origin.terrain)).mean;
-                if mean.total_cmp(&response_mean).is_gt() {
-                    response = Some(slot);
-                    response_mean = mean;
-                }
-            }
-        }
-        let reply = response.map_or(
-            Strikes {
-                count: 0,
-                reflection: 0,
-                ..attack
-            },
-            |weapon| target.strikes(unit, weapon, origin.terrain, 0),
-        );
-        exchange::forecast([unit.hp, target.hp], [attack, reply])
-    }
-}
-
 impl<'catalog> BattlePosition<'catalog> {
     #[inline]
-    pub(crate) fn combat_matchup(&self, unit: &Unit, target: &Unit) -> CombatMatchup<'_> {
-        let inputs = |unit: &Unit| {
-            let stats = &self.mechanics.units[unit.kind];
-            let modifiers = [DamageType::Blade, DamageType::Pierce, DamageType::Impact]
-                .map(|kind| stats.damage_modifiers.get(kind) + self.equipment_modifier(unit, kind));
-            CombatInputs {
-                hp: unit.hp,
-                maximum_hp: stats.hp,
-                modifiers,
-                environment: &self.mechanics.environment
-                    [stats.environment..stats.environment + self.rules.terrain_names.len()],
-                weapons: [
-                    self.mechanics.attacks(unit.kind),
-                    if unit.inventory.0 == 0 {
-                        &[]
-                    } else {
-                        self.runtime.inventories.attacks(unit.inventory)
+    pub(crate) fn with_attacks<R>(
+        &self,
+        unit: &Unit,
+        query: impl FnOnce(&[AttackHandle<'catalog>]) -> R,
+    ) -> R {
+        let owned = self.definitions.owned(unit, &self.runtime.inventories);
+        query(&owned.attacks)
+    }
+    #[inline]
+    pub(crate) fn with_attack<R>(
+        &self,
+        unit: &Unit,
+        weapon: usize,
+        query: impl FnOnce(AttackHandle<'_>) -> R,
+    ) -> R {
+        self.with_attacks(unit, |attacks| query(attacks[weapon]))
+    }
+
+    pub(crate) fn weapon_key(&self, unit: &Unit, weapon: usize) -> WeaponKey {
+        self.with_attack(unit, weapon, |attack| {
+            self.runtime.weapon_ids.borrow_mut().weapon_key(attack.id())
+        })
+    }
+    pub(crate) fn weapon_index(&self, unit: &Unit, weapon: WeaponKey) -> Option<usize> {
+        let id = self.runtime.weapon_ids.borrow().weapon_id(weapon)?;
+        self.with_attacks(unit, |attacks| {
+            attacks.iter().position(|attack| attack.id() == id)
+        })
+    }
+    pub(crate) fn attack_outcomes_at(
+        &self,
+        attacker: &Unit,
+        target: &Unit,
+        weapon: usize,
+        tile: usize,
+    ) -> AttackOutcomes {
+        let projected = [(*attacker, attacker.tile), (*target, tile)];
+        self.with_domain_capabilities_at(
+            attacker,
+            attacker.tile,
+            &self.units,
+            &projected,
+            super::effect_index::EffectKind::Stats,
+            |attack_caps| {
+                self.with_domain_capabilities_at(
+                    target,
+                    tile,
+                    &self.units,
+                    &projected,
+                    super::effect_index::EffectKind::Stats,
+                    |defense_caps| {
+                        attack_caps.attack_outcomes(
+                            attack_caps
+                                .attacks()
+                                .nth(weapon)
+                                .expect("attack index is valid"),
+                            defense_caps,
+                            self.terrain_definition(tile),
+                        )
                     },
-                ],
-            }
-        };
-        CombatMatchup {
-            actors: [inputs(unit), inputs(target)],
-            target_terrain: self.runtime.terrain[target.tile],
-            reply_allowed: self.hostile(target, unit),
-        }
-    }
-    #[inline]
-    pub(crate) fn weapons<'a>(
-        &'a self,
-        unit: &'a Unit,
-    ) -> std::iter::Chain<std::slice::Iter<'a, WeaponRules>, std::slice::Iter<'a, WeaponRules>>
-    {
-        self.mechanics
-            .attacks(unit.kind)
-            .iter()
-            .chain(if unit.inventory.0 == 0 {
-                [].iter()
-            } else {
-                self.runtime.inventories.attacks(unit.inventory).iter()
-            })
-    }
-    #[inline]
-    pub(crate) fn weapon<'a>(&'a self, unit: &'a Unit, index: usize) -> &'a WeaponRules {
-        let base = self.mechanics.attacks(unit.kind);
-        if index < base.len() {
-            &base[index]
-        } else {
-            &self.runtime.inventories.attacks(unit.inventory)[index - base.len()]
-        }
+                )
+            },
+        )
     }
 
     pub(crate) fn can_attack(
@@ -174,7 +84,9 @@ impl<'catalog> BattlePosition<'catalog> {
         if !self.can_attack_at(unit, from, target, target.tile, weapon) {
             return false;
         }
-        self.unit_visible_to(self.unit_faction(unit), target, Some((unit.id, from)))
+        self.perception(None)
+            .with_unit(unit, from)
+            .sees_unit(self.unit_vision_group(unit), target)
     }
     #[inline]
     fn can_attack_at(
@@ -188,11 +100,12 @@ impl<'catalog> BattlePosition<'catalog> {
         if !self.hostile(unit, target) {
             return false;
         }
-        let attack = self.weapon(unit, weapon);
-        self.in_attack_range(from, target_tile, attack.category, attack.range)
+        self.with_attack(unit, weapon, |attack| {
+            self.in_attack_range(from, target_tile, attack.category(), attack.range())
+        })
     }
     pub(crate) fn attack_options(&self, unit: &Unit, target: &Unit, from: usize) -> Vec<usize> {
-        (0..self.weapons(unit).count())
+        (0..self.with_attacks(unit, |attacks| attacks.len()))
             .filter(|&weapon| self.can_attack(unit, from, target, weapon))
             .collect()
     }
@@ -207,18 +120,9 @@ impl<'catalog> BattlePosition<'catalog> {
         weapon: usize,
         tile: usize,
     ) -> std::rc::Rc<super::damage::DamageDistribution> {
-        let attack = self.weapon(attacker, weapon);
-        let rule = &self.mechanics.units[target.kind];
-        super::damage::distribution(
-            attack,
-            rule.damage_modifiers.get(attack.damage_type)
-                + self.equipment_modifier(target, attack.damage_type)
-                + self
-                    .mechanics
-                    .environment(target.kind, self.runtime.terrain[tile])[attack.category.index()]
-                    [attack.damage_type.index()],
-        )
+        super::damage::distribution(self.attack_outcomes_at(attacker, target, weapon, tile))
     }
+
     fn damage_at(&self, attacker: &Unit, target: &Unit, weapon: usize, tile: usize) -> i32 {
         self.damage_distribution(attacker, target, weapon, tile)
             .mean
@@ -233,20 +137,11 @@ impl<'catalog> BattlePosition<'catalog> {
         tile: usize,
         reflection: i32,
     ) -> Strikes {
-        let attack = self.weapon(attacker, weapon);
-        let defender = &self.mechanics.units[target.kind];
+        let outcomes = self.attack_outcomes_at(attacker, target, weapon, tile);
         Strikes {
-            damage: attack.damage,
-            spread: attack.spread,
-            count: attack.count,
-            modifier: defender.damage_modifiers.get(attack.damage_type)
-                + self.equipment_modifier(target, attack.damage_type)
-                + self
-                    .mechanics
-                    .environment(target.kind, self.runtime.terrain[tile])[attack.category.index()]
-                    [attack.damage_type.index()],
-            drain: attack.drain,
-            maximum_hp: self.mechanics.units[attacker.kind].hp,
+            outcomes,
+            count: outcomes.strike_count(),
+            maximum_hp: self.definitions.unit(attacker.kind).max_hp,
             reflection,
         }
     }
@@ -259,13 +154,16 @@ impl<'catalog> BattlePosition<'catalog> {
         weapon: usize,
         from: usize,
     ) -> Rc<ExchangeForecast> {
-        let count = self.weapon(unit, weapon).count;
-        self.exchange_with_thorns(
+        let mut attacker = *unit;
+        attacker.tile = from;
+        let outcomes = self.attack_outcomes_at(&attacker, target, weapon, target.tile);
+        self.exchange_prepared(
             unit,
             target,
             weapon,
             from,
-            self.thorn_damage(unit, target, weapon, from) / i32::from(count),
+            outcomes,
+            outcomes.reflection_per_strike(),
         )
     }
     #[inline]
@@ -277,7 +175,27 @@ impl<'catalog> BattlePosition<'catalog> {
         from: usize,
         reflection: i32,
     ) -> Rc<ExchangeForecast> {
-        let attack = self.strike_rules(unit, target, weapon, target.tile, reflection);
+        let mut attacker = *unit;
+        attacker.tile = from;
+        let outcomes = self.attack_outcomes_at(&attacker, target, weapon, target.tile);
+        self.exchange_prepared(unit, target, weapon, from, outcomes, reflection)
+    }
+    #[inline]
+    fn exchange_prepared(
+        &self,
+        unit: &Unit,
+        target: &Unit,
+        weapon: usize,
+        from: usize,
+        outcomes: AttackOutcomes,
+        reflection: i32,
+    ) -> Rc<ExchangeForecast> {
+        let attack = Strikes {
+            outcomes,
+            count: outcomes.strike_count(),
+            maximum_hp: self.definitions.unit(unit.kind).max_hp,
+            reflection,
+        };
         let reply = self.response(unit, target, weapon, from).map_or(
             Strikes {
                 count: 0,
@@ -296,20 +214,23 @@ impl<'catalog> BattlePosition<'catalog> {
         weapon: usize,
         from: usize,
     ) -> Option<usize> {
-        let category = self.weapon(unit, weapon).category;
-        self.weapons(target)
-            .enumerate()
-            .filter(|(w, attack)| {
-                attack.category == category
-                    && self.can_attack_at(target, target.tile, unit, from, *w)
-            })
-            .max_by(|(a, _), (b, _)| {
-                self.damage_distribution(target, unit, *a, from)
-                    .mean
-                    .total_cmp(&self.damage_distribution(target, unit, *b, from).mean)
-                    .then(b.cmp(a))
-            })
-            .map(|(w, _)| w)
+        let category = self.with_attack(unit, weapon, |attack| attack.category());
+        self.with_attacks(target, |attacks| {
+            attacks
+                .iter()
+                .enumerate()
+                .filter(|(w, attack)| {
+                    attack.category() == category
+                        && self.can_attack_at(target, target.tile, unit, from, *w)
+                })
+                .max_by(|(a, _), (b, _)| {
+                    self.damage_distribution(target, unit, *a, from)
+                        .mean
+                        .total_cmp(&self.damage_distribution(target, unit, *b, from).mean)
+                        .then(b.cmp(a))
+                })
+                .map(|(w, _)| w)
+        })
     }
     pub(crate) fn maximum_retaliation(
         &self,
@@ -329,58 +250,6 @@ impl<'catalog> BattlePosition<'catalog> {
     ) -> f64 {
         self.exchange(unit, target, weapon, from).death[0]
     }
-    fn roll_strike(
-        &mut self,
-        attacker: &Unit,
-        target: &Unit,
-        weapon: usize,
-        tile: usize,
-    ) -> ResolvedStrike {
-        let attack = self.weapon(attacker, weapon).clone();
-        let armour = self.rules.units[target.kind]
-            .damage_modifiers
-            .get(attack.damage_type)
-            + self.equipment_modifier(target, attack.damage_type);
-        let environment = self.rules.units[target.kind].environment[self.runtime.terrain[tile]]
-            [attack.category.index()][attack.damage_type.index()];
-        // Full-period state, bijective output mixing and rejection sampling.
-        let width = (2 * attack.spread + 1) as u32;
-        let threshold = width.wrapping_neg() % width;
-        let roll = loop {
-            self.runtime.combat_rng = self
-                .combat_rng
-                .wrapping_mul(1664525)
-                .wrapping_add(1013904223);
-            let mut sample = self.runtime.combat_rng;
-            sample = (sample ^ (sample >> 16)).wrapping_mul(0x21f0aaad);
-            sample = (sample ^ (sample >> 15)).wrapping_mul(0x735a2d97);
-            sample ^= sample >> 15;
-            if sample >= threshold {
-                break sample % width;
-            }
-        };
-        let raw = attack.damage - attack.spread + roll as i32;
-        let damage = (raw + armour + environment).max(0);
-        ResolvedStrike {
-            raw,
-            damage,
-            #[cfg(not(target_arch = "wasm32"))]
-            mitigation: {
-                let after_armour = (raw + armour).max(0);
-                let hp = target.hp.max(0);
-                DamageMitigationRecord {
-                    available_hp: hp,
-                    effective_damage: Some(damage.min(hp)),
-                    raw_damage: raw,
-                    after_armour_damage: after_armour,
-                    after_terrain_damage: damage,
-                    effective_armour_prevented: raw.min(hp) - after_armour.min(hp),
-                    effective_terrain_prevented: after_armour.min(hp) - damage.min(hp),
-                }
-            },
-        }
-    }
-
     /// Fixed reflection per incoming melee strike. It is separate
     /// from the defender's weapon, survives a killing hit and never drains.
     pub(crate) fn thorn_damage(
@@ -390,30 +259,22 @@ impl<'catalog> BattlePosition<'catalog> {
         weapon: usize,
         from: usize,
     ) -> i32 {
-        let attack = self.weapon(attacker, weapon);
-        if attack.category != Category::Melee {
-            return 0;
-        }
-        let aura = self
-            .units
-            .iter()
-            .filter(|ally| {
-                ally.id != target.id
-                    && self.allied(ally, &target)
-                    && self.runtime.board.distance(
-                        if ally.id == attacker.id {
-                            from
-                        } else {
-                            ally.tile
-                        },
-                        target.tile,
-                    ) == 1
-            })
-            .map(|ally| self.mechanics.units[ally.kind].thorn_aura)
-            .max()
-            .unwrap_or(0);
-        (self.mechanics.units[target.kind].thorns + aura) * i32::from(attack.count)
+        let mut projected = *attacker;
+        projected.tile = from;
+        self.with_attack(attacker, weapon, |attack| {
+            self.with_selected_domain_effects_at(
+                target,
+                target.tile,
+                &self.units,
+                &[(projected, from)],
+                super::effect_index::EffectKind::Thorns,
+                true,
+                |_, _, _| true,
+                |caps| caps.reflected_damage(attack),
+            )
+        })
     }
+
     pub(crate) fn preview(
         &self,
         unit: &Unit,
@@ -443,10 +304,21 @@ impl<'catalog> BattlePosition<'catalog> {
                 && self.runtime.winner.is_none()
                 && self.can_attack(&attacker, attacker.tile, &target, weapon)
         );
-        let attack = self.weapon(&attacker, weapon).clone();
+        let (attack_id, attack_name, attack_sound, attack_category) =
+            self.with_attack(&attacker, weapon, |attack| {
+                (
+                    attack.id().to_owned(),
+                    attack.name().to_owned(),
+                    attack.sound().to_owned(),
+                    attack.category(),
+                )
+            });
         let response = self.response(&attacker, &target, weapon, attacker.tile);
-        let per_thorn =
-            self.thorn_damage(&attacker, &target, weapon, attacker.tile) / i32::from(attack.count);
+        let per_thorn = self.thorn_damage(&attacker, &target, weapon, attacker.tile)
+            / i32::from(
+                self.attack_outcomes_at(&attacker, &target, weapon, target.tile)
+                    .strike_count(),
+            );
         let strikes = [
             self.strike_rules(&attacker, &target, weapon, target.tile, per_thorn),
             response.map_or(
@@ -489,7 +361,9 @@ impl<'catalog> BattlePosition<'catalog> {
                 defender.hp = hp[1 - side];
                 self.reveal_weapon_user(actor.id, self.unit_vision_group(&defender));
                 let rolled = self.roll_strike(&actor, &defender, selected, defender.tile);
-                let (raw, damage) = (rolled.raw, rolled.damage);
+                let damage = rolled.damage();
+                #[cfg(not(target_arch = "wasm32"))]
+                let raw = rolled.raw();
                 #[cfg(target_arch = "wasm32")]
                 {
                     totals[side] += damage;
@@ -505,33 +379,9 @@ impl<'catalog> BattlePosition<'catalog> {
                 {
                     effective_thorns += effect.reflected;
                 }
-                #[cfg(feature = "wasm")]
-                {
-                    let attack = self.weapon(&actor, selected);
-                    let rule = &self.rules.units[defender.kind];
-                    playback.push(crate::model::CombatStrike {
-                        weapon: self.source_weapon(&attack).name.clone(),
-                        weapon_id: self.source_weapon(&attack).id.clone(),
-                        unit_id: format!("u{}", actor.id),
-                        roll_min: attack.damage - attack.spread,
-                        roll_max: attack.damage + attack.spread,
-                        raw,
-                        modifier: rule.damage_modifiers.get(attack.damage_type)
-                            + self.equipment_modifier(&defender, attack.damage_type),
-                        terrain: rule.environment[self.runtime.terrain[defender.tile]]
-                            [attack.category.index()][attack.damage_type.index()],
-                        damage,
-                        effective: effect.effective,
-                        drain: attack.drain,
-                        healed: effect.healed,
-                        thorns: strikes[side].reflection,
-                        reflected: effect.reflected,
-                        health: hp,
-                    });
-                }
                 #[cfg(not(target_arch = "wasm32"))]
                 {
-                    let record = rolled.mitigation;
+                    let record = rolled.mitigation();
                     if let Some(total) = &mut mitigation[side] {
                         total.raw_damage += record.raw_damage;
                         total.after_armour_damage += record.after_armour_damage;
@@ -546,6 +396,8 @@ impl<'catalog> BattlePosition<'catalog> {
                         mitigation[side] = Some(record);
                     }
                 }
+                #[cfg(feature = "wasm")]
+                playback.push(rolled.into_playback(effect, hp));
             }
             if hp.contains(&0) {
                 break;
@@ -581,31 +433,33 @@ impl<'catalog> BattlePosition<'catalog> {
                 retaliation: response_mitigation,
             });
         // Capture sources before movement, deaths or promotions can change them.
-        #[cfg(not(target_arch = "wasm32"))]
+        #[cfg(all(feature = "simulation", not(target_arch = "wasm32")))]
         let thorn_record = self.runtime.recordings.as_ref().map(|_| {
-            let own = if attack.category == Category::Melee {
-                self.mechanics.units[target.kind].thorns * rolls.len() as i32
-            } else {
-                0
-            };
+            let own = self.with_selected_capabilities_at(
+                &target,
+                target.tile,
+                &self.units,
+                &[],
+                |source, _, _| source.is_some_and(|unit| unit.id == target.id),
+                |defender| {
+                    self.with_capabilities_at(&attacker, attacker.tile, &self.units, &[], |caps| {
+                        caps.attack_outcomes(
+                            caps.attacks().nth(weapon).expect("attack index is valid"),
+                            defender,
+                            self.terrain_definition(target.tile),
+                        )
+                        .reflection_per_strike()
+                    })
+                },
+            ) * rolls.len() as i32;
             let damage = thorns;
             let aura_damage = damage - own;
-            let aura_sources = if aura_damage > 0 {
-                let strength = aura_damage / rolls.len() as i32;
-                self.runtime
-                    .units
-                    .iter()
-                    .filter(|ally| {
-                        ally.id != target.id
-                            && self.allied(ally, &target)
-                            && self.runtime.board.distance(ally.tile, target.tile) == 1
-                            && self.mechanics.units[ally.kind].thorn_aura == strength
-                    })
-                    .map(|ally| format!("u{}", ally.id))
-                    .collect()
-            } else {
-                vec![]
-            };
+            let support = self.support_diagnostic(
+                &target,
+                |_, _| true,
+                |caps| hex_command_catalog::diagnostics::thorns(caps, attack_category),
+            );
+            let aura_sources = support.source_names(Some(target.id));
             ThornRecord {
                 damage,
                 aura_damage,
@@ -613,6 +467,8 @@ impl<'catalog> BattlePosition<'catalog> {
                 aura_sources,
             }
         });
+        #[cfg(all(not(feature = "simulation"), not(target_arch = "wasm32")))]
+        let thorn_record = None;
         let before = [self.public_unit(&attacker), self.public_unit(&target)];
         #[cfg(feature = "wasm")]
         {
@@ -621,14 +477,23 @@ impl<'catalog> BattlePosition<'catalog> {
             #[cfg(not(target_arch = "wasm32"))]
             let animation_units = before.clone();
             self.runtime.combat_animation = Some(crate::model::CombatAnimation {
+                maximum_hp: [
+                    self.definitions.unit(attacker.kind).max_hp,
+                    self.definitions.unit(target.kind).max_hp,
+                ],
+                weapons: [attacker, target].map(|u| {
+                    (0..self.with_attacks(&u, |attacks| attacks.len()))
+                        .map(|index| self.attack_card(&u, index))
+                        .collect()
+                }),
                 units: animation_units,
                 strikes: playback,
             });
         }
         self.runtime.last_combat = Some(LastCombat {
             attacker_id: format!("u{id}"),
-            attack_id: self.source_weapon(&attack).id.clone(),
-            sound: self.source_weapon(&attack).sound.clone(),
+            attack_id: attack_id.clone(),
+            sound: attack_sound.clone(),
         });
         self.runtime.combat_present = true;
         self.runtime.units[a].moved = true;
@@ -636,12 +501,13 @@ impl<'catalog> BattlePosition<'catalog> {
         self.runtime.units[a].hp = hp[0];
         self.runtime.units[b].hp = hp[1];
         for (own, opponent, dealt) in [(a, b, damage), (b, a, retaliation)] {
-            let limit = self.rules.units[self.runtime.units[own].kind]
-                .experience_needed
-                .unwrap_or(0);
+            let limit = self.definitions.unit(self.runtime.units[own].kind).max_xp;
             if self.runtime.units[own].hp > 0 && dealt > 0 && limit > 0 {
                 let reward = if self.runtime.units[opponent].hp <= 0 {
-                    6 * self.rules.units[self.runtime.units[opponent].kind].level
+                    6 * self
+                        .definitions
+                        .unit(self.runtime.units[opponent].kind)
+                        .level()
                 } else {
                     1
                 };
@@ -649,7 +515,7 @@ impl<'catalog> BattlePosition<'catalog> {
                     limit.min(
                         self.runtime.units[own]
                             .experience
-                            .unwrap_or(0)
+                            .expect("unit with XP limit has current XP")
                             .saturating_add(reward),
                     ),
                 );
@@ -667,8 +533,8 @@ impl<'catalog> BattlePosition<'catalog> {
             } else {
                 "Enemy"
             },
-            self.rules.units[attacker.kind].name.to_lowercase(),
-            self.source_weapon(&attack).name.to_lowercase()
+            self.definitions.unit(attacker.kind).name().to_lowercase(),
+            attack_name.to_lowercase()
         ));
         let defeated: Vec<Unit> = self
             .units
@@ -691,7 +557,7 @@ impl<'catalog> BattlePosition<'catalog> {
                 } else {
                     "Enemy"
                 },
-                self.rules.units[unit.kind].name.to_lowercase()
+                self.definitions.unit(unit.kind).name().to_lowercase()
             ));
         }
         self.runtime.units.retain(|unit| unit.hp > 0);
@@ -700,14 +566,10 @@ impl<'catalog> BattlePosition<'catalog> {
         self.action(ActionRecord::Attack {
             unit: format!("u{id}"),
             target: format!("u{target_id}"),
-            weapon: self.source_weapon(&attack).id.clone(),
+            weapon: attack_id.clone(),
         });
         #[cfg(not(target_arch = "wasm32"))]
-        let recorded_weapon = self
-            .runtime
-            .recordings
-            .as_ref()
-            .map(|_| self.source_weapon(&attack).id.clone());
+        let recorded_weapon = self.runtime.recordings.as_ref().map(|_| attack_id.clone());
         #[cfg(not(target_arch = "wasm32"))]
         if let Some(records) = &mut self.runtime.recordings {
             records.losses.extend(before.into_iter().filter(|unit| {
@@ -742,28 +604,5 @@ impl<'catalog> BattlePosition<'catalog> {
                 mitigation: mitigation_record,
             });
         }
-    }
-}
-
-impl super::Game<'_> {
-    pub(crate) fn mediation_at_risk(&self, target: &Unit) -> bool {
-        self.story.mission.as_ref().is_some_and(|m| {
-            m.scripted_events.iter().any(|e| {
-                e.objective
-                    .as_ref()
-                    .and_then(|o| o.preserve_lives.as_ref())
-                    .is_some_and(|s| {
-                        self.story
-                            .scripts
-                            .as_deref()
-                            .is_some_and(|state| state.active.contains(&e.id))
-                            && self.objective_unit_matches(
-                                &e.objective.as_ref().unwrap().faction,
-                                s,
-                                target,
-                            )
-                    })
-            })
-        })
     }
 }

@@ -211,17 +211,29 @@ let convert input =
     if version = 48. then Historical_codec.V48.of_json (Migration_envelope_v48.current_save input)
     else Migration_mines.v47 (prior_current ())
   in
-  let converted =
-    if version = 49. then Historical_codec.V49.of_json (Migration_envelope.current_save input)
+  let previous () =
+    if version = 49. then Historical_codec.V49.of_json (Migration_envelope_v49.current_save input)
     else Migration_metadata.v48 (previous ())
   in
-  (converted, version <> 49.)
+  let previous () =
+    if version = 50. then Historical_codec.V50.of_json (Migration_envelope_v50.current_save input)
+    else Migration_explicit.v49 (previous ())
+  in
+  let previous () =
+    if version = 51. then Historical_codec.V51.of_json (Migration_envelope_v51.current_save input)
+    else Migration_stacking.v50 (previous ())
+  in
+  let converted =
+    if version = 52. then Historical_codec.V52.of_json (Migration_envelope.current_save input)
+    else Migration_catalogue.v51 (previous ())
+  in
+  (converted, version <> 52.)
 
 (* Relational rules (identity, flash/turn and replay invariants) complement the
    static wire model and apply to every consumer, including storage import. *)
 let validated input =
   let value, changed = convert input in
-  let json = Migration_envelope.current_save (Historical_codec.V49.to_json value) in
+  let json = Migration_envelope.current_save (Historical_codec.V52.to_json value) in
   (Current_save.narrow value, json, changed)
 
 let migrate_typed input =

@@ -1,22 +1,15 @@
 let number = Js.Float.toString
-
-let daylight_only (lighting : Domain.battlefield_lighting) =
-  lighting.time = Domain.Time_of_day.Day && Array.length lighting.underground = 0
+let daylight_only (lighting : Domain.battlefield_lighting) = Array.length lighting.unlit_tiles = 0
 
 let ambient x y (lighting : Domain.battlefield_lighting) =
-  if lighting.time = Domain.Time_of_day.Night then 1.
-  else Underground.sample (Underground.get lighting.underground) x y
+  Underground.sample (Underground.get lighting.unlit_tiles) x y
 
 let key (lighting : Domain.battlefield_lighting) =
   let optional encode = Option.fold ~none:Js.Json.null ~some:encode in
   Js.Json.stringify
     (Js.Json.array
        [|
-         Js.Json.string
-           (match lighting.time with
-           | Domain.Time_of_day.Day -> {js|day|js}
-           | Domain.Time_of_day.Night -> {js|night|js});
-         Js.Json.string (Underground.key lighting.underground);
+         Js.Json.string (Underground.key lighting.unlit_tiles);
          Js.Json.array
            (Array.map
               (fun (light : Domain.battlefield_light) ->
@@ -104,8 +97,8 @@ let daylight x y =
     0.006 +. (0.012 *. shade);
   |]
 
-let base_matrix x y (lighting : Domain.battlefield_lighting) =
-  if lighting.time = Domain.Time_of_day.Day then
+let base_matrix ~night x y (lighting : Domain.battlefield_lighting) =
+  if not night then
     let values = daylight x y in
     let luminance = [| 0.2126; 0.7152; 0.0722 |] in
     Array.init 20 (fun index ->
@@ -135,11 +128,11 @@ let base_matrix x y (lighting : Domain.battlefield_lighting) =
 
 let matrix x y (lighting : Domain.battlefield_lighting) =
   let darkness = ambient x y lighting in
-  if darkness = 0. then base_matrix x y { lighting with time = Domain.Time_of_day.Day }
-  else if darkness = 1. then base_matrix x y { lighting with time = Domain.Time_of_day.Night }
+  if darkness = 0. then base_matrix ~night:false x y lighting
+  else if darkness = 1. then base_matrix ~night:true x y lighting
   else
-    let day = base_matrix x y { lighting with time = Domain.Time_of_day.Day }
-    and night = base_matrix x y { lighting with time = Domain.Time_of_day.Night } in
+    let day = base_matrix ~night:false x y lighting
+    and night = base_matrix ~night:true x y lighting in
     Array.mapi (fun i value -> (value *. (1. -. darkness)) +. (night.(i) *. darkness)) day
 
 type pixels
@@ -179,8 +172,7 @@ let shade data width start finish pixel_scale (lighting : Domain.battlefield_lig
       done
     done
   else
-    let mask = Underground.get lighting.underground in
-    let regional = lighting.time = Domain.Time_of_day.Day in
+    let mask = Underground.get lighting.unlit_tiles in
     let colored = colored lighting in
     let sources =
       Array.map
@@ -260,7 +252,7 @@ let shade data width start finish pixel_scale (lighting : Domain.battlefield_lig
                 +. (((b *. wb) +. bo) *. mix))
           in
           let px = float_of_int x /. pixel_scale in
-          let darkness = if regional then Underground.sample mask px py else 1. in
+          let darkness = Underground.sample mask px py in
           if darkness > 0. then night_pixel ();
           if darkness < 1. then
             let values = daylight px py in
@@ -352,8 +344,7 @@ let changed_lights before after =
   let light_key (light : Domain.battlefield_light) =
     key
       {
-        Domain.time = Domain.Time_of_day.Day;
-        underground = [||];
+        Domain.unlit_tiles = [||];
         lights = [| { light with fixture = Some (Option.value ~default:true light.fixture) } |];
       }
   in

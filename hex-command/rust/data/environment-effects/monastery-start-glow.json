@@ -1,0 +1,27 @@
+{
+  "id": "monastery-start-glow",
+  "name": "Monastery start glow",
+  "description": "Authored light effect.",
+  "effects": [
+    {
+      "kind": "light",
+      "light": {
+        "radius": 110,
+        "power": 0.8,
+        "when": {
+          "condition": {
+            "kind": "flag",
+            "flag": "monastery-start"
+          },
+          "remember": false,
+          "observer": null
+        },
+        "emission": null,
+        "color": null,
+        "fixture": null,
+        "dx": null,
+        "dy": null
+      }
+    }
+  ]
+}

@@ -168,7 +168,15 @@ class NativeContract(unittest.TestCase):
             for a, b in zip(data.dense[:3], dense[:3]):
                 np.testing.assert_array_equal(a, b)
             for a, b in zip(
-                (data.boards, data.offsets, data.shapes, data.indices), spatial
+                (
+                    data.boards,
+                    data.offsets,
+                    data.shapes,
+                    data.indices,
+                    data.context_values,
+                    data.contexts,
+                ),
+                spatial,
             ):
                 np.testing.assert_array_equal(a, b)
             torch.manual_seed(19)
@@ -187,14 +195,26 @@ class NativeContract(unittest.TestCase):
                 data.offsets,
                 data.shapes,
                 data.indices,
+                data.context_values,
+                data.contexts,
             )
             np.testing.assert_allclose(actual, expected, atol=2e-6, rtol=2e-5)
             x, board, ix, mask, y = next(batches(data, np.array([0])))
             with torch.no_grad():
                 before = model(x, board, ix)
-                padded = torch.nn.functional.pad(board, (0, 2, 0, 1))
-                old_width = board.shape[-1]
-                new_width = padded.shape[-1]
+                base, contexts, owners, sites = board
+                old_width = base.shape[-1]
+                new_width = old_width + 2
+                padded = (
+                    torch.nn.functional.pad(base, (0, 2, 0, 1)),
+                    torch.nn.functional.pad(contexts, (0, 2, 0, 1)),
+                    owners,
+                    torch.where(
+                        sites < 0,
+                        sites,
+                        (sites // old_width) * new_width + sites % old_width,
+                    ),
+                )
                 shifted = torch.where(
                     ix < 0, ix, (ix // old_width) * new_width + ix % old_width
                 )
@@ -265,7 +285,8 @@ class NativeContract(unittest.TestCase):
         for schema, names, channel_names in [
             (3, native.LEGACY_FEATURE_NAMES, native.LEGACY_SPATIAL_CHANNEL_NAMES),
             (5, native.DUTY_FEATURE_NAMES, native.DUTY_SPATIAL_CHANNEL_NAMES),
-            (7, native.DIPLOMACY_FEATURE_NAMES, native.SPATIAL_CHANNEL_NAMES),
+            (7, native.DIPLOMACY_FEATURE_NAMES, native.CAMPAIGN_SPATIAL_CHANNEL_NAMES),
+            (9, native.CAMPAIGN_FEATURE_NAMES, native.CAMPAIGN_SPATIAL_CHANNEL_NAMES),
         ]:
             width = len(names)
             channels = len(channel_names)

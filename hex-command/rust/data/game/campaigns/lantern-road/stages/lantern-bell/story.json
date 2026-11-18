@@ -7,17 +7,23 @@
     {
       "speaker": "The company",
       "portrait": "lich",
-      "text": "The Bellwarden falls. The sound above the courtyard breaks into a thin, wavering note, then dies."
+      "text": "The Bellwarden falls. The sound above the courtyard breaks into a thin, wavering note, then dies.",
+      "character": null,
+      "sound": null
     },
     {
       "portrait": "scout",
       "text": "Listen. Just the reeds.",
-      "character": "ivo"
+      "character": "ivo",
+      "speaker": null,
+      "sound": null
     },
     {
       "portrait": "swordsman",
       "text": "Gather anyone still alive. We’re leaving.",
-      "character": "nera"
+      "character": "nera",
+      "speaker": null,
+      "sound": null
     }
   ],
   "debrief": "The bell is silent. The company withdraws from the valley with the survivors."

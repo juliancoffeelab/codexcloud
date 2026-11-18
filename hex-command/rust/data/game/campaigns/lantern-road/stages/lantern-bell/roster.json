@@ -3,7 +3,13 @@
     {
       "id": "player",
       "sight": {
-        "range": "unlimited",
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": []
       },
       "explored": []
@@ -11,7 +17,13 @@
     {
       "id": "enemy",
       "sight": {
-        "range": "unlimited",
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": ["fog"]
       },
       "explored": []
@@ -19,7 +31,13 @@
     {
       "id": "prisoners",
       "sight": {
-        "range": "unlimited",
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": ["fog"]
       },
       "explored": []
@@ -36,19 +54,24 @@
       "gold": 20,
       "recruits": [
         {
-          "unit": "swordsman"
+          "unit": "swordsman",
+          "cost": null
         },
         {
-          "unit": "spearman"
+          "unit": "spearman",
+          "cost": null
         },
         {
-          "unit": "archer"
+          "unit": "archer",
+          "cost": null
         },
         {
-          "unit": "scout"
+          "unit": "scout",
+          "cost": null
         },
         {
-          "unit": "adept"
+          "unit": "adept",
+          "cost": null
         }
       ],
       "units": [
@@ -59,7 +82,17 @@
           "tile": {
             "col": 2,
             "row": 7
-          }
+          },
+          "id": "u1",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "scout",
@@ -67,37 +100,58 @@
           "tile": {
             "col": 1,
             "row": 7
-          }
+          },
+          "id": "u2",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
       "relations": {
-        "bell-host": "hostile"
+        "bell-host": "hostile",
+        "player": "allied",
+        "prisoners": "neutral"
       },
-      "visionGroup": "player"
+      "visionGroup": "player",
+      "name": null,
+      "transfer": null
     },
     {
       "id": "bell-host",
       "phase": "ai",
       "controller": {
-        "kind": "ai"
+        "kind": "ai",
+        "policy": null
       },
       "palette": "enemy",
       "gold": 24,
       "recruits": [
         {
-          "unit": "skeleton"
+          "unit": "skeleton",
+          "cost": null
         },
         {
-          "unit": "bonearcher"
+          "unit": "bonearcher",
+          "cost": null
         },
         {
-          "unit": "skeleton-impact-caster"
+          "unit": "skeleton-impact-caster",
+          "cost": null
         },
         {
-          "unit": "skeleton-axeman"
+          "unit": "skeleton-axeman",
+          "cost": null
         },
         {
-          "unit": "skeleton-rider"
+          "unit": "skeleton-rider",
+          "cost": null
         }
       ],
       "units": [
@@ -108,21 +162,55 @@
           "tile": {
             "col": 11,
             "row": 12
-          }
+          },
+          "id": "u3",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "skeleton-impact-caster",
           "tile": {
             "col": 10,
             "row": 13
-          }
+          },
+          "id": "u4",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "bonearcher",
           "tile": {
             "col": 11,
             "row": 13
-          }
+          },
+          "id": "u5",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "skeleton",
@@ -130,7 +218,18 @@
           "tile": {
             "col": 10,
             "row": 5
-          }
+          },
+          "id": "u6",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "bonearcher",
@@ -138,7 +237,18 @@
           "tile": {
             "col": 19,
             "row": 9
-          }
+          },
+          "id": "u7",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "skeleton",
@@ -146,13 +256,28 @@
           "tile": {
             "col": 13,
             "row": 20
-          }
+          },
+          "id": "u8",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
       "relations": {
-        "player": "hostile"
+        "player": "hostile",
+        "bell-host": "allied",
+        "prisoners": "allied"
       },
-      "visionGroup": "enemy"
+      "visionGroup": "enemy",
+      "name": null,
+      "transfer": null
     },
     {
       "id": "prisoners",
@@ -163,7 +288,8 @@
       "palette": "passive",
       "relations": {
         "player": "neutral",
-        "bell-host": "allied"
+        "bell-host": "allied",
+        "prisoners": "allied"
       },
       "gold": 0,
       "recruits": [],
@@ -175,7 +301,17 @@
             "col": 11,
             "row": 5
           },
-          "role": "captive"
+          "role": "captive",
+          "id": "u9",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "captives",
@@ -184,7 +320,17 @@
             "col": 19,
             "row": 10
           },
-          "role": "captive"
+          "role": "captive",
+          "id": "u10",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "captives",
@@ -193,10 +339,22 @@
             "col": 12,
             "row": 20
           },
-          "role": "captive"
+          "role": "captive",
+          "id": "u11",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
-      "visionGroup": "prisoners"
+      "visionGroup": "prisoners",
+      "name": null,
+      "transfer": null
     }
   ],
   "arrivals": [
@@ -214,5 +372,9 @@
         "row": 7
       }
     }
-  ]
+  ],
+  "round": 1,
+  "turn": "player",
+  "log": ["Capture villages for gold. Defeat the enemy commander."],
+  "combatRng": 1831565813
 }

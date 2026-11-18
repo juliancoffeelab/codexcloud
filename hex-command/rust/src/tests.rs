@@ -1,40 +1,22 @@
 //! AI integration against validated mechanical snapshots; engine-only tests live in battle.
-use crate::{data::*, logic::Game};
-fn ability_rules() -> Rules {
-    let mut rules = Rules::load().unwrap();
-    for id in ["soldier", "archer", "scout"] {
-        let kind = rules.types[id];
-        let rule = &mut rules.units[kind];
-        rule.hp = 100;
-        rule.environment.fill([[0; 3]; 2]);
-        rule.damage_modifiers = DamageModifiers {
-            blade: 0,
-            pierce: 0,
-            impact: 0,
-        };
-        rule.thorns = 0;
-        rule.thorn_aura = 0;
-        for attack in &mut rule.attacks {
-            attack.spread = 0;
-            attack.damage = 4;
-            attack.count = 2;
-            attack.drain = 0;
-        }
-    }
-    rules
+use crate::{data::*, logic::BattleSession};
+fn ability_rules() -> JsonBundle {
+    crate::catalogue_fixture::neutral_combat()
 }
 
 #[test]
 fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
     let mut rules = ability_rules();
-    let kind = rules.types["archer"];
-    rules.units[kind].attacks[0].damage = 4;
-    rules.units[kind].attacks[0].spread = 4;
-    rules.units[kind].attacks[0].count = 1;
+    crate::catalogue_fixture::unit(&mut rules, "archer", |unit| {
+        unit["attacks"][0]["damage"] = serde_json::json!(4);
+        unit["attacks"][0]["spread"] = serde_json::json!(4);
+        unit["attacks"][0]["count"] = serde_json::json!(1);
+    });
+    let rules = Catalogue::from_json_bundle(&rules).unwrap();
     let mut outcomes = [false; 2];
     let mut decision = None;
     for seed in 0..32 {
-        let mut state = Game::new(&rules, "mirror").state();
+        let mut state = BattleSession::new(&rules, "mirror").state();
         state.units.clear();
         state.combat_rng = seed;
         state.gold = Gold::two(0, 0);
@@ -61,9 +43,9 @@ fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
             });
             id
         };
-        let a = add("player", Hex::new(2, 3), rules.units[kind].hp);
+        let a = add("player", Hex::new(2, 3), rules.unit("archer").max_hp);
         let b = add("enemy", Hex::new(3, 3), 4);
-        let mut game = Game::try_from_state(&rules, state).unwrap();
+        let mut game = BattleSession::try_from_state(&rules, state).unwrap();
         let actor = game.unit(a).unwrap();
         let target = game.unit(b).unwrap();
         assert!((game.exchange(actor, target, 0, actor.tile).death[1] - 5. / 9.).abs() < 1e-12);
@@ -74,6 +56,7 @@ fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
             crate::ai::choose_game_command(&game, crate::ai::Policy::Balanced, &mut workspace)
                 .unwrap();
         assert_eq!(decision.get_or_insert(command.clone()), &command);
+        #[cfg(feature = "simulation")]
         game.start_recording();
         game.execute(Command::Attack {
             unit: UnitId(a),
@@ -81,13 +64,17 @@ fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
             weapon: "bow".into(),
         })
         .unwrap();
+        #[cfg(feature = "simulation")]
         let records = game.take_recordings().unwrap();
+        #[cfg(feature = "simulation")]
         let record = &records.combats[0];
         if game.unit(b).is_none() {
             outcomes[0] = true;
+            #[cfg(feature = "simulation")]
             assert!(record.response_rolls.is_empty());
         } else {
             outcomes[1] = true;
+            #[cfg(feature = "simulation")]
             assert_eq!(record.response_rolls.len(), 1);
         }
     }
@@ -96,13 +83,8 @@ fn uncertain_kills_allow_actual_replies_and_ai_does_not_peek_at_combat_seed() {
 
 #[test]
 fn best_attack_avoids_lethal_reply_and_melee_cannot_repeat() {
-    let mut rules = Rules::load().unwrap();
-    for unit in &mut rules.units {
-        for attack in &mut unit.attacks {
-            attack.spread = 0;
-        }
-    }
-    let mut state = Game::new(&rules, "mirror").state();
+    let rules = Catalogue::from_json_bundle(&crate::catalogue_fixture::deterministic()).unwrap();
+    let mut state = BattleSession::new(&rules, "mirror").state();
     state.units.clear();
     for tile in &mut state.tiles {
         if tile.terrain != "plains" {
@@ -141,16 +123,16 @@ fn best_attack_avoids_lethal_reply_and_melee_cannot_repeat() {
         "archer",
         "enemy",
         Hex::new(3, 3),
-        rules.units[rules.types["archer"]].hp,
+        rules.unit("archer").max_hp,
     );
-    let mut game = Game::try_from_state(&rules, state).unwrap();
+    let mut game = BattleSession::try_from_state(&rules, state).unwrap();
     let actor = game.unit(scout).unwrap();
     let target = game.unit(bow).unwrap();
-    let knife = rules.units[actor.kind]
-        .attacks
-        .iter()
-        .position(|weapon| weapon.id == "knife")
-        .unwrap();
+    let knife = game.with_capabilities(actor, actor.tile, |caps| {
+        caps.attacks()
+            .position(|attack| attack.id() == "knife")
+            .unwrap()
+    });
     assert_eq!(
         crate::ai::policies::combat::best_attack(game.view(), actor, target, actor.tile),
         Some(knife)
@@ -173,11 +155,11 @@ fn best_attack_avoids_lethal_reply_and_melee_cannot_repeat() {
 }
 
 /// Restore an edited checkpoint for integration fixtures without exposing engine storage.
-pub(crate) fn edit(game: &mut Game<'_>, change: impl FnOnce(&mut State)) {
+pub(crate) fn edit(game: &mut BattleSession<'_>, change: impl FnOnce(&mut State)) {
     let pools = game.pools().cloned();
     let first = game.arena_first();
     let mut state = game.state();
     change(&mut state);
-    *game = Game::from_state(game.catalogue(), state);
+    *game = game.restored(state).unwrap();
     game.configure_arena(pools, first);
 }

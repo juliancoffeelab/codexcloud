@@ -72,14 +72,8 @@ test("Indexed queries match native inspection and remain attached to their publi
     old = game.view,
     inspection = Native.inspection(old);
   const check = (view, source) => {
-    const terrain = Catalog.terrain(catalog);
-    for (const definition of Catalog.units(catalog))
-      terrain.forEach((cell, index) =>
-        assert.equal(
-          Native.movement_cost(view, definition.id, cell.id),
-          definition.costs[index] ?? Infinity,
-        ),
-      );
+    for (const unit of source.units)
+      assert.deepEqual(Native.unit_details(view, unit.unit), unit.details);
     const tiles = Native.state(view).tiles;
     for (const origin of tiles) {
       const offsets =
@@ -118,12 +112,9 @@ test("Indexed queries match native inspection and remain attached to their publi
           Native.recruit_tiles(view, unit.unit, kind).map((tile) => tile.id),
           tiles.map(cellKey),
         );
-    assert.equal(Native.movement_cost(view, "missing", "missing"), Infinity);
     assert.deepEqual(Native.neighbors(view, "missing"), []);
     assert.deepEqual(Native.recruit_tiles(view, "missing", "missing"), []);
     for (const key of ["constructor", "__proto__"]) {
-      assert.equal(Native.movement_cost(view, key, "name"), Infinity);
-      assert.equal(Native.movement_cost(view, "commander", key), Infinity);
       assert.deepEqual(Native.neighbors(view, key), []);
       assert.deepEqual(Native.recruit_tiles(view, key, "soldier"), []);
       assert.deepEqual(Native.recruit_tiles(view, "u1", key), []);

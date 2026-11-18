@@ -6,44 +6,60 @@
     {
       "portrait": "scout",
       "text": "That landing lamp has burned every night since I was a boy. Last night it went out. So did every window on the other bank.",
-      "character": "ivo"
+      "character": "ivo",
+      "speaker": null,
+      "sound": null
     },
     {
       "portrait": "swordsman",
       "text": "And the ferry?",
-      "character": "nera"
+      "character": "nera",
+      "speaker": null,
+      "sound": null
     },
     {
       "portrait": "scout",
       "text": "Still tied up over there. We’ll have to take the fords round the island.",
-      "character": "ivo"
+      "character": "ivo",
+      "speaker": null,
+      "sound": null
     },
     {
       "portrait": "adept",
       "text": "The wind’s coming down the valley. That mist is creeping the other way.",
-      "character": "oren"
+      "character": "oren",
+      "speaker": null,
+      "sound": null
     },
     {
       "portrait": "scout",
       "text": "You studied fog?",
-      "character": "ivo"
+      "character": "ivo",
+      "speaker": null,
+      "sound": null
     },
     {
       "portrait": "adept",
       "text": "A whole winter at the Collegium. This wasn’t in the lessons.",
-      "character": "oren"
+      "character": "oren",
+      "speaker": null,
+      "sound": null
     },
     {
       "portrait": "swordsman",
       "text": "Find the ferryman. Quickly. Whatever happened, he’s alone over there.",
-      "character": "nera"
+      "character": "nera",
+      "speaker": null,
+      "sound": null
     }
   ],
   "victory": [
     {
       "portrait": "swordsman",
       "text": "Both lanterns are burning. Leave someone watching the crossing; the rest of us take the eastern road. We still have people to find.",
-      "character": "nera"
+      "character": "nera",
+      "speaker": null,
+      "sound": null
     }
   ],
   "debrief": "The patrol reached the ferryman and secured the eastern villages."

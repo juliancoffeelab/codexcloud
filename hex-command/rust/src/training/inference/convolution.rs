@@ -1,18 +1,18 @@
 //! Fixed seven-neighbor convolutions, vectorized across the sixteen outputs.
 use super::super::{
     FEATURES,
-    spatial::{self, Board, EMBEDDING, KERNEL},
+    spatial::{self, EMBEDDING, KERNEL, SpatialBoard},
 };
 use pulp::{Simd, WithSimd};
 
-struct Layer {
+struct ConvolutionLayer {
     channels: usize,
     weights: Vec<f32>, // input channel, kernel position, output channel
     bias: Vec<f32>,
 }
 
-pub(super) struct Encoder {
-    layers: Vec<Layer>,
+pub(super) struct ConvolutionEncoder {
+    layers: Vec<ConvolutionLayer>,
     arch: pulp::Arch,
     height: usize,
     width: usize,
@@ -23,8 +23,8 @@ pub(super) struct Encoder {
     embedding: Vec<f32>,
 }
 
-impl Encoder {
-    pub(super) fn new(encoder: &spatial::Encoder) -> Self {
+impl ConvolutionEncoder {
+    pub(super) fn new(encoder: &spatial::SpatialEncoder) -> Self {
         let layers = encoder
             .convolutions
             .iter()
@@ -38,7 +38,7 @@ impl Encoder {
                         }
                     }
                 }
-                Layer {
+                ConvolutionLayer {
                     channels: conv.input_channels,
                     weights,
                     bias: conv.bias.clone(),
@@ -60,11 +60,45 @@ impl Encoder {
 
     pub(super) fn inputs(
         &mut self,
-        board: &Board,
+        board: &SpatialBoard,
         indices: &[[i64; 3]],
         features: &[[f32; FEATURES]],
         input: &mut Vec<f32>,
     ) {
+        if !board.contexts.is_empty() {
+            let stride = FEATURES + 4 * EMBEDDING;
+            let offset = input.len();
+            input.resize(offset + features.len() * stride, 0.);
+            for actor in
+                std::iter::once(-1).chain(board.contexts.iter().map(|c| c.actor_site as i64))
+            {
+                let selected: Vec<_> = indices
+                    .iter()
+                    .enumerate()
+                    .filter(|(_, ix)| ix[0] == actor)
+                    .map(|(i, _)| i)
+                    .collect();
+                if selected.is_empty() {
+                    continue;
+                }
+                let context = board.contexts.iter().find(|c| c.actor_site as i64 == actor);
+                let plain =
+                    context
+                        .map(|c| board.with_context(c))
+                        .unwrap_or_else(|| SpatialBoard {
+                            contexts: vec![],
+                            ..board.clone()
+                        });
+                let ix: Vec<_> = selected.iter().map(|&i| indices[i]).collect();
+                let x: Vec<_> = selected.iter().map(|&i| features[i]).collect();
+                let mut rows = Vec::new();
+                self.inputs(&plain, &ix, &x, &mut rows);
+                for (i, row) in selected.into_iter().zip(rows.chunks_exact(stride)) {
+                    input[offset + i * stride..offset + (i + 1) * stride].copy_from_slice(row);
+                }
+            }
+            return;
+        }
         let cells = board.height * board.width;
         if self.height != board.height
             || self.width != board.width
@@ -162,7 +196,7 @@ fn dispatch<K: WithSimd>(arch: pulp::Arch, kernel: K) -> K::Output {
 }
 
 struct Kernel<'a, const CHANNEL_MAJOR: bool> {
-    layer: &'a Layer,
+    layer: &'a ConvolutionLayer,
     input: &'a [f32],
     output: &'a mut [f32],
     cells: usize,

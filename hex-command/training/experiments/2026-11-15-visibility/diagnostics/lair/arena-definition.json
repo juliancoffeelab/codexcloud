@@ -1,0 +1,18 @@
+{
+  "id": "diagnostic-underground-lair",
+  "variants": [
+    {
+      "map": "underground-lair",
+      "forces": {
+        "kind": "scenario"
+      }
+    }
+  ],
+  "territory": [
+    {
+      "col": 16,
+      "row": 6
+    }
+  ],
+  "holdTurns": 3
+}

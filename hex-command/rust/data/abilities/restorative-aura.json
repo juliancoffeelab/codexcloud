@@ -1,0 +1,22 @@
+{
+  "id": "restorative-aura",
+  "name": "Restorative Aura",
+  "description": "Heals eligible recipients at the start of their turn.",
+  "effects": [
+    {
+      "scope": {
+        "radius": 1,
+        "includeSelf": true,
+        "targets": "allies"
+      },
+      "stacking": {
+        "group": "healing",
+        "combine": "max"
+      },
+      "effect": {
+        "kind": "healing",
+        "power": 2
+      }
+    }
+  ]
+}

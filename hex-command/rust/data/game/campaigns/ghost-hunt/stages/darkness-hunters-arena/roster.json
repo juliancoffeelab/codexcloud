@@ -4,6 +4,12 @@
       "id": "hidden",
       "sight": {
         "range": 6,
+        "unlimited": false,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": ["darkness"]
       },
       "explored": []
@@ -12,6 +18,12 @@
       "id": "watch",
       "sight": {
         "range": 6,
+        "unlimited": false,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
         "penetrates": []
       },
       "explored": []
@@ -23,16 +35,19 @@
       "phase": "ai",
       "visionGroup": "hidden",
       "controller": {
-        "kind": "ai"
+        "kind": "ai",
+        "policy": null
       },
       "palette": "enemy",
       "relations": {
-        "player": "hostile"
+        "player": "hostile",
+        "crypt-hunters": "allied"
       },
       "gold": 18,
       "recruits": [
         {
-          "unit": "ghost"
+          "unit": "ghost",
+          "cost": null
         }
       ],
       "units": [
@@ -52,13 +67,24 @@
                   "kind": "darkness",
                   "revealWithin": 1,
                   "requires": {
-                    "illumination": "unlit"
+                    "illumination": ["unlit", "darkness"],
+                    "terrains": null
                   }
                 }
-              ]
+              ],
+              "light": null
             }
           ],
-          "character": "night-mayor"
+          "character": "night-mayor",
+          "id": "u1",
+          "hp": "full",
+          "items": [],
+          "aiGroup": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "ghost",
@@ -75,12 +101,25 @@
                   "kind": "darkness",
                   "revealWithin": 1,
                   "requires": {
-                    "illumination": "unlit"
+                    "illumination": ["unlit", "darkness"],
+                    "terrains": null
                   }
                 }
-              ]
+              ],
+              "light": null
             }
-          ]
+          ],
+          "id": "u2",
+          "hp": "full",
+          "items": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "ghost",
@@ -97,12 +136,25 @@
                   "kind": "darkness",
                   "revealWithin": 1,
                   "requires": {
-                    "illumination": "unlit"
+                    "illumination": ["unlit", "darkness"],
+                    "terrains": null
                   }
                 }
-              ]
+              ],
+              "light": null
             }
-          ]
+          ],
+          "id": "u3",
+          "hp": "full",
+          "items": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "ghost",
@@ -119,14 +171,29 @@
                   "kind": "darkness",
                   "revealWithin": 1,
                   "requires": {
-                    "illumination": "unlit"
+                    "illumination": ["unlit", "darkness"],
+                    "terrains": null
                   }
                 }
-              ]
+              ],
+              "light": null
             }
-          ]
+          ],
+          "id": "u4",
+          "hp": "full",
+          "items": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
-      ]
+      ],
+      "name": null,
+      "transfer": null
     },
     {
       "id": "player",
@@ -137,21 +204,26 @@
       },
       "palette": "player",
       "relations": {
-        "crypt-hunters": "hostile"
+        "crypt-hunters": "hostile",
+        "player": "allied"
       },
       "gold": 18,
       "recruits": [
         {
-          "unit": "swordsman"
+          "unit": "swordsman",
+          "cost": null
         },
         {
-          "unit": "spearman"
+          "unit": "spearman",
+          "cost": null
         },
         {
-          "unit": "archer"
+          "unit": "archer",
+          "cost": null
         },
         {
-          "unit": "scout"
+          "unit": "scout",
+          "cost": null
         }
       ],
       "units": [
@@ -167,10 +239,21 @@
               "id": "search-lantern",
               "light": {
                 "radius": 2
-              }
+              },
+              "penetrates": [],
+              "concealment": []
             }
           ],
-          "character": "captain-boots"
+          "character": "captain-boots",
+          "id": "u5",
+          "hp": "full",
+          "items": [],
+          "aiGroup": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "archer",
@@ -183,9 +266,22 @@
               "id": "search-lantern",
               "light": {
                 "radius": 2
-              }
+              },
+              "penetrates": [],
+              "concealment": []
             }
-          ]
+          ],
+          "id": "u6",
+          "hp": "full",
+          "items": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "swordsman",
@@ -198,9 +294,22 @@
               "id": "search-lantern",
               "light": {
                 "radius": 2
-              }
+              },
+              "penetrates": [],
+              "concealment": []
             }
-          ]
+          ],
+          "id": "u7",
+          "hp": "full",
+          "items": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         },
         {
           "type": "scout",
@@ -213,11 +322,31 @@
               "id": "search-lantern",
               "light": {
                 "radius": 2
-              }
+              },
+              "penetrates": [],
+              "concealment": []
             }
-          ]
+          ],
+          "id": "u8",
+          "hp": "full",
+          "items": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
-      ]
+      ],
+      "name": null,
+      "transfer": null
     }
-  ]
+  ],
+  "arrivals": [],
+  "round": 1,
+  "turn": "player",
+  "log": ["Capture villages for gold. Defeat the enemy commander."],
+  "combatRng": 1831565813
 }

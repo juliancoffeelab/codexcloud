@@ -22,7 +22,16 @@ test("Artwork and terrain names never resolve inherited object properties", () =
         "test",
         1,
         1,
-        [{ id: "0,0", col: 0, row: 0, terrain: key, owner: null }],
+        [
+          {
+            perception: { illumination: "lit", sight: null, remember: false, concealment: [] },
+            id: "0,0",
+            col: 0,
+            row: 0,
+            terrain: key,
+            owner: null,
+          },
+        ],
         Art.current(),
       ),
     );

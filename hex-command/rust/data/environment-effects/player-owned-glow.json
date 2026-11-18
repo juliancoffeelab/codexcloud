@@ -1,0 +1,28 @@
+{
+  "id": "player-owned-glow",
+  "name": "Player owned glow",
+  "description": "Authored light effect.",
+  "effects": [
+    {
+      "kind": "light",
+      "light": {
+        "dy": 6,
+        "radius": 95,
+        "power": 0.8,
+        "when": {
+          "condition": {
+            "kind": "owner",
+            "side": "player",
+            "tile": null
+          },
+          "remember": false,
+          "observer": null
+        },
+        "emission": null,
+        "color": null,
+        "fixture": null,
+        "dx": null
+      }
+    }
+  ]
+}

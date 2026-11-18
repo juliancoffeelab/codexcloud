@@ -60,7 +60,8 @@ pub(super) fn assign(
     }
     let villages: Vec<_> = (0..game.terrain().len())
         .filter(|&tile| {
-            game.role_is(tile, TerrainRole::Village) && game.captures(tile, game.observer_faction())
+            game.terrain_definition(tile).income() > 0
+                && game.captures(tile, game.observer_faction())
         })
         .collect();
     for unit in game.units().iter().filter(|unit| {
@@ -81,7 +82,7 @@ pub(super) fn assign(
         let village_step = if villages.is_empty() {
             None
         } else {
-            let routes = game.routes(unit.kind, &villages);
+            let routes = game.routes(&unit, &villages);
             reachable
                 .iter()
                 .filter(|&&(tile, _)| {
@@ -155,12 +156,12 @@ pub(super) fn assign(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::logic::Game;
+    use crate::logic::BattleSession;
 
     #[test]
     fn patrols_are_deterministic_read_only_and_preserve_duties() {
-        let rules = Rules::load().unwrap();
-        let visible = Game::new(&rules, "mirror");
+        let rules = Catalogue::load().unwrap();
+        let visible = BattleSession::new(&rules, "mirror");
         let mut untouched = TacticalOrders::default();
         assign(&visible, 17, &mut untouched, |_| None);
         assert!(untouched.objectives.is_empty());
@@ -189,7 +190,7 @@ mod tests {
             .unwrap()
             .hex();
         state.units.push(unit);
-        let game = Game::from_state(&rules, state);
+        let game = BattleSession::from_state(&rules, state);
         let before = serde_json::to_value(game.state()).unwrap();
         let mut first = TacticalOrders::default();
         assign(&game, 17, &mut first, |_| None);

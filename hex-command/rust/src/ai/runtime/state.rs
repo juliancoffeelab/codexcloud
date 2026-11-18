@@ -3,7 +3,7 @@
 use crate::ai::{Blocks, Policy};
 use crate::ai::{Diplomacy, orders::*, planner, policies};
 use crate::data::*;
-use hex_command_battle::RuntimeCommand as Command;
+use hex_command_battle::RuntimeCommand;
 use std::collections::VecDeque;
 
 /// Public continuation handle. Its storage is private to runtime, not AI siblings.
@@ -34,7 +34,7 @@ pub(super) struct TurnState {
     #[cfg(any(feature = "wasm", test))]
     pub(super) initialized: bool,
     pub(super) finished: bool,
-    pub(super) commands: VecDeque<Command>,
+    pub(super) commands: VecDeque<RuntimeCommand>,
     pub(super) attack_continuation: Option<(UnitId, UnitId, WeaponKey)>,
     #[cfg(any(feature = "wasm", test))]
     pub(super) blocks: Option<Blocks>,
@@ -44,10 +44,10 @@ pub(super) struct TurnState {
     pub(super) report: PlanningReport,
     #[cfg(any(feature = "wasm", test))]
     pub(super) turn_plan_ready: bool,
-    classic: planner::classic::Session,
-    full: planner::search::Session,
-    queued: planner::queued::Session,
-    coordination: policies::cooperation::State,
+    classic: planner::classic::ClassicPlannerSession,
+    full: planner::search::SearchPlannerSession,
+    queued: planner::queued::QueuedPlannerSession,
+    coordination: policies::cooperation::CooperationState,
 }
 
 #[derive(Clone, Copy)]
@@ -63,11 +63,11 @@ pub(in crate::ai) struct PlannerTurn<'a> {
     pub goals: Option<&'a [Objective]>,
     pub orders: &'a mut CampaignOrders,
     pub recruitment: Option<policies::recruitment::EstimateInput<'a>>,
-    pub commands: &'a mut VecDeque<Command>,
+    pub commands: &'a mut VecDeque<RuntimeCommand>,
     pub report: &'a mut PlanningReport,
     pub finished: &'a mut bool,
     pub attack_continuation: &'a mut Option<(UnitId, UnitId, WeaponKey)>,
-    pub coordination: &'a mut policies::cooperation::State,
+    pub coordination: &'a mut policies::cooperation::CooperationState,
 }
 pub(in crate::ai) struct PlannerParts<'a, S> {
     pub turn: PlannerTurn<'a>,
@@ -169,7 +169,7 @@ impl PlanningWorkspace {
     }
     pub(in crate::ai::runtime) fn classic_parts(
         &mut self,
-    ) -> PlannerParts<'_, planner::classic::Session> {
+    ) -> PlannerParts<'_, planner::classic::ClassicPlannerSession> {
         let state = &mut self.state;
         let turn = borrow_turn!(state);
         PlannerParts {
@@ -179,7 +179,7 @@ impl PlanningWorkspace {
     }
     pub(in crate::ai::runtime) fn full_parts(
         &mut self,
-    ) -> PlannerParts<'_, planner::search::Session> {
+    ) -> PlannerParts<'_, planner::search::SearchPlannerSession> {
         let state = &mut self.state;
         let turn = borrow_turn!(state);
         PlannerParts {
@@ -189,7 +189,7 @@ impl PlanningWorkspace {
     }
     pub(in crate::ai::runtime) fn queued_parts(
         &mut self,
-    ) -> PlannerParts<'_, planner::queued::Session> {
+    ) -> PlannerParts<'_, planner::queued::QueuedPlannerSession> {
         let state = &mut self.state;
         let turn = borrow_turn!(state);
         PlannerParts {
@@ -197,7 +197,7 @@ impl PlanningWorkspace {
             session: &mut state.queued,
         }
     }
-    pub(super) fn refresh_scope(&mut self, game: &crate::logic::Game<'_>) {
+    pub(super) fn refresh_scope(&mut self, game: &crate::logic::BattleSession<'_>) {
         let changed = self.state.scope.as_ref().is_some_and(|scope| {
             !game.in_scope(scope)
                 || self.state.acting_faction.as_deref() != game.active_faction()
@@ -220,7 +220,7 @@ impl PlanningWorkspace {
             self.state.phase = Some(game.turn());
         }
     }
-    pub(super) fn refresh_control(&mut self, game: &crate::logic::Game<'_>) -> bool {
+    pub(super) fn refresh_control(&mut self, game: &crate::logic::BattleSession<'_>) -> bool {
         self.refresh_scope(game);
         let revision = game.planning_revision();
         let observed: Vec<_> = game

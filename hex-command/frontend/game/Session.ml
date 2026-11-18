@@ -1109,7 +1109,7 @@ let reset ?(setup = Setup.default) ?armies t map =
   if
     not
       (List.exists
-         (fun (candidate : Domain.map_definition) -> candidate.id = map)
+         (fun (candidate : Domain.browser_map) -> candidate.id = map)
          (Catalog.scenario_maps t.catalog))
   then raise (Failed (Rejected {js|Unknown battlefield. Choose a skirmish or start a campaign.|js}));
   preload t.catalog map;
@@ -1378,38 +1378,26 @@ let scene_audio t =
       | Event_action.For_each_mark loop -> actions loop.actions
       | _ -> [])
   in
-  let item_ids, narrative =
+  let narrative =
     match state.campaign with
-    | None -> ([], [])
+    | None -> []
     | Some progress ->
         let campaign = Catalog.campaign t.catalog progress.id in
         let mission = campaign.missions.(int_of_float progress.mission) in
-        ( Array.to_list mission.item_ids,
-          speech mission.intro @ speech mission.victory
-          @ (if int_of_float progress.mission = Array.length campaign.missions - 1 then
-               speech campaign.ending
-             else [])
-          @ (Array.to_list mission.scripted_events
-            |> List.concat_map (fun (event : script_event) -> actions event.actions)) )
+        speech mission.intro @ speech mission.victory
+        @ (if int_of_float progress.mission = Array.length campaign.missions - 1 then
+             speech campaign.ending
+           else [])
+        @ (Array.to_list mission.scripted_events
+          |> List.concat_map (fun (event : script_event) -> actions event.actions))
   in
   let items = Array.to_list (Catalog.raw t.catalog).items in
-  let carried =
-    Array.to_list state.units
-    |> List.concat_map (fun (unit : public_unit) ->
-        Array.to_list unit.items |> List.map (fun (item : item) -> item.id))
-  in
-  let ground =
-    Array.to_list (Native.ground_items t.latest.interaction_game)
-    |> List.map (fun (entry : ground_item) -> entry.item.id)
-  in
   let item_sounds =
-    List.sort_uniq Stdlib.compare (item_ids @ carried @ ground)
-    |> List.concat_map (fun id ->
-        (if id = {js|quarry-hammer|js} then [ {js|attack-melee|js} ] else [])
-        @ Option.fold ~none:[]
-            ~some:(fun (item : item) ->
-              Array.to_list item.attacks |> List.map (fun (weapon : weapon) -> weapon.sound))
-            (List.find_opt (fun (item : item) -> item.id = id) items))
+    List.concat_map
+      (fun (item : wiki_item) ->
+        (if item.id = {js|quarry-hammer|js} then [ {js|attack-melee|js} ] else [])
+        @ (Array.to_list item.own_attacks |> List.map (fun (attack : wiki_attack) -> attack.sound)))
+      items
   in
   Phaser_sound.prepare t.audio (Array.of_list (narrative @ item_sounds))
 
@@ -1761,12 +1749,7 @@ let trace_context t =
       ( {js|lighting|js},
         obj
           [
-            ( {js|time|js},
-              str
-                (match presentation.lighting.time with
-                | Domain.Time_of_day.Day -> {js|day|js}
-                | Night -> {js|night|js}) );
-            ({js|underground|js}, Js.Json.array (Array.map hex presentation.lighting.underground));
+            ({js|unlitTiles|js}, Js.Json.array (Array.map hex presentation.lighting.unlit_tiles));
             ({js|lights|js}, Js.Json.array (Array.map light presentation.lighting.lights));
           ] );
       ({js|fog|js}, Js.Json.array (Array.map hex presentation.fog));

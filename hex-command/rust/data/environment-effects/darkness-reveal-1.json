@@ -1,0 +1,18 @@
+{
+  "id": "darkness-reveal-1",
+  "name": "Darkness reveal 1",
+  "description": "Authored concealment effect.",
+  "effects": [
+    {
+      "kind": "concealment",
+      "rule": {
+        "kind": "darkness",
+        "revealWithin": 1,
+        "requires": {
+          "illumination": ["unlit", "darkness"],
+          "terrains": null
+        }
+      }
+    }
+  ]
+}

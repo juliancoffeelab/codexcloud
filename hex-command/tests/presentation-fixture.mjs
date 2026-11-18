@@ -31,6 +31,7 @@ function board(start = { kind: "scenario", map: "mirror" }) {
       let unit;
       fixture.edit((state) => {
         unit = {
+          items: [],
           experience: 0,
           id: `u${state.nextId++}`,
           type,
@@ -42,7 +43,7 @@ function board(start = { kind: "scenario", map: "mirror" }) {
           moved: false,
           attackSpent: false,
         };
-        unit.hp = Catalog.unit(catalog, type).hp;
+        unit.hp = Native.preview_unit(battle, type, faction, hex(tile)).hp;
         state.units.push(unit);
       });
       return required(Native.unit(fixture.view, unit.id));

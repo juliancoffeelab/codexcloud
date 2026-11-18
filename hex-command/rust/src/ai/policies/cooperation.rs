@@ -1,17 +1,17 @@
 //! Duty assignment, local rescue and defensive fallback; planner entry points opt in explicitly.
-use crate::ai::orders::TargetKind as ObjectiveKind;
-use crate::ai::orders::target as objective;
+use crate::ai::orders::TargetKind;
+use crate::ai::orders::target;
 use crate::ai::{attack_command, move_command, orders::*, policies::threat::Threats};
 use crate::sort::SharedSort;
 use crate::{ai::context::BattleView, data::*};
-use hex_command_battle::RuntimeCommand as Command;
+use hex_command_battle::RuntimeCommand;
 use hex_command_battle::{ActionForecastSource, PhaseForecasts};
 
 const PER_ACTOR: usize = 32;
 const PER_TURN: usize = 128;
 
 #[derive(Clone, Debug, Default)]
-pub(in crate::ai) struct State {
+pub(in crate::ai) struct CooperationState {
     assigned: bool,
     attempted: Vec<UnitId>,
     fallback: Vec<UnitId>,
@@ -21,7 +21,7 @@ pub(in crate::ai) struct State {
     exhausted: Vec<UnitId>,
 }
 
-impl State {
+impl CooperationState {
     pub(in crate::ai) fn revision(&self) -> u32 {
         self.revision
     }
@@ -29,7 +29,7 @@ impl State {
 
 pub(in crate::ai) fn assign(
     game: &BattleView<'_, '_>,
-    state: &mut State,
+    state: &mut CooperationState,
     orders: &mut TacticalOrders,
     report: &mut PlanningReport,
 ) -> Option<Vec<Target>> {
@@ -76,9 +76,9 @@ pub(in crate::ai) fn assign(
                     .find(|g| g.id == order.id)
                     .cloned()
                     .unwrap_or_else(|| {
-                        objective(
+                        target(
                             &order.id,
-                            ObjectiveKind::Visit,
+                            TargetKind::Visit,
                             vec![destination.0.clone()],
                             24.0,
                         )
@@ -86,9 +86,9 @@ pub(in crate::ai) fn assign(
                 target.actor = Some(format!("u{}", actor.0));
                 target.family = None;
                 target.kind = if occupy {
-                    ObjectiveKind::Capture
+                    TargetKind::Capture
                 } else {
-                    ObjectiveKind::Visit
+                    TargetKind::Visit
                 };
                 target.hold = Some(occupy);
                 target.tiles = vec![destination.0.clone()];
@@ -158,7 +158,7 @@ pub(in crate::ai) fn assign(
 
 pub(in crate::ai) fn refresh_assignments(
     game: &BattleView<'_, '_>,
-    state: &mut State,
+    state: &mut CooperationState,
     orders: &mut TacticalOrders,
     report: &PlanningReport,
 ) -> Option<Vec<Target>> {
@@ -233,10 +233,10 @@ pub(in crate::ai) fn rescue(
     game: &BattleView<'_, '_>,
     phases: PhaseForecasts<'_, '_>,
     actions: ActionForecastSource<'_, '_>,
-    state: &mut State,
+    state: &mut CooperationState,
     orders: &TacticalOrders,
     report: &mut PlanningReport,
-    queued: &mut std::collections::VecDeque<Command>,
+    queued: &mut std::collections::VecDeque<RuntimeCommand>,
 ) -> Result<bool, CommandError> {
     for constraint in &orders.constraints {
         let TacticalConstraint::Survive { actor } = constraint;
@@ -277,7 +277,7 @@ pub(in crate::ai) fn rescue(
         let helpers: Vec<_> = helpers.into_iter().take(2).map(|u| u.id).collect();
         let mut pending = std::collections::VecDeque::from([(
             actions.fork(),
-            Vec::<Command>::new(),
+            Vec::<RuntimeCommand>::new(),
             Vec::<u32>::new(),
         )]);
         let mut actor_candidates = 0;
@@ -384,10 +384,10 @@ pub(in crate::ai) fn rescue(
 pub(in crate::ai) fn fallback(
     game: &BattleView<'_, '_>,
     phases: PhaseForecasts<'_, '_>,
-    state: &mut State,
+    state: &mut CooperationState,
     orders: &TacticalOrders,
     report: &mut PlanningReport,
-    queued: &mut std::collections::VecDeque<Command>,
+    queued: &mut std::collections::VecDeque<RuntimeCommand>,
 ) -> Result<bool, CommandError> {
     for constraint in &orders.constraints {
         let TacticalConstraint::Survive { actor } = constraint;
@@ -437,7 +437,7 @@ fn passage_clear(
     if unit.tile == destination {
         return true;
     }
-    let route = game.routes(unit.kind, &[destination]);
+    let route = game.routes(&unit, &[destination]);
     if route[unit.tile] == u16::MAX {
         return false;
     }
@@ -448,7 +448,7 @@ fn passage_clear(
         std::collections::BinaryHeap::from([std::cmp::Reverse((route[unit.tile], unit.tile))]);
     while let Some(std::cmp::Reverse((_, tile))) = pending.pop() {
         for &next in &game.board().adjacent[tile] {
-            if visited[next] || route[next] == u16::MAX || game.cost(unit.kind, next) == u16::MAX {
+            if visited[next] || route[next] == u16::MAX || game.step_cost(&unit, next) == u16::MAX {
                 continue;
             }
             visited[next] = true;
@@ -469,7 +469,7 @@ fn passage_clear(
 pub(in crate::ai) fn report(
     game: &BattleView<'_, '_>,
     phases: PhaseForecasts<'_, '_>,
-    state: &State,
+    state: &CooperationState,
     orders: &CampaignOrders,
     report: &mut PlanningReport,
     finished: bool,
@@ -573,11 +573,11 @@ pub(in crate::ai) fn report(
 mod tests {
     use super::*;
     use crate::data::Hex;
-    use crate::logic::Game;
-    use hex_command_battle::RuntimeCommand as Command;
+    use crate::logic::BattleSession;
+    use hex_command_battle::RuntimeCommand;
 
-    fn small_battle(rules: &Rules) -> Game<'_> {
-        let mut state = Game::new(rules, "mirror").state();
+    fn small_battle(rules: &Catalogue) -> BattleSession<'_> {
+        let mut state = BattleSession::new(rules, "mirror").state();
         state.units.retain(|u| u.role == Some(Role::Leader));
         let actor = state
             .units
@@ -603,21 +603,21 @@ mod tests {
         state.next_id += 1;
         helper.r#type = "archer".into();
         helper.tile = Hex::new(3, 3).into();
-        helper.hp = rules.units[rules.types["archer"]].hp;
+        helper.hp = rules.unit("archer").max_hp;
         helper.moved = false;
         helper.attack_spent = false;
         helper.character = None;
         helper.role = None;
         state.units.push(helper);
-        Game::try_from_state(rules, state).unwrap()
+        BattleSession::try_from_state(rules, state).unwrap()
     }
     struct Harness {
-        state: State,
+        state: CooperationState,
         orders: CampaignOrders,
         report: PlanningReport,
-        commands: std::collections::VecDeque<Command>,
+        commands: std::collections::VecDeque<RuntimeCommand>,
     }
-    fn workspace(game: &Game<'_>) -> Harness {
+    fn workspace(game: &BattleSession<'_>) -> Harness {
         let actor = game
             .units()
             .iter()
@@ -625,7 +625,7 @@ mod tests {
             .unwrap()
             .id;
         Harness {
-            state: State::default(),
+            state: CooperationState::default(),
             orders: CampaignOrders {
                 tactics: TacticalOrders {
                     constraints: vec![TacticalConstraint::Survive {
@@ -641,7 +641,7 @@ mod tests {
     }
     #[test]
     fn an_ally_removes_a_lethal_threat_before_the_protected_actor_acts() {
-        let rules = Rules::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         let mut game = small_battle(&rules);
         let mut workspace = workspace(&game);
         let actor = game
@@ -680,7 +680,7 @@ mod tests {
     }
     #[test]
     fn an_unsafe_fallback_is_reported_without_claiming_survival() {
-        let rules = Rules::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         let game = small_battle(&rules);
         let mut workspace = workspace(&game);
         let queued = fallback(

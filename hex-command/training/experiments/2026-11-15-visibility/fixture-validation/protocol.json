@@ -1,0 +1,9 @@
+{
+  "player": "Predictor preset",
+  "opponents": ["classic", "predictor"],
+  "arena_seeds": 10,
+  "campaign_seeds": 20,
+  "trials": 240,
+  "engine_errors": 0,
+  "notes": "Initial schema/legality checks; authored formations and normal caps. The pre-fix forest reproduction raised IllegalAttack for seed 910004, territory, AI first, Predictor versus Predictor; Queued now requires target visibility in the shortlist."
+}

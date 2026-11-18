@@ -16,6 +16,33 @@
   ],
   "events": [
     {
+      "id": "company-survival",
+      "observer": null,
+      "priority": 2147483647,
+      "remembers": false,
+      "objective": null,
+      "when": {
+        "any": [
+          {
+            "not": {
+              "survives": {
+                "company": "player",
+                "allies": false,
+                "character": null,
+                "role": "leader",
+                "includeEvacuated": true
+              }
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The company cannot continue without its protected companions."
+        }
+      ]
+    },
+    {
       "id": "ferryman-death",
       "when": {
         "all": [
@@ -36,7 +63,11 @@
         {
           "setFlag": "ferryman-dead"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "contact-route-scout",
@@ -46,7 +77,16 @@
             "location": "route-scout"
           },
           "radius": 1,
-          "side": "player"
+          "side": "player",
+          "target": null,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "through": true
         }
       },
       "actions": [
@@ -96,9 +136,15 @@
             ],
             "units": [
               {
-                "type": "scout"
+                "type": "scout",
+                "character": null,
+                "role": null,
+                "items": []
               }
-            ]
+            ],
+            "tile": null,
+            "radius": 2,
+            "aiGroup": null
           }
         },
         {
@@ -106,7 +152,9 @@
             {
               "speaker": "Scout",
               "portrait": "scout",
-              "text": "You\u2019re the patrol? We\u2019ve been checking the western woods. Nobody has come back across the ford. I\u2019ll show you the way."
+              "text": "You’re the patrol? We’ve been checking the western woods. Nobody has come back across the ford. I’ll show you the way.",
+              "character": null,
+              "sound": null
             }
           ]
         },
@@ -127,14 +175,30 @@
               "location": "route-scout"
             },
             "radius": 1,
-            "side": "player"
+            "side": "player",
+            "target": null,
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": true
           }
         },
         "visibleWhen": {
           "flag": "contact-route-scout"
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "availableWhen": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "contact-western-scout",
@@ -144,7 +208,16 @@
             "location": "western-scout"
           },
           "radius": 1,
-          "side": "player"
+          "side": "player",
+          "target": null,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "through": true
         }
       },
       "actions": [
@@ -194,9 +267,15 @@
             ],
             "units": [
               {
-                "type": "scout"
+                "type": "scout",
+                "character": null,
+                "role": null,
+                "items": []
               }
-            ]
+            ],
+            "tile": null,
+            "radius": 2,
+            "aiGroup": null
           }
         },
         {
@@ -204,7 +283,9 @@
             {
               "speaker": "Scout",
               "portrait": "scout",
-              "text": "No sign of raiders on this bank. Whatever stopped the ferry is across the river. I\u2019m coming with you."
+              "text": "No sign of raiders on this bank. Whatever stopped the ferry is across the river. I’m coming with you.",
+              "character": null,
+              "sound": null
             }
           ]
         },
@@ -225,14 +306,30 @@
               "location": "western-scout"
             },
             "radius": 1,
-            "side": "player"
+            "side": "player",
+            "target": null,
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": true
           }
         },
         "visibleWhen": {
           "flag": "contact-western-scout"
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "availableWhen": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "contact-northern-scout",
@@ -242,7 +339,16 @@
             "location": "northern-scout"
           },
           "radius": 1,
-          "side": "player"
+          "side": "player",
+          "target": null,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "through": true
         }
       },
       "actions": [
@@ -292,9 +398,15 @@
             ],
             "units": [
               {
-                "type": "scout"
+                "type": "scout",
+                "character": null,
+                "role": null,
+                "items": []
               }
-            ]
+            ],
+            "tile": null,
+            "radius": 2,
+            "aiGroup": null
           }
         },
         {
@@ -302,7 +414,9 @@
             {
               "speaker": "Scout",
               "portrait": "scout",
-              "text": "The mountain path is quiet. The abandoned mountain mine isn\u2019t. We heard something breathing in there. Leave it alone if you\u2019re in a hurry."
+              "text": "The mountain path is quiet. The abandoned mountain mine isn’t. We heard something breathing in there. Leave it alone if you’re in a hurry.",
+              "character": null,
+              "sound": null
             }
           ]
         },
@@ -323,14 +437,30 @@
               "location": "northern-scout"
             },
             "radius": 1,
-            "side": "player"
+            "side": "player",
+            "target": null,
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": true
           }
         },
         "visibleWhen": {
           "flag": "contact-northern-scout"
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "availableWhen": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "quarry-bear",
@@ -340,7 +470,16 @@
             "location": "quarry"
           },
           "radius": 1,
-          "side": "player"
+          "side": "player",
+          "target": null,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "through": true
         }
       },
       "actions": [
@@ -368,9 +507,13 @@
             "units": [
               {
                 "type": "bear",
-                "character": "quarry-bear"
+                "character": "quarry-bear",
+                "role": null,
+                "items": []
               }
-            ]
+            ],
+            "tile": null,
+            "radius": 2
           }
         },
         {
@@ -390,14 +533,30 @@
               "location": "quarry"
             },
             "radius": 1,
-            "side": "player"
+            "side": "player",
+            "target": null,
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": true
           }
         },
         "visibleWhen": {
           "flag": "quarry-bear"
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "availableWhen": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "western-ford",
@@ -407,7 +566,14 @@
             "location": "western-ford"
           },
           "side": "player",
-          "through": true
+          "through": true,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
         }
       },
       "actions": [
@@ -437,15 +603,26 @@
             "aiGroup": "animals",
             "units": [
               {
-                "type": "giant-bat"
+                "type": "giant-bat",
+                "character": null,
+                "role": null,
+                "items": []
               },
               {
-                "type": "giant-bat"
+                "type": "giant-bat",
+                "character": null,
+                "role": null,
+                "items": []
               },
               {
-                "type": "giant-bat"
+                "type": "giant-bat",
+                "character": null,
+                "role": null,
+                "items": []
               }
-            ]
+            ],
+            "tile": null,
+            "radius": 2
           }
         },
         {
@@ -453,12 +630,16 @@
             {
               "portrait": "swordsman",
               "text": "Bats! Keep them off the horses!",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             },
             {
               "portrait": "adept",
               "text": "There are accounts of swarms like this in the old siege chronicles. I thought the writers were embellishing.",
-              "character": "oren"
+              "character": "oren",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -468,7 +649,11 @@
         {
           "setFlag": "western-ford"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "eastern-ford",
@@ -478,7 +663,14 @@
             "location": "eastern-ford"
           },
           "side": "player",
-          "through": true
+          "through": true,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
         }
       },
       "actions": [
@@ -488,7 +680,11 @@
         {
           "setFlag": "eastern-ford"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "house-visit",
@@ -498,12 +694,19 @@
             "location": "ferryman-house"
           },
           "side": "player",
-          "through": true
+          "through": true,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
         }
       },
       "actions": [
         {
-          "log": "The patrol enters the ferryman\u2019s house and lights its lantern"
+          "log": "The patrol enters the ferryman’s house and lights its lantern"
         },
         {
           "setFlag": "house-visit"
@@ -511,14 +714,22 @@
       ],
       "objective": {
         "faction": "player",
-        "label": "Reach the ferryman\u2019s house",
+        "label": "Reach the ferryman’s house",
         "optional": false,
         "intent": {
           "goTo": {
             "tile": {
               "location": "ferryman-house"
             },
-            "side": "player"
+            "side": "player",
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": false
           }
         },
         "visibleWhen": {
@@ -529,9 +740,18 @@
             {
               "location": "ferryman-house"
             }
-          ]
-        }
-      }
+          ],
+          "units": null,
+          "visibleInFog": false
+        },
+        "id": null,
+        "preserveLives": null,
+        "availableWhen": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "ford-shout",
@@ -543,7 +763,14 @@
                 "location": "eastern-ford"
               },
               "side": "player",
-              "through": true
+              "through": true,
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           },
           {
@@ -565,17 +792,21 @@
             {
               "speaker": "Ferryman",
               "portrait": "worker",
-              "text": "Over here! They\u2019re at the door! For the love of anything living, get them away from the door!"
+              "text": "Over here! They’re at the door! For the love of anything living, get them away from the door!",
+              "character": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
               "text": "Shields up. Make them come to us.",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
         {
-          "log": "A cry from the ferryman\u2019s house"
+          "log": "A cry from the ferryman’s house"
         },
         {
           "setFlag": "ford-shout"
@@ -590,7 +821,15 @@
             "tile": {
               "location": "eastern-ford"
             },
-            "side": "player"
+            "side": "player",
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": false
           }
         },
         "visibleWhen": {
@@ -601,8 +840,14 @@
             "flag": "ferryman-dead"
           }
         },
-        "playerMarker": null
-      }
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "satisfiedWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "ford-silence",
@@ -631,7 +876,9 @@
             {
               "portrait": "swordsman",
               "text": "No lamp. No answer. Get to the house.",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -641,7 +888,11 @@
         {
           "setFlag": "ford-silence"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "ferryman-alive",
@@ -652,7 +903,15 @@
               "tile": {
                 "location": "ferryman-house"
               },
-              "side": "player"
+              "side": "player",
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null,
+              "through": false
             }
           },
           {
@@ -666,22 +925,30 @@
             {
               "speaker": "Ferryman",
               "portrait": "worker",
-              "text": "I thought the door would give before anyone heard me."
+              "text": "I thought the door would give before anyone heard me.",
+              "character": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
               "text": "We saw the landing lantern go out. Where is everyone?",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             },
             {
               "speaker": "Ferryman",
               "portrait": "worker",
-              "text": "The dead took them. Went house to house, drove them out onto the eastern road. I barred this door and put the lamp out."
+              "text": "The dead took them. Went house to house, drove them out onto the eastern road. I barred this door and put the lamp out.",
+              "character": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
-              "text": "Stay inside. We\u2019ll light the villages and see what\u2019s left.",
-              "character": "nera"
+              "text": "Stay inside. We’ll light the villages and see what’s left.",
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             },
             {
               "with": "oren",
@@ -689,24 +956,33 @@
                 {
                   "portrait": "adept",
                   "text": "Who gave the skeletons their orders? Did you see him?",
-                  "character": "oren"
+                  "character": "oren",
+                  "speaker": null,
+                  "sound": null
                 },
                 {
                   "speaker": "Ferryman",
                   "portrait": "worker",
-                  "text": "Something in a robe. Bare bone where its face should be. The other dead stood still when it spoke."
+                  "text": "Something in a robe. Bare bone where its face should be. The other dead stood still when it spoke.",
+                  "character": null,
+                  "sound": null
                 },
                 {
                   "portrait": "adept",
-                  "text": "A lich. Those villages weren\u2019t attacked for their coin.",
-                  "character": "oren"
+                  "text": "A lich. Those villages weren’t attacked for their coin.",
+                  "character": "oren",
+                  "speaker": null,
+                  "sound": null
                 },
                 {
                   "speaker": "Ferryman",
                   "portrait": "worker",
-                  "text": "Then bring my neighbors back. And watch the houses. I heard things moving inside after the people were gone."
+                  "text": "Then bring my neighbors back. And watch the houses. I heard things moving inside after the people were gone.",
+                  "character": null,
+                  "sound": null
                 }
-              ]
+              ],
+              "alternative": []
             }
           ]
         },
@@ -716,7 +992,11 @@
         {
           "setFlag": "ferryman-alive"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "ferryman-letter",
@@ -727,7 +1007,15 @@
               "tile": {
                 "location": "ferryman-house"
               },
-              "side": "player"
+              "side": "player",
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null,
+              "through": false
             }
           },
           {
@@ -740,18 +1028,24 @@
           "say": [
             {
               "portrait": "swordsman",
-              "text": "The door is broken. We\u2019re too late.",
-              "character": "nera"
+              "text": "The door is broken. We’re too late.",
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             },
             {
               "speaker": "The letter",
               "portrait": "worker",
-              "text": "If someone finds this: skeletons took the villagers up the eastern road. I stayed to keep the ferry ready. They have come back for me. Leave the light out. Save yourselves."
+              "text": "If someone finds this: skeletons took the villagers up the eastern road. I stayed to keep the ferry ready. They have come back for me. Leave the light out. Save yourselves.",
+              "character": null,
+              "sound": null
             },
             {
               "portrait": "swordsman",
-              "text": "We\u2019re lighting it. Then we follow the road.",
-              "character": "nera"
+              "text": "We’re lighting it. Then we follow the road.",
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -764,7 +1058,11 @@
         {
           "setFlag": "ferryman-dead"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "village-1",
@@ -774,7 +1072,14 @@
             "location": "northern-village"
           },
           "side": "player",
-          "through": true
+          "through": true,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
         }
       },
       "actions": [
@@ -825,12 +1130,20 @@
             "aiGroup": "animals",
             "units": [
               {
-                "type": "giant-spider"
+                "type": "giant-spider",
+                "character": null,
+                "role": null,
+                "items": []
               },
               {
-                "type": "giant-spider"
+                "type": "giant-spider",
+                "character": null,
+                "role": null,
+                "items": []
               }
-            ]
+            ],
+            "tile": null,
+            "radius": 2
           }
         },
         {
@@ -839,7 +1152,11 @@
         {
           "setFlag": "village-1"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "village-2",
@@ -849,7 +1166,14 @@
             "location": "southern-village"
           },
           "side": "player",
-          "through": true
+          "through": true,
+          "character": null,
+          "role": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
         }
       },
       "actions": [
@@ -900,12 +1224,20 @@
             "aiGroup": "animals",
             "units": [
               {
-                "type": "giant-spider"
+                "type": "giant-spider",
+                "character": null,
+                "role": null,
+                "items": []
               },
               {
-                "type": "giant-spider"
+                "type": "giant-spider",
+                "character": null,
+                "role": null,
+                "items": []
               }
-            ]
+            ],
+            "tile": null,
+            "radius": 2
           }
         },
         {
@@ -914,7 +1246,11 @@
         {
           "setFlag": "village-2"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "first-spiders",
@@ -934,12 +1270,16 @@
             {
               "portrait": "swordsman",
               "text": "Spiders! Back from the doorway!",
-              "character": "nera"
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             },
             {
               "portrait": "adept",
-              "text": "Cellar spiders. We raised them at the Collegium. All the food in the world wouldn\u2019t make them grow like this.",
-              "character": "oren"
+              "text": "Cellar spiders. We raised them at the Collegium. All the food in the world wouldn’t make them grow like this.",
+              "character": "oren",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -949,7 +1289,11 @@
         {
           "setFlag": "first-spiders"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "villages-secured",
@@ -989,7 +1333,9 @@
             {
               "location": "southern-village"
             }
-          ]
+          ],
+          "units": null,
+          "visibleInFog": false
         },
         "satisfiedWhen": {
           "all": [
@@ -1021,18 +1367,40 @@
             {
               "noUnits": {
                 "side": "enemy",
-                "unitType": "giant-spider"
+                "unitType": "giant-spider",
+                "character": null,
+                "role": null,
+                "faction": null,
+                "unitTypes": [],
+                "aiGroup": null,
+                "retreating": null
               }
             }
           ]
-        }
-      }
+        },
+        "id": null,
+        "preserveLives": null,
+        "availableWhen": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     },
     {
       "id": "quarry-tools",
       "when": {
         "killed": {
-          "character": "quarry-bear"
+          "character": "quarry-bear",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "initiatedBy": null,
+          "killedBy": null,
+          "defending": null
         }
       },
       "actions": [
@@ -1040,15 +1408,24 @@
           "give": {
             "item": "quarry-hammer",
             "side": "player",
-            "character": "nera"
+            "character": "nera",
+            "tile": null,
+            "role": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
         {
           "say": [
             {
               "portrait": "swordsman",
-              "text": "Quarry tools. This hammer still has a sound head. I\u2019ll take it.",
-              "character": "nera"
+              "text": "Quarry tools. This hammer still has a sound head. I’ll take it.",
+              "character": "nera",
+              "speaker": null,
+              "sound": null
             }
           ]
         },
@@ -1058,7 +1435,11 @@
         {
           "setFlag": "quarry-tools"
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "chapter-victory",
@@ -1083,7 +1464,11 @@
         {
           "victory": "Mission complete. The company can rest and regroup."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "spiders-cleared",
@@ -1095,7 +1480,13 @@
           {
             "noUnits": {
               "side": "enemy",
-              "unitType": "giant-spider"
+              "unitType": "giant-spider",
+              "character": null,
+              "role": null,
+              "faction": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
           }
         ]
@@ -1109,15 +1500,31 @@
         "intent": {
           "defeat": {
             "side": "enemy",
-            "unitType": "giant-spider"
+            "unitType": "giant-spider",
+            "character": null,
+            "role": null,
+            "faction": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
         "availableWhen": {
           "flag": "first-spiders"
         },
-        "playerMarker": null
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "optional": false,
+        "satisfiedWhen": null
       },
-      "actions": []
+      "actions": [],
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     }
-  ]
+  ],
+  "requiredCompanions": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false
 }

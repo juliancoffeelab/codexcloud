@@ -291,6 +291,7 @@ fn unit_dictionary(array: &dyn Array) -> Result<Vec<Value>, SimulationError> {
                     if !field.is_nullable() {
                         return Err("Null required unit field".into());
                     }
+                    object.insert(field.name().clone(), Value::Null);
                     continue;
                 }
                 let value = match field.data_type() {
@@ -321,9 +322,7 @@ fn unit_dictionary(array: &dyn Array) -> Result<Vec<Value>, SimulationError> {
                     if !items.is_array() {
                         return Err("Invalid unit items".into());
                     }
-                    if key != "items" || items.as_array().is_some_and(|items| !items.is_empty()) {
-                        object.insert(key.into(), items);
-                    }
+                    object.insert(key.into(), items);
                 } else {
                     object.insert(field.name().clone(), value);
                 }
@@ -446,7 +445,7 @@ mod tests {
     use super::*;
     use crate::{
         ai::{Diplomacy, Policy},
-        data::{Catalog, Role},
+        data::{Catalogue, Role},
     };
     #[test]
     fn json_metadata_preserves_floating_point_bits() {
@@ -464,7 +463,7 @@ mod tests {
     }
     #[test]
     fn dictionaries_round_trip_full_arena_and_multiple_campaign_chapters() {
-        let rules = Catalog::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         let mut arena = super::super::matches::run_arena(
             &rules,
             ArenaConfig {
@@ -498,10 +497,7 @@ mod tests {
         unit.character = Some("河😀".into());
         unit.faction = "independent".into();
         unit.ai_group = Some("guard".into());
-        unit.items = serde_json::from_value(serde_json::json!([{
-            "id":"keepsake", "name":"Keepsake", "description":"Carried equipment", "attacks":[]
-        }]))
-        .unwrap();
+        unit.items = vec!["keepsake".into()];
         arena.phases[0].before.reverse();
         let arena = MatchResult::Arena(arena);
         let mut campaign = super::super::matches::run_campaign(
@@ -518,7 +514,11 @@ mod tests {
                 max_rounds: 1,
                 recruit_limit: Some(0),
             },
-            &rules.campaigns["mirror-night"],
+            &hex_command_battle::CampaignProgram::compile(
+                &rules,
+                rules.campaign("mirror-night"),
+                None,
+            ),
         )
         .unwrap();
         campaign.missions.push(campaign.missions[0].clone());

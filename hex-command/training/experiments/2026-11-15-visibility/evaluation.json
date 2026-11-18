@@ -1,0 +1,594 @@
+{
+  "heldout": {
+    "best_trained": {
+      "score": 0.5084765625000003,
+      "weighted_caps": 0.03302083333333334,
+      "wins": 1183,
+      "caps": 52,
+      "runs": 1836,
+      "evaluation_key": "2f871f6b692568feaf956907810e5a8ae35874c66eae3dd97198ecce2d150aed",
+      "model": "tmp/rl/2026-11-15-visibility-v3/rl/checkpoints/update-00009438-1794739163316868740/planner.json",
+      "model_sha256": "ae4572f985ab37d3a890454fda940059fb96ee9b22ed8e7cc048123fe1d36f87",
+      "strata": {
+        "arena/classic": {
+          "score": 0.84375,
+          "wins": 648,
+          "runs": 768,
+          "caps": 8
+        },
+        "arena/predictor": {
+          "score": 0.5768229166666666,
+          "wins": 443,
+          "runs": 768,
+          "caps": 32
+        },
+        "campaign/classic": {
+          "score": 0.3933333333333333,
+          "wins": 59,
+          "runs": 150,
+          "caps": 6
+        },
+        "campaign/predictor": {
+          "score": 0.22,
+          "wins": 33,
+          "runs": 150,
+          "caps": 6
+        }
+      },
+      "metadata": {
+        "panel": "heldout",
+        "preset": null,
+        "learned_recruiters": ["situational", "predictor"],
+        "test_seeds_used_for_selection": false
+      }
+    },
+    "original_v2": {
+      "score": 0.5785546875000003,
+      "weighted_caps": 0.02074218750000001,
+      "wins": 1217,
+      "caps": 39,
+      "runs": 1836,
+      "evaluation_key": "0a26c532c84d5ec5ccf020aed846c720d488886f3247ddc278d44f1e80e0e9b7",
+      "model": "training/checkpoints/campaign-cnn-ppo-v2/planner.json",
+      "model_sha256": "25c5286bb10366d3faa2a1d79a15b4a1c14eaf9a52b971305f2f5ee4bc5acdb5",
+      "strata": {
+        "arena/classic": {
+          "score": 0.8359375,
+          "wins": 642,
+          "runs": 768,
+          "caps": 8
+        },
+        "arena/predictor": {
+          "score": 0.5716145833333334,
+          "wins": 439,
+          "runs": 768,
+          "caps": 25
+        },
+        "campaign/classic": {
+          "score": 0.48,
+          "wins": 72,
+          "runs": 150,
+          "caps": 6
+        },
+        "campaign/predictor": {
+          "score": 0.42666666666666664,
+          "wins": 64,
+          "runs": 150,
+          "caps": 0
+        }
+      },
+      "metadata": {
+        "panel": "heldout",
+        "preset": null,
+        "learned_recruiters": ["situational", "predictor"],
+        "test_seeds_used_for_selection": false
+      }
+    },
+    "selected": {
+      "score": 0.5785546875000003,
+      "weighted_caps": 0.02074218750000001,
+      "wins": 1217,
+      "caps": 39,
+      "runs": 1836,
+      "evaluation_key": "0a26c532c84d5ec5ccf020aed846c720d488886f3247ddc278d44f1e80e0e9b7",
+      "model": "training/checkpoints/campaign-cnn-ppo-v2/planner.json",
+      "model_sha256": "25c5286bb10366d3faa2a1d79a15b4a1c14eaf9a52b971305f2f5ee4bc5acdb5",
+      "strata": {
+        "arena/classic": {
+          "score": 0.8359375,
+          "wins": 642,
+          "runs": 768,
+          "caps": 8
+        },
+        "arena/predictor": {
+          "score": 0.5716145833333334,
+          "wins": 439,
+          "runs": 768,
+          "caps": 25
+        },
+        "campaign/classic": {
+          "score": 0.48,
+          "wins": 72,
+          "runs": 150,
+          "caps": 6
+        },
+        "campaign/predictor": {
+          "score": 0.42666666666666664,
+          "wins": 64,
+          "runs": 150,
+          "caps": 0
+        }
+      },
+      "metadata": {
+        "panel": "heldout",
+        "preset": null,
+        "learned_recruiters": ["situational", "predictor"],
+        "test_seeds_used_for_selection": false
+      }
+    },
+    "last": {
+      "score": 0.54125,
+      "weighted_caps": 0.022864583333333344,
+      "wins": 1226,
+      "caps": 62,
+      "runs": 1836,
+      "evaluation_key": "0dbca94cc095760c67725b00f23576172037e87e595776df8634fbe997b05061",
+      "model": "tmp/rl/2026-11-15-visibility-v3/rl/checkpoints/last-1794749882016466329/planner.json",
+      "model_sha256": "33b0ee26a4156d2e697b7e88665e1f201ad36c6704739e7fc9aac831fee5fc9a",
+      "strata": {
+        "arena/classic": {
+          "score": 0.8502604166666666,
+          "wins": 653,
+          "runs": 768,
+          "caps": 12
+        },
+        "arena/predictor": {
+          "score": 0.6080729166666666,
+          "wins": 467,
+          "runs": 768,
+          "caps": 48
+        },
+        "campaign/classic": {
+          "score": 0.5066666666666666,
+          "wins": 76,
+          "runs": 150,
+          "caps": 2
+        },
+        "campaign/predictor": {
+          "score": 0.19999999999999998,
+          "wins": 30,
+          "runs": 150,
+          "caps": 0
+        }
+      },
+      "metadata": {
+        "panel": "heldout",
+        "preset": null,
+        "learned_recruiters": ["situational", "predictor"],
+        "test_seeds_used_for_selection": false
+      }
+    },
+    "classic": {
+      "score": 0.30526041666666665,
+      "weighted_caps": 0.05166666666666665,
+      "wins": 267,
+      "caps": 67,
+      "runs": 918,
+      "evaluation_key": "2ec77b6ee08b9e20aa9f854f8472e95f3396b10eb938424f71586074efc9dc6d",
+      "model": null,
+      "model_sha256": null,
+      "strata": {
+        "arena/classic": {
+          "score": 0.4088541666666667,
+          "wins": 157,
+          "runs": 384,
+          "caps": 29
+        },
+        "arena/predictor": {
+          "score": 0.15885416666666666,
+          "wins": 61,
+          "runs": 384,
+          "caps": 35
+        },
+        "campaign/classic": {
+          "score": 0.38666666666666666,
+          "wins": 29,
+          "runs": 75,
+          "caps": 3
+        },
+        "campaign/predictor": {
+          "score": 0.26666666666666666,
+          "wins": 20,
+          "runs": 75,
+          "caps": 0
+        }
+      },
+      "metadata": {
+        "panel": "heldout",
+        "preset": "classic",
+        "learned_recruiters": null,
+        "test_seeds_used_for_selection": false
+      }
+    },
+    "situational": {
+      "score": 0.4517968749999999,
+      "weighted_caps": 0.09406249999999995,
+      "wins": 455,
+      "caps": 128,
+      "runs": 918,
+      "evaluation_key": "6a3ffccf4f8c446718f1861a89cd6cd597d547d241c381f6cb875ee377d5354d",
+      "model": null,
+      "model_sha256": null,
+      "strata": {
+        "arena/classic": {
+          "score": 0.6953125,
+          "wins": 267,
+          "runs": 384,
+          "caps": 30
+        },
+        "arena/predictor": {
+          "score": 0.3385416666666667,
+          "wins": 130,
+          "runs": 384,
+          "caps": 94
+        },
+        "campaign/classic": {
+          "score": 0.5066666666666666,
+          "wins": 38,
+          "runs": 75,
+          "caps": 4
+        },
+        "campaign/predictor": {
+          "score": 0.26666666666666666,
+          "wins": 20,
+          "runs": 75,
+          "caps": 0
+        }
+      },
+      "metadata": {
+        "panel": "heldout",
+        "preset": "situational",
+        "learned_recruiters": null,
+        "test_seeds_used_for_selection": false
+      }
+    },
+    "predictor": {
+      "score": 0.4334895833333332,
+      "weighted_caps": 0.10195312499999996,
+      "wins": 431,
+      "caps": 136,
+      "runs": 918,
+      "evaluation_key": "e7fec3992ac30aee08386b9e02afcf4623529aba528c6f882eea87b4ba85c4f1",
+      "model": null,
+      "model_sha256": null,
+      "strata": {
+        "arena/classic": {
+          "score": 0.6744791666666666,
+          "wins": 259,
+          "runs": 384,
+          "caps": 33
+        },
+        "arena/predictor": {
+          "score": 0.2994791666666667,
+          "wins": 115,
+          "runs": 384,
+          "caps": 98
+        },
+        "campaign/classic": {
+          "score": 0.4933333333333333,
+          "wins": 37,
+          "runs": 75,
+          "caps": 5
+        },
+        "campaign/predictor": {
+          "score": 0.26666666666666666,
+          "wins": 20,
+          "runs": 75,
+          "caps": 0
+        }
+      },
+      "metadata": {
+        "panel": "heldout",
+        "preset": "predictor",
+        "learned_recruiters": null,
+        "test_seeds_used_for_selection": false
+      }
+    }
+  },
+  "visibility": {
+    "best_trained": {
+      "score": 0.8093749999999998,
+      "weighted_caps": 0.0,
+      "wins": 720,
+      "caps": 0,
+      "runs": 960,
+      "evaluation_key": "50a5e0902bb9e85c6ac60d03256616d0cc6d52ea47c9d760df3388d569eb563e",
+      "model": "tmp/rl/2026-11-15-visibility-v3/rl/checkpoints/update-00009438-1794739163316868740/planner.json",
+      "model_sha256": "ae4572f985ab37d3a890454fda940059fb96ee9b22ed8e7cc048123fe1d36f87",
+      "strata": {
+        "arena/classic": {
+          "score": 0.684375,
+          "wins": 219,
+          "runs": 320,
+          "caps": 0
+        },
+        "arena/predictor": {
+          "score": 0.578125,
+          "wins": 185,
+          "runs": 320,
+          "caps": 0
+        },
+        "campaign/classic": {
+          "score": 0.9875,
+          "wins": 158,
+          "runs": 160,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.9875,
+          "wins": 158,
+          "runs": 160,
+          "caps": 0
+        }
+      },
+      "metadata": {
+        "panel": "visibility",
+        "preset": null,
+        "learned_recruiters": ["situational", "predictor"],
+        "test_seeds_used_for_selection": false
+      }
+    },
+    "original_v2": {
+      "score": 0.7398437499999998,
+      "weighted_caps": 0.0,
+      "wins": 657,
+      "caps": 0,
+      "runs": 960,
+      "evaluation_key": "2b4782db557fb92c0a9cfdc167befbe20b3fb74170c9f99a66d90c19e171f741",
+      "model": "training/checkpoints/campaign-cnn-ppo-v2/planner.json",
+      "model_sha256": "25c5286bb10366d3faa2a1d79a15b4a1c14eaf9a52b971305f2f5ee4bc5acdb5",
+      "strata": {
+        "arena/classic": {
+          "score": 0.596875,
+          "wins": 191,
+          "runs": 320,
+          "caps": 0
+        },
+        "arena/predictor": {
+          "score": 0.55,
+          "wins": 176,
+          "runs": 320,
+          "caps": 0
+        },
+        "campaign/classic": {
+          "score": 0.9,
+          "wins": 144,
+          "runs": 160,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.9125,
+          "wins": 146,
+          "runs": 160,
+          "caps": 0
+        }
+      },
+      "metadata": {
+        "panel": "visibility",
+        "preset": null,
+        "learned_recruiters": ["situational", "predictor"],
+        "test_seeds_used_for_selection": false
+      }
+    },
+    "selected": {
+      "score": 0.7398437499999998,
+      "weighted_caps": 0.0,
+      "wins": 657,
+      "caps": 0,
+      "runs": 960,
+      "evaluation_key": "2b4782db557fb92c0a9cfdc167befbe20b3fb74170c9f99a66d90c19e171f741",
+      "model": "training/checkpoints/campaign-cnn-ppo-v2/planner.json",
+      "model_sha256": "25c5286bb10366d3faa2a1d79a15b4a1c14eaf9a52b971305f2f5ee4bc5acdb5",
+      "strata": {
+        "arena/classic": {
+          "score": 0.596875,
+          "wins": 191,
+          "runs": 320,
+          "caps": 0
+        },
+        "arena/predictor": {
+          "score": 0.55,
+          "wins": 176,
+          "runs": 320,
+          "caps": 0
+        },
+        "campaign/classic": {
+          "score": 0.9,
+          "wins": 144,
+          "runs": 160,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.9125,
+          "wins": 146,
+          "runs": 160,
+          "caps": 0
+        }
+      },
+      "metadata": {
+        "panel": "visibility",
+        "preset": null,
+        "learned_recruiters": ["situational", "predictor"],
+        "test_seeds_used_for_selection": false
+      }
+    },
+    "last": {
+      "score": 0.8171875,
+      "weighted_caps": 0.0,
+      "wins": 730,
+      "caps": 0,
+      "runs": 960,
+      "evaluation_key": "6ae35cdb772a7bd206992ec289f7d99dfe6ac6e4e86c2f25f428e71f2db9de26",
+      "model": "tmp/rl/2026-11-15-visibility-v3/rl/checkpoints/last-1794749882016466329/planner.json",
+      "model_sha256": "33b0ee26a4156d2e697b7e88665e1f201ad36c6704739e7fc9aac831fee5fc9a",
+      "strata": {
+        "arena/classic": {
+          "score": 0.690625,
+          "wins": 221,
+          "runs": 320,
+          "caps": 0
+        },
+        "arena/predictor": {
+          "score": 0.603125,
+          "wins": 193,
+          "runs": 320,
+          "caps": 0
+        },
+        "campaign/classic": {
+          "score": 0.9875,
+          "wins": 158,
+          "runs": 160,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.9875,
+          "wins": 158,
+          "runs": 160,
+          "caps": 0
+        }
+      },
+      "metadata": {
+        "panel": "visibility",
+        "preset": null,
+        "learned_recruiters": ["situational", "predictor"],
+        "test_seeds_used_for_selection": false
+      }
+    },
+    "classic": {
+      "score": 0.46562499999999996,
+      "weighted_caps": 0.0,
+      "wins": 212,
+      "caps": 0,
+      "runs": 480,
+      "evaluation_key": "38cff643a835a90e56fcf78d6cb00f3ba58e2eb85e1796268c6dbcbedf16e0a5",
+      "model": null,
+      "model_sha256": null,
+      "strata": {
+        "arena/classic": {
+          "score": 0.47500000000000003,
+          "wins": 76,
+          "runs": 160,
+          "caps": 0
+        },
+        "arena/predictor": {
+          "score": 0.3125,
+          "wins": 50,
+          "runs": 160,
+          "caps": 0
+        },
+        "campaign/classic": {
+          "score": 0.5625,
+          "wins": 45,
+          "runs": 80,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.5125,
+          "wins": 41,
+          "runs": 80,
+          "caps": 0
+        }
+      },
+      "metadata": {
+        "panel": "visibility",
+        "preset": "classic",
+        "learned_recruiters": null,
+        "test_seeds_used_for_selection": false
+      }
+    },
+    "situational": {
+      "score": 0.6296875,
+      "weighted_caps": 0.0,
+      "wins": 277,
+      "caps": 0,
+      "runs": 480,
+      "evaluation_key": "baea120facb6469f09b76a422e8afaedd8fc96161f1873443e350e082ab7589f",
+      "model": null,
+      "model_sha256": null,
+      "strata": {
+        "arena/classic": {
+          "score": 0.56875,
+          "wins": 91,
+          "runs": 160,
+          "caps": 0
+        },
+        "arena/predictor": {
+          "score": 0.375,
+          "wins": 60,
+          "runs": 160,
+          "caps": 0
+        },
+        "campaign/classic": {
+          "score": 0.8625,
+          "wins": 69,
+          "runs": 80,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.7125,
+          "wins": 57,
+          "runs": 80,
+          "caps": 0
+        }
+      },
+      "metadata": {
+        "panel": "visibility",
+        "preset": "situational",
+        "learned_recruiters": null,
+        "test_seeds_used_for_selection": false
+      }
+    },
+    "predictor": {
+      "score": 0.63125,
+      "weighted_caps": 0.0,
+      "wins": 278,
+      "caps": 0,
+      "runs": 480,
+      "evaluation_key": "cba3b31ef5dc29afe985c893653216dc8a0121b906c5cb514691ef23101f9af2",
+      "model": null,
+      "model_sha256": null,
+      "strata": {
+        "arena/classic": {
+          "score": 0.58125,
+          "wins": 93,
+          "runs": 160,
+          "caps": 0
+        },
+        "arena/predictor": {
+          "score": 0.36875,
+          "wins": 59,
+          "runs": 160,
+          "caps": 0
+        },
+        "campaign/classic": {
+          "score": 0.8625,
+          "wins": 69,
+          "runs": 80,
+          "caps": 0
+        },
+        "campaign/predictor": {
+          "score": 0.7125,
+          "wins": 57,
+          "runs": 80,
+          "caps": 0
+        }
+      },
+      "metadata": {
+        "panel": "visibility",
+        "preset": "predictor",
+        "learned_recruiters": null,
+        "test_seeds_used_for_selection": false
+      }
+    }
+  }
+}

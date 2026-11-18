@@ -38,7 +38,11 @@ def verify(manifest):
                 or digest(data) != expected["original_sha256"]
             ):
                 raise ValueError(f"archived recovery mismatch: {name}")
-        verify(root / info["selected_model"])
+        models = {info["selected_model"]}
+        if "trained_model" in info:
+            models.add(info["trained_model"])
+        for model in models:
+            verify(root / model)
     return info
 
 

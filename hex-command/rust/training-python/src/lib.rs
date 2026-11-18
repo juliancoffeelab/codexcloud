@@ -17,7 +17,7 @@ fn parse(config: &str) -> Result<MatchConfig, String> {
     if [a, b]
         .into_iter()
         .flatten()
-        .any(|b| b.planner == hex_command_core::ai::Planner::Learned)
+        .any(|b| b.planner == hex_command_core::ai::PlannerKind::Learned)
     {
         return Err("supply baseline blocks; the bridge selects the learned planner itself".into());
     }
@@ -42,23 +42,21 @@ fn learned(config: &mut MatchConfig) {
         }
     }
 }
-fn summary(r: &MatchResult, definitions: &CampaignDefinitions<'_>) -> serde_json::Value {
+fn summary(r: &MatchResult, catalogue: &Catalogue) -> serde_json::Value {
     match r {
         MatchResult::Arena(r) => {
             serde_json::json!({"winner":r.winner,"reason":r.reason,"rounds":r.rounds,"success":r.winner==Some(BattleResult::PlayerVictory),"truncated":r.winner.is_none()})
         }
         MatchResult::Campaign(r) => {
-            let definition = definitions
-                .get(&r.config.campaign, &r.config.objective)
-                .expect("prepared campaign");
+            let definition = catalogue.campaign(&r.config.campaign);
             let failure = r.missions.last().and_then(|m| {
                 if m.winner != Some(BattleResult::PlayerDefeat) {
                     return None;
                 }
                 let mission = definition
-                    .missions
+                    .chapters()
                     .iter()
-                    .find(|v| v.map.id == m.id)
+                    .find(|v| v.map_id() == m.id)
                     .expect("reached mission");
                 let evacuated = m
                     .r#final
@@ -80,9 +78,9 @@ fn summary(r: &MatchResult, definitions: &CampaignDefinitions<'_>) -> serde_json
                 let lost: Vec<_> = seen
                     .filter(|u| {
                         !alive(u)
-                            && u.character
-                                .as_ref()
-                                .is_some_and(|id| mission.required_companions.contains(id))
+                            && u.character.as_ref().is_some_and(|id| {
+                                mission.scripts().required_companions.contains(id)
+                            })
                     })
                     .collect();
                 if lost.iter().any(|u| u.role.is_some_and(Role::is_escort)) {
@@ -138,7 +136,7 @@ fn collect_data(
         return Err(err("max_samples must be positive"));
     }
     py.detach(move || -> Result<Dataset, String> {
-        let rules = Rules::load().map_err(|e| e.to_string())?;
+        let rules = Catalogue::load().map_err(|e| e.to_string())?;
         let mut definitions = CampaignDefinitions::new(&rules);
         let (result, data) = scoped(
             Some(Dataset {
@@ -178,17 +176,25 @@ type SpatialResult = (
     Py<PyArray1<i64>>,
     Py<PyArray2<i64>>,
     Py<PyArray2<i64>>,
+    Py<PyArray1<f32>>,
+    Py<PyArray2<i64>>,
 );
 fn spatial_arrays(
     py: Python<'_>,
-    boards: Vec<Option<&spatial::Board>>,
+    boards: Vec<Option<&spatial::SpatialBoard>>,
     indices: Vec<[i64; 3]>,
 ) -> SpatialResult {
     let mut values = vec![];
     let mut offsets = vec![0i64];
     let mut shapes = vec![];
-    for board in &boards {
+    let mut context_values = vec![];
+    let mut contexts = vec![];
+    for (i, board) in boards.iter().enumerate() {
         if let Some(b) = board {
+            for c in &b.contexts {
+                contexts.extend([i as i64, c.actor_site as i64, context_values.len() as i64]);
+                context_values.extend_from_slice(&c.values);
+            }
             values.extend_from_slice(&b.values);
             shapes.extend([b.height as i64, b.width as i64]);
         } else {
@@ -205,6 +211,11 @@ fn spatial_arrays(
             .into_pyarray(py)
             .unbind(),
         Array2::from_shape_vec((count, 3), indices.into_iter().flatten().collect())
+            .unwrap()
+            .into_pyarray(py)
+            .unbind(),
+        context_values.into_pyarray(py).unbind(),
+        Array2::from_shape_vec((contexts.len() / 3, 3), contexts)
             .unwrap()
             .into_pyarray(py)
             .unbind(),
@@ -243,7 +254,7 @@ fn collect_spatial(
 fn evaluate(py: Python<'_>, configs: Vec<String>, model: Option<String>) -> PyResult<Vec<String>> {
     let model = model.map(|s| load_model(&s)).transpose().map_err(err)?;
     py.detach(move || -> Result<Vec<String>, String> {
-        let rules = Rules::load().map_err(|e| e.to_string())?;
+        let rules = Catalogue::load().map_err(|e| e.to_string())?;
         let mut definitions = CampaignDefinitions::new(&rules);
         let (r, _) = scoped(None, model.clone(), None, || {
             configs
@@ -255,7 +266,7 @@ fn evaluate(py: Python<'_>, configs: Vec<String>, model: Option<String>) -> PyRe
                     }
                     definitions.prepare_match(&c).map_err(|e| e.to_string())?;
                     run(&rules, c, &definitions)
-                        .map(|r| summary(&r, &definitions).to_string())
+                        .map(|r| summary(&r, &rules).to_string())
                         .map_err(|e| e.to_string())
                 })
                 .collect::<Result<Vec<_>, String>>()
@@ -277,7 +288,7 @@ fn replay_phases(
 ) -> PyResult<Vec<String>> {
     let model = model.map(|s| load_model(&s)).transpose().map_err(err)?;
     py.detach(move || -> Result<Vec<String>, String> {
-        let rules = Rules::load().map_err(|e| e.to_string())?;
+        let rules = Catalogue::load().map_err(|e| e.to_string())?;
         let (result, _) = scoped(None, model, None, || {
             requests
                 .into_iter()
@@ -321,6 +332,7 @@ fn score<'py>(
     Ok(scores.into_pyarray(py))
 }
 #[pyfunction]
+#[pyo3(signature=(model,features,offsets,boards,board_offsets,shapes,indices,context_values=None,contexts=None))]
 fn score_spatial<'py>(
     py: Python<'py>,
     model: String,
@@ -330,6 +342,8 @@ fn score_spatial<'py>(
     board_offsets: PyReadonlyArray1<'py, i64>,
     shapes: PyReadonlyArray2<'py, i64>,
     indices: PyReadonlyArray2<'py, i64>,
+    context_values: Option<PyReadonlyArray1<'py, f32>>,
+    contexts: Option<PyReadonlyArray2<'py, i64>>,
 ) -> PyResult<Bound<'py, PyArray1<f64>>> {
     let model = load_model(&model).map_err(err)?;
     if model.spatial.is_none() {
@@ -338,7 +352,14 @@ fn score_spatial<'py>(
     let x = features.as_array();
     let sh = shapes.as_array();
     let ix = indices.as_array();
-    if ![LEGACY_FEATURES, DUTY_FEATURES, DIPLOMACY_FEATURES, FEATURES].contains(&x.ncols())
+    if ![
+        LEGACY_FEATURES,
+        DUTY_FEATURES,
+        DIPLOMACY_FEATURES,
+        CAMPAIGN_FEATURES,
+        FEATURES,
+    ]
+    .contains(&x.ncols())
         || ix.nrows() != x.nrows()
         || ix.ncols() != 3
         || sh.ncols() != 2
@@ -369,6 +390,34 @@ fn score_spatial<'py>(
     let offsets = offsets.as_array().to_vec();
     let board_offsets = board_offsets.as_array().to_vec();
     let values = boards.as_array().to_vec();
+    if context_values.is_some() != contexts.is_some() {
+        return Err(err("both context arrays required"));
+    }
+    let cv = context_values
+        .map(|v| v.as_array().to_vec())
+        .unwrap_or_default();
+    let mut context_rows = Vec::new();
+    if let Some(contexts) = contexts {
+        let a = contexts.as_array();
+        if a.ncols() != 3 {
+            return Err(err("invalid actor context metadata"));
+        }
+        let mut expected = 0;
+        for row in a.rows() {
+            if row[0] < 0 || row[0] as usize >= shapes.len() || row[1] < 0 || row[2] != expected {
+                return Err(err("invalid actor context offset"));
+            }
+            let shape = shapes[row[0] as usize];
+            if shape[0] <= 0 || shape[1] <= 0 || shape[0] > 256 || shape[1] > 256 {
+                return Err(err("invalid actor context shape"));
+            }
+            expected += shape[0] * shape[1] * spatial::ACTOR_CHANNELS.len() as i64;
+            context_rows.push([row[0], row[1], row[2]]);
+        }
+        if expected as usize != cv.len() {
+            return Err(err("invalid actor context buffer"));
+        }
+    }
     for (boundaries, length) in [(&offsets, x.len()), (&board_offsets, values.len())] {
         if boundaries.len() != shapes.len() + 1
             || boundaries.first() != Some(&0)
@@ -392,16 +441,28 @@ fn score_spatial<'py>(
                 if shape[0] <= 0 || shape[1] <= 0 || shape[0] > 256 || shape[1] > 256 {
                     return Err("invalid spatial shape".into());
                 }
-                let mut board = spatial::Board {
+                let mut board = spatial::SpatialBoard {
                     height: shape[0] as usize,
                     width: shape[1] as usize,
+                    contexts: vec![],
                     values: values[board_offsets[i] as usize..board_offsets[i + 1] as usize]
                         .to_vec(),
                 };
                 let cells = board.height * board.width;
-                if [spatial::LEGACY_CHANNELS, spatial::DUTY_CHANNELS]
-                    .iter()
-                    .any(|&channels| board.values.len() == cells * channels)
+                for row in context_rows.iter().filter(|r| r[0] == i as i64) {
+                    let start = row[2] as usize;
+                    board.contexts.push(spatial::ActorContext {
+                        actor_site: row[1] as usize,
+                        values: cv[start..start + cells * spatial::ACTOR_CHANNELS.len()].to_vec(),
+                    });
+                }
+                if [
+                    spatial::LEGACY_CHANNELS,
+                    spatial::DUTY_CHANNELS,
+                    spatial::CAMPAIGN_CHANNELS,
+                ]
+                .iter()
+                .any(|&channels| board.values.len() == cells * channels)
                 {
                     board.values.resize(cells * spatial::CHANNELS, 0.);
                 }
@@ -416,15 +477,15 @@ fn score_spatial<'py>(
         .map_err(err)?;
     Ok(scores.into_pyarray(py))
 }
-enum Event {
+enum RolloutEvent {
     Decision(Choices),
     Done(Result<String, String>),
 }
 struct Worker {
     tx: Option<Sender<usize>>,
-    rx: std::sync::Mutex<Receiver<Event>>,
+    rx: std::sync::Mutex<Receiver<RolloutEvent>>,
     join: Option<JoinHandle<()>>,
-    event: Option<Event>,
+    event: Option<RolloutEvent>,
 }
 impl Worker {
     fn new(config: String, spatial: bool) -> Self {
@@ -433,21 +494,22 @@ impl Worker {
         let join = std::thread::spawn(move || {
             let trace = std::rc::Rc::new(std::cell::RefCell::new(Vec::new()));
             let result = (|| -> Result<String, String> {
-                let rules = Rules::load().map_err(|e| e.to_string())?;
+                let rules = Catalogue::load().map_err(|e| e.to_string())?;
                 let mut c = parse(&config)?;
                 learned(&mut c);
                 let mut definitions = CampaignDefinitions::new(&rules);
                 definitions.prepare_match(&c).map_err(|e| e.to_string())?;
                 let emit = events.clone();
                 let chosen = trace.clone();
-                let controller: hex_command_core::training::Controller = Box::new(move |choices| {
-                    if emit.send(Event::Decision(choices.clone())).is_err() {
-                        return None;
-                    }
-                    let action = actions.recv().ok()?;
-                    chosen.borrow_mut().push(action);
-                    Some(action)
-                });
+                let controller: hex_command_core::training::DecisionController =
+                    Box::new(move |choices| {
+                        if emit.send(RolloutEvent::Decision(choices.clone())).is_err() {
+                            return None;
+                        }
+                        let action = actions.recv().ok()?;
+                        chosen.borrow_mut().push(action);
+                        Some(action)
+                    });
                 let (result, _) = scoped(
                     spatial.then(|| Dataset {
                         spatial: true,
@@ -458,13 +520,13 @@ impl Worker {
                     || run(&rules, c, &definitions),
                 );
                 result
-                    .map(|r| summary(&r, &definitions).to_string())
+                    .map(|r| summary(&r, &rules).to_string())
                     .map_err(|e| e.to_string())
             })();
             let result = result.map_err(|error| {
                 serde_json::json!({"error":error,"config":serde_json::from_str::<serde_json::Value>(&config).ok(),"actions":*trace.borrow()}).to_string()
             });
-            let _ = events.send(Event::Done(result));
+            let _ = events.send(RolloutEvent::Done(result));
         });
         Self {
             tx: Some(tx),
@@ -475,7 +537,7 @@ impl Worker {
     }
     fn receive(&mut self) -> Result<(), String> {
         self.event = Some(self.rx.lock().unwrap().recv().map_err(|e| e.to_string())?);
-        if let Some(Event::Done(Err(e))) = &self.event {
+        if let Some(RolloutEvent::Done(Err(e))) = &self.event {
             return Err(e.clone());
         }
         Ok(())
@@ -514,8 +576,8 @@ impl BatchEnv {
             let mut term = false;
             let mut trunc = false;
             match w.event.as_ref().unwrap() {
-                Event::Decision(c) => features.extend_from_slice(&c.features),
-                Event::Done(Ok(s)) => {
+                RolloutEvent::Decision(c) => features.extend_from_slice(&c.features),
+                RolloutEvent::Done(Ok(s)) => {
                     let v: serde_json::Value = serde_json::from_str(s).unwrap();
                     trunc = v["truncated"] == true;
                     term = !trunc;
@@ -527,7 +589,7 @@ impl BatchEnv {
                         -1.
                     };
                 }
-                Event::Done(Err(e)) => return Err(err(e)),
+                RolloutEvent::Done(Err(e)) => return Err(err(e)),
             }
             offsets.push(features.len() as i64);
             rewards.push(reward);
@@ -558,7 +620,7 @@ impl BatchEnv {
         self.workers
             .iter()
             .map(|w| match &w.event {
-                Some(Event::Done(Ok(s))) => Some(s.clone()),
+                Some(RolloutEvent::Done(Ok(s))) => Some(s.clone()),
                 _ => None,
             })
             .collect()
@@ -570,7 +632,7 @@ impl BatchEnv {
         let mut boards = vec![];
         let mut indices = vec![];
         for worker in &self.workers {
-            if let Some(Event::Decision(c)) = &worker.event {
+            if let Some(RolloutEvent::Decision(c)) = &worker.event {
                 let s = c
                     .spatial
                     .as_ref()
@@ -609,7 +671,7 @@ impl BatchEnv {
             return Err(err("one action per environment required"));
         }
         for (w, &a) in self.workers.iter().zip(&actions) {
-            if let Some(Event::Decision(c)) = &w.event {
+            if let Some(RolloutEvent::Decision(c)) = &w.event {
                 if a >= c.commands.len() {
                     return Err(err("candidate index out of range"));
                 }
@@ -618,12 +680,12 @@ impl BatchEnv {
         py.detach(|| -> Result<(), String> {
             // Dispatch the whole batch before waiting so native workers overlap.
             for (w, a) in self.workers.iter().zip(actions) {
-                if matches!(w.event, Some(Event::Decision(_))) {
+                if matches!(w.event, Some(RolloutEvent::Decision(_))) {
                     w.tx.as_ref().unwrap().send(a).map_err(|e| e.to_string())?;
                 }
             }
             for w in &mut self.workers {
-                if matches!(w.event, Some(Event::Decision(_))) {
+                if matches!(w.event, Some(RolloutEvent::Decision(_))) {
                     w.receive()?;
                 }
             }
@@ -639,14 +701,14 @@ impl BatchEnv {
 #[pyfunction]
 fn training_workload(py: Python<'_>) -> PyResult<String> {
     py.detach(|| {
-        let rules = Rules::load().map_err(err)?;
-        serde_json::to_string(&rules.training).map_err(err)
+        let rules = Catalogue::load().map_err(err)?;
+        serde_json::to_string(&rules.meta().simulation.training).map_err(err)
     })
 }
 #[pyfunction]
 fn fingerprints(py: Python<'_>) -> PyResult<String> {
     py.detach(|| {
-        let rules = Rules::load().map_err(err)?;
+        let rules = Catalogue::load().map_err(err)?;
         Ok(hex_command_core::simulation::cli::fingerprints(&rules).to_string())
     })
 }
@@ -659,6 +721,15 @@ fn hex_command_training(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(fingerprints, m)?)?;
     m.add_function(wrap_pyfunction!(training_workload, m)?)?;
     m.add("FEATURE_NAMES", FEATURE_NAMES.to_vec())?;
+    m.add(
+        "CAMPAIGN_FEATURE_NAMES",
+        FEATURE_NAMES[..CAMPAIGN_FEATURES].to_vec(),
+    )?;
+    m.add(
+        "CAMPAIGN_SPATIAL_CHANNEL_NAMES",
+        spatial::channel_names()[..spatial::CAMPAIGN_CHANNELS].to_vec(),
+    )?;
+    m.add("ACTOR_SPATIAL_CHANNELS", spatial::ACTOR_CHANNELS.to_vec())?;
     m.add(
         "DIPLOMACY_FEATURE_NAMES",
         FEATURE_NAMES[..DIPLOMACY_FEATURES].to_vec(),

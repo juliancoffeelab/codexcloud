@@ -20,3 +20,14 @@ val convert_state_and_undo :
   Historical_types.V39.current_undo array option ->
   'b * Historical_types.V39.current_undo array option
 (** Reconstruct each historical undo state before applying a typed state conversion. *)
+
+val convert_state_and_undo_with_codecs :
+  encode_change:(Historical_types.save34_undo_member1_item_changes_item -> Js.Json.t) ->
+  decode_change:(Js.Json.t -> Historical_types.save34_undo_member1_item_changes_item) ->
+  encode_old:('a -> Js.Json.t) ->
+  decode_old:(Js.Json.t -> 'a) ->
+  encode_new:('b -> Js.Json.t) ->
+  ('a -> 'b) ->
+  'a ->
+  Historical_types.V39.current_undo array option ->
+  'b * Historical_types.V39.current_undo array option

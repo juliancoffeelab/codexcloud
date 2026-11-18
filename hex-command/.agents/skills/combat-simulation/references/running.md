@@ -1,7 +1,7 @@
 # Running simulations
 
 Read when selecting a schedule, limits, custom tactics or another data catalog.
-Work from the game root. Use `node scripts/toolchain/with-toolchain.mjs cargo run --locked --manifest-path rust/Cargo.toml --profile simulation --bin hex-command-sim -- --help` for current flags and
+Work from the game root. Use `node scripts/toolchain/with-toolchain.mjs cargo run --locked --manifest-path rust/Cargo.toml --profile simulation --bin hex-command-sim --features simulation -- --help` for current flags and
 defaults. Determine actual coverage from the resulting report metadata.
 
 - Keep experimental catalogs in ignored tmp/ or artifacts/ and pass --data-dir.
@@ -20,7 +20,7 @@ defaults. Determine actual coverage from the resulting report metadata.
   progression. A typical scoped run is:
 
 ```sh
-node scripts/toolchain/with-toolchain.mjs cargo run --locked --manifest-path rust/Cargo.toml --profile simulation --bin hex-command-sim -- --mode arena --policies balanced --armies human,woodland --landscapes open --self-play --seeds 10 --unit-usage
+node scripts/toolchain/with-toolchain.mjs cargo run --locked --manifest-path rust/Cargo.toml --profile simulation --bin hex-command-sim --features simulation -- --mode arena --policies balanced --armies human,woodland --landscapes open --self-play --seeds 10 --unit-usage
 ```
 
 - --with R,C,P adds a custom recruiter, campaigner and planner combination; a dash

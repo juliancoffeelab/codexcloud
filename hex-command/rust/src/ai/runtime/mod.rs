@@ -1,5 +1,5 @@
 //! The turn driver owns execution capabilities and the orchestration continuation.
-use hex_command_battle::RuntimeCommand as Command;
+use hex_command_battle::RuntimeCommand;
 pub(crate) mod context;
 mod state;
 pub use state::PlanningWorkspace;
@@ -9,14 +9,14 @@ pub(in crate::ai) use state::{PlannerParts, PlannerTurn};
 pub(crate) mod tactic;
 #[cfg(not(target_arch = "wasm32"))]
 use crate::ai::{Blocks, Diplomacy};
-use crate::{ai::Policy, data::*, logic::Game};
+use crate::{ai::Policy, data::*, logic::BattleSession};
 
 #[cfg(any(feature = "wasm", test))]
 pub(crate) fn choose_game_command(
-    game: &Game<'_>,
+    game: &BattleSession<'_>,
     policy: Policy,
     workspace: &mut PlanningWorkspace,
-) -> Result<Command, CommandError> {
+) -> Result<RuntimeCommand, CommandError> {
     workspace.refresh_scope(game);
     workspace.state.proposal_faction = game.active_faction().map(str::to_owned);
     if !game.factions().is_empty() && game.active_faction().is_none() {
@@ -45,7 +45,7 @@ pub(crate) fn choose_game_command(
             let mut scoped = game.fork();
             scoped.set_active_faction(Some(faction.clone()));
             let command = choose_game_command(&scoped, selected, child)?;
-            if command == Command::EndTurn {
+            if command == RuntimeCommand::EndTurn {
                 workspace.state.controller_index += 1;
                 workspace.state.controller_workspace = None;
             } else {
@@ -53,7 +53,7 @@ pub(crate) fn choose_game_command(
                 return Ok(command);
             }
         }
-        return Ok(Command::EndTurn);
+        return Ok(RuntimeCommand::EndTurn);
     }
     workspace.refresh_control(game);
     let blocks = workspace.effective_blocks(policy);
@@ -65,7 +65,7 @@ pub(crate) fn choose_game_command(
     workspace.state.initialized = true;
     workspace.state.blocks.get_or_insert(blocks);
     if game.winner().is_some() {
-        return Ok(Command::EndTurn);
+        return Ok(RuntimeCommand::EndTurn);
     }
     if !workspace.state.turn_plan_ready {
         let mut tactic = tactic::Tactic::new(blocks.recruiter, blocks.campaign, blocks.planner);
@@ -82,7 +82,7 @@ pub(crate) fn choose_game_command(
         .state
         .commands
         .pop_front()
-        .unwrap_or(Command::EndTurn);
+        .unwrap_or(RuntimeCommand::EndTurn);
     if command.is_attack() {
         workspace.state.turn_plan_ready = false;
     }
@@ -91,7 +91,7 @@ pub(crate) fn choose_game_command(
 
 #[cfg(not(target_arch = "wasm32"))]
 pub(crate) fn play_blocks(
-    game: &mut Game<'_>,
+    game: &mut BattleSession<'_>,
     policy: Policy,
     blocks: Option<Blocks>,
     seed: u32,
@@ -153,7 +153,7 @@ pub(crate) fn play_blocks(
     }
     Ok(())
 }
-fn automatic_factions(game: &Game<'_>) -> Vec<(String, Option<Policy>)> {
+fn automatic_factions(game: &BattleSession<'_>) -> Vec<(String, Option<Policy>)> {
     game.automatic_factions()
         .into_iter()
         .map(|(id, policy)| (id, policy.map(Into::into)))
@@ -165,7 +165,7 @@ fn automatic_factions(game: &Game<'_>) -> Vec<(String, Option<Policy>)> {
 /// its continuation before handing out the next command.
 #[cfg(not(target_arch = "wasm32"))]
 pub(crate) fn execute_proposals(
-    game: &mut Game<'_>,
+    game: &mut BattleSession<'_>,
     workspace: &mut PlanningWorkspace,
     proposals: Vec<hex_command_battle::ActionProposal>,
 ) -> Result<(), CommandError> {
@@ -174,7 +174,7 @@ pub(crate) fn execute_proposals(
             break;
         }
         let command = proposal.into_command();
-        if game.active_faction().is_some() && command == Command::EndTurn {
+        if game.active_faction().is_some() && command == RuntimeCommand::EndTurn {
             continue;
         }
         let outcome = game.execute_proposal(command.into())?;

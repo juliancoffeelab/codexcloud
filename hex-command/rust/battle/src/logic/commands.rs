@@ -1,8 +1,9 @@
 //! Atomic validation and execution of typed battle commands.
+use crate::logic::event_queries::EventFacts;
 
-use super::battle::Game;
+use super::battle::LiveBattle;
 use crate::{RuntimeCommand, data::*};
-impl Game<'_> {
+impl LiveBattle<'_> {
     /// Resolve the wire representation once; runtime AI bypasses this boundary.
     pub(crate) fn execute(&mut self, command: Command) -> Result<(), CommandError> {
         if self.runtime.winner.is_some()
@@ -29,16 +30,24 @@ mod browser_controls_tests {
 
     #[test]
     fn explicit_recall_preserves_selection_and_rejects_duplicates_atomically() {
-        let rules = Rules::load().unwrap();
-        let mut game =
-            Game::start_campaign(&rules, "lantern-road", 0, vec![], 0, vec![], vec![], vec![]);
+        let rules = Catalogue::load().unwrap();
+        let mut game = LiveBattle::start_campaign(
+            &rules,
+            "lantern-road",
+            0,
+            vec![],
+            0,
+            vec![],
+            vec![],
+            vec![],
+        );
         game.winner = Some(BattleResult::PlayerVictory);
         let leader = game
             .units
             .iter()
             .find(|u| u.role == Some(Role::Leader) && u.phase == TurnPhase::Player)
             .unwrap();
-        let kind = rules.types["archer"];
+        let kind = game.kind("archer");
         let site = game.board.adjacent[leader.tile]
             .iter()
             .copied()
@@ -88,10 +97,14 @@ impl super::BattlePosition<'_> {
                     .ok_or(CommandError::UnknownUnit(target))?;
                 let actor = self.unit(unit.0).unwrap();
                 let weapon = self
-                    .weapons(actor)
-                    .find(|w| self.source_weapon(w).id == weapon.0)
-                    .ok_or_else(|| CommandError::UnknownWeapon(weapon.clone()))?
-                    .key();
+                    .with_capabilities_at(actor, actor.tile, &self.units, &[], |caps| {
+                        caps.attacks()
+                            .find(|attack| attack.id() == weapon.0)
+                            .map(|attack| {
+                                self.runtime.weapon_ids.borrow_mut().weapon_key(attack.id())
+                            })
+                    })
+                    .ok_or_else(|| CommandError::UnknownWeapon(weapon.clone()))?;
                 RuntimeCommand::Attack {
                     unit,
                     target,
@@ -101,10 +114,8 @@ impl super::BattlePosition<'_> {
             Command::Recruit { unit, kind, tile } => {
                 self.unit(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
                 let kind = UnitKind(
-                    *self
-                        .rules
-                        .types
-                        .get(&kind.0)
+                    self.definitions
+                        .find_kind(&kind.0)
                         .ok_or_else(|| CommandError::UnknownType(kind.clone()))?,
                 );
                 let tile = TileIndex(
@@ -119,10 +130,8 @@ impl super::BattlePosition<'_> {
             Command::Advance { unit, kind } => {
                 self.unit(unit.0).ok_or(CommandError::UnknownUnit(unit))?;
                 let kind = UnitKind(
-                    *self
-                        .rules
-                        .types
-                        .get(&kind.0)
+                    self.definitions
+                        .find_kind(&kind.0)
                         .ok_or_else(|| CommandError::UnknownType(kind.clone()))?,
                 );
                 RuntimeCommand::Advance { unit, kind }
@@ -166,16 +175,22 @@ impl super::BattlePosition<'_> {
             } => Command::Attack {
                 unit: unit.clone(),
                 target: target.clone(),
-                weapon: WeaponId(self.weapon_id(*weapon).to_owned()),
+                weapon: WeaponId(
+                    self.runtime
+                        .weapon_ids
+                        .borrow()
+                        .weapon_id(*weapon)
+                        .ok_or(CommandError::IllegalAttack)?,
+                ),
             },
             RuntimeCommand::Recruit { unit, kind, tile } => Command::Recruit {
                 unit: unit.clone(),
-                kind: UnitTypeId(self.rules.units[kind.0].id.clone()),
+                kind: UnitTypeId(self.definitions.unit(kind.0).id().to_owned()),
                 tile: TileId(self.runtime.board.ids[tile.0].clone()),
             },
             RuntimeCommand::Advance { unit, kind } => Command::Advance {
                 unit: unit.clone(),
-                kind: UnitTypeId(self.rules.units[kind.0].id.clone()),
+                kind: UnitTypeId(self.definitions.unit(kind.0).id().to_owned()),
             },
             RuntimeCommand::DropItem { unit, item } => Command::DropItem {
                 unit: unit.clone(),
@@ -213,11 +228,12 @@ impl super::BattlePosition<'_> {
                 Err(CommandError::IllegalMove)
             }
             RuntimeCommand::Recruit { kind, tile, .. }
-                if kind.0 >= self.rules.units.len() || tile.0 >= self.runtime.terrain.len() =>
+                if kind.0 >= self.catalogue.units().count()
+                    || tile.0 >= self.runtime.terrain.len() =>
             {
                 Err(CommandError::IllegalRecruit)
             }
-            RuntimeCommand::Advance { kind, .. } if kind.0 >= self.rules.units.len() => {
+            RuntimeCommand::Advance { kind, .. } if kind.0 >= self.catalogue.units().count() => {
                 Err(CommandError::IllegalAdvance)
             }
             _ => Ok(()),
@@ -257,11 +273,8 @@ impl super::BattlePosition<'_> {
                     .unit(target.0)
                     .ok_or(CommandError::UnknownUnit(target))?;
                 let attack = self
-                    .weapons(actor)
-                    .position(|a| a.matches_key(&weapon))
-                    .ok_or_else(|| {
-                        CommandError::UnknownWeapon(WeaponId(self.weapon_id(weapon).to_owned()))
-                    })?;
+                    .weapon_index(actor, weapon)
+                    .ok_or(CommandError::IllegalAttack)?;
                 if !self.may_act(actor) {
                     return Err(CommandError::WrongTurn);
                 }
@@ -303,13 +316,15 @@ impl super::BattlePosition<'_> {
                 }
                 let slot = self
                     .inventory(&self.runtime.units[index])
-                    .position(|candidate| candidate.id == item)
+                    .position(|candidate| candidate.id() == item)
                     .ok_or(CommandError::IllegalItem)?;
                 let item = self.drop_item(unit.0, slot);
                 self.record(format!(
                     "{} dropped {}.",
                     self.unit_name(&self.runtime.units[index]),
-                    self.runtime.inventories.item(item).name
+                    self.catalogue
+                        .item(self.runtime.inventories.item(item))
+                        .name()
                 ));
                 self.runtime.ground_items.push(GroundItemState {
                     tile: self.runtime.units[index].tile,
@@ -318,7 +333,7 @@ impl super::BattlePosition<'_> {
                 #[cfg(not(target_arch = "wasm32"))]
                 self.action(ActionRecord::Drop {
                     unit: format!("u{}", unit.0),
-                    item: self.runtime.inventories.item(item).id.clone(),
+                    item: self.runtime.inventories.item(item).to_owned(),
                 });
             }
 
@@ -364,7 +379,7 @@ impl super::BattlePosition<'_> {
         Ok(())
     }
 }
-impl Game<'_> {
+impl LiveBattle<'_> {
     pub(crate) fn execute_runtime(&mut self, command: RuntimeCommand) -> Result<(), CommandError> {
         match command {
             RuntimeCommand::DismissDialogue => {
@@ -407,14 +422,23 @@ impl Game<'_> {
                 let records = self.runtime.recordings.take();
                 let flags = campaign.retry_flags();
                 *self = Self::start_campaign_from_definition(
-                    self.rules,
+                    self.catalogue,
                     self.campaign_definition(),
                     campaign.mission,
-                    campaign.veterans.clone().unwrap_or_default(),
+                    campaign
+                        .veterans
+                        .clone()
+                        .expect("resolved campaign veterans"),
                     campaign.carry_gold,
                     flags,
-                    campaign.story_veterans.clone().unwrap_or_default(),
-                    campaign.fallen_companions.clone().unwrap_or_default(),
+                    campaign
+                        .story_veterans
+                        .clone()
+                        .expect("resolved campaign veterans"),
+                    campaign
+                        .fallen_companions
+                        .clone()
+                        .expect("resolved campaign fallen_companions"),
                 );
                 self.runtime.combat_rng = combat_rng;
                 #[cfg(not(target_arch = "wasm32"))]
@@ -431,7 +455,7 @@ impl Game<'_> {
                     .clone();
                 if self.runtime.winner != Some(BattleResult::PlayerVictory)
                     || campaign.completed
-                    || campaign.mission + 1 >= self.campaign_definition().missions.len()
+                    || campaign.mission + 1 >= self.campaign_definition().chapters().len()
                 {
                     return Err(CommandError::NoNextMission);
                 }
@@ -453,7 +477,7 @@ impl Game<'_> {
                     RuntimeCommand::Attack { unit, target, .. } => self
                         .unit(unit.0)
                         .zip(self.unit(target.0))
-                        .map(|(a, b)| (*a, *b, self.mediation_at_risk(b))),
+                        .map(|(a, b)| (*a, *b, EventFacts::new(self).mediation_at_risk(b))),
                     _ => None,
                 };
                 let tick = matches!(command, RuntimeCommand::EndTurn);

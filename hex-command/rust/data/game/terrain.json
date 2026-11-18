@@ -5,7 +5,18 @@
     "cost": 1,
     "passable": true,
     "description": "Normal movement. No protection.",
-    "role": "road"
+    "role": "road",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "plains",
@@ -13,30 +24,56 @@
     "cost": 1,
     "passable": true,
     "description": "Normal movement. No protection.",
-    "role": "plains"
+    "role": "plains",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "forest",
     "damageModifiers": {
-      "ranged": -1
+      "ranged": -1,
+      "melee": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
     },
     "name": "Forest",
     "cost": 2,
     "passable": true,
     "description": "Costs 2 movement; ranged damage reduced by 1.",
-    "role": "forest"
+    "role": "forest",
+    "capturable": false,
+    "blocksShots": true,
+    "income": 0,
+    "environmentEffects": []
   },
   {
     "id": "hill",
     "damageModifiers": {
       "melee": -1,
-      "ranged": -1
+      "ranged": -1,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
     },
     "name": "Hills",
     "cost": 2,
     "passable": true,
     "description": "Costs 2 movement; all damage reduced by 1.",
-    "role": "hill"
+    "role": "hill",
+    "capturable": false,
+    "blocksShots": true,
+    "income": 0,
+    "environmentEffects": []
   },
   {
     "id": "water",
@@ -44,7 +81,18 @@
     "cost": 1,
     "passable": false,
     "description": "Impassable to land units.",
-    "role": "water"
+    "role": "water",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "bridge",
@@ -52,19 +100,37 @@
     "cost": 1,
     "passable": true,
     "description": "A crossing over water. Normal movement; no protection.",
-    "role": "bridge"
+    "role": "bridge",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "ford",
     "damageModifiers": {
       "melee": 1,
-      "ranged": 1
+      "ranged": 1,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
     },
     "name": "Shallow water",
     "cost": 2,
     "passable": true,
     "description": "Costs 3 movement for soldiers and commanders, 2 for archers and scouts. Units here take 1 extra damage.",
-    "role": "ford"
+    "role": "ford",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "environmentEffects": []
   },
   {
     "id": "village",
@@ -72,7 +138,18 @@
     "cost": 1,
     "passable": true,
     "description": "+2 gold per turn. Heals a friendly occupant by 4 HP.",
-    "role": "village"
+    "role": "village",
+    "capturable": true,
+    "blocksShots": false,
+    "income": 2,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": ["settlement-healing"]
   },
   {
     "id": "keep",
@@ -80,53 +157,94 @@
     "cost": 1,
     "passable": true,
     "description": "Your commander can recruit into adjacent empty hexes. Blocks ranged attacks through the tile.",
-    "role": "keep"
+    "role": "keep",
+    "capturable": true,
+    "blocksShots": true,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "marsh",
     "damageModifiers": {
       "melee": 1,
-      "ranged": 1
+      "ranged": 1,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
     },
     "name": "Marsh",
     "cost": 2,
     "passable": true,
     "description": "Mud slows land units and exposes them to 1 extra damage. Merfolk move easily here and take 1 less damage.",
-    "role": "marsh"
+    "role": "marsh",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "environmentEffects": []
   },
   {
     "id": "ruins",
     "damageModifiers": {
-      "ranged": -1
+      "ranged": -1,
+      "melee": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
     },
     "name": "Ruins",
     "cost": 1,
     "passable": true,
     "description": "Broken walls reduce ranged damage by 1 without blocking shots through the tile. Some campaign ruins contain binding stones; their objectives specify who can seal them.",
-    "role": "ruins"
+    "role": "ruins",
+    "capturable": true,
+    "blocksShots": false,
+    "income": 0,
+    "environmentEffects": []
   },
   {
     "id": "fort",
     "damageModifiers": {
       "melee": -1,
-      "ranged": -1
+      "ranged": -1,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
     },
     "name": "Fort",
     "cost": 2,
     "passable": true,
     "description": "Earthworks reduce all incoming damage by 1. Capture by entering; forts provide no income or healing.",
-    "role": "fort"
+    "role": "fort",
+    "capturable": true,
+    "blocksShots": false,
+    "income": 0,
+    "environmentEffects": []
   },
   {
     "id": "grove",
     "damageModifiers": {
-      "ranged": -1
+      "ranged": -1,
+      "melee": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
     },
     "name": "Sacred grove",
     "cost": 2,
     "passable": true,
     "description": "Trees reduce ranged damage by 1 and block shots through the tile. An owned grove heals its friendly occupant by 4 HP, but provides no income.",
-    "role": "grove"
+    "role": "grove",
+    "capturable": true,
+    "blocksShots": true,
+    "income": 0,
+    "environmentEffects": ["settlement-healing"]
   },
   {
     "id": "landing",
@@ -134,7 +252,18 @@
     "cost": 1,
     "passable": true,
     "description": "A jetty on the riverbank. Normal movement; no protection.",
-    "role": "landing"
+    "role": "landing",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "ferry",
@@ -142,7 +271,18 @@
     "cost": 1,
     "passable": true,
     "description": "A boat moored beside a riverbank jetty. Normal movement; no protection. Boarding does not move units across the river.",
-    "role": "ferry"
+    "role": "ferry",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "house",
@@ -150,7 +290,18 @@
     "cost": 1,
     "passable": true,
     "description": "A single home. Normal movement; no protection, income or healing.",
-    "role": "house"
+    "role": "house",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "mountain",
@@ -158,7 +309,18 @@
     "cost": 3,
     "passable": false,
     "description": "A sheer mountain ridge, impassable to land units. Blocks ranged attacks through the tile.",
-    "role": "mountain"
+    "role": "mountain",
+    "capturable": false,
+    "blocksShots": true,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "mountain-mine",
@@ -166,7 +328,18 @@
     "cost": 2,
     "passable": true,
     "description": "A mine dug into a mountainside. Costs 2 movement; no protection. The surrounding rock blocks ranged attacks through the tile. Scenario objectives specify what can be found inside.",
-    "role": "mountain-mine"
+    "role": "mountain-mine",
+    "capturable": false,
+    "blocksShots": true,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "cave-passage",
@@ -174,7 +347,18 @@
     "cost": 1,
     "passable": true,
     "description": "Walkable cave floor. Normal movement; no protection.",
-    "role": "plains"
+    "role": "plains",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "burned-village",
@@ -182,7 +366,18 @@
     "cost": 1,
     "passable": true,
     "description": "Charred homes on open ground. No income, healing or protection.",
-    "role": "burned-village"
+    "role": "burned-village",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "signpost",
@@ -190,7 +385,18 @@
     "cost": 1,
     "passable": true,
     "description": "A wooden waymarker beside the road. Normal movement; no protection.",
-    "role": "signpost"
+    "role": "signpost",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "castle-wall",
@@ -199,10 +405,17 @@
     "passable": true,
     "damageModifiers": {
       "melee": -1,
-      "ranged": -1
+      "ranged": -1,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
     },
     "description": "Paved fortifications. Normal movement; all incoming damage reduced by 1. No income, healing or recruitment.",
-    "role": "fortification"
+    "role": "fortification",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "environmentEffects": []
   },
   {
     "id": "castle-bell",
@@ -211,10 +424,17 @@
     "passable": true,
     "damageModifiers": {
       "melee": -1,
-      "ranged": -1
+      "ranged": -1,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
     },
     "description": "An enclosed fortified keep. Its owner\u2019s leader can recruit into adjacent empty passable hexes. All incoming damage reduced by 1. No income or healing.",
-    "role": "keep"
+    "role": "keep",
+    "capturable": true,
+    "blocksShots": true,
+    "income": 0,
+    "environmentEffects": []
   },
   {
     "id": "monastery",
@@ -223,9 +443,17 @@
     "passable": true,
     "description": "A hilltop sanctuary. Costs 1 movement and shelters against ranged attacks. Scenario rituals use this site.",
     "damageModifiers": {
-      "ranged": -1
+      "ranged": -1,
+      "melee": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
     },
-    "role": "monastery"
+    "role": "monastery",
+    "capturable": true,
+    "blocksShots": false,
+    "income": 0,
+    "environmentEffects": []
   },
   {
     "id": "church",
@@ -233,7 +461,18 @@
     "cost": 1,
     "passable": true,
     "description": "A quiet church. Normal movement; no protection. Scenario discoveries may leave equipment here.",
-    "role": "church"
+    "role": "church",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "graveyard",
@@ -241,7 +480,18 @@
     "cost": 1,
     "passable": true,
     "description": "Old burial stones. Normal movement; no protection.",
-    "role": "graveyard"
+    "role": "graveyard",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "ritual-star",
@@ -249,7 +499,18 @@
     "cost": 1,
     "passable": true,
     "description": "A charged ritual mark. Captives still standing here can be consumed by the bell.",
-    "role": "ritual-star"
+    "role": "ritual-star",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "ritual-spent",
@@ -257,7 +518,18 @@
     "cost": 1,
     "passable": true,
     "description": "The ritual has burned out. It cannot feed the bell again.",
-    "role": "ritual-spent"
+    "role": "ritual-spent",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   },
   {
     "id": "cave-wall",
@@ -265,6 +537,17 @@
     "cost": 1,
     "passable": false,
     "description": "Solid underground rock. Impassable.",
-    "role": "cave-wall"
+    "role": "cave-wall",
+    "capturable": false,
+    "blocksShots": true,
+    "income": 0,
+    "damageModifiers": {
+      "melee": 0,
+      "ranged": 0,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "environmentEffects": []
   }
 ]

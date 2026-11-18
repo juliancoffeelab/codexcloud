@@ -1,0 +1,11 @@
+{
+  "id": "darkness-ambient",
+  "name": "Darkness ambient",
+  "description": "Authored ambient light effect.",
+  "effects": [
+    {
+      "kind": "ambient-light",
+      "level": "darkness"
+    }
+  ]
+}

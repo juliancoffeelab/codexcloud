@@ -1,8 +1,9 @@
 //! Compact battle sessions borrowing catalog rules and indexing the live roster.
 use super::event_state::{CompiledMission, EventProgress};
+use crate::CampaignProgram;
 
 use crate::{data::*, model::StateFrame};
-use rustc_hash::FxHashMap as HashMap;
+use rustc_hash::FxHashMap;
 use std::cell::RefCell;
 use std::collections::VecDeque;
 use std::rc::Rc;
@@ -12,8 +13,8 @@ pub struct Board {
     pub ids: Vec<Hex>,
     pub locations: Vec<Option<String>>,
     pub positions: Vec<(i32, i32)>,
-    pub indices: HashMap<Hex, usize>,
-    named_locations: HashMap<String, usize>,
+    pub indices: FxHashMap<Hex, usize>,
+    named_locations: FxHashMap<String, usize>,
     pub adjacent: Vec<Vec<usize>>,
     pub adjacent_bits: Vec<u128>,
     pub distances: Vec<u16>,
@@ -70,14 +71,13 @@ impl Board {
             distances,
         })
     }
-    /// Resolve a source location reference; command lookup uses coordinate indices only.
     #[inline]
-    pub(crate) fn resolve(&self, reference: &TileRef) -> Option<usize> {
-        match reference {
-            TileRef::Hex(hex) => self.indices.get(hex).copied(),
-            TileRef::Location(name) => self.named_locations.get(name).copied(),
-            TileRef::Binding(_) => None,
-        }
+    pub(crate) fn tile_at(&self, hex: Hex) -> Option<usize> {
+        self.indices.get(&hex).copied()
+    }
+    #[inline]
+    pub(crate) fn named_tile(&self, name: &str) -> Option<usize> {
+        self.named_locations.get(name).copied()
     }
     pub fn distance(&self, first: usize, second: usize) -> u16 {
         self.distances[first * self.ids.len() + second]
@@ -90,11 +90,11 @@ pub fn hex_distance(first: (i32, i32), second: (i32, i32)) -> u16 {
 }
 // A generated layout is reused by many policy/race pairings. These caches
 // depend on catalog rules, geometry and terrain, never on a game's mutable state.
-type TerrainKey = (String, Vec<(String, Option<String>, i32, i32, String)>);
+type TerrainKey = ([u8; 32], Vec<(String, Option<String>, i32, i32, String)>);
 #[derive(Clone)]
 struct SharedTerrain {
     board: Rc<Board>,
-    routes: Rc<RefCell<HashMap<super::movement::RouteKey, Rc<Vec<u16>>>>>,
+    routes: Rc<RefCell<FxHashMap<super::movement::RouteKey, Rc<Vec<u16>>>>>,
     route_order: Rc<RefCell<VecDeque<super::movement::RouteKey>>>,
     attacks: super::geometry::AttackGeometry,
     masks: super::geometry::AttackMasks,
@@ -105,11 +105,11 @@ struct SharedTerrain {
     origin_runs: super::geometry::OriginRunCache,
 }
 thread_local! {
-    static TERRAIN_POOL: RefCell<(HashMap<TerrainKey, SharedTerrain>, VecDeque<TerrainKey>)> = RefCell::new((HashMap::default(), VecDeque::new()));
+    static TERRAIN_POOL: RefCell<(FxHashMap<TerrainKey, SharedTerrain>, VecDeque<TerrainKey>)> = RefCell::new((FxHashMap::default(), VecDeque::new()));
 }
 #[derive(Clone, Debug)]
 struct MissionKey {
-    definition: CampaignRules,
+    definition: CampaignProgram,
     mission: usize,
 }
 impl PartialEq for MissionKey {
@@ -126,7 +126,7 @@ impl std::hash::Hash for MissionKey {
 }
 thread_local! {
     // Strong definition ownership prevents address reuse from aliasing cached content.
-    static MISSION_POOL: RefCell<HashMap<MissionKey, Rc<CompiledMission>>> = RefCell::default();
+    static MISSION_POOL: RefCell<FxHashMap<MissionKey, Rc<CompiledMission>>> = RefCell::default();
 }
 /// Derived data for the current battle revision; refreshed after successful commands.
 #[derive(Clone, Debug)]
@@ -136,6 +136,7 @@ struct TileGeometry {
     dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
     floors: Rc<Vec<Option<String>>>,
     tile_perception: Rc<Vec<TilePerception>>,
+    tile_effects: Rc<Vec<Vec<ScopedEffect>>>,
     light: Rc<Vec<Option<std::sync::Arc<TileLight>>>>,
 }
 
@@ -173,17 +174,21 @@ impl<T: Clone> AsRef<T> for Shared<T> {
 /// Owned live data; no catalog borrows and no wire representation.
 #[derive(Clone, Debug)]
 pub(crate) struct PositionState {
+    pub(crate) effect_sources: Rc<super::effect_index::EffectSourceIndex>,
+    pub(crate) weapon_ids: Rc<RefCell<super::definition_index::WeaponIdentities>>,
+    pub(crate) map_modifiers: Rc<StatModifiers>,
+    pub(crate) lighting: Rc<MapLighting>,
     pub(crate) scope: crate::BattleScope,
-    pub(crate) character_names: Rc<HashMap<String, String>>,
+    pub(crate) character_names: Rc<FxHashMap<String, String>>,
     pub(crate) campaign_battle: bool,
     pub(crate) tracks_path: bool,
     pub(crate) traversal: Option<(u32, Vec<usize>)>,
     pub(crate) mechanical_deaths: Vec<Unit>,
     pub(crate) resolved_recruitment: Rc<std::collections::BTreeMap<String, Vec<FactionRecruit>>>,
     pub(crate) terrain_emitters: Rc<Vec<usize>>,
-    pub(crate) fixed_sights: Rc<Vec<(usize, VisionGroupKey, ResolvedSightProfile)>>,
     pub(crate) perception_sensitive: bool,
     pub(crate) observed_light: Rc<super::geometry::TileSet>,
+    pub(crate) ambient_illumination: Rc<Vec<Illumination>>,
     pub(crate) fixed_lights: Rc<Vec<super::perception::ResolvedFixedLight>>,
     pub(crate) factions: Rc<Vec<Faction>>,
     pub(crate) vision_groups: Rc<Vec<VisionGroupState>>,
@@ -197,10 +202,11 @@ pub(crate) struct PositionState {
     pub(crate) walls: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) dead_ends: Rc<Vec<Option<Vec<HexDirection>>>>,
     pub(crate) tile_perception: Rc<Vec<TilePerception>>,
+    pub(crate) tile_effects: Rc<Vec<Vec<ScopedEffect>>>,
     pub(crate) light: Rc<Vec<Option<std::sync::Arc<TileLight>>>>,
     pub(crate) condition_memory: Rc<Vec<String>>,
     /// Derived tile-indexed remembered fog; never serialized.
-    pub(crate) fog_memory: Rc<HashMap<String, Vec<u64>>>,
+    pub(crate) fog_memory: Rc<FxHashMap<String, Vec<u64>>>,
     pub(crate) floors: Rc<Vec<Option<String>>>,
     pub(crate) units: Vec<Unit>,
     pub(crate) ground_items: Vec<GroundItemState>,
@@ -227,7 +233,7 @@ pub(crate) struct PositionState {
     /// The selected immutable definition; absent only for a non-campaign game.
     #[cfg(not(target_arch = "wasm32"))]
     pub(crate) recordings: Option<Shared<Records>>,
-    pub(super) route_cache: Rc<RefCell<HashMap<super::movement::RouteKey, Rc<Vec<u16>>>>>,
+    pub(super) route_cache: Rc<RefCell<FxHashMap<super::movement::RouteKey, Rc<Vec<u16>>>>>,
     pub(super) terrain_revision: u64,
     pub(super) attack_geometry: super::geometry::AttackGeometry,
     pub(super) attack_masks: super::geometry::AttackMasks,
@@ -239,7 +245,7 @@ pub(crate) struct PositionState {
     pub(super) route_order: Rc<RefCell<VecDeque<super::movement::RouteKey>>>,
     pub(super) occupancy: Vec<Option<usize>>,
     pub(crate) occupied_tiles: super::geometry::TileSet,
-    pub(super) unit_indices: HashMap<u32, usize>,
+    pub(super) unit_indices: FxHashMap<u32, usize>,
 }
 /// Opaque owned live storage used by native hosts between catalog loans.
 #[derive(Debug)]
@@ -248,11 +254,18 @@ pub struct BattleState {
     pub(crate) story: CampaignRuntime,
 }
 /// Physical state has no campaign interpreter or narrative history.
-#[derive(Debug)]
 pub(crate) struct BattlePosition<'catalog> {
-    pub(crate) rules: &'catalog Rules,
-    pub(crate) mechanics: &'catalog UnitMechanics,
+    pub(crate) catalogue: &'catalog Catalogue,
+    pub(crate) definitions: Rc<super::definition_index::DefinitionIndex<'catalog>>,
     pub(crate) runtime: PositionState,
+}
+impl std::fmt::Debug for BattlePosition<'_> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("BattlePosition")
+            .field("content_fingerprint", &self.catalogue.content_fingerprint)
+            .field("runtime", &self.runtime)
+            .finish()
+    }
 }
 #[derive(Clone, Debug)]
 pub(crate) struct CampaignRuntime {
@@ -263,22 +276,23 @@ pub(crate) struct CampaignRuntime {
     pub(crate) campaign: Option<Shared<CampaignState>>,
     pub(crate) scripts: Option<Shared<EventProgress>>,
     pub(crate) mission: Option<Rc<CompiledMission>>,
-    pub(super) campaign_definition: Option<CampaignRules>,
+    pub(super) campaign_definition: Option<CampaignProgram>,
     mission_key: Option<MissionKey>,
 }
+/// Authoritative physical state and campaign/event runtime.
 #[derive(Debug)]
-pub(crate) struct Game<'catalog> {
+pub(crate) struct LiveBattle<'catalog> {
     pub(crate) position: BattlePosition<'catalog>,
     pub(crate) story: CampaignRuntime,
 }
-impl<'catalog> std::ops::Deref for Game<'catalog> {
+impl<'catalog> std::ops::Deref for LiveBattle<'catalog> {
     type Target = BattlePosition<'catalog>;
     #[inline]
     fn deref(&self) -> &Self::Target {
         &self.position
     }
 }
-impl std::ops::DerefMut for Game<'_> {
+impl std::ops::DerefMut for LiveBattle<'_> {
     #[inline]
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.position
@@ -297,21 +311,25 @@ impl std::ops::DerefMut for BattlePosition<'_> {
         &mut self.runtime
     }
 }
-impl<'catalog> Game<'catalog> {
-    pub(crate) fn from_state(rules: &'catalog Rules, state: State) -> Self {
+impl<'catalog> LiveBattle<'catalog> {
+    pub(crate) fn from_map(catalogue: &'catalog Catalogue, map: &MapDefinition) -> Self {
+        Self::from_state(catalogue, super::setup::initial_state(catalogue, map))
+    }
+
+    pub(crate) fn from_state(rules: &'catalog Catalogue, state: State) -> Self {
         let definition = state
             .campaign
             .as_ref()
-            .map(|state| &rules.campaigns[&state.id]);
-        Self::from_state_with_campaign(rules, state, definition)
+            .map(|state| CampaignProgram::compile(rules, rules.campaign(&state.id), None));
+        Self::from_state_with_campaign(rules, state, definition.as_ref())
     }
     pub(crate) fn from_state_with_campaign(
-        rules: &'catalog Rules,
+        rules: &'catalog Catalogue,
         state: State,
-        definition: Option<&CampaignRules>,
+        definition: Option<&CampaignProgram>,
     ) -> Self {
         let key = (
-            rules.content_fingerprint.clone(),
+            rules.content_fingerprint,
             state
                 .tiles
                 .iter()
@@ -370,13 +388,14 @@ impl<'catalog> Game<'catalog> {
     }
 
     fn from_state_with_board_and_campaign(
-        rules: &'catalog Rules,
+        rules: &'catalog Catalogue,
         state: State,
         board: Rc<Board>,
-        definition: Option<&CampaignRules>,
+        definition: Option<&CampaignProgram>,
     ) -> Self {
         let (state, tiles) = StateFrame::split(state);
         let n = tiles.len();
+        let definitions = Rc::new(super::definition_index::DefinitionIndex::new(rules));
         let mut terrain = Vec::with_capacity(n);
         let mut owners = Vec::with_capacity(n);
         let mut connections = Vec::with_capacity(n);
@@ -384,14 +403,16 @@ impl<'catalog> Game<'catalog> {
         let mut dead_ends = Vec::with_capacity(n);
         let mut floors = Vec::with_capacity(n);
         let mut tile_perception = Vec::with_capacity(n);
+        let mut tile_effects = Vec::with_capacity(n);
         let mut light = Vec::with_capacity(n);
         for tile in tiles {
-            terrain.push(rules.terrains[&tile.terrain]);
+            terrain.push(definitions.terrain_name(&tile.terrain));
             owners.push(tile.owner);
             connections.push(tile.connections);
             walls.push(tile.walls);
             dead_ends.push(tile.dead_ends);
             floors.push(tile.floor);
+            tile_effects.push(tile.effects);
             tile_perception.push(tile.perception);
             light.push(tile.light);
         }
@@ -405,23 +426,25 @@ impl<'catalog> Game<'catalog> {
             dead_ends,
             floors,
             tile_perception: Rc::new(tile_perception),
+            tile_effects: Rc::new(tile_effects),
             light: Rc::new(light),
         };
         Self::from_parts(rules, state, board, definition, terrain, owners, geometry)
     }
 
     fn from_parts(
-        rules: &'catalog Rules,
+        rules: &'catalog Catalogue,
         mut state: StateFrame,
         board: Rc<Board>,
-        campaign_definition: Option<&CampaignRules>,
+        campaign_definition: Option<&CampaignProgram>,
         terrain: Vec<usize>,
         owners: Vec<Option<String>>,
         geometry: TileGeometry,
     ) -> Self {
+        let definitions = Rc::new(super::definition_index::DefinitionIndex::new(rules));
         let character_names = campaign_definition
             .map(|c| {
-                c.characters
+                c.characters()
                     .iter()
                     .map(|v| (v.id.clone(), v.name.clone()))
                     .collect()
@@ -444,7 +467,6 @@ impl<'catalog> Game<'catalog> {
             })
             .collect();
         let fog_memory = Rc::new(fog_memory);
-        let mechanics = rules.units.mechanics();
         let mut names = Names::default();
         names.intern("player".into());
         names.intern("enemy".into());
@@ -478,7 +500,7 @@ impl<'catalog> Game<'catalog> {
                     field_available: true,
                     perception,
                     id: unit.id.strip_prefix('u').unwrap().parse().unwrap(),
-                    kind: rules.types[&unit.r#type],
+                    kind: definitions.kind(&unit.r#type),
                     phase: state
                         .factions
                         .iter()
@@ -510,7 +532,7 @@ impl<'catalog> Game<'catalog> {
                     ),
                     ai_group: unit.ai_group.map(|value| names.intern(value)),
                     character: unit.character.map(|value| names.intern(value)),
-                    inventory: inventories.load(unit.items, mechanics),
+                    inventory: inventories.load(unit.items),
                 }
             })
             .collect();
@@ -519,24 +541,41 @@ impl<'catalog> Game<'catalog> {
             .into_iter()
             .map(|ground| GroundItemState {
                 tile: board.indices[&ground.tile],
-                item: inventories.add_item(ground.item, mechanics),
+                item: inventories.add_item(ground.item),
             })
             .collect();
         let combat_present = state.last_combat.is_some();
         let last_combat = state.last_combat.flatten();
         let observed_light = Rc::new(super::geometry::TileSet::new(terrain.len()));
+        let ambient_illumination = Rc::new(
+            geometry
+                .tile_perception
+                .iter()
+                .map(|p| match p.illumination {
+                    Some(level) => level,
+                    None => match state.lighting.time {
+                        TimeOfDay::Day => Illumination::Lit,
+                        TimeOfDay::Night => Illumination::Unlit,
+                    },
+                })
+                .collect(),
+        );
         let terrain_emitters = Rc::new(
             (0..geometry.light.len())
-                .filter(|&i| {
-                    geometry.light[i].is_some() || geometry.tile_perception[i].sight.is_some()
-                })
+                .filter(|&i| geometry.light[i].is_some())
                 .collect(),
         );
         let mut game = Self {
             position: BattlePosition {
-                rules,
-                mechanics,
+                catalogue: rules,
+                definitions,
                 runtime: PositionState {
+                    effect_sources: Rc::new(super::effect_index::EffectSourceIndex::new()),
+                    weapon_ids: Rc::new(RefCell::new(
+                        super::definition_index::WeaponIdentities::default(),
+                    )),
+                    map_modifiers: Rc::new(state.map_modifiers.clone()),
+                    lighting: Rc::new(state.lighting.clone()),
                     scope: crate::BattleScope::new(),
                     character_names: Rc::new(character_names),
                     campaign_battle: state.campaign.is_some(),
@@ -544,9 +583,9 @@ impl<'catalog> Game<'catalog> {
                     traversal: None,
                     mechanical_deaths: vec![],
                     terrain_emitters,
-                    fixed_sights: Rc::new(vec![]),
                     perception_sensitive: true,
                     observed_light,
+                    ambient_illumination,
                     fixed_lights: Rc::new(vec![]),
                     resolved_recruitment: Rc::new(Default::default()),
                     factions: Rc::new(state.factions),
@@ -557,6 +596,7 @@ impl<'catalog> Game<'catalog> {
                     inventories: std::sync::Arc::new(inventories),
                     active_faction: None,
                     tile_perception: geometry.tile_perception,
+                    tile_effects: geometry.tile_effects,
                     light: geometry.light,
                     condition_memory: Rc::new(state.condition_memory),
                     fog_memory,
@@ -588,9 +628,9 @@ impl<'catalog> Game<'catalog> {
                     arena_first: None,
                     #[cfg(not(target_arch = "wasm32"))]
                     recordings: None,
-                    route_cache: Rc::new(RefCell::new(HashMap::default())),
+                    route_cache: Rc::new(RefCell::new(FxHashMap::default())),
                     terrain_revision: 0,
-                    attack_geometry: Rc::new(RefCell::new(HashMap::default())),
+                    attack_geometry: Rc::new(RefCell::new(FxHashMap::default())),
                     attack_masks: super::geometry::AttackMasks::default(),
                     reach_cache: super::movement::ReachCache::default(),
                     threat_reach_cache: super::movement::ThreatReachCache::default(),
@@ -600,7 +640,7 @@ impl<'catalog> Game<'catalog> {
                     route_order: Rc::new(RefCell::new(VecDeque::new())),
                     occupancy: vec![],
                     occupied_tiles: super::geometry::TileSet::new(0),
-                    unit_indices: HashMap::default(),
+                    unit_indices: FxHashMap::default(),
                 },
             },
             story: CampaignRuntime {
@@ -636,22 +676,20 @@ impl<'catalog> Game<'catalog> {
         game
     }
     #[cfg(test)]
-    pub(crate) fn new(rules: &'catalog Rules, map: &str) -> Self {
+    pub(crate) fn new(rules: &'catalog Catalogue, map: &str) -> Self {
         Self::new_with_campaign(rules, map, None)
     }
     pub(crate) fn new_with_campaign(
-        rules: &'catalog Rules,
+        rules: &'catalog Catalogue,
         map: &str,
-        definition: Option<&CampaignRules>,
+        definition: Option<&CampaignProgram>,
     ) -> Self {
-        let state = rules
-            .maps
-            .iter()
-            .filter(|((id, _), _)| id == map)
-            .max_by_key(|((_, revision), _)| revision)
-            .unwrap()
-            .1
-            .clone();
+        let map = rules
+            .maps()
+            .filter(|candidate| candidate.id() == map)
+            .max_by_key(|map| map.revision())
+            .expect("selected map exists in catalogue");
+        let state = super::setup::initial_state(rules, map);
         Self::from_state_with_campaign(rules, state, definition)
     }
     pub(crate) fn campaign_snapshot(&self) -> Option<CampaignState> {
@@ -670,6 +708,8 @@ impl<'catalog> Game<'catalog> {
     }
     pub(crate) fn state_with_tiles(&self, tiles: Vec<Tile>) -> State {
         State {
+            map_modifiers: self.runtime.map_modifiers.as_ref().clone(),
+            lighting: self.runtime.lighting.as_ref().clone(),
             vision_groups: self.runtime.vision_groups.as_ref().clone(),
             factions: self.runtime.factions.as_ref().clone(),
             ground_items: self
@@ -678,7 +718,7 @@ impl<'catalog> Game<'catalog> {
                 .iter()
                 .map(|ground| GroundItem {
                     tile: self.runtime.board.ids[ground.tile].clone(),
-                    item: self.runtime.inventories.item(ground.item).clone(),
+                    item: self.runtime.inventories.item(ground.item).to_owned(),
                 })
                 .collect(),
             condition_memory: self.runtime.condition_memory.as_ref().clone(),
@@ -706,22 +746,13 @@ impl<'catalog> Game<'catalog> {
 
     /// Patch the authoritative terrain only where current runtime values differ.
 
-    pub(crate) fn character_name(&self, id: &str) -> Option<&str> {
-        self.story
-            .campaign_definition
-            .as_ref()
-            .or_else(|| self.rules.campaign_for_map(&self.runtime.map_id))
-            .and_then(|campaign| campaign.character(id))
-            .map(|c| c.name.as_str())
-    }
-
     /// Capability is authored once and exported through the catalog for UI discovery too.
 
     /// Refresh dense lookup tables after an internal roster transformation.
 
     /// Change terrain and invalidate only terrain-dependent route results.
 
-    pub(crate) fn campaign_definition(&self) -> &CampaignRules {
+    pub(crate) fn campaign_definition(&self) -> &CampaignProgram {
         self.story
             .campaign_definition
             .as_ref()
@@ -748,7 +779,7 @@ impl<'catalog> Game<'catalog> {
                 return mission.clone();
             }
             let mission = Rc::new(CompiledMission::new(
-                definition.missions[state.mission].clone(),
+                definition.chapters()[state.mission].clone(),
             ));
             if pool.len() >= 128 {
                 pool.clear();
@@ -761,9 +792,9 @@ impl<'catalog> Game<'catalog> {
     }
 }
 
-impl<'catalog> Game<'catalog> {}
+impl<'catalog> LiveBattle<'catalog> {}
 
-impl<'catalog> Game<'catalog> {
+impl<'catalog> LiveBattle<'catalog> {
     pub(crate) fn fork(&self) -> Self {
         Self {
             position: self.position.fork(),
@@ -788,8 +819,8 @@ impl<'catalog> BattlePosition<'catalog> {
             runtime.combat_animation = None;
         }
         Self {
-            rules: self.rules,
-            mechanics: self.mechanics,
+            catalogue: self.catalogue,
+            definitions: self.definitions.clone(),
             runtime,
         }
     }
@@ -813,29 +844,34 @@ impl<'catalog> BattlePosition<'catalog> {
         }
     }
     #[inline]
-    pub(crate) fn inventory(&self, unit: &Unit) -> impl ExactSizeIterator<Item = &Item> + Clone {
-        self.runtime.inventories.items(unit.inventory)
+    pub(crate) fn inventory(
+        &self,
+        unit: &Unit,
+    ) -> impl ExactSizeIterator<Item = &ItemDefinition> + Clone {
+        self.runtime
+            .inventories
+            .items(unit.inventory)
+            .map(|id| self.catalogue.item(id))
     }
-    pub(crate) fn set_inventory(&mut self, id: u32, items: Vec<Item>) {
-        self.runtime.perception_sensitive |= items.iter().any(|item| item.perception.is_some());
-        let inventory =
-            std::sync::Arc::make_mut(&mut self.runtime.inventories).load(items, self.mechanics);
+    pub(crate) fn set_inventory(&mut self, id: u32, items: Vec<String>) {
+        self.runtime.perception_sensitive |= !items.is_empty();
+        let inventory = std::sync::Arc::make_mut(&mut self.runtime.inventories).load(items);
         let index = self.index(id).unwrap();
         self.runtime.units[index].inventory = inventory;
+        self.refresh_effect_sources();
     }
-    pub(crate) fn give_item(&mut self, id: u32, item: Item) {
-        let item =
-            std::sync::Arc::make_mut(&mut self.runtime.inventories).add_item(item, self.mechanics);
+    pub(crate) fn give_item(&mut self, id: u32, item: String) {
+        let item = std::sync::Arc::make_mut(&mut self.runtime.inventories).add_item(item);
         self.give_existing_item(id, item);
     }
     pub(crate) fn give_existing_item(&mut self, id: u32, item: ItemId) {
-        self.runtime.perception_sensitive |=
-            self.runtime.inventories.item(item).perception.is_some();
+        self.runtime.perception_sensitive = true;
         let index = self.index(id).unwrap();
         let old = self.runtime.units[index].inventory;
         let inventory =
             std::sync::Arc::make_mut(&mut self.runtime.inventories).edit(old, None, Some(item));
         self.runtime.units[index].inventory = inventory;
+        self.refresh_effect_sources();
     }
     pub(crate) fn drop_item(&mut self, id: u32, slot: usize) -> ItemId {
         let index = self.index(id).unwrap();
@@ -844,22 +880,8 @@ impl<'catalog> BattlePosition<'catalog> {
         let inventory =
             std::sync::Arc::make_mut(&mut self.runtime.inventories).edit(old, Some(slot), None);
         self.runtime.units[index].inventory = inventory;
+        self.refresh_effect_sources();
         item
-    }
-    #[inline]
-    pub(crate) fn source_weapon(&self, weapon: &WeaponRules) -> &Weapon {
-        if weapon.source < self.mechanics.weapons.len() {
-            let (kind, slot) = self.mechanics.weapon_sources[weapon.source];
-            &self.rules.units[kind].attacks[slot]
-        } else {
-            self.runtime
-                .inventories
-                .source(weapon.source, self.mechanics)
-        }
-    }
-    #[inline]
-    pub(crate) fn weapon_id(&self, key: WeaponKey) -> String {
-        self.mechanics.weapon_id(key)
     }
     #[cfg(feature = "wasm")]
     pub(crate) fn patch_tiles(&self, tiles: &mut [Tile]) -> Vec<usize> {
@@ -879,9 +901,10 @@ impl<'catalog> BattlePosition<'catalog> {
                 floor,
                 perception,
                 light,
+                effects,
             } = tile;
             let position = self.runtime.board.positions[i];
-            let kind = &self.rules.terrain_names[self.runtime.terrain[i]];
+            let kind = self.terrain_definition(i).id().as_str();
             if *col != position.0
                 || *row != position.1
                 || terrain != kind
@@ -891,11 +914,12 @@ impl<'catalog> BattlePosition<'catalog> {
                 || *walls != self.runtime.walls[i]
                 || *floor != self.runtime.floors[i]
                 || *perception != self.runtime.tile_perception[i]
+                || *effects != self.runtime.tile_effects[i]
                 || *light != self.runtime.light[i]
             {
                 *col = position.0;
                 *row = position.1;
-                terrain.clone_from(kind);
+                *terrain = kind.to_owned();
                 owner.clone_from(&self.runtime.owners[i]);
                 connections.clone_from(&self.runtime.connections[i]);
                 dead_ends.clone_from(&self.runtime.dead_ends[i]);
@@ -903,6 +927,7 @@ impl<'catalog> BattlePosition<'catalog> {
                 floor.clone_from(&self.runtime.floors[i]);
                 perception.clone_from(&self.runtime.tile_perception[i]);
                 light.clone_from(&self.runtime.light[i]);
+                effects.clone_from(&self.runtime.tile_effects[i]);
                 changed.push(i);
             }
         }
@@ -919,7 +944,7 @@ impl<'catalog> BattlePosition<'catalog> {
                 location: self.runtime.board.locations[index].clone(),
                 col: self.runtime.board.positions[index].0,
                 row: self.runtime.board.positions[index].1,
-                terrain: self.rules.terrain_names[self.runtime.terrain[index]].clone(),
+                terrain: self.terrain_definition(index).id().as_str().to_owned(),
                 owner: self.runtime.owners[index].clone(),
                 connections: self.runtime.connections[index].clone(),
                 walls: self.runtime.walls[index].clone(),
@@ -927,6 +952,7 @@ impl<'catalog> BattlePosition<'catalog> {
                 floor: self.runtime.floors[index].clone(),
                 perception: self.runtime.tile_perception[index].clone(),
                 light: self.runtime.light[index].clone(),
+                effects: self.runtime.tile_effects[index].clone(),
             })
             .collect()
     }
@@ -939,10 +965,15 @@ impl<'catalog> BattlePosition<'catalog> {
                 .collect(),
             perception_effects: self.unit_perception[unit.perception.0].effects.clone(),
             faction: self.runtime.names.get(unit.faction).to_owned(),
-            items: self.inventory(unit).cloned().collect(),
+            items: self
+                .runtime
+                .inventories
+                .items(unit.inventory)
+                .map(str::to_owned)
+                .collect(),
             ai_group: self.name(unit.ai_group).map(str::to_owned),
             id: format!("u{}", unit.id),
-            r#type: self.rules.units[unit.kind].id.clone(),
+            r#type: self.definitions.unit(unit.kind).id().to_owned(),
             tile: self.runtime.board.ids[unit.tile].clone(),
             hp: unit.hp,
             moved: unit.moved,
@@ -999,66 +1030,100 @@ impl<'catalog> BattlePosition<'catalog> {
     pub(crate) fn unit_name<'a>(&'a self, unit: &'a Unit) -> &'a str {
         self.name(unit.character)
             .and_then(|id| self.runtime.character_names.get(id).map(String::as_str))
-            .unwrap_or(&self.rules.units[unit.kind].name)
+            .unwrap_or_else(|| self.definitions.unit(unit.kind).name())
     }
     #[inline]
     pub(crate) fn kind(&self, name: &str) -> usize {
-        self.rules.types[name]
+        self.definitions.kind(name)
     }
     #[inline]
-    pub(crate) fn terrain_role(&self, tile: usize) -> TerrainRole {
-        self.rules.terrain_roles[self.runtime.terrain[tile]]
-    }
-    #[inline]
-    pub(crate) fn role_is(&self, tile: usize, role: TerrainRole) -> bool {
-        self.terrain_role(tile) == role
+    pub(crate) fn terrain_definition(&self, tile: usize) -> &TerrainDefinition {
+        self.definitions.terrain(self.runtime.terrain[tile])
     }
     #[inline]
     pub(crate) fn is_keep(&self, tile: usize) -> bool {
-        self.role_is(tile, TerrainRole::Keep)
+        self.terrain_definition(tile).allows_recruitment()
     }
     pub(crate) fn record(&mut self, message: String) {
         self.runtime.log.insert(0, message);
         self.runtime.log.truncate(8);
     }
+    pub(crate) fn prospective(&self, kind: usize, faction: NameKey, tile: usize) -> Unit {
+        let faction_id = self.names.get(faction);
+        let faction_index = self
+            .factions
+            .iter()
+            .position(|f| f.id == faction_id)
+            .expect("known prospective faction");
+        let offset =
+            (faction_index * self.catalogue.units().count() + kind) * self.terrain.len() + tile + 1;
+        let id = self
+            .next_id
+            .checked_add(u32::try_from(offset).expect("prospective identity range"))
+            .expect("prospective identity range");
+        Unit {
+            kind,
+            tile,
+            hp: self.definitions.unit(kind).max_hp,
+            id,
+            inventory: InventoryId(0),
+            experience: Some(0),
+            role: None,
+            character: None,
+            ai_group: None,
+            moved: true,
+            attack_spent: true,
+            field_available: true,
+            perception: PerceptionId(0),
+            vision_group: self.vision_group(faction_id),
+            phase: self
+                .faction(faction_id)
+                .expect("known prospective faction")
+                .phase,
+            faction,
+            retreating: None,
+            rebuilding: None,
+        }
+    }
+    pub(crate) fn promotion(&self, unit: &Unit, kind: usize) -> Unit {
+        let mut result = *unit;
+        result.kind = kind;
+        result.hp = (self.definitions.unit(kind).max_hp
+            - (self.definitions.unit(unit.kind).max_hp - unit.hp))
+            .max(1);
+        result
+    }
+    pub(crate) fn recruit_cost(&self, leader: &Unit, kind: usize) -> i32 {
+        self.recruit_cost_for_faction(self.unit_faction(leader), kind)
+    }
+    pub(crate) fn recruit_cost_for_faction(&self, faction: &str, kind: usize) -> i32 {
+        let definition = self.definitions.unit(kind);
+        let pool = match self.resolved_recruitment.get(faction) {
+            Some(pool) => Some(pool.as_slice()),
+            None => self.faction(faction).and_then(|f| f.recruits.as_deref()),
+        };
+        let price = pool
+            .and_then(|pool| pool.iter().find(|entry| entry.unit == definition.id()))
+            .and_then(|entry| entry.cost);
+        definition.recruitment_price(price)
+    }
     pub(crate) fn add(&mut self, kind: usize, faction: NameKey, tile: usize) -> u32 {
-        let profile = &self.rules.units[kind].perception;
-        self.runtime.perception_sensitive |=
-            !profile.concealment.is_empty() || matches!(profile.range, SightRange::Range(_));
+        self.runtime.perception_sensitive = true;
         let id = self.runtime.next_id;
         self.runtime.next_id += 1;
         let perception = self.fresh_perception();
-        let faction_id = self.runtime.names.get(faction);
-        let side = self
-            .faction(faction_id)
-            .expect("validated creation faction")
-            .phase;
-        let vision_group = self.vision_group(faction_id);
-        self.runtime.units.push(Unit {
-            field_available: true,
-            perception,
-            vision_group,
-            id,
-            kind,
-            phase: side,
-            tile,
-            hp: self.rules.units[kind].hp,
-            moved: false,
-            attack_spent: false,
-            experience: Some(0),
-            role: None,
-            retreating: None,
-            rebuilding: None,
-            faction,
-            ai_group: None,
-            character: None,
-            inventory: InventoryId(0),
-        });
+        let mut unit = self.prospective(kind, faction, tile);
+        unit.id = id;
+        unit.perception = perception;
+        unit.moved = false;
+        unit.attack_spent = false;
+        self.runtime.units.push(unit);
         self.runtime
             .unit_indices
             .insert(id, self.runtime.units.len() - 1);
         self.runtime.occupancy[tile] = Some(self.runtime.units.len() - 1);
         self.runtime.occupied_tiles.insert(tile);
+        self.refresh_effect_sources();
         id
     }
     pub(crate) fn roster_changed(&mut self) {
@@ -1070,6 +1135,34 @@ impl<'catalog> BattlePosition<'catalog> {
             self.runtime.occupied_tiles.insert(unit.tile);
             self.runtime.unit_indices.insert(unit.id, index);
         }
+        self.refresh_effect_sources();
+    }
+    pub(crate) fn refresh_ambient_illumination(&mut self) {
+        self.runtime.ambient_illumination = Rc::new(
+            self.tile_perception
+                .iter()
+                .map(|p| match p.illumination {
+                    Some(level) => level,
+                    None => match self.lighting.time {
+                        TimeOfDay::Day => Illumination::Lit,
+                        TimeOfDay::Night => Illumination::Unlit,
+                    },
+                })
+                .collect(),
+        );
+    }
+    pub(crate) fn invalidate_terrain_queries(&mut self) {
+        self.refresh_effect_sources();
+        self.runtime.attack_geometry = Rc::new(RefCell::new(FxHashMap::default()));
+        self.runtime.attack_masks = super::geometry::AttackMasks::default();
+        self.runtime.reach_cache = super::movement::ReachCache::default();
+        self.runtime.threat_reach_cache = super::movement::ThreatReachCache::default();
+        self.runtime.movement_masks = super::movement::MovementMasks::default();
+        self.runtime.movement_regions = super::movement::RegionCache::default();
+        self.runtime.origin_runs = super::geometry::OriginRunCache::default();
+        self.runtime.terrain_revision = self.runtime.terrain_revision.wrapping_add(1);
+        self.runtime.route_cache = Rc::new(RefCell::new(FxHashMap::default()));
+        self.runtime.route_order = Rc::new(RefCell::new(VecDeque::new()));
     }
     pub(crate) fn set_terrain(&mut self, tile: usize, terrain: usize) {
         if self.runtime.terrain[tile] != terrain {
@@ -1077,16 +1170,7 @@ impl<'catalog> BattlePosition<'catalog> {
             Rc::make_mut(&mut self.runtime.connections)[tile] = None;
             Rc::make_mut(&mut self.runtime.walls)[tile] = None;
             Rc::make_mut(&mut self.runtime.dead_ends)[tile] = None;
-            self.runtime.attack_geometry = Rc::new(RefCell::new(HashMap::default()));
-            self.runtime.attack_masks = super::geometry::AttackMasks::default();
-            self.runtime.reach_cache = super::movement::ReachCache::default();
-            self.runtime.threat_reach_cache = super::movement::ThreatReachCache::default();
-            self.runtime.movement_masks = super::movement::MovementMasks::default();
-            self.runtime.movement_regions = super::movement::RegionCache::default();
-            self.runtime.origin_runs = super::geometry::OriginRunCache::default();
-            self.runtime.terrain_revision = self.runtime.terrain_revision.wrapping_add(1);
-            self.runtime.route_cache = Rc::new(RefCell::new(HashMap::default()));
-            self.runtime.route_order = Rc::new(RefCell::new(VecDeque::new()));
+            self.invalidate_terrain_queries();
         }
     }
     #[cfg(not(target_arch = "wasm32"))]
@@ -1099,49 +1183,52 @@ impl<'catalog> BattlePosition<'catalog> {
         if self.runtime.winner.is_some() || !self.may_act(unit) || unit.moved || unit.attack_spent {
             return vec![];
         }
-        let rule = &self.rules.units[unit.kind];
-        if rule
-            .experience_needed
-            .is_none_or(|needed| unit.experience.unwrap_or(0) < needed)
-        {
+        let definition = self.definitions.unit(unit.kind);
+        if definition.max_xp == 0 || unit.experience.expect("resolved XP") < definition.max_xp {
             return vec![];
         }
-        rule.advances_to
+        definition
+            .promotion_ids()
             .iter()
             .map(|name| self.kind(name))
-            .filter(|&kind| self.cost(kind, unit.tile) != u16::MAX)
+            .filter(|&kind| {
+                let promoted = self.promotion(unit, kind);
+                self.with_capabilities_at(&promoted, unit.tile, &self.units, &[], |caps| {
+                    caps.step_cost(self.terrain_definition(unit.tile)).is_some()
+                })
+            })
             .collect()
     }
+
     pub(crate) fn advance(&mut self, id: u32, kind: usize) {
-        let profile = &self.rules.units[kind].perception;
-        self.runtime.perception_sensitive |=
-            !profile.concealment.is_empty() || matches!(profile.range, SightRange::Range(_));
+        self.runtime.perception_sensitive = true;
         let index = self.index(id).unwrap();
         assert!(
             self.promotion_options(&self.runtime.units[index])
                 .contains(&kind)
         );
-        let previous = &self.rules.units[self.runtime.units[index].kind];
-        let name = self.unit_name(&self.runtime.units[index]).to_owned();
-        let wounds = previous.hp - self.runtime.units[index].hp;
-        let experience = self.runtime.units[index]
+        let current = self.runtime.units[index];
+        let name = self.unit_name(&current).to_owned();
+        let experience = current
             .experience
-            .unwrap_or(0)
-            .saturating_sub(previous.experience_needed.unwrap_or(0));
+            .expect("resolved unit experience")
+            .saturating_sub(self.definitions.unit(current.kind).max_xp);
+        let promoted = self.promotion(&current, kind);
         let unit = &mut self.runtime.units[index];
-        unit.kind = kind;
+        *unit = promoted;
         unit.experience = Some(experience);
-        unit.hp = (self.rules.units[kind].hp - wounds).max(1);
         unit.moved = true;
         unit.attack_spent = true;
+        self.refresh_effect_sources();
         self.record(format!(
             "{} advanced to {}.",
-            name, self.rules.units[kind].name
+            name,
+            self.definitions.unit(kind).name()
         ));
         #[cfg(not(target_arch = "wasm32"))]
         self.action(ActionRecord::Advance {
             unit: format!("u{id}"),
-            unit_type: self.rules.units[kind].id.clone(),
+            unit_type: self.definitions.unit(kind).id().to_owned(),
         });
     }
     pub(crate) fn recruitment_options_for_faction(&self, id: &str) -> Vec<usize> {
@@ -1151,10 +1238,13 @@ impl<'catalog> BattlePosition<'catalog> {
     pub(crate) fn recruitment_pool_for(
         &self,
         leader: &Unit,
-    ) -> super::recruit_pool::RecruitPool<'_> {
+    ) -> super::recruit_pool::RecruitPool<'_, 'catalog> {
         self.recruitment_pool_for_faction(self.unit_faction(leader))
     }
-    fn recruitment_pool_for_faction(&self, id: &str) -> super::recruit_pool::RecruitPool<'_> {
+    fn recruitment_pool_for_faction(
+        &self,
+        id: &str,
+    ) -> super::recruit_pool::RecruitPool<'_, 'catalog> {
         use super::recruit_pool::{PoolEntries, RecruitPool};
         let entries = if let Some(pool) = self.runtime.resolved_recruitment.get(id) {
             PoolEntries::Recruits(pool.iter())
@@ -1166,11 +1256,13 @@ impl<'catalog> BattlePosition<'catalog> {
             && matches!(id, "player" | "enemy")
         {
             PoolEntries::Names(
-                self.rules
+                self.catalogue
+                    .meta()
+                    .simulation
                     .rosters
                     .iter()
-                    .find(|r| r.id == armies[if id == "player" { 0 } else { 1 }])
-                    .expect("validated skirmish faction")
+                    .find(|roster| roster.id == armies[if id == "player" { 0 } else { 1 }])
+                    .expect("selected army exists in authored rosters")
                     .pool
                     .iter(),
             )
@@ -1183,30 +1275,12 @@ impl<'catalog> BattlePosition<'catalog> {
             )
         };
         RecruitPool {
-            rules: self.rules,
+            definitions: &self.definitions,
             entries,
         }
     }
     pub(crate) fn recruitment_options_for(&self, leader: &Unit) -> Vec<usize> {
         self.recruitment_options_for_faction(self.unit_faction(leader))
-    }
-    pub(crate) fn recruit_cost(&self, leader: &Unit, kind: usize) -> i32 {
-        self.recruit_cost_for_faction(self.unit_faction(leader), kind)
-    }
-    pub(crate) fn recruit_cost_for_faction(&self, id: &str, kind: usize) -> i32 {
-        let unit = &self.rules.units[kind].id;
-        if let Some(pool) = self.runtime.resolved_recruitment.get(id) {
-            return pool
-                .iter()
-                .find(|entry| &entry.unit == unit)
-                .and_then(|entry| entry.cost)
-                .unwrap_or(self.rules.units[kind].cost);
-        }
-        self.faction(id)
-            .and_then(|f| f.recruits.as_ref())
-            .and_then(|pool| pool.iter().find(|entry| &entry.unit == unit))
-            .and_then(|entry| entry.cost)
-            .unwrap_or(self.rules.units[kind].cost)
     }
     pub(crate) fn placement_tiles(
         &self,
@@ -1229,7 +1303,13 @@ impl<'catalog> BattlePosition<'catalog> {
         self.runtime.board.adjacent[leader.tile]
             .iter()
             .copied()
-            .filter(|&tile| self.cost(kind, tile) != u16::MAX && self.at(tile).is_none())
+            .filter(|&tile| {
+                let recruit = self.prospective(kind, leader.faction, tile);
+                self.at(tile).is_none()
+                    && self.with_capabilities_at(&recruit, tile, &self.units, &[], |caps| {
+                        caps.step_cost(self.terrain_definition(tile)).is_some()
+                    })
+            })
             .collect()
     }
     pub(crate) fn recruit(&mut self, id: u32, kind: usize, tile: usize) {
@@ -1251,12 +1331,12 @@ impl<'catalog> BattlePosition<'catalog> {
             } else {
                 "Enemy"
             },
-            self.rules.units[kind].name.to_lowercase()
+            self.definitions.unit(kind).name().to_lowercase()
         ));
         #[cfg(not(target_arch = "wasm32"))]
         self.action(ActionRecord::Recruit {
             unit: format!("u{id}"),
-            unit_type: self.rules.units[kind].id.clone(),
+            unit_type: self.definitions.unit(kind).id().to_owned(),
             tile: self.runtime.board.ids[tile].clone(),
             cost: Some(cost),
         });

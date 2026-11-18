@@ -26,10 +26,10 @@ Assess the implementation cost of the proposed gameplay. Distinguish existing co
 
 Read when implementing story events, characters, factions or objectives. Work from the project root and use current schemas and authored examples rather than copying a cached field list.
 
-- **Loading and document boundaries:** `rust/catalog/src/data/catalog_documents.rs`; campaign `campaign.json` and stage `stage.json` files under `rust/data/game/campaigns/`.
-- **Events, conditions, dialogue and objectives:** `rust/catalog/src/data/events.rs`, `rust/battle/src/logic/events.rs` and `event_queries.rs`; current stage `scripts.json` and `story.json` files.
-- **Factions and rosters:** `rust/catalog/src/data/factions.rs` and the roster structures in `catalog_documents.rs`; current stage `roster.json` files.
-- **Characters, chapter transitions and equipment:** `rust/catalog/src/data/scenario.rs`, `rust/battle/src/logic/campaign.rs` and current campaign character declarations and item definitions.
+- **Loading and document boundaries:** `rust/catalog/src/loader.rs` and `rust/catalog/src/world.rs`; campaign `campaign.json` and stage `stage.json` files under `rust/data/game/campaigns/`.
+- **Events, conditions, dialogue and objectives:** `rust/catalog/src/schema/events.rs` and `rust/catalog/src/schema/conditions.rs`, `rust/battle/src/logic/events.rs` and `rust/battle/src/logic/event_queries.rs`; current stage `scripts.json` and `story.json` files.
+- **Factions and rosters:** `rust/catalog/src/schema/factions.rs` and the roster structures in `rust/catalog/src/world.rs`; current stage `roster.json` files.
+- **Characters, chapter transitions and equipment:** `rust/catalog/src/schema/characters.rs`, `rust/catalog/src/schema/scenario.rs` and `rust/catalog/src/schema/units.rs`, `rust/battle/src/logic/campaign.rs` and current campaign character declarations and item definitions.
 
 Before implementing, establish whether the shared engine expresses the intended encounter. Separate missing capability from an authoring choice. Keep campaign-specific decisions in authored content; tactical planners handle movement, combat and safety.
 

@@ -1,8 +1,8 @@
 //! Deterministic race/policy/map schedules with counterbalanced seats and initiative.
 use super::{error::SimulationError, types::*};
 use crate::{
-    ai::{Blocks, CampaignBlock, Diplomacy, Planner, Policy, Recruiter},
-    data::{Rules, TurnPhase},
+    ai::{Blocks, CampaignerKind, Diplomacy, PlannerKind, Policy, RecruiterKind},
+    data::{Catalogue, TurnPhase},
 };
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -31,9 +31,9 @@ impl Mode {
 #[derive(Clone, Copy, Debug, Serialize)]
 /// Independently chosen blocks; omitted slots resolve from the workload defaults.
 pub struct WithSelection {
-    pub recruiter: Option<Recruiter>,
-    pub campaign: Option<CampaignBlock>,
-    pub planner: Option<Planner>,
+    pub recruiter: Option<RecruiterKind>,
+    pub campaign: Option<CampaignerKind>,
+    pub planner: Option<PlannerKind>,
 }
 impl WithSelection {
     pub fn parse(value: &str) -> Result<Self, SimulationError> {
@@ -66,9 +66,9 @@ impl WithSelection {
         Blocks {
             recruiter: self.recruiter.unwrap_or(defaults.recruiter),
             campaign: self.campaign.unwrap_or(if arena {
-                CampaignBlock::Arena
+                CampaignerKind::Arena
             } else {
-                CampaignBlock::Mission
+                CampaignerKind::Mission
             }),
             planner: self.planner.unwrap_or(defaults.planner),
         }
@@ -111,7 +111,7 @@ pub struct ScheduleOptions {
 }
 impl ScheduleOptions {
     /// Resolve authored simulation defaults without starting any matches.
-    pub fn defaults(rules: &Rules) -> Result<Self, SimulationError> {
+    pub fn defaults(rules: &Catalogue) -> Result<Self, SimulationError> {
         let parse = |ids: &[String]| -> Result<Vec<Policy>, SimulationError> {
             ids.iter()
                 .map(|id| {
@@ -128,16 +128,24 @@ impl ScheduleOptions {
             first_seed: 1,
             seeds: DEFAULT_ARENA_SEEDS,
             campaign_seeds: DEFAULT_CAMPAIGN_SEEDS,
-            max_rounds: rules.arena.default_max_rounds,
-            campaign_max_rounds: rules.campaign_defaults.default_max_rounds,
+            max_rounds: rules.meta().simulation.arena.default_max_rounds,
+            campaign_max_rounds: rules.meta().simulation.campaign.default_max_rounds,
             recruit_limit: None,
-            armies: rules.rosters.iter().map(|item| item.id.clone()).collect(),
-            landscapes: rules.arena.default_scenarios.clone(),
-            campaigns: rules.campaign_defaults.default_campaigns.clone(),
-            policies: parse(&rules.arena.policies)?,
+            armies: rules
+                .meta()
+                .simulation
+                .rosters
+                .iter()
+                .map(|item| item.id.clone())
+                .collect(),
+            landscapes: rules.meta().simulation.arena.default_scenarios.clone(),
+            campaigns: rules.meta().simulation.campaign.default_campaigns.clone(),
+            policies: parse(&rules.meta().simulation.arena.policies)?,
             objectives: None,
             campaign_objectives: rules
-                .campaign_defaults
+                .meta()
+                .simulation
+                .campaign
                 .campaigns
                 .iter()
                 .filter(|(_, config)| !config.routes.is_empty())
@@ -148,7 +156,9 @@ impl ScheduleOptions {
             self_play: false,
             opponent: None,
             campaign_diplomacy: rules
-                .campaign_defaults
+                .meta()
+                .simulation
+                .campaign
                 .campaigns
                 .iter()
                 .map(|(id, campaign)| {
@@ -164,7 +174,9 @@ impl ScheduleOptions {
                 })
                 .collect::<Result<_, SimulationError>>()?,
             diplomacy: rules
-                .campaign_defaults
+                .meta()
+                .simulation
+                .campaign
                 .diplomacy
                 .iter()
                 .map(|id| {
@@ -443,15 +455,15 @@ mod tests {
     use super::*;
     #[test]
     fn custom_tactic_is_added_to_matrix_and_campaign_roles() {
-        let rules = Rules::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         let mut options = ScheduleOptions::defaults(&rules).unwrap();
         options.mode = Mode::Arena;
         options.seeds = 1;
         options.opponent = Some(Policy::Balanced);
         options.with = Some(WithSelection {
-            recruiter: Some(crate::ai::Recruiter::Rotation),
+            recruiter: Some(crate::ai::RecruiterKind::Rotation),
             campaign: None,
-            planner: Some(crate::ai::Planner::Queued),
+            planner: Some(crate::ai::PlannerKind::Queued),
         });
         options.policies = vec![
             crate::ai::Policy::Classic,
@@ -496,12 +508,12 @@ mod tests {
         let configs = schedule(&campaign).unwrap();
         assert_eq!(configs.len(), 2);
         assert_eq!(configs.len(), campaign.expected_games().unwrap());
-        assert!(configs.iter().all(|config| matches!(config, MatchConfig::Campaign(config) if config.player_blocks.is_none() && config.enemy_blocks.is_none_or(|blocks| blocks.campaign == crate::ai::CampaignBlock::Mission && blocks.recruiter == crate::ai::Recruiter::Rotation))));
+        assert!(configs.iter().all(|config| matches!(config, MatchConfig::Campaign(config) if config.player_blocks.is_none() && config.enemy_blocks.is_none_or(|blocks| blocks.campaign == crate::ai::CampaignerKind::Mission && blocks.recruiter == crate::ai::RecruiterKind::Rotation))));
     }
 
     #[test]
     fn authored_diplomacy_limits_campaign_runs_and_counts() {
-        let rules = Rules::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         let mut options = ScheduleOptions::defaults(&rules).unwrap();
         options.mode = Mode::Campaign;
         options.seeds = 2;
@@ -532,7 +544,7 @@ mod tests {
     }
     #[test]
     fn fixed_opponent_panel_preserves_seats_and_initiative_without_duplicate_matches() {
-        let rules = Rules::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         let mut options = ScheduleOptions::defaults(&rules).unwrap();
         options.mode = Mode::Arena;
         options.seeds = 1;

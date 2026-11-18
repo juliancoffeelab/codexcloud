@@ -788,10 +788,8 @@ class battlefield ~(audio : Phaser_sound.t) ~(actions : unit -> Battlefield_view
       Array.iter
         (fun (unit : Domain.public_unit) ->
           Array.iter
-            (fun (item : Domain.item) ->
-              let _ =
-                Set.add urls (Phaser_resource_plan.item_frame frame.view.artwork item.id).url
-              in
+            (fun item ->
+              let _ = Set.add urls (Phaser_resource_plan.item_frame frame.view.artwork item).url in
               ())
             unit.items)
         (Native.units frame.view.game);

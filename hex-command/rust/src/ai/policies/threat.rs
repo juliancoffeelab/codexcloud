@@ -1,7 +1,7 @@
 //! Exposure policy, actor isolation and signature-owned threat caches.
 use crate::{ai::context::BattleView, data::*};
 use hex_command_battle::{PhaseForecasts, PhaseSnapshot};
-use rustc_hash::FxHashMap as HashMap;
+use rustc_hash::FxHashMap;
 // Dense reachability sets intersect attack origins a machine word at a time.
 use crate::logic::geometry::TileSet;
 // A kind is not a combat identity: two units of that kind can carry different
@@ -13,7 +13,7 @@ struct PotentialThreat {
     origins: TileSet,
     coverage: Vec<TileSet>,
 }
-type ArenaEnemies = HashMap<Option<u32>, Vec<PotentialThreat>>;
+type ArenaEnemies = FxHashMap<Option<u32>, Vec<PotentialThreat>>;
 type ArenaUnit = (
     u32,
     usize,
@@ -32,7 +32,7 @@ pub(in crate::ai) struct ArenaThreatWorkspace {
     roster: Vec<ArenaUnit>,
     faction: Option<String>,
     arena: ArenaEnemies,
-    risks: HashMap<RiskKey, i32>,
+    risks: FxHashMap<RiskKey, i32>,
 }
 pub(in crate::ai) struct Threats<'game, 'catalog> {
     orders: Option<&'game crate::ai::orders::TacticalOrders>,
@@ -40,8 +40,8 @@ pub(in crate::ai) struct Threats<'game, 'catalog> {
     phases: PhaseForecasts<'game, 'catalog>,
     faction: String,
     normal: Option<(PhaseSnapshot<'catalog>, Vec<PotentialThreat>)>,
-    cache: HashMap<RiskKey, i32>,
-    forecasts: HashMap<(u32, Option<u32>), (PhaseSnapshot<'catalog>, Vec<PotentialThreat>)>,
+    cache: FxHashMap<RiskKey, i32>,
+    forecasts: FxHashMap<(u32, Option<u32>), (PhaseSnapshot<'catalog>, Vec<PotentialThreat>)>,
     arena: ArenaEnemies,
     workspace: Option<&'game mut ArenaThreatWorkspace>,
 }
@@ -83,9 +83,9 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
             phases,
             faction: faction.to_owned(),
             normal: None,
-            cache: HashMap::default(),
-            forecasts: HashMap::default(),
-            arena: HashMap::default(),
+            cache: FxHashMap::default(),
+            forecasts: FxHashMap::default(),
+            arena: FxHashMap::default(),
             workspace: None,
         }
     }
@@ -235,7 +235,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
         positions: &TileSet,
     ) -> Vec<TileSet> {
         board
-            .weapons(unit)
+            .attack_reaches(unit)
             .map(|attack| {
                 if let TileSet::Small(positions) = positions {
                     let masks = board.attack_masks(attack.category, attack.range);
@@ -273,7 +273,7 @@ impl<'game, 'catalog> Threats<'game, 'catalog> {
                 continue;
             }
             let mut best = 0;
-            for weapon in 0..board.weapons(enemy).count() {
+            for weapon in 0..board.attack_count(enemy) {
                 if positions[weapon].contains(target.tile)
                     && board.can_threaten_from(enemy, target, weapon, &threat.origins)
                 {
@@ -396,11 +396,11 @@ impl Drop for Threats<'_, '_> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::logic::Game;
+    use crate::logic::BattleSession;
     #[test]
     fn arena_workspace_reuses_hp_only_changes_and_invalidates_roster_changes() {
-        let rules = Catalog::load().unwrap();
-        let mut game = Game::new(&rules, "mirror");
+        let rules = Catalogue::load().unwrap();
+        let mut game = BattleSession::new(&rules, "mirror");
         let side = game.turn();
         let mut workspace = ArenaThreatWorkspace::default();
         let enemy = game.units().iter().find(|u| u.phase != side).unwrap().id;
@@ -418,7 +418,7 @@ mod tests {
                 } else {
                     state.units.retain(|u| u.id != format!("u{enemy}"));
                 }
-                game = Game::try_from_state(&rules, state).unwrap();
+                game = BattleSession::try_from_state(&rules, state).unwrap();
             }
             let mut cached = Threats::with_workspace(
                 game.phase_forecasts(),
@@ -451,9 +451,9 @@ mod tests {
     }
     #[test]
     fn arena_shortcut_matches_full_turn_forecasts_with_eliminations() {
-        let rules = Catalog::load().unwrap();
+        let rules = Catalogue::load().unwrap();
         for side in [TurnPhase::Player, TurnPhase::Ai] {
-            let mut game = Game::new(&rules, "mirror");
+            let mut game = BattleSession::new(&rules, "mirror");
             game.begin_turn(side);
             let enemy = game.units().iter().find(|u| u.phase != side).unwrap().id;
             let ordinary = game

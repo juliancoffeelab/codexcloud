@@ -2,6 +2,33 @@
   "requiredCompanions": [],
   "events": [
     {
+      "id": "company-survival",
+      "observer": null,
+      "priority": 2147483647,
+      "remembers": false,
+      "objective": null,
+      "when": {
+        "any": [
+          {
+            "not": {
+              "survives": {
+                "company": "player",
+                "allies": false,
+                "character": null,
+                "role": "leader",
+                "includeEvacuated": true
+              }
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The company cannot continue without its protected companions."
+        }
+      ]
+    },
+    {
       "id": "relief",
       "when": {
         "turn": 10
@@ -10,7 +37,11 @@
         {
           "victory": "Relief arrived."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
     },
     {
       "id": "stay",
@@ -31,16 +62,35 @@
                 "row": 1
               }
             },
-            "character": "player-leader"
+            "character": "player-leader",
+            "role": null,
+            "side": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "through": false
           }
         },
-        "playerMarker": null
+        "playerMarker": null,
+        "id": null,
+        "preserveLives": null,
+        "optional": false,
+        "availableWhen": null,
+        "satisfiedWhen": null
       },
       "actions": [
         {
           "log": "Defend until relief."
         }
-      ]
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0
     }
-  ]
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false
 }

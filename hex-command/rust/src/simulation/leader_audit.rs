@@ -2,7 +2,7 @@
 //! Exposure sums independent enemies' best legal damage after movement. It is a
 //! conservative forecast, not a prediction of coordinated tactics or proof of a
 //! mission-compatible alternative. Alternatives hold every other unit fixed.
-use crate::{ai::audit_leader_exposure, data::*, logic::Game};
+use crate::{ai::audit_leader_exposure, data::*, logic::BattleSession};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -66,7 +66,7 @@ pub(crate) struct Pending {
     audit: LeaderAudit,
     alternatives: Vec<(usize, i32)>,
 }
-fn strength(game: &Game<'_>, leader: &Unit, opponent: bool) -> ArmyStrength {
+fn strength(game: &BattleSession<'_>, leader: &Unit, opponent: bool) -> ArmyStrength {
     let mut total = ArmyStrength::default();
     for unit in game.authoritative_units().iter().filter(|u| {
         !u.is_leader()
@@ -77,24 +77,25 @@ fn strength(game: &Game<'_>, leader: &Unit, opponent: bool) -> ArmyStrength {
                 game.allied(leader, u)
             }
     }) {
-        let rule = &game.catalogue().units[unit.kind];
+        let rule = game.unit_definition(unit.kind);
         total.units += 1;
         let price = game.recruit_cost(unit, unit.kind);
         total.cost += price;
         total.hp += unit.hp.max(0);
-        total.max_hp += rule.hp;
-        total.hp_value += f64::from(price) * f64::from(unit.hp.max(0)) / f64::from(rule.hp.max(1));
+        total.max_hp += rule.max_hp;
+        total.hp_value +=
+            f64::from(price) * f64::from(unit.hp.max(0)) / f64::from(rule.max_hp.max(1));
     }
     total
 }
-fn state(game: &Game<'_>, unit: &Unit) -> LeaderState {
+fn state(game: &BattleSession<'_>, unit: &Unit) -> LeaderState {
     LeaderState {
         tile: game.board().ids[unit.tile].clone(),
         hp: unit.hp,
-        max_hp: game.catalogue().units[unit.kind].hp,
+        max_hp: game.unit_definition(unit.kind).max_hp,
     }
 }
-pub(crate) fn begin(game: &Game<'_>) -> Vec<Pending> {
+pub(crate) fn begin(game: &BattleSession<'_>) -> Vec<Pending> {
     game.authoritative_units()
         .iter()
         .filter(|u| u.is_leader())
@@ -146,7 +147,7 @@ pub(crate) fn begin(game: &Game<'_>) -> Vec<Pending> {
         })
         .collect()
 }
-pub(crate) fn finish(game: &Game<'_>, pending: Vec<Pending>) -> Vec<LeaderAudit> {
+pub(crate) fn finish(game: &BattleSession<'_>, pending: Vec<Pending>) -> Vec<LeaderAudit> {
     pending
         .into_iter()
         .map(|mut p| {
@@ -196,8 +197,9 @@ mod tests {
     use super::*;
     #[test]
     fn exposed_destination_is_compared_with_a_reachable_nonlethal_alternative() {
-        let mut rules = Catalog::load().unwrap();
-        let original = Game::new(&rules, "mirror");
+        let mut source = crate::catalogue_fixture::bundle();
+        let rules = crate::catalogue_fixture::frozen(&source);
+        let original = BattleSession::new(&rules, "mirror");
         let leader = original
             .units()
             .iter()
@@ -219,14 +221,17 @@ mod tests {
             .unwrap()
             .clone();
         drop(original);
-        rules.units[enemy.kind].r#move = 1;
-        for attack in &mut rules.units[enemy.kind].attacks {
-            attack.damage = 100;
-            attack.count = 1;
-            attack.category = Category::Melee;
-            attack.range = 1;
-        }
-        let mut game = Game::new(&rules, "mirror");
+        crate::catalogue_fixture::unit_kind(&mut source, enemy.kind, |unit| {
+            unit["move"] = serde_json::json!(1);
+            for attack in unit["attacks"].as_array_mut().unwrap() {
+                attack["damage"] = serde_json::json!(100);
+                attack["count"] = serde_json::json!(1);
+                attack["category"] = serde_json::json!(Category::Melee);
+                attack["range"] = serde_json::json!(1);
+            }
+        });
+        let rules = crate::catalogue_fixture::frozen(&source);
+        let mut game = BattleSession::new(&rules, "mirror");
         crate::tests::edit(&mut game, |state| {
             state
                 .units
@@ -234,7 +239,8 @@ mod tests {
         });
         let mut fixture = None;
         for tile in 0..game.board().ids.len() {
-            if tile == leader.tile || game.cost(enemy.kind, tile) == u16::MAX {
+            if tile == leader.tile || game.step_cost(game.unit(enemy.id).unwrap(), tile) == u16::MAX
+            {
                 continue;
             }
             let target = game.board().ids[tile].clone();
@@ -272,8 +278,8 @@ mod tests {
     }
     #[test]
     fn boundaries_record_army_attrition_and_leader_death_without_a_verdict() {
-        let rules = Catalog::load().unwrap();
-        let mut game = Game::new(&rules, "mirror");
+        let rules = Catalogue::load().unwrap();
+        let mut game = BattleSession::new(&rules, "mirror");
         let leader = game
             .units()
             .iter()

@@ -246,14 +246,16 @@ let register session =
         let commands = Session.commands session in
         let catalog = (Session.view session).catalog in
         let unit_ids =
-          List.map (fun (unit : Domain.unit_rule) -> unit.id) (Catalog.units catalog)
+          List.map (fun (unit : Domain.wiki_unit) -> unit.id) (Catalog.units catalog)
         in
         let recruitable = unit_ids in
         let campaign_ids =
-          List.map (fun (campaign : Domain.campaign) -> campaign.id) (Catalog.campaigns catalog)
+          List.map
+            (fun (campaign : Domain.browser_campaign) -> campaign.id)
+            (Catalog.campaigns catalog)
         in
         let maps =
-          List.map (fun (map : Domain.map_definition) -> map.id) (Catalog.scenario_maps catalog)
+          List.map (fun (map : Domain.browser_map) -> map.id) (Catalog.scenario_maps catalog)
         in
         let member values value message = if not (List.mem value values) then fail message in
         let result action value =

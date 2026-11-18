@@ -6,24 +6,32 @@
     {
       "portrait": "scout",
       "text": "Firm ground, trees to break the wind, and a view of the approaches. We could make a camp here.",
-      "character": "ivo"
+      "character": "ivo",
+      "speaker": null,
+      "sound": null
     },
     {
       "portrait": "swordsman",
       "text": "A place to fall back to. Good. Check the woods before we settle in.",
-      "character": "nera"
+      "character": "nera",
+      "speaker": null,
+      "sound": null
     }
   ],
   "victory": [
     {
       "portrait": "swordsman",
       "text": "The message is on its way to the ferry. Now we find where that column went.",
-      "character": "nera"
+      "character": "nera",
+      "speaker": null,
+      "sound": null
     },
     {
       "portrait": "scout",
       "text": "East, then. I’ll watch the road.",
-      "character": "ivo"
+      "character": "ivo",
+      "speaker": null,
+      "sound": null
     }
   ],
   "debrief": "The rescued villagers remain in the hidden village. A runner carries word back to the crossing while the patrol follows the prisoner road east."

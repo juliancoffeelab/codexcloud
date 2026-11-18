@@ -366,6 +366,15 @@ def main():
             valid.offsets[: count + 1],
             valid.shapes[:count],
             valid.indices[:end],
+            valid.context_values[
+                : sum(
+                    len(native.ACTOR_SPATIAL_CHANNELS)
+                    * int(np.prod(valid.shapes[owner]))
+                    for owner, _, _ in valid.contexts
+                    if owner < count
+                )
+            ],
+            valid.contexts[valid.contexts[:, 0] < count],
         )
         if args.architecture == "cnn"
         else native.score(exported, valid.dense[0][:end])

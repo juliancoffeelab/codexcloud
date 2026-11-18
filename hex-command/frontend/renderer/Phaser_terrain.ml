@@ -321,8 +321,7 @@ class terrain (scene : Phaser.scene) (manifest : Terrain_pages.sprite)
         let global =
           not
             (Option.fold ~none:false
-               ~some:(fun (old : Domain.battlefield_lighting) ->
-                 old.time = next.time && old.underground = next.underground)
+               ~some:(fun (old : Domain.battlefield_lighting) -> old.unlit_tiles = next.unlit_tiles)
                before)
         in
         let changed = Set.create () in

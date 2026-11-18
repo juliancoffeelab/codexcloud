@@ -2,7 +2,7 @@
   "id": "lantern-road",
   "name": "The Lantern Road",
   "tagline": "A dark crossing. A road into the missing villages.",
-  "description": "Lead Captain Nera’s patrol across a river whose far bank has gone dark. Find the ferryman, reopen the village road, and follow the people taken by the dead.",
+  "description": "Lead Captain Nera\u2019s patrol across a river whose far bank has gone dark. Find the ferryman, reopen the village road, and follow the people taken by the dead.",
   "shortDescription": "Investigate the dark eastern bank and follow the missing villagers.",
   "race": "human",
   "leader": "swordsman",
@@ -10,7 +10,9 @@
     {
       "portrait": "swordsman",
       "text": "Leave a watch at every crossing. Carry lamps down the road. We opened the valley; now we keep it open.",
-      "character": "nera"
+      "character": "nera",
+      "speaker": null,
+      "sound": null
     }
   ],
   "stages": [
@@ -68,5 +70,17 @@
       "name": "Quarry bear"
     }
   ],
+  "carryover": {
+    "goldLimit": 8,
+    "veteranLimit": 4,
+    "deploymentRadius": 3,
+    "weights": {
+      "hp": 1,
+      "damage": 2,
+      "healing": 5,
+      "level": 3,
+      "experience": 0.3333333333333333
+    }
+  },
   "tags": ["human"]
 }

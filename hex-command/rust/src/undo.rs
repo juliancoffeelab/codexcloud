@@ -50,7 +50,7 @@ fn apply(state: &mut Value, change: UndoChange) -> Result<(), EngineError> {
     Ok(())
 }
 
-pub(crate) fn validate(rules: &Rules, request: UndoValidation) -> Result<(), EngineError> {
+pub(crate) fn validate(rules: &Catalogue, request: UndoValidation) -> Result<(), EngineError> {
     let round = request.state.round;
     let map = request.state.map_id.clone();
     if request.state.turn != TurnPhase::Player || request.state.winner.is_some() {

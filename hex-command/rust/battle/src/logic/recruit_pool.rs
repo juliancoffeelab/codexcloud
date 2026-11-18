@@ -7,11 +7,11 @@ pub(crate) enum PoolEntries<'a> {
     Recruits(std::slice::Iter<'a, FactionRecruit>),
 }
 #[derive(Clone)]
-pub(crate) struct RecruitPool<'a> {
-    pub rules: &'a Rules,
+pub(crate) struct RecruitPool<'a, 'catalog> {
+    pub definitions: &'a super::definition_index::DefinitionIndex<'catalog>,
     pub entries: PoolEntries<'a>,
 }
-impl Iterator for RecruitPool<'_> {
+impl Iterator for RecruitPool<'_, '_> {
     type Item = usize;
     #[inline]
     fn size_hint(&self) -> (usize, Option<usize>) {
@@ -25,10 +25,10 @@ impl Iterator for RecruitPool<'_> {
     fn next(&mut self) -> Option<usize> {
         match &mut self.entries {
             PoolEntries::Kinds(v) => v.next().copied(),
-            PoolEntries::Names(v) => v.next().map(|id| self.rules.types[id]),
-            PoolEntries::Recruits(v) => v.next().map(|r| self.rules.types[&r.unit]),
+            PoolEntries::Names(v) => v.next().map(|id| self.definitions.kind(id)),
+            PoolEntries::Recruits(v) => v.next().map(|r| self.definitions.kind(&r.unit)),
         }
     }
 }
 
-impl ExactSizeIterator for RecruitPool<'_> {}
+impl ExactSizeIterator for RecruitPool<'_, '_> {}

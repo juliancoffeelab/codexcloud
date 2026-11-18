@@ -8,119 +8,136 @@
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 1,
       "row": 0,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 2,
       "row": 0,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 3,
       "row": 0,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 4,
       "row": 0,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 5,
       "row": 0,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 6,
       "row": 0,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 7,
       "row": 0,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 8,
       "row": 0,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 9,
       "row": 0,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 10,
       "row": 0,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 11,
       "row": 0,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 12,
       "row": 0,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 13,
       "row": 0,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 14,
       "row": 0,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 15,
       "row": 0,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 16,
       "row": 0,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 17,
@@ -129,28 +146,32 @@
       "owner": null,
       "floor": "green-plain",
       "connections": ["sw", "ne"],
-      "id": "exit"
+      "id": "exit",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 18,
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 0,
       "row": 1,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 1,
       "row": 1,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 2,
@@ -159,98 +180,112 @@
       "owner": null,
       "floor": "green-plain",
       "connections": [],
-      "id": "shelter"
+      "id": "shelter",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 3,
       "row": 1,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 4,
       "row": 1,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 5,
       "row": 1,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 6,
       "row": 1,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 7,
       "row": 1,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 8,
       "row": 1,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 9,
       "row": 1,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 10,
       "row": 1,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 11,
       "row": 1,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 12,
       "row": 1,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 13,
       "row": 1,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 14,
       "row": 1,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 15,
       "row": 1,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 16,
@@ -258,28 +293,32 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["sw", "ne"]
+      "connections": ["sw", "ne"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 17,
       "row": 1,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 18,
       "row": 1,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 0,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 1,
@@ -287,105 +326,120 @@
       "terrain": "keep",
       "owner": null,
       "floor": "green-plain",
-      "id": "player-camp"
+      "id": "player-camp",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 2,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 3,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 4,
       "row": 2,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 5,
       "row": 2,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 6,
       "row": 2,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 7,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 8,
       "row": 2,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 9,
       "row": 2,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 10,
       "row": 2,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 11,
       "row": 2,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 12,
       "row": 2,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 13,
       "row": 2,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 14,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 15,
       "row": 2,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 16,
@@ -393,133 +447,152 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["se", "ne"]
+      "connections": ["se", "ne"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 17,
       "row": 2,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 18,
       "row": 2,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 0,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 1,
       "row": 3,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 2,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 3,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 4,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 5,
       "row": 3,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 6,
       "row": 3,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 7,
       "row": 3,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 8,
       "row": 3,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 9,
       "row": 3,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 10,
       "row": 3,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 11,
       "row": 3,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 12,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 13,
       "row": 3,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 14,
       "row": 3,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 15,
       "row": 3,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 16,
@@ -527,119 +600,136 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["sw", "nw"]
+      "connections": ["sw", "nw"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 17,
       "row": 3,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 18,
       "row": 3,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 0,
       "row": 4,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 1,
       "row": 4,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 2,
       "row": 4,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 3,
       "row": 4,
       "terrain": "burned-village",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 4,
       "row": 4,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 5,
       "row": 4,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 6,
       "row": 4,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 7,
       "row": 4,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 8,
       "row": 4,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 9,
       "row": 4,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 10,
       "row": 4,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 11,
       "row": 4,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 12,
       "row": 4,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 13,
       "row": 4,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 14,
@@ -647,7 +737,8 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["e", "sw"]
+      "connections": ["e", "sw"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 15,
@@ -655,7 +746,8 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["e", "w"]
+      "connections": ["e", "w"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 16,
@@ -663,91 +755,104 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["w", "ne"]
+      "connections": ["w", "ne"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 17,
       "row": 4,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 18,
       "row": 4,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 0,
       "row": 5,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 1,
       "row": 5,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 2,
       "row": 5,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 3,
       "row": 5,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 4,
       "row": 5,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 5,
       "row": 5,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 6,
       "row": 5,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 7,
       "row": 5,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 8,
       "row": 5,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 9,
       "row": 5,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 10,
@@ -755,7 +860,8 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["e", "sw"]
+      "connections": ["e", "sw"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 11,
@@ -763,7 +869,8 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["e", "w"]
+      "connections": ["e", "w"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 12,
@@ -771,7 +878,8 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["e", "w"]
+      "connections": ["e", "w"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 13,
@@ -779,28 +887,32 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["w", "ne"]
+      "connections": ["w", "ne"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 14,
       "row": 5,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 15,
       "row": 5,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 16,
       "row": 5,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 17,
@@ -808,49 +920,56 @@
       "terrain": "village",
       "owner": "enemy",
       "floor": "green-plain",
-      "connections": []
+      "connections": [],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 18,
       "row": 5,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 0,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 1,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 2,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 3,
       "row": 6,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 4,
       "row": 6,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 5,
@@ -858,7 +977,8 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["e", "sw"]
+      "connections": ["e", "sw"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 6,
@@ -866,14 +986,16 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["e", "w"]
+      "connections": ["e", "w"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 7,
       "row": 6,
       "terrain": "fort",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 8,
@@ -882,7 +1004,8 @@
       "owner": null,
       "floor": "green-plain",
       "connections": ["e", "w"],
-      "id": "captive-camp"
+      "id": "captive-camp",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 9,
@@ -890,7 +1013,8 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["e", "w"]
+      "connections": ["e", "w"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 10,
@@ -898,91 +1022,104 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["w", "ne"]
+      "connections": ["w", "ne"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 11,
       "row": 6,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 12,
       "row": 6,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 13,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 14,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 15,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 16,
       "row": 6,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 17,
       "row": 6,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 18,
       "row": 6,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 0,
       "row": 7,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 1,
       "row": 7,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 2,
       "row": 7,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 3,
       "row": 7,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 4,
@@ -990,77 +1127,88 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["sw", "ne"]
+      "connections": ["sw", "ne"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 5,
       "row": 7,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 6,
       "row": 7,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 7,
       "row": 7,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 8,
       "row": 7,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 9,
       "row": 7,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 10,
       "row": 7,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 11,
       "row": 7,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 12,
       "row": 7,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 13,
       "row": 7,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 14,
       "row": 7,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 15,
@@ -1068,56 +1216,64 @@
       "terrain": "keep",
       "owner": "enemy",
       "floor": "green-plain",
-      "id": "tollkeeper-keep"
+      "id": "tollkeeper-keep",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 16,
       "row": 7,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 17,
       "row": 7,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 18,
       "row": 7,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 0,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 1,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 2,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 3,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 4,
@@ -1125,105 +1281,120 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["sw", "ne"]
+      "connections": ["sw", "ne"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 5,
       "row": 8,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 6,
       "row": 8,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 7,
       "row": 8,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 8,
       "row": 8,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 9,
       "row": 8,
       "terrain": "hill",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 10,
       "row": 8,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 11,
       "row": 8,
       "terrain": "mountain",
       "owner": null,
-      "floor": "mountain-rock"
+      "floor": "mountain-rock",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 12,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 13,
       "row": 8,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 14,
       "row": 8,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 15,
       "row": 8,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 16,
       "row": 8,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 17,
       "row": 8,
       "terrain": "forest",
       "owner": null,
-      "floor": "green-forest"
+      "floor": "green-forest",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 18,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 0,
@@ -1231,7 +1402,8 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["e", "sw"]
+      "connections": ["e", "sw"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 1,
@@ -1239,7 +1411,8 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["e", "w"]
+      "connections": ["e", "w"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 2,
@@ -1247,7 +1420,8 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["e", "w"]
+      "connections": ["e", "w"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 3,
@@ -1255,112 +1429,128 @@
       "terrain": "village",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["w", "ne"]
+      "connections": ["w", "ne"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 4,
       "row": 9,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 5,
       "row": 9,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 6,
       "row": 9,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 7,
       "row": 9,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 8,
       "row": 9,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 9,
       "row": 9,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 10,
       "row": 9,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 11,
       "row": 9,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 12,
       "row": 9,
       "terrain": "burned-village",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 13,
       "row": 9,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 14,
       "row": 9,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 15,
       "row": 9,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 16,
       "row": 9,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 17,
       "row": 9,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 18,
       "row": 9,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 0,
@@ -1368,343 +1558,392 @@
       "terrain": "road",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["ne", "w"]
+      "connections": ["ne", "w"],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 1,
       "row": 10,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 2,
       "row": 10,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 3,
       "row": 10,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 4,
       "row": 10,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 5,
       "row": 10,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 6,
       "row": 10,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 7,
       "row": 10,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 8,
       "row": 10,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 9,
       "row": 10,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 10,
       "row": 10,
       "terrain": "water",
       "owner": null,
-      "floor": "dark-water"
+      "floor": "dark-water",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 11,
       "row": 10,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 12,
       "row": 10,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 13,
       "row": 10,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 14,
       "row": 10,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 15,
       "row": 10,
       "terrain": "water",
       "owner": null,
-      "floor": "dark-water"
+      "floor": "dark-water",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 16,
       "row": 10,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 17,
       "row": 10,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 18,
       "row": 10,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 0,
       "row": 11,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 1,
       "row": 11,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 2,
       "row": 11,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 3,
       "row": 11,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 4,
       "row": 11,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 5,
       "row": 11,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 6,
       "row": 11,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 7,
       "row": 11,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 8,
       "row": 11,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 9,
       "row": 11,
       "terrain": "water",
       "owner": null,
-      "floor": "dark-water"
+      "floor": "dark-water",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 10,
       "row": 11,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 11,
       "row": 11,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 12,
       "row": 11,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 13,
       "row": 11,
       "terrain": "water",
       "owner": null,
-      "floor": "dark-water"
+      "floor": "dark-water",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 14,
       "row": 11,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 15,
       "row": 11,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 16,
       "row": 11,
       "terrain": "water",
       "owner": null,
-      "floor": "dark-water"
+      "floor": "dark-water",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 17,
       "row": 11,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 18,
       "row": 11,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 0,
       "row": 12,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 1,
       "row": 12,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 2,
       "row": 12,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 3,
       "row": 12,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 4,
       "row": 12,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 5,
       "row": 12,
       "terrain": "plains",
       "owner": null,
-      "floor": "green-plain"
+      "floor": "green-plain",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 6,
       "row": 12,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 7,
       "row": 12,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 8,
       "row": 12,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 9,
       "row": 12,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 10,
       "row": 12,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 11,
@@ -1712,56 +1951,64 @@
       "terrain": "village",
       "owner": "swamp-dead",
       "floor": "marsh",
-      "connections": []
+      "connections": [],
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 12,
       "row": 12,
       "terrain": "keep",
       "owner": "swamp-dead",
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 13,
       "row": 12,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 14,
       "row": 12,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 15,
       "row": 12,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 16,
       "row": 12,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 17,
       "row": 12,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     },
     {
       "col": 18,
       "row": 12,
       "terrain": "marsh",
       "owner": null,
-      "floor": "marsh"
+      "floor": "marsh",
+      "environmentEffects": ["unlit-ambient"]
     }
   ],
   "lighting": {
@@ -1769,5 +2016,23 @@
   },
   "mapRevision": 1,
   "name": "The Toll Road",
-  "description": "A hidden woodland refuge, a guarded mountain pass, and a prisoner road through the marshes."
+  "description": "A hidden woodland refuge, a guarded mountain pass, and a prisoner road through the marshes.",
+  "modifiers": {
+    "sight": {
+      "range": 0,
+      "unlimited": false,
+      "sightModifiers": {
+        "lit": 0,
+        "unlit": 0,
+        "darkness": 0
+      },
+      "penetrates": []
+    },
+    "damageModifiers": {
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "terrainModifiers": {}
+  }
 }
