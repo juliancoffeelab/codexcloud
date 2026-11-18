@@ -56,6 +56,10 @@ module Node = struct
   external absolute : string -> string = "resolve" [@@mel.module "node:path"]
   external resolve : string -> string -> string = "resolve" [@@mel.module "node:path"]
   external dirname : string -> string = "dirname" [@@mel.module "node:path"]
+
+  external realpath : string -> string = "native"
+  [@@mel.module "node:fs"] [@@mel.scope "realpathSync"]
+
   external argv : string array = "argv" [@@mel.module "node:process"]
   external stat : string -> file_info = "statSync" [@@mel.module "node:fs"]
 
@@ -69,6 +73,8 @@ let used_files = Hashtbl.create 32
 
 let read_json path =
   Hashtbl.replace used_files (Node.absolute path) ();
+  let path = Node.realpath path in
+  Hashtbl.replace used_files path ();
   Node.read path
 
 let dependencies () = Array.of_seq (Hashtbl.to_seq_keys used_files)
@@ -162,7 +168,7 @@ let frame_path root (frame : Art.frame) =
   else Node.absolute frame.url
 
 let help =
-  {js|Usage: node scripts/render-map.mjs [--watch] --map map.json [--overlay overlay.json] --output preview.png\nOptions: --grid [--grid-color COLOR] --artwork candidate-frames.json\n         --draw-order native|reverse-within-z|shuffle-within-z|reverse-all|shuffle-all\n         --order-seed 17 --order-terrain castle-wall,castle-bell\nSupply a registered map/revision with its authored scenario or campaign roster.\nStatic draft only: Rust resolves perception; encounters and gameplay are not executed.|js}
+  {js|Usage: node scripts/render-map.mjs [--watch] --map map.json --roster roster.json --scenario scenario.json [--overlay overlay.json] --output preview.png\nOptions: --grid [--grid-color COLOR] --artwork candidate-frames.json\n         --draw-order native|reverse-within-z|shuffle-within-z|reverse-all|shuffle-all\n         --order-seed 17 --order-terrain castle-wall,castle-bell\nSupply standalone current-format map, roster and scenario documents; no catalogue registration is needed.\nStatic draft only: Rust resolves perception; encounters and gameplay are not executed.|js}
 
 let options () =
   let flags = Hashtbl.create 12 in
@@ -177,6 +183,8 @@ let options () =
         List.mem name
           [
             {js|--map|js};
+            {js|--roster|js};
+            {js|--scenario|js};
             {js|--overlay|js};
             {js|--output|js};
             {js|--grid-color|js};
@@ -208,13 +216,27 @@ let positive name value =
     invalid_arg {j|Expected positive integer $(name)|j};
   int_of_float n
 
-(* Drafts use the same authored documents and setup path as a live map. The
-   devtool may read source files; Rust remains responsible for their mechanics. *)
-let draft_factory root map =
+(* Keep content definitions, but load only the supplied scenario in this temporary
+   bundle. The on-disk catalogue is untouched and cannot shadow a draft identity. *)
+let draft_factory root map_path map roster_path scenario_path =
   let data_root = Node.resolve root {js|rust/data|js} in
-  let wanted = J.text map {js|mapId|js} in
-  let revision = J.n map {js|mapRevision|js} in
-  let replaced = ref false in
+  let scenario = read_json scenario_path in
+  let reference field supplied =
+    let relative = J.text scenario field in
+    if Js.String.startsWith ~prefix:{js|/|js} relative then
+      invalid_arg {j|Draft scenario $(field) reference must be relative|j};
+    let referenced = Node.realpath (Node.dirname scenario_path ^ {js|/|js} ^ relative) in
+    if referenced <> supplied then
+      invalid_arg {j|Draft scenario $(field) reference does not match --$(field)|j};
+    ()
+  in
+  reference {js|map|js} map_path;
+  reference {js|roster|js} roster_path;
+  let scenario_key = {js|__draft__/scenario.json|js}
+  and map_key = {js|__draft__/map.json|js}
+  and roster_key = {js|__draft__/roster.json|js} in
+  J.set scenario {js|map|js} (J.str {js|map.json|js});
+  J.set scenario {js|roster|js} (J.str {js|roster.json|js});
   let documents =
     Array.fold_left
       (fun documents path ->
@@ -222,25 +244,29 @@ let draft_factory root map =
         else
           let source_path = Node.resolve data_root path in
           Hashtbl.replace used_files source_path ();
-          let text = Node.read_text source_path {js|utf8|js} in
-          let value = Js.Json.parseExn text in
-          let text =
-            if
-              J.has value {js|tiles|js} && J.has value {js|mapId|js}
-              && J.text value {js|mapId|js} = wanted
-              && J.n value {js|mapRevision|js} = revision
-            then (
-              replaced := true;
-              Js.Json.stringify map)
-            else text
-          in
-          Domain.Text_map.add path text documents)
+          Domain.Text_map.add path (Node.read_text source_path {js|utf8|js}) documents)
       Domain.Text_map.empty
       (Node.paths data_root [%mel.obj { recursive = true }])
   in
-  if not !replaced then
-    invalid_arg
-      {js|Draft must replace a registered map and revision; author its scenario/roster first|js};
+  let manifest =
+    match Domain.Text_map.find_opt {js|manifest.json|js} documents with
+    | Some text -> Js.Json.parseExn text
+    | None -> invalid_arg {js|Missing catalogue manifest.json|js}
+  in
+  J.set manifest {js|scenarios|js} (Js.Json.array [| J.str scenario_key |]);
+  J.set manifest {js|campaigns|js} (Js.Json.array [||]);
+  let documents =
+    Domain.Text_map.add {js|manifest.json|js} (Js.Json.stringify manifest) documents
+  in
+  let documents =
+    List.fold_left
+      (fun documents (key, value) ->
+        if Domain.Text_map.mem key documents then
+          invalid_arg {j|Duplicate draft document path: $(key)|j};
+        Domain.Text_map.add key (Js.Json.stringify value) documents)
+      documents
+      [ (scenario_key, scenario); (map_key, map); (roster_key, read_json roster_path) ]
+  in
   match Domain.NativeEngineFactory.with_documents documents with
   | Ok factory -> factory
   | Error error -> failwith (Native.message (Native.Engine error))
@@ -268,7 +294,7 @@ let normalize factory map overlay =
         catalog.maps
     with
     | Some map -> map.state
-    | None -> invalid_arg {js|Unregistered draft map revision|js}
+    | None -> invalid_arg {js|Draft map was not loaded|js}
   in
   let state_json = Js.Json.parseExn (Domain.state_to_json prepared) in
   if J.has overlay {js|units|js} then J.set state_json {js|units|js} (J.field overlay {js|units|js});
@@ -405,11 +431,14 @@ let run root =
     let required name =
       match Hashtbl.find_opt flags name with Some v -> v | None -> invalid_arg help
     in
-    let map = read_json (required {js|--map|js}) in
+    let map_path = Node.realpath (required {js|--map|js})
+    and roster_path = Node.realpath (required {js|--roster|js})
+    and scenario_path = Node.realpath (required {js|--scenario|js}) in
+    let map = read_json map_path in
     let overlay =
       Option.fold ~none:(J.obj []) ~some:read_json (Hashtbl.find_opt flags {js|--overlay|js})
     in
-    let factory = draft_factory root map in
+    let factory = draft_factory root map_path map roster_path scenario_path in
     let cols, rows, map_id, units, input, coordinate, resolved, roles =
       Fun.protect
         ~finally:(fun () -> Domain.NativeEngineFactory.dispose factory)

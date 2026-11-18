@@ -6,12 +6,14 @@ Run the bundled renderer from the project root:
 node scripts/render-map.mjs \
   --watch \
   --map tmp/draft/map.json \
+  --roster tmp/draft/roster.json \
+  --scenario tmp/draft/scenario.json \
   --overlay tmp/draft/overlay.json \
   --output tmp/draft/preview.png
 ```
 
 Watch mode keeps Wasm, decoded artwork and unchanged terrain layers in memory.
-Saving the map, overlay, candidate manifest or used image automatically updates
+Saving the map, roster, scenario, overlay, candidate manifest or used image updates
 the PNG. Input errors leave the last successful PNG available; the next edit
 retries. Source or built-Wasm changes rebuild/restart the client. Stop with Ctrl+C.
 Omit `--watch` for one PNG; Dune reuses unchanged OCaml compilation.
@@ -41,22 +43,45 @@ lighting. The launcher asks Cargo and Dune to update their inputs, then bundles
 the renderer; map-only watch updates reuse the running renderer. Conditions are resolved by the same Rust evaluator used
 by live battles.
 
-The map input has `mapId`, positive `cols` and `rows`, and a complete `tiles` grid.
-Tiles use the existing map schema, including explicit `floor` choices and terrain
-`connections`. An optional `name` titles the preview. Optional `lighting` uses the
-Rust-authored map format; optional `units` have `type`, `side`, `col` and `row`.
-This renderer checks geometry and artwork availability; it does not replace Rust
-content validation or establish whether a scenario is playable.
+Supply three standalone documents using the current authored formats. They can
+live entirely under `tmp/`; the map ID and revision need not exist in the playable
+catalogue. The renderer creates a temporary in-memory manifest containing only
+this scenario, while retaining the shared unit, terrain, item and ability
+definitions. It neither edits nor registers files in `rust/data/`. Reusing an
+existing map ID for an experiment does not replace that map on disk.
+
+- `--map`: the authored map, including its ID/revision, name, description,
+  dimensions, modifiers, lighting and tiles. `cols` and `rows` bound the layout;
+  tiles may form clipped edges or holes. Missing cells stay absent rather than
+  being filled with invented terrain. Use explicit floor and connection geometry
+  where required by the selected artwork.
+- `--roster`: the authored initial factions, vision groups and unit placements.
+  Supply their mechanical fields even for a terrain-only preview; the tool does
+  not fabricate a roster, sight rules or lighting.
+- `--scenario`: the normal scenario document, including `map`, `roster`,
+  `characters` and `tags`. Its relative map/roster references must resolve to the
+  files passed by the corresponding CLI flags.
+
+For current format examples, inspect the independent
+[map](../../../rust/data/game/scenario/mirror-v1/map.json),
+[roster](../../../rust/data/game/scenario/mirror-v1/roster.json) and
+[scenario](../../../rust/data/game/scenario/mirror-v1/scenario.json) documents.
+Author a draft rather than changing those examples. Unsupported or incomplete
+mechanical data fails through the normal Rust setup path; no parallel draft
+rules engine or historical input adapter is involved.
 
 An overlay can supply:
 
 - `title` and `notes`: preview title and footer lines.
-- `units`: the complete set of unit placements for this preview, replacing map
-  units. Use an empty array for terrain alone. An optional unit `faction` selects
-  an available visual palette independently of allegiance (for example white
-  passive artwork). These are illustrations, not spawned units in a running game.
-- `memory`: previously remembered condition keys, as exported in a checkpoint’s
-  `conditionMemory`. `round` optionally sets the current round (default 1).
+- `units`: complete current native unit snapshots, replacing the roster's
+  prepared units. Use an empty array for terrain alone. A unit's `faction` must
+  name a roster faction; its palette comes from that faction. These are static
+  preview placements, not units spawned by scenario events.
+- `observer`: the roster faction whose perception to show (`player` if omitted).
+- `memory`: explored hex coordinates for that observer's vision group. These
+  reveal fogged terrain only on tiles with the `remember-terrain` effect;
+  other tiles still require current observation.
+  `round` optionally overrides the roster's initial round.
 - `marks`: completed event markers, in the engine's `event:<id>` format, for
   resolving event-controlled lights. Ownership comes from the supplied map tiles.
 - `annotations`: objects with `col`, `row`, optional `text`, `color`, `dy` (label
@@ -75,7 +100,7 @@ custom artwork selectors to fake unsupported map geometry.
 Unit placement follows `frontend/renderer/Phaser_battlefield.ml`: native sprites use the battlefield
 scale, their canvas bottom is at tile center + 20, and units draw in tile order.
 Team bases sit at center + 19; health bars draw at center + 27 in a separate layer
-above all units. Draft bars depict full health, not simulated combat state.
+above all units. Draft bars are illustrative full-health markers, not simulated combat state.
 
 ## Draft scope and completion
 
