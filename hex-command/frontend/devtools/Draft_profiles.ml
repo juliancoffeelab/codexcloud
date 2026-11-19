@@ -79,13 +79,15 @@ let validate_river ~rows ~channel ~crossings tiles =
     | None -> false
   in
   List.iter
-    (fun (col, row) ->
-      if
-        Hashtbl.find_opt tiles (col, row) <> Some (fst ford)
-        || not (clear_bank (col - 1, row) && clear_bank (col + 1, row))
-      then
+    (fun (left, right, row) ->
+      let blocked () =
         invalid_arg
-          {js|The template blocks a planned ford or its banks. Use clear terrain around the river crossings.|js})
+          {js|The template blocks a planned ford or its banks. Use clear terrain around the river crossings.|js}
+      in
+      for col = left to right do
+        if Hashtbl.find_opt tiles (col, row) <> Some (fst ford) then blocked ()
+      done;
+      if not (clear_bank (left - 1, row) && clear_bank (right + 1, row)) then blocked ())
     crossings
 
 let river ~seed ~cols ~rows ~island ~fields =
@@ -112,55 +114,43 @@ let river ~seed ~cols ~rows ~island ~fields =
     else -1
   in
   let at frac = int_of_float (Float.round (frac *. float_of_int (rows - 1))) in
+  let branch_width = max 2 (cols / 12) in
+  let river_radius = max 1 (cols / 16) in
   let west_row, east_row = (at 0.36, at 0.57) in
   let crossings =
     if island then
-      [
-        (centers.(west_row) - island_radius west_row - 1, west_row);
-        (centers.(east_row) + island_radius east_row + 1, east_row);
-      ]
-    else [ (centers.(at 0.48), at 0.48) ]
+      let west = centers.(west_row) - island_radius west_row - 1 in
+      let east = centers.(east_row) + island_radius east_row + 1 in
+      [ (west - branch_width + 1, west, west_row); (east, east + branch_width - 1, east_row) ]
+    else
+      let row = at 0.48 in
+      [ (centers.(row) - river_radius, centers.(row) + river_radius, row) ]
   in
   let channel ~col ~row =
     let center = centers.(row) in
     let distance = abs (col - center) in
-    let is_ford = List.mem (col, row) crossings in
-    let at_bank = List.exists (fun (x, y) -> y = row && abs (col - x) = 1) crossings in
+    let is_ford =
+      List.exists (fun (left, right, y) -> y = row && col >= left && col <= right) crossings
+    in
+    let at_bank =
+      List.exists (fun (left, right, y) -> y = row && (col = left - 1 || col = right + 1)) crossings
+    in
     let inner = island_radius row in
     let outer =
       if island then
-        if inner >= 0 then inner + max 2 (cols / 12)
+        if inner >= 0 then inner + branch_width
         else
           let at_tip =
             (row > 0 && island_radius (row - 1) >= 0)
             || (row < rows - 1 && island_radius (row + 1) >= 0)
           in
           max (if at_tip then 4 else 2) (cols / 9)
-      else max 1 (cols / 16)
-    in
-    let wets bank (lo, hi) =
-      let lo, hi =
-        List.fold_left
-          (fun (lo, hi) (x, y) ->
-            if not (bank (x, y)) then (lo, hi)
-            else if y = row then (x, x)
-              (* Join the shoal to the channel on either side of the crossing. *)
-            else if abs (row - y) = 1 then (min lo x, max hi x)
-            else (lo, hi))
-          (lo, hi) crossings
-      in
-      col >= lo && col <= hi
-    in
-    let wet =
-      if inner < 0 then wets (fun _ -> true) (center - outer, center + outer)
-      else
-        wets (fun (x, y) -> x < centers.(y)) (center - outer, center - inner - 1)
-        || wets (fun (x, y) -> x > centers.(y)) (center + inner + 1, center + outer)
+      else river_radius
     in
     if is_ford then Ford
     else if at_bank then Bank
-    else if wet then Water
     else if distance <= inner then Island
+    else if distance <= outer then Water
     else Land
   in
   let tile ~col ~row =
