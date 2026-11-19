@@ -44,9 +44,8 @@ and convert_2985_3781 ambient (value : save48_member0_checkpoint) : save50_membe
   let _ = ambient in
   { wire = value.wire; seed = value.seed; state = convert_2987_3456 ambient value.state }
 
-and convert_2987_3456 ambient (value : save48_member0_checkpoint_state) :
-    save50_member0_checkpoint_state =
-  let _ = ambient in
+and convert_2987_3456 _ (value : save48_member0_checkpoint_state) : save50_member0_checkpoint_state
+    =
   let ambient = Migration_explicit_lighting.ambient value.map_id value.map_revision in
   let converted =
     {
