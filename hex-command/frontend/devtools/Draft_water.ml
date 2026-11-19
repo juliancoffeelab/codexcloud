@@ -35,6 +35,20 @@ let soften_shores t =
       then shores := point :: !shores);
   List.iter (fun point -> paint t point shallows) !shores
 
+let refine_shores t ~bank ~shelf =
+  let classify p =
+    match Draft_boundary.surface t p with
+    | Some "water" -> Some true
+    | Some kind when bank kind -> Some false
+    | _ -> None
+  in
+  Draft_boundary.refine t ~classify ~replacement:(fun _ flooded ->
+      Some (if flooded then water else shelf));
+  soften_shores t
+
+let refine_surface_shores t =
+  refine_shores t ~bank:(function "plains" | "forest" | "hill" -> true | _ -> false) ~shelf:plains
+
 let spread_marsh t ~depth ~dense =
   let visited = Hashtbl.create 64 in
   let frontier = Queue.create () in
@@ -167,7 +181,6 @@ let river t ~island ~flood ~near_edge ~additional ~defense =
     if main_row <= row t 0.65 then tributary 19. 0.79 0.88 0.81;
     if near_edge && main_row < row t 0.35 then tributary 20. 0.23 0.77 0.68;
     if near_edge && main_row > row t 0.65 then tributary 21. 0.79 0.18 0.29);
-  soften_shores t;
   let crossing_paths = List.mapi (fun i c -> use_crossing t (i + 1) c) crossings in
   let crossing_cells = Hashtbl.create 16 in
   List.iter
@@ -176,10 +189,6 @@ let river t ~island ~flood ~near_edge ~additional ~defense =
     crossings;
   let north = List.filter (fun p -> channel p && wet t p) (band t ~row:0 0 (t.cols - 1)) in
   let head = match north with point :: _ -> point | [] -> feature_error "river headwater" in
-  contiguous_water t ~feature:"continuous river channel" ~starts:[ head ]
-    ~required:(fun reached ->
-      List.exists (Hashtbl.mem reached) (band t ~row:(t.rows - 1) 0 (t.cols - 1)))
-    ~candidate:(fun p -> channel p || Hashtbl.mem tributaries p);
   let first = List.hd crossing_paths in
   let start_bank = List.hd first in
   let finish_path = if island then List.nth crossing_paths 1 else first in
@@ -274,7 +283,12 @@ let river t ~island ~flood ~near_edge ~additional ~defense =
   mark t "entry" start;
   mark t (if near_edge then "exit" else "objective") finish;
   Option.iter (fun (center, radius) -> castle t ~radius center) city;
+  refine_surface_shores t;
   spread_marsh t ~depth:(if flood then 5 else 2) ~dense:flood;
+  contiguous_water t ~feature:"continuous river channel" ~starts:[ head ]
+    ~required:(fun reached ->
+      List.exists (Hashtbl.mem reached) (band t ~row:(t.rows - 1) 0 (t.cols - 1)))
+    ~candidate:(fun p -> editable t p || channel p || Hashtbl.mem tributaries p);
   validate_route t "river crossing route" start finish;
   validate_cut t "river crossings" [ start ] finish ~blocked:(Hashtbl.mem crossing_cells)
 
@@ -346,7 +360,6 @@ let coast t ~siege ~more_islands =
         landing)
       harbors
   in
-  soften_shores t;
   let coast_bound p = mainland p && edited_land t p in
   let entry =
     nearest t "coastal entry"
@@ -356,21 +369,28 @@ let coast t ~siege ~more_islands =
   let routes = List.map (surface_path t "port road" ~allowed:mainland entry) ports in
   roads t routes;
   mark t "entry" entry;
-  List.iteri
-    (fun index (center, radius) ->
-      let objective =
-        nearest t "offshore landmark" center ~within:1 ~allowed:(fun point ->
-            edited_land t point && island point center radius)
-      in
-      if siege && index = 1 then castle t ~radius:(max 1 (radius - 1)) objective
-      else (
-        paint t objective (if index = 0 then fort else ruins);
-        mark t ("offshore-" ^ string_of_int (index + 1)) objective);
+  let objectives =
+    List.mapi
+      (fun index (center, radius) ->
+        let objective =
+          nearest t "offshore landmark" center ~within:1 ~allowed:(fun point ->
+              edited_land t point && island point center radius)
+        in
+        if siege && index = 1 then castle t ~radius:(max 1 (radius - 1)) objective
+        else (
+          paint t objective (if index = 0 then fort else ruins);
+          mark t ("offshore-" ^ string_of_int (index + 1)) objective);
+        objective)
+      islands
+  in
+  refine_surface_shores t;
+  List.iter
+    (fun objective ->
       validate_cut t "offshore separation" [ entry ] objective ~blocked:(fun _ -> false))
-    islands;
+    objectives;
   let sea_edge = band t ~row:0 0 (t.cols - 1) |> List.filter (wet t) in
   let start = match List.rev sea_edge with head :: _ -> head | [] -> feature_error "open sea" in
   contiguous_water t ~feature:"open sea around islands" ~starts:[ start ]
     ~required:(fun reached -> Hashtbl.mem reached (at t 1. 1.))
-    ~candidate:(fun point -> not (mainland point));
+    ~candidate:(fun point -> editable t point || not (mainland point));
   List.iter (validate_route t "port approach" entry) ports

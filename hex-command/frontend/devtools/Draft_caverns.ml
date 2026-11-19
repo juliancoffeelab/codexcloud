@@ -132,6 +132,15 @@ let create t ~frontier ~rift ~exploration ~siege =
       mark t "objective" goal;
       goal
   in
+  let classify p =
+    match Draft_boundary.surface t p with
+    | Some "cave-wall" -> Some false
+    | Some "cave-passage" -> Some true
+    | _ -> None
+  in
+  Draft_boundary.refine t ~classify ~replacement:(fun p open_cave ->
+      if open_cave && abs (offset p) > width + 1 then Some cave_floor else None);
+  if rift then Draft_water.refine_shores t ~bank:(( = ) (fst cave_rock)) ~shelf:cave_rock;
   cave_openings t ~allowed:(walkable t);
   let reachable = connected [ entry ] ~allowed:(walkable t) in
   iter t (fun p ->
@@ -141,10 +150,9 @@ let create t ~frontier ~rift ~exploration ~siege =
   validate_route t "route to the key chamber" entry key_site;
   validate_cut t "cave gate" [ entry ] finish ~blocked:(( = ) gate);
   validate_cut t "key location before the gate" [ finish ] key_site ~blocked:(( = ) gate);
-  if rift then (
-    Draft_water.soften_shores t;
+  if rift then
     let north = at_col ridge.(0) 0 and last = t.rows - 1 in
     let south = at_col ridge.(last) last in
     Draft_water.contiguous_water t ~feature:"continuous cavern rift" ~starts:[ north ]
       ~required:(fun reached -> Hashtbl.mem reached south)
-      ~candidate:flooded)
+      ~candidate:(fun p -> editable t p || flooded p)
