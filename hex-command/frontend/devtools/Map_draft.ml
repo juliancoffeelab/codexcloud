@@ -50,6 +50,9 @@ module Node = struct
   external read_text : string -> string -> string = "readFileSync" [@@mel.module "node:fs"]
   external write : string -> buffer -> unit = "writeFileSync" [@@mel.module "node:fs"]
 
+  external write_text : string -> string -> < flag : string > Js.t -> unit = "writeFileSync"
+  [@@mel.module "node:fs"]
+
   external mkdir : string -> < recursive : bool > Js.t -> unit = "mkdirSync"
   [@@mel.module "node:fs"]
 
@@ -190,7 +193,7 @@ let frame_path root (frame : Art.frame) =
   else Node.absolute frame.url
 
 let help =
-  {js|Usage: node scripts/render-map.mjs [--watch] --map map.json --roster roster.json --scenario scenario.json [--overlay overlay.json] --output preview.png\nOptions: --grid [--grid-color COLOR] --artwork frames.json --content content.json\n         --draw-order native|reverse-within-z|shuffle-within-z|reverse-all|shuffle-all\n         --order-seed 17 --order-terrain castle-wall,castle-bell\nSupply standalone current-format map, roster and scenario documents; no catalogue registration is needed.\nStatic draft only: Rust resolves perception; encounters and gameplay are not executed.|js}
+  {js|Usage: node scripts/render-map.mjs [--watch] --map map.json --roster roster.json --scenario scenario.json [--overlay overlay.json] --output preview.png\nOptions: --generate SEED [--write-map draft.json]  Resample natural terrain on the input map.\n         SEED is a decimal unsigned 32-bit integer. Export creates a new file and requires a one-shot render.\n         --grid [--grid-color COLOR] --artwork frames.json --content content.json\n         --draw-order native|reverse-within-z|shuffle-within-z|reverse-all|shuffle-all\n         --order-seed 17 --order-terrain castle-wall,castle-bell\nSupply standalone current-format map, roster and scenario documents; no catalogue registration is needed.\nStatic draft only: Rust resolves perception; encounters and gameplay are not executed.|js}
 
 let options () =
   let flags = Hashtbl.create 12 in
@@ -209,6 +212,8 @@ let options () =
             {js|--scenario|js};
             {js|--overlay|js};
             {js|--output|js};
+            {js|--generate|js};
+            {js|--write-map|js};
             {js|--grid-color|js};
             {js|--artwork|js};
             {js|--content|js};
@@ -239,9 +244,67 @@ let positive name value =
     invalid_arg {j|Expected positive integer $(name)|j};
   int_of_float n
 
+let generate_map seed map roster =
+  let seed =
+    match Int64.of_string_opt seed with
+    | Some value
+      when Js.Re.test ~str:seed (Js.Re.fromString {js|^[0-9]+$|js})
+           && value >= 0L && value <= 4294967295L ->
+        Int64.to_int32 value
+    | _ -> invalid_arg {js|--generate requires a decimal seed between 0 and 4294967295|js}
+  in
+  let cols = positive {js|cols|js} (J.field map {js|cols|js})
+  and rows = positive {js|rows|js} (J.field map {js|rows|js}) in
+  let terrain_at = Draft_noise.terrain ~seed ~cols ~rows in
+  let point value = (J.n value {js|col|js}, J.n value {js|row|js}) in
+  let occupied = Hashtbl.create 16 in
+  Array.iter
+    (fun army ->
+      Array.iter
+        (fun unit -> Hashtbl.replace occupied (point (J.field unit {js|tile|js})) ())
+        (J.list army {js|units|js}))
+    (J.list roster {js|factions|js});
+  Array.iter
+    (fun tile ->
+      let col, row = point tile in
+      let terrain = J.text tile {js|terrain|js} in
+      if
+        List.mem terrain
+          [
+            {js|plains|js};
+            {js|forest|js};
+            {js|hill|js};
+            {js|mountain|js};
+            {js|water|js};
+            {js|marsh|js};
+          ]
+        && (not (Hashtbl.mem occupied (col, row)))
+        && (not
+              (List.exists (J.has tile)
+                 [ {js|id|js}; {js|owner|js}; {js|connections|js}; {js|deadEnds|js}; {js|walls|js} ]))
+        && Array.length (J.list tile {js|environmentEffects|js}) = 0
+      then
+        let generated, floor = terrain_at ~col:(int_of_float col) ~row:(int_of_float row) in
+        if generated <> terrain then (
+          J.set tile {js|terrain|js} (J.str generated);
+          J.set tile {js|floor|js} (J.str floor)))
+    (J.array (J.field map {js|tiles|js}))
+
+let write_generated_map path preview map =
+  let parent = Node.dirname path in
+  Node.mkdir parent [%mel.obj { recursive = true }];
+  let physical_destination path =
+    Node.resolve (Node.realpath (Node.dirname path)) (Filename.basename path)
+  in
+  if physical_destination path = physical_destination preview then
+    invalid_arg {js|--write-map and --output require different paths|js};
+  Node.write_text path
+    (Js.Json.stringifyWithSpace map 2 ^ {js|\n|js})
+    [%mel.obj { flag = {js|wx|js} }]
+
 (* Keep content definitions, but load only the supplied scenario in this temporary
    bundle. The on-disk catalogue is untouched and cannot shadow a draft identity. *)
-let draft_factory root map_path map roster_path scenario_path content_path =
+let draft_factory root map_path map roster_path roster scenario_path content_path =
   let data_root = Node.resolve root {js|rust/data|js} in
   let scenario = read_json scenario_path in
   let key path = {js|__draft__|js} ^ Node.absolute path in
@@ -335,7 +398,7 @@ let draft_factory root map_path map roster_path scenario_path content_path =
           invalid_arg {j|Duplicate draft document path: $(key)|j};
         Domain.Text_map.add key (Js.Json.stringify value) documents)
       documents
-      [ (scenario_key, scenario); (map_key, map); (roster_key, read_json roster_path) ]
+      [ (scenario_key, scenario); (map_key, map); (roster_key, roster) ]
   in
   match Domain.NativeEngineFactory.with_documents documents with
   | Ok factory -> factory
@@ -504,11 +567,16 @@ let run root =
     and roster_path = physical_path (required {js|--roster|js})
     and scenario_path = physical_path (required {js|--scenario|js}) in
     let map = read_json map_path in
+    let roster = read_json roster_path in
+    let export = Hashtbl.find_opt flags {js|--write-map|js} in
+    (match Hashtbl.find_opt flags {js|--generate|js} with
+    | Some seed -> generate_map seed map roster
+    | None -> if Option.is_some export then invalid_arg {js|--write-map requires --generate|js});
     let overlay =
       Option.fold ~none:(J.obj []) ~some:read_json (Hashtbl.find_opt flags {js|--overlay|js})
     in
     let factory =
-      draft_factory root map_path map roster_path scenario_path
+      draft_factory root map_path map roster_path roster scenario_path
         (Hashtbl.find_opt flags {js|--content|js})
     in
     let cols, rows, map_id, input, coordinate, resolved, roles =
@@ -923,7 +991,9 @@ let run root =
       notes;
     let output = Node.absolute (required {js|--output|js}) in
     Node.mkdir (Node.dirname output) [%mel.obj { recursive = true }];
-    Node.write output (C.png canvas {js|image/png|js});
+    let preview = C.png canvas {js|image/png|js} in
+    Option.iter (fun path -> write_generated_map (Node.absolute path) output map) export;
+    Node.write output preview;
     Hashtbl.filter_map_inplace
       (fun path image -> if Hashtbl.mem used_images path then Some image else None)
       decoded_images;

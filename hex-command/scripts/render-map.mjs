@@ -11,6 +11,10 @@ import { toolchainEnvironment } from "./toolchain/toolchain-env.mjs";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const watching = process.argv.includes("--watch") && !process.argv.includes("--help");
 const args = process.argv.slice(2).filter((arg) => arg !== "--watch");
+if (watching && args.includes("--write-map")) {
+  console.error("--write-map requires a one-shot render. Omit --watch to export the draft.");
+  process.exit(1);
+}
 const output = resolve(root, "tmp/map-draft/runner.mjs");
 const inputPaths = [
   "--map",
