@@ -193,7 +193,7 @@ let frame_path root (frame : Art.frame) =
   else Node.absolute frame.url
 
 let help =
-  {js|Usage: node scripts/render-map.mjs [--watch] --map map.json --roster roster.json --scenario scenario.json [--overlay overlay.json] --output preview.png\nOptions: --generate SEED [--write-map draft.json]  Resample natural terrain on the input map.\n         SEED is a decimal unsigned 32-bit integer. Export creates a new file and requires a one-shot render.\n         --grid [--grid-color COLOR] --artwork frames.json --content content.json\n         --draw-order native|reverse-within-z|shuffle-within-z|reverse-all|shuffle-all\n         --order-seed 17 --order-terrain castle-wall,castle-bell\nSupply standalone current-format map, roster and scenario documents; no catalogue registration is needed.\nStatic draft only: Rust resolves perception; encounters and gameplay are not executed.|js}
+  {js|Usage: node scripts/render-map.mjs [--watch] --map map.json --roster roster.json --scenario scenario.json [--overlay overlay.json] --output preview.png\nOptions: --generate SEED [--profile NAME] [--write-map draft.json]\n         natural (default) blends elevation and moisture.\n         river draws a connected river with a ford between its two banks.\n         lantern-crossing splits the river around a wooded island with two fords.\n         lantern-wetlands biases the north toward ridges and the south toward marsh.\n         SEED is a decimal unsigned 32-bit integer. Export creates a new file and requires a one-shot render.\n         --grid [--grid-color COLOR] --artwork frames.json --content content.json\n         --draw-order native|reverse-within-z|shuffle-within-z|reverse-all|shuffle-all\n         --order-seed 17 --order-terrain castle-wall,castle-bell\nSupply standalone current-format map, roster and scenario documents; no catalogue registration is needed.\nStatic draft only: Rust resolves perception; encounters and gameplay are not executed.|js}
 
 let options () =
   let flags = Hashtbl.create 12 in
@@ -213,6 +213,7 @@ let options () =
             {js|--overlay|js};
             {js|--output|js};
             {js|--generate|js};
+            {js|--profile|js};
             {js|--write-map|js};
             {js|--grid-color|js};
             {js|--artwork|js};
@@ -244,7 +245,7 @@ let positive name value =
     invalid_arg {j|Expected positive integer $(name)|j};
   int_of_float n
 
-let generate_map seed map roster =
+let generate_map seed profile map roster =
   let seed =
     match Int64.of_string_opt seed with
     | Some value
@@ -255,9 +256,20 @@ let generate_map seed map roster =
   in
   let cols = positive {js|cols|js} (J.field map {js|cols|js})
   and rows = positive {js|rows|js} (J.field map {js|rows|js}) in
-  let terrain_at = Draft_noise.terrain ~seed ~cols ~rows in
-  let point value = (J.n value {js|col|js}, J.n value {js|row|js}) in
+  let plan = Draft_profiles.create profile ~seed ~cols ~rows in
+  let point value =
+    let col = J.n value {js|col|js} and row = J.n value {js|row|js} in
+    if
+      floor col <> col
+      || floor row <> row
+      || col < 0. || row < 0.
+      || col >= float_of_int cols
+      || row >= float_of_int rows
+    then invalid_arg {js|Position outside draft map|js};
+    (int_of_float col, int_of_float row)
+  in
   let occupied = Hashtbl.create 16 in
+  let tiles = Hashtbl.create 64 in
   Array.iter
     (fun army ->
       Array.iter
@@ -268,27 +280,33 @@ let generate_map seed map roster =
     (fun tile ->
       let col, row = point tile in
       let terrain = J.text tile {js|terrain|js} in
-      if
-        List.mem terrain
-          [
-            {js|plains|js};
-            {js|forest|js};
-            {js|hill|js};
-            {js|mountain|js};
-            {js|water|js};
-            {js|marsh|js};
-          ]
-        && (not (Hashtbl.mem occupied (col, row)))
-        && (not
-              (List.exists (J.has tile)
-                 [ {js|id|js}; {js|owner|js}; {js|connections|js}; {js|deadEnds|js}; {js|walls|js} ]))
-        && Array.length (J.list tile {js|environmentEffects|js}) = 0
-      then
-        let generated, floor = terrain_at ~col:(int_of_float col) ~row:(int_of_float row) in
-        if generated <> terrain then (
-          J.set tile {js|terrain|js} (J.str generated);
-          J.set tile {js|floor|js} (J.str floor)))
-    (J.array (J.field map {js|tiles|js}))
+      (if
+         List.mem terrain
+           [
+             {js|plains|js};
+             {js|forest|js};
+             {js|hill|js};
+             {js|mountain|js};
+             {js|water|js};
+             {js|marsh|js};
+           ]
+         && (not (Hashtbl.mem occupied (col, row)))
+         && (not
+               (List.exists (J.has tile)
+                  [
+                    {js|id|js}; {js|owner|js}; {js|connections|js}; {js|deadEnds|js}; {js|walls|js};
+                  ]))
+         && Array.length (J.list tile {js|environmentEffects|js}) = 0
+       then
+         let generated, floor = plan.tile ~col ~row in
+         if generated <> terrain then (
+           J.set tile {js|terrain|js} (J.str generated);
+           J.set tile {js|floor|js} (J.str floor);
+           if generated = {js|ford|js} then
+             J.set tile {js|connections|js} (Js.Json.array [| J.str {js|e|js}; J.str {js|w|js} |])));
+      Hashtbl.replace tiles (col, row) (J.text tile {js|terrain|js}))
+    (J.array (J.field map {js|tiles|js}));
+  plan.validate tiles
 
 let write_generated_map path preview map =
   let parent = Node.dirname path in
@@ -569,9 +587,14 @@ let run root =
     let map = read_json map_path in
     let roster = read_json roster_path in
     let export = Hashtbl.find_opt flags {js|--write-map|js} in
+    let profile = Hashtbl.find_opt flags {js|--profile|js} in
     (match Hashtbl.find_opt flags {js|--generate|js} with
-    | Some seed -> generate_map seed map roster
-    | None -> if Option.is_some export then invalid_arg {js|--write-map requires --generate|js});
+    | Some seed ->
+        let profile = Option.fold ~none:Draft_profiles.Natural ~some:Draft_profiles.parse profile in
+        generate_map seed profile map roster
+    | None ->
+        if Option.is_some profile then invalid_arg {js|--profile requires --generate|js};
+        if Option.is_some export then invalid_arg {js|--write-map requires --generate|js});
     let overlay =
       Option.fold ~none:(J.obj []) ~some:read_json (Hashtbl.find_opt flags {js|--overlay|js})
     in

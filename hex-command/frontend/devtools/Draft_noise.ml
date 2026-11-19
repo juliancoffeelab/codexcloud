@@ -33,7 +33,7 @@ let simplex seed =
             (y0 -. float_of_int dj +. unskew)
        +. corner (i + 1) (j + 1) (x0 -. 1. +. (2. *. unskew)) (y0 -. 1. +. (2. *. unskew)))
 
-let terrain ~seed ~cols ~rows =
+let fields ~seed ~cols ~rows =
   let elevation = simplex seed and moisture = simplex (Int32.logxor seed 0x68bc21ebl) in
   let frequency = 3. /. float_of_int (max 12 (min cols rows)) in
   fun ~col ~row ->
@@ -45,10 +45,4 @@ let terrain ~seed ~cols ~rows =
       +. (0.21 *. elevation ((2. *. x) +. 19.) (2. *. y))
       +. (0.07 *. elevation (4. *. x) ((4. *. y) +. 31.))
     in
-    let wetness = moisture (0.83 *. x) (0.83 *. y) in
-    if height < -0.30 then ({js|water|js}, {js|dark-water|js})
-    else if height < -0.20 && wetness > 0. then ({js|marsh|js}, {js|marsh|js})
-    else if height > 0.48 then ({js|mountain|js}, {js|mountain-rock|js})
-    else if height > 0.24 then ({js|hill|js}, {js|green-plain|js})
-    else if wetness > 0.08 then ({js|forest|js}, {js|green-forest|js})
-    else ({js|plains|js}, {js|green-plain|js})
+    (height, moisture (0.83 *. x) (0.83 *. y))
