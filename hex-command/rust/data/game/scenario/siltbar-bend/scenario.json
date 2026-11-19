@@ -1,0 +1,6 @@
+{
+  "tags": ["simulation", "astra"],
+  "map": "map.json",
+  "roster": "../astra-arena-setup.json",
+  "characters": []
+}

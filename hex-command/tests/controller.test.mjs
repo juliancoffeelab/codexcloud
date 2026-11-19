@@ -739,6 +739,19 @@ test("Optional browser tools share player commands and return detached JSON", as
     (await execute("start_new_battle", { mapId: "river-valley" })).mapId,
     "river-valley",
   );
+  await assert.rejects(
+    execute("start_new_battle", { mapId: "sable-sound" }),
+    sessionException(/Choose both races/),
+  );
+  assert.equal(state(session).mapId, "river-valley");
+  const arena = await execute("start_new_battle", {
+    mapId: "sable-sound",
+    playerRace: "woodland",
+    enemyRace: "coastal",
+  });
+  assert.equal(arena.mapId, "sable-sound");
+  assert.deepEqual(state(session).armies, ["woodland", "coastal"]);
+  assert.equal(state(session).units.length, 2);
   assert.equal((await execute("start_new_battle")).mapId, "mirror");
   assert.equal(await execute("advance_dialogue"), null);
   close();

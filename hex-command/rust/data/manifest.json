@@ -155,7 +155,16 @@
     "game/scenario/rl-dark-rooms/scenario.json",
     "game/scenario/rl-twilight-ridge/scenario.json",
     "game/scenario/rl-mist-wetland/scenario.json",
-    "game/scenario/rl-lantern-forest/scenario.json"
+    "game/scenario/rl-lantern-forest/scenario.json",
+    "game/scenario/sable-sound/scenario.json",
+    "game/scenario/drowned-kilns/scenario.json",
+    "game/scenario/switchback-saltworks/scenario.json",
+    "game/scenario/herring-road/scenario.json",
+    "game/scenario/frosthook-gate/scenario.json",
+    "game/scenario/hart-saddle/scenario.json",
+    "game/scenario/siltbar-bend/scenario.json",
+    "game/scenario/ochre-wells/scenario.json",
+    "game/scenario/alder-fen/scenario.json"
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",

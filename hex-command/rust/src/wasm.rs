@@ -723,12 +723,18 @@ impl NativeEngineFactory {
                     .max_by_key(|definition| definition.revision())
                     .ok_or_else(|| EngineError::UnknownMap { map: map.clone() })?;
                 let mut state = BattleSession::from_map(&self.rules, definition).state();
+                if armies.is_none() && state.units.is_empty() {
+                    return Err(EngineError::InvalidRequest {
+                        message: "Choose both races to start this scenario".into(),
+                    });
+                }
                 if let Some(armies) = armies {
                     if map == "developer" {
                         return Err(EngineError::InvalidRequest {
                             message: "Developer armies are authored".into(),
                         });
                     }
+                    let place_leaders = state.units.is_empty();
                     for (seat, faction) in ["player", "enemy"].into_iter().enumerate() {
                         let roster = self
                             .rules
@@ -740,6 +746,20 @@ impl NativeEngineFactory {
                             .ok_or_else(|| EngineError::InvalidRequest {
                                 message: "Unknown faction".into(),
                             })?;
+                        if place_leaders {
+                            crate::logic::place_selected_leader(
+                                &self.rules,
+                                &mut state,
+                                faction,
+                                &roster.leader,
+                            )
+                            .map_err(|message| {
+                                EngineError::InvalidRequest {
+                                    message: message.into(),
+                                }
+                            })?;
+                            continue;
+                        }
                         for unit in state.units.iter_mut().filter(|u| u.faction == faction) {
                             let original = self.rules.unit(&unit.r#type);
                             let kind = if unit.role == Some(Role::Leader) {
