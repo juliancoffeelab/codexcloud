@@ -6,9 +6,7 @@ let parse = function
   | "river-valley" -> River_valley
   | "lantern-crossing" -> Lantern_crossing
   | "lantern-wetlands" -> Lantern_wetlands
-  | _ ->
-      invalid_arg
-        {js|Unknown terrain profile. Choose natural, river, river-valley, lantern-crossing or lantern-wetlands.|js}
+  | _ -> invalid_arg {js|Unknown terrain profile. See --help for terrain and campaign profiles.|js}
 
 let plains = ({js|plains|js}, {js|green-plain|js})
 let forest = ({js|forest|js}, {js|green-forest|js})

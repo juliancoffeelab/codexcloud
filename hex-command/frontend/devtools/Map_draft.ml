@@ -193,7 +193,24 @@ let frame_path root (frame : Art.frame) =
   else Node.absolute frame.url
 
 let help =
-  {js|Usage: node scripts/render-map.mjs [--watch] --map map.json --roster roster.json --scenario scenario.json [--overlay overlay.json] --output preview.png\nOptions: --generate SEED [--profile NAME] [--write-map draft.json]\n         natural (default) blends elevation and moisture.\n         river draws a connected river with a ford between its two banks.\n         river-valley adds two road bridges and a shallow crossing in a wooded valley.\n         lantern-crossing splits the river around a wooded island with two fords.\n         lantern-wetlands biases the north toward ridges and the south toward marsh.\n         SEED is a decimal unsigned 32-bit integer. Export creates a new file and requires a one-shot render.\n         --grid [--grid-color COLOR] --artwork frames.json --content content.json\n         --draw-order native|reverse-within-z|shuffle-within-z|shuffle-all\n         --order-seed 17 --order-terrain castle-wall,castle-bell\nSupply standalone current-format map, roster and scenario documents; no catalogue registration is needed.\nStatic draft only: Rust resolves perception; encounters and gameplay are not executed.|js}
+  "Usage: node scripts/render-map.mjs [--watch] --map map.json --roster roster.json --scenario \
+   scenario.json [--overlay overlay.json] --output preview.png\n"
+  ^ "Options: --generate SEED [--profile NAME] [--write-map draft.json]\n"
+  ^ "         natural (default) blends elevation and moisture.\n"
+  ^ "         river draws a connected river with a ford.\n"
+  ^ "         river-valley adds two bridges and a shallow crossing.\n"
+  ^ "         lantern-crossing splits the river around a wooded island.\n"
+  ^ "         lantern-wetlands combines northern ridges and southern marsh.\n"
+  ^ "Campaign profiles support --intent NAME (default listed first) and --facing east|west.\n"
+  ^ Draft_campaign.help ^ "\n"
+  ^ "SEED is a decimal unsigned 32-bit integer. Campaign profiles require 24 columns and 20 rows.\n"
+  ^ "Export creates a new file and requires a one-shot render.\n"
+  ^ "         --reveal-terrain shows the entire landscape in the PNG.\n"
+  ^ "         --grid [--grid-color COLOR] --artwork frames.json --content content.json\n"
+  ^ "         --draw-order native|reverse-within-z|shuffle-within-z|shuffle-all\n"
+  ^ "         --order-seed 17 --order-terrain castle-wall,castle-bell\n"
+  ^ "Supply standalone current-format map, roster and scenario documents.\n"
+  ^ "Static draft only: Rust resolves perception; encounters and gameplay are not executed."
 
 let options () =
   let flags = Hashtbl.create 12 in
@@ -201,7 +218,7 @@ let options () =
   let rec read i =
     if i < Array.length args then
       let name = args.(i) in
-      if List.mem name [ {js|--grid|js}; {js|--help|js} ] then (
+      if List.mem name [ {js|--grid|js}; {js|--help|js}; {js|--reveal-terrain|js} ] then (
         Hashtbl.replace flags name {js|true|js};
         read (i + 1))
       else if
@@ -214,6 +231,8 @@ let options () =
             {js|--output|js};
             {js|--generate|js};
             {js|--profile|js};
+            {js|--intent|js};
+            {js|--facing|js};
             {js|--write-map|js};
             {js|--grid-color|js};
             {js|--artwork|js};
@@ -245,7 +264,7 @@ let positive name value =
     invalid_arg {j|Expected positive integer $(name)|j};
   int_of_float n
 
-let generate_map seed profile map roster =
+let generate_map seed ~profile ~intent ~facing map roster =
   let seed =
     match Int64.of_string_opt seed with
     | Some value
@@ -267,7 +286,9 @@ let generate_map seed profile map roster =
     then invalid_arg {js|Position outside draft map|js};
     (int_of_float col, int_of_float row)
   in
+  let campaign = Draft_campaign.find profile in
   let occupied = Hashtbl.create 16 in
+  let ids = Hashtbl.create 16 in
   let tiles = Hashtbl.create 64 in
   let editable = Hashtbl.create 64 in
   Array.iter
@@ -280,17 +301,23 @@ let generate_map seed profile map roster =
     (fun tile ->
       let position = point tile in
       let terrain = J.text tile {js|terrain|js} in
+      if Option.is_some campaign && J.has tile {js|id|js} then
+        Hashtbl.replace ids (J.text tile {js|id|js}) ();
       Hashtbl.replace tiles position terrain;
+      let default_floor =
+        match terrain with
+        | "plains" | "hill" -> Some "green-plain"
+        | "forest" -> Some "green-forest"
+        | "mountain" -> Some "mountain-rock"
+        | "water" -> Some "dark-water"
+        | "marsh" -> Some "marsh"
+        | _ -> None
+      in
       if
-        List.mem terrain
-          [
-            {js|plains|js};
-            {js|forest|js};
-            {js|hill|js};
-            {js|mountain|js};
-            {js|water|js};
-            {js|marsh|js};
-          ]
+        Option.is_some default_floor
+        && (Option.is_none campaign
+           || (not (J.has tile {js|floor|js}))
+           || Some (J.text tile {js|floor|js}) = default_floor)
         && (not (Hashtbl.mem occupied position))
         && (not
               (List.exists (J.has tile)
@@ -298,23 +325,45 @@ let generate_map seed profile map roster =
         && Array.length (J.list tile {js|environmentEffects|js}) = 0
       then Hashtbl.replace editable position tile)
     (J.array (J.field map {js|tiles|js}));
-  let plan =
-    Draft_profiles.create profile ~seed ~cols ~rows ~tiles ~editable:(Hashtbl.mem editable)
+  let set_directions tile key directions =
+    J.set tile key (Js.Json.array (Array.of_list (List.map J.str directions)))
   in
-  Hashtbl.iter
-    (fun ((col, row) as position) tile ->
-      let generated, floor = plan.tile ~col ~row in
-      if generated <> Hashtbl.find tiles position then (
-        Hashtbl.replace tiles position generated;
-        J.set tile {js|terrain|js} (J.str generated);
-        J.set tile {js|floor|js} (J.str floor);
-        match plan.connections ~col ~row with
-        | [] -> ()
-        | directions ->
-            J.set tile {js|connections|js}
-              (Js.Json.array (Array.of_list (List.map J.str directions)))))
-    editable;
-  plan.validate tiles
+  let apply tile (terrain, floor) =
+    J.set tile {js|terrain|js} (J.str terrain);
+    J.set tile {js|floor|js} (J.str floor)
+  in
+  match campaign with
+  | Some family ->
+      let canvas =
+        Draft_campaign.create family ~intent ~facing ~seed ~cols ~rows ~tiles
+          ~editable:(Hashtbl.mem editable) ~ids
+      in
+      Draft_layout.export canvas (fun position (paint : Draft_layout.paint) ->
+          let tile = Hashtbl.find editable position in
+          apply tile paint.material;
+          Option.iter (fun id -> J.set tile {js|id|js} (J.str id)) paint.landmark;
+          match paint.geometry with
+          | Surface -> ()
+          | Exits directions -> set_directions tile {js|connections|js} directions
+          | Walls directions -> set_directions tile {js|walls|js} directions)
+  | None ->
+      if Option.is_some intent || Option.is_some facing then
+        invalid_arg {js|--intent and --facing require a campaign profile. See --help.|js};
+      let profile = Draft_profiles.parse profile in
+      let plan =
+        Draft_profiles.create profile ~seed ~cols ~rows ~tiles ~editable:(Hashtbl.mem editable)
+      in
+      Hashtbl.iter
+        (fun ((col, row) as position) tile ->
+          let generated, floor = plan.tile ~col ~row in
+          if generated <> Hashtbl.find tiles position then (
+            Hashtbl.replace tiles position generated;
+            apply tile (generated, floor);
+            match plan.connections ~col ~row with
+            | [] -> ()
+            | directions -> set_directions tile {js|connections|js} directions))
+        editable;
+      plan.validate tiles
 
 let write_generated_map path preview map =
   let parent = Node.dirname path in
@@ -595,13 +644,17 @@ let run root =
     let map = read_json map_path in
     let roster = read_json roster_path in
     let export = Hashtbl.find_opt flags {js|--write-map|js} in
-    let profile = Hashtbl.find_opt flags {js|--profile|js} in
+    let profile = Hashtbl.find_opt flags {js|--profile|js}
+    and intent = Hashtbl.find_opt flags {js|--intent|js}
+    and facing = Hashtbl.find_opt flags {js|--facing|js} in
     (match Hashtbl.find_opt flags {js|--generate|js} with
     | Some seed ->
-        let profile = Option.fold ~none:Draft_profiles.Natural ~some:Draft_profiles.parse profile in
-        generate_map seed profile map roster
+        let profile = Option.value ~default:{js|natural|js} profile in
+        generate_map seed ~profile ~intent ~facing map roster
     | None ->
         if Option.is_some profile then invalid_arg {js|--profile requires --generate|js};
+        if Option.is_some intent || Option.is_some facing then
+          invalid_arg {js|--intent and --facing require --generate|js};
         if Option.is_some export then invalid_arg {js|--write-map requires --generate|js});
     let overlay =
       Option.fold ~none:(J.obj []) ~some:read_json (Hashtbl.find_opt flags {js|--overlay|js})
@@ -788,7 +841,8 @@ let run root =
     C.save ctx;
     C.translate ctx margin header;
     Terrain_plan.configure ctx scale;
-    Lighting.fog ctx plan.tiles (Array.map Hex.key resolved.fog);
+    if not (Hashtbl.mem flags {js|--reveal-terrain|js}) then
+      Lighting.fog ctx plan.tiles (Array.map Hex.key resolved.fog);
     let fog = Hashtbl.create 16 in
     Array.iter (fun hex -> Hashtbl.replace fog (Hex.key hex) ()) resolved.fog;
     let point value =
