@@ -193,7 +193,7 @@ let frame_path root (frame : Art.frame) =
   else Node.absolute frame.url
 
 let help =
-  {js|Usage: node scripts/render-map.mjs [--watch] --map map.json --roster roster.json --scenario scenario.json [--overlay overlay.json] --output preview.png\nOptions: --generate SEED [--profile NAME] [--write-map draft.json]\n         natural (default) blends elevation and moisture.\n         river draws a connected river with a ford between its two banks.\n         lantern-crossing splits the river around a wooded island with two fords.\n         lantern-wetlands biases the north toward ridges and the south toward marsh.\n         SEED is a decimal unsigned 32-bit integer. Export creates a new file and requires a one-shot render.\n         --grid [--grid-color COLOR] --artwork frames.json --content content.json\n         --draw-order native|reverse-within-z|shuffle-within-z|reverse-all|shuffle-all\n         --order-seed 17 --order-terrain castle-wall,castle-bell\nSupply standalone current-format map, roster and scenario documents; no catalogue registration is needed.\nStatic draft only: Rust resolves perception; encounters and gameplay are not executed.|js}
+  {js|Usage: node scripts/render-map.mjs [--watch] --map map.json --roster roster.json --scenario scenario.json [--overlay overlay.json] --output preview.png\nOptions: --generate SEED [--profile NAME] [--write-map draft.json]\n         natural (default) blends elevation and moisture.\n         river draws a connected river with a ford between its two banks.\n         river-valley adds two road bridges and a shallow crossing in a wooded valley.\n         lantern-crossing splits the river around a wooded island with two fords.\n         lantern-wetlands biases the north toward ridges and the south toward marsh.\n         SEED is a decimal unsigned 32-bit integer. Export creates a new file and requires a one-shot render.\n         --grid [--grid-color COLOR] --artwork frames.json --content content.json\n         --draw-order native|reverse-within-z|shuffle-within-z|shuffle-all\n         --order-seed 17 --order-terrain castle-wall,castle-bell\nSupply standalone current-format map, roster and scenario documents; no catalogue registration is needed.\nStatic draft only: Rust resolves perception; encounters and gameplay are not executed.|js}
 
 let options () =
   let flags = Hashtbl.create 12 in
@@ -308,8 +308,11 @@ let generate_map seed profile map roster =
         Hashtbl.replace tiles position generated;
         J.set tile {js|terrain|js} (J.str generated);
         J.set tile {js|floor|js} (J.str floor);
-        if generated = {js|ford|js} then
-          J.set tile {js|connections|js} (Js.Json.array [| J.str {js|e|js}; J.str {js|w|js} |])))
+        match plan.connections ~col ~row with
+        | [] -> ()
+        | directions ->
+            J.set tile {js|connections|js}
+              (Js.Json.array (Array.of_list (List.map J.str directions)))))
     editable;
   plan.validate tiles
 
