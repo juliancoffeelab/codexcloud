@@ -73,8 +73,8 @@
           "type": "commander",
           "role": "leader",
           "tile": {
-            "col": 1,
-            "row": 8
+            "col": 4,
+            "row": 17
           },
           "id": "u1",
           "hp": "full",
@@ -141,8 +141,8 @@
           "type": "commander",
           "role": "leader",
           "tile": {
-            "col": 12,
-            "row": 7
+            "col": 25,
+            "row": 16
           },
           "id": "u2",
           "hp": "full",

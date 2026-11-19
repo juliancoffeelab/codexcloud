@@ -307,7 +307,7 @@
             "kind": "selected",
             "budget": 39
           },
-          "mapRevision": 2
+          "mapRevision": 3
         },
         {
           "map": "river-valley",
@@ -315,7 +315,7 @@
             "kind": "selected",
             "budget": 42
           },
-          "mapRevision": 2
+          "mapRevision": 3
         },
         {
           "map": "river-valley",
@@ -323,7 +323,7 @@
             "kind": "selected",
             "budget": 42
           },
-          "mapRevision": 2
+          "mapRevision": 3
         },
         {
           "map": "river-valley",
@@ -331,13 +331,13 @@
             "kind": "selected",
             "budget": 42
           },
-          "mapRevision": 2
+          "mapRevision": 3
         }
       ],
       "territory": [
         {
-          "col": 11,
-          "row": 1
+          "col": 9,
+          "row": 7
         }
       ],
       "holdTurns": 4

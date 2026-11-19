@@ -59,8 +59,8 @@ existing map ID for an experiment does not replace that map on disk.
   Supply their mechanical fields even for a terrain-only preview; the tool does
   not fabricate a roster, sight rules or lighting.
 - `--scenario`: the normal scenario document, including `map`, `roster`,
-  `characters` and `tags`. Its relative map/roster references must resolve to the
-  files passed by the corresponding CLI flags.
+  `fixedArmies`, `characters` and `tags`. Its relative map/roster references must
+  resolve to the files passed by the corresponding CLI flags.
 
 For current format examples, inspect the independent
 [map](../../../rust/data/game/scenario/mirror-v1/map.json),
