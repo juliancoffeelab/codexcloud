@@ -322,7 +322,7 @@
     {
       "col": 3,
       "row": 2,
-      "terrain": "house",
+      "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -347,7 +347,7 @@
     {
       "col": 6,
       "row": 2,
-      "terrain": "monastery",
+      "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -413,7 +413,7 @@
     {
       "col": 14,
       "row": 2,
-      "terrain": "house",
+      "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1751,7 +1751,7 @@
     {
       "col": 15,
       "row": 11,
-      "terrain": "house",
+      "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -2115,7 +2115,7 @@
     {
       "col": 5,
       "row": 14,
-      "terrain": "house",
+      "terrain": "plains",
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
