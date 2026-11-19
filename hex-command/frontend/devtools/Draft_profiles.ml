@@ -41,14 +41,44 @@ let neighbors (col, row) =
     (west + 1, row + 1);
   ]
 
+let is_channel channel ~col ~row =
+  match channel ~col ~row with Water | Ford -> true | Bank | Island | Land -> false
+
+let waterway_terrain terrain = List.mem terrain [ {js|water|js}; {js|ford|js}; {js|bridge|js} ]
+
+let floodplain ~channel ~fields ~tiles ~editable ~lowland =
+  let marshes = Hashtbl.create 64 in
+  let frontier = Queue.create () in
+  Hashtbl.iter
+    (fun ((col, row) as point) terrain ->
+      if is_channel channel ~col ~row && (editable point || waterway_terrain terrain) then
+        Queue.add (point, 0) frontier)
+    tiles;
+  (* Flood only contiguous low ground, up to three hexes inland from the channel. *)
+  while not (Queue.is_empty frontier) do
+    let point, distance = Queue.take frontier in
+    if distance < 3 then
+      List.iter
+        (fun ((col, row) as neighbor) ->
+          if
+            editable neighbor
+            && (not (Hashtbl.mem marshes neighbor))
+            && lowland row
+            && channel ~col ~row = Land
+          then
+            let height, moisture = fields ~col ~row in
+            if height < -0.12 && moisture > -0.24 then (
+              Hashtbl.add marshes neighbor ();
+              Queue.add (neighbor, distance + 1) frontier))
+        (neighbors point)
+  done;
+  marshes
+
 let validate_river ~rows ~channel ~crossings tiles =
   let waterway = Hashtbl.create 64 in
-  let is_channel col row =
-    match channel ~col ~row with Water | Ford -> true | Bank | Island | Land -> false
-  in
   Hashtbl.iter
     (fun (col, row) terrain ->
-      if is_channel col row && List.mem terrain [ {js|water|js}; {js|ford|js}; {js|bridge|js} ] then
+      if is_channel channel ~col ~row && waterway_terrain terrain then
         Hashtbl.add waterway (col, row) ())
     tiles;
   let frontier = Queue.create () in
@@ -90,7 +120,7 @@ let validate_river ~rows ~channel ~crossings tiles =
       if not (clear_bank (left - 1, row) && clear_bank (right + 1, row)) then blocked ())
     crossings
 
-let river ~seed ~cols ~rows ~island ~fields =
+let river ~seed ~cols ~rows ~island ~fields ~tiles ~editable =
   let min_cols, min_rows = if island then (13, 9) else (7, 5) in
   (if cols < min_cols || rows < min_rows then
      let min_cols = string_of_int min_cols and min_rows = string_of_int min_rows in
@@ -153,6 +183,8 @@ let river ~seed ~cols ~rows ~island ~fields =
     else if distance <= outer then Water
     else Land
   in
+  let lowland row = (not island) || progress row >= 0.17 in
+  let marshes = floodplain ~channel ~fields ~tiles ~editable ~lowland in
   let tile ~col ~row =
     let height, wetness = fields ~col ~row in
     match channel ~col ~row with
@@ -163,15 +195,16 @@ let river ~seed ~cols ~rows ~island ~fields =
     | Land ->
         if island && progress row < 0.09 then mountain
         else if island && progress row < 0.17 then upland (height +. 0.23) wetness
-        else if wetness > 0.25 && height < -0.22 then marsh
+        else if Hashtbl.mem marshes (col, row) then marsh
         else upland height wetness
   in
   { tile; validate = validate_river ~rows ~channel ~crossings }
 
-let create profile ~seed ~cols ~rows =
+let create profile ~seed ~cols ~rows ~tiles ~editable =
   let fields = Draft_noise.fields ~seed ~cols ~rows in
   match profile with
-  | River | Lantern_crossing -> river ~seed ~cols ~rows ~island:(profile = Lantern_crossing) ~fields
+  | River | Lantern_crossing ->
+      river ~seed ~cols ~rows ~island:(profile = Lantern_crossing) ~fields ~tiles ~editable
   | Natural ->
       let tile ~col ~row =
         let height, wetness = fields ~col ~row in

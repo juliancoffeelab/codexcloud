@@ -256,7 +256,6 @@ let generate_map seed profile map roster =
   in
   let cols = positive {js|cols|js} (J.field map {js|cols|js})
   and rows = positive {js|rows|js} (J.field map {js|rows|js}) in
-  let plan = Draft_profiles.create profile ~seed ~cols ~rows in
   let point value =
     let col = J.n value {js|col|js} and row = J.n value {js|row|js} in
     if
@@ -270,6 +269,7 @@ let generate_map seed profile map roster =
   in
   let occupied = Hashtbl.create 16 in
   let tiles = Hashtbl.create 64 in
+  let editable = Hashtbl.create 64 in
   Array.iter
     (fun army ->
       Array.iter
@@ -278,34 +278,39 @@ let generate_map seed profile map roster =
     (J.list roster {js|factions|js});
   Array.iter
     (fun tile ->
-      let col, row = point tile in
+      let position = point tile in
       let terrain = J.text tile {js|terrain|js} in
-      (if
-         List.mem terrain
-           [
-             {js|plains|js};
-             {js|forest|js};
-             {js|hill|js};
-             {js|mountain|js};
-             {js|water|js};
-             {js|marsh|js};
-           ]
-         && (not (Hashtbl.mem occupied (col, row)))
-         && (not
-               (List.exists (J.has tile)
-                  [
-                    {js|id|js}; {js|owner|js}; {js|connections|js}; {js|deadEnds|js}; {js|walls|js};
-                  ]))
-         && Array.length (J.list tile {js|environmentEffects|js}) = 0
-       then
-         let generated, floor = plan.tile ~col ~row in
-         if generated <> terrain then (
-           J.set tile {js|terrain|js} (J.str generated);
-           J.set tile {js|floor|js} (J.str floor);
-           if generated = {js|ford|js} then
-             J.set tile {js|connections|js} (Js.Json.array [| J.str {js|e|js}; J.str {js|w|js} |])));
-      Hashtbl.replace tiles (col, row) (J.text tile {js|terrain|js}))
+      Hashtbl.replace tiles position terrain;
+      if
+        List.mem terrain
+          [
+            {js|plains|js};
+            {js|forest|js};
+            {js|hill|js};
+            {js|mountain|js};
+            {js|water|js};
+            {js|marsh|js};
+          ]
+        && (not (Hashtbl.mem occupied position))
+        && (not
+              (List.exists (J.has tile)
+                 [ {js|id|js}; {js|owner|js}; {js|connections|js}; {js|deadEnds|js}; {js|walls|js} ]))
+        && Array.length (J.list tile {js|environmentEffects|js}) = 0
+      then Hashtbl.replace editable position tile)
     (J.array (J.field map {js|tiles|js}));
+  let plan =
+    Draft_profiles.create profile ~seed ~cols ~rows ~tiles ~editable:(Hashtbl.mem editable)
+  in
+  Hashtbl.iter
+    (fun ((col, row) as position) tile ->
+      let generated, floor = plan.tile ~col ~row in
+      if generated <> Hashtbl.find tiles position then (
+        Hashtbl.replace tiles position generated;
+        J.set tile {js|terrain|js} (J.str generated);
+        J.set tile {js|floor|js} (J.str floor);
+        if generated = {js|ford|js} then
+          J.set tile {js|connections|js} (Js.Json.array [| J.str {js|e|js}; J.str {js|w|js} |])))
+    editable;
   plan.validate tiles
 
 let write_generated_map path preview map =
