@@ -387,12 +387,24 @@ let register session =
                         Js.Promise.resolve (snapshot session))
                   (commands.end_turn ()));
             descriptor {js|start_new_battle|js}
-              {js|Replace the current battle with a fresh battle.|js}
-              (schema [ ({js|mapId|js}, string_property ~values:maps ()) ])
+              {js|Replace the current battle with a fresh battle. Choose both races for maps that start with empty armies.|js}
+              (schema
+                 [
+                   ({js|mapId|js}, string_property ~values:maps ());
+                   ({js|playerRace|js}, string_property ~description:{js|Player race ID.|js} ());
+                   ({js|enemyRace|js}, string_property ~description:{js|Enemy race ID.|js} ());
+                 ])
               (immediate
                  (result (fun value ->
                       let input = input value in
-                      commands.reset
+                      let armies =
+                        match (get input {js|playerRace|js}, get input {js|enemyRace|js}) with
+                        | None, None -> None
+                        | Some _, Some _ ->
+                            Some (string input {js|playerRace|js}, string input {js|enemyRace|js})
+                        | _ -> fail {js|Choose both races.|js}
+                      in
+                      commands.reset ?armies
                         (match get input {js|mapId|js} with
                         | None -> {js|mirror|js}
                         | Some _ -> string input {js|mapId|js}))));

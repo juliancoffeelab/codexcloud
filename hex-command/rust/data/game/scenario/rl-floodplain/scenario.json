@@ -1,6 +1,7 @@
 {
   "tags": ["simulation"],
   "map": "map.json",
-  "roster": "roster.json",
+  "roster": "../rl-arena-setup.json",
+  "fixedArmies": false,
   "characters": []
 }

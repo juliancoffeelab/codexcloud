@@ -217,7 +217,16 @@ impl SimulationArgs {
             .unwrap_or(rules.meta().simulation.campaign.default_max_rounds);
         options.recruit_limit = self.recruits.map(|n| n as usize);
         options.armies = selection(self.armies, "--armies", &options.armies)?;
-        options.landscapes = selection(self.landscapes, "--landscapes", &options.landscapes)?;
+        let registered: Vec<_> = rules
+            .meta()
+            .simulation
+            .arena
+            .scenarios
+            .iter()
+            .map(|arena| arena.id.clone())
+            .collect();
+        let landscapes = self.landscapes.unwrap_or(options.landscapes);
+        options.landscapes = selection(Some(landscapes), "--landscapes", &registered)?;
         options.campaigns = selection(self.campaigns, "--campaigns", &options.campaigns)?;
         options.policies = selection(
             self.policies.or_else(|| Some(vec![Policy::Balanced])),

@@ -18,6 +18,13 @@ launchers. Campaign stage metadata inherits its campaign's tags.
 Standalone scenarios can declare `characters` when their roster contains named
 actors. Map identifiers and revisions remain the engine's loading keys.
 
+Every standalone scenario declares `fixedArmies`. Set it to `false` for
+browser skirmishes that let players choose both races. The engine adapts
+authored starting units to those races while preserving their hexes. If the
+roster is empty, both races are required and their leaders start on the owned
+keeps. Set it to `true` for a browser scenario that plays with its authored
+forces. The native simulation manifest defines its own starting forces.
+
 Workload manifests reference these registered definitions:
 
 - `simulation/arena.json` defines named arena groups, their fixed map variants,

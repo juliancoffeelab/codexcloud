@@ -515,17 +515,14 @@ def main():
         folder = DATA / "game/scenario" / identifier
         b = board(identifier, biome, 1729 + i)
         write(folder / "map.json", b)
-        arena_roster = roster("human", "skeletons", b["cols"], b["rows"])
-        for faction in arena_roster["factions"]:
-            for unit in faction["units"]:
-                unit.pop("character", None)
-        write(folder / "roster.json", arena_roster)
         write(
             folder / "scenario.json",
             dict(
-                human=False,
+                tags=["simulation"],
+                fixedArmies=False,
                 map="map.json",
-                roster="roster.json",
+                roster="../rl-arena-setup.json",
+                characters=[],
             ),
         )
         path = str((folder / "scenario.json").relative_to(DATA))

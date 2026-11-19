@@ -617,6 +617,186 @@
         }
       ],
       "holdTurns": 4
+    },
+    {
+      "id": "sable-sound",
+      "variants": [
+        {
+          "map": "sable-sound",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 19,
+          "row": 18
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "drowned-kilns",
+      "variants": [
+        {
+          "map": "drowned-kilns",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 25,
+          "row": 6
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "switchback-saltworks",
+      "variants": [
+        {
+          "map": "switchback-saltworks",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 19,
+          "row": 19
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "herring-road",
+      "variants": [
+        {
+          "map": "herring-road",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 12,
+          "row": 24
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "frosthook-gate",
+      "variants": [
+        {
+          "map": "frosthook-gate",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 22,
+          "row": 20
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "hart-saddle",
+      "variants": [
+        {
+          "map": "hart-saddle",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 18,
+          "row": 11
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "siltbar-bend",
+      "variants": [
+        {
+          "map": "siltbar-bend",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 17,
+          "row": 21
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "ochre-wells",
+      "variants": [
+        {
+          "map": "ochre-wells",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 20,
+          "row": 7
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "alder-fen",
+      "variants": [
+        {
+          "map": "alder-fen",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 6,
+          "row": 23
+        }
+      ],
+      "holdTurns": 3
     }
   ],
   "defaultScenarios": ["open", "wooded", "crossings", "islands", "wood-edge"],

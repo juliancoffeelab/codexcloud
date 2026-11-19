@@ -390,6 +390,7 @@ test("Catalog indexes detached metadata supplied through its exported constructo
         name: "Small map",
         description: "One owned tile",
         tags: ["human"],
+        fixed_armies: false,
         lighting: { time: "day" },
         presentation: {
           lighting: { unlit_tiles: [], lights: [] },

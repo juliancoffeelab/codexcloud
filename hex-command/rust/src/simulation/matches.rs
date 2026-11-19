@@ -100,40 +100,8 @@ pub(crate) fn create_arena<'catalog>(
     {
         let roster = roster(rules, army)?;
         let leader = roster.leader.as_str();
-        let start = state
-            .tiles
-            .iter()
-            .find(|tile| {
-                rules
-                    .terrains()
-                    .find(|terrain| terrain.id().as_str() == tile.terrain)
-                    .expect("authored terrain")
-                    .allows_recruitment()
-                    && tile.owner.as_deref() == Some(faction)
-            })
-            .ok_or("Arena requires an owned keep for each side")?
-            .hex();
-        let rule = rules.unit(leader);
-        starting_cost[seat] += rule.recruitment_price(None);
-        state.units.push(PublicUnit {
-            faction: faction.into(),
-            revealed_to: vec![],
-            perception_effects: vec![],
-            items: vec![],
-            ai_group: None,
-            id: format!("u{}", state.next_id),
-            r#type: leader.into(),
-            tile: start.clone(),
-            hp: rule.max_hp,
-            moved: false,
-            attack_spent: false,
-            experience: Some(0),
-            character: None,
-            role: Some(Role::Leader),
-            retreating: None,
-            rebuilding: None,
-        });
-        state.next_id += 1;
+        crate::logic::place_selected_leader(rules, &mut state, faction, leader)?;
+        starting_cost[seat] += rules.unit(leader).recruitment_price(None);
     }
     let ArenaForces::Selected { budget } = variant.forces else {
         unreachable!()

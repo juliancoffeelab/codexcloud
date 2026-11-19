@@ -84,12 +84,13 @@ struct ItemSource {
     sight: SightContribution,
 }
 #[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct ScenarioSource {
     tags: Vec<Text>,
     characters: Vec<Character>,
     map: Text,
     roster: Text,
+    fixed_armies: bool,
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -189,7 +190,7 @@ pub(crate) fn parse(bundle: &JsonBundle) -> Result<Catalogue, ContentError> {
     }
     let content_fingerprint = digest.finalize().into();
     let manifest: Manifest = document(bundle, "manifest.json")?;
-    if manifest.schema_version != 6 {
+    if manifest.schema_version != 7 {
         return Err(ContentError::new(
             "manifest.json",
             "unsupported authored schemaVersion",
@@ -328,6 +329,7 @@ pub(crate) fn parse(bundle: &JsonBundle) -> Result<Catalogue, ContentError> {
             tags: source.tags,
             roster: document(bundle, &sibling(p, &source.roster))?,
             characters: source.characters,
+            fixed_armies: source.fixed_armies,
         });
     }
     let mut campaigns = Vec::new();
@@ -345,6 +347,7 @@ pub(crate) fn parse(bundle: &JsonBundle) -> Result<Catalogue, ContentError> {
                 tags: source.tags.clone(),
                 roster: document(bundle, &sibling(&path, &chapter.roster))?,
                 characters: source.characters.clone(),
+                fixed_armies: true,
             });
             chapters.push(ChapterDefinition {
                 id: chapter.id,

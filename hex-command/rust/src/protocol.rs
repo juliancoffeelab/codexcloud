@@ -196,6 +196,7 @@ pub struct BrowserMap {
     pub name: Text,
     pub description: Text,
     pub tags: Vec<Text>,
+    pub fixed_armies: bool,
     pub state: State,
     pub presentation: BattlefieldPresentation,
 }

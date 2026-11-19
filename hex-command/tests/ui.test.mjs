@@ -209,11 +209,8 @@ test("The real embedding mounts native presentation, browser tools and reusable 
   await click(".ng-modes button:nth-child(2)");
   assert.ok(element(".new-game-dialog .setup-map-preview polygon"));
   await click(".ng-choice");
-  assert.equal(
-    document.querySelector('.ng-strip[aria-label="Your race"]'),
-    null,
-    "Maps with starting armies keep their authored roster",
-  );
+  assert.ok(element('.ng-strip[aria-label="Your race"]'));
+  assert.ok(element('.ng-strip[aria-label="Opponent’s race"]'));
   await click(".ng-start-footer button:first-child");
   await click(".ng-browse-footer > button");
   assert.equal(
@@ -639,6 +636,10 @@ test.each(["scenario", "campaign"])(
       );
       await act(async () => target.click());
     };
+    if (mode === "scenario") {
+      await choose("Your race", "Merfolk");
+      await choose("Opponent’s race", "Woodland");
+    }
     await click(".new-game-dialog .advanced > summary");
     await choose("Opponent planning", "Full");
     await click(".ng-recruitment > .recruitment-trigger");
@@ -661,13 +662,14 @@ test.each(["scenario", "campaign"])(
       },
     });
     if (mode === "scenario") {
-      assert.equal(saved.checkpoint.state.armies, null);
+      const armies = ["coastal", "woodland"];
+      assert.deepEqual(saved.checkpoint.state.armies, armies);
       const roster = (state) =>
         state.units.map(({ type, faction, tile }) => ({ type, faction, tile }));
-      const authored = Native.save(
-        createBattle({ kind: "scenario", map: saved.checkpoint.state.mapId }),
+      const selected = Native.save(
+        createBattle({ kind: "scenario", map: saved.checkpoint.state.mapId, armies }),
       ).state;
-      assert.deepEqual(roster(saved.checkpoint.state), roster(authored));
+      assert.deepEqual(roster(saved.checkpoint.state), roster(selected));
     } else
       assert.equal(
         saved.checkpoint.state.campaign.id,
