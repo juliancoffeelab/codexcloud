@@ -263,6 +263,7 @@ pub fn catalog(factory: &NativeEngineFactory) -> CatalogView {
             name: map.name().into(),
             description: map.description().into(),
             tags: map.tags().to_vec(),
+            fixed_armies: map.fixed_armies(),
             state: game.state(),
             presentation: game.presentation(),
         }
@@ -723,15 +724,15 @@ impl NativeEngineFactory {
                     .max_by_key(|definition| definition.revision())
                     .ok_or_else(|| EngineError::UnknownMap { map: map.clone() })?;
                 let mut state = BattleSession::from_map(&self.rules, definition).state();
-                if armies.is_none() && state.units.is_empty() {
+                if armies.is_none() && !definition.fixed_armies() && state.units.is_empty() {
                     return Err(EngineError::InvalidRequest {
                         message: "Choose both races to start this scenario".into(),
                     });
                 }
                 if let Some(armies) = armies {
-                    if map == "developer" {
+                    if definition.fixed_armies() {
                         return Err(EngineError::InvalidRequest {
-                            message: "Developer armies are authored".into(),
+                            message: "This scenario requires its authored armies".into(),
                         });
                     }
                     let place_leaders = state.units.is_empty();

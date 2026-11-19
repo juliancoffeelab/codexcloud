@@ -294,7 +294,7 @@ let make =
     mode == Setup.Campaign
       ? Catalog.mission_map(view.catalog, campaign.missions[0])
       : Catalog.map(view.catalog, mapId);
-  let hasStartingArmies = Array.length(selectedMap.state.units) > 0;
+  let fixedArmies = selectedMap.fixed_armies;
   let mapName = (map: Domain.browser_map) =>
     map.id == {js|river-valley|js} ? {js|River Valley|js} : map.name;
   let setDifficulty = policy => {
@@ -400,11 +400,7 @@ let make =
           if (mode == Setup.Campaign) {
             actions.start_campaign(~setup, campaignId);
           } else {
-            actions.reset(
-              ~setup,
-              ~armies=?hasStartingArmies ? None : Some((player, opponent)),
-              mapId,
-            );
+            actions.reset(~setup, ~armies=?fixedArmies ? None : Some((player, opponent)), mapId);
           };
           let _ =
             Session.saved(session)
@@ -688,7 +684,7 @@ let make =
                              />
                              <p> {text(campaign.short_description)} </p>
                            </div>
-                         : !hasStartingArmies
+                         : !fixedArmies
                              ? <>
                                  <RaceStrip
                                    session

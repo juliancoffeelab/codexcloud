@@ -519,6 +519,7 @@ def main():
             folder / "scenario.json",
             dict(
                 tags=["simulation"],
+                fixedArmies=False,
                 map="map.json",
                 roster="../rl-arena-setup.json",
                 characters=[],

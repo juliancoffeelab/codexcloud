@@ -53,6 +53,7 @@ pub struct MapDefinition {
     pub(crate) tags: Vec<Text>,
     pub(crate) roster: InitialRoster,
     pub(crate) characters: Vec<Character>,
+    pub(crate) fixed_armies: bool,
 }
 impl MapDefinition {
     pub fn id(&self) -> &str {
@@ -72,6 +73,9 @@ impl MapDefinition {
     }
     pub fn tags(&self) -> &[Text] {
         &self.tags
+    }
+    pub fn fixed_armies(&self) -> bool {
+        self.fixed_armies
     }
     pub fn dimensions(&self) -> (i32, i32) {
         (self.source.cols, self.source.rows)

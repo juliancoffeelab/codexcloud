@@ -2,5 +2,6 @@
   "tags": ["simulation"],
   "map": "map.json",
   "roster": "roster.json",
+  "fixedArmies": false,
   "characters": []
 }
