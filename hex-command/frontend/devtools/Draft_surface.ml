@@ -144,6 +144,7 @@ let ridge t ~near_edge ~alternate =
   roads t routes;
   mark t "entry" start;
   mark t "exit" finish;
+  Draft_mountains.ridge_flanks t ~offset ~width;
   validate_route t "route through mountain pass" start finish;
   validate_cut t "mountain pass" [ start ] finish ~blocked:(Hashtbl.mem crossing_cells)
 
