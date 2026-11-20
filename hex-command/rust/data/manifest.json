@@ -195,7 +195,12 @@
     "game/scenario/rl-sump-teeth/scenario.json",
     "game/scenario/rl-sump-teeth/scenario-fog.json",
     "game/scenario/rl-last-lantern/scenario.json",
-    "game/scenario/rl-last-lantern/scenario-sight.json"
+    "game/scenario/rl-last-lantern/scenario-sight.json",
+    "game/scenario/rl-switchback-saltworks-fog/scenario.json",
+    "game/scenario/rl-cinderfault-fog/scenario.json",
+    "game/scenario/rl-sable-sound-sight/scenario.json",
+    "game/scenario/rl-three-wells-trail-sight/scenario.json",
+    "game/scenario/rl-frosthook-gate-sight/scenario.json"
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",

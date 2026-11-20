@@ -1000,6 +1000,14 @@
             "budget": 54
           },
           "mapRevision": 1
+        },
+        {
+          "map": "rl-switchback-saltworks-fog",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -1015,6 +1023,14 @@
       "variants": [
         {
           "map": "cinderfault",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          }
+        },
+        {
+          "map": "rl-cinderfault-fog",
           "mapRevision": 1,
           "forces": {
             "kind": "selected",
@@ -1040,6 +1056,14 @@
             "budget": 54
           },
           "mapRevision": 1
+        },
+        {
+          "map": "rl-sable-sound-sight",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
         }
       ],
       "territory": [
@@ -1060,6 +1084,14 @@
             "kind": "selected",
             "budget": 54
           }
+        },
+        {
+          "map": "rl-three-wells-trail-sight",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          }
         }
       ],
       "territory": [
@@ -1075,6 +1107,14 @@
       "variants": [
         {
           "map": "frosthook-gate",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        },
+        {
+          "map": "rl-frosthook-gate-sight",
           "forces": {
             "kind": "selected",
             "budget": 54
