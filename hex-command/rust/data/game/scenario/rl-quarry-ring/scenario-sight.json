@@ -1,0 +1,7 @@
+{
+  "map": "map-sight.json",
+  "roster": "roster-sight.json",
+  "fixedArmies": false,
+  "characters": [],
+  "tags": ["simulation"]
+}

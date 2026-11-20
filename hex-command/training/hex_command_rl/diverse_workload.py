@@ -1,4 +1,4 @@
-"""RL-only training with existing arenas/campaigns held out for selection."""
+"""Select RL checkpoints on synthetic layouts and showcase on authored maps."""
 
 import argparse
 import hashlib
@@ -24,27 +24,45 @@ def prepare(root):
     if not all(a["id"].startswith("rl-") for a in training["arenas"]) or not all(
         c.startswith("rl-") for c in training["campaigns"]
     ):
-        raise ValueError("training catalog must contain only rl_ tasks")
+        raise ValueError("training catalog must contain only rl- tasks")
     races = ["human", "skeletons", "woodland", "coastal"]
-    held_out = dict(
+    cross_faction_pairs = [
+        dict(player=p, enemy=races[(i + 1) % len(races)]) for i, p in enumerate(races)
+    ]
+    evaluation = dict(
+        opponents=training["opponents"],
+        recruiters=training["recruiters"],
+        objectives=training["objectives"],
+    )
+    selection_panel = dict(
+        **evaluation,
         arenas=[
-            dict(
-                id=name,
-                pairs=[
-                    dict(player=p, enemy=races[(i + 1) % 4])
-                    for i, p in enumerate(races)
-                ],
-            )
+            dict(id=name, pairs=cross_faction_pairs)
             for name in (
                 "open",
                 "wooded",
                 "crossings",
                 "islands",
                 "wood-edge",
-                "river-valley",
+                "alder-fen",
+                "drowned-kilns",
+                "hart-saddle",
+                "herring-road",
+                "ochre-wells",
+                "siltbar-bend",
             )
-        ]
-        + [
+        ],
+        campaigns={
+            campaign: [
+                dict(objective=o, diplomacy="unrestricted") for o in ("authored", "fog")
+            ]
+            for campaign in ("rl-coastal-assault", "rl-whitebank-relief")
+        },
+    )
+    showcase_panel = dict(
+        **evaluation,
+        arenas=[
+            dict(id="river-valley", pairs=cross_faction_pairs),
             dict(id="villages", pairs=[dict(player="human", enemy="skeletons")]),
             dict(id="sluice", pairs=[dict(player="coastal", enemy="human")]),
         ],
@@ -54,13 +72,23 @@ def prepare(root):
                 for o in ("authored", "flight", "fight")
             ]
         },
-        opponents=training["opponents"],
-        recruiters=training["recruiters"],
-        objectives=training["objectives"],
     )
+    arena_catalog = json.loads((catalog / "simulation/arena.json").read_text())
+    layouts = {
+        arena["id"]: {variant["map"] for variant in arena["variants"]}
+        for arena in arena_catalog["scenarios"]
+    }
+    used_layouts, used_campaigns = set(), set()
+    for panel in (training, selection_panel, showcase_panel):
+        arena_layouts = set().union(*(layouts[a["id"]] for a in panel["arenas"]))
+        campaign_ids = panel["campaigns"].keys()
+        if arena_layouts & used_layouts or campaign_ids & used_campaigns:
+            raise ValueError("training, selection, and showcase must use distinct maps")
+        used_layouts.update(arena_layouts)
+        used_campaigns.update(campaign_ids)
     # Campaigns are a small number of correlated routes; use more independent
     # combat seeds before choosing between apparent gains on the tiny panel.
-    validation = configs("validation", held_out, campaign_seeds=12)
+    validation = configs("validation", selection_panel, campaign_seeds=12)
     periodic, seen = [], set()
     for c in validation:
         key = group(c)
@@ -69,7 +97,7 @@ def prepare(root):
             if "armies" in c:
                 names = [
                     p["player"]
-                    for a in held_out["arenas"]
+                    for a in selection_panel["arenas"]
                     if a["id"] == c["landscape"]
                     for p in a["pairs"]
                 ]
@@ -83,8 +111,8 @@ def prepare(root):
         train=configs("train", training),
         periodic=periodic,
         validation=validation,
-        test=configs("test", held_out),
-        balance="50% arena / 50% campaign decisions; equal tasks then variants; rl_ only; existing content held out",
+        test=configs("test", showcase_panel),
+        balance="50% arena / 50% campaign decisions; equal tasks then variants; synthetic selection and authored showcase",
     )
     spec["workload_sha256"] = hashlib.sha256(
         json.dumps(

@@ -1,0 +1,276 @@
+{
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": []
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": ["fog"]
+      },
+      "explored": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "gold": 24,
+      "recruits": [
+        {
+          "unit": "wolf",
+          "cost": null
+        },
+        {
+          "unit": "boar",
+          "cost": null
+        },
+        {
+          "unit": "thorncaller",
+          "cost": null
+        },
+        {
+          "unit": "fox-spearguard",
+          "cost": null
+        },
+        {
+          "unit": "treant",
+          "cost": null
+        }
+      ],
+      "units": [
+        {
+          "type": "wildkeeper",
+          "role": "leader",
+          "tile": {
+            "col": 14,
+            "row": 19
+          },
+          "id": "u1",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": "player-leader",
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "wolf",
+          "role": null,
+          "tile": {
+            "col": 12,
+            "row": 19
+          },
+          "id": "u2",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "boar",
+          "role": null,
+          "tile": {
+            "col": 13,
+            "row": 18
+          },
+          "id": "u3",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "thorncaller",
+          "role": null,
+          "tile": {
+            "col": 13,
+            "row": 20
+          },
+          "id": "u4",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        }
+      ],
+      "relations": {
+        "enemy": "hostile",
+        "player": "allied"
+      },
+      "visionGroup": "player",
+      "name": null,
+      "transfer": null
+    },
+    {
+      "id": "enemy",
+      "phase": "ai",
+      "controller": {
+        "kind": "ai",
+        "policy": null
+      },
+      "palette": "enemy",
+      "gold": 24,
+      "recruits": [
+        {
+          "unit": "skeleton",
+          "cost": null
+        },
+        {
+          "unit": "skeleton-impact-caster",
+          "cost": null
+        },
+        {
+          "unit": "skeleton-rider",
+          "cost": null
+        },
+        {
+          "unit": "bonearcher",
+          "cost": null
+        },
+        {
+          "unit": "skeleton-axeman",
+          "cost": null
+        },
+        {
+          "unit": "ghost",
+          "cost": null
+        }
+      ],
+      "units": [
+        {
+          "type": "necromancer",
+          "role": "leader",
+          "tile": {
+            "col": 4,
+            "row": 26
+          },
+          "id": "u5",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": "enemy-leader",
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "skeleton",
+          "role": null,
+          "tile": {
+            "col": 3,
+            "row": 25
+          },
+          "id": "u6",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "skeleton-impact-caster",
+          "role": null,
+          "tile": {
+            "col": 3,
+            "row": 26
+          },
+          "id": "u7",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "skeleton-rider",
+          "role": null,
+          "tile": {
+            "col": 3,
+            "row": 27
+          },
+          "id": "u8",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        }
+      ],
+      "relations": {
+        "player": "hostile",
+        "enemy": "allied"
+      },
+      "visionGroup": "enemy",
+      "name": null,
+      "transfer": null
+    }
+  ],
+  "arrivals": [],
+  "round": 1,
+  "turn": "player",
+  "log": ["Hold the forest outpost for four turns."],
+  "combatRng": 1831565813
+}

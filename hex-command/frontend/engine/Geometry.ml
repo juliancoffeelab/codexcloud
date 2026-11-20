@@ -66,6 +66,7 @@ let preview_color = function
   | matched_text_14 when matched_text_14 = {js|forest|js} -> {js|#536e3d|js}
   | matched_text_15 when matched_text_15 = {js|hill|js} -> {js|#85866c|js}
   | matched_text_16 when matched_text_16 = {js|water|js} -> {js|#407899|js}
+  | kind when kind = {js|shallow-water|js} -> {js|#44ada8|js}
   | matched_text_17 when matched_text_17 = {js|bridge|js} -> {js|#b3ab8d|js}
   | matched_text_18 when matched_text_18 = {js|ford|js} -> {js|#78a4a6|js}
   | matched_text_19 when matched_text_19 = {js|village|js} -> {js|#d4b476|js}

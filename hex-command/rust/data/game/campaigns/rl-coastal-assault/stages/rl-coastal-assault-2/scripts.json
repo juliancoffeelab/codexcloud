@@ -1,0 +1,216 @@
+{
+  "requiredCompanions": ["harbor-pilot"],
+  "events": [
+    {
+      "id": "harbor-secured",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 4,
+              "row": 11
+            }
+          },
+          "faction": "player",
+          "turns": 10,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "harbor-secured"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "label": "Hold the harbor approach for ten turns",
+        "intent": {
+          "own": {
+            "tile": {
+              "hex": {
+                "col": 4,
+                "row": 11
+              }
+            },
+            "faction": "player",
+            "turns": 10,
+            "when": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "id": null,
+        "optional": false,
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "flag": "harbor-secured"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "intercept",
+      "when": {
+        "noUnits": {
+          "character": "harbor-pilot",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The harbor pilot was killed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": {
+        "faction": "enemy",
+        "label": "Intercept the harbor pilot",
+        "intent": {
+          "defeat": {
+            "character": "harbor-pilot",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "id": null,
+        "optional": false,
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "mission-complete",
+      "when": {
+        "all": [
+          {
+            "flag": "harbor-secured"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 5,
+                  "row": 12
+                }
+              },
+              "through": true,
+              "character": "harbor-pilot",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "label": "Escort the pilot to the landing",
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 5,
+                "row": 12
+              }
+            },
+            "through": true,
+            "character": "harbor-pilot",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "flag": "harbor-secured"
+        },
+        "id": null,
+        "optional": false,
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "commander-lost",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turn": 50
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

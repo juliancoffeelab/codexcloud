@@ -134,6 +134,7 @@ let terrain_portrait artwork terrain =
     | matched_text_19 when matched_text_19 = {js|hill|js} ->
         ({js|hill_layout_0|js}, {js|green-plain|js})
     | matched_text_20 when matched_text_20 = {js|water|js} -> ({js|water|js}, {js|dark-water|js})
+    | kind when kind = {js|shallow-water|js} -> ({js|shallow-water|js}, {js|shallow-water|js})
     | matched_text_21 when matched_text_21 = {js|bridge|js} -> ({js|bridge_9|js}, {js|dark-water|js})
     | matched_text_22 when matched_text_22 = {js|ford|js} ->
         ({js|ford_9_layout_0|js}, {js|shallow-water|js})

@@ -100,6 +100,7 @@ let string_of_terrain (value : Terrain.t) =
   | Terrain.Forest -> {js|forest|js}
   | Terrain.Hill -> {js|hill|js}
   | Terrain.Water -> {js|water|js}
+  | Terrain.Shallow_water -> {js|shallow-water|js}
   | Terrain.Village -> {js|village|js}
   | Terrain.Keep -> {js|keep|js}
   | Terrain.Grove -> {js|grove|js}

@@ -57,9 +57,9 @@
     {
       "col": 6,
       "row": 0,
-      "terrain": "plains",
+      "terrain": "shallow-water",
       "owner": null,
-      "floor": "green-plain",
+      "floor": "shallow-water",
       "environmentEffects": []
     },
     {

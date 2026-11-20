@@ -59,8 +59,8 @@ existing map ID for an experiment does not replace that map on disk.
   Supply their mechanical fields even for a terrain-only preview; the tool does
   not fabricate a roster, sight rules or lighting.
 - `--scenario`: the normal scenario document, including `map`, `roster`,
-  `characters` and `tags`. Its relative map/roster references must resolve to the
-  files passed by the corresponding CLI flags.
+  `fixedArmies`, `characters` and `tags`. Its relative map/roster references must
+  resolve to the files passed by the corresponding CLI flags.
 
 For current format examples, inspect the independent
 [map](../../../rust/data/game/scenario/mirror-v1/map.json),
@@ -69,6 +69,58 @@ For current format examples, inspect the independent
 Author a draft rather than changing those examples. Unsupported or incomplete
 mechanical data fails through the normal Rust setup path; no parallel draft
 rules engine or historical input adapter is involved.
+
+## Generate a campaign landscape
+
+Use a current-format template of at least 24 columns by 20 rows. A rectangle of
+plain tiles is a useful starting point. Choose the profile, a decimal seed
+between `0` and `4294967295`, and optionally the route intent and facing.
+
+```sh
+node scripts/render-map.mjs \
+  --map tmp/draft/map.json \
+  --roster tmp/draft/roster.json \
+  --scenario tmp/draft/scenario.json \
+  --generate 315 --profile river-crossing --intent evacuation --facing west \
+  --reveal-terrain --output tmp/draft/evacuation.png \
+  --write-map tmp/draft/evacuation.json
+```
+
+| Profile          | Supported intents, default first       | Planned geography                                                                        |
+| ---------------- | -------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `coast`          | `exploration`, `siege`                 | Open sea around islands, mainland port roads, and offshore landmarks or a citadel        |
+| `island-city`    | `siege`, `transit`                     | Fortified river island with bridges to both banks. Siege adds an alternate approach      |
+| `river-crossing` | `transit`, `evacuation`, `defense`     | Broad ford, single edgeward bridge, or a bridge and ford with a guard post               |
+| `floodplain`     | `exploration`, `transit`, `evacuation` | River-fed wetlands and tributaries around planned crossings                              |
+| `woodland`       | `defense`, `siege`, `exploration`      | Forest clearings, watch posts, and courtyard approaches. Exploration adds a shrine trail |
+| `ridge-pass`     | `transit`, `evacuation`, `exploration` | Narrow pass through a continuous ridge. Exploration adds a second pass                   |
+| `badlands`       | `transit`, `evacuation`, `exploration` | Staggered oases and trails across dry country, with an optional side route               |
+| `caverns`        | `exploration`, `transit`, `siege`      | Connected chambers, a side chamber before the gate, and a deep objective or fortress     |
+| `cave-frontier`  | `transit`, `exploration`               | Cave mouth opening onto dry country and a route to the far edge                          |
+| `rift-caverns`   | `exploration`, `transit`               | Underground river with branching rifts and a required bridge                             |
+
+Facing defaults to `east`. Facing `west` changes the direction of travel or the
+side of the main terrain feature. Seed and dimensions vary landmark locations,
+route geometry, and terrain. Each profile checks its structural constraints on
+the template before the renderer attempts to export. Missing cells and authored
+features remain in place. The planner preserves occupied tiles, named or owned
+tiles, connection and wall metadata, environmental effects, distinct floor
+palettes, and special terrain such as existing roads and villages. A template
+that interrupts a required route, waterway, or courtyard can produce an error.
+Try a larger clear footprint or a different seed or facing.
+
+`--write-map` creates an editable authored map and requires one-shot mode. Use
+a new output path. Update the standalone scenario's relative `map` reference
+when reopening that file as the input to `--map`. Generated sites have
+`draft-…` tile IDs that can serve as location references during authoring.
+`--reveal-terrain` shows the whole landscape in the PNG, including with empty
+armies. It leaves the map's perception rules and actor visibility intact.
+
+The planner uses existing terrain, movement roles, and artwork. Badlands use
+dry palettes with existing ground terrain. Underground rifts use water. Gates,
+keys, forts, ports, and sites provide geography and landmark IDs for encounter
+scripts. Locking gates, ferry transport, authored fog, lighting, objectives, and
+unit placement are separate authoring steps.
 
 ## Local definitions and illustrations
 

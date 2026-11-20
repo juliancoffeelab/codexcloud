@@ -1,0 +1,42 @@
+{
+  "tags": ["simulation"],
+  "id": "rl-underground-escape",
+  "name": "Underground Escape",
+  "tagline": "Underground Escape",
+  "description": "Underground Escape simulation fixtures.",
+  "shortDescription": "Training only.",
+  "race": "human",
+  "leader": "commander",
+  "characters": [
+    {
+      "id": "player-leader",
+      "name": "player-leader"
+    },
+    {
+      "id": "enemy-leader",
+      "name": "enemy-leader"
+    },
+    {
+      "id": "charge",
+      "name": "charge"
+    }
+  ],
+  "ending": [],
+  "stages": [
+    "stages/rl-underground-escape-1/stage.json",
+    "stages/rl-underground-escape-2/stage.json",
+    "stages/rl-underground-escape-3/stage.json"
+  ],
+  "carryover": {
+    "goldLimit": 8,
+    "veteranLimit": 4,
+    "deploymentRadius": 3,
+    "weights": {
+      "hp": 1,
+      "damage": 2,
+      "healing": 5,
+      "level": 3,
+      "experience": 0.3333333333333333
+    }
+  }
+}

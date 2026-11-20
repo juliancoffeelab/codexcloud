@@ -122,6 +122,25 @@
       "pierce": 0,
       "impact": 0
     },
+    "name": "Ford",
+    "cost": 2,
+    "passable": true,
+    "description": "Costs 3 movement for soldiers and commanders, 2 for archers and scouts. Units here take 1 extra damage.",
+    "role": "ford",
+    "capturable": false,
+    "blocksShots": false,
+    "income": 0,
+    "environmentEffects": []
+  },
+  {
+    "id": "shallow-water",
+    "damageModifiers": {
+      "melee": 1,
+      "ranged": 1,
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
     "name": "Shallow water",
     "cost": 2,
     "passable": true,

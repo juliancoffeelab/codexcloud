@@ -231,7 +231,7 @@ fn routes_spend_the_whole_allowance_and_stop_at_blockers() {
 
 #[test]
 fn adjacency_matches_hex_distance_including_edges() {
-    for (map, revision) in [("mirror", 1), ("river-valley", 2)] {
+    for (map, revision) in [("mirror", 1), ("river-valley", 3)] {
         let game = LiveBattle::from_map(rules(), rules().map(map, revision));
         for first in 0..game.board.ids.len() {
             let expected: Vec<_> = (0..game.board.ids.len())

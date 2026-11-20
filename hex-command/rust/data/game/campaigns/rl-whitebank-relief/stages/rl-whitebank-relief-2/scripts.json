@@ -1,0 +1,97 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "mission-complete",
+      "observer": null,
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 17,
+              "row": 9
+            }
+          },
+          "faction": "player",
+          "turns": 10,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ],
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "label": "Hold the north-pass village for ten turns",
+        "intent": {
+          "own": {
+            "tile": {
+              "hex": {
+                "col": 17,
+                "row": 9
+              }
+            },
+            "faction": "player",
+            "turns": 10,
+            "when": null
+          }
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "playerMarker": null,
+        "preserveLives": null
+      }
+    },
+    {
+      "id": "commander-lost",
+      "observer": null,
+      "when": {
+        "noUnits": {
+          "faction": "player",
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "deadline",
+      "observer": null,
+      "when": {
+        "turn": 44
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ],
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

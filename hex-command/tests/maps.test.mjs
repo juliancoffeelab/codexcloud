@@ -9,12 +9,13 @@ import { pixelSprites } from "@assets/pixel-art";
 const { Game, TYPES, developerFixture } = await import("./game-fixture.mjs");
 const { Native, Catalog, catalog, restoreBattle } = await import("./native-fixture.mjs");
 test("Catalog retains the latest scenario revisions and non-human metadata", () => {
-  const history = Catalog.raw(catalog).maps.filter((map) => map.id === "river-valley");
-  assert(history.length > 1);
-  const latest = history.reduce((a, b) => (a.revision > b.revision ? a : b));
-  assert.deepEqual(Catalog.map(catalog, "river-valley"), latest);
+  const source = Catalog.raw(catalog);
+  const latest = Catalog.map(catalog, "river-valley");
+  const older = { ...latest, revision: 1, state: { ...latest.state, mapRevision: 1 } };
+  const projected = Catalog.of_view({ ...source, maps: [...source.maps, older] });
+  assert.deepEqual(Catalog.map(projected, latest.id), latest);
   assert.deepEqual(
-    Catalog.scenario_maps(catalog).filter((map) => map.id === latest.id),
+    Catalog.scenario_maps(projected).filter((map) => map.id === latest.id),
     [latest],
   );
   assert(Catalog.scenario_maps(catalog).some((map) => !map.tags.includes("human")));

@@ -1,7 +1,7 @@
 {
   "arenas": [
     {
-      "id": "rl-meadow",
+      "id": "rl-twin-fords",
       "pairs": [
         {
           "player": "human",
@@ -54,7 +54,7 @@
       ]
     },
     {
-      "id": "rl-woodland",
+      "id": "rl-splitpine-clearing",
       "pairs": [
         {
           "player": "human",
@@ -107,7 +107,7 @@
       ]
     },
     {
-      "id": "rl-ridge",
+      "id": "rl-crown-gap",
       "pairs": [
         {
           "player": "human",
@@ -160,7 +160,7 @@
       ]
     },
     {
-      "id": "rl-wetland",
+      "id": "rl-jawbone-crossing",
       "pairs": [
         {
           "player": "human",
@@ -213,7 +213,7 @@
       ]
     },
     {
-      "id": "rl-river",
+      "id": "rl-sump-teeth",
       "pairs": [
         {
           "player": "human",
@@ -266,7 +266,7 @@
       ]
     },
     {
-      "id": "rl-islands",
+      "id": "rl-last-lantern",
       "pairs": [
         {
           "player": "human",
@@ -319,7 +319,7 @@
       ]
     },
     {
-      "id": "rl-cavern",
+      "id": "rl-switchback-saltworks",
       "pairs": [
         {
           "player": "human",
@@ -372,7 +372,7 @@
       ]
     },
     {
-      "id": "rl-ruins",
+      "id": "rl-cinderfault",
       "pairs": [
         {
           "player": "human",
@@ -425,7 +425,7 @@
       ]
     },
     {
-      "id": "rl-broadfield",
+      "id": "rl-sable-sound",
       "pairs": [
         {
           "player": "human",
@@ -478,7 +478,7 @@
       ]
     },
     {
-      "id": "rl-floodplain",
+      "id": "rl-three-wells-trail",
       "pairs": [
         {
           "player": "human",
@@ -531,26 +531,52 @@
       ]
     },
     {
-      "id": "rl-dark-rooms",
+      "id": "rl-frosthook-gate",
       "pairs": [
         {
           "player": "human",
           "enemy": "skeletons"
-        }
-      ]
-    },
-    {
-      "id": "rl-twilight-ridge",
-      "pairs": [
+        },
         {
           "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
           "enemy": "skeletons"
-        }
-      ]
-    },
-    {
-      "id": "rl-mist-wetland",
-      "pairs": [
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
         {
           "player": "coastal",
           "enemy": "woodland"
@@ -558,126 +584,198 @@
       ]
     },
     {
-      "id": "rl-lantern-forest",
+      "id": "rl-birch-pocket",
       "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
         {
           "player": "woodland",
           "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ]
+    },
+    {
+      "id": "rl-quarry-ring",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ]
+    },
+    {
+      "id": "rl-fordstep",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
         }
       ]
     }
   ],
   "campaigns": {
-    "rl-escort": [
+    "rl-woodland-defense": [
       {
         "objective": "authored",
         "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-courier": [
+      },
       {
-        "objective": "authored",
+        "objective": "fog",
         "diplomacy": "unrestricted"
       }
     ],
-    "rl-protect": [
+    "rl-splitwake-crossing": [
       {
         "objective": "authored",
         "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-reach": [
+      },
       {
-        "objective": "authored",
+        "objective": "fog",
         "diplomacy": "unrestricted"
       }
     ],
-    "rl-hold": [
+    "rl-underground-escape": [
       {
         "objective": "authored",
         "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-capture": [
+      },
       {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-survive": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-reinforcements": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-fog": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-relay": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-company-human": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-company-skeletons": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-company-woodland": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-company-coastal": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-dark-escort": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-forest-evacuation": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-twilight-hold": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
-      }
-    ],
-    "rl-mist-reach": [
-      {
-        "objective": "authored",
+        "objective": "fog",
         "diplomacy": "unrestricted"
       }
     ]
   },
-  "opponents": ["classic", "predictor"],
+  "opponents": ["classic", "predictor", "full"],
   "recruiters": ["situational", "predictor"],
   "objectives": ["deathmatch", "territory"]
 }
