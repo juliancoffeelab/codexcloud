@@ -9,6 +9,14 @@ from pathlib import Path
 from .representative import prepare_catalog
 from .recovery import atomic_json
 
+FULL_OPPONENT_BLOCKS = dict(recruiter="predictor", campaign="mission", planner="full")
+
+
+def opponent_config(name):
+    if name == "full":
+        return dict(enemy="predictor", enemyBlocks=FULL_OPPONENT_BLOCKS)
+    return dict(enemy=name)
+
 
 @lru_cache(maxsize=8)
 def _definition(catalog):
@@ -23,10 +31,15 @@ def definition():
 
 def group(c):
     rec = c.get("playerBlocks", {}).get("recruiter", c["player"])
+    enemy = (
+        "full"
+        if c["enemy"] == "predictor" and c.get("enemyBlocks") == FULL_OPPONENT_BLOCKS
+        else c["enemy"]
+    )
     return (
-        ("campaign", c["campaign"], c["objective"], c["diplomacy"], c["enemy"], rec)
+        ("campaign", c["campaign"], c["objective"], c["diplomacy"], enemy, rec)
         if "campaign" in c
-        else ("arena", c["landscape"], c["objective"], c["enemy"], rec)
+        else ("arena", c["landscape"], c["objective"], enemy, rec)
     )
 
 
@@ -56,6 +69,7 @@ def configs(split, spec=None, campaign_seeds=None):
     arena_start = {"train": 1000001, "validation": 3000001, "test": 5000001}[split]
     campaign_start = {"train": 2000001, "validation": 4000001, "test": 6000001}[split]
     spec = definition() if spec is None else spec
+    opponents = [opponent_config(name) for name in spec["opponents"]]
     max_pairs = max(len(a["pairs"]) for a in spec["arenas"])
     for arena in spec["arenas"]:
         name = arena["id"]
@@ -63,7 +77,7 @@ def configs(split, spec=None, campaign_seeds=None):
         multiplier = max_pairs // len(pairs)
         n = {"train": 8, "validation": 1, "test": 3}[split] * multiplier
         for objective in spec["objectives"]:
-            for enemy in spec["opponents"]:
+            for opponent in opponents:
                 for recruiter in spec["recruiters"]:
                     for seed in range(arena_start, arena_start + n):
                         for player, foe in pairs:
@@ -74,7 +88,7 @@ def configs(split, spec=None, campaign_seeds=None):
                                         armies=dict(player=player, enemy=foe),
                                         landscape=name,
                                         player="balanced",
-                                        enemy=enemy,
+                                        **opponent,
                                         playerBlocks=dict(
                                             recruiter=recruiter,
                                             campaign="mission",
@@ -90,7 +104,7 @@ def configs(split, spec=None, campaign_seeds=None):
         n = campaign_seeds or {"train": 24, "validation": 4, "test": 25}[split]
         for variant in variants:
             objective, diplomacy = variant["objective"], variant["diplomacy"]
-            for enemy in spec["opponents"]:
+            for opponent in opponents:
                 for recruiter in spec["recruiters"]:
                     for seed in range(campaign_start, campaign_start + n):
                         result.append(
@@ -100,7 +114,7 @@ def configs(split, spec=None, campaign_seeds=None):
                                 diplomacy=diplomacy,
                                 objective=objective,
                                 player="balanced",
-                                enemy=enemy,
+                                **opponent,
                                 playerBlocks=dict(
                                     recruiter=recruiter,
                                     campaign="mission",

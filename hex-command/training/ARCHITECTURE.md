@@ -278,7 +278,8 @@ Prepare a new workload with:
 
 Run `mixed_evaluate --root tmp/rl/new-run --phase rl` in a second process during
 training. Training uses the fixtures in `simulation/rl.json` with equal
-arena and campaign decision budgets and both Classic and Predictor opponents.
+arena and campaign decision budgets. Each task splits opponent coverage
+between Classic, Predictor, and Full with the Predictor recruiter.
 Checkpoint selection uses separate synthetic arenas and the Coastal Assault
 and Whitebank Relief campaigns. The authored showcase evaluates Lantern Road
 and the River Valley, Toll Road, and A Tide for Both battlefields after

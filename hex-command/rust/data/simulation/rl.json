@@ -606,7 +606,7 @@
       }
     ]
   },
-  "opponents": ["classic", "predictor"],
+  "opponents": ["classic", "predictor", "full"],
   "recruiters": ["situational", "predictor"],
   "objectives": ["deathmatch", "territory"]
 }

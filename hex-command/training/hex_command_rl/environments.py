@@ -624,7 +624,7 @@ def main():
         dict(
             arenas=arenas,
             campaigns=campaigns,
-            opponents=["classic", "predictor"],
+            opponents=existing["opponents"],
             recruiters=["situational", "predictor"],
             objectives=["deathmatch", "territory"],
         ),
