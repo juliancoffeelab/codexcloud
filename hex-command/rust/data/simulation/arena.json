@@ -1129,6 +1129,102 @@
         }
       ],
       "holdTurns": 3
+    },
+    {
+      "id": "rl-birch-pocket",
+      "variants": [
+        {
+          "map": "rl-birch-pocket",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 18
+          }
+        },
+        {
+          "map": "rl-birch-pocket-sight",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 18
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 4,
+          "row": 4
+        },
+        {
+          "col": 5,
+          "row": 5
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-quarry-ring",
+      "variants": [
+        {
+          "map": "rl-quarry-ring",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 18
+          }
+        },
+        {
+          "map": "rl-quarry-ring-sight",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 18
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 4,
+          "row": 3
+        },
+        {
+          "col": 6,
+          "row": 4
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-fordstep",
+      "variants": [
+        {
+          "map": "rl-fordstep",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 18
+          }
+        },
+        {
+          "map": "rl-fordstep-fog",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 18
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 3,
+          "row": 3
+        },
+        {
+          "col": 6,
+          "row": 6
+        }
+      ],
+      "holdTurns": 3
     }
   ],
   "defaultScenarios": ["open", "wooded", "crossings", "islands", "wood-edge"],

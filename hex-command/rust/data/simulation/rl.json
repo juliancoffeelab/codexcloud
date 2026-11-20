@@ -582,6 +582,165 @@
           "enemy": "woodland"
         }
       ]
+    },
+    {
+      "id": "rl-birch-pocket",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ]
+    },
+    {
+      "id": "rl-quarry-ring",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ]
+    },
+    {
+      "id": "rl-fordstep",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ]
     }
   ],
   "campaigns": {

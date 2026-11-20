@@ -200,7 +200,13 @@
     "game/scenario/rl-cinderfault-fog/scenario.json",
     "game/scenario/rl-sable-sound-sight/scenario.json",
     "game/scenario/rl-three-wells-trail-sight/scenario.json",
-    "game/scenario/rl-frosthook-gate-sight/scenario.json"
+    "game/scenario/rl-frosthook-gate-sight/scenario.json",
+    "game/scenario/rl-birch-pocket/scenario.json",
+    "game/scenario/rl-birch-pocket/scenario-sight.json",
+    "game/scenario/rl-quarry-ring/scenario.json",
+    "game/scenario/rl-quarry-ring/scenario-sight.json",
+    "game/scenario/rl-fordstep/scenario.json",
+    "game/scenario/rl-fordstep/scenario-fog.json"
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",
