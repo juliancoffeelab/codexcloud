@@ -310,6 +310,7 @@ let generate_map seed ~profile ~intent ~facing map roster =
         | "forest" -> Some "green-forest"
         | "mountain" -> Some "mountain-rock"
         | "water" -> Some "dark-water"
+        | "shallow-water" -> Some "shallow-water"
         | "marsh" -> Some "marsh"
         | _ -> None
       in

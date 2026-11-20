@@ -44,7 +44,7 @@ let hill = ("hill", "green-plain")
 let mountain = ("mountain", "mountain-rock")
 let marsh = ("marsh", "marsh")
 let water = ("water", "dark-water")
-let shallows = ("water", "shallow-water")
+let shallows = ("shallow-water", "shallow-water")
 let road = ("road", "green-plain")
 let fort = ("fort", "green-plain")
 let ruins = ("ruins", "green-plain")
@@ -83,7 +83,9 @@ let walkable t point =
   | Some _ -> true
 
 let wet t point =
-  match terrain t point with Some ("water" | "bridge" | "ford") -> true | _ -> false
+  match terrain t point with
+  | Some ("water" | "shallow-water" | "bridge" | "ford") -> true
+  | _ -> false
 
 let change t point update =
   match Hashtbl.find_opt t.cells point with

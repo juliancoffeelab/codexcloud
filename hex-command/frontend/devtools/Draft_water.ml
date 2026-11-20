@@ -25,20 +25,37 @@ let contiguous_water t ~feature ~starts ~required ~candidate =
       !valid)
 
 let soften_shores t =
-  let shores = ref [] in
+  let walkable_bank point =
+    match terrain t point with Some ("ford" | "bridge") -> false | _ -> walkable t point
+  in
+  let banks = Hashtbl.create 64 in
   iter t (fun point ->
-      if
-        terrain t point = Some (fst water)
-        && List.exists
-             (fun (_, neighbor) -> walkable t neighbor && not (wet t neighbor))
-             (adjacent point)
-      then shores := point :: !shores);
-  List.iter (fun point -> paint t point shallows) !shores
+      if walkable_bank point && not (Hashtbl.mem banks point) then
+        connected [ point ] ~allowed:walkable_bank
+        |> Hashtbl.iter (fun neighbor () -> Hashtbl.add banks neighbor point));
+  let shores = Hashtbl.create 64 in
+  iter t (fun point ->
+      if editable t point && terrain t point = Some (fst water) then
+        let neighbors = List.filter_map (fun (_, p) -> Hashtbl.find_opt banks p) (adjacent point) in
+        if neighbors <> [] then Hashtbl.add shores point neighbors);
+  (* Keep a deep channel wherever shallows would join separate banks. *)
+  Hashtbl.iter
+    (fun point -> function
+      | bank :: others ->
+          let same_bank = List.for_all (( = ) bank) in
+          if
+            same_bank others
+            && List.for_all
+                 (fun (_, p) -> Option.fold ~none:true ~some:same_bank (Hashtbl.find_opt shores p))
+                 (adjacent point)
+          then paint t point shallows
+      | [] -> ())
+    shores
 
 let refine_shores t ~bank ~shelf =
   let classify p =
     match Draft_boundary.surface t p with
-    | Some "water" -> Some true
+    | Some ("water" | "shallow-water") -> Some true
     | Some kind when bank kind -> Some false
     | _ -> None
   in

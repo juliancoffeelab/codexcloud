@@ -53,7 +53,8 @@ let is_channel channel ~col ~row =
   | Water | Crossing _ -> true
   | Approach _ | Bank | Island | Land -> false
 
-let waterway_terrain terrain = List.mem terrain [ {js|water|js}; {js|ford|js}; {js|bridge|js} ]
+let waterway_terrain terrain =
+  List.mem terrain [ {js|water|js}; {js|shallow-water|js}; {js|ford|js}; {js|bridge|js} ]
 
 let floodplain ~channel ~fields ~tiles ~editable ~lowland =
   let marshes = Hashtbl.create 64 in
