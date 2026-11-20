@@ -989,6 +989,106 @@
         }
       ],
       "holdTurns": 3
+    },
+    {
+      "id": "rl-switchback-saltworks",
+      "variants": [
+        {
+          "map": "switchback-saltworks",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 19,
+          "row": 19
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-cinderfault",
+      "variants": [
+        {
+          "map": "cinderfault",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 19,
+          "row": 21
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-sable-sound",
+      "variants": [
+        {
+          "map": "sable-sound",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 19,
+          "row": 18
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-three-wells-trail",
+      "variants": [
+        {
+          "map": "three-wells-trail",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 5,
+          "row": 31
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-frosthook-gate",
+      "variants": [
+        {
+          "map": "frosthook-gate",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 22,
+          "row": 20
+        }
+      ],
+      "holdTurns": 3
     }
   ],
   "defaultScenarios": ["open", "wooded", "crossings", "islands", "wood-edge"],
