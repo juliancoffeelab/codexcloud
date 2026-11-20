@@ -183,7 +183,19 @@
     "game/scenario/hart-saddle/scenario.json",
     "game/scenario/siltbar-bend/scenario.json",
     "game/scenario/ochre-wells/scenario.json",
-    "game/scenario/alder-fen/scenario.json"
+    "game/scenario/alder-fen/scenario.json",
+    "game/scenario/rl-twin-fords/scenario.json",
+    "game/scenario/rl-twin-fords/scenario-fog.json",
+    "game/scenario/rl-splitpine-clearing/scenario.json",
+    "game/scenario/rl-splitpine-clearing/scenario-fog.json",
+    "game/scenario/rl-crown-gap/scenario.json",
+    "game/scenario/rl-crown-gap/scenario-fog.json",
+    "game/scenario/rl-jawbone-crossing/scenario.json",
+    "game/scenario/rl-jawbone-crossing/scenario-fog.json",
+    "game/scenario/rl-sump-teeth/scenario.json",
+    "game/scenario/rl-sump-teeth/scenario-fog.json",
+    "game/scenario/rl-last-lantern/scenario.json",
+    "game/scenario/rl-last-lantern/scenario-sight.json"
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",
@@ -210,7 +222,10 @@
     "game/campaigns/rl-dark-escort/campaign.json",
     "game/campaigns/rl-forest-evacuation/campaign.json",
     "game/campaigns/rl-twilight-hold/campaign.json",
-    "game/campaigns/rl-mist-reach/campaign.json"
+    "game/campaigns/rl-mist-reach/campaign.json",
+    "game/campaigns/rl-woodland-defense/campaign.json",
+    "game/campaigns/rl-underground-escape/campaign.json",
+    "game/campaigns/rl-coastal-assault/campaign.json"
   ],
   "simulation": {
     "rosters": "simulation/rosters.json",

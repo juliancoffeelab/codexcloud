@@ -1,0 +1,157 @@
+{
+  "requiredCompanions": ["charge"],
+  "events": [
+    {
+      "id": "intercept",
+      "when": {
+        "noUnits": {
+          "character": "charge",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The escort was intercepted."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": {
+        "faction": "enemy",
+        "label": "Intercept the escort",
+        "intent": {
+          "defeat": {
+            "character": "charge",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "id": null,
+        "optional": false,
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "mission-complete",
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 38,
+              "row": 23
+            }
+          },
+          "through": true,
+          "character": "charge",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "label": "Escort the charge out of the caves and across the badlands",
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 38,
+                "row": 23
+              }
+            },
+            "through": true,
+            "character": "charge",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "id": null,
+        "optional": false,
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "commander-lost",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turn": 50
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

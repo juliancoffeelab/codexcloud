@@ -797,6 +797,198 @@
         }
       ],
       "holdTurns": 3
+    },
+    {
+      "id": "rl-twin-fords",
+      "variants": [
+        {
+          "map": "rl-twin-fords",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        },
+        {
+          "map": "rl-twin-fords-fog",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 6,
+          "row": 6
+        },
+        {
+          "col": 11,
+          "row": 7
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-splitpine-clearing",
+      "variants": [
+        {
+          "map": "rl-splitpine-clearing",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        },
+        {
+          "map": "rl-splitpine-clearing-fog",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 7,
+          "row": 6
+        },
+        {
+          "col": 10,
+          "row": 7
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-crown-gap",
+      "variants": [
+        {
+          "map": "rl-crown-gap",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        },
+        {
+          "map": "rl-crown-gap-fog",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 7,
+          "row": 4
+        },
+        {
+          "col": 12,
+          "row": 11
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-jawbone-crossing",
+      "variants": [
+        {
+          "map": "rl-jawbone-crossing",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        },
+        {
+          "map": "rl-jawbone-crossing-fog",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 8,
+          "row": 7
+        },
+        {
+          "col": 15,
+          "row": 8
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-sump-teeth",
+      "variants": [
+        {
+          "map": "rl-sump-teeth",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        },
+        {
+          "map": "rl-sump-teeth-fog",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 15,
+          "row": 8
+        },
+        {
+          "col": 8,
+          "row": 9
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-last-lantern",
+      "variants": [
+        {
+          "map": "rl-last-lantern",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        },
+        {
+          "map": "rl-last-lantern-sight",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 9,
+          "row": 7
+        },
+        {
+          "col": 14,
+          "row": 10
+        }
+      ],
+      "holdTurns": 3
     }
   ],
   "defaultScenarios": ["open", "wooded", "crossings", "islands", "wood-edge"],

@@ -1,0 +1,38 @@
+{
+  "tags": ["simulation"],
+  "id": "rl-coastal-assault",
+  "name": "Coastal Assault",
+  "tagline": "Coastal Assault",
+  "description": "Coastal Assault simulation fixtures.",
+  "shortDescription": "Training only.",
+  "race": "merfolk",
+  "leader": "tidekeeper",
+  "characters": [
+    {
+      "id": "player-leader",
+      "name": "player-leader"
+    },
+    {
+      "id": "enemy-leader",
+      "name": "enemy-leader"
+    }
+  ],
+  "ending": [],
+  "stages": [
+    "stages/rl-coastal-assault-1/stage.json",
+    "stages/rl-coastal-assault-2/stage.json",
+    "stages/rl-coastal-assault-3/stage.json"
+  ],
+  "carryover": {
+    "goldLimit": 8,
+    "veteranLimit": 4,
+    "deploymentRadius": 3,
+    "weights": {
+      "hp": 1,
+      "damage": 2,
+      "healing": 5,
+      "level": 3,
+      "experience": 0.3333333333333333
+    }
+  }
+}

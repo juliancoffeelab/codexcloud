@@ -58,6 +58,20 @@ def prepare(root):
         recruiters=training["recruiters"],
         objectives=training["objectives"],
     )
+    # Reserve the entire coastal layout and chapter sequence for the final test.
+    coastal = "rl-coastal-assault"
+    if coastal in training["campaigns"]:
+        raise ValueError("the coastal campaign is reserved for final evaluation")
+    test_panel = {
+        **held_out,
+        "campaigns": {
+            **held_out["campaigns"],
+            coastal: [
+                dict(objective=o, diplomacy="unrestricted")
+                for o in ("authored", "fog")
+            ],
+        },
+    }
     # Campaigns are a small number of correlated routes; use more independent
     # combat seeds before choosing between apparent gains on the tiny panel.
     validation = configs("validation", held_out, campaign_seeds=12)
@@ -83,8 +97,8 @@ def prepare(root):
         train=configs("train", training),
         periodic=periodic,
         validation=validation,
-        test=configs("test", held_out),
-        balance="50% arena / 50% campaign decisions; equal tasks then variants; rl_ only; existing content held out",
+        test=configs("test", test_panel),
+        balance="50% arena / 50% campaign decisions; equal tasks then variants; coastal campaign final test only",
     )
     spec["workload_sha256"] = hashlib.sha256(
         json.dumps(
