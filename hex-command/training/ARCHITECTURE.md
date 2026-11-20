@@ -277,10 +277,13 @@ Prepare a new workload with:
 ```
 
 Run `mixed_evaluate --root tmp/rl/new-run --phase rl` in a second process during
-training. Training uses only the new fixtures, evenly splitting arena/campaign
-decision budgets, tasks and Classic/Predictor opponents. Existing arena maps and
-Lantern Road routes are held out; separate validation and test seeds prevent
-checkpoint selection on final test outcomes. The starting policy stays eligible.
+training. Training uses the fixtures in `simulation/rl.json` with equal
+arena and campaign decision budgets and both Classic and Predictor opponents.
+Checkpoint selection uses separate synthetic arenas and the Coastal Assault
+and Whitebank Relief campaigns. The authored showcase evaluates Lantern Road
+and the River Valley, Toll Road, and A Tide for Both battlefields after
+selection. The three panels use separate layouts and seeds. The starting
+policy stays eligible.
 PPO uses a 100-round harness cap per arena or campaign stage; authored defeat
 deadlines can end a stage earlier.
 The full panel uses twelve campaign seeds per route; the small periodic panel

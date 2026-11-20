@@ -1,4 +1,4 @@
-"""RL-only training with separate selection and final evaluation panels."""
+"""Select RL checkpoints on synthetic layouts and showcase on authored maps."""
 
 import argparse
 import hashlib
@@ -29,7 +29,13 @@ def prepare(root):
     cross_faction_pairs = [
         dict(player=p, enemy=races[(i + 1) % len(races)]) for i, p in enumerate(races)
     ]
-    held_out = dict(
+    evaluation = dict(
+        opponents=training["opponents"],
+        recruiters=training["recruiters"],
+        objectives=training["objectives"],
+    )
+    selection_panel = dict(
+        **evaluation,
         arenas=[
             dict(id=name, pairs=cross_faction_pairs)
             for name in (
@@ -38,10 +44,25 @@ def prepare(root):
                 "crossings",
                 "islands",
                 "wood-edge",
-                "river-valley",
+                "alder-fen",
+                "drowned-kilns",
+                "hart-saddle",
+                "herring-road",
+                "ochre-wells",
+                "siltbar-bend",
             )
-        ]
-        + [
+        ],
+        campaigns={
+            campaign: [
+                dict(objective=o, diplomacy="unrestricted") for o in ("authored", "fog")
+            ]
+            for campaign in ("rl-coastal-assault", "rl-whitebank-relief")
+        },
+    )
+    showcase_panel = dict(
+        **evaluation,
+        arenas=[
+            dict(id="river-valley", pairs=cross_faction_pairs),
             dict(id="villages", pairs=[dict(player="human", enemy="skeletons")]),
             dict(id="sluice", pairs=[dict(player="coastal", enemy="human")]),
         ],
@@ -51,52 +72,23 @@ def prepare(root):
                 for o in ("authored", "flight", "fight")
             ]
         },
-        opponents=training["opponents"],
-        recruiters=training["recruiters"],
-        objectives=training["objectives"],
     )
-    # Reserve novel maps and chapter sequences for the final test.
-    final_campaigns = ("rl-coastal-assault", "rl-whitebank-relief")
-    final_arenas = (
-        "alder-fen",
-        "drowned-kilns",
-        "hart-saddle",
-        "herring-road",
-        "ochre-wells",
-        "siltbar-bend",
-    )
-    if set(final_campaigns) & training["campaigns"].keys():
-        raise ValueError("final-test campaigns cannot be used for training")
     arena_catalog = json.loads((catalog / "simulation/arena.json").read_text())
     layouts = {
         arena["id"]: {variant["map"] for variant in arena["variants"]}
         for arena in arena_catalog["scenarios"]
     }
-    exposed_layouts = set().union(
-        *(layouts[arena["id"]] for arena in training["arenas"] + held_out["arenas"])
-    )
-    if exposed_layouts & set().union(*(layouts[name] for name in final_arenas)):
-        raise ValueError(
-            "final-test arenas cannot share layouts with training or validation"
-        )
-    test_panel = {
-        **held_out,
-        "arenas": held_out["arenas"]
-        + [dict(id=name, pairs=cross_faction_pairs) for name in final_arenas],
-        "campaigns": {
-            **held_out["campaigns"],
-            **{
-                campaign: [
-                    dict(objective=o, diplomacy="unrestricted")
-                    for o in ("authored", "fog")
-                ]
-                for campaign in final_campaigns
-            },
-        },
-    }
+    used_layouts, used_campaigns = set(), set()
+    for panel in (training, selection_panel, showcase_panel):
+        arena_layouts = set().union(*(layouts[a["id"]] for a in panel["arenas"]))
+        campaign_ids = panel["campaigns"].keys()
+        if arena_layouts & used_layouts or campaign_ids & used_campaigns:
+            raise ValueError("training, selection, and showcase must use distinct maps")
+        used_layouts.update(arena_layouts)
+        used_campaigns.update(campaign_ids)
     # Campaigns are a small number of correlated routes; use more independent
     # combat seeds before choosing between apparent gains on the tiny panel.
-    validation = configs("validation", held_out, campaign_seeds=12)
+    validation = configs("validation", selection_panel, campaign_seeds=12)
     periodic, seen = [], set()
     for c in validation:
         key = group(c)
@@ -105,7 +97,7 @@ def prepare(root):
             if "armies" in c:
                 names = [
                     p["player"]
-                    for a in held_out["arenas"]
+                    for a in selection_panel["arenas"]
                     if a["id"] == c["landscape"]
                     for p in a["pairs"]
                 ]
@@ -119,8 +111,8 @@ def prepare(root):
         train=configs("train", training),
         periodic=periodic,
         validation=validation,
-        test=configs("test", test_panel),
-        balance="50% arena / 50% campaign decisions; equal tasks then variants; novel arena and campaign layouts reserved for the final test",
+        test=configs("test", showcase_panel),
+        balance="50% arena / 50% campaign decisions; equal tasks then variants; synthetic selection and authored showcase",
     )
     spec["workload_sha256"] = hashlib.sha256(
         json.dumps(
