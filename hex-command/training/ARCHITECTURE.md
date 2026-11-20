@@ -248,24 +248,10 @@ selection metric; teacher agreement alone does not establish game strength.
 
 ## Diverse tactical continuation
 
-The `rl-` maps and campaigns are fixed, engine-owned JSON with `human: false`.
-They are absent from default simulation schedules. The offline authoring utility
-`python -m hex_command_rl.environments` reproduces them; no runtime terrain
-generator or frontend loader is involved. Arena layouts cover meadow, woodland,
-ridge, wetlands, river crossings, islands, caverns and ruins, from 9×7 to 21×13.
-The current cavern revision uses two cave-stone chambers, rock walls and two
-connecting routes, with explicit passage openings. It replaces revision one's
-repeated mine landmarks; the archived v2 experiment and selected checkpoint used
-that earlier layout and have not been retrained on the replacement. The survival
-fixture that shares this biome uses the corrected geometry too.
-All twelve ordered race pairings are available in training. Campaign fixtures
-exercise escort/courier movement, protected fighters, deadlines, holding,
-simultaneous ownership, survival, reinforcements, fog and stage progression.
-Four longer company campaigns chain opening a crossing, escorting, holding and
-fighting across two chapters, with optional supplies and persistent survivors.
-Mirrored hex layouts also teach movement in the other direction (their bounding
-box has one extra staggered column). Some campaigns omit authored deadlines so
-the harness-cap penalty can actually occur alongside scripted deadline defeats.
+The active RL maps and campaigns are fixed, engine-owned JSON registered in
+`rust/data/simulation/rl.json`. They include 14 arenas and the Underground Escape
+and Woodland Defense campaigns. The V3 training catalog and workload remain
+available in the [archived experiment](experiments/2026-11-15-visibility/experiment.json).
 
 Prepare a new workload with:
 
