@@ -50,3 +50,17 @@ is needed, explain why those repairs are sufficient.
 
 **Complete when:** every remaining cause is linked to an identified change and
 its expected effect, or completed repairs are explained as sufficient.
+
+## 4. Verify that the remedies prevent recurrence
+
+Define the class of failures from the causes in step 2. Walk through the original
+failure and a plausible variant as an agent starting a new conversation with
+zero knowledge of this one. Use only the environment, artifacts and instructions
+that would be available after the proposed remedies were implemented. Identify
+where the normal workflow would prevent each failure or catch it before it
+produced the wrong result. If either failure can still recur, return to step 3
+and revise the remedies.
+
+**Complete when:** the evidence shows that implementing the proposed remedies
+would eliminate the whole class of failures for an agent with zero knowledge of
+this conversation.
