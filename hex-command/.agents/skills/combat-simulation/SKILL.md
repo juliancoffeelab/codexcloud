@@ -25,6 +25,9 @@ faction roles. For coefficient tuning, read [recruitment](recruitment.md).
 1. Select the requested workload and a matching baseline when making a regression
    or improvement claim. Use [running](references/running.md) for schedules,
    custom tactics, catalog copies and saved-run analysis.
+   For fog or sight comparisons, inspect the run's map effects, route scripts
+   and faction sight settings. State which sides are affected in the findings
+   and plot labels.
 2. Collect evidence adequate for the claim. Balance work requires --unit-usage or
    equivalent presence and contribution telemetry. Read
    [metrics](references/metrics.md) before interpreting unit composition, damage,
