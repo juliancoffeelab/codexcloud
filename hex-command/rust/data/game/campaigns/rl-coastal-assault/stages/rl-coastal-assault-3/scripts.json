@@ -12,7 +12,7 @@
             }
           },
           "faction": "player",
-          "turns": 3,
+          "turns": 10,
           "when": null
         }
       },
@@ -26,7 +26,7 @@
       "priority": 0,
       "objective": {
         "faction": "player",
-        "label": "Hold the island stronghold for three turns",
+        "label": "Hold the island stronghold for ten turns",
         "intent": {
           "own": {
             "tile": {
@@ -36,7 +36,7 @@
               }
             },
             "faction": "player",
-            "turns": 3,
+            "turns": 10,
             "when": null
           }
         },
@@ -78,7 +78,7 @@
     {
       "id": "deadline",
       "when": {
-        "turn": 34
+        "turn": 47
       },
       "actions": [
         {

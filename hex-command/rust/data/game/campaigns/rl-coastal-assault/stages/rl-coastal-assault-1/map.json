@@ -1344,7 +1344,7 @@
       "connections": [],
       "floor": "green-forest",
       "environmentEffects": [],
-      "owner": null
+      "owner": "player"
     },
     {
       "col": 6,
@@ -1435,9 +1435,10 @@
     {
       "col": 18,
       "row": 7,
-      "terrain": "hill",
+      "terrain": "keep",
       "floor": "green-plain",
-      "environmentEffects": []
+      "environmentEffects": [],
+      "owner": "enemy"
     },
     {
       "col": 19,
@@ -1617,9 +1618,11 @@
     {
       "col": 18,
       "row": 8,
-      "terrain": "hill",
+      "terrain": "village",
       "floor": "green-plain",
-      "environmentEffects": []
+      "environmentEffects": [],
+      "owner": "enemy",
+      "connections": []
     },
     {
       "col": 19,
@@ -1726,7 +1729,7 @@
       "connections": [],
       "floor": "autumn-forest",
       "environmentEffects": [],
-      "owner": null
+      "owner": "player"
     },
     {
       "col": 8,
@@ -1976,9 +1979,11 @@
     {
       "col": 17,
       "row": 10,
-      "terrain": "plains",
+      "terrain": "village",
       "floor": "green-plain",
-      "environmentEffects": []
+      "environmentEffects": [],
+      "owner": "enemy",
+      "connections": []
     },
     {
       "col": 18,
@@ -6474,10 +6479,11 @@
     {
       "col": 4,
       "row": 35,
-      "terrain": "keep",
+      "terrain": "village",
       "floor": "green-forest",
       "environmentEffects": [],
-      "owner": "enemy"
+      "owner": null,
+      "connections": []
     },
     {
       "col": 5,

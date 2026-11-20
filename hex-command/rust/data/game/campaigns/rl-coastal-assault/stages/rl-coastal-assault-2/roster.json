@@ -132,6 +132,25 @@
           "experience": 0,
           "retreating": null,
           "rebuilding": null
+        },
+        {
+          "type": "captives",
+          "role": "captive",
+          "tile": {
+            "col": 12,
+            "row": 4
+          },
+          "id": "u11",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": "harbor-pilot",
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
       "relations": {
@@ -186,8 +205,8 @@
           "type": "commander",
           "role": "leader",
           "tile": {
-            "col": 11,
-            "row": 22
+            "col": 3,
+            "row": 13
           },
           "id": "u5",
           "hp": "full",
@@ -205,8 +224,8 @@
           "type": "swordsman",
           "role": null,
           "tile": {
-            "col": 10,
-            "row": 21
+            "col": 3,
+            "row": 12
           },
           "id": "u6",
           "hp": "full",
@@ -224,8 +243,8 @@
           "type": "spearman",
           "role": null,
           "tile": {
-            "col": 10,
-            "row": 22
+            "col": 3,
+            "row": 11
           },
           "id": "u7",
           "hp": "full",

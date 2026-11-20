@@ -186,8 +186,8 @@
           "type": "commander",
           "role": "leader",
           "tile": {
-            "col": 3,
-            "row": 33
+            "col": 10,
+            "row": 26
           },
           "id": "u5",
           "hp": "full",

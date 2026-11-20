@@ -1,8 +1,8 @@
 {
-  "requiredCompanions": [],
+  "requiredCompanions": ["harbor-pilot"],
   "events": [
     {
-      "id": "mission-complete",
+      "id": "harbor-secured",
       "when": {
         "own": {
           "tile": {
@@ -12,9 +12,122 @@
             }
           },
           "faction": "player",
-          "turns": 2,
+          "turns": 10,
           "when": null
         }
+      },
+      "actions": [
+        {
+          "setFlag": "harbor-secured"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "label": "Hold the harbor approach for ten turns",
+        "intent": {
+          "own": {
+            "tile": {
+              "hex": {
+                "col": 4,
+                "row": 11
+              }
+            },
+            "faction": "player",
+            "turns": 10,
+            "when": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "id": null,
+        "optional": false,
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "flag": "harbor-secured"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "intercept",
+      "when": {
+        "noUnits": {
+          "character": "harbor-pilot",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The harbor pilot was killed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": {
+        "faction": "enemy",
+        "label": "Intercept the harbor pilot",
+        "intent": {
+          "defeat": {
+            "character": "harbor-pilot",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "id": null,
+        "optional": false,
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "mission-complete",
+      "when": {
+        "all": [
+          {
+            "flag": "harbor-secured"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 5,
+                  "row": 12
+                }
+              },
+              "through": true,
+              "character": "harbor-pilot",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
       },
       "actions": [
         {
@@ -26,22 +139,28 @@
       "priority": 0,
       "objective": {
         "faction": "player",
-        "label": "Hold the harbor approach for two turns",
+        "label": "Escort the pilot to the landing",
         "intent": {
-          "own": {
+          "escort": {
             "tile": {
               "hex": {
-                "col": 4,
-                "row": 11
+                "col": 5,
+                "row": 12
               }
             },
+            "through": true,
+            "character": "harbor-pilot",
+            "role": null,
+            "side": null,
             "faction": "player",
-            "turns": 2,
-            "when": null
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
         "visibleWhen": {
-          "always": true
+          "flag": "harbor-secured"
         },
         "id": null,
         "optional": false,
@@ -78,7 +197,7 @@
     {
       "id": "deadline",
       "when": {
-        "turn": 30
+        "turn": 50
       },
       "actions": [
         {

@@ -15,6 +15,10 @@
     {
       "id": "enemy-leader",
       "name": "enemy-leader"
+    },
+    {
+      "id": "harbor-pilot",
+      "name": "Harbor pilot"
     }
   ],
   "ending": [],

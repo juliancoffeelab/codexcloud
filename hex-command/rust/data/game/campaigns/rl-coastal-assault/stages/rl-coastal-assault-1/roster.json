@@ -37,7 +37,7 @@
         "kind": "human"
       },
       "palette": "player",
-      "gold": 24,
+      "gold": 34,
       "recruits": [
         {
           "unit": "harpooner",
@@ -150,7 +150,7 @@
         "policy": null
       },
       "palette": "enemy",
-      "gold": 24,
+      "gold": 16,
       "recruits": [
         {
           "unit": "swordsman",
@@ -186,8 +186,8 @@
           "type": "commander",
           "role": "leader",
           "tile": {
-            "col": 4,
-            "row": 35
+            "col": 18,
+            "row": 7
           },
           "id": "u5",
           "hp": "full",
@@ -205,8 +205,8 @@
           "type": "swordsman",
           "role": null,
           "tile": {
-            "col": 3,
-            "row": 35
+            "col": 17,
+            "row": 8
           },
           "id": "u6",
           "hp": "full",
@@ -224,8 +224,8 @@
           "type": "spearman",
           "role": null,
           "tile": {
-            "col": 4,
-            "row": 34
+            "col": 17,
+            "row": 6
           },
           "id": "u7",
           "hp": "full",

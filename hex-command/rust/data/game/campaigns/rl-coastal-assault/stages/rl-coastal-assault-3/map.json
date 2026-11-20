@@ -4352,7 +4352,7 @@
       "connections": [],
       "floor": "green-plain",
       "environmentEffects": [],
-      "owner": null
+      "owner": "enemy"
     },
     {
       "col": 12,
@@ -4514,9 +4514,10 @@
     {
       "col": 10,
       "row": 26,
-      "terrain": "plains",
+      "terrain": "keep",
       "floor": "green-plain",
-      "environmentEffects": []
+      "environmentEffects": [],
+      "owner": "enemy"
     },
     {
       "col": 11,
@@ -4675,7 +4676,7 @@
       "connections": [],
       "floor": "green-plain",
       "environmentEffects": [],
-      "owner": null
+      "owner": "enemy"
     },
     {
       "col": 9,
@@ -5675,10 +5676,11 @@
     {
       "col": 3,
       "row": 33,
-      "terrain": "keep",
+      "terrain": "village",
       "floor": "green-plain",
       "environmentEffects": [],
-      "owner": "enemy"
+      "owner": null,
+      "connections": []
     },
     {
       "col": 4,
