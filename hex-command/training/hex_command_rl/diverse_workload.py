@@ -1,4 +1,4 @@
-"""RL-only training with existing arenas/campaigns held out for selection."""
+"""RL-only training with separate selection and final evaluation panels."""
 
 import argparse
 import hashlib
@@ -24,17 +24,14 @@ def prepare(root):
     if not all(a["id"].startswith("rl-") for a in training["arenas"]) or not all(
         c.startswith("rl-") for c in training["campaigns"]
     ):
-        raise ValueError("training catalog must contain only rl_ tasks")
+        raise ValueError("training catalog must contain only rl- tasks")
     races = ["human", "skeletons", "woodland", "coastal"]
+    cross_faction_pairs = [
+        dict(player=p, enemy=races[(i + 1) % len(races)]) for i, p in enumerate(races)
+    ]
     held_out = dict(
         arenas=[
-            dict(
-                id=name,
-                pairs=[
-                    dict(player=p, enemy=races[(i + 1) % 4])
-                    for i, p in enumerate(races)
-                ],
-            )
+            dict(id=name, pairs=cross_faction_pairs)
             for name in (
                 "open",
                 "wooded",
@@ -58,18 +55,43 @@ def prepare(root):
         recruiters=training["recruiters"],
         objectives=training["objectives"],
     )
-    # Reserve the entire coastal layout and chapter sequence for the final test.
-    coastal = "rl-coastal-assault"
-    if coastal in training["campaigns"]:
-        raise ValueError("the coastal campaign is reserved for final evaluation")
+    # Reserve novel maps and chapter sequences for the final test.
+    final_campaigns = ("rl-coastal-assault", "rl-whitebank-relief")
+    final_arenas = (
+        "alder-fen",
+        "drowned-kilns",
+        "hart-saddle",
+        "herring-road",
+        "ochre-wells",
+        "siltbar-bend",
+    )
+    if set(final_campaigns) & training["campaigns"].keys():
+        raise ValueError("final-test campaigns cannot be used for training")
+    arena_catalog = json.loads((catalog / "simulation/arena.json").read_text())
+    layouts = {
+        arena["id"]: {variant["map"] for variant in arena["variants"]}
+        for arena in arena_catalog["scenarios"]
+    }
+    exposed_layouts = set().union(
+        *(layouts[arena["id"]] for arena in training["arenas"] + held_out["arenas"])
+    )
+    if exposed_layouts & set().union(*(layouts[name] for name in final_arenas)):
+        raise ValueError(
+            "final-test arenas cannot share layouts with training or validation"
+        )
     test_panel = {
         **held_out,
+        "arenas": held_out["arenas"]
+        + [dict(id=name, pairs=cross_faction_pairs) for name in final_arenas],
         "campaigns": {
             **held_out["campaigns"],
-            coastal: [
-                dict(objective=o, diplomacy="unrestricted")
-                for o in ("authored", "fog")
-            ],
+            **{
+                campaign: [
+                    dict(objective=o, diplomacy="unrestricted")
+                    for o in ("authored", "fog")
+                ]
+                for campaign in final_campaigns
+            },
         },
     }
     # Campaigns are a small number of correlated routes; use more independent
@@ -98,7 +120,7 @@ def prepare(root):
         periodic=periodic,
         validation=validation,
         test=configs("test", test_panel),
-        balance="50% arena / 50% campaign decisions; equal tasks then variants; coastal campaign final test only",
+        balance="50% arena / 50% campaign decisions; equal tasks then variants; novel arena and campaign layouts reserved for the final test",
     )
     spec["workload_sha256"] = hashlib.sha256(
         json.dumps(

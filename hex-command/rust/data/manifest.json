@@ -225,7 +225,8 @@
     "game/campaigns/rl-mist-reach/campaign.json",
     "game/campaigns/rl-woodland-defense/campaign.json",
     "game/campaigns/rl-underground-escape/campaign.json",
-    "game/campaigns/rl-coastal-assault/campaign.json"
+    "game/campaigns/rl-coastal-assault/campaign.json",
+    "game/campaigns/rl-whitebank-relief/campaign.json"
   ],
   "simulation": {
     "rosters": "simulation/rosters.json",

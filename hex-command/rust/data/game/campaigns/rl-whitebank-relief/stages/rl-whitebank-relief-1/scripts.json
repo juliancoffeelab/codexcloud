@@ -1,0 +1,157 @@
+{
+  "requiredCompanions": ["courier"],
+  "events": [
+    {
+      "id": "intercept",
+      "observer": null,
+      "when": {
+        "noUnits": {
+          "faction": "player",
+          "character": "courier",
+          "role": null,
+          "side": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The courier was intercepted."
+        }
+      ],
+      "remembers": true,
+      "priority": 100,
+      "objective": {
+        "faction": "enemy",
+        "label": "Intercept the courier",
+        "intent": {
+          "defeat": {
+            "faction": "player",
+            "character": "courier",
+            "role": null,
+            "side": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "playerMarker": null,
+        "preserveLives": null
+      }
+    },
+    {
+      "id": "mission-complete",
+      "observer": null,
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 16,
+              "row": 20
+            }
+          },
+          "through": true,
+          "faction": "player",
+          "character": "courier",
+          "role": null,
+          "side": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ],
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "label": "Escort the courier across the river",
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 16,
+                "row": 20
+              }
+            },
+            "through": true,
+            "faction": "player",
+            "character": "courier",
+            "role": null,
+            "side": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "playerMarker": null,
+        "preserveLives": null
+      }
+    },
+    {
+      "id": "commander-lost",
+      "observer": null,
+      "when": {
+        "noUnits": {
+          "faction": "player",
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "deadline",
+      "observer": null,
+      "when": {
+        "turn": 32
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ],
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

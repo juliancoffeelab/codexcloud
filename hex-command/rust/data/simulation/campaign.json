@@ -484,6 +484,102 @@
           }
         }
       }
+    },
+    "rl-whitebank-relief": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "fog": {
+          "stages": {
+            "rl-whitebank-relief-1": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            },
+            "rl-whitebank-relief-2": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            },
+            "rl-whitebank-relief-3": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        }
+      }
     }
   },
   "escalationFlags": {}
