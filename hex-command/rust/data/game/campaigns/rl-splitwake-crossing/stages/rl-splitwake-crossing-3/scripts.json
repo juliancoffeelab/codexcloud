@@ -1,0 +1,174 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "garrison-broken",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "enemy",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "garrison-broken"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "label": "Defeat the citadel commander",
+        "intent": {
+          "defeat": {
+            "character": null,
+            "role": "leader",
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "playerMarker": null,
+        "preserveLives": null
+      }
+    },
+    {
+      "id": "citadel-captured",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 27,
+              "row": 19
+            }
+          },
+          "faction": "player",
+          "turns": null,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "citadel-captured"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "label": "Capture the island citadel",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 27,
+                "row": 19
+              }
+            }
+          ]
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "playerMarker": null,
+        "preserveLives": null
+      }
+    },
+    {
+      "id": "mission-complete",
+      "when": {
+        "all": [
+          {
+            "flag": "garrison-broken"
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 27,
+                  "row": 19
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "commander-lost",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turn": 48
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

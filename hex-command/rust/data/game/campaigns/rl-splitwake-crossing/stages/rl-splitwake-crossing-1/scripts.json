@@ -1,0 +1,97 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "mission-complete",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 18,
+              "row": 12
+            }
+          },
+          "faction": "player",
+          "turns": 10,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "label": "Take the landing village and hold it for ten turns",
+        "intent": {
+          "own": {
+            "tile": {
+              "hex": {
+                "col": 18,
+                "row": 12
+              }
+            },
+            "faction": "player",
+            "turns": 10,
+            "when": null
+          }
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "playerMarker": null,
+        "preserveLives": null
+      }
+    },
+    {
+      "id": "commander-lost",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turn": 42
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

@@ -1,0 +1,42 @@
+{
+  "tags": ["simulation"],
+  "id": "rl-splitwake-crossing",
+  "name": "Splitwake Crossing",
+  "tagline": "Crossings of the western coast",
+  "description": "A Merfolk company takes a landing, escorts a courier through an archipelago, and assaults an island citadel.",
+  "shortDescription": "Three amphibious missions for the Merfolk.",
+  "race": "merfolk",
+  "leader": "tidekeeper",
+  "characters": [
+    {
+      "id": "player-leader",
+      "name": "player-leader"
+    },
+    {
+      "id": "enemy-leader",
+      "name": "enemy-leader"
+    },
+    {
+      "id": "courier",
+      "name": "Splitwake courier"
+    }
+  ],
+  "ending": [],
+  "stages": [
+    "stages/rl-splitwake-crossing-1/stage.json",
+    "stages/rl-splitwake-crossing-2/stage.json",
+    "stages/rl-splitwake-crossing-3/stage.json"
+  ],
+  "carryover": {
+    "goldLimit": 8,
+    "veteranLimit": 4,
+    "deploymentRadius": 3,
+    "weights": {
+      "hp": 1,
+      "damage": 2,
+      "healing": 5,
+      "level": 3,
+      "experience": 0.3333333333333333
+    }
+  }
+}

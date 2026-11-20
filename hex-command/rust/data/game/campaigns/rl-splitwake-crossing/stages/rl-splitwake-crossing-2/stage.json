@@ -1,0 +1,7 @@
+{
+  "id": "rl-splitwake-crossing-2",
+  "map": "map.json",
+  "roster": "roster.json",
+  "scripts": "scripts.json",
+  "story": "story.json"
+}

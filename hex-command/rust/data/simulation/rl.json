@@ -754,6 +754,16 @@
         "diplomacy": "unrestricted"
       }
     ],
+    "rl-splitwake-crossing": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted"
+      },
+      {
+        "objective": "fog",
+        "diplomacy": "unrestricted"
+      }
+    ],
     "rl-underground-escape": [
       {
         "objective": "authored",

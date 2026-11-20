@@ -249,9 +249,9 @@ selection metric; teacher agreement alone does not establish game strength.
 ## Diverse tactical continuation
 
 The active RL maps and campaigns are fixed, engine-owned JSON registered in
-`rust/data/simulation/rl.json`. They include 14 arenas and the Underground Escape
-and Woodland Defense campaigns. The V3 training catalog and workload remain
-available in the [archived experiment](experiments/2026-11-15-visibility/experiment.json).
+`rust/data/simulation/rl.json`. They include 14 arenas and the Underground Escape,
+Woodland Defense, and Splitwake Crossing campaigns. The V3 training catalog and
+workload remain available in the [archived experiment](experiments/2026-11-15-visibility/experiment.json).
 
 Prepare a new workload with:
 
