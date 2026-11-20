@@ -202,13 +202,70 @@
           "rebuilding": null
         },
         {
-          "type": "swordsman",
+          "type": "soldier",
           "role": null,
           "tile": {
-            "col": 2,
-            "row": 33
+            "col": 11,
+            "row": 24
           },
           "id": "u6",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "halberdier",
+          "role": null,
+          "tile": {
+            "col": 9,
+            "row": 23
+          },
+          "id": "u7",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "warden",
+          "role": null,
+          "tile": {
+            "col": 10,
+            "row": 23
+          },
+          "id": "u8",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "crossbowman",
+          "role": null,
+          "tile": {
+            "col": 10,
+            "row": 22
+          },
+          "id": "u9",
           "hp": "full",
           "items": [],
           "perceptionEffects": [],
@@ -224,29 +281,10 @@
           "type": "spearman",
           "role": null,
           "tile": {
-            "col": 3,
-            "row": 32
-          },
-          "id": "u7",
-          "hp": "full",
-          "items": [],
-          "perceptionEffects": [],
-          "aiGroup": null,
-          "character": null,
-          "moved": false,
-          "attackSpent": false,
-          "experience": 0,
-          "retreating": null,
-          "rebuilding": null
-        },
-        {
-          "type": "scout",
-          "role": null,
-          "tile": {
-            "col": 10,
+            "col": 11,
             "row": 23
           },
-          "id": "u8",
+          "id": "u10",
           "hp": "full",
           "items": [],
           "perceptionEffects": [],

@@ -257,6 +257,25 @@
           "experience": 0,
           "retreating": null,
           "rebuilding": null
+        },
+        {
+          "type": "spearman",
+          "role": null,
+          "tile": {
+            "col": 15,
+            "row": 7
+          },
+          "id": "u9",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
       "relations": {

@@ -45,7 +45,7 @@
             "character": null,
             "role": null,
             "side": null,
-            "faction": "player",
+            "faction": null,
             "unitType": null,
             "unitTypes": [],
             "aiGroup": null,
@@ -90,7 +90,7 @@
     {
       "id": "deadline",
       "when": {
-        "turn": 24
+        "turn": 31
       },
       "actions": [
         {

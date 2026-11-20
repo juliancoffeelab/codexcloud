@@ -55,8 +55,8 @@
         "stand": {
           "tile": {
             "hex": {
-              "col": 24,
-              "row": 16
+              "col": 22,
+              "row": 17
             }
           },
           "through": true,
@@ -85,8 +85,8 @@
           "escort": {
             "tile": {
               "hex": {
-                "col": 24,
-                "row": 16
+                "col": 22,
+                "row": 17
               }
             },
             "through": true,
@@ -138,7 +138,7 @@
     {
       "id": "deadline",
       "when": {
-        "turn": 26
+        "turn": 30
       },
       "actions": [
         {

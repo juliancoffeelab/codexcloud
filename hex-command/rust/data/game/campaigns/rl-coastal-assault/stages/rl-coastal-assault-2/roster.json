@@ -240,13 +240,51 @@
           "rebuilding": null
         },
         {
-          "type": "scout",
+          "type": "soldier",
           "role": null,
           "tile": {
             "col": 4,
             "row": 11
           },
           "id": "u8",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "archer",
+          "role": null,
+          "tile": {
+            "col": 5,
+            "row": 10
+          },
+          "id": "u9",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "spearman",
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 12
+          },
+          "id": "u10",
           "hp": "full",
           "items": [],
           "perceptionEffects": [],

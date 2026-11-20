@@ -12,7 +12,7 @@
             }
           },
           "faction": "player",
-          "turns": null,
+          "turns": 2,
           "when": null
         }
       },
@@ -26,16 +26,19 @@
       "priority": 0,
       "objective": {
         "faction": "player",
-        "label": "Open the harbor approach",
+        "label": "Hold the harbor approach for two turns",
         "intent": {
-          "capture": [
-            {
+          "own": {
+            "tile": {
               "hex": {
                 "col": 4,
                 "row": 11
               }
-            }
-          ]
+            },
+            "faction": "player",
+            "turns": 2,
+            "when": null
+          }
         },
         "visibleWhen": {
           "always": true

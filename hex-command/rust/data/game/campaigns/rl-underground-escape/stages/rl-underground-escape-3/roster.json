@@ -181,7 +181,7 @@
         "policy": null
       },
       "palette": "enemy",
-      "gold": 24,
+      "gold": 16,
       "recruits": [
         {
           "unit": "skeleton",
@@ -267,7 +267,7 @@
           "rebuilding": null
         },
         {
-          "type": "skeleton-rider",
+          "type": "bonearcher",
           "role": null,
           "tile": {
             "col": 46,

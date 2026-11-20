@@ -55,8 +55,8 @@
         "stand": {
           "tile": {
             "hex": {
-              "col": 38,
-              "row": 23
+              "col": 34,
+              "row": 24
             }
           },
           "through": true,
@@ -85,8 +85,8 @@
           "escort": {
             "tile": {
               "hex": {
-                "col": 38,
-                "row": 23
+                "col": 34,
+                "row": 24
               }
             },
             "through": true,
