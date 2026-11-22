@@ -3712,7 +3712,7 @@
       "connections": [],
       "floor": "green-forest",
       "environmentEffects": [],
-      "owner": null
+      "owner": "player"
     },
     {
       "col": 3,
@@ -3736,7 +3736,7 @@
       "connections": [],
       "floor": "autumn-forest",
       "environmentEffects": [],
-      "owner": null
+      "owner": "player"
     },
     {
       "col": 6,
@@ -5591,11 +5591,10 @@
     {
       "col": 8,
       "row": 30,
-      "terrain": "village",
-      "connections": [],
+      "terrain": "keep",
       "floor": "green-plain",
       "environmentEffects": [],
-      "owner": null
+      "owner": "southern-raiders"
     },
     {
       "col": 9,
@@ -5949,7 +5948,7 @@
       "connections": [],
       "floor": "autumn-forest",
       "environmentEffects": [],
-      "owner": null
+      "owner": "southern-raiders"
     },
     {
       "col": 7,
@@ -6482,7 +6481,7 @@
       "terrain": "village",
       "floor": "green-forest",
       "environmentEffects": [],
-      "owner": null,
+      "owner": "southern-raiders",
       "connections": []
     },
     {

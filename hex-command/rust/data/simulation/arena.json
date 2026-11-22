@@ -261,7 +261,7 @@
       "holdTurns": 4
     },
     {
-      "id": "villages",
+      "id": "toll-road",
       "variants": [
         {
           "map": "combat-villages",
@@ -280,7 +280,7 @@
       "holdTurns": 4
     },
     {
-      "id": "sluice",
+      "id": "a-tide-for-both",
       "variants": [
         {
           "map": "combat-sluice",

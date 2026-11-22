@@ -7292,7 +7292,7 @@
       "connections": [],
       "floor": "green-forest",
       "environmentEffects": [],
-      "owner": null
+      "owner": "enemy"
     },
     {
       "col": 34,
@@ -8088,7 +8088,7 @@
       "connections": [],
       "floor": "green-forest",
       "environmentEffects": [],
-      "owner": null
+      "owner": "enemy"
     },
     {
       "col": 31,

@@ -37,7 +37,7 @@
         "kind": "human"
       },
       "palette": "player",
-      "gold": 35,
+      "gold": 40,
       "recruits": [
         {
           "unit": "harpooner",
@@ -169,7 +169,7 @@
         "policy": null
       },
       "palette": "enemy",
-      "gold": 20,
+      "gold": 24,
       "recruits": [
         {
           "unit": "swordsman",

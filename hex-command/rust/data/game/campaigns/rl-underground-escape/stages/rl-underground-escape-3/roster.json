@@ -37,7 +37,7 @@
         "kind": "human"
       },
       "palette": "player",
-      "gold": 24,
+      "gold": 36,
       "recruits": [
         {
           "unit": "swordsman",
@@ -144,25 +144,6 @@
           "experience": 0,
           "retreating": null,
           "rebuilding": null
-        },
-        {
-          "type": "captives",
-          "role": "captive",
-          "tile": {
-            "col": 11,
-            "row": 16
-          },
-          "id": "u5",
-          "hp": "full",
-          "items": [],
-          "perceptionEffects": [],
-          "aiGroup": null,
-          "character": "charge",
-          "moved": false,
-          "attackSpent": false,
-          "experience": 0,
-          "retreating": null,
-          "rebuilding": null
         }
       ],
       "relations": {
@@ -181,7 +162,7 @@
         "policy": null
       },
       "palette": "enemy",
-      "gold": 16,
+      "gold": 24,
       "recruits": [
         {
           "unit": "skeleton",
@@ -274,6 +255,44 @@
             "row": 24
           },
           "id": "u9",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "bonearcher",
+          "role": null,
+          "tile": {
+            "col": 38,
+            "row": 23
+          },
+          "id": "u10",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "skeleton",
+          "role": null,
+          "tile": {
+            "col": 41,
+            "row": 23
+          },
+          "id": "u11",
           "hp": "full",
           "items": [],
           "perceptionEffects": [],

@@ -2,23 +2,29 @@
   "requiredCompanions": [],
   "events": [
     {
-      "id": "mission-complete",
+      "id": "rl-coastal-assault-1-north-defeated",
       "when": {
-        "own": {
-          "tile": {
-            "hex": {
-              "col": 16,
-              "row": 7
-            }
+        "all": [
+          {
+            "always": true
           },
-          "faction": "player",
-          "turns": 10,
-          "when": null
-        }
+          {
+            "noUnits": {
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
       },
       "actions": [
         {
-          "victory": "Task completed."
+          "setFlag": "rl-coastal-assault-1-north-defeated"
         }
       ],
       "observer": null,
@@ -26,37 +32,121 @@
       "priority": 0,
       "objective": {
         "faction": "player",
-        "label": "Hold the offshore fort for ten turns",
+        "id": null,
+        "label": "Defeat the northern garrison",
         "intent": {
-          "own": {
-            "tile": {
-              "hex": {
-                "col": 16,
-                "row": 7
-              }
-            },
-            "faction": "player",
-            "turns": 10,
-            "when": null
+          "defeat": {
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
+        "optional": false,
         "visibleWhen": {
           "always": true
         },
-        "id": null,
-        "optional": false,
-        "availableWhen": null,
-        "satisfiedWhen": null,
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-coastal-assault-1-north-defeated"
+        },
         "preserveLives": null,
         "playerMarker": null
       }
     },
     {
-      "id": "commander-lost",
+      "id": "rl-coastal-assault-1-south-defeated",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "southern-raiders",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-coastal-assault-1-south-defeated"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the southern raiders",
+        "intent": {
+          "defeat": {
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "southern-raiders",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-coastal-assault-1-south-defeated"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-coastal-assault-1-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "rl-coastal-assault-1-north-defeated"
+          },
+          {
+            "flag": "rl-coastal-assault-1-south-defeated"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Both hostile companies were destroyed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-coastal-assault-1-commander-lost",
       "when": {
         "noUnits": {
-          "character": null,
-          "role": "leader",
+          "character": "player-leader",
+          "role": null,
           "side": null,
           "faction": "player",
           "unitType": null,
@@ -76,13 +166,13 @@
       "objective": null
     },
     {
-      "id": "deadline",
+      "id": "rl-coastal-assault-1-deadline",
       "when": {
-        "turn": 42
+        "turn": 76
       },
       "actions": [
         {
-          "defeat": "The deadline expired."
+          "defeat": "The operation exceeded its 75-turn deadline."
         }
       ],
       "observer": null,

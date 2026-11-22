@@ -3,7 +3,7 @@
   "id": "rl-coastal-assault",
   "name": "Coastal Assault",
   "tagline": "Coastal Assault",
-  "description": "Coastal Assault simulation fixtures.",
+  "description": "Three broad battles with staged or alternative objectives, active opposition and veteran carryover.",
   "shortDescription": "Training only.",
   "race": "merfolk",
   "leader": "tidekeeper",
@@ -19,6 +19,10 @@
     {
       "id": "harbor-pilot",
       "name": "Harbor pilot"
+    },
+    {
+      "id": "south-captain",
+      "name": "South captain"
     }
   ],
   "ending": [],
@@ -28,8 +32,8 @@
     "stages/rl-coastal-assault-3/stage.json"
   ],
   "carryover": {
-    "goldLimit": 8,
-    "veteranLimit": 4,
+    "goldLimit": 20,
+    "veteranLimit": 6,
     "deploymentRadius": 3,
     "weights": {
       "hp": 1,

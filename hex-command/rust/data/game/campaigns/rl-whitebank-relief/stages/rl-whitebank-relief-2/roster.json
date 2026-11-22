@@ -24,7 +24,7 @@
           "unlit": 0,
           "darkness": 0
         },
-        "penetrates": []
+        "penetrates": ["fog"]
       },
       "explored": []
     }
@@ -162,7 +162,7 @@
         "policy": null
       },
       "palette": "enemy",
-      "gold": 16,
+      "gold": 24,
       "recruits": [
         {
           "unit": "skeleton",
@@ -236,6 +236,44 @@
             "row": 20
           },
           "id": "u7",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "skeleton-impact-caster",
+          "role": null,
+          "tile": {
+            "col": 17,
+            "row": 9
+          },
+          "id": "u8",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "bonearcher",
+          "role": null,
+          "tile": {
+            "col": 25,
+            "row": 14
+          },
+          "id": "u9",
           "hp": "full",
           "items": [],
           "perceptionEffects": [],

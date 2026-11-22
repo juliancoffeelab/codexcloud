@@ -1,78 +1,30 @@
 {
-  "requiredCompanions": ["charge"],
+  "requiredCompanions": [],
   "events": [
     {
-      "id": "intercept",
+      "id": "rl-woodland-defense-1-guard-broken",
       "when": {
-        "noUnits": {
-          "character": "charge",
-          "role": null,
-          "side": null,
-          "faction": "player",
-          "unitType": null,
-          "unitTypes": [],
-          "aiGroup": null,
-          "retreating": null
-        }
-      },
-      "actions": [
-        {
-          "defeat": "The escort was intercepted."
-        }
-      ],
-      "observer": null,
-      "remembers": true,
-      "priority": 100,
-      "objective": {
-        "faction": "enemy",
-        "label": "Intercept the escort",
-        "intent": {
-          "defeat": {
-            "character": "charge",
-            "role": null,
-            "side": null,
-            "faction": "player",
-            "unitType": null,
-            "unitTypes": [],
-            "aiGroup": null,
-            "retreating": null
-          }
-        },
-        "visibleWhen": {
-          "always": true
-        },
-        "id": null,
-        "optional": false,
-        "availableWhen": null,
-        "satisfiedWhen": null,
-        "preserveLives": null,
-        "playerMarker": null
-      }
-    },
-    {
-      "id": "mission-complete",
-      "when": {
-        "stand": {
-          "tile": {
-            "hex": {
-              "col": 22,
-              "row": 17
-            }
+        "all": [
+          {
+            "always": true
           },
-          "through": true,
-          "character": "charge",
-          "role": null,
-          "side": null,
-          "faction": "player",
-          "unitType": null,
-          "unitTypes": [],
-          "aiGroup": null,
-          "retreating": null
-        }
+          {
+            "noUnits": {
+              "character": "fen-warden",
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
       },
       "actions": [
         {
-          "victory": "Task completed."
+          "setFlag": "rl-woodland-defense-1-guard-broken"
         }
       ],
       "observer": null,
@@ -80,17 +32,111 @@
       "priority": 0,
       "objective": {
         "faction": "player",
-        "label": "Escort the charge across the channel",
+        "id": null,
+        "label": "Defeat the fen guard",
         "intent": {
-          "escort": {
-            "tile": {
-              "hex": {
-                "col": 22,
-                "row": 17
-              }
+          "defeat": {
+            "character": "fen-warden",
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-woodland-defense-1-guard-broken"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-woodland-defense-1-captives-freed",
+      "when": {
+        "all": [
+          {
+            "flag": "rl-woodland-defense-1-guard-broken"
+          },
+          {
+            "proximity": {
+              "tile": null,
+              "target": {
+                "character": "charge",
+                "role": null,
+                "side": null,
+                "faction": null,
+                "unitType": null,
+                "unitTypes": [],
+                "aiGroup": null,
+                "retreating": null
+              },
+              "radius": 1,
+              "through": true,
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-woodland-defense-1-captives-freed"
+        },
+        {
+          "changeAllegiance": {
+            "units": {
+              "character": "charge",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             },
+            "faction": "player"
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Free the captives beyond the crossing",
+        "intent": {
+          "approach": {
+            "tile": null,
+            "target": {
+              "character": "charge",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            },
+            "radius": 1,
             "through": true,
-            "character": "charge",
+            "character": null,
             "role": null,
             "side": null,
             "faction": "player",
@@ -100,23 +146,189 @@
             "retreating": null
           }
         },
-        "visibleWhen": {
-          "always": true
-        },
-        "id": null,
         "optional": false,
-        "availableWhen": null,
-        "satisfiedWhen": null,
+        "visibleWhen": {
+          "flag": "rl-woodland-defense-1-guard-broken"
+        },
+        "availableWhen": {
+          "flag": "rl-woodland-defense-1-guard-broken"
+        },
+        "satisfiedWhen": {
+          "flag": "rl-woodland-defense-1-captives-freed"
+        },
         "preserveLives": null,
         "playerMarker": null
       }
     },
     {
-      "id": "commander-lost",
+      "id": "rl-woodland-defense-1-scout-captured",
+      "when": {
+        "all": [
+          {
+            "flag": "rl-woodland-defense-1-captives-freed"
+          },
+          {
+            "proximity": {
+              "tile": null,
+              "target": {
+                "character": "fen-scout",
+                "role": null,
+                "side": null,
+                "faction": null,
+                "unitType": null,
+                "unitTypes": [],
+                "aiGroup": null,
+                "retreating": null
+              },
+              "radius": 1,
+              "through": true,
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-woodland-defense-1-scout-captured"
+        },
+        {
+          "changeAllegiance": {
+            "units": {
+              "character": "fen-scout",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            },
+            "faction": "player"
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Capture the surrendered scout",
+        "intent": {
+          "approach": {
+            "tile": null,
+            "target": {
+              "character": "fen-scout",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            },
+            "radius": 1,
+            "through": true,
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "flag": "rl-woodland-defense-1-captives-freed"
+        },
+        "availableWhen": {
+          "flag": "rl-woodland-defense-1-captives-freed"
+        },
+        "satisfiedWhen": {
+          "flag": "rl-woodland-defense-1-scout-captured"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-woodland-defense-1-lost-charge",
       "when": {
         "noUnits": {
-          "character": null,
-          "role": "leader",
+          "character": "charge",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "charge was lost."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "rl-woodland-defense-1-lost-fen-scout",
+      "when": {
+        "noUnits": {
+          "character": "fen-scout",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "fen-scout was lost."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "rl-woodland-defense-1-victory",
+      "when": {
+        "flag": "rl-woodland-defense-1-scout-captured"
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-woodland-defense-1-commander-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
           "side": null,
           "faction": "player",
           "unitType": null,
@@ -136,13 +348,13 @@
       "objective": null
     },
     {
-      "id": "deadline",
+      "id": "rl-woodland-defense-1-deadline",
       "when": {
-        "turn": 30
+        "turn": 58
       },
       "actions": [
         {
-          "defeat": "The deadline expired."
+          "defeat": "The operation exceeded its 57-turn deadline."
         }
       ],
       "observer": null,

@@ -3,7 +3,7 @@
   "id": "rl-whitebank-relief",
   "name": "Whitebank Relief",
   "tagline": "Whitebank Relief",
-  "description": "Escort a courier through the mountains and retake a refuge from the skeletons.",
+  "description": "Three broad battles with staged or alternative objectives, active opposition and veteran carryover.",
   "shortDescription": "Three-chapter campaign for final RL evaluation.",
   "race": "human",
   "leader": "commander",
@@ -19,6 +19,10 @@
     {
       "id": "courier",
       "name": "Relief courier"
+    },
+    {
+      "id": "sanctuary-prisoners",
+      "name": "Sanctuary prisoners"
     }
   ],
   "ending": [],
@@ -28,8 +32,8 @@
     "stages/rl-whitebank-relief-3/stage.json"
   ],
   "carryover": {
-    "goldLimit": 8,
-    "veteranLimit": 4,
+    "goldLimit": 20,
+    "veteranLimit": 6,
     "deploymentRadius": 3,
     "weights": {
       "hp": 1,

@@ -2,32 +2,57 @@
   "requiredCompanions": [],
   "events": [
     {
-      "id": "mission-complete",
+      "id": "rl-woodland-defense-2-west-prisoners-freed",
       "when": {
-        "held": {
-          "tile": {
-            "hex": {
-              "col": 13,
-              "row": 19
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "proximity": {
+              "tile": null,
+              "target": {
+                "character": "west-prisoners",
+                "role": null,
+                "side": null,
+                "faction": null,
+                "unitType": null,
+                "unitTypes": [],
+                "aiGroup": null,
+                "retreating": null
+              },
+              "radius": 1,
+              "through": true,
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             }
-          },
-          "turns": 4,
-          "when": {
-            "turnAtLeast": 7
-          },
-          "character": null,
-          "role": null,
-          "side": null,
-          "faction": "player",
-          "unitType": null,
-          "unitTypes": [],
-          "aiGroup": null,
-          "retreating": null
-        }
+          }
+        ]
       },
       "actions": [
         {
-          "victory": "Task completed."
+          "setFlag": "rl-woodland-defense-2-west-prisoners-freed"
+        },
+        {
+          "changeAllegiance": {
+            "units": {
+              "character": "west-prisoners",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            },
+            "faction": "player"
+          }
         }
       ],
       "observer": null,
@@ -35,19 +60,23 @@
       "priority": 0,
       "objective": {
         "faction": "player",
-        "label": "Hold the forest outpost for four turns",
+        "id": null,
+        "label": "Free west prisoners",
         "intent": {
-          "hold": {
-            "tile": {
-              "hex": {
-                "col": 13,
-                "row": 19
-              }
+          "approach": {
+            "tile": null,
+            "target": {
+              "character": "west-prisoners",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
             },
-            "turns": 4,
-            "when": {
-              "turnAtLeast": 7
-            },
+            "radius": 1,
+            "through": true,
             "character": null,
             "role": null,
             "side": null,
@@ -58,23 +87,260 @@
             "retreating": null
           }
         },
+        "optional": false,
         "visibleWhen": {
           "always": true
         },
-        "id": null,
-        "optional": false,
-        "availableWhen": null,
-        "satisfiedWhen": null,
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-woodland-defense-2-west-prisoners-freed"
+        },
         "preserveLives": null,
         "playerMarker": null
       }
     },
     {
-      "id": "commander-lost",
+      "id": "rl-woodland-defense-2-lost-west-prisoners",
       "when": {
         "noUnits": {
-          "character": null,
-          "role": "leader",
+          "character": "west-prisoners",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "west-prisoners was lost."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "rl-woodland-defense-2-south-prisoners-freed",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "proximity": {
+              "tile": null,
+              "target": {
+                "character": "south-prisoners",
+                "role": null,
+                "side": null,
+                "faction": null,
+                "unitType": null,
+                "unitTypes": [],
+                "aiGroup": null,
+                "retreating": null
+              },
+              "radius": 1,
+              "through": true,
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-woodland-defense-2-south-prisoners-freed"
+        },
+        {
+          "changeAllegiance": {
+            "units": {
+              "character": "south-prisoners",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            },
+            "faction": "player"
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Free south prisoners",
+        "intent": {
+          "approach": {
+            "tile": null,
+            "target": {
+              "character": "south-prisoners",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            },
+            "radius": 1,
+            "through": true,
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-woodland-defense-2-south-prisoners-freed"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-woodland-defense-2-lost-south-prisoners",
+      "when": {
+        "noUnits": {
+          "character": "south-prisoners",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "south-prisoners was lost."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "rl-woodland-defense-2-supplies",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 24,
+                  "row": 6
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-woodland-defense-2-supplies"
+        },
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 8
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Secure the supply village for 8 gold",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 24,
+                "row": 6
+              }
+            }
+          ]
+        },
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-woodland-defense-2-supplies"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-woodland-defense-2-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "rl-woodland-defense-2-west-prisoners-freed"
+          },
+          {
+            "flag": "rl-woodland-defense-2-south-prisoners-freed"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-woodland-defense-2-commander-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
           "side": null,
           "faction": "player",
           "unitType": null,
@@ -94,13 +360,13 @@
       "objective": null
     },
     {
-      "id": "deadline",
+      "id": "rl-woodland-defense-2-deadline",
       "when": {
-        "turn": 33
+        "turn": 54
       },
       "actions": [
         {
-          "defeat": "The deadline expired."
+          "defeat": "The operation exceeded its 53-turn deadline."
         }
       ],
       "observer": null,

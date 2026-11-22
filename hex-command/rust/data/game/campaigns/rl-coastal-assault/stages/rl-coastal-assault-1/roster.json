@@ -24,7 +24,7 @@
           "unlit": 0,
           "darkness": 0
         },
-        "penetrates": []
+        "penetrates": ["fog"]
       },
       "explored": []
     }
@@ -37,7 +37,7 @@
         "kind": "human"
       },
       "palette": "player",
-      "gold": 34,
+      "gold": 40,
       "recruits": [
         {
           "unit": "harpooner",
@@ -132,11 +132,69 @@
           "experience": 0,
           "retreating": null,
           "rebuilding": null
+        },
+        {
+          "type": "harpooner",
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 19
+          },
+          "id": "u14",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "reefguard",
+          "role": null,
+          "tile": {
+            "col": 5,
+            "row": 20
+          },
+          "id": "u15",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "wavemender",
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 21
+          },
+          "id": "u16",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
       "relations": {
         "enemy": "hostile",
-        "player": "allied"
+        "player": "allied",
+        "southern-raiders": "hostile"
       },
       "visionGroup": "player",
       "name": null,
@@ -280,7 +338,122 @@
       ],
       "relations": {
         "player": "hostile",
-        "enemy": "allied"
+        "enemy": "allied",
+        "southern-raiders": "allied"
+      },
+      "visionGroup": "enemy",
+      "name": null,
+      "transfer": null
+    },
+    {
+      "id": "southern-raiders",
+      "phase": "ai",
+      "controller": {
+        "kind": "ai",
+        "policy": null
+      },
+      "palette": "enemy",
+      "gold": 16,
+      "recruits": [
+        {
+          "unit": "harpooner",
+          "cost": null
+        },
+        {
+          "unit": "reefguard",
+          "cost": null
+        },
+        {
+          "unit": "wavemender",
+          "cost": null
+        },
+        {
+          "unit": "merfolk-maceguard",
+          "cost": null
+        }
+      ],
+      "units": [
+        {
+          "type": "tidekeeper",
+          "role": "leader",
+          "tile": {
+            "col": 8,
+            "row": 30
+          },
+          "id": "u10",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": "south-captain",
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "harpooner",
+          "role": null,
+          "tile": {
+            "col": 7,
+            "row": 30
+          },
+          "id": "u11",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "reefguard",
+          "role": null,
+          "tile": {
+            "col": 7,
+            "row": 31
+          },
+          "id": "u12",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "harpooner",
+          "role": null,
+          "tile": {
+            "col": 9,
+            "row": 28
+          },
+          "id": "u13",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        }
+      ],
+      "relations": {
+        "player": "hostile",
+        "enemy": "allied",
+        "southern-raiders": "allied"
       },
       "visionGroup": "enemy",
       "name": null,

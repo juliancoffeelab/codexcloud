@@ -37,7 +37,7 @@
         "kind": "human"
       },
       "palette": "player",
-      "gold": 36,
+      "gold": 40,
       "recruits": [
         {
           "unit": "swordsman",
@@ -181,7 +181,7 @@
         "policy": null
       },
       "palette": "enemy",
-      "gold": 12,
+      "gold": 16,
       "recruits": [
         {
           "unit": "skeleton",

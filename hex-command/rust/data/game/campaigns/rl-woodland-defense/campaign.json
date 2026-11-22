@@ -3,7 +3,7 @@
   "id": "rl-woodland-defense",
   "name": "Woodland Defense",
   "tagline": "Woodland Defense",
-  "description": "Woodland Defense simulation fixtures.",
+  "description": "Three broad battles with staged or alternative objectives, active opposition and veteran carryover.",
   "shortDescription": "Training only.",
   "race": "beast",
   "leader": "wildkeeper",
@@ -19,6 +19,22 @@
     {
       "id": "charge",
       "name": "charge"
+    },
+    {
+      "id": "fen-warden",
+      "name": "Fen warden"
+    },
+    {
+      "id": "fen-scout",
+      "name": "Fen scout"
+    },
+    {
+      "id": "west-prisoners",
+      "name": "West prisoners"
+    },
+    {
+      "id": "south-prisoners",
+      "name": "South prisoners"
     }
   ],
   "ending": [],
@@ -28,8 +44,8 @@
     "stages/rl-woodland-defense-3/stage.json"
   ],
   "carryover": {
-    "goldLimit": 8,
-    "veteranLimit": 4,
+    "goldLimit": 20,
+    "veteranLimit": 6,
     "deploymentRadius": 3,
     "weights": {
       "hp": 1,

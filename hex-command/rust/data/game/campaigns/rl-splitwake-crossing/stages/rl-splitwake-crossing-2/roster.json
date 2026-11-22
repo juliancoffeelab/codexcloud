@@ -37,7 +37,7 @@
         "kind": "human"
       },
       "palette": "player",
-      "gold": 24,
+      "gold": 32,
       "recruits": [
         {
           "unit": "harpooner",
@@ -145,7 +145,7 @@
           "items": [],
           "perceptionEffects": [],
           "aiGroup": null,
-          "character": null,
+          "character": "rear-guard",
           "moved": false,
           "attackSpent": false,
           "experience": 0,
@@ -188,7 +188,7 @@
         "policy": null
       },
       "palette": "enemy",
-      "gold": 12,
+      "gold": 20,
       "recruits": [
         {
           "unit": "harpooner",

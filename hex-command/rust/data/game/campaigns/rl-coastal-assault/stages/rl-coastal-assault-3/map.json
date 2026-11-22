@@ -3531,7 +3531,7 @@
       "connections": [],
       "floor": "green-forest",
       "environmentEffects": [],
-      "owner": null
+      "owner": "player"
     },
     {
       "col": 18,

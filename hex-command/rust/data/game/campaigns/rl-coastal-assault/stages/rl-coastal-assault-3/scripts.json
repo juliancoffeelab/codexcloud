@@ -2,23 +2,37 @@
   "requiredCompanions": [],
   "events": [
     {
-      "id": "mission-complete",
+      "id": "rl-coastal-assault-3-fleet-safe",
       "when": {
-        "own": {
-          "tile": {
-            "hex": {
-              "col": 10,
-              "row": 23
-            }
+        "all": [
+          {
+            "always": true
           },
-          "faction": "player",
-          "turns": 10,
-          "when": null
-        }
+          {
+            "held": {
+              "tile": {
+                "hex": {
+                  "col": 18,
+                  "row": 17
+                }
+              },
+              "turns": 21,
+              "when": null,
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
       },
       "actions": [
         {
-          "victory": "Task completed."
+          "setFlag": "rl-coastal-assault-3-fleet-safe"
         }
       ],
       "observer": null,
@@ -26,37 +40,190 @@
       "priority": 0,
       "objective": {
         "faction": "player",
-        "label": "Hold the island stronghold for ten turns",
+        "id": null,
+        "label": "Hold the evacuation keep for twenty-one consecutive turns and protect the tidekeeper",
         "intent": {
-          "own": {
+          "hold": {
             "tile": {
               "hex": {
-                "col": 10,
-                "row": 23
+                "col": 18,
+                "row": 17
               }
             },
+            "turns": 21,
+            "when": null,
+            "character": null,
+            "role": null,
+            "side": null,
             "faction": "player",
-            "turns": 10,
-            "when": null
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
+        "optional": false,
         "visibleWhen": {
           "always": true
         },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-coastal-assault-3-fleet-safe"
+        },
+        "preserveLives": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-coastal-assault-3-first-sea-attack",
+      "when": {
+        "turn": 8
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 17,
+                "row": 20
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": ["harpooner", "reefguard"]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-coastal-assault-3-second-sea-attack",
+      "when": {
+        "turn": 14
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 17,
+                "row": 20
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": ["harpooner", "harpooner"]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-coastal-assault-3-forward-supplies",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 11,
+                  "row": 19
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-coastal-assault-3-forward-supplies"
+        },
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 10
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
         "id": null,
-        "optional": false,
-        "availableWhen": null,
-        "satisfiedWhen": null,
+        "label": "Secure the supply village for 10 gold",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 11,
+                "row": 19
+              }
+            }
+          ]
+        },
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-coastal-assault-3-forward-supplies"
+        },
         "preserveLives": null,
         "playerMarker": null
       }
     },
     {
-      "id": "commander-lost",
+      "id": "rl-coastal-assault-3-victory",
+      "when": {
+        "flag": "rl-coastal-assault-3-fleet-safe"
+      },
+      "actions": [
+        {
+          "victory": "The company survived until the fleet escaped."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-coastal-assault-3-commander-lost",
       "when": {
         "noUnits": {
-          "character": null,
-          "role": "leader",
+          "character": "player-leader",
+          "role": null,
           "side": null,
           "faction": "player",
           "unitType": null,
@@ -76,13 +243,13 @@
       "objective": null
     },
     {
-      "id": "deadline",
+      "id": "rl-coastal-assault-3-deadline",
       "when": {
-        "turn": 47
+        "turn": 42
       },
       "actions": [
         {
-          "defeat": "The deadline expired."
+          "defeat": "The operation exceeded its 41-turn deadline."
         }
       ],
       "observer": null,

@@ -1,78 +1,30 @@
 {
-  "requiredCompanions": ["charge"],
+  "requiredCompanions": [],
   "events": [
     {
-      "id": "intercept",
+      "id": "rl-underground-escape-3-pursuit-ended",
       "when": {
-        "noUnits": {
-          "character": "charge",
-          "role": null,
-          "side": null,
-          "faction": "player",
-          "unitType": null,
-          "unitTypes": [],
-          "aiGroup": null,
-          "retreating": null
-        }
-      },
-      "actions": [
-        {
-          "defeat": "The escort was intercepted."
-        }
-      ],
-      "observer": null,
-      "remembers": true,
-      "priority": 100,
-      "objective": {
-        "faction": "enemy",
-        "label": "Intercept the escort",
-        "intent": {
-          "defeat": {
-            "character": "charge",
-            "role": null,
-            "side": null,
-            "faction": "player",
-            "unitType": null,
-            "unitTypes": [],
-            "aiGroup": null,
-            "retreating": null
-          }
-        },
-        "visibleWhen": {
-          "always": true
-        },
-        "id": null,
-        "optional": false,
-        "availableWhen": null,
-        "satisfiedWhen": null,
-        "preserveLives": null,
-        "playerMarker": null
-      }
-    },
-    {
-      "id": "mission-complete",
-      "when": {
-        "stand": {
-          "tile": {
-            "hex": {
-              "col": 34,
-              "row": 24
-            }
+        "all": [
+          {
+            "always": true
           },
-          "through": true,
-          "character": "charge",
-          "role": null,
-          "side": null,
-          "faction": "player",
-          "unitType": null,
-          "unitTypes": [],
-          "aiGroup": null,
-          "retreating": null
-        }
+          {
+            "noUnits": {
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
       },
       "actions": [
         {
-          "victory": "Task completed."
+          "setFlag": "rl-underground-escape-3-pursuit-ended"
         }
       ],
       "observer": null,
@@ -80,43 +32,119 @@
       "priority": 0,
       "objective": {
         "faction": "player",
-        "label": "Escort the charge out of the caves and across the badlands",
+        "id": null,
+        "label": "Defeat every unit in the pursuing army",
         "intent": {
-          "escort": {
-            "tile": {
-              "hex": {
-                "col": 34,
-                "row": 24
-              }
-            },
-            "through": true,
-            "character": "charge",
+          "defeat": {
+            "character": null,
             "role": null,
             "side": null,
-            "faction": "player",
+            "faction": "enemy",
             "unitType": null,
             "unitTypes": [],
             "aiGroup": null,
             "retreating": null
           }
         },
+        "optional": false,
         "visibleWhen": {
           "always": true
         },
-        "id": null,
-        "optional": false,
-        "availableWhen": null,
-        "satisfiedWhen": null,
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-underground-escape-3-pursuit-ended"
+        },
         "preserveLives": null,
         "playerMarker": null
       }
     },
     {
-      "id": "commander-lost",
+      "id": "rl-underground-escape-3-supplies",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 25,
+                  "row": 19
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-underground-escape-3-supplies"
+        },
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 8
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Secure the supply village for 8 gold",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 25,
+                "row": 19
+              }
+            }
+          ]
+        },
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-underground-escape-3-supplies"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-underground-escape-3-victory",
+      "when": {
+        "flag": "rl-underground-escape-3-pursuit-ended"
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-underground-escape-3-commander-lost",
       "when": {
         "noUnits": {
-          "character": null,
-          "role": "leader",
+          "character": "player-leader",
+          "role": null,
           "side": null,
           "faction": "player",
           "unitType": null,
@@ -136,13 +164,13 @@
       "objective": null
     },
     {
-      "id": "deadline",
+      "id": "rl-underground-escape-3-deadline",
       "when": {
-        "turn": 50
+        "turn": 72
       },
       "actions": [
         {
-          "defeat": "The deadline expired."
+          "defeat": "The operation exceeded its 71-turn deadline."
         }
       ],
       "observer": null,

@@ -2,22 +2,29 @@
   "requiredCompanions": [],
   "events": [
     {
-      "id": "garrison-broken",
+      "id": "rl-splitwake-crossing-3-citadel-army-defeated",
       "when": {
-        "noUnits": {
-          "character": null,
-          "role": "leader",
-          "side": null,
-          "faction": "enemy",
-          "unitType": null,
-          "unitTypes": [],
-          "aiGroup": null,
-          "retreating": null
-        }
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
       },
       "actions": [
         {
-          "setFlag": "garrison-broken"
+          "setFlag": "rl-splitwake-crossing-3-citadel-army-defeated"
         }
       ],
       "observer": null,
@@ -25,11 +32,12 @@
       "priority": 0,
       "objective": {
         "faction": "player",
-        "label": "Defeat the citadel commander",
+        "id": null,
+        "label": "Defeat the entire citadel army",
         "intent": {
           "defeat": {
             "character": null,
-            "role": "leader",
+            "role": null,
             "side": null,
             "faction": "enemy",
             "unitType": null,
@@ -38,77 +46,33 @@
             "retreating": null
           }
         },
-        "id": null,
         "optional": false,
         "visibleWhen": {
           "always": true
         },
-        "availableWhen": null,
-        "satisfiedWhen": null,
-        "playerMarker": null,
-        "preserveLives": null
-      }
-    },
-    {
-      "id": "citadel-captured",
-      "when": {
-        "own": {
-          "tile": {
-            "hex": {
-              "col": 27,
-              "row": 19
-            }
-          },
-          "faction": "player",
-          "turns": null,
-          "when": null
-        }
-      },
-      "actions": [
-        {
-          "setFlag": "citadel-captured"
-        }
-      ],
-      "observer": null,
-      "remembers": true,
-      "priority": 0,
-      "objective": {
-        "faction": "player",
-        "label": "Capture the island citadel",
-        "intent": {
-          "capture": [
-            {
-              "hex": {
-                "col": 27,
-                "row": 19
-              }
-            }
-          ]
-        },
-        "id": null,
-        "optional": false,
-        "visibleWhen": {
+        "availableWhen": {
           "always": true
         },
-        "availableWhen": null,
-        "satisfiedWhen": null,
-        "playerMarker": null,
-        "preserveLives": null
+        "satisfiedWhen": {
+          "flag": "rl-splitwake-crossing-3-citadel-army-defeated"
+        },
+        "preserveLives": null,
+        "playerMarker": null
       }
     },
     {
-      "id": "mission-complete",
+      "id": "rl-splitwake-crossing-3-landing-supplies",
       "when": {
         "all": [
           {
-            "flag": "garrison-broken"
+            "always": true
           },
           {
             "own": {
               "tile": {
                 "hex": {
                   "col": 27,
-                  "row": 19
+                  "row": 23
                 }
               },
               "faction": "player",
@@ -120,7 +84,54 @@
       },
       "actions": [
         {
-          "victory": "Task completed."
+          "setFlag": "rl-splitwake-crossing-3-landing-supplies"
+        },
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 8
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Secure the supply village for 8 gold",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 27,
+                "row": 23
+              }
+            }
+          ]
+        },
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-splitwake-crossing-3-landing-supplies"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-splitwake-crossing-3-victory",
+      "when": {
+        "flag": "rl-splitwake-crossing-3-citadel-army-defeated"
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
         }
       ],
       "observer": null,
@@ -129,11 +140,11 @@
       "objective": null
     },
     {
-      "id": "commander-lost",
+      "id": "rl-splitwake-crossing-3-commander-lost",
       "when": {
         "noUnits": {
-          "character": null,
-          "role": "leader",
+          "character": "player-leader",
+          "role": null,
           "side": null,
           "faction": "player",
           "unitType": null,
@@ -153,13 +164,13 @@
       "objective": null
     },
     {
-      "id": "deadline",
+      "id": "rl-splitwake-crossing-3-deadline",
       "when": {
-        "turn": 48
+        "turn": 64
       },
       "actions": [
         {
-          "defeat": "The deadline expired."
+          "defeat": "The operation exceeded its 63-turn deadline."
         }
       ],
       "observer": null,

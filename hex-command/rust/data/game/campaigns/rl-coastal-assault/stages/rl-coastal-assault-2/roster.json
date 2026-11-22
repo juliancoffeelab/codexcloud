@@ -24,7 +24,7 @@
           "unlit": 0,
           "darkness": 0
         },
-        "penetrates": []
+        "penetrates": ["fog"]
       },
       "explored": []
     }
@@ -37,7 +37,7 @@
         "kind": "human"
       },
       "palette": "player",
-      "gold": 24,
+      "gold": 32,
       "recruits": [
         {
           "unit": "harpooner",

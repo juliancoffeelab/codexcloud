@@ -4910,11 +4910,10 @@
     {
       "col": 27,
       "row": 19,
-      "terrain": "castle-bell",
+      "terrain": "keep",
       "floor": "castle-paving",
       "environmentEffects": [],
       "id": "draft-fortress",
-      "walls": ["e", "se", "sw", "w", "nw", "ne"],
       "owner": "enemy"
     },
     {

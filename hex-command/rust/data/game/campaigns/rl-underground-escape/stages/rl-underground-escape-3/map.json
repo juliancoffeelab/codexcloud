@@ -9336,7 +9336,7 @@
       "connections": [],
       "floor": "autumn-forest",
       "environmentEffects": [],
-      "owner": null
+      "owner": "enemy"
     },
     {
       "col": 39,
@@ -9359,7 +9359,7 @@
       "connections": [],
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "owner": null
+      "owner": "enemy"
     },
     {
       "col": 42,

@@ -1,11 +1,77 @@
 {
-  "requiredCompanions": ["courier"],
+  "requiredCompanions": [],
   "events": [
     {
-      "id": "courier-lost",
+      "id": "rl-splitwake-crossing-2-arrival-player-leader",
       "when": {
-        "noUnits": {
-          "character": "courier",
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 31,
+                  "row": 29
+                }
+              },
+              "through": true,
+              "character": "player-leader",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-splitwake-crossing-2-arrival-player-leader"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Bring player leader to the escape island",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 31,
+                "row": 29
+              }
+            },
+            "through": true,
+            "character": "player-leader",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-splitwake-crossing-2-arrival-player-leader"
+        },
+        "preserveLives": {
+          "character": "player-leader",
           "role": null,
           "side": null,
           "faction": "player",
@@ -13,21 +79,59 @@
           "unitTypes": [],
           "aiGroup": null,
           "retreating": null
-        }
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-splitwake-crossing-2-arrival-courier",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 30,
+                  "row": 29
+                }
+              },
+              "through": true,
+              "character": "courier",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
       },
       "actions": [
         {
-          "defeat": "The courier was intercepted."
+          "setFlag": "rl-splitwake-crossing-2-arrival-courier"
         }
       ],
       "observer": null,
       "remembers": true,
-      "priority": 100,
+      "priority": 0,
       "objective": {
-        "faction": "enemy",
-        "label": "Intercept the courier",
+        "faction": "player",
+        "id": null,
+        "label": "Bring courier to the escape island",
         "intent": {
-          "defeat": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 30,
+                "row": 29
+              }
+            },
+            "through": true,
             "character": "courier",
             "role": null,
             "side": null,
@@ -38,21 +142,17 @@
             "retreating": null
           }
         },
-        "id": null,
         "optional": false,
         "visibleWhen": {
           "always": true
         },
-        "availableWhen": null,
-        "satisfiedWhen": null,
-        "playerMarker": null,
-        "preserveLives": null
-      }
-    },
-    {
-      "id": "mission-complete",
-      "when": {
-        "stand": {
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-splitwake-crossing-2-arrival-courier"
+        },
+        "preserveLives": {
           "character": "courier",
           "role": null,
           "side": null,
@@ -60,19 +160,42 @@
           "unitType": null,
           "unitTypes": [],
           "aiGroup": null,
-          "retreating": null,
-          "tile": {
-            "hex": {
-              "col": 31,
-              "row": 29
-            }
+          "retreating": null
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-splitwake-crossing-2-arrival-rear-guard",
+      "when": {
+        "all": [
+          {
+            "always": true
           },
-          "through": true
-        }
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 31,
+                  "row": 28
+                }
+              },
+              "through": true,
+              "character": "rear-guard",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
       },
       "actions": [
         {
-          "victory": "Task completed."
+          "setFlag": "rl-splitwake-crossing-2-arrival-rear-guard"
         }
       ],
       "observer": null,
@@ -80,43 +203,147 @@
       "priority": 0,
       "objective": {
         "faction": "player",
-        "label": "Escort the courier to the southeastern island",
+        "id": null,
+        "label": "Bring rear guard to the escape island",
         "intent": {
-          "escort": {
-            "character": "courier",
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 31,
+                "row": 28
+              }
+            },
+            "through": true,
+            "character": "rear-guard",
             "role": null,
             "side": null,
             "faction": "player",
             "unitType": null,
             "unitTypes": [],
             "aiGroup": null,
-            "retreating": null,
-            "tile": {
-              "hex": {
-                "col": 31,
-                "row": 29
-              }
-            },
-            "through": true
+            "retreating": null
           }
         },
-        "id": null,
         "optional": false,
         "visibleWhen": {
           "always": true
         },
-        "availableWhen": null,
-        "satisfiedWhen": null,
-        "playerMarker": null,
-        "preserveLives": null
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-splitwake-crossing-2-arrival-rear-guard"
+        },
+        "preserveLives": {
+          "character": "rear-guard",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
       }
     },
     {
-      "id": "commander-lost",
+      "id": "rl-splitwake-crossing-2-flotilla-defeated",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-splitwake-crossing-2-flotilla-defeated"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the entire enemy flotilla",
+        "intent": {
+          "defeat": {
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-splitwake-crossing-2-flotilla-defeated"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-splitwake-crossing-2-victory",
+      "when": {
+        "any": [
+          {
+            "all": [
+              {
+                "flag": "rl-splitwake-crossing-2-arrival-player-leader"
+              },
+              {
+                "flag": "rl-splitwake-crossing-2-arrival-courier"
+              },
+              {
+                "flag": "rl-splitwake-crossing-2-arrival-rear-guard"
+              }
+            ]
+          },
+          {
+            "flag": "rl-splitwake-crossing-2-flotilla-defeated"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-splitwake-crossing-2-commander-lost",
       "when": {
         "noUnits": {
-          "character": null,
-          "role": "leader",
+          "character": "player-leader",
+          "role": null,
           "side": null,
           "faction": "player",
           "unitType": null,
@@ -136,13 +363,13 @@
       "objective": null
     },
     {
-      "id": "deadline",
+      "id": "rl-splitwake-crossing-2-deadline",
       "when": {
-        "turn": 44
+        "turn": 66
       },
       "actions": [
         {
-          "defeat": "The deadline expired."
+          "defeat": "The operation exceeded its 65-turn deadline."
         }
       ],
       "observer": null,

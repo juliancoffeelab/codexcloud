@@ -2,23 +2,29 @@
   "requiredCompanions": [],
   "events": [
     {
-      "id": "mission-complete",
+      "id": "rl-woodland-defense-3-army-defeated",
       "when": {
-        "own": {
-          "tile": {
-            "hex": {
-              "col": 23,
-              "row": 24
-            }
+        "all": [
+          {
+            "always": true
           },
-          "faction": "player",
-          "turns": null,
-          "when": null
-        }
+          {
+            "noUnits": {
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
       },
       "actions": [
         {
-          "victory": "Task completed."
+          "setFlag": "rl-woodland-defense-3-army-defeated"
         }
       ],
       "observer": null,
@@ -26,34 +32,119 @@
       "priority": 0,
       "objective": {
         "faction": "player",
-        "label": "Take the fortress center",
+        "id": null,
+        "label": "Defeat the entire occupying army",
         "intent": {
-          "capture": [
-            {
-              "hex": {
-                "col": 23,
-                "row": 24
-              }
-            }
-          ]
+          "defeat": {
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
         },
+        "optional": false,
         "visibleWhen": {
           "always": true
         },
-        "id": null,
-        "optional": false,
-        "availableWhen": null,
-        "satisfiedWhen": null,
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-woodland-defense-3-army-defeated"
+        },
         "preserveLives": null,
         "playerMarker": null
       }
     },
     {
-      "id": "commander-lost",
+      "id": "rl-woodland-defense-3-supplies",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 8,
+                  "row": 14
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-woodland-defense-3-supplies"
+        },
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 8
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Secure the supply village for 8 gold",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 8,
+                "row": 14
+              }
+            }
+          ]
+        },
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-woodland-defense-3-supplies"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-woodland-defense-3-victory",
+      "when": {
+        "flag": "rl-woodland-defense-3-army-defeated"
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-woodland-defense-3-commander-lost",
       "when": {
         "noUnits": {
-          "character": null,
-          "role": "leader",
+          "character": "player-leader",
+          "role": null,
           "side": null,
           "faction": "player",
           "unitType": null,
@@ -73,13 +164,13 @@
       "objective": null
     },
     {
-      "id": "deadline",
+      "id": "rl-woodland-defense-3-deadline",
       "when": {
-        "turn": 34
+        "turn": 64
       },
       "actions": [
         {
-          "defeat": "The deadline expired."
+          "defeat": "The operation exceeded its 63-turn deadline."
         }
       ],
       "observer": null,

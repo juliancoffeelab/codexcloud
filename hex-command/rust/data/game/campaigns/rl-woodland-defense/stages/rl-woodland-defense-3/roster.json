@@ -37,7 +37,7 @@
         "kind": "human"
       },
       "palette": "player",
-      "gold": 24,
+      "gold": 32,
       "recruits": [
         {
           "unit": "wolf",
@@ -247,6 +247,44 @@
             "row": 30
           },
           "id": "u8",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "bonearcher",
+          "role": null,
+          "tile": {
+            "col": 30,
+            "row": 29
+          },
+          "id": "u9",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "skeleton",
+          "role": null,
+          "tile": {
+            "col": 33,
+            "row": 26
+          },
+          "id": "u10",
           "hp": "full",
           "items": [],
           "perceptionEffects": [],

@@ -24,7 +24,7 @@
           "unlit": 0,
           "darkness": 0
         },
-        "penetrates": []
+        "penetrates": ["fog"]
       },
       "explored": []
     }
@@ -37,7 +37,7 @@
         "kind": "human"
       },
       "palette": "player",
-      "gold": 24,
+      "gold": 40,
       "recruits": [
         {
           "unit": "harpooner",
@@ -132,6 +132,44 @@
           "experience": 0,
           "retreating": null,
           "rebuilding": null
+        },
+        {
+          "type": "reefguard",
+          "role": null,
+          "tile": {
+            "col": 17,
+            "row": 18
+          },
+          "id": "u11",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "harpooner",
+          "role": null,
+          "tile": {
+            "col": 19,
+            "row": 18
+          },
+          "id": "u12",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
       "relations": {
@@ -150,7 +188,7 @@
         "policy": null
       },
       "palette": "enemy",
-      "gold": 24,
+      "gold": 20,
       "recruits": [
         {
           "unit": "swordsman",

@@ -162,7 +162,7 @@
         "policy": null
       },
       "palette": "enemy",
-      "gold": 8,
+      "gold": 16,
       "recruits": [
         {
           "unit": "skeleton",

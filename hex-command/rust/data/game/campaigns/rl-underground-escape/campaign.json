@@ -3,7 +3,7 @@
   "id": "rl-underground-escape",
   "name": "Underground Escape",
   "tagline": "Underground Escape",
-  "description": "Underground Escape simulation fixtures.",
+  "description": "Three broad battles with staged or alternative objectives, active opposition and veteran carryover.",
   "shortDescription": "Training only.",
   "race": "human",
   "leader": "commander",
@@ -28,8 +28,8 @@
     "stages/rl-underground-escape-3/stage.json"
   ],
   "carryover": {
-    "goldLimit": 8,
-    "veteranLimit": 4,
+    "goldLimit": 20,
+    "veteranLimit": 6,
     "deploymentRadius": 3,
     "weights": {
       "hp": 1,

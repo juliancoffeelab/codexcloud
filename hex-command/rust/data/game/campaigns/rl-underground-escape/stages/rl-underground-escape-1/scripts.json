@@ -2,29 +2,39 @@
   "requiredCompanions": [],
   "events": [
     {
-      "id": "mission-complete",
+      "id": "rl-underground-escape-1-shore-reached",
       "when": {
-        "stand": {
-          "tile": {
-            "hex": {
-              "col": 14,
-              "row": 10
-            }
+        "all": [
+          {
+            "always": true
           },
-          "through": true,
-          "character": null,
-          "role": null,
-          "side": null,
-          "faction": "player",
-          "unitType": null,
-          "unitTypes": [],
-          "aiGroup": null,
-          "retreating": null
-        }
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 14,
+                  "row": 10
+                }
+              },
+              "through": true,
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
       },
       "actions": [
         {
-          "victory": "Task completed."
+          "setFlag": "rl-underground-escape-1-shore-reached"
+        },
+        {
+          "setFlag": "vault-escaped"
         }
       ],
       "observer": null,
@@ -32,7 +42,8 @@
       "priority": 0,
       "objective": {
         "faction": "player",
-        "label": "Reach the far shore with any unit",
+        "id": null,
+        "label": "Reach the far shore",
         "intent": {
           "goTo": {
             "tile": {
@@ -45,30 +56,123 @@
             "character": null,
             "role": null,
             "side": null,
-            "faction": null,
+            "faction": "player",
             "unitType": null,
             "unitTypes": [],
             "aiGroup": null,
             "retreating": null
           }
         },
+        "optional": false,
         "visibleWhen": {
           "always": true
         },
-        "id": null,
-        "optional": false,
-        "availableWhen": null,
-        "satisfiedWhen": null,
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-underground-escape-1-shore-reached"
+        },
         "preserveLives": null,
         "playerMarker": null
       }
     },
     {
-      "id": "commander-lost",
+      "id": "rl-underground-escape-1-garrison-defeated",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-underground-escape-1-garrison-defeated"
+        },
+        {
+          "setFlag": "vault-cleared"
+        },
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 8
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the vault garrison",
+        "intent": {
+          "defeat": {
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-underground-escape-1-garrison-defeated"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-underground-escape-1-victory",
+      "when": {
+        "any": [
+          {
+            "flag": "rl-underground-escape-1-shore-reached"
+          },
+          {
+            "flag": "rl-underground-escape-1-garrison-defeated"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-underground-escape-1-commander-lost",
       "when": {
         "noUnits": {
-          "character": null,
-          "role": "leader",
+          "character": "player-leader",
+          "role": null,
           "side": null,
           "faction": "player",
           "unitType": null,
@@ -88,13 +192,13 @@
       "objective": null
     },
     {
-      "id": "deadline",
+      "id": "rl-underground-escape-1-deadline",
       "when": {
-        "turn": 31
+        "turn": 48
       },
       "actions": [
         {
-          "defeat": "The deadline expired."
+          "defeat": "The operation exceeded its 47-turn deadline."
         }
       ],
       "observer": null,

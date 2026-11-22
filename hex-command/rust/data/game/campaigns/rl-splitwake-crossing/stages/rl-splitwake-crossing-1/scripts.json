@@ -2,23 +2,43 @@
   "requiredCompanions": [],
   "events": [
     {
-      "id": "mission-complete",
+      "id": "rl-splitwake-crossing-1-landing-ready",
       "when": {
-        "own": {
-          "tile": {
-            "hex": {
-              "col": 18,
-              "row": 12
-            }
+        "all": [
+          {
+            "always": true
           },
-          "faction": "player",
-          "turns": 10,
-          "when": null
-        }
+          {
+            "held": {
+              "tile": {
+                "hex": {
+                  "col": 9,
+                  "row": 7
+                }
+              },
+              "turns": 19,
+              "when": null,
+              "character": "player-leader",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
       },
       "actions": [
         {
-          "victory": "Task completed."
+          "setFlag": "rl-splitwake-crossing-1-landing-ready"
+        },
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 8
+          }
         }
       ],
       "observer": null,
@@ -26,37 +46,253 @@
       "priority": 0,
       "objective": {
         "faction": "player",
-        "label": "Take the landing village and hold it for ten turns",
+        "id": null,
+        "label": "Protect the tidekeeper at the keep for nineteen consecutive turns",
         "intent": {
-          "own": {
+          "hold": {
             "tile": {
               "hex": {
-                "col": 18,
-                "row": 12
+                "col": 9,
+                "row": 7
               }
             },
+            "turns": 19,
+            "when": null,
+            "character": "player-leader",
+            "role": null,
+            "side": null,
             "faction": "player",
-            "turns": 10,
-            "when": null
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
           }
         },
-        "id": null,
         "optional": false,
         "visibleWhen": {
           "always": true
         },
-        "availableWhen": null,
-        "satisfiedWhen": null,
-        "playerMarker": null,
-        "preserveLives": null
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-splitwake-crossing-1-landing-ready"
+        },
+        "preserveLives": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
       }
     },
     {
-      "id": "commander-lost",
+      "id": "rl-splitwake-crossing-1-beachhead",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 18,
+                  "row": 12
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-splitwake-crossing-1-beachhead"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Take the landing village",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 18,
+                "row": 12
+              }
+            }
+          ]
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-splitwake-crossing-1-beachhead"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-splitwake-crossing-1-defenders-defeated",
+      "when": {
+        "all": [
+          {
+            "flag": "rl-splitwake-crossing-1-beachhead"
+          },
+          {
+            "noUnits": {
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-splitwake-crossing-1-defenders-defeated"
+        },
+        {
+          "setFlag": "splitwake-beach-cleared"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the landing defenders",
+        "intent": {
+          "defeat": {
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "flag": "rl-splitwake-crossing-1-beachhead"
+        },
+        "availableWhen": {
+          "flag": "rl-splitwake-crossing-1-beachhead"
+        },
+        "satisfiedWhen": {
+          "flag": "rl-splitwake-crossing-1-defenders-defeated"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-splitwake-crossing-1-sea-raiders",
+      "when": {
+        "turn": 6
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 15,
+                "row": 8
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": ["harpooner", "reefguard"]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-splitwake-crossing-1-second-raid",
+      "when": {
+        "turn": 12
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 17,
+                "row": 10
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": ["harpooner"]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-splitwake-crossing-1-victory",
+      "when": {
+        "any": [
+          {
+            "flag": "rl-splitwake-crossing-1-landing-ready"
+          },
+          {
+            "flag": "rl-splitwake-crossing-1-defenders-defeated"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-splitwake-crossing-1-commander-lost",
       "when": {
         "noUnits": {
-          "character": null,
-          "role": "leader",
+          "character": "player-leader",
+          "role": null,
           "side": null,
           "faction": "player",
           "unitType": null,
@@ -76,13 +312,13 @@
       "objective": null
     },
     {
-      "id": "deadline",
+      "id": "rl-splitwake-crossing-1-deadline",
       "when": {
         "turn": 42
       },
       "actions": [
         {
-          "defeat": "The deadline expired."
+          "defeat": "The operation exceeded its 41-turn deadline."
         }
       ],
       "observer": null,
