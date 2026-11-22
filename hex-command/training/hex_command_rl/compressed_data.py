@@ -58,7 +58,7 @@ def collect_one(task):
     )
 
 
-def collect(configs, root, record):
+def collect(configs, root, record, workers=2, games_per_shard=4):
     root = Path(root)
     root.mkdir(parents=True, exist_ok=True)
     manifest_path = root / "manifest.json"
@@ -68,11 +68,13 @@ def collect(configs, root, record):
         else dict(
             configs=configs, pretrain_imitators=[pretrain_imitator(c) for c in configs],
             fingerprints=json.loads(native.fingerprints()),
-            sequence_schema=SEQUENCE_SCHEMA, shards={}
+            sequence_schema=SEQUENCE_SCHEMA, games_per_shard=games_per_shard, shards={}
         )
     )
     if manifest.get("sequence_schema") != SEQUENCE_SCHEMA:
         raise ValueError("teacher corpus lacks sequence boundaries; collect a new corpus")
+    if manifest.get("games_per_shard", 4) != games_per_shard:
+        raise ValueError("teacher corpus shard layout differs")
     if (manifest["configs"] != configs
         or manifest.get("pretrain_imitators") != [pretrain_imitator(c) for c in configs]
         or manifest["fingerprints"] != json.loads(native.fingerprints())):
@@ -82,7 +84,8 @@ def collect(configs, root, record):
     batches = []
     for _, cases in groupby(configs, key=group):
         cases = list(cases)
-        batches.extend(cases[i:i+4] for i in range(0, len(cases), 4))
+        batches.extend(cases[i:i+games_per_shard]
+                       for i in range(0, len(cases), games_per_shard))
     for start, batch in enumerate(batches):
         name = f"{start:06d}.npz"
         p = root / name
@@ -95,7 +98,7 @@ def collect(configs, root, record):
             continue
         tasks.append((str(p), batch))
     with ProcessPoolExecutor(
-        max_workers=2, mp_context=multiprocessing.get_context("spawn")
+        max_workers=workers, mp_context=multiprocessing.get_context("spawn")
     ) as pool:
         for future in as_completed([pool.submit(collect_one, t) for t in tasks]):
             row = future.result()

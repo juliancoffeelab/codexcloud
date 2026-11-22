@@ -16,6 +16,7 @@ from .mixed_workload import mass
 from .recovery import atomic_json, save_bundle, load_resume, read_jsonl
 from .spatial import SpatialPlanner
 from .imitation_sequences import SEQUENCE_SCHEMA, forward_window
+from .training_clock import TrainingClock
 
 
 def measure(model, directory, manifest, sequence_length=8, sequence_batch_size=8):
@@ -81,9 +82,14 @@ def main():
     p.add_argument("--threads", type=int, default=2)
     p.add_argument("--sequence-length", type=int, default=8)
     p.add_argument("--sequence-batch-size", type=int, default=8)
+    p.add_argument("--checkpoint-seconds", type=float, default=300)
+    p.add_argument("--collection-workers", type=int, default=2)
+    p.add_argument("--games-per-shard", type=int, default=4)
     a = p.parse_args()
-    if a.sequence_length < 1 or a.sequence_batch_size < 1:
-        p.error("sequence length and batch size must be positive")
+    if (a.sequence_length < 1 or a.sequence_batch_size < 1
+            or a.seconds <= 0 or a.checkpoint_seconds <= 0
+            or a.collection_workers < 1 or a.games_per_shard < 1):
+        p.error("budgets, sequence and collection sizes must be positive")
     sequence_training = dict(
         schema=SEQUENCE_SCHEMA, length=a.sequence_length,
         batch_size=a.sequence_batch_size,
@@ -108,6 +114,8 @@ def main():
     elapsed = 0.0
     best_loss = float("inf")
     if old:
+        if old.get("budget_kind") != "training-time":
+            raise ValueError("old wall-time checkpoints require a new warm start")
         if old.get("sequence_training") != sequence_training:
             raise ValueError("resume sequence settings differ; old independent-example checkpoints require a warm start")
         assert (
@@ -123,24 +131,30 @@ def main():
         rng.bit_generator.state = old["numpy_rng"]
         random.setstate(old["python_rng"])
     start = time.monotonic()
-    deadline = start + max(0, a.seconds - elapsed)
+    clock = TrainingClock(elapsed)
+    prior_wall = old.get("wall_seconds", 0.0) if old else 0.0
     read_jsonl(run / "metrics.jsonl", repair=True)
     log = (run / "metrics.jsonl").open("a")
 
     def record(event, **kw):
-        row = dict(event=event, seconds=elapsed + time.monotonic() - start, **kw)
+        row = dict(event=event, seconds=clock.seconds(),
+                   wall_seconds=prior_wall + time.monotonic() - start, **kw)
         log.write(json.dumps(row) + "\n")
         log.flush()
         print(json.dumps(row), flush=True)
         atomic_json(run / "status.json", row)
 
     def checkpoint(label):
+        running = clock.started is not None
+        clock.pause()
         state = dict(
             kind="mixed_imitation",
             policy=model.state_dict(),
             optimizer=optimizer.state_dict(),
             progress=progress,
-            elapsed=elapsed + time.monotonic() - start,
+            elapsed=clock.seconds(),
+            wall_seconds=prior_wall + time.monotonic() - start,
+            budget_kind="training-time",
             best_loss=best_loss,
             torch_rng=torch.get_rng_state(),
             numpy_rng=rng.bit_generator.state,
@@ -150,18 +164,23 @@ def main():
             sequence_training=sequence_training,
         )
         save_bundle(run, state, model, label)
+        if running:
+            clock.resume()
 
     checkpoint("initial")
     record("started", budget=a.seconds, resumed=bool(old), balance=spec["balance"],
            sequence_training=sequence_training)
-    train = collect(spec["train"], root / "corpus/train", record)
-    valid = collect(spec["imitation_validation"], root / "corpus/validation", record)
+    train = collect(spec["train"], root / "corpus/train", record,
+                    workers=a.collection_workers, games_per_shard=a.games_per_shard)
+    valid = collect(spec["imitation_validation"], root / "corpus/validation", record,
+                    workers=a.collection_workers, games_per_shard=a.games_per_shard)
     total = sum(s["decisions"] for s in train["shards"].values())
     group_sizes = defaultdict(int)
     for s in train["shards"].values():
         group_sizes[tuple(s["group"])] += s["decisions"]
     names = list(train["shards"])
-    last_save = time.monotonic()
+    next_save = (int(clock.seconds() // a.checkpoint_seconds) + 1) * a.checkpoint_seconds
+    last_progress = time.monotonic()
     record(
         "collected",
         decisions=total,
@@ -172,15 +191,16 @@ def main():
         initial = measure(model, root / "corpus/validation", valid,
                           a.sequence_length, a.sequence_batch_size)
         record("validation", epoch=0, **initial)
+    clock.resume()
     try:
-        while time.monotonic() < deadline:
+        while clock.seconds() < a.seconds:
             if not progress["order"]:
                 progress["epoch"] += 1
                 progress["order"] = rng.permutation(len(names)).tolist()
                 progress["shard"] = 0
             epoch_loss = epoch_rows = 0
             epoch_start = time.monotonic()
-            while progress["shard"] < len(names) and time.monotonic() < deadline:
+            while progress["shard"] < len(names) and clock.seconds() < a.seconds:
                 name = names[progress["order"][progress["shard"]]]
                 meta = train["shards"][name]
                 data = load(root / "corpus/train" / name)
@@ -192,7 +212,7 @@ def main():
                     mass(meta["configs"][0]) * total / group_sizes[tuple(meta["group"])]
                 )
                 model.train()
-                while progress["batch"] < n and time.monotonic() < deadline:
+                while progress["batch"] < n and clock.seconds() < a.seconds:
                     ids = progress["ids"][progress["batch"]:
                                           progress["batch"] + a.sequence_batch_size]
                     streams = [data.streams[i] for i in ids]
@@ -223,9 +243,12 @@ def main():
                     progress["decisions"] += count
                     epoch_rows += count
                     epoch_loss += float(summed_loss.detach()) * weight
-                    if time.monotonic() - last_save >= 120:
-                        checkpoint(f"update-{progress['updates']:08d}")
-                        last_save = time.monotonic()
+                    if clock.seconds() >= next_save:
+                        checkpoint(f"minute-{round(next_save / 60):04d}")
+                        while next_save <= clock.seconds():
+                            next_save += a.checkpoint_seconds
+                    if time.monotonic() - last_progress >= 30:
+                        last_progress = time.monotonic()
                         record(
                             "progress",
                             **{
@@ -239,6 +262,7 @@ def main():
                     progress["ids"] = []
                     progress["shard"] += 1
             if progress["shard"] >= len(names):
+                clock.pause()
                 model.eval()
                 v = measure(model, root / "corpus/validation", valid,
                             a.sequence_length, a.sequence_batch_size)
@@ -259,9 +283,11 @@ def main():
                     )
                 progress["order"] = []
                 progress["ids"] = []
+                clock.resume()
             else:
                 break
     finally:
+        clock.pause()
         model.eval()
         checkpoint("last")
         record(
@@ -273,7 +299,8 @@ def main():
         log.close()
     atomic_json(
         run / "complete.json",
-        dict(elapsed=elapsed + time.monotonic() - start, progress=progress),
+        dict(elapsed=clock.seconds(), budget_kind="training-time",
+             wall_seconds=prior_wall + time.monotonic() - start, progress=progress),
     )
 
 

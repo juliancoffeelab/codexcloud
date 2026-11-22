@@ -672,3 +672,14 @@ the surrounding PPO checkpoint preserves the RNG for future draws.
 contains every case's estimate, observation count, multiplier, normalized decision
 weight and actual decision share. Imitation weights, gameplay evaluation panels,
 checkpoint-selection metrics and all reward calculations stay fixed.
+
+### Mixed-imitation run clock and collection bounds
+
+The mixed pretrainer budgets active training pipeline time. Corpus collection,
+initial/epoch validation, checkpoint writes and recovery downtime do not consume
+`--seconds`. Checkpoints store `budget_kind: training-time` and separate training
+`elapsed` and total `wall_seconds`; older wall-time checkpoints require a warm
+start. `--checkpoint-seconds` sets training-time checkpoint spacing (300 seconds
+by default). `--collection-workers` and `--games-per-shard` bound collection
+concurrency and retained games without truncating their teacher trajectories.
+The corpus manifest pins its shard layout for recovery.

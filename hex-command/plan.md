@@ -731,3 +731,17 @@ GRU matrices plus both CNN branches/head, and resumed active memory at decision
 64 of a stream. A serialized mid-stream checkpoint reproduced the exact next
 optimizer update, including dropout, memory and momentum. No gameplay-strength
 improvement is inferred from this smoke.
+
+### One-hour recurrent imitation run authorized
+
+Start from V4's policy expanded into the current architecture. Optimize for
+3,600 training seconds after corpus preparation; validation and checkpoint writes
+are excluded. Retain five-minute checkpoints and gameplay measurements at
+0/15/30/45/60 minutes. Keep Lantern Road separate from selection. Use all 336
+configured teacher groups, with four teaching games and two disjoint imitation
+validation games per group. Corpus shards retain one whole game each to limit
+memory. The exact frozen workloads, seed bands, evaluation panels and settings
+are in `tmp/rl/pretrain-v4-recurrent-60m-20261122/protocol.json`.
+
+Kill rewards remain an outstanding PPO experiment and are not part of this
+imitation run. No PPO continuation is authorized by this launch.
