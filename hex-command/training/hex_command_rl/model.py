@@ -26,11 +26,17 @@ class Planner(nn.Module):
         else:
             raise ValueError(f"unknown architecture: {architecture}")
 
+        with torch.no_grad():
+            self.net[0].weight[:, len(native.VISIBILITY_FEATURE_NAMES) :] = 0
+
     def forward(self, features):
         if features.shape[-1] in (
             len(native.LEGACY_FEATURE_NAMES),
             len(native.DUTY_FEATURE_NAMES),
             len(native.DIPLOMACY_FEATURE_NAMES),
+            len(native.CAMPAIGN_FEATURE_NAMES),
+            len(native.VISIBILITY_FEATURE_NAMES),
+            len(native.IDLE_FEATURE_NAMES),
         ):
             features = torch.nn.functional.pad(
                 features, (0, len(native.FEATURE_NAMES) - features.shape[-1])
