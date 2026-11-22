@@ -1,0 +1,426 @@
+{
+  "id": "campaign-cnn-ppo-v4",
+  "source_revision": "6b99fae284cba5a55d21ceb797ec37d008a3971c",
+  "architecture": {
+    "schema": 11,
+    "dense_features": 243,
+    "spatial_channels": 79,
+    "convolutions": [
+      {
+        "input_channels": 79,
+        "output_channels": 16,
+        "spatial_taps": 7
+      },
+      {
+        "input_channels": 16,
+        "output_channels": 16,
+        "spatial_taps": 7
+      }
+    ],
+    "head_dimensions": [
+      307,
+      64,
+      64,
+      1
+    ],
+    "actor_parameters": 34609,
+    "recurrent": false,
+    "coarse_branch": false
+  },
+  "imitation": {
+    "warm_start": {
+      "path": "training/checkpoints/campaign-cnn-ppo-v2/resume.pt",
+      "sha256": "e54d0ab6f6108d9137f8ee539d86f7454899402842236a45c171ddc27faf6523"
+    },
+    "teacher": {
+      "recruiter": "predictor",
+      "planner": "queued",
+      "campaign": "mission"
+    },
+    "selected_epoch": 6,
+    "selected_elapsed_seconds": 2605.215992665999,
+    "selected_resume_sha256": "648b7c4ac100c7e1b766216eb5ad1c28f2f21b91a157541126c167f7658b1463",
+    "budget_seconds": 3600,
+    "train_cases": 408,
+    "validation_cases": 80,
+    "workload_sha256": "51105acd7fd65d85d17b0d95167a0f6fd251804524914a8ca525b9840751fb58",
+    "objective": "cross-entropy on teacher action among legal candidate actions"
+  },
+  "ppo": {
+    "progress": {
+      "elapsed": 32400.08203271901,
+      "updates": 5143,
+      "episodes": 10566,
+      "decisions": 1316608
+    },
+    "parameters": {
+      "seconds": 32400.0,
+      "seed_start": 26000001,
+      "temperature": 0.35,
+      "envs": 4,
+      "horizon": 64,
+      "minibatch_size": 8,
+      "optimization_epochs": 3,
+      "max_gradient_norm": 0.5,
+      "actor_lr": 5e-06,
+      "critic_lr": 0.001,
+      "gamma": 0.999,
+      "gae_lambda": 0.95,
+      "clip": 0.2,
+      "entropy_coefficient": 0.001,
+      "reference_kl_coefficient": 0.02,
+      "critic_warmup_episodes": 24,
+      "rewards": {
+        "campaign_success": 1,
+        "campaign_defeat": -1,
+        "campaign_cap": -2.0,
+        "escort_loss": -2,
+        "protected_loss": -1.5,
+        "leader_loss": -1,
+        "arena_win": 1,
+        "arena_defeat": -1,
+        "arena_cap": -1
+      }
+    },
+    "fingerprints": {
+      "content": "eccb04afb1b5d5df2a6ed78663f50c4710efd198c12f6802f3d04406c96c795f",
+      "engine": "3822ea7d40aeda8590f7c53ae04b232ef358c5b8518bef0b61826b7f229a399d"
+    },
+    "workload_sha256": "bc180476c088231b061d19ca24d73ed1c29ae61fe9ff52186b9263a2c017a740",
+    "balance": "50% arena / 50% campaign decisions; equal tasks then variants; synthetic selection and authored showcase",
+    "chapter_completion_reward": 0,
+    "terminal_campaign_success_reward": 1,
+    "adaptive_sampling": false
+  },
+  "panels": {
+    "train": {
+      "cases": 33120,
+      "arenas": [
+        "rl-birch-pocket",
+        "rl-cinderfault",
+        "rl-crown-gap",
+        "rl-fordstep",
+        "rl-frosthook-gate",
+        "rl-jawbone-crossing",
+        "rl-last-lantern",
+        "rl-quarry-ring",
+        "rl-sable-sound",
+        "rl-splitpine-clearing",
+        "rl-sump-teeth",
+        "rl-switchback-saltworks",
+        "rl-three-wells-trail",
+        "rl-twin-fords"
+      ],
+      "campaigns": [
+        "rl-splitwake-crossing",
+        "rl-underground-escape",
+        "rl-woodland-defense"
+      ],
+      "opponents": [
+        "classic",
+        "full",
+        "predictor"
+      ],
+      "objectives": [
+        "authored",
+        "deathmatch",
+        "fog",
+        "territory"
+      ],
+      "seed_range": [
+        1000001,
+        2000024
+      ]
+    },
+    "periodic": {
+      "cases": 156,
+      "arenas": [
+        "alder-fen",
+        "crossings",
+        "drowned-kilns",
+        "hart-saddle",
+        "herring-road",
+        "islands",
+        "ochre-wells",
+        "open",
+        "siltbar-bend",
+        "wood-edge",
+        "wooded"
+      ],
+      "campaigns": [
+        "rl-coastal-assault",
+        "rl-whitebank-relief"
+      ],
+      "opponents": [
+        "classic",
+        "full",
+        "predictor"
+      ],
+      "objectives": [
+        "authored",
+        "deathmatch",
+        "fog",
+        "territory"
+      ],
+      "seed_range": [
+        3000001,
+        4000001
+      ]
+    },
+    "validation": {
+      "cases": 1344,
+      "arenas": [
+        "alder-fen",
+        "crossings",
+        "drowned-kilns",
+        "hart-saddle",
+        "herring-road",
+        "islands",
+        "ochre-wells",
+        "open",
+        "siltbar-bend",
+        "wood-edge",
+        "wooded"
+      ],
+      "campaigns": [
+        "rl-coastal-assault",
+        "rl-whitebank-relief"
+      ],
+      "opponents": [
+        "classic",
+        "full",
+        "predictor"
+      ],
+      "objectives": [
+        "authored",
+        "deathmatch",
+        "fog",
+        "territory"
+      ],
+      "seed_range": [
+        3000001,
+        4000012
+      ]
+    },
+    "test": {
+      "cases": 1314,
+      "arenas": [
+        "river-valley",
+        "sluice",
+        "villages"
+      ],
+      "campaigns": [
+        "lantern-road"
+      ],
+      "opponents": [
+        "classic",
+        "full",
+        "predictor"
+      ],
+      "objectives": [
+        "authored",
+        "deathmatch",
+        "fight",
+        "flight",
+        "territory"
+      ],
+      "seed_range": [
+        5000001,
+        6000025
+      ]
+    }
+  },
+  "selection": {
+    "checkpoint": "checkpoints/last-1795252605675922037",
+    "reliability_key": [
+      0.19791666666666663,
+      0.4097222222222224,
+      -0.03361742424242422
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.6931818181818181,
+        "wins": 244,
+        "runs": 352,
+        "caps": 14
+      },
+      "arena/full": {
+        "score": 0.44034090909090906,
+        "wins": 155,
+        "runs": 352,
+        "caps": 29
+      },
+      "arena/predictor": {
+        "score": 0.4602272727272727,
+        "wins": 162,
+        "runs": 352,
+        "caps": 28
+      },
+      "campaign/classic": {
+        "score": 0.19791666666666663,
+        "wins": 19,
+        "runs": 96,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.39583333333333337,
+        "wins": 38,
+        "runs": 96,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.2708333333333333,
+        "wins": 26,
+        "runs": 96,
+        "caps": 0
+      }
+    },
+    "candidates": 6,
+    "validation_runs": 1344,
+    "test_seeds_used": false,
+    "criterion": "Worst stratum within 2.5 percentage points of best; then overall score and fewer caps; starting policy eligible"
+  },
+  "showcase": {
+    "pretrain_43m_start": {
+      "checkpoint": "initial-1795220205656123409",
+      "score": 0.3143749999999998,
+      "runs": 1314,
+      "wins": 477,
+      "caps": 179,
+      "strata": {
+        "arena/classic": {
+          "score": 0.638888888888889,
+          "wins": 184,
+          "runs": 288,
+          "caps": 17
+        },
+        "arena/full": {
+          "score": 0.3680555555555555,
+          "wins": 106,
+          "runs": 288,
+          "caps": 58
+        },
+        "arena/predictor": {
+          "score": 0.3993055555555555,
+          "wins": 115,
+          "runs": 288,
+          "caps": 58
+        },
+        "campaign/classic": {
+          "score": 0.24000000000000002,
+          "wins": 36,
+          "runs": 150,
+          "caps": 10
+        },
+        "campaign/full": {
+          "score": 0.16,
+          "wins": 24,
+          "runs": 150,
+          "caps": 18
+        },
+        "campaign/predictor": {
+          "score": 0.08,
+          "wins": 12,
+          "runs": 150,
+          "caps": 18
+        }
+      }
+    },
+    "selected": {
+      "checkpoint": "last-1795252605675922037",
+      "score": 0.2939120370370369,
+      "runs": 1314,
+      "wins": 449,
+      "caps": 240,
+      "strata": {
+        "arena/classic": {
+          "score": 0.6111111111111112,
+          "wins": 176,
+          "runs": 288,
+          "caps": 35
+        },
+        "arena/full": {
+          "score": 0.3576388888888889,
+          "wins": 103,
+          "runs": 288,
+          "caps": 66
+        },
+        "arena/predictor": {
+          "score": 0.3680555555555555,
+          "wins": 106,
+          "runs": 288,
+          "caps": 55
+        },
+        "campaign/classic": {
+          "score": 0.12666666666666668,
+          "wins": 19,
+          "runs": 150,
+          "caps": 36
+        },
+        "campaign/full": {
+          "score": 0.12000000000000001,
+          "wins": 18,
+          "runs": 150,
+          "caps": 36
+        },
+        "campaign/predictor": {
+          "score": 0.18,
+          "wins": 27,
+          "runs": 150,
+          "caps": 12
+        }
+      }
+    },
+    "last": {
+      "checkpoint": "last-1795252605675922037",
+      "score": 0.2939120370370369,
+      "runs": 1314,
+      "wins": 449,
+      "caps": 240,
+      "strata": {
+        "arena/classic": {
+          "score": 0.6111111111111112,
+          "wins": 176,
+          "runs": 288,
+          "caps": 35
+        },
+        "arena/full": {
+          "score": 0.3576388888888889,
+          "wins": 103,
+          "runs": 288,
+          "caps": 66
+        },
+        "arena/predictor": {
+          "score": 0.3680555555555555,
+          "wins": 106,
+          "runs": 288,
+          "caps": 55
+        },
+        "campaign/classic": {
+          "score": 0.12666666666666668,
+          "wins": 19,
+          "runs": 150,
+          "caps": 36
+        },
+        "campaign/full": {
+          "score": 0.12000000000000001,
+          "wins": 18,
+          "runs": 150,
+          "caps": 36
+        },
+        "campaign/predictor": {
+          "score": 0.18,
+          "wins": 27,
+          "runs": 150,
+          "caps": 12
+        }
+      }
+    }
+  },
+  "source_run": "tmp/rl/ppo-from-pretrain-43m-9h-20261121",
+  "shared_backup": "/workspace/shared/ppo-from-pretrain-43m-9h-20261121/rl",
+  "visibility": {
+    "training_campaigns": "Player-only fog on fog routes; enemy penetrates fog. Verified at launch.",
+    "training_arenas": "Two authored variants per arena; fog/sight roster restrictions generally apply to both sides. Base variants are not uniformly clear."
+  }
+}

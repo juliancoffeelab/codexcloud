@@ -1,0 +1,20 @@
+{
+  "checkpoint": "/workspace/codexcloud/hex-command/tmp/rl/v2-predictor-queued-pretrain-1h/posttune/checkpoints/epoch-0006-1795199024586818373/resume.pt",
+  "sha256": "648b7c4ac100c7e1b766216eb5ad1c28f2f21b91a157541126c167f7658b1463",
+  "pretrain_seconds": 2605.215992665999,
+  "fingerprints": {
+    "content": "eccb04afb1b5d5df2a6ed78663f50c4710efd198c12f6802f3d04406c96c795f",
+    "engine": "3822ea7d40aeda8590f7c53ae04b232ef358c5b8518bef0b61826b7f229a399d"
+  },
+  "train_cases": 33120,
+  "fog": {
+    "rl-woodland-defense": "player only",
+    "rl-splitwake-crossing": "player only",
+    "rl-underground-escape": "player only"
+  },
+  "periodic_cases": 156,
+  "validation_cases": 1344,
+  "showcase_cases": 1314,
+  "ppo_budget_seconds": 32400,
+  "rollout_seed_start": 26000001
+}
