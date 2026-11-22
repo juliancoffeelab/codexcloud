@@ -11,13 +11,14 @@ import numpy as np
 import hex_command_training as native
 from .mixed_workload import group, pretrain_imitator
 from .recovery import atomic_json
+from .imitation_sequences import SEQUENCE_SCHEMA, decision_streams
 
 
 def collect_one(task):
     path, configs = task
     path = Path(path)
     teachers = [pretrain_imitator(c) for c in configs]
-    dense, spatial = native.collect_spatial(
+    dense, spatial, contexts_json = native.collect_spatial_sequences(
         [json.dumps(c) for c in configs], 1000000, side="player",
         imitators=[json.dumps(t) for t in teachers],
     )
@@ -25,6 +26,7 @@ def collect_one(task):
     boards, board_offsets, shapes, indices, context_values, contexts = spatial
     if missing or len(labels) >= 1000000:
         raise RuntimeError("incomplete teacher shard")
+    decision_streams(json.loads(contexts_json), len(labels))
     temporary = path.with_suffix(".tmp")
     with temporary.open("wb") as f:
         np.savez_compressed(
@@ -38,6 +40,7 @@ def collect_one(task):
             indices=indices,
             context_values=context_values,
             contexts=contexts,
+            decision_contexts=np.asarray(contexts_json),
         )
         f.flush()
         os.fsync(f.fileno())
@@ -51,6 +54,7 @@ def collect_one(task):
         configs=configs,
         pretrain_imitators=teachers,
         group=list(group(configs[0])),
+        sequence_schema=SEQUENCE_SCHEMA,
     )
 
 
@@ -63,9 +67,12 @@ def collect(configs, root, record):
         if manifest_path.exists()
         else dict(
             configs=configs, pretrain_imitators=[pretrain_imitator(c) for c in configs],
-            fingerprints=json.loads(native.fingerprints()), shards={}
+            fingerprints=json.loads(native.fingerprints()),
+            sequence_schema=SEQUENCE_SCHEMA, shards={}
         )
     )
+    if manifest.get("sequence_schema") != SEQUENCE_SCHEMA:
+        raise ValueError("teacher corpus lacks sequence boundaries; collect a new corpus")
     if (manifest["configs"] != configs
         or manifest.get("pretrain_imitators") != [pretrain_imitator(c) for c in configs]
         or manifest["fingerprints"] != json.loads(native.fingerprints())):
@@ -110,6 +117,9 @@ def collect(configs, root, record):
 def load(path):
     with np.load(path) as z:
         a = {k: z[k] for k in z.files}
+    if "decision_contexts" not in a:
+        raise ValueError("teacher shard lacks sequence boundaries; collect a new corpus")
+    contexts = json.loads(str(a["decision_contexts"].item()))
     return SimpleNamespace(
         dense=(a["x"], a["offsets"], a["labels"], 0),
         boards=a["boards"],
@@ -119,4 +129,6 @@ def load(path):
         context_values=a.get("context_values", np.empty(0, np.float32)),
         contexts=a.get("contexts", np.empty((0, 3), np.int64)),
         channels=len(native.SPATIAL_CHANNEL_NAMES),
+        streams=decision_streams(contexts, len(a["labels"])),
+        decision_contexts=contexts,
     )

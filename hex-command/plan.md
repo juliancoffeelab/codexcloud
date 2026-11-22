@@ -401,9 +401,10 @@ away the targeted behavior.
 - Teacher selection remains unresolved. Rule-based hesitation must not become
   the target behavior. Earlier successful intervention add-ons demonstrate
   recoverable errors, not proof that the current model needs the same remedies.
-- Recurrent imitation would require ordered demonstrations and correct memory
-  boundaries. Existing independent examples start with zero memory; sequence
-  PPO is the implemented path for learning across decisions.
+- Recurrent mixed imitation now preserves ordered teacher streams and explicit
+  match/faction/chapter boundaries. It carries detached memory across windows
+  and trains recurrence within them, like the implemented sequence PPO path.
+  Legacy standalone imitation tools still use independent examples.
 
 ## Agreed direction
 
@@ -473,7 +474,8 @@ away the targeted behavior.
   detailed global pool (16 values), keeps 64 learned values per faction, and
   resets at match/chapter boundaries. Both PPO trainers replay ordered windows
   of up to eight decisions with connected hidden states, and cache reference
-  logits. Legacy independent imitation data still uses zero initial memory.
+  logits. Mixed imitation now also trains ordered teacher streams; old corpora
+  without explicit sequence contexts must be recollected.
   A short mixed arena/campaign PPO smoke completed 34 updates and 544 decisions;
   input and recurrent weights both changed. Native hidden-state/logit parity and
   reset/isolation/repeated-scoring checks passed. Strength gains and complete
@@ -699,3 +701,33 @@ strict catalog setting validation, and a disposable PPO start/resume smoke under
 decisions over a 24-second cumulative budget. Its saved EMA exactly matches the
 recorded actual outcomes; episode-20 refresh, recovery and latest diagnostics
 were verified. It is an integration artifact, not a candidate training run.
+
+### Recurrent imitation sequence wiring
+
+The mixed pretrainer now collects explicit game/faction/map/reset-generation/
+round/decision metadata alongside teacher labels. It partitions complete streams,
+shuffles streams instead of decisions, advances up to eight streams together,
+and backpropagates through windows of eight decisions. Memory carries detached
+between windows and resets at true match/chapter boundaries. Validation follows
+the same ordered path. Teacher selection and authored hierarchical sampling
+weights are unchanged; no reward is added to imitation.
+
+Resume checkpoints retain stream order, active batch, window cursor and detached
+memory along with optimizer/RNG state. Old corpora without sequence boundaries
+are rejected, and old independent-example checkpoints require a warm start rather
+than exact resume. The existing standalone stateless collection API is preserved.
+
+Verification and integration evidence is retained under
+`tmp/rl/recurrent-imitation-20261122/`. This completes sequence wiring, not the
+planned candidate pretraining/strength evaluation. Kill-reward experiments remain
+outstanding PPO work.
+
+Verification passed: 41 training tests (one optional dependency skip), full project
+verification, and 10 arena/20 campaign collection probes. Legacy dense/spatial
+buffers and teacher outcomes were unchanged on the paired arena panel; 7,762
+campaign decisions formed 50 isolated faction/chapter streams. A 36-second
+start/resume integration smoke made 215 updates on 1,680 decisions, changed both
+GRU matrices plus both CNN branches/head, and resumed active memory at decision
+64 of a stream. A serialized mid-stream checkpoint reproduced the exact next
+optimizer update, including dropout, memory and momentum. No gameplay-strength
+improvement is inferred from this smoke.

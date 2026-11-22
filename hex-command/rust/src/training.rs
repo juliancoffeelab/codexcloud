@@ -32,6 +32,8 @@ pub struct Dataset {
     pub spatial: bool,
     pub boards: Vec<spatial::SpatialBoard>,
     pub indices: Vec<[i64; 3]>,
+    pub game: usize,
+    pub decision_contexts: Vec<CollectedDecision>,
 }
 #[derive(Clone, Deserialize, Serialize)]
 pub struct DenseLayer {
@@ -448,13 +450,18 @@ fn unit_history_features(g: &BattleView<'_, '_>, command: &RuntimeCommand) -> [f
             .map_or([0.; 9], |h| h.encode(g.round(), command))
     })
 }
-#[derive(Clone, Default)]
+#[derive(Clone, Default, Serialize)]
 pub struct DecisionContext {
     pub observer: String,
     pub map: String,
     pub round: u32,
     pub decision: u64,
     pub generation: u64,
+}
+#[derive(Serialize)]
+pub struct CollectedDecision {
+    pub game: usize,
+    pub context: DecisionContext,
 }
 fn decision_context(g: &BattleView<'_, '_>) -> DecisionContext {
     SESSION.with(|s| DecisionContext {
@@ -546,6 +553,10 @@ pub(crate) fn record(g: &BattleView<'_, '_>, orders: &TacticalOrders, command: &
             d.features.extend(choices.features);
             d.offsets.push(d.features.len() as i64);
             d.labels.push(index as i64);
+            d.decision_contexts.push(CollectedDecision {
+                game: d.game,
+                context: choices.context,
+            });
         } else {
             d.missing += 1;
         }

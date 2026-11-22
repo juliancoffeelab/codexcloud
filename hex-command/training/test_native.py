@@ -173,7 +173,12 @@ class NativeContract(unittest.TestCase):
         from hex_command_rl.spatial_data import collect_spatial_dataset, batches
 
         configs = [arena([906], rounds=3)[i] for i in (0, 32)]
-        dense, spatial = native.collect_spatial(encode(configs), 100000, side="player")
+        dense, spatial, metadata = native.collect_spatial_sequences(
+            encode(configs), 100000, side="player"
+        )
+        from hex_command_rl.imitation_sequences import decision_streams
+        streams = decision_streams(json.loads(metadata), len(dense[2]))
+        self.assertEqual(len(streams), len(configs))
         original = native.collect(encode(configs), 100000, side="player")
         for a, b in zip(dense[:3], original[:3]):
             np.testing.assert_array_equal(a, b)

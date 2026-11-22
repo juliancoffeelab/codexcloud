@@ -158,6 +158,7 @@ fn collect_data(
             ..Default::default()
         };
         for (i, config) in configs.into_iter().enumerate() {
+            data.game = i;
             let mut config = parse(&config)?;
             let spec = imitators
                 .as_ref()
@@ -291,6 +292,25 @@ fn collect_spatial(
         std::mem::take(&mut data.indices),
     );
     Ok((data_arrays(py, data), spatial))
+}
+/// Ordered labels with explicit match, observer and chapter/reset identity.
+#[pyfunction]
+#[pyo3(signature=(configs,max_samples=100000,side=None,imitators=None))]
+fn collect_spatial_sequences(
+    py: Python<'_>,
+    configs: Vec<String>,
+    max_samples: usize,
+    side: Option<String>,
+    imitators: Option<Vec<String>>,
+) -> PyResult<(DataResult, SpatialResult, String)> {
+    let mut data = collect_data(py, configs, max_samples, side, true, imitators)?;
+    let contexts = serde_json::to_string(&data.decision_contexts).map_err(err)?;
+    let spatial = spatial_arrays(
+        py,
+        data.boards.iter().map(Some).collect(),
+        std::mem::take(&mut data.indices),
+    );
+    Ok((data_arrays(py, data), spatial, contexts))
 }
 #[pyfunction]
 fn evaluate(py: Python<'_>, configs: Vec<String>, model: Option<String>) -> PyResult<Vec<String>> {
@@ -897,6 +917,7 @@ fn hex_command_training(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(upgrade_model, m)?)?;
     m.add_function(wrap_pyfunction!(collect, m)?)?;
     m.add_function(wrap_pyfunction!(collect_spatial, m)?)?;
+    m.add_function(wrap_pyfunction!(collect_spatial_sequences, m)?)?;
     m.add_function(wrap_pyfunction!(score_spatial, m)?)?;
     m.add_function(wrap_pyfunction!(evaluate, m)?)?;
     m.add_function(wrap_pyfunction!(score, m)?)?;

@@ -111,8 +111,9 @@ rollout states (truncated backpropagation through time). Windows are shuffled,
 individual positions within a window are not. Chapter resets split windows
 without ending campaign reward credit. Bootstrap evaluation does not commit
 memory. Checkpoint recovery restarts environments and hidden state at fresh
-seeds, as before. Legacy shuffled imitation datasets remain independent,
-zero-initial-state examples; they do not teach multi-decision recurrence.
+seeds, as before. Legacy shuffled datasets used by the older standalone
+imitation tools remain zero-initial-state examples. The mixed pretrainer uses
+the ordered sequence path described below and rejects corpora without boundaries.
 
 GRU exports use PyTorch reset/update/candidate ordering, including reset after
 the hidden candidate bias. Native weights and explicit hidden-state parity are
@@ -276,7 +277,7 @@ root and place mutable runs under ignored `tmp/rl/`.
 | `mixed_workload`                  | Isolated authored catalog and disjoint hierarchical seed panels  |
 | `environments`                    | Offline authoring of fixed training-only tactical fixtures       |
 | `diverse_workload`, `diverse_run` | Held-out validation and supervised PPO-only continuation         |
-| `mixed_imitation`                 | Weighted imitation over losslessly compressed shards             |
+| `mixed_imitation`                 | Weighted recurrent imitation over ordered compressed teacher streams |
 | `mixed_ppo`                       | Independent native slots and decision-budgeted multi-task PPO    |
 | `mixed_evaluate`, `handoff`       | Greedy validation and robust checkpoint selection                |
 | `overnight`                       | Restartable imitation → PPO → held-out evaluation supervisor     |
@@ -612,6 +613,35 @@ player-only fog and both-sides fog share the same maps/rosters and use ordinary
 events to assign the appropriate authored vision groups before play. Later
 recruits inherit the faction's selected vision group. Broad environments retain
 their existing mixed opponent and visibility settings.
+
+### Recurrent mixed imitation
+
+`collect_spatial_sequences` returns the same dense and spatial buffers as
+`collect_spatial`, plus one explicit context per label: source game index,
+observing faction, map, reset generation, round and decision counter. The old
+collection API remains available. Compressed corpus schema 1 preserves these
+contexts, teacher identities and fingerprints; missing boundaries or changed
+provenance require a new corpus rather than guessing sequence identity.
+
+The mixed trainer partitions each shard into match/faction/chapter streams.
+Map reuse does not merge matches or repeated chapters. It shuffles shards and
+whole streams, never individual positions inside a stream. Up to eight streams
+advance in parallel through windows of eight decisions (configurable through
+`--sequence-batch-size` and `--sequence-length`). Memory starts at zero at each
+stream boundary, remains connected inside a window, and carries detached values
+into its next window. Shorter streams leave the batch without contaminating
+other streams. Candidate padding contributes no loss. Cross-entropy updates the
+CNN, coarse branch, GRU and action head jointly. The existing hierarchical
+per-decision loss weights remain in use; ragged final windows use the same
+fixed loss denominator as full windows rather than receiving extra weight.
+
+Validation uses the same ordered forward path with dropout disabled and no
+gradients. It carries memory across windows and reports loss/accuracy over all
+teacher decisions with the existing group weights. Held-out gameplay panels
+remain separate. Checkpoints retain the stream permutation, active stream-batch
+position, window cursor, detached memory, optimizer and RNG states. Exact resume
+requires matching sequence settings and sequence schema; older independent-example
+checkpoints can initialize a new run through `--warm-start`, not exact resume.
 
 ## Adaptive PPO practice allocation
 

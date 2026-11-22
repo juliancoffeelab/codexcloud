@@ -9,17 +9,16 @@ import random
 import time
 import numpy as np
 import torch
-from torch.nn import functional as F
 import hex_command_training as native
 from .checkpoint import warm_start
 from .compressed_data import collect, load
 from .mixed_workload import mass
 from .recovery import atomic_json, save_bundle, load_resume, read_jsonl
 from .spatial import SpatialPlanner
-from .spatial_data import batches
+from .imitation_sequences import SEQUENCE_SCHEMA, forward_window
 
 
-def measure(model, directory, manifest):
+def measure(model, directory, manifest, sequence_length=8, sequence_batch_size=8):
     model.eval()
     rows = []
     with torch.no_grad():
@@ -27,10 +26,15 @@ def measure(model, directory, manifest):
             data = load(directory / name)
             loss = correct = 0.0
             n = len(data.dense[2])
-            for x, b, ix, mask, y in batches(data, np.arange(n)):
-                scores = model(x, b, ix).masked_fill(~mask, -torch.inf)
-                loss += float(F.cross_entropy(scores, y, reduction="sum"))
-                correct += int((scores.argmax(-1) == y).sum())
+            for first in range(0, len(data.streams), sequence_batch_size):
+                streams = data.streams[first:first + sequence_batch_size]
+                memory = None
+                for step in range(0, max(map(len, streams)), sequence_length):
+                    value, hits, _, memory = forward_window(
+                        model, data, streams, step, memory, sequence_length
+                    )
+                    loss += float(value)
+                    correct += hits
             rows.append(
                 dict(
                     group=meta["group"],
@@ -75,7 +79,15 @@ def main():
         default=Path("training/checkpoints/campaign-cnn-imitation-v1/weights.pt"),
     )
     p.add_argument("--threads", type=int, default=2)
+    p.add_argument("--sequence-length", type=int, default=8)
+    p.add_argument("--sequence-batch-size", type=int, default=8)
     a = p.parse_args()
+    if a.sequence_length < 1 or a.sequence_batch_size < 1:
+        p.error("sequence length and batch size must be positive")
+    sequence_training = dict(
+        schema=SEQUENCE_SCHEMA, length=a.sequence_length,
+        batch_size=a.sequence_batch_size,
+    )
     root = a.root
     run = root / "posttune"
     run.mkdir(exist_ok=True)
@@ -91,10 +103,13 @@ def main():
     warm_start(model, a.warm_start)
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
     old = load_resume(a.resume) if a.resume else None
-    progress = dict(epoch=0, order=[], shard=0, ids=[], batch=0, updates=0, decisions=0)
+    progress = dict(epoch=0, order=[], shard=0, ids=[], batch=0, updates=0,
+                    decisions=0, sequence_step=0, memory=[])
     elapsed = 0.0
     best_loss = float("inf")
     if old:
+        if old.get("sequence_training") != sequence_training:
+            raise ValueError("resume sequence settings differ; old independent-example checkpoints require a warm start")
         assert (
             old["workload_sha256"] == spec["workload_sha256"]
             and old["fingerprints"] == spec["fingerprints"]
@@ -132,11 +147,13 @@ def main():
             python_rng=random.getstate(),
             fingerprints=spec["fingerprints"],
             workload_sha256=spec["workload_sha256"],
+            sequence_training=sequence_training,
         )
         save_bundle(run, state, model, label)
 
     checkpoint("initial")
-    record("started", budget=a.seconds, resumed=bool(old), balance=spec["balance"])
+    record("started", budget=a.seconds, resumed=bool(old), balance=spec["balance"],
+           sequence_training=sequence_training)
     train = collect(spec["train"], root / "corpus/train", record)
     valid = collect(spec["imitation_validation"], root / "corpus/validation", record)
     total = sum(s["decisions"] for s in train["shards"].values())
@@ -152,7 +169,8 @@ def main():
         games=len(spec["train"]),
     )
     if not old:
-        initial = measure(model, root / "corpus/validation", valid)
+        initial = measure(model, root / "corpus/validation", valid,
+                          a.sequence_length, a.sequence_batch_size)
         record("validation", epoch=0, **initial)
     try:
         while time.monotonic() < deadline:
@@ -166,7 +184,7 @@ def main():
                 name = names[progress["order"][progress["shard"]]]
                 meta = train["shards"][name]
                 data = load(root / "corpus/train" / name)
-                n = len(data.dense[2])
+                n = len(data.streams)
                 if not progress["ids"]:
                     progress["ids"] = rng.permutation(n).tolist()
                     progress["batch"] = 0
@@ -174,14 +192,20 @@ def main():
                     mass(meta["configs"][0]) * total / group_sizes[tuple(meta["group"])]
                 )
                 model.train()
-                for x, b, ix, mask, y in batches(
-                    data, np.asarray(progress["ids"][progress["batch"] :]), 64
-                ):
-                    if time.monotonic() >= deadline:
-                        break
+                while progress["batch"] < n and time.monotonic() < deadline:
+                    ids = progress["ids"][progress["batch"]:
+                                          progress["batch"] + a.sequence_batch_size]
+                    streams = [data.streams[i] for i in ids]
+                    memory = (torch.tensor(progress["memory"], dtype=torch.float32)
+                              if progress["memory"] else None)
                     optimizer.zero_grad()
-                    scores = model(x, b, ix).masked_fill(~mask, -torch.inf)
-                    loss = F.cross_entropy(scores, y) * weight
+                    summed_loss, _, count, memory = forward_window(
+                        model, data, streams, progress["sequence_step"], memory,
+                        a.sequence_length,
+                    )
+                    # Fixed denominator gives every decision the same loss mass,
+                    # including the shorter final windows of ragged matches.
+                    loss = summed_loss * weight / (a.sequence_batch_size * a.sequence_length)
                     if not torch.isfinite(loss):
                         raise RuntimeError("nonfinite imitation loss")
                     loss.backward()
@@ -189,11 +213,16 @@ def main():
                         model.parameters(), 1.0, error_if_nonfinite=True
                     )
                     optimizer.step()
-                    progress["batch"] += len(y)
+                    progress["sequence_step"] += a.sequence_length
+                    progress["memory"] = memory.detach().tolist()
+                    if progress["sequence_step"] >= max(map(len, streams)):
+                        progress["batch"] += len(ids)
+                        progress["sequence_step"] = 0
+                        progress["memory"] = []
                     progress["updates"] += 1
-                    progress["decisions"] += len(y)
-                    epoch_rows += len(y)
-                    epoch_loss += float(loss.detach()) * len(y)
+                    progress["decisions"] += count
+                    epoch_rows += count
+                    epoch_loss += float(summed_loss.detach()) * weight
                     if time.monotonic() - last_save >= 120:
                         checkpoint(f"update-{progress['updates']:08d}")
                         last_save = time.monotonic()
@@ -211,7 +240,8 @@ def main():
                     progress["shard"] += 1
             if progress["shard"] >= len(names):
                 model.eval()
-                v = measure(model, root / "corpus/validation", valid)
+                v = measure(model, root / "corpus/validation", valid,
+                            a.sequence_length, a.sequence_batch_size)
                 record(
                     "validation",
                     epoch=progress["epoch"],
