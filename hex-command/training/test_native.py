@@ -29,6 +29,20 @@ class NativeContract(unittest.TestCase):
         native.collect([self.config], 10)
         np.testing.assert_array_equal(x, saved)
 
+    def test_pretrain_imitator_overrides_only_collected_player_actions(self):
+        config = json.loads(self.config)
+        classic = json.loads(self.config)
+        classic["playerBlocks"]["planner"] = "classic"
+        expected = native.collect_spatial([json.dumps(classic)], 64, side="player")
+        actual = native.collect_spatial([json.dumps(config)], 64, side="player", imitators=['"classic"'])
+        for left, right in zip(expected[0][:3], actual[0][:3]):
+            np.testing.assert_array_equal(left, right)
+        self.assertEqual(actual[0][3], 0)
+        self.assertEqual(config, json.loads(self.config))
+        for invalid in ([], ['"unknown"']):
+            with self.assertRaises(ValueError):
+                native.collect_spatial([self.config], 64, side="player", imitators=invalid)
+
     def test_inference_parity_and_schema_rejection(self):
         torch.manual_seed(7)
         model = Planner()
@@ -228,6 +242,7 @@ class NativeContract(unittest.TestCase):
             loss = torch.nn.functional.cross_entropy(model(x, board, ix), y)
             loss.backward()
             self.assertGreater(float(model.convs[0].weight.grad.abs().sum()), 0.0)
+            self.assertGreater(float(model.coarse[0].weight.grad.abs().sum()), 0.0)
             with self.assertRaises(ValueError):
                 native.score(model.export(), data.dense[0][:1])
             bad = json.loads(model.export())
@@ -287,13 +302,22 @@ class NativeContract(unittest.TestCase):
             (5, native.DUTY_FEATURE_NAMES, native.DUTY_SPATIAL_CHANNEL_NAMES),
             (7, native.DIPLOMACY_FEATURE_NAMES, native.CAMPAIGN_SPATIAL_CHANNEL_NAMES),
             (9, native.CAMPAIGN_FEATURE_NAMES, native.CAMPAIGN_SPATIAL_CHANNEL_NAMES),
+            (11, native.VISIBILITY_FEATURE_NAMES, native.VISIBILITY_SPATIAL_CHANNEL_NAMES),
+            (13, native.IDLE_FEATURE_NAMES, native.VISIBILITY_SPATIAL_CHANNEL_NAMES),
+            (14, native.IDLE_FEATURE_NAMES, native.HOLD_SPATIAL_CHANNEL_NAMES),
+            (15, native.IDLE_FEATURE_NAMES, native.SPATIAL_CHANNEL_NAMES),
+            (17, native.FEATURE_NAMES, native.SPATIAL_CHANNEL_NAMES),
+            (18, native.FEATURE_NAMES, native.SPATIAL_CHANNEL_NAMES),
         ]:
             width = len(names)
             channels = len(channel_names)
             torch.manual_seed(81)
             old = SpatialPlanner().eval()
+            if schema < 18:
+                old.coarse = None
+            old.gru = None
             old.convs[0] = HexConv(channels)
-            old.head[0] = torch.nn.Linear(width + 64, 64)
+            old.head[0] = torch.nn.Linear(width + (128 if schema == 18 else 64), 64)
             x = torch.randn(2, 3, width)
             board = torch.randn(2, channels, 3, 4)
             board[:, 0] = 1
@@ -306,13 +330,18 @@ class NativeContract(unittest.TestCase):
                 gathered = gathered.transpose(1, 2).reshape(2, 3, 3, 16) * (
                     indices >= 0
                 ).unsqueeze(-1)
+                extra = []
+                if schema == 18:
+                    low, low_pool, _ = old.encode_candidates(board, indices, old.coarse, 2)
+                    extra = [low, low_pool]
                 expected = old.head(
                     torch.cat(
-                        [x, gathered.flatten(2), pooled[:, None, :].expand(-1, 3, -1)],
+                        [x, gathered.flatten(2), pooled[:, None, :].expand(-1, 3, -1), *extra],
                         -1,
                     )
                 ).squeeze(-1)
             exported = json.loads(old.export())
+            exported.pop("recurrent", None)
             exported.update(schema=schema, feature_names=names)
             exported["spatial"]["channel_names"] = channel_names
             with tempfile.TemporaryDirectory() as directory:
@@ -356,15 +385,16 @@ class NativeContract(unittest.TestCase):
                     self.assertGreater(
                         float(model.convs[0].weight.grad[:, channels:].abs().sum()), 0.0
                     )
-                self.assertGreater(
-                    float(
-                        model.head[0]
-                        .weight.grad[:, width : len(native.FEATURE_NAMES)]
-                        .abs()
-                        .sum()
-                    ),
-                    0.0,
-                )
+                if width < len(native.FEATURE_NAMES):
+                    self.assertGreater(
+                        float(
+                            model.head[0]
+                            .weight.grad[:, width : len(native.FEATURE_NAMES)]
+                            .abs()
+                            .sum()
+                        ),
+                        0.0,
+                    )
 
     def test_spatial_step_buffers_and_terminal_slots(self):
         env = native.BatchEnv(spatial=True)

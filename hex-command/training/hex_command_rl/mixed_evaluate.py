@@ -164,7 +164,7 @@ def plot(root):
             [r["seconds"] / 60 for r in validation],
             [r["accuracy"] * 100 for r in validation],
         )
-        axes[1, 1].set_title("Balanced teacher agreement (%)")
+        axes[1, 1].set_title("Configured teacher agreement (%)")
     if updates:
         tx = [r["seconds"] / 60 for r in updates]
         for k in ["policy_loss", "value_loss"]:
@@ -178,7 +178,10 @@ def plot(root):
         axes[1, 2].plot(
             [r["seconds"] / 60 for r in episodes],
             [
-                sum(e["reward"] for e in episodes[max(0, i - 49) : i + 1])
+                sum(
+                    e.get("episode_return", e["reward"])
+                    for e in episodes[max(0, i - 49) : i + 1]
+                )
                 / len(episodes[max(0, i - 49) : i + 1])
                 for i in range(len(episodes))
             ],

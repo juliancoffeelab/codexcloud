@@ -9,15 +9,17 @@ import multiprocessing
 from types import SimpleNamespace
 import numpy as np
 import hex_command_training as native
-from .mixed_workload import group
+from .mixed_workload import group, pretrain_imitator
 from .recovery import atomic_json
 
 
 def collect_one(task):
     path, configs = task
     path = Path(path)
+    teachers = [pretrain_imitator(c) for c in configs]
     dense, spatial = native.collect_spatial(
-        [json.dumps(c) for c in configs], 1000000, side="player"
+        [json.dumps(c) for c in configs], 1000000, side="player",
+        imitators=[json.dumps(t) for t in teachers],
     )
     x, offsets, labels, missing = dense
     boards, board_offsets, shapes, indices, context_values, contexts = spatial
@@ -47,6 +49,7 @@ def collect_one(task):
         bytes=path.stat().st_size,
         sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
         configs=configs,
+        pretrain_imitators=teachers,
         group=list(group(configs[0])),
     )
 
@@ -59,17 +62,21 @@ def collect(configs, root, record):
         json.loads(manifest_path.read_text())
         if manifest_path.exists()
         else dict(
-            configs=configs, fingerprints=json.loads(native.fingerprints()), shards={}
+            configs=configs, pretrain_imitators=[pretrain_imitator(c) for c in configs],
+            fingerprints=json.loads(native.fingerprints()), shards={}
         )
     )
-    if manifest["configs"] != configs or manifest["fingerprints"] != json.loads(
-        native.fingerprints()
-    ):
+    if (manifest["configs"] != configs
+        or manifest.get("pretrain_imitators") != [pretrain_imitator(c) for c in configs]
+        or manifest["fingerprints"] != json.loads(native.fingerprints())):
         raise ValueError("collection provenance differs")
     tasks = []
-    for start in range(0, len(configs), 4):
-        batch = configs[start : start + 4]
-        assert len({group(c) for c in batch}) == 1
+    from itertools import groupby
+    batches = []
+    for _, cases in groupby(configs, key=group):
+        cases = list(cases)
+        batches.extend(cases[i:i+4] for i in range(0, len(cases), 4))
+    for start, batch in enumerate(batches):
         name = f"{start:06d}.npz"
         p = root / name
         old = manifest["shards"].get(name)
@@ -91,7 +98,7 @@ def collect(configs, root, record):
                 "collection",
                 split=root.name,
                 shards=len(manifest["shards"]),
-                total_shards=(len(configs) + 3) // 4,
+                total_shards=len(batches),
                 decisions=sum(s["decisions"] for s in manifest["shards"].values()),
                 bytes=sum(s["bytes"] for s in manifest["shards"].values()),
             )

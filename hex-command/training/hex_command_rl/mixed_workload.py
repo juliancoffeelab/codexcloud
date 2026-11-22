@@ -43,25 +43,70 @@ def group(c):
     )
 
 
+def variant_opponents(spec, variant):
+    names = variant.get("opponents")
+    if names is None:
+        names = spec["opponents"]
+    if (
+        not isinstance(names, list)
+        or not names
+        or not all(isinstance(name, str) for name in names)
+        or len(set(names)) != len(names)
+        or not set(names).issubset(spec["opponents"])
+    ):
+        raise ValueError("opponents must be a nonempty, unique subset of global opponents")
+    return names
+
+
+def variant_for(config, spec):
+    return next(v for v in spec["campaigns"][config["campaign"]]
+                if v["objective"] == config["objective"] and v["diplomacy"] == config["diplomacy"])
+
+
+def sampling_group(config, spec=None):
+    spec = definition() if spec is None else spec
+    if "campaign" not in config:
+        return "arena"
+    if config["campaign"] not in spec["campaigns"]:
+        # Evaluation-only authored campaigns retain the broad-campaign budget.
+        # They never acquire an imitation teacher or enter the training schedule.
+        return "campaign"
+    return variant_for(config, spec)["samplingGroup"]
+
+
+def pretrain_imitator(config, spec=None):
+    spec = definition() if spec is None else spec
+    entry = variant_for(config, spec) if "campaign" in config else next(
+        a for a in spec["arenas"] if a["id"] == config["landscape"])
+    teacher = entry["pretrain_imitator"]
+    if isinstance(teacher, str) and teacher in ("classic", "queued", "full", "objective_progress"):
+        return teacher
+    if isinstance(teacher, dict) and set(teacher) == {"path_to"}:
+        return teacher
+    raise ValueError("unknown pretrain_imitator")
+
+
+@lru_cache(maxsize=8)
+def _masses(serialized_spec):
+    spec = json.loads(serialized_spec)
+    return weights(configs("validation", spec, campaign_seeds=1), spec)
+
+
 def mass(c):
-    spec = definition()
-    axes = len(spec["opponents"]) * len(spec["recruiters"])
-    return (
-        0.5 / len(spec["campaigns"]) / len(spec["campaigns"][c["campaign"]]) / axes
-        if "campaign" in c
-        else 0.5 / len(spec["arenas"]) / len(spec["objectives"]) / axes
-    )
+    return _masses(json.dumps(definition(), sort_keys=True))[group(c)]
 
 
-def weights(cases):
-    """Equal family/task budgets, then split each task's actual variant groups."""
-    keys = set(group(c) for c in cases)
-    families = {k[0] for k in keys}
-    tasks = {f: {k[1] for k in keys if k[0] == f} for f in families}
-    return {
-        k: 1 / len(families) / len(tasks[k[0]]) / sum(v[:2] == k[:2] for v in keys)
-        for k in keys
-    }
+def weights(cases, spec=None):
+    """Authored pool budgets, equal maps per pool, equal conditions per map."""
+    spec = definition() if spec is None else spec
+    templates = {group(c): c for c in cases}
+    buckets = {k: sampling_group(c, spec) for k, c in templates.items()}
+    active = set(buckets.values())
+    budget = spec["samplingWeights"]
+    total = sum(budget[b] for b in active)
+    tasks = {b: {k[:2] for k in templates if buckets[k] == b} for b in active}
+    return {k: budget[buckets[k]] / total / len(tasks[buckets[k]]) /
+            sum(t[:2] == k[:2] for t in templates) for k in templates}
 
 
 def configs(split, spec=None, campaign_seeds=None):
@@ -104,7 +149,8 @@ def configs(split, spec=None, campaign_seeds=None):
         n = campaign_seeds or {"train": 24, "validation": 4, "test": 25}[split]
         for variant in variants:
             objective, diplomacy = variant["objective"], variant["diplomacy"]
-            for opponent in opponents:
+            for name in variant_opponents(spec, variant):
+                opponent = opponent_config(name)
                 for recruiter in spec["recruiters"]:
                     for seed in range(campaign_start, campaign_start + n):
                         result.append(
@@ -154,13 +200,20 @@ def prepare(root):
         fingerprints=json.loads(native.fingerprints()),
         train=configs("train"),
         validation=configs("validation"),
+        imitation_validation=configs("validation"),
         periodic=validation(),
         test=configs("test"),
-        balance="50% arenas / 50% campaigns; uniform maps/campaigns, then variants/opponents/recruiters",
+        balance="Base budgets:25% ordinary arenas / 25% broad campaigns / 50% targeted; equal behavior families and base map/condition weights; adaptive PPO within pools",
+        sampling_weights=definition()["samplingWeights"],
+        adaptive_sampling=definition()["adaptiveSampling"],
     )
+    spec["pretrain_imitators"] = {
+        split: [pretrain_imitator(c) for c in spec[split]]
+        for split in ("train", "imitation_validation")
+    }
     spec["workload_sha256"] = hashlib.sha256(
         json.dumps(
-            {k: spec[k] for k in ["train", "validation", "periodic", "test"]},
+            {k: spec[k] for k in ["train", "validation", "periodic", "test", "imitation_validation", "pretrain_imitators", "sampling_weights", "adaptive_sampling"]},
             sort_keys=True,
         ).encode()
     ).hexdigest()

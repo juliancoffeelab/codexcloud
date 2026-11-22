@@ -5,7 +5,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
-from .mixed_workload import configs, group
+from .mixed_workload import configs, group, pretrain_imitator
 from .recovery import atomic_json
 from .representative import prepare_catalog
 
@@ -63,8 +63,8 @@ def prepare(root):
         **evaluation,
         arenas=[
             dict(id="river-valley", pairs=cross_faction_pairs),
-            dict(id="villages", pairs=[dict(player="human", enemy="skeletons")]),
-            dict(id="sluice", pairs=[dict(player="coastal", enemy="human")]),
+            dict(id="toll-road", pairs=[dict(player="human", enemy="skeletons")]),
+            dict(id="a-tide-for-both", pairs=[dict(player="coastal", enemy="human")]),
         ],
         campaigns={
             "lantern-road": [
@@ -111,12 +111,19 @@ def prepare(root):
         train=configs("train", training),
         periodic=periodic,
         validation=validation,
+        imitation_validation=configs("validation", training),
+        sampling_weights=training["samplingWeights"],
+        adaptive_sampling=training["adaptiveSampling"],
         test=configs("test", showcase_panel),
-        balance="50% arena / 50% campaign decisions; equal tasks then variants; synthetic selection and authored showcase",
+        balance="Base budgets:25% ordinary arenas / 25% broad campaigns / 50% targeted; equal behavior families and base map weights; adaptive PPO within pools; synthetic selection and authored showcase",
     )
+    spec["pretrain_imitators"] = {
+        split: [pretrain_imitator(c, training) for c in spec[split]]
+        for split in ("train", "imitation_validation")
+    }
     spec["workload_sha256"] = hashlib.sha256(
         json.dumps(
-            {k: spec[k] for k in ("train", "periodic", "validation", "test")},
+            {k: spec[k] for k in ("train", "periodic", "validation", "test", "imitation_validation", "pretrain_imitators", "sampling_weights", "adaptive_sampling")},
             sort_keys=True,
         ).encode()
     ).hexdigest()

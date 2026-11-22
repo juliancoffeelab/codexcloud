@@ -15,6 +15,7 @@ from torch.nn import functional as F
 import hex_command_training as native
 from .spatial import SpatialPlanner
 from .checkpoint import warm_start
+from .recurrent import MemoryBank, windows, replay
 from .recovery import atomic_torch_save, read_jsonl
 
 
@@ -118,19 +119,23 @@ class ActorCritic(nn.Module):
         super().__init__()
         self.policy = policy
         self.critic = nn.Sequential(
-            nn.Linear(16 + len(native.FEATURE_NAMES), 64), nn.Tanh(), nn.Linear(64, 1)
+            nn.Linear(16 + 64 + len(native.FEATURE_NAMES), 64), nn.Tanh(), nn.Linear(64, 1)
         )
         nn.init.zeros_(self.critic[-1].weight)
         nn.init.zeros_(self.critic[-1].bias)
 
     def forward(self, x, board, positions, mask, temperature):
-        scores, pooled = self.policy.forward_with_pool(x, board, positions)
+        dist, value, _ = self.forward_recurrent(x, board, positions, mask, temperature)
+        return dist, value
+
+    def forward_recurrent(self, x, board, positions, mask, temperature, memory=None):
+        scores, pooled, memory = self.policy.forward_recurrent(x, board, positions, memory)
         dist = categorical(scores, mask, temperature)
         # Critic training initially leaves the pretrained policy encoder untouched.
         with torch.no_grad():
             mean = (x * mask[:, :, None]).sum(1) / mask.sum(1, keepdim=True)
-        value = self.critic(torch.cat([pooled.detach(), mean], -1)).squeeze(-1)
-        return dist, value
+        value = self.critic(torch.cat([pooled.detach(), memory.detach(), mean], -1)).squeeze(-1)
+        return dist, value, memory
 
 
 def advantages(rewards, values, dones, bootstrap, gamma, lam):
@@ -399,12 +404,15 @@ def main():
         )
         plot_metrics(args.out)
 
+    memory_bank, reference_bank = MemoryBank(), MemoryBank()
     env = native.BatchEnv(spatial=True)
     try:
         evaluate("baseline")
 
         def reset():
             nonlocal next_seed
+            memory_bank.states.clear()
+            reference_bank.states.clear()
             configs = [
                 configuration(next_seed + i, ["situational", "predictor"][i % 2], args)
                 for i in range(args.envs)
@@ -428,15 +436,25 @@ def main():
                     break
                 ids = list(observations)
                 tensors = pack(list(observations.values()))
+                contexts = [env.decision_contexts()[slot] for slot in ids]
+                memory, memory_resets = memory_bank.inputs(ids, contexts)
+                ref_memory, _ = reference_bank.inputs(ids, contexts)
                 with torch.no_grad():
-                    dist, v = ac(*tensors, temperature)
+                    dist, v, next_memory = ac.forward_recurrent(*tensors, temperature, memory)
+                    ref_scores, _, next_ref = reference.forward_recurrent(*tensors[:3], ref_memory)
+                    ref_dist = categorical(ref_scores, tensors[3], temperature)
                     acts = dist.sample()
                     lp = dist.log_prob(acts)
+                memory_bank.commit(ids, contexts, memory, next_memory)
+                reference_bank.commit(ids, contexts, ref_memory, next_ref)
                 actions = [0] * args.envs
                 step_samples = {}
                 for j, slot in enumerate(ids):
                     actions[slot] = int(acts[j])
                     step_samples[slot] = dict(
+                        slot=slot, context=contexts[j], memory=memory[j].numpy().copy(),
+                        memory_reset=memory_resets[j],
+                        reference_logits=ref_dist.logits[j, :len(observations[slot][0])].numpy().copy(),
                         observation=observations[slot],
                         action=int(acts[j]),
                         old_log_prob=float(lp[j]),
@@ -474,7 +492,10 @@ def main():
             live = unpack(obs, env.spatial_observation())
             if live:
                 with torch.no_grad():
-                    _, next_v = ac(*pack(list(live.values())), temperature)
+                    ids = list(live)
+                    contexts = [env.decision_contexts()[slot] for slot in ids]
+                    memory, _ = memory_bank.inputs(ids, contexts)
+                    _, next_v, _ = ac.forward_recurrent(*pack(list(live.values())), temperature, memory)
                 for j, slot in enumerate(live):
                     bootstrap[slot] = float(next_v[j])
             adv, returns = advantages(
@@ -497,31 +518,10 @@ def main():
             update += 1
             stats = []
             for epoch in range(3):
-                for first in range(0, len(flat), 64):
+                for batch in windows(flat, rng):
                     if time.monotonic() >= deadline:
                         break
-                    # Shuffle once per PPO pass, retaining each sample exactly once.
-                    if first == 0:
-                        order = rng.permutation(len(flat))
-                    batch = [flat[i] for i in order[first : first + 64]]
-                    tensors = pack([s["observation"] for s in batch])
-                    dist, value = ac(*tensors, temperature)
-                    acts = torch.tensor([s["action"] for s in batch])
-                    old = torch.tensor([s["old_log_prob"] for s in batch])
-                    advantage = torch.tensor([s["advantage"] for s in batch])
-                    target = torch.tensor([s["target"] for s in batch])
-                    logp = dist.log_prob(acts)
-                    ratio = (logp - old).exp()
-                    policy_loss = -torch.minimum(
-                        ratio * advantage, ratio.clamp(0.8, 1.2) * advantage
-                    ).mean()
-                    value_loss = F.mse_loss(value, target)
-                    with torch.no_grad():
-                        ref_dist = categorical(
-                            reference(*tensors[:3]), tensors[3], temperature
-                        )
-                    kl = categorical_kl(dist, ref_dist).mean()
-                    entropy = dist.entropy().mean()
+                    policy_loss, value_loss, entropy, kl, clip_fraction = replay(ac, batch, temperature)
                     loss = value_loss + (
                         policy_loss + 0.02 * kl - 0.005 * entropy if update > 2 else 0
                     )
@@ -544,7 +544,7 @@ def main():
                                 value_loss,
                                 entropy,
                                 kl,
-                                ((ratio - 1).abs() > 0.2).float().mean(),
+                                clip_fraction,
                             ]
                         ]
                     )

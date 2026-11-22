@@ -138,7 +138,7 @@ def main():
     checkpoint("initial")
     record("started", budget=a.seconds, resumed=bool(old), balance=spec["balance"])
     train = collect(spec["train"], root / "corpus/train", record)
-    valid = collect(spec["validation"], root / "corpus/validation", record)
+    valid = collect(spec["imitation_validation"], root / "corpus/validation", record)
     total = sum(s["decisions"] for s in train["shards"].values())
     group_sizes = defaultdict(int)
     for s in train["shards"].values():
