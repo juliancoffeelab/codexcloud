@@ -6,17 +6,21 @@ use crate::{
 use hex_command_battle::RuntimeCommand;
 use serde::{Deserialize, Serialize};
 use std::cell::RefCell;
-pub const SCHEMA: u32 = 10;
+pub const SCHEMA: u32 = 16;
 mod duties;
 mod features;
+#[cfg(feature = "simulation")]
+pub mod imitator;
 mod inference;
+mod recurrent;
 pub mod spatial;
 mod visibility;
 pub use features::{
     CAMPAIGN_FEATURES, Choices, DIPLOMACY_FEATURES, DUTY_FEATURES, FEATURE_NAMES, FEATURES,
-    LEGACY_FEATURES, candidates,
+    IDLE_FEATURES, LEGACY_FEATURES, VISIBILITY_FEATURES, candidates,
 };
 pub use inference::Evaluator;
+pub use recurrent::RecurrentLayer;
 #[derive(Default)]
 pub struct Dataset {
     pub features: Vec<[f32; FEATURES]>,
@@ -36,6 +40,8 @@ pub struct DenseLayer {
 }
 #[derive(Clone, Deserialize, Serialize)]
 pub struct Model {
+    #[serde(default)]
+    pub recurrent: Option<RecurrentLayer>,
     pub schema: u32,
     pub feature_names: Vec<String>,
     #[serde(default)]
@@ -133,19 +139,32 @@ impl Model {
             (4, false) | (5, true) => (DUTY_FEATURES, spatial::DUTY_CHANNELS),
             (6, false) | (7, true) => (DIPLOMACY_FEATURES, spatial::CAMPAIGN_CHANNELS),
             (8, false) | (9, true) => (CAMPAIGN_FEATURES, spatial::CAMPAIGN_CHANNELS),
+            (10, false) | (11, true) => (VISIBILITY_FEATURES, spatial::VISIBILITY_CHANNELS),
+            (12, false) => (IDLE_FEATURES, spatial::CHANNELS),
+            (13, true) => (IDLE_FEATURES, spatial::VISIBILITY_CHANNELS),
+            (14, true) => (IDLE_FEATURES, spatial::HOLD_CHANNELS),
+            (15, true) => (IDLE_FEATURES, spatial::CHANNELS),
+            (17, true) | (18, true) => (FEATURES, spatial::CHANNELS),
             _ => return self.validate(),
         };
         if self.feature_names != FEATURE_NAMES[..old_width] {
             return Err("legacy model feature names differ".into());
         }
+        let legacy_coarse = self.schema != 18;
         let embedding = if self.spatial.is_some() {
-            4 * spatial::EMBEDDING
+            if legacy_coarse {
+                4 * spatial::EMBEDDING
+            } else {
+                spatial::ENCODED_FEATURES
+            }
         } else {
             0
         };
         if let Some(encoder) = &mut self.spatial {
             let names = spatial::channel_names();
-            if encoder.channel_names != names[..old_channels] || encoder.convolutions.len() != 2 {
+            if encoder.channel_names != names[..old_channels]
+                || encoder.convolutions.len() != if legacy_coarse { 2 } else { 4 }
+            {
                 return Err("legacy spatial schema differs".into());
             }
             let first = &mut encoder.convolutions[0];
@@ -165,15 +184,46 @@ impl Model {
             first.weights = weights;
             first.input_channels = spatial::CHANNELS;
             encoder.channel_names = names;
+            // Deterministic nonzero initialization; appended head weights remain
+            // zero, preserving legacy scores without creating a dead branch.
+            if legacy_coarse {
+                let mut seed = 731u64;
+                for channels in [spatial::CHANNELS, spatial::EMBEDDING] {
+                    let scale = 1. / (channels as f32 * 7.).sqrt();
+                    let weights = (0..spatial::EMBEDDING * channels * 7)
+                        .map(|_| {
+                            seed = seed.wrapping_mul(6364136223846793005).wrapping_add(1);
+                            ((seed >> 32) as u32 as f32 / u32::MAX as f32 * 2. - 1.) * scale
+                        })
+                        .collect();
+                    encoder.convolutions.push(spatial::Convolution {
+                        input_channels: channels,
+                        output_channels: spatial::EMBEDDING,
+                        weights,
+                        bias: vec![0.; spatial::EMBEDDING],
+                    });
+                }
+            }
+        }
+        if self.spatial.is_some() {
+            self.recurrent = Some(RecurrentLayer::initialized());
         }
         if let Some(first) = self.layers.first_mut() {
             for row in &mut first.weights {
                 if row.len() != old_width + embedding {
                     return Err("legacy dense dimensions differ".into());
                 }
-                let mut upgraded = vec![0.; FEATURES + embedding];
+                let mut upgraded = vec![
+                    0.;
+                    FEATURES
+                        + if self.spatial.is_some() {
+                            spatial::ENCODED_FEATURES + recurrent::MEMORY
+                        } else {
+                            0
+                        }
+                ];
                 upgraded[..old_width].copy_from_slice(&row[..old_width]);
-                upgraded[FEATURES..].copy_from_slice(&row[old_width..]);
+                upgraded[FEATURES..FEATURES + embedding].copy_from_slice(&row[old_width..]);
                 *row = upgraded;
             }
         }
@@ -204,7 +254,14 @@ impl Model {
         {
             return Err("model feature schema mismatch".into());
         }
+        if self.spatial.is_none() && self.recurrent.is_some() {
+            return Err("dense model cannot contain a GRU".into());
+        }
         if let Some(encoder) = &self.spatial {
+            self.recurrent
+                .as_ref()
+                .ok_or("spatial model requires recurrent weights")?
+                .validate()?;
             encoder.validate()?;
             if !self.trees.is_empty() {
                 return Err("cannot combine trees and spatial encoder".into());
@@ -224,7 +281,7 @@ impl Model {
         }
         let mut width = FEATURES
             + if self.spatial.is_some() {
-                4 * spatial::EMBEDDING
+                spatial::ENCODED_FEATURES + recurrent::MEMORY
             } else {
                 0
             };
@@ -277,6 +334,8 @@ struct TrainingSession {
     data: Option<Dataset>,
     model: Option<Evaluator>,
     controller: Option<DecisionController>,
+    history: std::collections::HashMap<String, TurnHistory>,
+    generation: u64,
 }
 thread_local! { static SESSION: RefCell<TrainingSession> = RefCell::new(TrainingSession::default()); }
 struct Restore(Option<TrainingSession>);
@@ -296,6 +355,8 @@ pub fn scoped<T>(
             data,
             model: model.map(|model| Evaluator::new(model).expect("valid learned model required")),
             controller,
+            history: Default::default(),
+            generation: 0,
         })
     });
     let _restore = Restore(Some(old));
@@ -303,21 +364,171 @@ pub fn scoped<T>(
     let data = SESSION.with(|s| s.borrow_mut().data.take());
     (result, data)
 }
+/// Per-observer tactical history. Recruitment does not count as a planner action.
+#[derive(Default)]
+struct TurnHistory {
+    map: String,
+    round: u32,
+    idle: u32,
+    acted: bool,
+    decision: u64,
+    units: std::collections::HashMap<u32, UnitHistory>,
+}
+#[derive(Default)]
+struct UnitHistory {
+    last_action: usize,
+    moved_round: Option<u32>,
+    attacked_round: Option<u32>,
+    move_origin: Option<usize>,
+}
+fn command_actor(command: &RuntimeCommand) -> Option<u32> {
+    match command {
+        RuntimeCommand::Move { unit, .. }
+        | RuntimeCommand::Attack { unit, .. }
+        | RuntimeCommand::Advance { unit, .. } => Some(unit.0),
+        _ => None,
+    }
+}
+impl UnitHistory {
+    fn encode(&self, round: u32, command: &RuntimeCommand) -> [f32; 9] {
+        let mut x = [0.; 9];
+        x[0] = 1.;
+        x[1 + self.last_action] = 1.;
+        if let Some(last) = self.moved_round {
+            x[4] = 1.;
+            x[5] = round.saturating_sub(last) as f32 / 10.;
+        }
+        if let Some(last) = self.attacked_round {
+            x[6] = 1.;
+            x[7] = round.saturating_sub(last) as f32 / 10.;
+        }
+        if let RuntimeCommand::Move { tile, .. } = command {
+            x[8] = self
+                .move_origin
+                .as_ref()
+                .is_some_and(|origin| origin == &tile.0) as u8 as f32;
+        }
+        x
+    }
+}
+impl TurnHistory {
+    fn observe(&mut self, map: &str, round: u32) -> [f32; 2] {
+        if self.map != map || round < self.round {
+            *self = Self {
+                map: map.to_owned(),
+                round,
+                ..Self::default()
+            };
+        } else if round > self.round {
+            self.idle = if self.acted {
+                0
+            } else {
+                self.idle.saturating_add(1)
+            };
+            self.acted = false;
+            self.round = round;
+        }
+        [self.idle as f32 / 10., f32::from(self.acted)]
+    }
+}
+fn history_features(g: &BattleView<'_, '_>) -> [f32; 2] {
+    SESSION.with(|s| {
+        s.borrow_mut()
+            .history
+            .entry(g.observer_faction().to_owned())
+            .or_default()
+            .observe(g.map_id(), g.round())
+    })
+}
+fn unit_history_features(g: &BattleView<'_, '_>, command: &RuntimeCommand) -> [f32; 9] {
+    SESSION.with(|s| {
+        let s = s.borrow();
+        command_actor(command)
+            .and_then(|id| s.history.get(g.observer_faction())?.units.get(&id))
+            .map_or([0.; 9], |h| h.encode(g.round(), command))
+    })
+}
+#[derive(Clone, Default)]
+pub struct DecisionContext {
+    pub observer: String,
+    pub map: String,
+    pub round: u32,
+    pub decision: u64,
+    pub generation: u64,
+}
+fn decision_context(g: &BattleView<'_, '_>) -> DecisionContext {
+    SESSION.with(|s| DecisionContext {
+        observer: g.observer_faction().to_owned(),
+        map: g.map_id().to_owned(),
+        round: g.round(),
+        generation: s.borrow().generation,
+        decision: s
+            .borrow()
+            .history
+            .get(g.observer_faction())
+            .map_or(0, |h| h.decision),
+    })
+}
+pub(crate) fn reset_history() {
+    SESSION.with(|s| {
+        let mut s = s.borrow_mut();
+        s.generation += 1;
+        s.history.clear();
+        if let Some(model) = &mut s.model {
+            model.reset_memory();
+        }
+    });
+}
+fn mark_history(g: &BattleView<'_, '_>, command: &RuntimeCommand) {
+    history_features(g);
+    SESSION.with(|s| {
+        s.borrow_mut()
+            .history
+            .get_mut(g.observer_faction())
+            .unwrap()
+            .decision += 1;
+    });
+    if *command != RuntimeCommand::EndTurn {
+        SESSION.with(|s| {
+            let mut s = s.borrow_mut();
+            let history = s.history.get_mut(g.observer_faction()).unwrap();
+            history.acted = true;
+            if let Some(id) = command_actor(command) {
+                let unit = history.units.entry(id).or_default();
+                match command {
+                    RuntimeCommand::Move { .. } => {
+                        unit.last_action = 0;
+                        unit.moved_round = Some(g.round());
+                        unit.move_origin = g.unit(id).map(|u| u.tile);
+                    }
+                    RuntimeCommand::Attack { .. } => {
+                        unit.last_action = 1;
+                        unit.attacked_round = Some(g.round());
+                    }
+                    RuntimeCommand::Advance { .. } => unit.last_action = 2,
+                    _ => unreachable!(),
+                }
+            }
+        });
+    }
+}
 pub(crate) fn record(g: &BattleView<'_, '_>, orders: &TacticalOrders, command: &RuntimeCommand) {
     let enabled = SESSION.with(|s| {
         s.borrow().data.as_ref().is_some_and(|d| {
             d.labels.len() < d.limit && d.phase.is_none_or(|side| side == g.turn())
         })
     });
-    if !enabled
-        || !matches!(
-            command,
-            RuntimeCommand::Move { .. }
-                | RuntimeCommand::Attack { .. }
-                | RuntimeCommand::Advance { .. }
-                | RuntimeCommand::EndTurn
-        )
-    {
+    if !matches!(
+        command,
+        RuntimeCommand::Move { .. }
+            | RuntimeCommand::Attack { .. }
+            | RuntimeCommand::Advance { .. }
+            | RuntimeCommand::EndTurn
+    ) {
+        return;
+    }
+    if !enabled {
+        mark_history(g, command);
         return;
     }
     let choices = candidates(g, orders);
@@ -339,6 +550,7 @@ pub(crate) fn record(g: &BattleView<'_, '_>, orders: &TacticalOrders, command: &
             d.missing += 1;
         }
     });
+    mark_history(g, command);
 }
 pub(crate) fn needs_spatial() -> bool {
     SESSION.with(|s| {
@@ -363,7 +575,8 @@ pub(crate) fn select(choices: &Choices) -> Option<usize> {
             .model
             .as_mut()
             .expect("Learned planner requires a model or controller");
-        let scores = m.scores(
+        let scores = m.decision_scores(
+            &choices.context,
             &choices.features,
             choices
                 .spatial
@@ -391,6 +604,7 @@ mod tests {
     #[test]
     fn equal_logits_follow_pytorch_argmax() {
         let model = Model {
+            recurrent: None,
             schema: SCHEMA,
             feature_names: FEATURE_NAMES.iter().map(|s| s.to_string()).collect(),
             trees: vec![],
@@ -401,6 +615,7 @@ mod tests {
             }],
         };
         let choices = Choices {
+            context: DecisionContext::default(),
             spatial: None,
             commands: vec![RuntimeCommand::EndTurn; 3],
             features: vec![[0.; FEATURES]; 3],

@@ -53,6 +53,8 @@ impl<'a, 'catalog> CampaignerContext<'a, 'catalog> {
             input: CampaignInput {
                 seed: config.seed,
                 goals: config.goals,
+                objective_progress: config.objective_progress,
+                opponent_progress: config.opponent_progress,
                 diplomacy: config.diplomacy,
             },
         }

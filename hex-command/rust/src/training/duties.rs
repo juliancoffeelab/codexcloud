@@ -79,6 +79,22 @@ pub const CHANNEL_NAMES: [&str; 12] = [
     "mediated_enemy",
     "withdrawal_lane",
 ];
+// Appended after visibility planes to preserve every existing channel index.
+pub const HOLD_CHANNEL_NAMES: [&str; 2] = ["hold_objective", "hold_turns_remaining"];
+pub const OPPONENT_HOLD_CHANNEL_NAMES: [&str; 2] =
+    ["opponent_hold_objective", "opponent_hold_turns_remaining"];
+
+fn progress_for<'a>(progress: &'a [ObjectiveProgress], id: &str) -> Option<&'a ObjectiveProgress> {
+    progress
+        .iter()
+        .filter(|p| {
+            id == p.id
+                || id
+                    .strip_prefix(&p.id)
+                    .is_some_and(|tail| tail.starts_with(':'))
+        })
+        .max_by_key(|p| p.id.len())
+}
 
 fn priority(p: ObjectivePriority) -> f32 {
     match p {
@@ -122,9 +138,9 @@ pub(super) struct Duties {
 impl Duties {
     pub fn new(g: &BattleView<'_, '_>, orders: &TacticalOrders) -> Self {
         let mut result = Self::default();
-        // The appended schema is campaign-only, making zero padding truthful for
-        // legacy deathmatch corpora, including their old rebuild/hold targets.
-        if !orders.campaign {
+        // External objectives use the same duties as authored campaign objectives.
+        // Ordinary deathmatch observations retain zero duty features.
+        if !orders.campaign && orders.progress.is_empty() {
             return result;
         }
         for order in &orders.objectives {
@@ -265,7 +281,7 @@ impl Duties {
         command: &RuntimeCommand,
         x: &mut [f32],
     ) {
-        if !orders.campaign {
+        if !orders.campaign && orders.progress.is_empty() {
             return;
         }
         if let Some(round) = orders.deadline_round {
@@ -370,17 +386,7 @@ impl Duties {
             );
         }
         if let Some((id, _, _)) = primary {
-            if let Some(p) = orders
-                .progress
-                .iter()
-                .filter(|p| {
-                    id == p.id
-                        || id
-                            .strip_prefix(&p.id)
-                            .is_some_and(|tail| tail.starts_with(':'))
-                })
-                .max_by_key(|p| p.id.len())
-            {
+            if let Some(p) = progress_for(&orders.progress, id) {
                 timing(p, x);
             }
         }
@@ -399,7 +405,7 @@ impl Duties {
         values: &mut [f32],
         cells: usize,
     ) {
-        if !orders.campaign {
+        if !orders.campaign && orders.progress.is_empty() && orders.opponent_progress.is_empty() {
             return;
         }
         let mut mark = |channel: usize, tile: usize, value: f32| {
@@ -441,6 +447,53 @@ impl Duties {
             }
             for &tile in &orders.withdrawal_tiles {
                 mark(11, g.site(&tile.0), 1.);
+            }
+        }
+        let mut hold = |progress: &[ObjectiveProgress], id: &str, tile: usize, channel: usize| {
+            let Some(remaining) = progress_for(progress, id).and_then(|p| p.hold_turns_remaining)
+            else {
+                return;
+            };
+            let known = channel * cells + sites[tile];
+            let countdown = known + cells;
+            let value = remaining as f32 / 30.;
+            // Coincident objectives expose the nearest completion. Distinct
+            // locations retain independent countdowns, including completed zeroes.
+            values[countdown] = if values[known] == 0. {
+                value
+            } else {
+                values[countdown].min(value)
+            };
+            values[known] = 1.;
+        };
+        // Paint all known target tiles, even without a living assigned actor.
+        for target in &orders.targets {
+            for tile in &target.tiles {
+                if let Some(&tile) = g.board().indices.get(tile) {
+                    hold(
+                        &orders.progress,
+                        &target.id,
+                        tile,
+                        super::spatial::VISIBILITY_CHANNELS,
+                    );
+                    hold(
+                        &orders.opponent_progress,
+                        &target.id,
+                        tile,
+                        super::spatial::HOLD_CHANNELS,
+                    );
+                }
+            }
+        }
+        // Typed duties can also be supplied without generic targets.
+        for order in &orders.objectives {
+            if let TacticalObjective::Occupy { location, .. } = order.objective {
+                hold(
+                    &orders.progress,
+                    &order.id,
+                    g.site(&location.0),
+                    super::spatial::VISIBILITY_CHANNELS,
+                );
             }
         }
     }
@@ -685,7 +738,74 @@ mod tests {
         let spatial = &choices.spatial.unwrap().board;
         let cells = spatial.height * spatial.width;
         assert!(spatial.values[61 * cells..62 * cells].contains(&1.));
+        orders.targets.push(Target {
+            id: "second-hold".into(),
+            kind: TargetKind::Capture,
+            tiles: vec![
+                game.board().ids[destination].clone(),
+                game.board().ids[actor.tile].clone(),
+            ],
+            weight: 1.,
+            actor: None,
+            family: None,
+            hold: Some(true),
+        });
+        orders.progress.push(ObjectiveProgress {
+            id: "second-hold".into(),
+            current: 1,
+            total: 8,
+            satisfied: false,
+            hold_turns_remaining: Some(7),
+        });
+        let sites: Vec<_> = (0..game.board().ids.len()).collect();
+        let n = sites.len();
+        let paint = |o: &TacticalOrders| {
+            let mut planes = vec![0.; super::super::spatial::CHANNELS * n];
+            Duties::new(game.view(), o).paint(game.view(), o, &sites, &mut planes, n);
+            planes
+        };
+        let planes = paint(&orders);
+        let known = super::super::spatial::VISIBILITY_CHANNELS * n;
+        for (site, remaining) in [(guard.tile, 2.), (destination, 7.), (actor.tile, 7.)] {
+            assert_eq!(planes[known + site], 1.);
+            assert_eq!(planes[known + n + site], remaining / 30.);
+        }
+        orders.opponent_progress.push(ObjectiveProgress {
+            id: "second-hold".into(),
+            current: 7,
+            total: 8,
+            satisfied: false,
+            hold_turns_remaining: Some(1),
+        });
+        let opponent = super::super::spatial::HOLD_CHANNELS * n;
+        let planes = paint(&orders);
+        for site in [destination, actor.tile] {
+            assert_eq!(planes[known + site], 1.);
+            assert_eq!(planes[known + n + site], 7. / 30.);
+            assert_eq!(planes[opponent + site], 1.);
+            assert_eq!(planes[opponent + n + site], 1. / 30.);
+        }
+        assert_eq!(planes[opponent + guard.tile], 0.);
+        orders.progress[1].hold_turns_remaining = Some(0);
+        orders.progress[1].satisfied = true;
+        let planes = paint(&orders);
+        assert_eq!(planes[known + destination], 1.);
+        assert_eq!(planes[known + n + destination], 0.);
         orders.campaign = false;
+        let arena_hold = observe(&orders);
+        assert_eq!(
+            arena_hold.features[0][feature("duty_hold_turns_remaining")],
+            2. / 30.
+        );
+        assert!(arena_hold.features[0][feature("occupy_unfinished")] > 0.);
+        orders.progress.clear();
+        let planes = paint(&orders);
+        assert!(planes[known..opponent].iter().all(|&v| v == 0.));
+        assert_eq!(planes[opponent + destination], 1.);
+        assert_eq!(planes[opponent + n + destination], 1. / 30.);
+        orders.opponent_progress.clear();
+        let planes = paint(&orders);
+        assert!(planes[known..].iter().all(|&v| v == 0.));
         let arena = observe(&orders);
         assert!(arena.features.iter().all(|x| {
             x[LEGACY_FEATURES..super::super::CAMPAIGN_FEATURES]

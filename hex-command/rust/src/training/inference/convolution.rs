@@ -14,6 +14,9 @@ struct ConvolutionLayer {
 pub(super) struct ConvolutionEncoder {
     layers: Vec<ConvolutionLayer>,
     arch: pulp::Arch,
+    stride: usize,
+    coarse: Option<Box<ConvolutionEncoder>>,
+    next_neighbors: Vec<[usize; 7]>,
     height: usize,
     width: usize,
     mask: Vec<f32>,
@@ -25,8 +28,12 @@ pub(super) struct ConvolutionEncoder {
 
 impl ConvolutionEncoder {
     pub(super) fn new(encoder: &spatial::SpatialEncoder) -> Self {
-        let layers = encoder
-            .convolutions
+        let mut result = Self::from_layers(&encoder.convolutions[..2], 1);
+        result.coarse = Some(Box::new(Self::from_layers(&encoder.convolutions[2..], 2)));
+        result
+    }
+    fn from_layers(convolutions: &[spatial::Convolution], stride: usize) -> Self {
+        let layers = convolutions
             .iter()
             .map(|conv| {
                 let mut weights = vec![0.; conv.weights.len()];
@@ -48,6 +55,9 @@ impl ConvolutionEncoder {
         Self {
             layers,
             arch: pulp::Arch::new(),
+            stride,
+            coarse: None,
+            next_neighbors: Vec::new(),
             height: 0,
             width: 0,
             mask: Vec::new(),
@@ -64,9 +74,10 @@ impl ConvolutionEncoder {
         indices: &[[i64; 3]],
         features: &[[f32; FEATURES]],
         input: &mut Vec<f32>,
+        summary: &mut [f32; EMBEDDING],
     ) {
         if !board.contexts.is_empty() {
-            let stride = FEATURES + 4 * EMBEDDING;
+            let stride = FEATURES + spatial::ENCODED_FEATURES;
             let offset = input.len();
             input.resize(offset + features.len() * stride, 0.);
             for actor in
@@ -78,7 +89,7 @@ impl ConvolutionEncoder {
                     .filter(|(_, ix)| ix[0] == actor)
                     .map(|(i, _)| i)
                     .collect();
-                if selected.is_empty() {
+                if selected.is_empty() && actor != -1 {
                     continue;
                 }
                 let context = board.contexts.iter().find(|c| c.actor_site as i64 == actor);
@@ -92,44 +103,84 @@ impl ConvolutionEncoder {
                 let ix: Vec<_> = selected.iter().map(|&i| indices[i]).collect();
                 let x: Vec<_> = selected.iter().map(|&i| features[i]).collect();
                 let mut rows = Vec::new();
-                self.inputs(&plain, &ix, &x, &mut rows);
+                let mut pooled = [0.; EMBEDDING];
+                self.inputs(&plain, &ix, &x, &mut rows, &mut pooled);
+                if actor == -1 {
+                    *summary = pooled;
+                }
                 for (i, row) in selected.into_iter().zip(rows.chunks_exact(stride)) {
                     input[offset + i * stride..offset + (i + 1) * stride].copy_from_slice(row);
                 }
             }
             return;
         }
-        let cells = board.height * board.width;
+        self.encode_board(board);
+        let pooled = self.pooled();
+        *summary = pooled;
+        if let Some(coarse) = &mut self.coarse {
+            coarse.encode_board(board);
+        }
+        let coarse_pool = self.coarse.as_ref().map(|c| c.pooled());
+        input.reserve(features.len() * (FEATURES + spatial::ENCODED_FEATURES));
+        for (features, tiles) in features.iter().zip(indices) {
+            input.extend_from_slice(features);
+            append(input, &self.embedding, &pooled, tiles, board.width, 1);
+            if let Some(coarse) = &self.coarse {
+                append(
+                    input,
+                    &coarse.embedding,
+                    coarse_pool.as_ref().unwrap(),
+                    tiles,
+                    board.width,
+                    2,
+                );
+            }
+        }
+    }
+    fn encode_board(&mut self, board: &SpatialBoard) {
+        let original_cells = board.height * board.width;
+        let height = board.height.div_ceil(self.stride);
+        let width = board.width.div_ceil(self.stride);
+        let cells = height * width;
         if self.height != board.height
             || self.width != board.width
-            || self.mask != board.values[..cells]
+            || self.mask != board.values[..original_cells]
         {
             self.height = board.height;
             self.width = board.width;
-            self.mask.clear();
-            self.mask.extend_from_slice(&board.values[..cells]);
-            self.sites.clear();
-            self.sites
-                .extend((0..cells).filter(|&site| board.values[site] == 1.));
-            self.neighbors.clear();
-            self.neighbors.extend(self.sites.iter().map(|&site| {
-                KERNEL.map(|(dr, dq)| {
-                    let row = (site / board.width) as i32 + dr;
-                    let col = (site % board.width) as i32 + dq;
-                    if row < 0 || col < 0 || row >= board.height as i32 || col >= board.width as i32
-                    {
-                        usize::MAX
-                    } else {
-                        row as usize * board.width + col as usize
-                    }
+            self.mask = board.values[..original_cells].to_vec();
+            self.sites = (0..cells)
+                .filter(|&site| {
+                    let row = site / width * self.stride;
+                    let col = site % width * self.stride;
+                    (0..self.stride).any(|dr| {
+                        (0..self.stride).any(|dq| {
+                            row + dr < board.height
+                                && col + dq < board.width
+                                && board.values[(row + dr) * board.width + col + dq] == 1.
+                        })
+                    })
                 })
-            }));
-            // Invalid cells must be zero after a shape or mask change. With the
-            // same geometry, kernels overwrite every valid cell on each call.
-            self.first.resize(cells * EMBEDDING, 0.);
-            self.first.fill(0.);
-            self.embedding.resize(cells * EMBEDDING, 0.);
-            self.embedding.fill(0.);
+                .collect();
+            self.neighbors = self
+                .sites
+                .iter()
+                .map(|&site| {
+                    neighbors(
+                        site / width * self.stride + usize::from(self.stride == 2),
+                        site % width * self.stride,
+                        board.height,
+                        board.width,
+                    )
+                })
+                .collect();
+            self.next_neighbors = self
+                .sites
+                .iter()
+                .map(|&site| neighbors(site / width, site % width, height, width))
+                .collect();
+            self.first = vec![0.; cells * EMBEDDING];
+            self.embedding = vec![0.; cells * EMBEDDING];
         }
         dispatch(
             self.arch,
@@ -137,7 +188,7 @@ impl ConvolutionEncoder {
                 layer: &self.layers[0],
                 input: &board.values,
                 output: &mut self.first,
-                cells,
+                cells: original_cells,
                 sites: &self.sites,
                 neighbors: &self.neighbors,
             },
@@ -150,9 +201,11 @@ impl ConvolutionEncoder {
                 output: &mut self.embedding,
                 cells,
                 sites: &self.sites,
-                neighbors: &self.neighbors,
+                neighbors: &self.next_neighbors,
             },
         );
+    }
+    fn pooled(&self) -> [f32; EMBEDDING] {
         let mut pooled = [0.; EMBEDDING];
         for tile in self.embedding.chunks_exact(EMBEDDING) {
             for (sum, value) in pooled.iter_mut().zip(tile) {
@@ -163,21 +216,39 @@ impl ConvolutionEncoder {
         for sum in &mut pooled {
             *sum /= count;
         }
-        input.reserve(features.len() * (FEATURES + 4 * EMBEDDING));
-        for (features, tiles) in features.iter().zip(indices) {
-            input.extend_from_slice(features);
-            for &tile in tiles {
-                if tile < 0 {
-                    input.extend_from_slice(&[0.; EMBEDDING]);
-                } else {
-                    input.extend_from_slice(
-                        &self.embedding[tile as usize * EMBEDDING..(tile as usize + 1) * EMBEDDING],
-                    );
-                }
-            }
-            input.extend_from_slice(&pooled);
+        pooled
+    }
+}
+
+fn neighbors(row: usize, col: usize, height: usize, width: usize) -> [usize; 7] {
+    KERNEL.map(|(dr, dq)| {
+        let r = row as i32 + dr;
+        let c = col as i32 + dq;
+        if r < 0 || c < 0 || r >= height as i32 || c >= width as i32 {
+            usize::MAX
+        } else {
+            r as usize * width + c as usize
+        }
+    })
+}
+fn append(
+    input: &mut Vec<f32>,
+    embedding: &[f32],
+    pooled: &[f32; EMBEDDING],
+    tiles: &[i64; 3],
+    width: usize,
+    stride: usize,
+) {
+    for &tile in tiles {
+        if tile < 0 {
+            input.extend_from_slice(&[0.; EMBEDDING]);
+        } else {
+            let site = (tile as usize / width / stride) * width.div_ceil(stride)
+                + tile as usize % width / stride;
+            input.extend_from_slice(&embedding[site * EMBEDDING..(site + 1) * EMBEDDING]);
         }
     }
+    input.extend_from_slice(pooled);
 }
 
 #[inline]

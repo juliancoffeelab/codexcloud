@@ -184,6 +184,8 @@ fn phase(
     seed: u32,
     limit: Option<usize>,
     goals: Option<&[Objective]>,
+    objective_progress: &[crate::ai::orders::ObjectiveProgress],
+    opponent_progress: &[crate::ai::orders::ObjectiveProgress],
     diplomacy: Diplomacy,
     tactic: &mut PresetTactic,
 ) -> Result<Phase, SimulationError> {
@@ -220,6 +222,7 @@ fn phase(
             goals.map(<[Objective]>::to_vec),
             diplomacy,
         );
+        workspace.set_objective_progress(objective_progress, opponent_progress);
         let composition = selected_tactic.composition();
         if !composition.campaign.supports_campaign() && game.campaign_state().is_some() {
             return Err(CommandError::BattleOnlyPolicy.into());
@@ -331,12 +334,14 @@ pub(super) fn run_arena_capturing(
         let mut goals = if deathmatch {
             vec![]
         } else {
-            vec![objective(
+            let mut target = objective(
                 "required-territory",
                 ObjectiveKind::Capture,
                 territory.clone(),
                 24.0,
-            )]
+            );
+            target.hold = Some(true);
+            vec![target]
         };
         for tile in 0..game.terrain().len() {
             if game.terrain_definition(tile).income() > 0 && game.captures(tile, faction) {
@@ -374,6 +379,23 @@ pub(super) fn run_arena_capturing(
         if let Some(capture) = capture.as_deref_mut() {
             capture.observe(&game, Some(&goals));
         }
+        // Hold clocks are public objective scores, including under fog.
+        // Index relative to the acting side, never the training/player seat.
+        let progress_for = |seat: usize| {
+            if deathmatch {
+                Vec::new()
+            } else {
+                vec![crate::ai::orders::ObjectiveProgress {
+                    id: "required-territory".into(),
+                    current: held[seat],
+                    total: hold_turns,
+                    satisfied: held[seat] >= hold_turns,
+                    hold_turns_remaining: Some(hold_turns.saturating_sub(held[seat])),
+                }]
+            }
+        };
+        let progress = progress_for(side.index());
+        let opponent_progress = progress_for(1 - side.index());
         let record = phase(
             &mut game,
             &mut recording,
@@ -385,6 +407,8 @@ pub(super) fn run_arena_capturing(
             config.seed,
             config.recruit_limit,
             Some(&goals),
+            &progress,
+            &opponent_progress,
             Diplomacy::Unrestricted,
             &mut tactics[side.index()],
         )?;
@@ -453,14 +477,17 @@ pub fn run_campaign(
     config: CampaignConfig,
     definition: &CampaignProgram,
 ) -> Result<CampaignResult, SimulationError> {
-    run_campaign_capturing(rules, config, definition, None)
+    run_campaign_capturing(rules, config, definition, None, || {})
 }
 pub(super) fn run_campaign_capturing(
     rules: &Catalogue,
     config: CampaignConfig,
     definition: &CampaignProgram,
     mut capture: Option<&mut super::phase_fixtures::Capture>,
+    mut on_chapter_clear: impl FnMut(),
 ) -> Result<CampaignResult, SimulationError> {
+    #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+    crate::training::reset_history();
     validate_limits(config.max_rounds, config.recruit_limit)?;
     if definition.id() != config.campaign {
         return Err(SimulationError::InvalidConfig(
@@ -489,6 +516,8 @@ pub(super) fn run_campaign_capturing(
     game.set_combat_rng(config.seed);
     let mut missions = vec![];
     for _ in 0..chapters {
+        #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+        crate::training::reset_history();
         if !game.is_campaign() {
             return Err("Campaign state missing".into());
         }
@@ -517,6 +546,8 @@ pub(super) fn run_campaign_capturing(
                 config.seed,
                 config.recruit_limit,
                 objective_goals.as_deref(),
+                &[],
+                &[],
                 config.diplomacy,
                 &mut tactics[side.index()],
             )?);
@@ -554,6 +585,7 @@ pub(super) fn run_campaign_capturing(
         {
             break;
         }
+        on_chapter_clear();
         game = game.next_campaign();
     }
     Ok(CampaignResult {
@@ -572,11 +604,22 @@ pub fn run(
     config: MatchConfig,
     definitions: &super::CampaignDefinitions<'_>,
 ) -> Result<MatchResult, SimulationError> {
+    run_with_chapter_clears(rules, config, definitions, || {})
+}
+
+/// Notify the caller when a victory advances the campaign to another chapter.
+pub fn run_with_chapter_clears(
+    rules: &Catalogue,
+    config: MatchConfig,
+    definitions: &super::CampaignDefinitions<'_>,
+    on_chapter_clear: impl FnMut(),
+) -> Result<MatchResult, SimulationError> {
     match config {
         MatchConfig::Arena(config) => run_arena(rules, config).map(MatchResult::Arena),
         MatchConfig::Campaign(config) => {
             let definition = definitions.get(&config.campaign, &config.objective)?;
-            run_campaign(rules, config, definition).map(MatchResult::Campaign)
+            run_campaign_capturing(rules, config, definition, None, on_chapter_clear)
+                .map(MatchResult::Campaign)
         }
     }
 }
@@ -608,6 +651,8 @@ mod tests {
                 7,
                 limit,
                 None,
+                &[],
+                &[],
                 Diplomacy::Unrestricted,
                 &mut PresetTactic::preset(policy),
             )

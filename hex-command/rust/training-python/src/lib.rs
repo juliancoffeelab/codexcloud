@@ -23,6 +23,12 @@ fn parse(config: &str) -> Result<MatchConfig, String> {
     }
     Ok(c)
 }
+fn load_rules() -> Result<Catalogue, ContentError> {
+    match std::env::var_os("HEX_COMMAND_DATA_ROOT") {
+        Some(root) => Catalogue::load_from(std::path::PathBuf::from(root)),
+        None => Catalogue::load(),
+    }
+}
 fn load_model(s: &str) -> Result<Model, String> {
     let mut m: Model = serde_json::from_str(s).map_err(|e| e.to_string())?;
     m.upgrade()?;
@@ -125,6 +131,7 @@ fn collect_data(
     max_samples: usize,
     side: Option<String>,
     spatial: bool,
+    imitators: Option<Vec<String>>,
 ) -> PyResult<Dataset> {
     let side = match side.as_deref() {
         None => None,
@@ -135,31 +142,64 @@ fn collect_data(
     if max_samples == 0 {
         return Err(err("max_samples must be positive"));
     }
+    if imitators.is_some() && side != Some(TurnPhase::Player) {
+        return Err(err("pretrain_imitator collects the player side only"));
+    }
+    if imitators.as_ref().is_some_and(|x| x.len() != configs.len()) {
+        return Err(err("one pretrain_imitator is required per config"));
+    }
     py.detach(move || -> Result<Dataset, String> {
-        let rules = Catalogue::load().map_err(|e| e.to_string())?;
+        let rules = load_rules().map_err(|e| e.to_string())?;
         let mut definitions = CampaignDefinitions::new(&rules);
-        let (result, data) = scoped(
-            Some(Dataset {
-                limit: max_samples,
-                phase: side,
-                spatial,
-                ..Default::default()
-            }),
-            None,
-            None,
-            || {
-                for config in configs {
-                    let config = parse(&config)?;
-                    definitions
-                        .prepare_match(&config)
-                        .map_err(|e| e.to_string())?;
-                    run(&rules, config, &definitions).map_err(|e| e.to_string())?;
+        let mut data = Dataset {
+            limit: max_samples,
+            phase: side,
+            spatial,
+            ..Default::default()
+        };
+        for (i, config) in configs.into_iter().enumerate() {
+            let mut config = parse(&config)?;
+            let spec = imitators
+                .as_ref()
+                .map(|x| serde_json::from_str::<PretrainImitator>(&x[i]))
+                .transpose()
+                .map_err(|e| e.to_string())?;
+            let controller = spec
+                .as_ref()
+                .map(|v| imitator::controller(v, &rules, &config))
+                .transpose()?
+                .flatten();
+            if controller.is_some() {
+                if !spatial {
+                    return Err("targeted imitators require collect_spatial".into());
                 }
-                Ok::<_, String>(())
-            },
-        );
-        result?;
-        Ok(data.unwrap())
+                if side != Some(TurnPhase::Player) {
+                    return Err("targeted imitators collect the player side only".into());
+                }
+                learned(&mut config);
+            } else if let Some(PretrainImitator::Named(name)) = &spec {
+                let planner = serde_json::from_value(serde_json::Value::String(name.clone()))
+                    .map_err(|e| e.to_string())?;
+                let mut blocks = match &config {
+                    MatchConfig::Arena(c) => c.player_blocks.unwrap_or(c.player.blocks()),
+                    MatchConfig::Campaign(c) => c.player_blocks.unwrap_or(c.player.blocks()),
+                };
+                blocks.planner = planner;
+                match &mut config {
+                    MatchConfig::Arena(c) => c.player_blocks = Some(blocks),
+                    MatchConfig::Campaign(c) => c.player_blocks = Some(blocks),
+                }
+            }
+            definitions
+                .prepare_match(&config)
+                .map_err(|e| e.to_string())?;
+            let (result, next) = scoped(Some(data), None, controller, || {
+                run(&rules, config, &definitions)
+            });
+            result.map_err(|e| e.to_string())?;
+            data = next.unwrap();
+        }
+        Ok(data)
     })
     .map_err(err)
 }
@@ -222,27 +262,29 @@ fn spatial_arrays(
     )
 }
 #[pyfunction]
-#[pyo3(signature=(configs,max_samples=100000,side=None))]
+#[pyo3(signature=(configs,max_samples=100000,side=None,imitators=None))]
 fn collect(
     py: Python<'_>,
     configs: Vec<String>,
     max_samples: usize,
     side: Option<String>,
+    imitators: Option<Vec<String>>,
 ) -> PyResult<DataResult> {
     Ok(data_arrays(
         py,
-        collect_data(py, configs, max_samples, side, false)?,
+        collect_data(py, configs, max_samples, side, false, imitators)?,
     ))
 }
 #[pyfunction]
-#[pyo3(signature=(configs,max_samples=100000,side=None))]
+#[pyo3(signature=(configs,max_samples=100000,side=None,imitators=None))]
 fn collect_spatial(
     py: Python<'_>,
     configs: Vec<String>,
     max_samples: usize,
     side: Option<String>,
+    imitators: Option<Vec<String>>,
 ) -> PyResult<(DataResult, SpatialResult)> {
-    let mut data = collect_data(py, configs, max_samples, side, true)?;
+    let mut data = collect_data(py, configs, max_samples, side, true, imitators)?;
     let spatial = spatial_arrays(
         py,
         data.boards.iter().map(Some).collect(),
@@ -254,7 +296,7 @@ fn collect_spatial(
 fn evaluate(py: Python<'_>, configs: Vec<String>, model: Option<String>) -> PyResult<Vec<String>> {
     let model = model.map(|s| load_model(&s)).transpose().map_err(err)?;
     py.detach(move || -> Result<Vec<String>, String> {
-        let rules = Catalogue::load().map_err(|e| e.to_string())?;
+        let rules = load_rules().map_err(|e| e.to_string())?;
         let mut definitions = CampaignDefinitions::new(&rules);
         let (r, _) = scoped(None, model.clone(), None, || {
             configs
@@ -288,7 +330,7 @@ fn replay_phases(
 ) -> PyResult<Vec<String>> {
     let model = model.map(|s| load_model(&s)).transpose().map_err(err)?;
     py.detach(move || -> Result<Vec<String>, String> {
-        let rules = Catalogue::load().map_err(|e| e.to_string())?;
+        let rules = load_rules().map_err(|e| e.to_string())?;
         let (result, _) = scoped(None, model, None, || {
             requests
                 .into_iter()
@@ -314,7 +356,17 @@ fn score<'py>(
         return Err(err("use score_spatial for a CNN model"));
     }
     let a = features.as_array();
-    if ![LEGACY_FEATURES, DUTY_FEATURES, DIPLOMACY_FEATURES, FEATURES].contains(&a.ncols()) {
+    if ![
+        LEGACY_FEATURES,
+        DUTY_FEATURES,
+        DIPLOMACY_FEATURES,
+        CAMPAIGN_FEATURES,
+        VISIBILITY_FEATURES,
+        IDLE_FEATURES,
+        FEATURES,
+    ]
+    .contains(&a.ncols())
+    {
         return Err(err("feature width mismatch"));
     }
     let features: Vec<[f32; FEATURES]> = a
@@ -357,6 +409,8 @@ fn score_spatial<'py>(
         DUTY_FEATURES,
         DIPLOMACY_FEATURES,
         CAMPAIGN_FEATURES,
+        VISIBILITY_FEATURES,
+        IDLE_FEATURES,
         FEATURES,
     ]
     .contains(&x.ncols())
@@ -460,6 +514,8 @@ fn score_spatial<'py>(
                     spatial::LEGACY_CHANNELS,
                     spatial::DUTY_CHANNELS,
                     spatial::CAMPAIGN_CHANNELS,
+                    spatial::VISIBILITY_CHANNELS,
+                    spatial::HOLD_CHANNELS,
                 ]
                 .iter()
                 .any(|&channels| board.values.len() == cells * channels)
@@ -477,15 +533,53 @@ fn score_spatial<'py>(
         .map_err(err)?;
     Ok(scores.into_pyarray(py))
 }
+#[pyfunction]
+fn gru_step<'py>(
+    py: Python<'py>,
+    model: String,
+    summaries: PyReadonlyArray2<'py, f32>,
+    memory: PyReadonlyArray2<'py, f32>,
+) -> PyResult<Bound<'py, PyArray2<f32>>> {
+    let model = load_model(&model).map_err(err)?;
+    let gru = model
+        .recurrent
+        .as_ref()
+        .ok_or_else(|| err("recurrent model required"))?;
+    let x = summaries.as_array();
+    let h = memory.as_array();
+    if x.ncols() != 16
+        || h.ncols() != 64
+        || x.nrows() != h.nrows()
+        || x.iter().chain(h.iter()).any(|v| !v.is_finite())
+    {
+        return Err(err("invalid recurrent input dimensions or values"));
+    }
+    let rows = x.nrows();
+    let output: Vec<f32> = x
+        .rows()
+        .into_iter()
+        .zip(h.rows())
+        .flat_map(|(x, h)| {
+            gru.step(
+                &x.to_vec().try_into().unwrap(),
+                &h.to_vec().try_into().unwrap(),
+            )
+        })
+        .collect();
+    Ok(Array2::from_shape_vec((rows, 64), output)
+        .unwrap()
+        .into_pyarray(py))
+}
 enum RolloutEvent {
     Decision(Choices),
     Done(Result<String, String>),
 }
 struct Worker {
     tx: Option<Sender<usize>>,
-    rx: std::sync::Mutex<Receiver<RolloutEvent>>,
+    rx: std::sync::Mutex<Receiver<(RolloutEvent, usize)>>,
     join: Option<JoinHandle<()>>,
     event: Option<RolloutEvent>,
+    chapters_cleared: usize,
 }
 impl Worker {
     fn new(config: String, spatial: bool) -> Self {
@@ -493,17 +587,22 @@ impl Worker {
         let (events, rx) = mpsc::channel();
         let join = std::thread::spawn(move || {
             let trace = std::rc::Rc::new(std::cell::RefCell::new(Vec::new()));
+            let chapters_cleared = std::rc::Rc::new(std::cell::Cell::new(0));
             let result = (|| -> Result<String, String> {
-                let rules = Catalogue::load().map_err(|e| e.to_string())?;
+                let rules = load_rules().map_err(|e| e.to_string())?;
                 let mut c = parse(&config)?;
                 learned(&mut c);
                 let mut definitions = CampaignDefinitions::new(&rules);
                 definitions.prepare_match(&c).map_err(|e| e.to_string())?;
                 let emit = events.clone();
                 let chosen = trace.clone();
+                let progress = chapters_cleared.clone();
                 let controller: hex_command_core::training::DecisionController =
                     Box::new(move |choices| {
-                        if emit.send(RolloutEvent::Decision(choices.clone())).is_err() {
+                        if emit
+                            .send((RolloutEvent::Decision(choices.clone()), progress.get()))
+                            .is_err()
+                        {
                             return None;
                         }
                         let action = actions.recv().ok()?;
@@ -517,7 +616,11 @@ impl Worker {
                     }),
                     None,
                     Some(controller),
-                    || run(&rules, c, &definitions),
+                    || {
+                        matches::run_with_chapter_clears(&rules, c, &definitions, || {
+                            chapters_cleared.set(chapters_cleared.get() + 1);
+                        })
+                    },
                 );
                 result
                     .map(|r| summary(&r, &rules).to_string())
@@ -526,17 +629,21 @@ impl Worker {
             let result = result.map_err(|error| {
                 serde_json::json!({"error":error,"config":serde_json::from_str::<serde_json::Value>(&config).ok(),"actions":*trace.borrow()}).to_string()
             });
-            let _ = events.send(RolloutEvent::Done(result));
+            let _ = events.send((RolloutEvent::Done(result), chapters_cleared.get()));
         });
         Self {
             tx: Some(tx),
             rx: std::sync::Mutex::new(rx),
             join: Some(join),
             event: None,
+            chapters_cleared: 0,
         }
     }
     fn receive(&mut self) -> Result<(), String> {
-        self.event = Some(self.rx.lock().unwrap().recv().map_err(|e| e.to_string())?);
+        let (event, chapters_cleared) =
+            self.rx.lock().unwrap().recv().map_err(|e| e.to_string())?;
+        self.event = Some(event);
+        self.chapters_cleared = chapters_cleared;
         if let Some(RolloutEvent::Done(Err(e))) = &self.event {
             return Err(e.clone());
         }
@@ -625,6 +732,26 @@ impl BatchEnv {
             })
             .collect()
     }
+    /// Cumulative intermediate chapter clears per slot, including after termination.
+    /// Observer, map, round, committed decision counter, chapter generation.
+    fn decision_contexts(&self) -> Vec<Option<(String, String, u32, u64, u64)>> {
+        self.workers
+            .iter()
+            .map(|w| match &w.event {
+                Some(RolloutEvent::Decision(c)) => Some((
+                    c.context.observer.clone(),
+                    c.context.map.clone(),
+                    c.context.round,
+                    c.context.decision,
+                    c.context.generation,
+                )),
+                _ => None,
+            })
+            .collect()
+    }
+    fn chapters_cleared(&self) -> Vec<usize> {
+        self.workers.iter().map(|w| w.chapters_cleared).collect()
+    }
     fn spatial_observation(&self, py: Python<'_>) -> PyResult<SpatialResult> {
         if !self.spatial {
             return Err(err("construct BatchEnv(spatial=True)"));
@@ -701,26 +828,43 @@ impl BatchEnv {
 #[pyfunction]
 fn training_workload(py: Python<'_>) -> PyResult<String> {
     py.detach(|| {
-        let rules = Catalogue::load().map_err(err)?;
+        let rules = load_rules().map_err(err)?;
         serde_json::to_string(&rules.meta().simulation.training).map_err(err)
     })
 }
 #[pyfunction]
 fn fingerprints(py: Python<'_>) -> PyResult<String> {
     py.detach(|| {
-        let rules = Catalogue::load().map_err(err)?;
+        let rules = load_rules().map_err(err)?;
         Ok(hex_command_core::simulation::cli::fingerprints(&rules).to_string())
     })
 }
 #[pymodule]
 fn hex_command_training(m: &Bound<'_, PyModule>) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(gru_step, m)?)?;
     m.add("SCHEMA", SCHEMA)?;
     m.add("SPATIAL_SCHEMA", spatial::SPATIAL_SCHEMA)?;
     m.add("SPATIAL_CHANNEL_NAMES", spatial::channel_names())?;
+    m.add(
+        "HOLD_SPATIAL_CHANNEL_NAMES",
+        spatial::channel_names()[..spatial::HOLD_CHANNELS].to_vec(),
+    )?;
+    m.add(
+        "VISIBILITY_SPATIAL_CHANNEL_NAMES",
+        spatial::channel_names()[..spatial::VISIBILITY_CHANNELS].to_vec(),
+    )?;
     m.add("SPATIAL_KERNEL", spatial::KERNEL.to_vec())?;
     m.add_function(wrap_pyfunction!(fingerprints, m)?)?;
     m.add_function(wrap_pyfunction!(training_workload, m)?)?;
     m.add("FEATURE_NAMES", FEATURE_NAMES.to_vec())?;
+    m.add(
+        "IDLE_FEATURE_NAMES",
+        FEATURE_NAMES[..IDLE_FEATURES].to_vec(),
+    )?;
+    m.add(
+        "VISIBILITY_FEATURE_NAMES",
+        FEATURE_NAMES[..VISIBILITY_FEATURES].to_vec(),
+    )?;
     m.add(
         "CAMPAIGN_FEATURE_NAMES",
         FEATURE_NAMES[..CAMPAIGN_FEATURES].to_vec(),

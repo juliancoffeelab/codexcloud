@@ -30,6 +30,8 @@ pub(super) struct TurnState {
     pub(super) recruitment_remaining: Option<usize>,
     pub(super) recruitment_opportunity: Option<super::context::RecruitmentOpportunity>,
     pub(super) goals: Option<Vec<Objective>>,
+    pub(super) objective_progress: Vec<ObjectiveProgress>,
+    pub(super) opponent_progress: Vec<ObjectiveProgress>,
     pub(super) diplomacy: Diplomacy,
     #[cfg(any(feature = "wasm", test))]
     pub(super) initialized: bool,
@@ -54,6 +56,8 @@ pub(super) struct TurnState {
 pub(crate) struct TurnConfig<'a> {
     pub seed: u32,
     pub goals: Option<&'a [Objective]>,
+    pub objective_progress: &'a [ObjectiveProgress],
+    pub opponent_progress: &'a [ObjectiveProgress],
     pub diplomacy: Diplomacy,
 }
 
@@ -124,6 +128,8 @@ impl PlanningWorkspace {
                 recruitment_remaining: recruitment_limit.into(),
                 recruitment_opportunity: None,
                 goals,
+                objective_progress: Vec::new(),
+                opponent_progress: Vec::new(),
                 diplomacy,
                 #[cfg(any(feature = "wasm", test))]
                 initialized: false,
@@ -145,6 +151,15 @@ impl PlanningWorkspace {
             },
         }
     }
+    /// Supply visible progress for externally executed objectives.
+    pub(crate) fn set_objective_progress(
+        &mut self,
+        progress: &[ObjectiveProgress],
+        opponent: &[ObjectiveProgress],
+    ) {
+        self.state.objective_progress = progress.to_vec();
+        self.state.opponent_progress = opponent.to_vec();
+    }
     pub(in crate::ai::runtime) fn state_mut(&mut self) -> &mut TurnState {
         &mut self.state
     }
@@ -152,6 +167,8 @@ impl PlanningWorkspace {
         TurnConfig {
             seed: self.state.seed,
             goals: self.state.goals.as_deref(),
+            objective_progress: &self.state.objective_progress,
+            opponent_progress: &self.state.opponent_progress,
             diplomacy: self.state.diplomacy,
         }
     }

@@ -1037,6 +1037,8 @@ mod tests {
                         game.phase_forecasts(),
                     );
                     let input = crate::ai::campaigner::mission::CampaignInput {
+                        objective_progress: &[],
+                        opponent_progress: &[],
                         seed: 0,
                         goals: None,
                         diplomacy: crate::ai::Diplomacy::Unrestricted,

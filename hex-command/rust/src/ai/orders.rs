@@ -185,6 +185,8 @@ pub struct TacticalOrders {
     /// First round triggering an unconditional scripted campaign defeat.
     pub deadline_round: Option<u32>,
     pub progress: Vec<ObjectiveProgress>,
+    /// Public opponent scores; separate from our strategic duties and head features.
+    pub opponent_progress: Vec<ObjectiveProgress>,
     pub scoped: Vec<ScopedOrder>,
     /// Actors withheld by Campaigner, independent of unit archetypes or economy.
     pub inactive: Vec<UnitId>,

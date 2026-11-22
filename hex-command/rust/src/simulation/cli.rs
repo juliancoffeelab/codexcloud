@@ -399,7 +399,7 @@ fn capture_stdio(rules: &Catalogue) -> Result<(), SimulationError> {
             }
             MatchConfig::Campaign(c) => {
                 let definition = definitions.get(&c.campaign, &c.objective)?;
-                matches::run_campaign_capturing(rules, c, definition, Some(&mut capture))?;
+                matches::run_campaign_capturing(rules, c, definition, Some(&mut capture), || {})?;
             }
         }
         serde_json::to_writer(
