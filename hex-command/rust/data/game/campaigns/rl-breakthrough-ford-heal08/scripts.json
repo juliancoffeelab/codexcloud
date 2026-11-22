@@ -1,0 +1,228 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "defeat-guard",
+      "when": {
+        "noUnits": {
+          "character": "blocker",
+          "role": null,
+          "side": null,
+          "faction": "enemy",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "guard-defeated"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the pass guard",
+        "intent": {
+          "defeat": {
+            "character": "blocker",
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "flag": "guard-defeated"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "reach",
+      "when": {
+        "all": [
+          {
+            "flag": "guard-defeated"
+          },
+          {
+            "stand": {
+              "character": "courier",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null,
+              "tile": {
+                "hex": {
+                  "col": 9,
+                  "row": 3
+                }
+              },
+              "through": true
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Breakthrough secured."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Deliver the courier before reinforcements arrive",
+        "intent": {
+          "goTo": {
+            "character": "courier",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "tile": {
+              "hex": {
+                "col": 9,
+                "row": 3
+              }
+            },
+            "through": true
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "flag": "guard-defeated"
+        },
+        "satisfiedWhen": null,
+        "preserveLives": {
+          "character": "courier",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turn": 4
+      },
+      "actions": [
+        {
+          "defeat": "Deadline expired."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    },
+    {
+      "id": "lost",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Commander lost."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "courier-lost",
+      "when": {
+        "noUnits": {
+          "character": "courier",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Courier lost."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "enemy-reinforcements",
+      "when": {
+        "turn": 4
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 9,
+                "row": 3
+              }
+            },
+            "area": [],
+            "radius": 2,
+            "aiGroup": null,
+            "units": ["treant", "thorncaller", "fox-spearguard"]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 30,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

@@ -1,0 +1,229 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "enemy-hold-expired",
+      "when": {
+        "own": {
+          "faction": "enemy",
+          "tile": {
+            "hex": {
+              "col": 7,
+              "row": 3
+            }
+          },
+          "turns": 2,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The enemy completed the village hold."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": {
+        "id": null,
+        "faction": "player",
+        "label": "Enemy village control (2 consecutive turns ends the chapter)",
+        "intent": {
+          "own": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 7,
+                "row": 3
+              }
+            },
+            "turns": 2,
+            "when": null
+          }
+        },
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "owner": {
+            "tile": {
+              "hex": {
+                "col": 7,
+                "row": 3
+              }
+            },
+            "faction": "enemy"
+          }
+        },
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": {
+          "tiles": [
+            {
+              "hex": {
+                "col": 7,
+                "row": 3
+              }
+            }
+          ],
+          "units": null,
+          "visibleInFog": true
+        }
+      }
+    },
+    {
+      "id": "enemy-village-recapture",
+      "when": {
+        "owner": {
+          "tile": {
+            "hex": {
+              "col": 7,
+              "row": 3
+            }
+          },
+          "faction": "enemy"
+        }
+      },
+      "actions": [],
+      "observer": null,
+      "remembers": false,
+      "priority": 0,
+      "objective": {
+        "id": null,
+        "faction": "enemy",
+        "label": "Recover control of the village",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 7,
+                "row": 3
+              }
+            }
+          ]
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "not": {
+            "owner": {
+              "tile": {
+                "hex": {
+                  "col": 7,
+                  "row": 3
+                }
+              },
+              "faction": "enemy"
+            }
+          }
+        },
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "commander-lost",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "faction": "player",
+          "role": "leader",
+          "side": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company commander fell."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "dispatch-delivered",
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 2,
+              "row": 9
+            }
+          },
+          "through": true,
+          "character": "courier",
+          "faction": "player",
+          "role": null,
+          "side": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "victory": "The dispatch reached the relay."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "id": null,
+        "faction": "player",
+        "label": "Deliver the dispatch to the relay post",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 2,
+                "row": 9
+              }
+            },
+            "through": true,
+            "character": "courier",
+            "faction": "player",
+            "role": null,
+            "side": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": {
+          "tiles": [
+            {
+              "hex": {
+                "col": 2,
+                "row": 9
+              }
+            }
+          ],
+          "units": null,
+          "visibleInFog": true
+        }
+      }
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false
+}

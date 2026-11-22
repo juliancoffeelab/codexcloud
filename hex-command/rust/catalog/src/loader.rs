@@ -365,6 +365,79 @@ pub(crate) fn parse(bundle: &JsonBundle) -> Result<Catalogue, ContentError> {
         campaign: document(bundle, &manifest.simulation.campaign)?,
         training: document(bundle, &manifest.simulation.rl)?,
     };
+    let training = &simulation.training;
+    if !training.adaptive_sampling.valid() {
+        return Err(ContentError::new(
+            &manifest.simulation.rl,
+            "invalid adaptiveSampling settings",
+        ));
+    }
+    if training.sampling_weights.is_empty()
+        || training
+            .sampling_weights
+            .values()
+            .any(|w| !w.is_finite() || *w <= 0.)
+        || !training.sampling_weights.contains_key("arena")
+        || training.arenas.iter().any(|a| {
+            !a.pretrain_imitator.valid()
+                || matches!(a.pretrain_imitator, crate::PretrainImitator::Path { .. })
+        })
+    {
+        return Err(ContentError::new(
+            &manifest.simulation.rl,
+            "invalid sampling weights or arena pretrain_imitator",
+        ));
+    }
+    for (campaign_id, variants) in &training.campaigns {
+        for variant in variants {
+            if !variant.pretrain_imitator.valid()
+                || !training
+                    .sampling_weights
+                    .contains_key(&variant.sampling_group)
+            {
+                return Err(ContentError::new(
+                    &manifest.simulation.rl,
+                    "unknown pretrain_imitator or samplingGroup",
+                ));
+            }
+            if let crate::PretrainImitator::Path { path_to } = &variant.pretrain_imitator {
+                let campaign = campaigns.iter().find(|c| c.id() == campaign_id);
+                let valid_target = campaign.is_some_and(|c| {
+                    c.chapters().len() == 1 && {
+                        let chapter = &c.chapters()[0];
+                        maps.iter()
+                            .find(|m| {
+                                m.id() == chapter.map_id() && m.revision() == chapter.map_revision()
+                            })
+                            .is_some_and(|m| {
+                                m.tiles()
+                                    .iter()
+                                    .any(|t| t.col == path_to.col && t.row == path_to.row)
+                            })
+                    }
+                });
+                if !valid_target {
+                    return Err(ContentError::new(
+                        &manifest.simulation.rl,
+                        "path_to requires an authored tile in a single-chapter campaign",
+                    ));
+                }
+            }
+            if let Some(opponents) = &variant.opponents {
+                if opponents.is_empty()
+                    || opponents.iter().enumerate().any(|(i, name)| {
+                        !simulation.training.opponents.contains(name)
+                            || opponents[..i].contains(name)
+                    })
+                {
+                    return Err(ContentError::new(
+                        &manifest.simulation.rl,
+                        "campaign opponents must be a nonempty, unique subset of global opponents",
+                    ));
+                }
+            }
+        }
+    }
     let recruiter_weights = document(bundle, &manifest.recruitment)?;
     let _ = manifest.concealment_kinds;
     Ok(Catalogue {

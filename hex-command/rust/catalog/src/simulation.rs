@@ -64,12 +64,43 @@ pub struct TrainingSettings {
     pub campaigns: BTreeMap<Text, Vec<TrainingCampaignVariant>>,
     pub opponents: Vec<Text>,
     pub recruiters: Vec<Text>,
+    pub sampling_weights: BTreeMap<Text, f64>,
+    pub adaptive_sampling: AdaptiveSamplingSettings,
+}
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct AdaptiveSamplingSettings {
+    pub enabled: bool,
+    pub completion_threshold: f64,
+    pub minimum_multiplier: f64,
+    pub ema_rate: f64,
+    pub initial_completion_rate: f64,
+    pub warmup_episodes: u32,
+    pub update_every_episodes: u32,
+}
+impl AdaptiveSamplingSettings {
+    pub fn valid(&self) -> bool {
+        self.completion_threshold.is_finite()
+            && (0.0..1.0).contains(&self.completion_threshold)
+            && self.minimum_multiplier.is_finite()
+            && self.minimum_multiplier > 0.0
+            && self.minimum_multiplier <= 1.0
+            && self.ema_rate.is_finite()
+            && self.ema_rate > 0.0
+            && self.ema_rate <= 1.0
+            && self.initial_completion_rate.is_finite()
+            && (0.0..=1.0).contains(&self.initial_completion_rate)
+            && self.warmup_episodes > 0
+            && self.update_every_episodes > 0
+    }
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct TrainingArena {
     pub id: Text,
     pub pairs: Vec<TrainingArmies>,
+    #[serde(rename = "pretrain_imitator")]
+    pub pretrain_imitator: PretrainImitator,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -82,6 +113,30 @@ pub struct TrainingArmies {
 pub struct TrainingCampaignVariant {
     pub objective: Text,
     pub diplomacy: Text,
+    /// When omitted, inherit the authored global opponent pool.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub opponents: Option<Vec<Text>>,
+    pub sampling_group: Text,
+    #[serde(rename = "pretrain_imitator")]
+    pub pretrain_imitator: PretrainImitator,
+}
+/// Pretraining-only action source. PPO never uses this selector.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(untagged, deny_unknown_fields)]
+pub enum PretrainImitator {
+    Named(Text),
+    Path { path_to: crate::Hex },
+}
+impl PretrainImitator {
+    pub fn valid(&self) -> bool {
+        match self {
+            Self::Named(name) => matches!(
+                name.as_str(),
+                "classic" | "queued" | "full" | "objective_progress"
+            ),
+            Self::Path { .. } => true,
+        }
+    }
 }
 /// Named simulator-only routes. Keys are authored stage map identifiers.
 #[derive(Clone, Debug, Deserialize, Serialize)]

@@ -1,0 +1,168 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "reach",
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 15,
+              "row": 4
+            }
+          },
+          "through": true,
+          "character": null,
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "victory": "The route is open."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Reach the marked exit",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 15,
+                "row": 4
+              }
+            },
+            "through": true,
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turn": 10
+      },
+      "actions": [
+        {
+          "defeat": "Deadline expired."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    },
+    {
+      "id": "lost",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Commander lost."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "gallery-patrol",
+      "when": {
+        "turn": 2
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 9,
+                "row": 2
+              }
+            },
+            "area": [],
+            "radius": 0,
+            "aiGroup": null,
+            "units": ["skeleton-dreadguard"]
+          }
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 10,
+                "row": 2
+              }
+            },
+            "area": [],
+            "radius": 0,
+            "aiGroup": null,
+            "units": ["skeleton-impact-caster-l2"]
+          }
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 11,
+                "row": 2
+              }
+            },
+            "area": [],
+            "radius": 0,
+            "aiGroup": null,
+            "units": ["skeleton-impact-caster-l2"]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false
+}

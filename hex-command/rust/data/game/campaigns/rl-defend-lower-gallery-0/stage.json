@@ -1,0 +1,7 @@
+{
+  "id": "rl-defend-lower-gallery-0",
+  "map": "map.json",
+  "roster": "roster.json",
+  "story": "story.json",
+  "scripts": "scripts.json"
+}

@@ -1,0 +1,30 @@
+{
+  "tags": ["simulation"],
+  "id": "rl-thorn-verge",
+  "name": "Thorn Verge",
+  "tagline": "Close against ranged threats",
+  "description": "A bent forest edge shelters the rear ranks. Two clearings give the wolves room to join the attack on the caster.",
+  "shortDescription": "Defeat the ranged captain before round 2.",
+  "race": "beast",
+  "leader": "grovewarden",
+  "characters": [
+    {
+      "id": "marksman",
+      "name": "Ranged captain"
+    }
+  ],
+  "ending": [],
+  "stages": ["stage.json"],
+  "carryover": {
+    "goldLimit": 0,
+    "veteranLimit": 0,
+    "deploymentRadius": 3,
+    "weights": {
+      "hp": 1,
+      "damage": 2,
+      "healing": 5,
+      "level": 3,
+      "experience": 0.3333333333333333
+    }
+  }
+}

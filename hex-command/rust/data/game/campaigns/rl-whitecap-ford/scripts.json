@@ -1,0 +1,117 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "breach",
+      "when": {
+        "noUnits": {
+          "character": "gate-guard",
+          "role": null,
+          "side": null,
+          "faction": "enemy",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "victory": "The defenders of Whitecap Ford fell."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the gate guard and preserve the vanguard",
+        "intent": {
+          "defeat": {
+            "character": "gate-guard",
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "availableWhen": null,
+        "visibleWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "vanguard-lost",
+      "when": {
+        "noUnits": {
+          "character": "assault-vanguard",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The assault vanguard fell."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 110
+    },
+    {
+      "id": "lost",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The assault commander fell."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 100
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turn": 6
+      },
+      "actions": [
+        {
+          "defeat": "The assault window closed."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": -100
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

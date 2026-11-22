@@ -51,7 +51,8 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued"
     },
     {
       "id": "rl-splitpine-clearing",
@@ -104,7 +105,8 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued"
     },
     {
       "id": "rl-crown-gap",
@@ -157,7 +159,8 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued"
     },
     {
       "id": "rl-jawbone-crossing",
@@ -210,7 +213,8 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued"
     },
     {
       "id": "rl-sump-teeth",
@@ -263,7 +267,8 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued"
     },
     {
       "id": "rl-last-lantern",
@@ -316,7 +321,8 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued"
     },
     {
       "id": "rl-switchback-saltworks",
@@ -369,7 +375,8 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued"
     },
     {
       "id": "rl-cinderfault",
@@ -422,7 +429,8 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued"
     },
     {
       "id": "rl-sable-sound",
@@ -475,7 +483,8 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued"
     },
     {
       "id": "rl-three-wells-trail",
@@ -528,7 +537,8 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued"
     },
     {
       "id": "rl-frosthook-gate",
@@ -581,7 +591,8 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued"
     },
     {
       "id": "rl-birch-pocket",
@@ -634,7 +645,8 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued"
     },
     {
       "id": "rl-quarry-ring",
@@ -687,7 +699,8 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued"
     },
     {
       "id": "rl-fordstep",
@@ -740,42 +753,388 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued"
     }
   ],
   "campaigns": {
     "rl-woodland-defense": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued"
       },
       {
         "objective": "fog",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued"
       }
     ],
     "rl-splitwake-crossing": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued"
       },
       {
         "objective": "fog",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued"
       }
     ],
     "rl-underground-escape": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued"
       },
       {
         "objective": "fog",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued"
+      }
+    ],
+    "rl-urgent-crossing": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "full"],
+        "samplingGroup": "deadline",
+        "pretrain_imitator": "objective_progress"
+      }
+    ],
+    "rl-deadline-wait7": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "deadline",
+        "pretrain_imitator": "objective_progress"
+      }
+    ],
+    "rl-deadline-pines-relief8": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "predictor", "full"],
+        "samplingGroup": "deadline",
+        "pretrain_imitator": "objective_progress"
+      }
+    ],
+    "rl-route-ambush": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "routes",
+        "pretrain_imitator": "full"
+      }
+    ],
+    "rl-route-pocket-leader": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "routes",
+        "pretrain_imitator": "queued"
+      }
+    ],
+    "rl-route-pass-road": [
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "routes",
+        "pretrain_imitator": "queued"
+      }
+    ],
+    "rl-escort-lantern-maze": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "predictor", "full"],
+        "samplingGroup": "escort-handoff",
+        "pretrain_imitator": "full"
+      }
+    ],
+    "rl-escort-mistfen-patrol": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "predictor", "full"],
+        "samplingGroup": "escort-handoff",
+        "pretrain_imitator": "full"
+      }
+    ],
+    "rl-escort-splitwake-patrol": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "predictor", "full"],
+        "samplingGroup": "escort-handoff",
+        "pretrain_imitator": "full"
+      }
+    ],
+    "rl-defend-lower-gallery-0": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "defend",
+        "pretrain_imitator": "full"
+      }
+    ],
+    "rl-defend-tidegate-stand-110": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "predictor", "full"],
+        "samplingGroup": "defend",
+        "pretrain_imitator": "full"
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["predictor"],
+        "samplingGroup": "defend",
+        "pretrain_imitator": "full"
+      }
+    ],
+    "rl-defend-bracken-stand-010": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "predictor", "full"],
+        "samplingGroup": "defend",
+        "pretrain_imitator": "full"
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "defend",
+        "pretrain_imitator": "full"
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "defend",
+        "pretrain_imitator": "full"
+      }
+    ],
+    "rl-interrupt-siltbar-approach": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "interrupt",
+        "pretrain_imitator": {
+          "path_to": {
+            "col": 13,
+            "row": 5
+          }
+        }
+      }
+    ],
+    "rl-interrupt-herring-tide-road-three": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "interrupt",
+        "pretrain_imitator": "full"
+      }
+    ],
+    "rl-interrupt-south-ford-west-post": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "interrupt",
+        "pretrain_imitator": "full"
+      }
+    ],
+    "rl-briar-saddle": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "joint-attack",
+        "pretrain_imitator": "queued"
+      }
+    ],
+    "rl-whitecap-ford": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "joint-attack",
+        "pretrain_imitator": "queued"
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["predictor"],
+        "samplingGroup": "joint-attack",
+        "pretrain_imitator": "queued"
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["predictor"],
+        "samplingGroup": "joint-attack",
+        "pretrain_imitator": "queued"
+      }
+    ],
+    "rl-slate-gallery": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "joint-attack",
+        "pretrain_imitator": "queued"
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "predictor", "full"],
+        "samplingGroup": "joint-attack",
+        "pretrain_imitator": "queued"
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "predictor"],
+        "samplingGroup": "joint-attack",
+        "pretrain_imitator": "queued"
+      }
+    ],
+    "rl-vault-rally": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["predictor"],
+        "samplingGroup": "breakthrough",
+        "pretrain_imitator": "classic"
+      }
+    ],
+    "rl-breakthrough-cave5": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "breakthrough",
+        "pretrain_imitator": "full"
+      }
+    ],
+    "rl-breakthrough-ford-heal08": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "breakthrough",
+        "pretrain_imitator": "full"
+      }
+    ],
+    "rl-bellmarket-courts": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "ranged-melee",
+        "pretrain_imitator": "classic"
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic"],
+        "samplingGroup": "ranged-melee",
+        "pretrain_imitator": "classic"
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "full"],
+        "samplingGroup": "ranged-melee",
+        "pretrain_imitator": "classic"
+      }
+    ],
+    "rl-thorn-verge": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "predictor", "full"],
+        "samplingGroup": "ranged-melee",
+        "pretrain_imitator": "classic"
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "predictor", "full"],
+        "samplingGroup": "ranged-melee",
+        "pretrain_imitator": "classic"
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "predictor", "full"],
+        "samplingGroup": "ranged-melee",
+        "pretrain_imitator": "classic"
+      }
+    ],
+    "rl-lair-outworks": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "predictor", "full"],
+        "samplingGroup": "ranged-melee",
+        "pretrain_imitator": "full"
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "predictor", "full"],
+        "samplingGroup": "ranged-melee",
+        "pretrain_imitator": "full"
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["classic", "predictor", "full"],
+        "samplingGroup": "ranged-melee",
+        "pretrain_imitator": "full"
       }
     ]
   },
   "opponents": ["classic", "predictor", "full"],
   "recruiters": ["situational", "predictor"],
-  "objectives": ["deathmatch", "territory"]
+  "objectives": ["deathmatch", "territory"],
+  "samplingWeights": {
+    "arena": 0.25,
+    "campaign": 0.25,
+    "deadline": 0.0625,
+    "routes": 0.0625,
+    "escort-handoff": 0.0625,
+    "defend": 0.0625,
+    "interrupt": 0.0625,
+    "joint-attack": 0.0625,
+    "breakthrough": 0.0625,
+    "ranged-melee": 0.0625
+  },
+  "adaptiveSampling": {
+    "enabled": true,
+    "completionThreshold": 0.8,
+    "minimumMultiplier": 0.1,
+    "emaRate": 0.1,
+    "initialCompletionRate": 0.5,
+    "warmupEpisodes": 10,
+    "updateEveryEpisodes": 20
+  }
 }

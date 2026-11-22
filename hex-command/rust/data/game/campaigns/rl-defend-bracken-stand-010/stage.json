@@ -1,0 +1,7 @@
+{
+  "id": "rl-defend-bracken-stand-010",
+  "map": "map.json",
+  "roster": "roster.json",
+  "story": "story.json",
+  "scripts": "scripts.json"
+}

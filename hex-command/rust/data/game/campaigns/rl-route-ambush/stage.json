@@ -1,0 +1,7 @@
+{
+  "id": "rl-route-ambush",
+  "map": "map.json",
+  "roster": "roster.json",
+  "scripts": "scripts.json",
+  "story": "story.json"
+}

@@ -51,9 +51,10 @@ pub use schema::{
 mod tests;
 
 pub use simulation::{
-    ArenaForces, ArenaScenario, ArenaSettings, ArenaVariant, ArmyRoster, CampaignSettings,
-    CampaignSimulation, SimulationObjective, SimulationSettings, SimulationStageObjective,
-    TrainingArena, TrainingArmies, TrainingCampaignVariant, TrainingSettings,
+    AdaptiveSamplingSettings, ArenaForces, ArenaScenario, ArenaSettings, ArenaVariant, ArmyRoster,
+    CampaignSettings, CampaignSimulation, PretrainImitator, SimulationObjective,
+    SimulationSettings, SimulationStageObjective, TrainingArena, TrainingArmies,
+    TrainingCampaignVariant, TrainingSettings,
 };
 
 mod prepared_combat;
