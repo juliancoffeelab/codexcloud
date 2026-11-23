@@ -1,0 +1,230 @@
+[
+  {
+    "player": "learner",
+    "imitator": null,
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-long",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491231001
+    }
+  },
+  {
+    "player": "learner",
+    "imitator": null,
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-long",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491231002
+    }
+  },
+  {
+    "player": "learner",
+    "imitator": null,
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-long",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491231004
+    }
+  },
+  {
+    "player": "learner",
+    "imitator": null,
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-long",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491231005
+    }
+  },
+  {
+    "player": "learner",
+    "imitator": null,
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-long",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491231003
+    }
+  },
+  {
+    "player": "learner",
+    "imitator": null,
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-long",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491231005
+    }
+  },
+  {
+    "player": "learner",
+    "imitator": null,
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-long",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491231006
+    }
+  },
+  {
+    "player": "learner",
+    "imitator": null,
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-long",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491231007
+    }
+  },
+  {
+    "player": "learner",
+    "imitator": null,
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-healer",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491231001
+    }
+  },
+  {
+    "player": "learner",
+    "imitator": null,
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-healer",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491231003
+    }
+  },
+  {
+    "player": "learner",
+    "imitator": null,
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-healer",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491231005
+    }
+  },
+  {
+    "player": "learner",
+    "imitator": null,
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-healer",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491231006
+    }
+  }
+]

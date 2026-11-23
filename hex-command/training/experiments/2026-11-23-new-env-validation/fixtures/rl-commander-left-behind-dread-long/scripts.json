@@ -1,0 +1,175 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "commander-lost",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "secure-post",
+      "when": {
+        "owner": {
+          "tile": {
+            "hex": {
+              "col": 13,
+              "row": 6
+            }
+          },
+          "faction": "player"
+        }
+      },
+      "actions": [],
+      "observer": null,
+      "remembers": false,
+      "priority": 1,
+      "objective": {
+        "faction": "player",
+        "label": "Secure the eastern village",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 13,
+                "row": 6
+              }
+            }
+          ]
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "owner": {
+            "tile": {
+              "hex": {
+                "col": 13,
+                "row": 6
+              }
+            },
+            "faction": "player"
+          }
+        },
+        "playerMarker": null,
+        "preserveLives": null
+      }
+    },
+    {
+      "id": "leader-exit",
+      "when": {
+        "all": [
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 15,
+                  "row": 6
+                }
+              },
+              "through": false,
+              "character": "nera",
+              "role": "leader",
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          },
+          {
+            "owner": {
+              "tile": {
+                "hex": {
+                  "col": 13,
+                  "row": 6
+                }
+              },
+              "faction": "player"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Commander evacuated."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 1,
+      "objective": {
+        "faction": "player",
+        "label": "Bring Nera to the eastern exit",
+        "intent": {
+          "escape": {
+            "tile": {
+              "hex": {
+                "col": 15,
+                "row": 6
+              }
+            },
+            "through": false,
+            "character": "nera",
+            "role": "leader",
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "playerMarker": null,
+        "preserveLives": null
+      }
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turnAtLeast": 22
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false
+}

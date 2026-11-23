@@ -1,0 +1,103 @@
+[
+  {
+    "player": "hour8",
+    "mode": "switch",
+    "wins": 0,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "Commander lost.": 8
+    }
+  },
+  {
+    "player": "hour8",
+    "mode": "stay",
+    "wins": 0,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 6,
+      "Commander lost.": 2
+    }
+  },
+  {
+    "player": "hour10",
+    "mode": "switch",
+    "wins": 0,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "Commander lost.": 8
+    }
+  },
+  {
+    "player": "hour10",
+    "mode": "stay",
+    "wins": 8,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "full",
+    "mode": "switch",
+    "wins": 8,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "full",
+    "mode": "stay",
+    "wins": 8,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "queued",
+    "mode": "switch",
+    "wins": 8,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "queued",
+    "mode": "stay",
+    "wins": 8,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "classic",
+    "mode": "switch",
+    "wins": 8,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "classic",
+    "mode": "stay",
+    "wins": 8,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  }
+]

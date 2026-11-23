@@ -1,0 +1,613 @@
+{
+  "selected": [
+    {
+      "id": "rl-scree-relay-v8-switch",
+      "role": "route-choice challenge",
+      "scope": {
+        "size": [
+          18,
+          11
+        ],
+        "playerSight": "clear",
+        "enemySight": "clear",
+        "opponent": "Classic",
+        "playerCampaigner": "Mission",
+        "playerRecruiter": "Situational",
+        "recruitsPerPhase": 0,
+        "completedByTurn": 7,
+        "deadlineDefeatOnTurn": 8,
+        "simulationRoundCap": 100,
+        "diplomacy": "unrestricted",
+        "objective": "living commander at (16,4)"
+      },
+      "discovery": {
+        "seeds": [
+          56180101,
+          56180108
+        ],
+        "players": {
+          "hour8": {
+            "successes": 0,
+            "defeats": 8,
+            "caps": 0,
+            "outcomes": {
+              "Deadline expired.": 8
+            }
+          },
+          "hour10": {
+            "successes": 0,
+            "defeats": 8,
+            "caps": 0,
+            "outcomes": {
+              "Deadline expired.": 8
+            }
+          },
+          "full": {
+            "successes": 8,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 8
+            }
+          },
+          "queued": {
+            "successes": 0,
+            "defeats": 8,
+            "caps": 0,
+            "outcomes": {
+              "Deadline expired.": 8
+            }
+          },
+          "classic": {
+            "successes": 8,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 8
+            }
+          }
+        },
+        "raw": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/discovery/results.jsonl"
+      },
+      "confirmation": {
+        "seeds": [
+          56180201,
+          56180220
+        ],
+        "players": {
+          "hour8": {
+            "successes": 0,
+            "defeats": 20,
+            "caps": 0,
+            "outcomes": {
+              "Deadline expired.": 20
+            }
+          },
+          "hour10": {
+            "successes": 0,
+            "defeats": 20,
+            "caps": 0,
+            "outcomes": {
+              "Deadline expired.": 20
+            }
+          },
+          "full": {
+            "successes": 20,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 20
+            }
+          }
+        },
+        "raw": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/confirmation/results.jsonl",
+        "protocol": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/confirmation/protocol.json"
+      },
+      "replay": {
+        "routes": {
+          "hour8": {
+            "traces": 20,
+            "captainStayedOffBypass": 20,
+            "rangerSurvived": 14
+          },
+          "hour10": {
+            "traces": 20,
+            "captainStayedOffBypass": 20,
+            "rangerSurvived": 20
+          },
+          "full": {
+            "traces": 20,
+            "captainOnBypass": 20,
+            "clearOnPlayerTurn5": 20,
+            "rangerSurvived": 19
+          }
+        },
+        "extract": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/confirmation/traces/trace-extract.json",
+        "rawDirectory": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/confirmation/traces"
+      },
+      "files": {
+        "catalog": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog",
+        "map": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-switch/map.json",
+        "roster": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-switch/roster.json",
+        "scripts": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-switch/scripts.json",
+        "campaign": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-switch/campaign.json",
+        "stage": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-switch/stage.json",
+        "story": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-switch/story.json"
+      },
+      "render": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/scree-relay.png"
+    },
+    {
+      "id": "rl-scree-relay-v8-stay",
+      "role": "matched counterexample",
+      "scope": {
+        "size": [
+          18,
+          11
+        ],
+        "playerSight": "clear",
+        "enemySight": "clear",
+        "opponent": "Classic",
+        "playerCampaigner": "Mission",
+        "playerRecruiter": "Situational",
+        "recruitsPerPhase": 0,
+        "completedByTurn": 7,
+        "deadlineDefeatOnTurn": 8,
+        "simulationRoundCap": 100,
+        "diplomacy": "unrestricted",
+        "objective": "living commander at (16,4)"
+      },
+      "discovery": {
+        "seeds": [
+          56180101,
+          56180108
+        ],
+        "players": {
+          "hour8": {
+            "successes": 0,
+            "defeats": 8,
+            "caps": 0,
+            "outcomes": {
+              "Deadline expired.": 8
+            }
+          },
+          "hour10": {
+            "successes": 8,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 8
+            }
+          },
+          "full": {
+            "successes": 8,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 8
+            }
+          },
+          "queued": {
+            "successes": 8,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 8
+            }
+          },
+          "classic": {
+            "successes": 8,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 8
+            }
+          }
+        },
+        "raw": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/discovery/results.jsonl"
+      },
+      "confirmation": {
+        "seeds": [
+          56180201,
+          56180220
+        ],
+        "players": {
+          "hour8": {
+            "successes": 0,
+            "defeats": 20,
+            "caps": 0,
+            "outcomes": {
+              "Deadline expired.": 19,
+              "Commander lost.": 1
+            }
+          },
+          "hour10": {
+            "successes": 20,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 20
+            }
+          },
+          "full": {
+            "successes": 20,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 20
+            }
+          }
+        },
+        "raw": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/confirmation/results.jsonl",
+        "protocol": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/confirmation/protocol.json"
+      },
+      "replay": {
+        "routes": {
+          "hour8": {
+            "traces": 20,
+            "captainStayedOffBypass": 20
+          },
+          "hour10": {
+            "traces": 20,
+            "captainStayedOffBypass": 20,
+            "clearOnPlayerTurn5": 20
+          },
+          "full": {
+            "traces": 20,
+            "captainStayedOffBypass": 20,
+            "clearOnPlayerTurn5": 10,
+            "rangerSurvived": 20,
+            "clearOnPlayerTurn4": 10
+          }
+        },
+        "extract": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/confirmation/traces/trace-extract.json",
+        "rawDirectory": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/confirmation/traces"
+      },
+      "files": {
+        "catalog": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog",
+        "map": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-stay/map.json",
+        "roster": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-stay/roster.json",
+        "scripts": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-stay/scripts.json",
+        "campaign": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-stay/campaign.json",
+        "stage": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-stay/stage.json",
+        "story": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-stay/story.json"
+      },
+      "render": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/scree-relay.png"
+    }
+  ],
+  "optionalStressPair": [
+    {
+      "id": "rl-scree-relay-v6-switch",
+      "role": "advance under pursuit",
+      "scope": {
+        "size": [
+          18,
+          11
+        ],
+        "playerSight": "clear",
+        "enemySight": "clear",
+        "opponent": "Classic",
+        "playerCampaigner": "Mission",
+        "playerRecruiter": "Situational",
+        "recruitsPerPhase": 0,
+        "completedByTurn": 7,
+        "deadlineDefeatOnTurn": 8,
+        "simulationRoundCap": 100,
+        "diplomacy": "unrestricted",
+        "objective": "living commander at (16,4)"
+      },
+      "discovery": {
+        "seeds": [
+          56180101,
+          56180108
+        ],
+        "players": {
+          "hour8": {
+            "successes": 0,
+            "defeats": 8,
+            "caps": 0,
+            "outcomes": {
+              "Commander lost.": 8
+            }
+          },
+          "hour10": {
+            "successes": 0,
+            "defeats": 8,
+            "caps": 0,
+            "outcomes": {
+              "Commander lost.": 8
+            }
+          },
+          "full": {
+            "successes": 8,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 8
+            }
+          },
+          "queued": {
+            "successes": 8,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 8
+            }
+          },
+          "classic": {
+            "successes": 8,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 8
+            }
+          }
+        },
+        "raw": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/discovery/results.jsonl"
+      },
+      "confirmation": {
+        "seeds": [
+          56180201,
+          56180220
+        ],
+        "players": {
+          "hour8": {
+            "successes": 0,
+            "defeats": 20,
+            "caps": 0,
+            "outcomes": {
+              "Commander lost.": 20
+            }
+          },
+          "hour10": {
+            "successes": 0,
+            "defeats": 20,
+            "caps": 0,
+            "outcomes": {
+              "Commander lost.": 20
+            }
+          },
+          "full": {
+            "successes": 20,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 20
+            }
+          },
+          "queued": {
+            "successes": 20,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 20
+            }
+          },
+          "classic": {
+            "successes": 16,
+            "defeats": 4,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 16,
+              "Deadline expired.": 3,
+              "Commander lost.": 1
+            }
+          }
+        },
+        "raw": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/confirmation/results.jsonl",
+        "protocol": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/confirmation/protocol.json"
+      },
+      "replay": {
+        "routes": {
+          "hour8": {
+            "traces": 5,
+            "captainStayedOffBypass": 5,
+            "rangerSurvived": 5
+          },
+          "hour10": {
+            "traces": 5,
+            "captainOnBypass": 5,
+            "rangerSurvived": 5
+          },
+          "full": {
+            "traces": 5,
+            "captainOnBypass": 5,
+            "clearOnPlayerTurn7": 3,
+            "clearOnPlayerTurn5": 2
+          },
+          "queued": {
+            "traces": 5,
+            "captainOnBypass": 5,
+            "clearOnPlayerTurn5": 5,
+            "rangerSurvived": 2
+          }
+        },
+        "extract": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/confirmation/traces/trace-extract.json",
+        "rawDirectory": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/confirmation/traces"
+      },
+      "files": {
+        "catalog": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/catalog",
+        "map": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/catalog/game/campaigns/rl-scree-relay-v6-switch/map.json",
+        "roster": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/catalog/game/campaigns/rl-scree-relay-v6-switch/roster.json",
+        "scripts": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/catalog/game/campaigns/rl-scree-relay-v6-switch/scripts.json",
+        "campaign": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/catalog/game/campaigns/rl-scree-relay-v6-switch/campaign.json",
+        "stage": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/catalog/game/campaigns/rl-scree-relay-v6-switch/stage.json",
+        "story": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/catalog/game/campaigns/rl-scree-relay-v6-switch/story.json"
+      },
+      "render": null
+    },
+    {
+      "id": "rl-scree-relay-v6-stay",
+      "role": "matched counterexample",
+      "scope": {
+        "size": [
+          18,
+          11
+        ],
+        "playerSight": "clear",
+        "enemySight": "clear",
+        "opponent": "Classic",
+        "playerCampaigner": "Mission",
+        "playerRecruiter": "Situational",
+        "recruitsPerPhase": 0,
+        "completedByTurn": 7,
+        "deadlineDefeatOnTurn": 8,
+        "simulationRoundCap": 100,
+        "diplomacy": "unrestricted",
+        "objective": "living commander at (16,4)"
+      },
+      "discovery": {
+        "seeds": [
+          56180101,
+          56180108
+        ],
+        "players": {
+          "hour8": {
+            "successes": 0,
+            "defeats": 8,
+            "caps": 0,
+            "outcomes": {
+              "Deadline expired.": 6,
+              "Commander lost.": 2
+            }
+          },
+          "hour10": {
+            "successes": 8,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 8
+            }
+          },
+          "full": {
+            "successes": 8,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 8
+            }
+          },
+          "queued": {
+            "successes": 8,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 8
+            }
+          },
+          "classic": {
+            "successes": 8,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 8
+            }
+          }
+        },
+        "raw": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/discovery/results.jsonl"
+      },
+      "confirmation": {
+        "seeds": [
+          56180201,
+          56180220
+        ],
+        "players": {
+          "hour8": {
+            "successes": 0,
+            "defeats": 20,
+            "caps": 0,
+            "outcomes": {
+              "Deadline expired.": 14,
+              "Commander lost.": 6
+            }
+          },
+          "hour10": {
+            "successes": 20,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 20
+            }
+          },
+          "full": {
+            "successes": 20,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 20
+            }
+          },
+          "queued": {
+            "successes": 20,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 20
+            }
+          },
+          "classic": {
+            "successes": 20,
+            "defeats": 0,
+            "caps": 0,
+            "outcomes": {
+              "The route is open.": 20
+            }
+          }
+        },
+        "raw": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/confirmation/results.jsonl",
+        "protocol": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/confirmation/protocol.json"
+      },
+      "replay": {
+        "routes": {
+          "hour8": {
+            "traces": 5,
+            "captainStayedOffBypass": 5
+          },
+          "hour10": {
+            "traces": 5,
+            "captainStayedOffBypass": 5,
+            "clearOnPlayerTurn5": 5
+          },
+          "full": {
+            "traces": 5,
+            "captainStayedOffBypass": 5,
+            "clearOnPlayerTurn5": 1,
+            "rangerSurvived": 5,
+            "clearOnPlayerTurn6": 4
+          },
+          "queued": {
+            "traces": 5,
+            "captainStayedOffBypass": 5,
+            "clearOnPlayerTurn4": 2,
+            "rangerSurvived": 2,
+            "clearOnPlayerTurn6": 3
+          }
+        },
+        "extract": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/confirmation/traces/trace-extract.json",
+        "rawDirectory": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/confirmation/traces"
+      },
+      "files": {
+        "catalog": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/catalog",
+        "map": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/catalog/game/campaigns/rl-scree-relay-v6-stay/map.json",
+        "roster": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/catalog/game/campaigns/rl-scree-relay-v6-stay/roster.json",
+        "scripts": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/catalog/game/campaigns/rl-scree-relay-v6-stay/scripts.json",
+        "campaign": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/catalog/game/campaigns/rl-scree-relay-v6-stay/campaign.json",
+        "stage": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/catalog/game/campaigns/rl-scree-relay-v6-stay/stage.json",
+        "story": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v6/catalog/game/campaigns/rl-scree-relay-v6-stay/story.json"
+      },
+      "render": null
+    }
+  ],
+  "validation": {
+    "content": "498080d951d65ae6f9f0c3ffe2ae299ca33510e1fc4321bcf069e6cd404f2928",
+    "engine": "8cf0581157741df24b8e5e5c57ab6b8d0b1caae00e3def9b5d4866ee71eb1859",
+    "evaluationNative": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/native/hex_command_training.so",
+    "phaseTools": [
+      "/workspace/codexcloud/hex-command/rust/target/debug/hex-command-sim",
+      "/workspace/codexcloud/hex-command/rust/target/release/companion_trace"
+    ],
+    "finalBuilder": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/build.py",
+    "runScript": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/evaluate.py",
+    "noTraining": true,
+    "noIntegration": true
+  }
+}

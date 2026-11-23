@@ -1,0 +1,18 @@
+[
+  {
+    "id": "commander-dread-long",
+    "map": "tmp/rl/new-env-validation/commander/render/dread-long/map.json",
+    "roster": "tmp/rl/new-env-validation/commander/render/dread-long/roster.json",
+    "scenario": "tmp/rl/new-env-validation/commander/render/dread-long/scenario.json",
+    "overlay": "tmp/rl/new-env-validation/commander/render/dread-long/overlay.json",
+    "output": "tmp/rl/new-env-validation/commander/render/dread-long/preview.png"
+  },
+  {
+    "id": "commander-dread-wounded-long",
+    "map": "tmp/rl/new-env-validation/commander/render/dread-wounded-long/map.json",
+    "roster": "tmp/rl/new-env-validation/commander/render/dread-wounded-long/roster.json",
+    "scenario": "tmp/rl/new-env-validation/commander/render/dread-wounded-long/scenario.json",
+    "overlay": "tmp/rl/new-env-validation/commander/render/dread-wounded-long/overlay.json",
+    "output": "tmp/rl/new-env-validation/commander/render/dread-wounded-long/preview.png"
+  }
+]

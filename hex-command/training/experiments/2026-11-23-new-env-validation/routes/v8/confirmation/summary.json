@@ -1,0 +1,63 @@
+[
+  {
+    "player": "hour8",
+    "mode": "switch",
+    "wins": 0,
+    "games": 20,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 20
+    }
+  },
+  {
+    "player": "hour8",
+    "mode": "stay",
+    "wins": 0,
+    "games": 20,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 19,
+      "Commander lost.": 1
+    }
+  },
+  {
+    "player": "hour10",
+    "mode": "switch",
+    "wins": 0,
+    "games": 20,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 20
+    }
+  },
+  {
+    "player": "hour10",
+    "mode": "stay",
+    "wins": 20,
+    "games": 20,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 20
+    }
+  },
+  {
+    "player": "full",
+    "mode": "switch",
+    "wins": 20,
+    "games": 20,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 20
+    }
+  },
+  {
+    "player": "full",
+    "mode": "stay",
+    "wins": 20,
+    "games": 20,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 20
+    }
+  }
+]
