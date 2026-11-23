@@ -1,0 +1,26 @@
+{
+  "scores.png": {
+    "bytes": 175592,
+    "sha256": "9bd12a91c2e823e6fd159331ef8a25b611af19b888049877c1edd032a73570ec"
+  },
+  "teacher-fresh.json.gz": {
+    "bytes": 608,
+    "sha256": "852270c3c1abb99ea2eb472af05f108a87dd31859ea1992d07bdafa2c882b1e5"
+  },
+  "README.md": {
+    "bytes": 3730,
+    "sha256": "fa7c880ce0d2296d5ea83710e1452b49252146f142c7f17ff574f425a8e538b7"
+  },
+  "fresh.jsonl.gz": {
+    "bytes": 4541,
+    "sha256": "7f63d2de33539282d43aebe1218da63c7f10beee9a40f7b1532b7a10fa225a25"
+  },
+  "protocol.json": {
+    "bytes": 362,
+    "sha256": "3a515e642abe713ac5af9c4b21291712a42fa7c0241754872b55a4a8a8e43d34"
+  },
+  "summary.json": {
+    "bytes": 2157,
+    "sha256": "759077ac6f64ea406c12bb003e55f1c84aea9a7327383e1caff32bf8d0ba0b2e"
+  }
+}

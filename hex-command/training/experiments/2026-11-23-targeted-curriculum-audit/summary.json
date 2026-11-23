@@ -1,0 +1,146 @@
+[
+  {
+    "id": "rl-urgent-crossing",
+    "wins": 12,
+    "runs": 16,
+    "caps": 0
+  },
+  {
+    "id": "rl-deadline-wait7",
+    "wins": 8,
+    "runs": 8,
+    "caps": 0
+  },
+  {
+    "id": "rl-deadline-pines-relief8",
+    "wins": 0,
+    "runs": 24,
+    "caps": 0
+  },
+  {
+    "id": "rl-route-ambush",
+    "wins": 0,
+    "runs": 8,
+    "caps": 0
+  },
+  {
+    "id": "rl-route-pocket-leader",
+    "wins": 7,
+    "runs": 8,
+    "caps": 0
+  },
+  {
+    "id": "rl-route-pass-road",
+    "wins": 0,
+    "runs": 8,
+    "caps": 0
+  },
+  {
+    "id": "rl-escort-lantern-maze",
+    "wins": 24,
+    "runs": 24,
+    "caps": 0
+  },
+  {
+    "id": "rl-escort-mistfen-patrol",
+    "wins": 24,
+    "runs": 24,
+    "caps": 0
+  },
+  {
+    "id": "rl-escort-splitwake-patrol",
+    "wins": 24,
+    "runs": 24,
+    "caps": 0
+  },
+  {
+    "id": "rl-defend-lower-gallery-0",
+    "wins": 0,
+    "runs": 8,
+    "caps": 0
+  },
+  {
+    "id": "rl-defend-tidegate-stand-110",
+    "wins": 31,
+    "runs": 32,
+    "caps": 0
+  },
+  {
+    "id": "rl-defend-bracken-stand-010",
+    "wins": 26,
+    "runs": 40,
+    "caps": 0
+  },
+  {
+    "id": "rl-interrupt-siltbar-approach",
+    "wins": 6,
+    "runs": 8,
+    "caps": 0
+  },
+  {
+    "id": "rl-interrupt-herring-tide-road-three",
+    "wins": 4,
+    "runs": 8,
+    "caps": 0
+  },
+  {
+    "id": "rl-interrupt-south-ford-west-post",
+    "wins": 8,
+    "runs": 8,
+    "caps": 0
+  },
+  {
+    "id": "rl-briar-saddle",
+    "wins": 7,
+    "runs": 8,
+    "caps": 0
+  },
+  {
+    "id": "rl-whitecap-ford",
+    "wins": 22,
+    "runs": 24,
+    "caps": 0
+  },
+  {
+    "id": "rl-slate-gallery",
+    "wins": 37,
+    "runs": 48,
+    "caps": 0
+  },
+  {
+    "id": "rl-vault-rally",
+    "wins": 5,
+    "runs": 8,
+    "caps": 0
+  },
+  {
+    "id": "rl-breakthrough-cave5",
+    "wins": 8,
+    "runs": 8,
+    "caps": 0
+  },
+  {
+    "id": "rl-breakthrough-ford-heal08",
+    "wins": 8,
+    "runs": 8,
+    "caps": 0
+  },
+  {
+    "id": "rl-bellmarket-courts",
+    "wins": 32,
+    "runs": 32,
+    "caps": 0
+  },
+  {
+    "id": "rl-thorn-verge",
+    "wins": 72,
+    "runs": 72,
+    "caps": 0
+  },
+  {
+    "id": "rl-lair-outworks",
+    "wins": 18,
+    "runs": 72,
+    "caps": 0
+  }
+]
