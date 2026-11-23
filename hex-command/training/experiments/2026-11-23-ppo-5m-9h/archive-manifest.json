@@ -386,5 +386,9 @@
   "plots/final-targeted-families.png": {
     "bytes": 474909,
     "sha256": "415b172a3feac0e008fa79acfb8223456a8fdae2cb6e291cb41f1a444b8c647e"
+  },
+  "plots/final-lantern-chapters.png": {
+    "bytes": 200915,
+    "sha256": "25102542691ba212cc1697a097292a15b6f0c3e83f8f1a3261233ee22d83e6e9"
   }
 }
