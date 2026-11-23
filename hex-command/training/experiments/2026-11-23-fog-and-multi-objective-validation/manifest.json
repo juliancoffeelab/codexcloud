@@ -1,0 +1,274 @@
+{
+  "fog/README.md": {
+    "bytes": 2579,
+    "sha256": "e61c54d467bd5703fa0780a7c8d008ac9f518f0d61df9274322e8cde2e69323e"
+  },
+  "fog/commander/discovery.jsonl.gz": {
+    "bytes": 3277,
+    "sha256": "a527c62b7b0085cf6b33144078357b6e66eedd4d08f9c5b6174a6afe06043884"
+  },
+  "fog/commander/all-scopes-catalog.tar.gz": {
+    "bytes": 645527,
+    "sha256": "99c2780cfec71bb73ac525e30c3d4ab843031009197b48394b14d49506048982"
+  },
+  "fog/commander/confirmation.jsonl.gz": {
+    "bytes": 6575,
+    "sha256": "2d9a584ea74c469153675c31ccd124789a1e9aa2555abb514065ef1f1f2ca13e"
+  },
+  "fog/commander/REPORT.md": {
+    "bytes": 4885,
+    "sha256": "6cb1649d74a8e297b04b65b06776b3299957fb335e10a3d61de3cf5a6b34819c"
+  },
+  "fog/commander/run.py": {
+    "bytes": 5784,
+    "sha256": "dd907c720612f2acdd942649e0907164ad1ba729f410e80d66b9ef685a7a13b6"
+  },
+  "fog/commander/trace-hour10.jsonl.gz": {
+    "bytes": 278155,
+    "sha256": "550d4e4f8f3c4a7963789acc921299a6dc99f53ee9f5ec6e25242f703111f1d9"
+  },
+  "fog/commander/final-summary.json": {
+    "bytes": 50459,
+    "sha256": "30ae2bcc1c4d28e28c8ab0153f51d691613e9c562d0d8b22fd0a304d77311b08"
+  },
+  "fog/commander/confirmation-summary.json": {
+    "bytes": 14187,
+    "sha256": "58a5eba70a6f541828e545c068372075f1acf4854a3670886ac129d51a78ef8c"
+  },
+  "fog/commander/action-evidence.json": {
+    "bytes": 2487725,
+    "sha256": "46483d3b0652bc18c9c8db816e8335127bab9952ab29ffd0f06a5dccc5659f28"
+  },
+  "fog/commander/trace-hour10-jobs.json": {
+    "bytes": 17449,
+    "sha256": "a16725a5aa03942c617416444c9052c2719aa76d30c4ade5daf95d93c55aba09"
+  },
+  "fog/commander/discovery-summary.json": {
+    "bytes": 13540,
+    "sha256": "2d8f3897abd1c524b8385a2ed8d568dad860939b31c2edb105adf43bae3d73e8"
+  },
+  "fog/commander/audit.py": {
+    "bytes": 9086,
+    "sha256": "18df49671f55295984947ea85a0e8ae52e81ebdd7962626a1238a20174c0ae02"
+  },
+  "fog/commander/trace-rules-jobs.json": {
+    "bytes": 17199,
+    "sha256": "4bcea2a2c14fb0bc7ff5cb59080941ade47037df01e81c718db3a3feea545b44"
+  },
+  "fog/commander/trace-rules.jsonl.gz": {
+    "bytes": 320038,
+    "sha256": "ad9b631f44e0f2458e43edb1be33bca117be559877ed7b5545a4f2c31ff98063"
+  },
+  "fog/commander/confirmation-cells.json": {
+    "bytes": 432,
+    "sha256": "2424f2038f7adf2828f07d931dd1050f81a797cd9d70eb051b4f1b94f49127c9"
+  },
+  "fog/routes/summarize.py": {
+    "bytes": 4916,
+    "sha256": "6a6f3953bdd57a252f7719aa28ade66286e54aea81e24d865dc4132eb80467c7"
+  },
+  "fog/routes/EVIDENCE.md": {
+    "bytes": 4031,
+    "sha256": "12c7b8cd0985e81bdc2618d96267ab0209ba3eb9bc00cf2701e9f34f49a2d4ea"
+  },
+  "fog/routes/final-summary.json": {
+    "bytes": 42838,
+    "sha256": "09432f70dea50e19a78e00a0e9bab55344478640cd5f90993e2ed232d094bdfb"
+  },
+  "fog/routes/both-fog-catalog.tar.gz": {
+    "bytes": 597725,
+    "sha256": "1adcdb9c2a79c55e6ab361234d3e1f71ffc821dc09aa3f524b566ceb8619bea5"
+  },
+  "fog/routes/player-fog-catalog.tar.gz": {
+    "bytes": 597745,
+    "sha256": "8e76864bfdbb5cbbb2c2b84770b5a629d110015c9e895f9c74a82685e02b796d"
+  },
+  "fog/routes/fog_eval.py": {
+    "bytes": 5482,
+    "sha256": "29a66bff2c9fac38fa74088bc7cc4e2cc9f789bc00d98f4713d344cc96d1a65a"
+  },
+  "fog/routes/audit.py": {
+    "bytes": 8048,
+    "sha256": "44448720f6e85be6fe96f825621aeaf8d7a1193a918f6ce0a6116978920fffbc"
+  },
+  "fog/commander/probe/Cargo.toml": {
+    "bytes": 298,
+    "sha256": "a7bd8f1fe655e4bdff49fb43c8c3ec4c3fbb85a68f635157fd71d0119360e529"
+  },
+  "fog/commander/probe/Cargo.lock": {
+    "bytes": 32213,
+    "sha256": "54df45dfdd44661ecbbd0cd500a096436e795b7416e6dc7a7cad69c6add5716c"
+  },
+  "fog/commander/probe/src/main.rs": {
+    "bytes": 2084,
+    "sha256": "be1f82eb4b2dab33160520d929487661dfe3a73b88d18db586ef5097b3afeb9f"
+  },
+  "fog/routes/player-fog/discovery/results.jsonl.gz": {
+    "bytes": 804,
+    "sha256": "ede83beee0afcafd2c26c495f2a9efb47393495f599574217157024822f9aae0"
+  },
+  "fog/routes/player-fog/discovery/protocol.json": {
+    "bytes": 35524,
+    "sha256": "986414c17af99f6607a3e2f6bcc842537529be159a5189ea511a64a656587aab"
+  },
+  "fog/routes/player-fog/discovery/summary.json": {
+    "bytes": 1857,
+    "sha256": "fdfd08f295666b755a69c7c1df212f68797fc65d18f4c83403b3d687b6ca6bbf"
+  },
+  "fog/routes/player-fog/confirmation/results.jsonl.gz": {
+    "bytes": 1171,
+    "sha256": "28c67e1f51feeeb0104e4bfc63e57bf9269398106928e2df5b213c3db08d7c61"
+  },
+  "fog/routes/player-fog/confirmation/protocol.json": {
+    "bytes": 68278,
+    "sha256": "5589e1116fa48e7374f9ee1dd8e70dd2ea8c45b2f667da21b11afc49b47e1719"
+  },
+  "fog/routes/player-fog/confirmation/summary.json": {
+    "bytes": 1505,
+    "sha256": "59494eae925e7c706292b0bebba03d48143b05e011a49f8e589acfd436ac26dd"
+  },
+  "fog/routes/player-fog/confirmation/evidence/fog-scope-audit.json": {
+    "bytes": 58285,
+    "sha256": "34e5fb77a61dfb397a0af96e0f48743f3646c3877274cdcaba27e13169ba8c16"
+  },
+  "fog/routes/player-fog/confirmation/evidence/hour10-phases.jsonl.gz": {
+    "bytes": 49393,
+    "sha256": "69b2faa298e8c7aa901c291e5c03ac8cfb5833b2598989de4f8ad9d7cbabdc2b"
+  },
+  "fog/routes/player-fog/confirmation/evidence/full-phases.jsonl.gz": {
+    "bytes": 52768,
+    "sha256": "b7f8aa6f2bde9c381ed2d93be4bcf0e205ba4957321ce06e062e0253cc9347bf"
+  },
+  "fog/routes/player-fog/confirmation/evidence/captain-trace-examples.json": {
+    "bytes": 39621,
+    "sha256": "0634452b29813481ada95749d343b43c2f4d7ee48e016d9a759b69caf99c3b00"
+  },
+  "fog/routes/player-fog/confirmation/evidence/classic-phases.jsonl.gz": {
+    "bytes": 54164,
+    "sha256": "0809c9b9467907d01c93772efedbd704aba841b06701f0eb861f4d36d942e061"
+  },
+  "fog/routes/player-fog/confirmation/evidence/hour8-configs.json": {
+    "bytes": 2103,
+    "sha256": "ccb59c142227cecf1e9c17639b779446cac2cff9186001f7c52d001d75f57306"
+  },
+  "fog/routes/player-fog/confirmation/evidence/hour8-phases.jsonl.gz": {
+    "bytes": 49365,
+    "sha256": "1b52a4fe77d427f19ba3c5788e5f403e4104195c2c5e2e2419ca1c21d7efb264"
+  },
+  "fog/routes/player-fog/confirmation/evidence/hour10-configs.json": {
+    "bytes": 2103,
+    "sha256": "ccb59c142227cecf1e9c17639b779446cac2cff9186001f7c52d001d75f57306"
+  },
+  "fog/routes/player-fog/confirmation/evidence/native-visible-information.json": {
+    "bytes": 42112,
+    "sha256": "f64c356d8188723cda3e25d75c0c48997c69cced1a545ceb17f8a5a31aeb0761"
+  },
+  "fog/routes/clear/confirmation/results.jsonl.gz": {
+    "bytes": 1139,
+    "sha256": "d4c3726bbe1ecde305d1dd1e2bf47462e9f573b0b05952696f100952818bf5bc"
+  },
+  "fog/routes/clear/confirmation/protocol.json": {
+    "bytes": 67941,
+    "sha256": "95b2148ac50a080f2149891522dddc3a1210b10155d74365583ef76e7a242343"
+  },
+  "fog/routes/clear/confirmation/summary.json": {
+    "bytes": 1476,
+    "sha256": "ef885973a837ec6f37b0c348fde948eea18b6f2ed039788d965480cee70eeb48"
+  },
+  "fog/routes/clear/confirmation/evidence/fog-scope-audit.json": {
+    "bytes": 50674,
+    "sha256": "136182825215c7b180a9e936536f1448f07ffa0ef542c0dc8575262cbfe3b133"
+  },
+  "fog/routes/clear/confirmation/evidence/hour10-phases.jsonl.gz": {
+    "bytes": 53032,
+    "sha256": "b793ce2618c133e0abf4a45f5273b0ff53a40e3f3aef8679b0ac46461951d267"
+  },
+  "fog/routes/clear/confirmation/evidence/full-phases.jsonl.gz": {
+    "bytes": 50329,
+    "sha256": "bb38f44e3a7a9518f740d53e7778df20f1faf7e10907776c29b18516e1c95ca7"
+  },
+  "fog/routes/clear/confirmation/evidence/captain-trace-examples.json": {
+    "bytes": 39648,
+    "sha256": "ec4c18d773f853bb6c41bb4111abd0bfaa7f9fb67f35ceeb352f6c39d65a6c8c"
+  },
+  "fog/routes/clear/confirmation/evidence/classic-phases.jsonl.gz": {
+    "bytes": 51517,
+    "sha256": "4687db939e070f29e61882dff4a6a1ad976e2425b67645fd983973d7e424dcbf"
+  },
+  "fog/routes/clear/confirmation/evidence/hour8-configs.json": {
+    "bytes": 2091,
+    "sha256": "799af9d92b8bf0bc7a73ba4f82930dffd9e9e1ae2d0de23d4ba6847a78b810e5"
+  },
+  "fog/routes/clear/confirmation/evidence/hour8-phases.jsonl.gz": {
+    "bytes": 54858,
+    "sha256": "5ea14bfdf4bfbeb1577d4c7b097572eadebf677ac4237df97520aeea1b9ba3e1"
+  },
+  "fog/routes/clear/confirmation/evidence/hour10-configs.json": {
+    "bytes": 2091,
+    "sha256": "799af9d92b8bf0bc7a73ba4f82930dffd9e9e1ae2d0de23d4ba6847a78b810e5"
+  },
+  "fog/routes/clear/confirmation/evidence/native-visible-information.json": {
+    "bytes": 41882,
+    "sha256": "f5402c815bfe51afdb013423181dcf6fbf2e24ba51821e4e62169f236fc5e3a2"
+  },
+  "fog/routes/both-fog/discovery/results.jsonl.gz": {
+    "bytes": 856,
+    "sha256": "d362a425021ed85fb08c2ef5bd905fdfb76c0b8825d603ab0eee6c360c819c3a"
+  },
+  "fog/routes/both-fog/discovery/protocol.json": {
+    "bytes": 35360,
+    "sha256": "8c84b16daad949231f227041ccddb9df6cd74f6c1111ffeffedd60486405ca76"
+  },
+  "fog/routes/both-fog/discovery/summary.json": {
+    "bytes": 1977,
+    "sha256": "4cf49982b25927f10d5771d78d2ab3b0b865e58af2a684d80f6306e2b20fe492"
+  },
+  "fog/routes/both-fog/confirmation/results.jsonl.gz": {
+    "bytes": 1259,
+    "sha256": "cb3f67a224b5e1acfb08efab041bfc33494f12ffddd950fd2416f8bccb338ee0"
+  },
+  "fog/routes/both-fog/confirmation/protocol.json": {
+    "bytes": 67954,
+    "sha256": "687f86d8d1fee3770e09faf28712d1473eb75a5654539ce78effba42ed8af6c1"
+  },
+  "fog/routes/both-fog/confirmation/summary.json": {
+    "bytes": 1623,
+    "sha256": "e73919ab7fef68e60c276928d8d7b971304eba0a4f815f57a496672f9aa39c55"
+  },
+  "fog/routes/both-fog/confirmation/evidence/fog-scope-audit.json": {
+    "bytes": 56509,
+    "sha256": "e21325798907928307cf6d7eaf95b94b3d108042d97e4ff641f27802cf7c522a"
+  },
+  "fog/routes/both-fog/confirmation/evidence/hour10-phases.jsonl.gz": {
+    "bytes": 50407,
+    "sha256": "e73c3a0a869226bb0341b65cbb203443c6f6d4eca0c4328ace23da656384f6cd"
+  },
+  "fog/routes/both-fog/confirmation/evidence/full-phases.jsonl.gz": {
+    "bytes": 54329,
+    "sha256": "c990000009fe3136a5991ccc7edc22c3d1def918e1b74c56bee24ded45656558"
+  },
+  "fog/routes/both-fog/confirmation/evidence/captain-trace-examples.json": {
+    "bytes": 40059,
+    "sha256": "8c7dc0e6589d6632f37d35b05a9ea5ba4b9358eaa898befb898509a4e98a2d00"
+  },
+  "fog/routes/both-fog/confirmation/evidence/classic-phases.jsonl.gz": {
+    "bytes": 54037,
+    "sha256": "7d62e58adbd59b0de7e8c1544fdc965cfb5f74ce46b2742127cf08642d7761bb"
+  },
+  "fog/routes/both-fog/confirmation/evidence/hour8-configs.json": {
+    "bytes": 2091,
+    "sha256": "b4e9e4124bb04350761e534d6284dcb86ef903a188f385fac4acbed4db0de8cf"
+  },
+  "fog/routes/both-fog/confirmation/evidence/hour8-phases.jsonl.gz": {
+    "bytes": 50672,
+    "sha256": "f60fee1d39befb4b817b12bfcd6673122173f0da110638ea09612b1c1a7c8f70"
+  },
+  "fog/routes/both-fog/confirmation/evidence/hour10-configs.json": {
+    "bytes": 2091,
+    "sha256": "b4e9e4124bb04350761e534d6284dcb86ef903a188f385fac4acbed4db0de8cf"
+  },
+  "fog/routes/both-fog/confirmation/evidence/native-visible-information.json": {
+    "bytes": 33907,
+    "sha256": "7820a4d3f4a01bd28552546af922b5088d95154616a87b07c122bfb918a6b8c0"
+  }
+}

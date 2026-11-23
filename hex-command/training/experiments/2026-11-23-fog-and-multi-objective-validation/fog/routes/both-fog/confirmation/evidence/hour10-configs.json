@@ -1,0 +1,92 @@
+[
+  {
+    "campaign": "rl-scree-relay-v8-switch",
+    "seed": 56181201,
+    "diplomacy": "unrestricted",
+    "objective": "both-fog",
+    "player": "balanced",
+    "enemy": "classic",
+    "maxRounds": 100,
+    "recruitLimit": 0,
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    }
+  },
+  {
+    "campaign": "rl-scree-relay-v8-switch",
+    "seed": 56181202,
+    "diplomacy": "unrestricted",
+    "objective": "both-fog",
+    "player": "balanced",
+    "enemy": "classic",
+    "maxRounds": 100,
+    "recruitLimit": 0,
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    }
+  },
+  {
+    "campaign": "rl-scree-relay-v8-switch",
+    "seed": 56181203,
+    "diplomacy": "unrestricted",
+    "objective": "both-fog",
+    "player": "balanced",
+    "enemy": "classic",
+    "maxRounds": 100,
+    "recruitLimit": 0,
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    }
+  },
+  {
+    "campaign": "rl-scree-relay-v8-stay",
+    "seed": 56181201,
+    "diplomacy": "unrestricted",
+    "objective": "both-fog",
+    "player": "balanced",
+    "enemy": "classic",
+    "maxRounds": 100,
+    "recruitLimit": 0,
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    }
+  },
+  {
+    "campaign": "rl-scree-relay-v8-stay",
+    "seed": 56181202,
+    "diplomacy": "unrestricted",
+    "objective": "both-fog",
+    "player": "balanced",
+    "enemy": "classic",
+    "maxRounds": 100,
+    "recruitLimit": 0,
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    }
+  },
+  {
+    "campaign": "rl-scree-relay-v8-stay",
+    "seed": 56181203,
+    "diplomacy": "unrestricted",
+    "objective": "both-fog",
+    "player": "balanced",
+    "enemy": "classic",
+    "maxRounds": 100,
+    "recruitLimit": 0,
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    }
+  }
+]

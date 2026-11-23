@@ -1,0 +1,103 @@
+[
+  {
+    "player": "hour8",
+    "campaign": "rl-scree-relay-v8-switch",
+    "successes": 0,
+    "defeats": 8,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 8
+    }
+  },
+  {
+    "player": "hour8",
+    "campaign": "rl-scree-relay-v8-stay",
+    "successes": 8,
+    "defeats": 0,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "hour10",
+    "campaign": "rl-scree-relay-v8-switch",
+    "successes": 0,
+    "defeats": 8,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 8
+    }
+  },
+  {
+    "player": "hour10",
+    "campaign": "rl-scree-relay-v8-stay",
+    "successes": 8,
+    "defeats": 0,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "full",
+    "campaign": "rl-scree-relay-v8-switch",
+    "successes": 8,
+    "defeats": 0,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "full",
+    "campaign": "rl-scree-relay-v8-stay",
+    "successes": 8,
+    "defeats": 0,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "queued",
+    "campaign": "rl-scree-relay-v8-switch",
+    "successes": 1,
+    "defeats": 7,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 7,
+      "The route is open.": 1
+    }
+  },
+  {
+    "player": "queued",
+    "campaign": "rl-scree-relay-v8-stay",
+    "successes": 8,
+    "defeats": 0,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "classic",
+    "campaign": "rl-scree-relay-v8-switch",
+    "successes": 8,
+    "defeats": 0,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "classic",
+    "campaign": "rl-scree-relay-v8-stay",
+    "successes": 8,
+    "defeats": 0,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  }
+]

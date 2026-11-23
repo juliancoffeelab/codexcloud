@@ -1,0 +1,695 @@
+[
+  {
+    "variant": "dread-long",
+    "scope": "clear",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-long",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241001,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-long",
+          "round": 8,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The company lost its commander.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-long",
+    "scope": "clear",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-long",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241002,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-long",
+          "round": 6,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The company lost its commander.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-long",
+    "scope": "player-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-long-player-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241001,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-long-player-fog",
+          "round": 9,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The company lost its commander.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-long",
+    "scope": "player-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-long-player-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241002,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-long-player-fog",
+          "round": 9,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The company lost its commander.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-long",
+    "scope": "player-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-long-player-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241014,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-long-player-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Commander evacuated.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-long",
+    "scope": "both-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-long-both-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241001,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-long-both-fog",
+          "round": 17,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Commander evacuated.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-long",
+    "scope": "both-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-long-both-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241002,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-long-both-fog",
+          "round": 22,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The deadline expired.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-long",
+    "scope": "both-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-long-both-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241015,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-long-both-fog",
+          "round": 22,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The deadline expired.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-wounded-long",
+    "scope": "clear",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-long",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241001,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-wounded-long",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The company lost its commander.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-wounded-long",
+    "scope": "clear",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-long",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241002,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-wounded-long",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The company lost its commander.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-wounded-long",
+    "scope": "player-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-long-player-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241001,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-wounded-long-player-fog",
+          "round": 13,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The company lost its commander.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-wounded-long",
+    "scope": "player-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-long-player-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241002,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-wounded-long-player-fog",
+          "round": 22,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The deadline expired.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-wounded-long",
+    "scope": "both-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-long-both-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241001,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-wounded-long-both-fog",
+          "round": 3,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The company lost its commander.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-wounded-long",
+    "scope": "both-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-long-both-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241002,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-wounded-long-both-fog",
+          "round": 3,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The company lost its commander.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-wounded-healer",
+    "scope": "clear",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-healer",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241001,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-wounded-healer",
+          "round": 8,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The company lost its commander.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-wounded-healer",
+    "scope": "clear",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-healer",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241002,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-wounded-healer",
+          "round": 13,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The deadline expired.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-wounded-healer",
+    "scope": "player-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-healer-player-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241001,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-wounded-healer-player-fog",
+          "round": 3,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The company lost its commander.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-wounded-healer",
+    "scope": "player-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-healer-player-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241003,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-wounded-healer-player-fog",
+          "round": 3,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The company lost its commander.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-wounded-healer",
+    "scope": "both-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-healer-both-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241001,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-wounded-healer-both-fog",
+          "round": 4,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The company lost its commander.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-wounded-healer",
+    "scope": "both-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-healer-both-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241002,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-wounded-healer-both-fog",
+          "round": 4,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The company lost its commander.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "variant": "dread-wounded-healer",
+    "scope": "both-fog",
+    "policy": "hour10",
+    "config": {
+      "campaign": "rl-commander-left-behind-dread-wounded-healer-both-fog",
+      "objective": "authored",
+      "diplomacy": "unrestricted",
+      "player": "predictor",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "seed": 491241003,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-commander-left-behind-dread-wounded-healer-both-fog",
+          "round": 13,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The deadline expired.",
+      "success": false,
+      "truncated": false
+    }
+  }
+]

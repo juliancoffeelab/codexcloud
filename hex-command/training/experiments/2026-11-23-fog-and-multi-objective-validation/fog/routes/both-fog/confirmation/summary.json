@@ -1,0 +1,87 @@
+[
+  {
+    "player": "hour8",
+    "campaign": "rl-scree-relay-v8-switch",
+    "successes": 0,
+    "defeats": 20,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 19,
+      "Commander lost.": 1
+    }
+  },
+  {
+    "player": "hour8",
+    "campaign": "rl-scree-relay-v8-stay",
+    "successes": 14,
+    "defeats": 6,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 14,
+      "Deadline expired.": 6
+    }
+  },
+  {
+    "player": "hour10",
+    "campaign": "rl-scree-relay-v8-switch",
+    "successes": 0,
+    "defeats": 20,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 19,
+      "Commander lost.": 1
+    }
+  },
+  {
+    "player": "hour10",
+    "campaign": "rl-scree-relay-v8-stay",
+    "successes": 14,
+    "defeats": 6,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 14,
+      "Deadline expired.": 6
+    }
+  },
+  {
+    "player": "full",
+    "campaign": "rl-scree-relay-v8-switch",
+    "successes": 20,
+    "defeats": 0,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 20
+    }
+  },
+  {
+    "player": "full",
+    "campaign": "rl-scree-relay-v8-stay",
+    "successes": 20,
+    "defeats": 0,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 20
+    }
+  },
+  {
+    "player": "classic",
+    "campaign": "rl-scree-relay-v8-switch",
+    "successes": 20,
+    "defeats": 0,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 20
+    }
+  },
+  {
+    "player": "classic",
+    "campaign": "rl-scree-relay-v8-stay",
+    "successes": 19,
+    "defeats": 1,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 19,
+      "Deadline expired.": 1
+    }
+  }
+]
