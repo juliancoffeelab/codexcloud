@@ -814,3 +814,12 @@ was active only for the final 1h46m; all 14 ordinary maps then received work.
 Monitor disabled. No checkpoint promoted and no additional run started.
 A possible later continuation without targeted encounters was discussed, not
 authorized as a new run. Rewards/exploration proposals remain separate work.
+
+
+### One-hour extension authorized — 2026-11-23
+
+Continue from final hour9, not hour8, with the same corrected sampler, environment
+mix, rewards and fixed evaluation cases. Preserve optimizer/critic/reference/RNG
+and adaptive sampling state. Additional3600 seconds; saved cumulative target
+36000.54316014299. Original nine-hour archive remains intact. Hour10 comparisons
+will inform the next decision; no environment changes or next run authorized.
