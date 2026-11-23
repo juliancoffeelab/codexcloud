@@ -1,0 +1,394 @@
+{
+  "fingerprints": {
+    "content": "a2918e067dbe199cb032a6d31da841a9c553acc6a1dc3a627a43b5a02c382b9d",
+    "engine": "dbd0ceca44c36175041c928e83fbbc5984b3fad8393eceb5fdf27c79e11a82e2"
+  },
+  "budgets": {
+    "arena": 0.2499999999999994,
+    "targeted": 0.25000000000000017,
+    "campaign": 0.5000000000000001
+  },
+  "mapBaseDecisionShares": {
+    "rl-twin-fords": 0.017857142857142856,
+    "rl-splitpine-clearing": 0.017857142857142856,
+    "rl-crown-gap": 0.017857142857142856,
+    "rl-jawbone-crossing": 0.017857142857142856,
+    "rl-sump-teeth": 0.017857142857142856,
+    "rl-last-lantern": 0.017857142857142856,
+    "rl-switchback-saltworks": 0.017857142857142856,
+    "rl-cinderfault": 0.017857142857142856,
+    "rl-sable-sound": 0.017857142857142856,
+    "rl-three-wells-trail": 0.017857142857142856,
+    "rl-frosthook-gate": 0.017857142857142856,
+    "rl-birch-pocket": 0.017857142857142856,
+    "rl-quarry-ring": 0.017857142857142856,
+    "rl-fordstep": 0.017857142857142856,
+    "rl-marlow-cut-pass-finish": 0.01020408163265306,
+    "rl-ashbank-relay-fork-vigil": 0.01020408163265306,
+    "rl-bellmarket-courts": 0.002551020408163265,
+    "rl-breakthrough-cave5": 0.01020408163265306,
+    "rl-breakthrough-ford-heal08": 0.01020408163265306,
+    "rl-briar-saddle": 0.01020408163265306,
+    "rl-deadline-pines-relief8": 0.01020408163265306,
+    "rl-deadline-wait7": 0.01020408163265306,
+    "rl-defend-bracken-stand-010": 0.01020408163265306,
+    "rl-defend-lower-gallery-0": 0.01020408163265306,
+    "rl-defend-tidegate-stand-110": 0.01020408163265306,
+    "rl-escort-lantern-maze": 0.003401360544217687,
+    "rl-escort-mistfen-patrol": 0.003401360544217687,
+    "rl-escort-splitwake-patrol": 0.003401360544217687,
+    "rl-hollowbank-extraction-crossfire-late-guard": 0.01020408163265306,
+    "rl-hollowbank-extraction-crossfire-nearside": 0.01020408163265306,
+    "rl-interrupt-herring-tide-road-three": 0.01020408163265306,
+    "rl-interrupt-siltbar-approach": 0.01020408163265306,
+    "rl-interrupt-south-ford-west-post": 0.01020408163265306,
+    "rl-lair-outworks": 0.010204081632653055,
+    "rl-route-ambush": 0.01020408163265306,
+    "rl-route-pass-road": 0.01020408163265306,
+    "rl-route-pocket-leader": 0.01020408163265306,
+    "rl-slate-gallery": 0.010204081632653059,
+    "rl-splitwake-crossing": 0.1666666666666667,
+    "rl-thorn-verge": 0.002551020408163264,
+    "rl-underground-escape": 0.1666666666666667,
+    "rl-urgent-crossing": 0.01020408163265306,
+    "rl-vault-rally": 0.01020408163265306,
+    "rl-whitecap-ford": 0.01020408163265306,
+    "rl-woodland-defense": 0.1666666666666667
+  },
+  "newConditions": [
+    {
+      "config": {
+        "seed": 3000012,
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "landscape": "rl-marlow-cut-pass-finish",
+        "player": "balanced",
+        "enemy": "classic",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "first": "player",
+        "maxRounds": 30,
+        "recruitLimit": 0,
+        "objective": "territory"
+      },
+      "teacher": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "reward": {
+        "win": 1.0,
+        "chapter": 0.0
+      },
+      "mass": 0.008163265306122448
+    },
+    {
+      "config": {
+        "seed": 3000012,
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "landscape": "rl-marlow-cut-pass-interrupt",
+        "player": "balanced",
+        "enemy": "classic",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "first": "player",
+        "maxRounds": 30,
+        "recruitLimit": 0,
+        "objective": "territory"
+      },
+      "teacher": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "reward": {
+        "win": 1.0,
+        "chapter": 0.0
+      },
+      "mass": 0.002040816326530612
+    },
+    {
+      "config": {
+        "seed": 4000004,
+        "campaign": "rl-ashbank-relay-fork-vigil",
+        "diplomacy": "unrestricted",
+        "objective": "authored",
+        "player": "balanced",
+        "enemy": "predictor",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "teacher": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "reward": {
+        "win": 1.0,
+        "chapter": 0.0
+      },
+      "mass": 0.002040816326530612
+    },
+    {
+      "config": {
+        "seed": 4000004,
+        "campaign": "rl-ashbank-relay-fork-vigil",
+        "diplomacy": "unrestricted",
+        "objective": "authored",
+        "player": "balanced",
+        "enemy": "predictor",
+        "enemyBlocks": {
+          "recruiter": "predictor",
+          "campaign": "mission",
+          "planner": "full"
+        },
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "teacher": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "reward": {
+        "win": 1.0,
+        "chapter": 0.0
+      },
+      "mass": 0.002040816326530612
+    },
+    {
+      "config": {
+        "seed": 4000004,
+        "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+        "diplomacy": "unrestricted",
+        "objective": "authored",
+        "player": "balanced",
+        "enemy": "predictor",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "teacher": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "reward": {
+        "win": 1.0,
+        "chapter": 0.0
+      },
+      "mass": 0.002040816326530612
+    },
+    {
+      "config": {
+        "seed": 4000004,
+        "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+        "diplomacy": "unrestricted",
+        "objective": "authored",
+        "player": "balanced",
+        "enemy": "predictor",
+        "enemyBlocks": {
+          "recruiter": "predictor",
+          "campaign": "mission",
+          "planner": "full"
+        },
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "teacher": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "reward": {
+        "win": 1.0,
+        "chapter": 0.0
+      },
+      "mass": 0.002040816326530612
+    },
+    {
+      "config": {
+        "seed": 4000004,
+        "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+        "diplomacy": "unrestricted",
+        "objective": "authored",
+        "player": "balanced",
+        "enemy": "predictor",
+        "enemyBlocks": {
+          "recruiter": "predictor",
+          "campaign": "mission",
+          "planner": "full"
+        },
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "teacher": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "reward": {
+        "win": 1.0,
+        "chapter": 0.0
+      },
+      "mass": 0.002040816326530612
+    },
+    {
+      "config": {
+        "seed": 4000004,
+        "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+        "diplomacy": "unrestricted",
+        "objective": "authored",
+        "player": "balanced",
+        "enemy": "classic",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "teacher": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "reward": {
+        "win": 1.0,
+        "chapter": 0.0
+      },
+      "mass": 0.01020408163265306
+    },
+    {
+      "config": {
+        "seed": 4000004,
+        "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+        "diplomacy": "unrestricted",
+        "objective": "authored",
+        "player": "balanced",
+        "enemy": "classic",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "teacher": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "reward": {
+        "win": 1.0,
+        "chapter": 0.0
+      },
+      "mass": 0.01020408163265306
+    }
+  ],
+  "actualDecisions": {
+    "arena": 15441,
+    "targeted": 15435,
+    "campaign": 30886
+  },
+  "actualDecisionShares": {
+    "arena": 0.2500080955927593,
+    "targeted": 0.24991094847964768,
+    "campaign": 0.500080955927593
+  },
+  "mapExposure": {
+    "rl-twin-fords": 1143,
+    "rl-splitpine-clearing": 1074,
+    "rl-crown-gap": 1118,
+    "rl-jawbone-crossing": 1084,
+    "rl-sump-teeth": 1112,
+    "rl-last-lantern": 1100,
+    "rl-switchback-saltworks": 1138,
+    "rl-cinderfault": 1074,
+    "rl-sable-sound": 1073,
+    "rl-three-wells-trail": 1104,
+    "rl-frosthook-gate": 1101,
+    "rl-birch-pocket": 1098,
+    "rl-quarry-ring": 1110,
+    "rl-fordstep": 1112,
+    "rl-marlow-cut-pass-finish": 734,
+    "rl-ashbank-relay-fork-vigil": 429,
+    "rl-bellmarket-courts": 135,
+    "rl-breakthrough-cave5": 741,
+    "rl-breakthrough-ford-heal08": 736,
+    "rl-briar-saddle": 546,
+    "rl-deadline-pines-relief8": 547,
+    "rl-deadline-wait7": 736,
+    "rl-defend-bracken-stand-010": 700,
+    "rl-defend-lower-gallery-0": 744,
+    "rl-defend-tidegate-stand-110": 544,
+    "rl-escort-lantern-maze": 200,
+    "rl-escort-mistfen-patrol": 201,
+    "rl-escort-splitwake-patrol": 200,
+    "rl-hollowbank-extraction-crossfire-late-guard": 736,
+    "rl-hollowbank-extraction-crossfire-nearside": 737,
+    "rl-interrupt-herring-tide-road-three": 739,
+    "rl-interrupt-siltbar-approach": 353,
+    "rl-interrupt-south-ford-west-post": 548,
+    "rl-lair-outworks": 605,
+    "rl-route-ambush": 349,
+    "rl-route-pass-road": 734,
+    "rl-route-pocket-leader": 739,
+    "rl-slate-gallery": 643,
+    "rl-splitwake-crossing": 10766,
+    "rl-thorn-verge": 140,
+    "rl-underground-escape": 9392,
+    "rl-urgent-crossing": 644,
+    "rl-vault-rally": 734,
+    "rl-whitecap-ford": 541,
+    "rl-woodland-defense": 10728
+  },
+  "totalTemplates": 4209,
+  "activeMaps": 45,
+  "nativeGames": 18,
+  "checks": [
+    "25/25/50 authored and actual decision exposure",
+    "all45 logical maps exercised",
+    "8 challenge conditions plus quarter-weight control and exact teacher blocks",
+    "mastery reweight preserves credits and group budgets",
+    "profiles:single-stage1,broad1+1+2,existingpenalties",
+    "native teacher gameplay on every new condition"
+  ]
+}

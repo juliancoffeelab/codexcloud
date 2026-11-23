@@ -303,16 +303,39 @@ manifest through the native binding. Isolated catalogs copy the current engine
 catalog; they do not create a second set of scenario definitions. See
 [the catalog contract](../rust/data/CATALOG.md) for visibility and simulation setup.
 
-Mixed sampling uses authored `samplingWeights`: 50% arena decisions and 50% broad
-campaign decisions. The 24 targeted encounters share the arena pool with the 14
-ordinary arenas, with no reserved targeted or behavior-family budget. Their scripted
-objectives still use single-chapter campaign matches and existing finale rewards.
-Base weights give maps equal budgets within pools and split each map across its
-selected opponent/visibility/recruiter conditions. Imitation uses these fixed
-weights; PPO applies the mastery multiplier within each pool. Recruiters and
-fixed opponents are explicit workload axes. Seed partitions separate training,
-validation and final testing. Fixed-opponent comparisons measure that opponent
-set; authored rosters, diplomacy and objective routes remain part of the case.
+Mixed sampling uses authored `samplingWeights`: **25% ordinary arena decisions,
+25% targeted-encounter decisions, 50% broad-campaign decisions**. Each pool keeps
+its own decision budget while PPO adapts map/condition weights inside it. The 28
+targeted maps include the four new multi-objective challenges. Their eight
+validated opponent/visibility combinations are registered explicitly; fixed-force
+encounters retain zero recruits and the validated initiative. Unqualified fog
+variants do not enter training. The distant-commander control shares Marlow’s map
+budget at conditionWeight0.25 versus1 for the exposed-commander challenge.
+
+`samplingMap` identifies the logical map: Ashbank's physical visibility variants
+share one budget. `mapWeights` gives each map its authored base mass. Each of the
+three escort maps has weight1/3, Bellmarket Courts and Thorn Verge1/4; other maps
+have weight1. Base weights multiply PPO mastery weights and normalize within the
+same pool. Conditions share their map's base mass using explicit `conditionWeight`, independent of condition count.
+Imitation uses the same base decision mixture; PPO additionally updates mastery
+from learned-policy outcomes. Evaluation does not adapt and keeps equal mass per
+represented family/map, independent of training curriculum weights.
+
+Reward profiles are separate from storage format and sampling group. `arena`
+pays +1 on victory and no intermediate chapter bonus, including single-stage
+encounters authored as campaigns. `campaign` pays +1 per intermediate chapter
+and +2 for the finale. Existing defeat/cap/loss penalties remain. Objective-progress
+and kill bonuses remain disabled. Profiles and map weights participate in workload
+provenance alongside cases, teachers, pool budgets, adaptive settings and native
+content fingerprints.
+
+`pretrain_imitator` may select an existing named controller or explicit
+`{recruiter, campaign, planner}` blocks. New teachers record their validated full
+composition: Classic/Mission/Classic, Balanced/Mission/Queued, or
+Predictor/Mission/Full. Native collection applies all three teacher blocks; PPO
+continues to use the learned planner. No pretraining is implied by configuration.
+Seed partitions separate training, validation and final testing. Fixed-opponent
+comparisons retain authored roster, diplomacy and objective scope.
 
 PPO allocation is hierarchical: pool, then map, then condition. Map and condition
 credits accumulate the decision share owed under the weights in effect at each

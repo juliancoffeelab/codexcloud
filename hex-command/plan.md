@@ -1,6 +1,6 @@
 # Learned policy training plan
 
-Updated 2026-11-22.
+Updated 2026-11-23.
 
 ## Goal
 
@@ -8,12 +8,29 @@ Improve the policy's ability to advance, fight, defend objectives, and complete
 campaigns. Measure improvements through the model's own decisions on matched
 evaluation cases.
 
+## Current wiring and next decision
+
+- Implemented:25% ordinary arena /25% targeted /50% broad-campaign decisions,
+  adaptive inside each group, authored mastery/base-weight controls, explicit
+  single-stage+1 versus chapter+1/finale+2 rewards, eight new validated challenge
+  conditions and a quarter-weight Marlow control sharing its map budget.
+- Teacher blocks and ordered recurrent imitation are wired. Whether to run a
+  short mixed imitation pretrain before the next PPO run is still undecided.
+  No new optimizer, training supervisor, promotion or deployment was started.
+- Kill/objective-progress rewards and exploration experiments remain outstanding
+  work; current vanilla workload keeps those bonuses off. Do not treat earlier
+  proposals or historical experiment protocols below as current configuration.
+- Current implementation/evidence is summarized in the final curriculum-wiring
+  section and `training/experiments/2026-11-23-curriculum-wiring`.
+
 ## RL environment priorities
 
 Better RL environments are needed regardless of whether we use targeted
 imitation pretraining. Design situations around concrete decision failures and
-the outcomes we want the agent to learn. Three qualified targeted tasks and the five broad campaign revisions are
-implemented below. Other entries in the failure taxonomy remain proposals.
+the outcomes we want the agent to learn. The curriculum now contains28 targeted
+logical maps (24 existing plus four new multi-objective challenges),14 ordinary
+arenas and three broad training campaigns; two other broad campaigns remain
+held out. Implementation and experiment records follow below.
 Environment validation is not evidence that training has improved the policy.
 
 Prioritize finishing objectives, defending and contesting points, advancing
@@ -463,10 +480,10 @@ away the targeted behavior.
   Exploration remains an open issue when the starting policy overwhelmingly
   prefers End Turn. Exploration changes are deferred; if revisited, test them
   separately from observation and reward changes.
-- Targeted imitation pretraining remains a proposal under discussion. The
-  proposed sources were Queued with Predictor recruitment for ordinary play and
-  successful intervention branches for recovery examples. The latter encode our
-  chosen strategy. The user questioned this source, so its inclusion is unresolved.
+- A new mixed imitation pretrain remains a decision under discussion. Teachers
+  are explicitly configured per validated condition; keep their full block
+  compositions and the same25/25/50 base decision mixture. Do not start it merely
+  because collection/training wiring exists.
 - If imitation is evaluated, update the CNN's own weights, mix ordinary play
   with the targeted examples, evaluate the resulting policy, and test whether a
   subsequent PPO continuation retains the gains.
@@ -937,3 +954,36 @@ Native two-side observations and living-faction re-hiding audited. Queued and
 Predictor have equal win counts here, but Ashbank terminal rounds/reasons differ
 on four matched pairs; do not describe the presets as identical. No integration,
 workload/reward edits, checkpoint promotion or training launched.
+
+### Multi-objective curriculum wired — 2026-11-23
+
+User approved implementation after explicitly choosing **25% ordinary arena /
+25% targeted / 50% broad-campaign decisions**, adaptive separately within all
+three groups. This supersedes the earlier proposed equal-base shared arena pool.
+No global adaptive transfer between groups. Existing EMA/warmup/80%-threshold/
+10%-floor controls and persistent allocation credits remain in place.
+
+Five base reductions now authored: each of the three escort maps1/3; Bellmarket
+Courts and Thorn Verge1/4. Others1. Ashbank's physical fog variants share one
+logical samplingMap. Four new challenges join the24 existing targeted maps:
+Hollowbank east-road guard and west-bank reserve clear/Classic; Ashbank clear
+Predictor/Full, player-onlyfogFull, both-fogPredictor/Full; Marlow exposed-commander
+clear/Classic. Those are eight challenge combinations. Marlow's validated distant-
+commander control shares its map budget at conditionWeight1/4, versus1 for Finish.
+
+New imitators record full validated blocks per condition (Classic/Mission/Classic,
+Balanced/Mission/Queued, Predictor/Mission/Full). Native collection applies all
+three blocks; teacher-only collection parity was checked against explicit-config
+reference play. New cases preserve fixed rosters, zero recruitment, initiative,
+objectives and deadlines; no unqualified fog scope is registered for training.
+
+Reward profiles are authored separately from scenario storage: ordinary and
+single-stage targeted victories+1, no intermediate bonus; broad intermediate
+chapters+1 and finale+2. Existing loss/cap penalties retained. Objective-progress
+and kill bonuses remain OFF for the next vanilla run. They remain outstanding
+experiments, not removed from the broader plan. Workload provenance includes
+map weights, profiles, pool budgets, teachers and adaptive controls. Evaluation
+keeps static family/map weights independent of training allocation changes.
+
+No pretrain/PPO launched. Optional short imitation pretrain decision is still
+open. Frozen earlier experiment workloads/checkpoints were not rewritten.

@@ -1,0 +1,20 @@
+{
+  "fullVerify": {
+    "command": "source /workspace/.setup/env.sh; make full-verify",
+    "exitCode": 0,
+    "frontendTests": 272,
+    "frontendFiles": 38
+  },
+  "trainingTests": {
+    "tests": 41,
+    "skipped": 1,
+    "passed": true
+  },
+  "nativeTeacherCompositions": 3,
+  "nativeTeacherCollectionDecisions": 178,
+  "nativeTeacherMissingLabels": 0,
+  "configuredStarts": 9,
+  "challengeCombinations": 8,
+  "rehearsalControls": 1,
+  "trainingStarted": false
+}

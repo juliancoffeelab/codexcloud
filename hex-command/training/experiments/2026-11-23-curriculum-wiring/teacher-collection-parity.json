@@ -1,0 +1,86 @@
+[
+  {
+    "config": {
+      "seed": 3000001,
+      "armies": {
+        "player": "human",
+        "enemy": "skeletons"
+      },
+      "landscape": "rl-marlow-cut-pass-finish",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "first": "player",
+      "maxRounds": 30,
+      "recruitLimit": 0,
+      "objective": "territory"
+    },
+    "teacher": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "decisions": 5,
+    "missing": 0,
+    "exactTeacherBlockParity": true
+  },
+  {
+    "config": {
+      "seed": 4000001,
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "predictor",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    },
+    "decisions": 73,
+    "missing": 0,
+    "exactTeacherBlockParity": true
+  },
+  {
+    "config": {
+      "seed": 4000001,
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "predictor",
+      "campaign": "mission",
+      "planner": "full"
+    },
+    "decisions": 100,
+    "missing": 0,
+    "exactTeacherBlockParity": true
+  }
+]
