@@ -834,3 +834,23 @@ Extra3600.20 saved trainer seconds,273 updates,1217 episodes,69888 decisions.
 Evidence/checkpoint/curves preserved under the parent experiment's
 `extension-one-hour/` folder, original nine-hour archive unchanged. Monitor
 disabled; no checkpoint promoted and no new run started.
+
+### Targeted curriculum audit and proposed revision — 2026-11-23
+
+Measured hour10 on528 fresh-seed games (eight per configured condition), plus24
+matched teacher games. Evidence: `training/experiments/2026-11-23-targeted-curriculum-audit`.
+All three escort maps24/24 each, Bellmarket32/32, Thorn Verge72/72. Proposed,
+not implemented: reduce each escort base budget to one-third and Bellmarket/
+Thorn Verge to one-quarter, retaining rehearsal; account for existing adaptive
+multipliers when choosing final allocations. Echo Gate and North of Lantern Road
+remain0/8 while their configured teachers each win8/8; keep these gaps. Lower
+Gallery learner0/8 vsFull3/8. Lair Outworks18/72 remains relevant. Fixed1/1 does
+not establish mastery: Rally5/8 fresh, Flint7/8, training action sampling differs
+from greedy evaluation.
+
+Proposed new targeted candidate: Commander Left Behind, derived from observed
+Lantern split-army failures. Commander reaches exit alive while supporting the
+advance; rear pursuer punishes abandonment. Include a wounded-withdrawal variant
+so following the army is not always correct. Validate a current learned-policy
+gap against a successful rule-based/targeted reference before integration.
+No map, allocation config, reward or new training run changed by this audit.
