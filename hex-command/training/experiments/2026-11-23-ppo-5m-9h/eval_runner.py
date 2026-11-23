@@ -50,12 +50,19 @@ def plots(records):
     import matplotlib.pyplot as plt
     from collections import defaultdict
     folder=root/'plots';folder.mkdir(exist_ok=True)
+    correction=json.loads((root/'allocation-correction.json').read_text()) if (root/'allocation-correction.json').exists() else None
+    def mark(axes):
+        if correction:
+            for ax in axes.flat:
+                ax.axvline(correction['elapsed']/3600,color='crimson',linestyle=':',alpha=.7)
+            fig.text(.5,.005,'Dotted red line: arena allocation fix; earlier training used the faulty sampler',ha='center',fontsize=9)
+
     xs=[r['hour'] for r in records]
     fig,axes=plt.subplots(1,3,figsize=(14,4))
     for ax,name in zip(axes,panels):
         ys=[r['panels'][name]['score']*100 for r in records]
         ax.plot(xs,ys,'o-');ax.set(title=name.replace('_',' '),xlabel='Training hours',ylabel='Completion / win (%)',ylim=(0,100));ax.grid(alpha=.25)
-    fig.tight_layout();fig.savefig(folder/'gameplay-over-time.png',dpi=150);plt.close(fig)
+    mark(axes);fig.tight_layout();fig.savefig(folder/'gameplay-over-time.png',dpi=150);plt.close(fig)
     stages=defaultdict(dict)
     for r in records:
         for name in ['training_diagnostic','lantern_showcase']:
@@ -72,14 +79,14 @@ def plots(records):
                 if k[:2]!=g:continue
                 ax.plot(xs,[100*points[h][0]/points[h][1] if h in points and points[h][1] else float('nan') for h in xs],'o-',label=k[2])
             ax.set(title=' · '.join(g),xlabel='Training hours',ylabel='Clears / entrants (%)',ylim=(0,100));ax.grid(alpha=.25);ax.legend(fontsize=7)
-        fig.tight_layout();fig.savefig(folder/'campaign-chapters-over-time.png',dpi=120);plt.close(fig)
+        mark(axes);fig.tight_layout();fig.savefig(folder/'campaign-chapters-over-time.png',dpi=120);plt.close(fig)
     rows=read_jsonl(root/'rl/metrics.jsonl',repair=False)
     fig,axes=plt.subplots(2,2,figsize=(12,7))
     for ax,field in zip(axes.flat,['policy_loss','value_loss','entropy','reference_kl']):
         pts=[(r['seconds']/3600,r[field]) for r in rows if field in r]
         if pts:ax.plot(*zip(*pts),linewidth=.5)
         ax.set(title=field,xlabel='Training hours');ax.grid(alpha=.25)
-    fig.tight_layout();fig.savefig(folder/'training-curves.png',dpi=150);plt.close(fig)
+    mark(axes);fig.tight_layout();fig.savefig(folder/'training-curves.png',dpi=150);plt.close(fig)
 
 def main():
     from hex_command_rl.mixed_evaluate import reliability

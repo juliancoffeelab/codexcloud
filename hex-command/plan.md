@@ -803,3 +803,14 @@ belong to the faulty-allocation phase, not the intended training distribution.
 Validation: heterogeneous full-workload scheduling, changing mastery with four
 concurrent slots, migration and deterministic resume; all ordinary maps receive
 work. Full training suite: 41 tests pass, one optional LightGBM skip.
+
+
+### Nine-hour run completed — 2026-11-23
+
+Training and all hour0–9 evaluations finished; evidence archived under
+`training/experiments/2026-11-23-ppo-5m-9h`. Held-out selector chose hour5; hour8
+retained with 6/24 Lantern clears, final hour9 had 1/24. Corrected allocation
+was active only for the final 1h46m; all 14 ordinary maps then received work.
+Monitor disabled. No checkpoint promoted and no additional run started.
+A possible later continuation without targeted encounters was discussed, not
+authorized as a new run. Rewards/exploration proposals remain separate work.
