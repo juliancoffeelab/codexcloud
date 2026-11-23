@@ -1,0 +1,19 @@
+[package]
+name = "current-native-timing"
+version = "0.1.0"
+edition = "2024"
+
+[workspace]
+
+[[bin]]
+name = "hollowbank_fog_view"
+path = "src/main.rs"
+
+[dependencies]
+hex-command-simulation = { path = "../../../../../rust", features = ["simulation"] }
+serde_json = "1"
+mimalloc = { version = "0.1", default-features = false }
+
+[profile.release]
+lto = false
+codegen-units = 16

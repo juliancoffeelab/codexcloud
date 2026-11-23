@@ -1,0 +1,338 @@
+[
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136002,
+    "player": "balanced",
+    "enemy": "classic",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    }
+  },
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136002,
+    "player": "balanced",
+    "enemy": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    }
+  },
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136002,
+    "player": "balanced",
+    "enemy": "predictor",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "predictor",
+      "campaign": "mission",
+      "planner": "full"
+    }
+  },
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136002,
+    "player": "balanced",
+    "enemy": "predictor",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "predictor",
+      "campaign": "mission",
+      "planner": "queued"
+    }
+  },
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-interrupt-player-fog",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136002,
+    "player": "balanced",
+    "enemy": "classic",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    }
+  },
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-interrupt-both-fog",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136002,
+    "player": "balanced",
+    "enemy": "classic",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    }
+  },
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136002,
+    "player": "balanced",
+    "enemy": "classic",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    }
+  },
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136002,
+    "player": "balanced",
+    "enemy": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    }
+  },
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136002,
+    "player": "balanced",
+    "enemy": "predictor",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "predictor",
+      "campaign": "mission",
+      "planner": "full"
+    }
+  },
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136002,
+    "player": "balanced",
+    "enemy": "predictor",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "predictor",
+      "campaign": "mission",
+      "planner": "queued"
+    }
+  },
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-finish-player-fog",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136002,
+    "player": "balanced",
+    "enemy": "classic",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    }
+  },
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-finish-both-fog",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136002,
+    "player": "balanced",
+    "enemy": "classic",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    }
+  },
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136101,
+    "player": "balanced",
+    "enemy": "classic",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    }
+  },
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136102,
+    "player": "balanced",
+    "enemy": "classic",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    }
+  }
+]

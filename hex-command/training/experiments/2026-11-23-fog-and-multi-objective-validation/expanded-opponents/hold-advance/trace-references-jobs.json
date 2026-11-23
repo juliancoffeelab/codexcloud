@@ -1,0 +1,1250 @@
+[
+  {
+    "scope": "clear",
+    "opponent": "classic",
+    "policy": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571240001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "enemy": "classic",
+      "enemyBlocks": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "discovery"
+  },
+  {
+    "scope": "clear",
+    "opponent": "queued",
+    "policy": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571240001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "discovery"
+  },
+  {
+    "scope": "clear",
+    "opponent": "full",
+    "policy": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571240001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "discovery"
+  },
+  {
+    "scope": "clear",
+    "opponent": "predictor",
+    "policy": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571240001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "discovery"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "queued",
+    "policy": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571240001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "discovery"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "full",
+    "policy": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571240001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "discovery"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "predictor",
+    "policy": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571240001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "discovery"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "queued",
+    "policy": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571240001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "discovery"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "full",
+    "policy": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571240001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "discovery"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "predictor",
+    "policy": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571240001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "discovery"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "classic",
+    "policy": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571240001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "enemy": "classic",
+      "enemyBlocks": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "discovery"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "classic",
+    "policy": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571240001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "enemy": "classic",
+      "enemyBlocks": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "discovery"
+  },
+  {
+    "scope": "clear",
+    "opponent": "classic",
+    "policy": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "enemy": "classic",
+      "enemyBlocks": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "clear",
+    "opponent": "classic",
+    "policy": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "enemy": "classic",
+      "enemyBlocks": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "clear",
+    "opponent": "queued",
+    "policy": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "clear",
+    "opponent": "queued",
+    "policy": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "clear",
+    "opponent": "full",
+    "policy": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "clear",
+    "opponent": "full",
+    "policy": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "clear",
+    "opponent": "predictor",
+    "policy": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "clear",
+    "opponent": "predictor",
+    "policy": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "queued",
+    "policy": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571241002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "queued",
+    "policy": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571241003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "full",
+    "policy": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571241003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "full",
+    "policy": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571241004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "predictor",
+    "policy": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571241002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "predictor",
+    "policy": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571241003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "queued",
+    "policy": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571241001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "queued",
+    "policy": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571241002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "full",
+    "policy": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571241001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "full",
+    "policy": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571241002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "predictor",
+    "policy": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571241001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "predictor",
+    "policy": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571241002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  }
+]

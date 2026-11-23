@@ -36,3 +36,13 @@ Multi-objective confirmed results above are clear-only. Hollowbank player-fog sc
 - Native artwork previews and render inputs are preserved. Render-only connection metadata/header changes do not alter evaluated gameplay catalogs.
 
 ![Native encounter renders](multi-objective-gallery.jpg)
+
+## Expanded opponent and fog follow-up
+
+[Complete expanded matrix and fresh confirmation](expanded-opponents/README.md)
+adds Classic, Queued, Predictor and Full enemies across all three visibility
+scopes on these same five starts.2400 screening plus1020 independent confirmation
+games; no caps. Ashbank establishes strong both-fog learner/reference gaps against
+Queued/Predictor and Full, plus player-only fog againstFull. Hollowbank and Marlow
+remain scope-specific. This follow-up supersedes the earlier lack of
+multi-objective fog qualification, without changing the earlier raw results.

@@ -1,0 +1,5402 @@
+{
+  "nativeSpatialSchema": 19,
+  "channelIndices": {
+    "tile_remembered": 65,
+    "tile_in_sight": 66,
+    "friendly": 1,
+    "hostile": 2,
+    "enemy_owned": 43,
+    "defeat_goal": 51,
+    "opponent_hold_objective": 81,
+    "opponent_hold_turns_remaining": 82
+  },
+  "cases": [
+    {
+      "start": "interrupt",
+      "visibility": "clear",
+      "observer": "player",
+      "target": {
+        "col": 1,
+        "row": 17
+      },
+      "limited": false,
+      "opening": {
+        "round": 1,
+        "decision": 0,
+        "friendlyUnits": 3,
+        "opposingStartingTile": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 1.0,
+          "friendly": 0.0,
+          "hostile": 1.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 1.2,
+          "opponent_hold_objective": 0.0,
+          "opponent_hold_turns_remaining": 0.0
+        },
+        "post": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 1.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 1.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2
+        }
+      },
+      "openingVisibleTileCount": 475,
+      "openingVisibleHostileCount": 3,
+      "openingSpatialSha256": "19e240514d4c658f24d58c78b4b6faa7a2ccd906dd96d1b8a83d1907790952cd",
+      "returningFogExample": null,
+      "frames": [
+        {
+          "round": 1,
+          "decision": 0,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 1,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 2,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 3,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 2,
+          "decision": 4,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 5,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 6,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 7,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 8,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 3,
+          "decision": 9,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 3,
+          "decision": 10,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 3,
+          "decision": 11,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 3,
+          "decision": 12,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 4,
+          "decision": 13,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 4,
+          "decision": 14,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 5,
+          "decision": 15,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 6,
+          "decision": 16,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 7,
+          "decision": 17,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 8,
+          "decision": 18,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        }
+      ],
+      "config": {
+        "objective": "territory",
+        "landscape": "rl-marlow-cut-pass-interrupt",
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "first": "player",
+        "recruitLimit": 0,
+        "maxRounds": 30,
+        "seed": 661136001,
+        "player": "balanced",
+        "enemy": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "arena",
+          "planner": "queued"
+        },
+        "enemyBlocks": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        }
+      }
+    },
+    {
+      "start": "interrupt",
+      "visibility": "clear",
+      "observer": "enemy",
+      "target": {
+        "col": 11,
+        "row": 7
+      },
+      "limited": false,
+      "opening": {
+        "round": 1,
+        "decision": 0,
+        "friendlyUnits": 2,
+        "opposingStartingTile": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 1.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 0.0,
+          "opponent_hold_turns_remaining": 0.0
+        },
+        "post": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 1.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2
+        }
+      },
+      "openingVisibleTileCount": 475,
+      "openingVisibleHostileCount": 3,
+      "openingSpatialSha256": "bfbffb253c3a795732173dbb8c7049d612166bb62957bacea2e98bbeb63c9563",
+      "returningFogExample": null,
+      "frames": [
+        {
+          "round": 1,
+          "decision": 0,
+          "friendlyUnits": 2,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 1,
+          "friendlyUnits": 2,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 2,
+          "decision": 2,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 3,
+          "decision": 3,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 4,
+          "decision": 4,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 5,
+          "decision": 5,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 6,
+          "decision": 6,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.1
+          }
+        },
+        {
+          "round": 7,
+          "decision": 7,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.066667
+          }
+        },
+        {
+          "round": 8,
+          "decision": 8,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.033333
+          }
+        }
+      ],
+      "config": {
+        "objective": "territory",
+        "landscape": "rl-marlow-cut-pass-interrupt",
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "first": "player",
+        "recruitLimit": 0,
+        "maxRounds": 30,
+        "seed": 661136001,
+        "player": "balanced",
+        "enemy": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "arena",
+          "planner": "queued"
+        },
+        "enemyBlocks": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        }
+      }
+    },
+    {
+      "start": "interrupt",
+      "visibility": "player-fog",
+      "observer": "player",
+      "target": {
+        "col": 1,
+        "row": 17
+      },
+      "limited": true,
+      "opening": {
+        "round": 1,
+        "decision": 0,
+        "friendlyUnits": 3,
+        "opposingStartingTile": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 0.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 0.0,
+          "opponent_hold_turns_remaining": 0.0
+        },
+        "post": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 0.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 1.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2
+        }
+      },
+      "openingVisibleTileCount": 51,
+      "openingVisibleHostileCount": 0,
+      "openingSpatialSha256": "e38e90ef02dc1412d2ad9c3880a74cb8d27742063f6277436f0a872f96ba3c5b",
+      "returningFogExample": {
+        "tile": {
+          "col": 13,
+          "row": 4
+        },
+        "revealed": {
+          "observer": "player",
+          "map": "rl-marlow-cut-pass-interrupt-player-fog",
+          "round": 1,
+          "decision": 0,
+          "generation": 0,
+          "friendlyUnits": 3
+        },
+        "hidden": {
+          "observer": "player",
+          "map": "rl-marlow-cut-pass-interrupt-player-fog",
+          "round": 1,
+          "decision": 1,
+          "generation": 0,
+          "friendlyUnits": 3
+        },
+        "remembered": 0
+      },
+      "frames": [
+        {
+          "round": 1,
+          "decision": 0,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 1,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 2,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 3,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 2,
+          "decision": 4,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 5,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 6,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 7,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 8,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 3,
+          "decision": 9,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 3,
+          "decision": 10,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 3,
+          "decision": 11,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 4,
+          "decision": 12,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.1
+          }
+        },
+        {
+          "round": 4,
+          "decision": 13,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.1
+          }
+        },
+        {
+          "round": 5,
+          "decision": 14,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 6,
+          "decision": 15,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 7,
+          "decision": 16,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 8,
+          "decision": 17,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 9,
+          "decision": 18,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        }
+      ],
+      "config": {
+        "objective": "territory",
+        "landscape": "rl-marlow-cut-pass-interrupt-player-fog",
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "first": "player",
+        "recruitLimit": 0,
+        "maxRounds": 30,
+        "seed": 661136001,
+        "player": "balanced",
+        "enemy": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "arena",
+          "planner": "queued"
+        },
+        "enemyBlocks": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        }
+      }
+    },
+    {
+      "start": "interrupt",
+      "visibility": "player-fog",
+      "observer": "enemy",
+      "target": {
+        "col": 11,
+        "row": 7
+      },
+      "limited": false,
+      "opening": {
+        "round": 1,
+        "decision": 0,
+        "friendlyUnits": 3,
+        "opposingStartingTile": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 1.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 0.0,
+          "opponent_hold_turns_remaining": 0.0
+        },
+        "post": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 1.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2
+        }
+      },
+      "openingVisibleTileCount": 475,
+      "openingVisibleHostileCount": 3,
+      "openingSpatialSha256": "c54f4a9bfce114bbe3069005b08e7e8c1f1f829aae83c17a46bf51cc0ad63dd0",
+      "returningFogExample": null,
+      "frames": [
+        {
+          "round": 1,
+          "decision": 0,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 1,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 2,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 3,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 2,
+          "decision": 4,
+          "friendlyUnits": 2,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 3,
+          "decision": 5,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 4,
+          "decision": 6,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 5,
+          "decision": 7,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 6,
+          "decision": 8,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 7,
+          "decision": 9,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.1
+          }
+        },
+        {
+          "round": 8,
+          "decision": 10,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.066667
+          }
+        },
+        {
+          "round": 9,
+          "decision": 11,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.033333
+          }
+        }
+      ],
+      "config": {
+        "objective": "territory",
+        "landscape": "rl-marlow-cut-pass-interrupt-player-fog",
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "first": "player",
+        "recruitLimit": 0,
+        "maxRounds": 30,
+        "seed": 661136001,
+        "player": "balanced",
+        "enemy": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "arena",
+          "planner": "queued"
+        },
+        "enemyBlocks": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        }
+      }
+    },
+    {
+      "start": "interrupt",
+      "visibility": "both-fog",
+      "observer": "player",
+      "target": {
+        "col": 1,
+        "row": 17
+      },
+      "limited": true,
+      "opening": {
+        "round": 1,
+        "decision": 0,
+        "friendlyUnits": 3,
+        "opposingStartingTile": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 0.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 0.0,
+          "opponent_hold_turns_remaining": 0.0
+        },
+        "post": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 0.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 1.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2
+        }
+      },
+      "openingVisibleTileCount": 51,
+      "openingVisibleHostileCount": 0,
+      "openingSpatialSha256": "e38e90ef02dc1412d2ad9c3880a74cb8d27742063f6277436f0a872f96ba3c5b",
+      "returningFogExample": {
+        "tile": {
+          "col": 13,
+          "row": 4
+        },
+        "revealed": {
+          "observer": "player",
+          "map": "rl-marlow-cut-pass-interrupt-both-fog",
+          "round": 1,
+          "decision": 0,
+          "generation": 0,
+          "friendlyUnits": 3
+        },
+        "hidden": {
+          "observer": "player",
+          "map": "rl-marlow-cut-pass-interrupt-both-fog",
+          "round": 1,
+          "decision": 1,
+          "generation": 0,
+          "friendlyUnits": 3
+        },
+        "remembered": 0
+      },
+      "frames": [
+        {
+          "round": 1,
+          "decision": 0,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 1,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 2,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 3,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 2,
+          "decision": 4,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 5,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 6,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 7,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 8,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 3,
+          "decision": 9,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 3,
+          "decision": 10,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 3,
+          "decision": 11,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 4,
+          "decision": 12,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.1
+          }
+        },
+        {
+          "round": 4,
+          "decision": 13,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.1
+          }
+        },
+        {
+          "round": 5,
+          "decision": 14,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 6,
+          "decision": 15,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 7,
+          "decision": 16,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 8,
+          "decision": 17,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 8,
+          "decision": 18,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 8,
+          "decision": 19,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 9,
+          "decision": 20,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 9,
+          "decision": 21,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        }
+      ],
+      "config": {
+        "objective": "territory",
+        "landscape": "rl-marlow-cut-pass-interrupt-both-fog",
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "first": "player",
+        "recruitLimit": 0,
+        "maxRounds": 30,
+        "seed": 661136001,
+        "player": "balanced",
+        "enemy": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "arena",
+          "planner": "queued"
+        },
+        "enemyBlocks": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        }
+      }
+    },
+    {
+      "start": "interrupt",
+      "visibility": "both-fog",
+      "observer": "enemy",
+      "target": {
+        "col": 11,
+        "row": 7
+      },
+      "limited": true,
+      "opening": {
+        "round": 1,
+        "decision": 0,
+        "friendlyUnits": 3,
+        "opposingStartingTile": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 0.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 0.0,
+          "opponent_hold_turns_remaining": 0.0
+        },
+        "post": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 1.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2
+        }
+      },
+      "openingVisibleTileCount": 67,
+      "openingVisibleHostileCount": 1,
+      "openingSpatialSha256": "8023fb1a8c7b31d1d7243bff2b05519cc776a49ca6b519a61b8454dc29dd92d4",
+      "returningFogExample": {
+        "tile": {
+          "col": 4,
+          "row": 6
+        },
+        "revealed": {
+          "observer": "enemy",
+          "map": "rl-marlow-cut-pass-interrupt-both-fog",
+          "round": 1,
+          "decision": 0,
+          "generation": 0,
+          "friendlyUnits": 3
+        },
+        "hidden": {
+          "observer": "enemy",
+          "map": "rl-marlow-cut-pass-interrupt-both-fog",
+          "round": 1,
+          "decision": 1,
+          "generation": 0,
+          "friendlyUnits": 3
+        },
+        "remembered": 0
+      },
+      "frames": [
+        {
+          "round": 1,
+          "decision": 0,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 1,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 2,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 3,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 4,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 2,
+          "decision": 5,
+          "friendlyUnits": 2,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 3,
+          "decision": 6,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 4,
+          "decision": 7,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 4,
+          "decision": 8,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 5,
+          "decision": 9,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 5,
+          "decision": 10,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 6,
+          "decision": 11,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 6,
+          "decision": 12,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 7,
+          "decision": 13,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.1
+          }
+        },
+        {
+          "round": 7,
+          "decision": 14,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.1
+          }
+        },
+        {
+          "round": 7,
+          "decision": 15,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.1
+          }
+        },
+        {
+          "round": 8,
+          "decision": 16,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.066667
+          }
+        },
+        {
+          "round": 8,
+          "decision": 17,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.066667
+          }
+        },
+        {
+          "round": 9,
+          "decision": 18,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.033333
+          }
+        }
+      ],
+      "config": {
+        "objective": "territory",
+        "landscape": "rl-marlow-cut-pass-interrupt-both-fog",
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "first": "player",
+        "recruitLimit": 0,
+        "maxRounds": 30,
+        "seed": 661136001,
+        "player": "balanced",
+        "enemy": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "arena",
+          "planner": "queued"
+        },
+        "enemyBlocks": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        }
+      }
+    },
+    {
+      "start": "finish",
+      "visibility": "clear",
+      "observer": "player",
+      "target": {
+        "col": 16,
+        "row": 8
+      },
+      "limited": false,
+      "opening": {
+        "round": 1,
+        "decision": 0,
+        "friendlyUnits": 3,
+        "opposingStartingTile": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 1.0,
+          "friendly": 0.0,
+          "hostile": 1.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 1.2,
+          "opponent_hold_objective": 0.0,
+          "opponent_hold_turns_remaining": 0.0
+        },
+        "post": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 1.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 1.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2
+        }
+      },
+      "openingVisibleTileCount": 475,
+      "openingVisibleHostileCount": 3,
+      "openingSpatialSha256": "14608c23e5d348ba73732a2aaa7653a691c20231cacbc6e0da0d788d374a0e9c",
+      "returningFogExample": null,
+      "frames": [
+        {
+          "round": 1,
+          "decision": 0,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 1,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 2,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 1.2,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 2,
+          "decision": 3,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 4,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        }
+      ],
+      "config": {
+        "objective": "territory",
+        "landscape": "rl-marlow-cut-pass-finish",
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "first": "player",
+        "recruitLimit": 0,
+        "maxRounds": 30,
+        "seed": 661136001,
+        "player": "balanced",
+        "enemy": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "arena",
+          "planner": "queued"
+        },
+        "enemyBlocks": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        }
+      }
+    },
+    {
+      "start": "finish",
+      "visibility": "clear",
+      "observer": "enemy",
+      "target": {
+        "col": 11,
+        "row": 7
+      },
+      "limited": false,
+      "opening": {
+        "round": 1,
+        "decision": 0,
+        "friendlyUnits": 3,
+        "opposingStartingTile": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 1.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 0.0,
+          "opponent_hold_turns_remaining": 0.0
+        },
+        "post": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 1.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2
+        }
+      },
+      "openingVisibleTileCount": 475,
+      "openingVisibleHostileCount": 3,
+      "openingSpatialSha256": "9850cb96cc983e713234a1ddf916bee0512376b6345f5692e495082916b87a63",
+      "returningFogExample": null,
+      "frames": [
+        {
+          "round": 1,
+          "decision": 0,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 1,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 2,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 3,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 4,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        }
+      ],
+      "config": {
+        "objective": "territory",
+        "landscape": "rl-marlow-cut-pass-finish",
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "first": "player",
+        "recruitLimit": 0,
+        "maxRounds": 30,
+        "seed": 661136001,
+        "player": "balanced",
+        "enemy": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "arena",
+          "planner": "queued"
+        },
+        "enemyBlocks": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        }
+      }
+    },
+    {
+      "start": "finish",
+      "visibility": "player-fog",
+      "observer": "player",
+      "target": {
+        "col": 16,
+        "row": 8
+      },
+      "limited": true,
+      "opening": {
+        "round": 1,
+        "decision": 0,
+        "friendlyUnits": 3,
+        "opposingStartingTile": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 0.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 0.0,
+          "opponent_hold_turns_remaining": 0.0
+        },
+        "post": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 0.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 1.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2
+        }
+      },
+      "openingVisibleTileCount": 51,
+      "openingVisibleHostileCount": 0,
+      "openingSpatialSha256": "e38e90ef02dc1412d2ad9c3880a74cb8d27742063f6277436f0a872f96ba3c5b",
+      "returningFogExample": {
+        "tile": {
+          "col": 13,
+          "row": 4
+        },
+        "revealed": {
+          "observer": "player",
+          "map": "rl-marlow-cut-pass-finish-player-fog",
+          "round": 1,
+          "decision": 0,
+          "generation": 0,
+          "friendlyUnits": 3
+        },
+        "hidden": {
+          "observer": "player",
+          "map": "rl-marlow-cut-pass-finish-player-fog",
+          "round": 1,
+          "decision": 1,
+          "generation": 0,
+          "friendlyUnits": 3
+        },
+        "remembered": 0
+      },
+      "frames": [
+        {
+          "round": 1,
+          "decision": 0,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 1,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 2,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 3,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 2,
+          "decision": 4,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 5,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 6,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 7,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 8,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 3,
+          "decision": 9,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 3,
+          "decision": 10,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 3,
+          "decision": 11,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 4,
+          "decision": 12,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.1
+          }
+        },
+        {
+          "round": 4,
+          "decision": 13,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.1
+          }
+        },
+        {
+          "round": 5,
+          "decision": 14,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 6,
+          "decision": 15,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 7,
+          "decision": 16,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 8,
+          "decision": 17,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 9,
+          "decision": 18,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        }
+      ],
+      "config": {
+        "objective": "territory",
+        "landscape": "rl-marlow-cut-pass-finish-player-fog",
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "first": "player",
+        "recruitLimit": 0,
+        "maxRounds": 30,
+        "seed": 661136001,
+        "player": "balanced",
+        "enemy": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "arena",
+          "planner": "queued"
+        },
+        "enemyBlocks": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        }
+      }
+    },
+    {
+      "start": "finish",
+      "visibility": "player-fog",
+      "observer": "enemy",
+      "target": {
+        "col": 11,
+        "row": 7
+      },
+      "limited": false,
+      "opening": {
+        "round": 1,
+        "decision": 0,
+        "friendlyUnits": 3,
+        "opposingStartingTile": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 1.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 0.0,
+          "opponent_hold_turns_remaining": 0.0
+        },
+        "post": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 1.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2
+        }
+      },
+      "openingVisibleTileCount": 475,
+      "openingVisibleHostileCount": 3,
+      "openingSpatialSha256": "9a8bb227ee5f4581eab3af16a63d7e92fda6301a13d146cd79a13a984d3ee810",
+      "returningFogExample": null,
+      "frames": [
+        {
+          "round": 1,
+          "decision": 0,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 1,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 2,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 3,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 4,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 2,
+          "decision": 5,
+          "friendlyUnits": 2,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 3,
+          "decision": 6,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 4,
+          "decision": 7,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 5,
+          "decision": 8,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 6,
+          "decision": 9,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 7,
+          "decision": 10,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.1
+          }
+        },
+        {
+          "round": 8,
+          "decision": 11,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.066667
+          }
+        },
+        {
+          "round": 9,
+          "decision": 12,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.033333
+          }
+        }
+      ],
+      "config": {
+        "objective": "territory",
+        "landscape": "rl-marlow-cut-pass-finish-player-fog",
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "first": "player",
+        "recruitLimit": 0,
+        "maxRounds": 30,
+        "seed": 661136001,
+        "player": "balanced",
+        "enemy": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "arena",
+          "planner": "queued"
+        },
+        "enemyBlocks": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        }
+      }
+    },
+    {
+      "start": "finish",
+      "visibility": "both-fog",
+      "observer": "player",
+      "target": {
+        "col": 16,
+        "row": 8
+      },
+      "limited": true,
+      "opening": {
+        "round": 1,
+        "decision": 0,
+        "friendlyUnits": 3,
+        "opposingStartingTile": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 0.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 0.0,
+          "opponent_hold_turns_remaining": 0.0
+        },
+        "post": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 0.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 1.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2
+        }
+      },
+      "openingVisibleTileCount": 51,
+      "openingVisibleHostileCount": 0,
+      "openingSpatialSha256": "e38e90ef02dc1412d2ad9c3880a74cb8d27742063f6277436f0a872f96ba3c5b",
+      "returningFogExample": {
+        "tile": {
+          "col": 13,
+          "row": 4
+        },
+        "revealed": {
+          "observer": "player",
+          "map": "rl-marlow-cut-pass-finish-both-fog",
+          "round": 1,
+          "decision": 0,
+          "generation": 0,
+          "friendlyUnits": 3
+        },
+        "hidden": {
+          "observer": "player",
+          "map": "rl-marlow-cut-pass-finish-both-fog",
+          "round": 1,
+          "decision": 1,
+          "generation": 0,
+          "friendlyUnits": 3
+        },
+        "remembered": 0
+      },
+      "frames": [
+        {
+          "round": 1,
+          "decision": 0,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 1,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 2,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 3,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 2,
+          "decision": 4,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 5,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 6,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 7,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 2,
+          "decision": 8,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 3,
+          "decision": 9,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 3,
+          "decision": 10,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 1.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 3,
+          "decision": 11,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 4,
+          "decision": 12,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.1
+          }
+        },
+        {
+          "round": 4,
+          "decision": 13,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.1
+          }
+        },
+        {
+          "round": 5,
+          "decision": 14,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 5,
+          "decision": 15,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 5,
+          "decision": 16,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 6,
+          "decision": 17,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 6,
+          "decision": 18,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 7,
+          "decision": 19,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 7,
+          "decision": 20,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        }
+      ],
+      "config": {
+        "objective": "territory",
+        "landscape": "rl-marlow-cut-pass-finish-both-fog",
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "first": "player",
+        "recruitLimit": 0,
+        "maxRounds": 30,
+        "seed": 661136001,
+        "player": "balanced",
+        "enemy": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "arena",
+          "planner": "queued"
+        },
+        "enemyBlocks": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        }
+      }
+    },
+    {
+      "start": "finish",
+      "visibility": "both-fog",
+      "observer": "enemy",
+      "target": {
+        "col": 11,
+        "row": 7
+      },
+      "limited": true,
+      "opening": {
+        "round": 1,
+        "decision": 0,
+        "friendlyUnits": 3,
+        "opposingStartingTile": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 0.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 0.0,
+          "opponent_hold_turns_remaining": 0.0
+        },
+        "post": {
+          "tile_remembered": 0.0,
+          "tile_in_sight": 1.0,
+          "friendly": 0.0,
+          "hostile": 0.0,
+          "enemy_owned": 0.0,
+          "defeat_goal": 0.0,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2
+        }
+      },
+      "openingVisibleTileCount": 81,
+      "openingVisibleHostileCount": 1,
+      "openingSpatialSha256": "faf9c78416e15a8c8a026f5605de7ee7070137abdf1c93b93b85c87b2f0408a0",
+      "returningFogExample": {
+        "tile": {
+          "col": 4,
+          "row": 6
+        },
+        "revealed": {
+          "observer": "enemy",
+          "map": "rl-marlow-cut-pass-finish-both-fog",
+          "round": 1,
+          "decision": 0,
+          "generation": 0,
+          "friendlyUnits": 3
+        },
+        "hidden": {
+          "observer": "enemy",
+          "map": "rl-marlow-cut-pass-finish-both-fog",
+          "round": 1,
+          "decision": 1,
+          "generation": 0,
+          "friendlyUnits": 3
+        },
+        "remembered": 0
+      },
+      "frames": [
+        {
+          "round": 1,
+          "decision": 0,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 1,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 2,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 3,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 4,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 1,
+          "decision": 5,
+          "friendlyUnits": 3,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 2,
+          "decision": 6,
+          "friendlyUnits": 2,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 1.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 3,
+          "decision": 7,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 4,
+          "decision": 8,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 4,
+          "decision": 9,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 4,
+          "decision": 10,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.2
+          }
+        },
+        {
+          "round": 5,
+          "decision": 11,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 5,
+          "decision": 12,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.166667
+          }
+        },
+        {
+          "round": 6,
+          "decision": 13,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 1.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 6,
+          "decision": 14,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        },
+        {
+          "round": 6,
+          "decision": 15,
+          "friendlyUnits": 1,
+          "opposingStartingTile": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 0.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 0.0,
+            "opponent_hold_turns_remaining": 0.0
+          },
+          "post": {
+            "tile_remembered": 0.0,
+            "tile_in_sight": 0.0,
+            "friendly": 0.0,
+            "hostile": 0.0,
+            "enemy_owned": 1.0,
+            "defeat_goal": 0.0,
+            "opponent_hold_objective": 1.0,
+            "opponent_hold_turns_remaining": 0.133333
+          }
+        }
+      ],
+      "config": {
+        "objective": "territory",
+        "landscape": "rl-marlow-cut-pass-finish-both-fog",
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "first": "player",
+        "recruitLimit": 0,
+        "maxRounds": 30,
+        "seed": 661136001,
+        "player": "balanced",
+        "enemy": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "arena",
+          "planner": "queued"
+        },
+        "enemyBlocks": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        }
+      }
+    }
+  ]
+}

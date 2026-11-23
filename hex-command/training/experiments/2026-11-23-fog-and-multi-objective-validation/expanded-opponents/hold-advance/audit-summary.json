@@ -1,0 +1,304 @@
+{
+  "probe": {
+    "path": "/workspace/codexcloud/hex-command/rust/target/simulation/commander-fog-probe",
+    "sha256": "d3fc523a10694c407b194f51e9ecf899c64e1882fddfceac2162ba29b923abb3",
+    "source": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/commander/probe/src/main.rs",
+    "sourceSha256": "be1f82eb4b2dab33160520d929487661dfe3a73b88d18db586ef5097b3afeb9f"
+  },
+  "raw": {
+    "references": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/trace-references.jsonl.gz",
+      "sha256": "d2c758593bf5c26ac13efc0168c037420e85fe2a3d7d8e95010ea1fe37560f51",
+      "jobs": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/trace-references-jobs.json"
+    },
+    "hour8": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/trace-hour8.jsonl.gz",
+      "sha256": "d530effa9b4a3835a837c5f9e22a870b3ae43e45197b2e8f1d16bf16175bcab9",
+      "jobs": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/trace-hour8-jobs.json"
+    },
+    "hour10": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/trace-hour10.jsonl.gz",
+      "sha256": "402b89e61a2427b968ab5ed1206ad673ffae7fa47ec7eb6b444e739c8a8596fa",
+      "jobs": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/trace-hour10-jobs.json"
+    }
+  },
+  "count": 72,
+  "catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog",
+  "catalogSha256": "7c0d2bb91548276bdf7a39befaddee63351cab940973be4cf2711c99882dfe5b",
+  "visibility": {
+    "clear": {
+      "observedGames": 28,
+      "initialHiddenTiles": {
+        "player": 0,
+        "enemy": 0
+      },
+      "initialHiddenEnemies": {
+        "player": 0,
+        "enemy": 0
+      },
+      "maxRefogged": {
+        "player": 0,
+        "enemy": 0
+      },
+      "enemyActionsByOpponent": {
+        "classic": [
+          {
+            "seed": 571240001,
+            "moves": 11,
+            "attacks": 13
+          }
+        ],
+        "queued": [
+          {
+            "seed": 571240001,
+            "moves": 23,
+            "attacks": 10
+          }
+        ],
+        "full": [
+          {
+            "seed": 571240001,
+            "moves": 32,
+            "attacks": 4
+          }
+        ],
+        "predictor": [
+          {
+            "seed": 571240001,
+            "moves": 23,
+            "attacks": 10
+          }
+        ]
+      }
+    },
+    "player-fog": {
+      "observedGames": 22,
+      "initialHiddenTiles": {
+        "player": 95,
+        "enemy": 0
+      },
+      "initialHiddenEnemies": {
+        "player": 4,
+        "enemy": 0
+      },
+      "maxRefogged": {
+        "player": 69,
+        "enemy": 0
+      },
+      "enemyActionsByOpponent": {
+        "classic": [
+          {
+            "seed": 571240001,
+            "moves": 11,
+            "attacks": 13
+          }
+        ],
+        "queued": [
+          {
+            "seed": 571240001,
+            "moves": 15,
+            "attacks": 9
+          }
+        ],
+        "full": [
+          {
+            "seed": 571240001,
+            "moves": 35,
+            "attacks": 8
+          }
+        ],
+        "predictor": [
+          {
+            "seed": 571240001,
+            "moves": 15,
+            "attacks": 9
+          }
+        ]
+      }
+    },
+    "both-fog": {
+      "observedGames": 22,
+      "initialHiddenTiles": {
+        "player": 95,
+        "enemy": 97
+      },
+      "initialHiddenEnemies": {
+        "player": 4,
+        "enemy": 5
+      },
+      "maxRefogged": {
+        "player": 48,
+        "enemy": 90
+      },
+      "enemyActionsByOpponent": {
+        "classic": [
+          {
+            "seed": 571240001,
+            "moves": 11,
+            "attacks": 13
+          }
+        ],
+        "queued": [
+          {
+            "seed": 571240001,
+            "moves": 11,
+            "attacks": 7
+          }
+        ],
+        "full": [
+          {
+            "seed": 571240001,
+            "moves": 23,
+            "attacks": 4
+          }
+        ],
+        "predictor": [
+          {
+            "seed": 571240001,
+            "moves": 11,
+            "attacks": 7
+          }
+        ]
+      }
+    }
+  },
+  "returnedFogMeasurement": "Initially visible tiles hidden at terminal state for a fog-limited faction with surviving units.",
+  "queuedVsPredictorDiscovery": {
+    "compared": 120,
+    "differences": [
+      {
+        "scope": "clear",
+        "seed": 571240001,
+        "policy": "hour8",
+        "queued": {
+          "failure": "leader_loss",
+          "missions": [
+            {
+              "id": "rl-ashbank-relay-fork-vigil",
+              "round": 10,
+              "winner": "playerDefeat"
+            }
+          ],
+          "outcome": "The commander fell.",
+          "success": false,
+          "truncated": false
+        },
+        "predictor": {
+          "failure": "leader_loss",
+          "missions": [
+            {
+              "id": "rl-ashbank-relay-fork-vigil",
+              "round": 12,
+              "winner": "playerDefeat"
+            }
+          ],
+          "outcome": "The commander fell.",
+          "success": false,
+          "truncated": false
+        }
+      },
+      {
+        "scope": "both-fog",
+        "seed": 571240002,
+        "policy": "classic",
+        "queued": {
+          "failure": "leader_loss",
+          "missions": [
+            {
+              "id": "rl-ashbank-relay-fork-vigil-both-fog",
+              "round": 7,
+              "winner": "playerDefeat"
+            }
+          ],
+          "outcome": "The commander fell.",
+          "success": false,
+          "truncated": false
+        },
+        "predictor": {
+          "failure": "defeat",
+          "missions": [
+            {
+              "id": "rl-ashbank-relay-fork-vigil-both-fog",
+              "round": 8,
+              "winner": "playerDefeat"
+            }
+          ],
+          "outcome": "The eastern crossing was still enemy-held at the deadline.",
+          "success": false,
+          "truncated": false
+        }
+      }
+    ]
+  },
+  "replayEvidence": {
+    "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/replay-evidence.json",
+    "sha256": "5a5175c368907adea764d151dec7ab0f9b5c3dd2ad3b739509f9bb72db56c1b7"
+  },
+  "queuedVsPredictorConfirmation": {
+    "compared": 180,
+    "differences": [
+      {
+        "scope": "clear",
+        "seed": 571241014,
+        "policy": "hour8",
+        "queued": {
+          "failure": "leader_loss",
+          "missions": [
+            {
+              "id": "rl-ashbank-relay-fork-vigil",
+              "round": 12,
+              "winner": "playerDefeat"
+            }
+          ],
+          "outcome": "The commander fell.",
+          "success": false,
+          "truncated": false
+        },
+        "predictor": {
+          "failure": "defeat",
+          "missions": [
+            {
+              "id": "rl-ashbank-relay-fork-vigil",
+              "round": 13,
+              "winner": "playerDefeat"
+            }
+          ],
+          "outcome": "The relief force arrived before both positions were secured.",
+          "success": false,
+          "truncated": false
+        }
+      },
+      {
+        "scope": "player-fog",
+        "seed": 571241002,
+        "policy": "hour10",
+        "queued": {
+          "failure": "defeat",
+          "missions": [
+            {
+              "id": "rl-ashbank-relay-fork-vigil-player-fog",
+              "round": 13,
+              "winner": "playerDefeat"
+            }
+          ],
+          "outcome": "The relief force arrived before both positions were secured.",
+          "success": false,
+          "truncated": false
+        },
+        "predictor": {
+          "failure": "leader_loss",
+          "missions": [
+            {
+              "id": "rl-ashbank-relay-fork-vigil-player-fog",
+              "round": 12,
+              "winner": "playerDefeat"
+            }
+          ],
+          "outcome": "The commander fell.",
+          "success": false,
+          "truncated": false
+        }
+      }
+    ]
+  }
+}

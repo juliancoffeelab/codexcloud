@@ -1,0 +1,38 @@
+[
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "queuedPredictorPairs": 240,
+    "identicalTerminalResults": 240
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "queuedPredictorPairs": 60,
+    "identicalTerminalResults": 60
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "queuedPredictorPairs": 120,
+    "identicalTerminalResults": 118
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "queuedPredictorPairs": 180,
+    "identicalTerminalResults": 178
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "queuedPredictorPairs": 240,
+    "identicalTerminalResults": 240
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "confirmation",
+    "queuedPredictorPairs": 0,
+    "identicalTerminalResults": 0
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136101,
+    "player": "balanced",
+    "enemy": "classic",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    }
+  },
+  {
+    "objective": "territory",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "maxRounds": 30,
+    "seed": 661136102,
+    "player": "balanced",
+    "enemy": "classic",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    },
+    "enemyBlocks": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    }
+  }
+]

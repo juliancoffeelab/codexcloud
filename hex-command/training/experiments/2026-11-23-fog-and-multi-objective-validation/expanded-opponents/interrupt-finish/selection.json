@@ -1,0 +1,270 @@
+{
+  "rule": "Reference >=6/8 and at least 3 more wins than Hour 10. Ties use Queued, Full, Classic.",
+  "confirmation": "Same reference >=15/20 and at least 6 more wins than Hour 10.",
+  "cells": [
+    {
+      "cell": [
+        "interrupt",
+        "clear",
+        "classic"
+      ],
+      "reference": "queued",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "interrupt",
+        "clear",
+        "queued"
+      ],
+      "reference": "queued",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "interrupt",
+        "clear",
+        "full"
+      ],
+      "reference": "queued",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "interrupt",
+        "clear",
+        "predictor"
+      ],
+      "reference": "queued",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "interrupt",
+        "player-fog",
+        "classic"
+      ],
+      "reference": "queued",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "interrupt",
+        "player-fog",
+        "queued"
+      ],
+      "reference": "full",
+      "referenceWins": 8,
+      "hour10Wins": 7,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "interrupt",
+        "player-fog",
+        "full"
+      ],
+      "reference": "full",
+      "referenceWins": 8,
+      "hour10Wins": 7,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "interrupt",
+        "player-fog",
+        "predictor"
+      ],
+      "reference": "full",
+      "referenceWins": 8,
+      "hour10Wins": 7,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "interrupt",
+        "both-fog",
+        "classic"
+      ],
+      "reference": "queued",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "interrupt",
+        "both-fog",
+        "queued"
+      ],
+      "reference": "full",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "interrupt",
+        "both-fog",
+        "full"
+      ],
+      "reference": "full",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "interrupt",
+        "both-fog",
+        "predictor"
+      ],
+      "reference": "full",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "finish",
+        "clear",
+        "classic"
+      ],
+      "reference": "queued",
+      "referenceWins": 8,
+      "hour10Wins": 5,
+      "qualifies": true
+    },
+    {
+      "cell": [
+        "finish",
+        "clear",
+        "queued"
+      ],
+      "reference": "queued",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "finish",
+        "clear",
+        "full"
+      ],
+      "reference": "queued",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "finish",
+        "clear",
+        "predictor"
+      ],
+      "reference": "queued",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "finish",
+        "player-fog",
+        "classic"
+      ],
+      "reference": "queued",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "finish",
+        "player-fog",
+        "queued"
+      ],
+      "reference": "full",
+      "referenceWins": 8,
+      "hour10Wins": 7,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "finish",
+        "player-fog",
+        "full"
+      ],
+      "reference": "full",
+      "referenceWins": 8,
+      "hour10Wins": 7,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "finish",
+        "player-fog",
+        "predictor"
+      ],
+      "reference": "full",
+      "referenceWins": 8,
+      "hour10Wins": 7,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "finish",
+        "both-fog",
+        "classic"
+      ],
+      "reference": "queued",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "finish",
+        "both-fog",
+        "queued"
+      ],
+      "reference": "full",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "finish",
+        "both-fog",
+        "full"
+      ],
+      "reference": "full",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    },
+    {
+      "cell": [
+        "finish",
+        "both-fog",
+        "predictor"
+      ],
+      "reference": "full",
+      "referenceWins": 8,
+      "hour10Wins": 8,
+      "qualifies": false
+    }
+  ]
+}

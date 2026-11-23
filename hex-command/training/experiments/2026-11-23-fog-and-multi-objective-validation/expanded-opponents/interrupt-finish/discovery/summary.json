@@ -1,0 +1,2407 @@
+[
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "classic"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "classic"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 5
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 3
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "classic"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "classic"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "classic"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "queued"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "queued"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "queued"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "queued"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "queued"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 0,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "full"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "full"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "full"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "full"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "full"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 0,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "predictor"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "predictor"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "predictor"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "predictor"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "clear",
+      "predictor"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 0,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "classic"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "classic"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "classic"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "classic"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "classic"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "queued"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "queued"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "queued"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "queued"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "queued"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "full"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "full"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "full"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "full"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "full"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "predictor"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "predictor"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "predictor"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "predictor"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "predictor"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "classic"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "classic"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "classic"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "classic"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 3
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 5
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "classic"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "queued"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "queued"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "queued"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 3
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 4
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "queued"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "queued"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 5
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 3
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "full"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "full"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "full"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "full"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 6
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 2
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "full"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "predictor"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "predictor"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "predictor"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 3
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 4
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "predictor"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "predictor"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 5
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 3
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "classic"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 5,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 5
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 3
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "classic"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 5,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 5
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 3
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "classic"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "classic"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "classic"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "queued"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "queued"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "queued"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "queued"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "queued"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "full"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "full"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "full"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "full"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "full"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "predictor"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "predictor"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "predictor"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "predictor"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "predictor"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "classic"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "classic"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "classic"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "classic"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "classic"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "queued"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "queued"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "queued"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "queued"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "queued"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "full"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "full"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "full"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "full"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "full"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "predictor"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "predictor"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "predictor"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "predictor"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "player-fog",
+      "predictor"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "classic"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "classic"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "classic"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "classic"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 6
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 2
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "classic"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 7
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "queued"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 6
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "queued"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "queued"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "queued"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "queued"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "full"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 6
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "full"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "full"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "full"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 5
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 3
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "full"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 7
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "predictor"
+    ],
+    "player": "hour8",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 6
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "leader",
+        "count": 1
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "predictor"
+    ],
+    "player": "hour10",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "predictor"
+    ],
+    "player": "queued",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "predictor"
+    ],
+    "player": "full",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "both-fog",
+      "predictor"
+    ],
+    "player": "classic",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  }
+]

@@ -1,0 +1,6501 @@
+[
+  {
+    "variant": "crossfire-late-guard",
+    "player": "hour10",
+    "visibility": "player-fog",
+    "opponent": "classic",
+    "seed": 493023001,
+    "reached": {
+      "Secure the crossing post": {
+        "round": 2,
+        "side": "player"
+      },
+      "Free Mara at the stockade": {
+        "round": 8,
+        "side": "player"
+      },
+      "Get Tavin to his exit": {
+        "round": 12,
+        "side": "player"
+      }
+    },
+    "round": 14,
+    "outcome": "The evacuation window closed.",
+    "player_progress": [
+      {
+        "round": 1,
+        "revealed": [
+          "secure-crossing"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": true,
+            "id": "required:secure-crossing:7,4",
+            "kind": "capture",
+            "tiles": [
+              {
+                "col": 7,
+                "row": 4
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 2,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 3,
+              "row": 5
+            },
+            "hp": 22,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 3,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 5
+            },
+            "hp": 22,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 4,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 5,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 6,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 6
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 7,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 6
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 8,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 7,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 12,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 9,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 9,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 10,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 11,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 11,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 14,
+              "row": 10
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 12,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 16,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 13,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 16,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "player": "classic",
+    "visibility": "player-fog",
+    "opponent": "classic",
+    "seed": 493023001,
+    "reached": {
+      "Secure the crossing post": {
+        "round": 2,
+        "side": "player"
+      },
+      "Free Mara at the stockade": {
+        "round": 10,
+        "side": "player"
+      }
+    },
+    "round": 14,
+    "outcome": "The evacuation window closed.",
+    "player_progress": [
+      {
+        "round": 1,
+        "revealed": [
+          "secure-crossing"
+        ],
+        "targets": [
+          {
+            "id": "required:secure-crossing:7,4",
+            "kind": "capture",
+            "tiles": [
+              {
+                "col": 7,
+                "row": 4
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u2",
+            "family": null,
+            "hold": true
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 4,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 2,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 2
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 3,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 4,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 5,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 7,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 6,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 2
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 7,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 8,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 4,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 9,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0,
+            "actor": null,
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 10,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 12,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 11,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 10,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 5
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 12,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 13,
+              "row": 6
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 13,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 15,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 5,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "player": "hour10",
+    "visibility": "clear",
+    "opponent": "classic",
+    "seed": 493023001,
+    "reached": {
+      "Secure the crossing post": {
+        "round": 2,
+        "side": "player"
+      },
+      "Free Mara at the stockade": {
+        "round": 7,
+        "side": "player"
+      },
+      "Get Tavin to his exit": {
+        "round": 10,
+        "side": "player"
+      },
+      "Get Mara to her exit": {
+        "round": 12,
+        "side": "player"
+      }
+    },
+    "round": 12,
+    "outcome": "Mara and Tavin both reached safety.",
+    "player_progress": [
+      {
+        "round": 1,
+        "revealed": [
+          "secure-crossing"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": true,
+            "id": "required:secure-crossing:7,4",
+            "kind": "capture",
+            "tiles": [
+              {
+                "col": 7,
+                "row": 4
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 2,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 4
+            },
+            "hp": 23,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 3,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 4,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 5,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 6,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 7,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 10,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 11,
+              "row": 3
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 8,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 13,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 9,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 15,
+              "row": 7
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 7,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 10,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 16,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 4,
+              "row": 5
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 11,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 16,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 3,
+              "row": 8
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 12,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 16,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 2,
+              "row": 9
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "player": "classic",
+    "visibility": "clear",
+    "opponent": "classic",
+    "seed": 493023001,
+    "reached": {
+      "Secure the crossing post": {
+        "round": 2,
+        "side": "player"
+      },
+      "Free Mara at the stockade": {
+        "round": 6,
+        "side": "player"
+      },
+      "Get Mara to her exit": {
+        "round": 11,
+        "side": "player"
+      },
+      "Get Tavin to his exit": {
+        "round": 11,
+        "side": "player"
+      }
+    },
+    "round": 11,
+    "outcome": "Mara and Tavin both reached safety.",
+    "player_progress": [
+      {
+        "round": 1,
+        "revealed": [
+          "secure-crossing"
+        ],
+        "targets": [
+          {
+            "id": "required:secure-crossing:7,4",
+            "kind": "capture",
+            "tiles": [
+              {
+                "col": 7,
+                "row": 4
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u2",
+            "family": null,
+            "hold": true
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 4,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 2,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0,
+            "actor": null,
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 2
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 3,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0,
+            "actor": null,
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 4,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0,
+            "actor": null,
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 5,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0,
+            "actor": null,
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 7,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 6,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 6
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 12,
+              "row": 5
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 7,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 7,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 11,
+              "row": 8
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 8,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 9,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 10
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 9,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 12,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 6,
+              "row": 11
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 10,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 14,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 4,
+              "row": 10
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 11,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 16,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 2,
+              "row": 9
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "player": "hour10",
+    "visibility": "player-fog",
+    "opponent": "classic",
+    "seed": 493023002,
+    "reached": {
+      "Secure the crossing post": {
+        "round": 2,
+        "side": "player"
+      },
+      "Free Mara at the stockade": {
+        "round": 5,
+        "side": "player"
+      },
+      "Get Tavin to his exit": {
+        "round": 12,
+        "side": "player"
+      }
+    },
+    "round": 14,
+    "outcome": "The evacuation window closed.",
+    "player_progress": [
+      {
+        "round": 1,
+        "revealed": [
+          "secure-crossing"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": true,
+            "id": "required:secure-crossing:7,4",
+            "kind": "capture",
+            "tiles": [
+              {
+                "col": 7,
+                "row": 4
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 2,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 6
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 3,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 6
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 4,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 5,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 12,
+              "row": 3
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 6,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 7
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 11,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 7,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 10
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 8,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 7,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 9,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 9,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 10,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 11,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 11,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 14,
+              "row": 10
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 12,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 16,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 5,
+              "row": 5
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 13,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 16,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 3,
+              "row": 7
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "player": "classic",
+    "visibility": "player-fog",
+    "opponent": "classic",
+    "seed": 493023002,
+    "reached": {
+      "Secure the crossing post": {
+        "round": 2,
+        "side": "player"
+      },
+      "Free Mara at the stockade": {
+        "round": 5,
+        "side": "player"
+      },
+      "Get Mara to her exit": {
+        "round": 10,
+        "side": "player"
+      },
+      "Get Tavin to his exit": {
+        "round": 11,
+        "side": "player"
+      }
+    },
+    "round": 11,
+    "outcome": "Mara and Tavin both reached safety.",
+    "player_progress": [
+      {
+        "round": 1,
+        "revealed": [
+          "secure-crossing"
+        ],
+        "targets": [
+          {
+            "id": "required:secure-crossing:7,4",
+            "kind": "capture",
+            "tiles": [
+              {
+                "col": 7,
+                "row": 4
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u2",
+            "family": null,
+            "hold": true
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 4,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 2,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 3,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 1
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 4,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0,
+            "actor": null,
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 2
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 5,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 12,
+              "row": 5
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 6,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 7
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 11,
+              "row": 8
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 7,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 7,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 10
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 8,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 9,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 6,
+              "row": 11
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 9,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 12,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 4,
+              "row": 10
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 10,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 14,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 2,
+              "row": 9
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 11,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 16,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 2,
+              "row": 9
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "player": "hour10",
+    "visibility": "both-fog",
+    "opponent": "classic",
+    "seed": 493022002,
+    "reached": {
+      "Secure the crossing post": {
+        "round": 2,
+        "side": "player"
+      },
+      "Free Mara at the stockade": {
+        "round": 7,
+        "side": "player"
+      }
+    },
+    "round": 14,
+    "outcome": "The evacuation window closed.",
+    "player_progress": [
+      {
+        "round": 1,
+        "revealed": [
+          "secure-crossing"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": true,
+            "id": "required:secure-crossing:7,4",
+            "kind": "capture",
+            "tiles": [
+              {
+                "col": 7,
+                "row": 4
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 2,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 3,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 4,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 0
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 5,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 0
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 6,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 0
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 7,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 10,
+              "row": 1
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 8,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 3
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 9,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 10,
+              "row": 5
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 10,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 3
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 11,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 7,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 6
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 12,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 7,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 8
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 13,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 7,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 8,
+              "row": 11
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "player": "classic",
+    "visibility": "both-fog",
+    "opponent": "classic",
+    "seed": 493022002,
+    "reached": {
+      "Secure the crossing post": {
+        "round": 2,
+        "side": "player"
+      },
+      "Free Mara at the stockade": {
+        "round": 9,
+        "side": "player"
+      },
+      "Get Tavin to his exit": {
+        "round": 13,
+        "side": "player"
+      }
+    },
+    "round": 14,
+    "outcome": "The evacuation window closed.",
+    "player_progress": [
+      {
+        "round": 1,
+        "revealed": [
+          "secure-crossing"
+        ],
+        "targets": [
+          {
+            "id": "required:secure-crossing:7,4",
+            "kind": "capture",
+            "tiles": [
+              {
+                "col": 7,
+                "row": 4
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u2",
+            "family": null,
+            "hold": true
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 2,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 3,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 2
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 4,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 5,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 6,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 7,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 4,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 8,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0,
+            "actor": null,
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 9,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 12,
+              "row": 5
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 10,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 10,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 11,
+              "row": 8
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 11,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 13,
+              "row": 6
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 10
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 12,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 15,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 6,
+              "row": 11
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 13,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 16,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 4,
+              "row": 10
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "variant": "crossfire-nearside",
+    "player": "hour10",
+    "visibility": "clear",
+    "opponent": "queued",
+    "seed": 493023001,
+    "reached": {
+      "Secure the crossing post": {
+        "round": 2,
+        "side": "player"
+      },
+      "Free Mara at the stockade": {
+        "round": 9,
+        "side": "player"
+      },
+      "Get Tavin to his exit": {
+        "round": 12,
+        "side": "player"
+      }
+    },
+    "round": 14,
+    "outcome": "The evacuation window closed.",
+    "player_progress": [
+      {
+        "round": 1,
+        "revealed": [
+          "secure-crossing"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": true,
+            "id": "required:secure-crossing:7,4",
+            "kind": "capture",
+            "tiles": [
+              {
+                "col": 7,
+                "row": 4
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 2,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 4
+            },
+            "hp": 23,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 3,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 4,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 5,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 6,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 7,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 8,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "actor": null,
+            "family": null,
+            "hold": false,
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 9,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 10,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 11,
+              "row": 3
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 10,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 13,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 11,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 15,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 11,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 12,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 16,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 3
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 13,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "actor": "u41",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          },
+          {
+            "actor": "u1",
+            "family": null,
+            "hold": false,
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 16,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 4
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "variant": "crossfire-nearside",
+    "player": "queued",
+    "visibility": "clear",
+    "opponent": "queued",
+    "seed": 493023001,
+    "reached": {
+      "Secure the crossing post": {
+        "round": 2,
+        "side": "player"
+      },
+      "Free Mara at the stockade": {
+        "round": 6,
+        "side": "player"
+      },
+      "Get Tavin to his exit": {
+        "round": 12,
+        "side": "player"
+      },
+      "Get Mara to her exit": {
+        "round": 13,
+        "side": "player"
+      }
+    },
+    "round": 13,
+    "outcome": "Mara and Tavin both reached safety.",
+    "player_progress": [
+      {
+        "round": 1,
+        "revealed": [
+          "secure-crossing"
+        ],
+        "targets": [
+          {
+            "id": "required:secure-crossing:7,4",
+            "kind": "capture",
+            "tiles": [
+              {
+                "col": 7,
+                "row": 4
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u2",
+            "family": null,
+            "hold": true
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 4,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 2,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0,
+            "actor": null,
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 3,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0,
+            "actor": null,
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 4,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0,
+            "actor": null,
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 5,
+        "revealed": [
+          "secure-crossing",
+          "free-mara"
+        ],
+        "targets": [
+          {
+            "id": "required:free-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 12,
+                "row": 1
+              },
+              {
+                "col": 13,
+                "row": 1
+              },
+              {
+                "col": 12,
+                "row": 2
+              },
+              {
+                "col": 13,
+                "row": 2
+              },
+              {
+                "col": 14,
+                "row": 2
+              },
+              {
+                "col": 12,
+                "row": 3
+              },
+              {
+                "col": 13,
+                "row": 3
+              }
+            ],
+            "weight": 24.0,
+            "actor": null,
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "prisoners"
+          }
+        }
+      },
+      {
+        "round": 6,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 5,
+              "row": 3
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 13,
+              "row": 2
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 7,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 6,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 12,
+              "row": 5
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 8,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 8,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 5
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 9,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 11,
+              "row": 4
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 9,
+              "row": 8
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 10,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 13,
+              "row": 5
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 8,
+              "row": 8
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 11,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 15,
+              "row": 8
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 6,
+              "row": 8
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 12,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [
+          {
+            "id": "required:evacuate-mara",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 2,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u41",
+            "family": null,
+            "hold": false
+          },
+          {
+            "id": "required:evacuate-tavin",
+            "kind": "visit",
+            "tiles": [
+              {
+                "col": 16,
+                "row": 9
+              }
+            ],
+            "weight": 24.0,
+            "actor": "u1",
+            "family": null,
+            "hold": false
+          }
+        ],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 16,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 3,
+              "row": 8
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      },
+      {
+        "round": 13,
+        "revealed": [
+          "secure-crossing",
+          "free-mara",
+          "evacuate-mara",
+          "evacuate-tavin"
+        ],
+        "targets": [],
+        "actors": {
+          "tavin": {
+            "tile": {
+              "col": 16,
+              "row": 9
+            },
+            "hp": 25,
+            "faction": "player"
+          },
+          "mara": {
+            "tile": {
+              "col": 2,
+              "row": 9
+            },
+            "hp": 24,
+            "faction": "player"
+          }
+        }
+      }
+    ]
+  }
+]

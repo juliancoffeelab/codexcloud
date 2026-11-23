@@ -1,0 +1,143 @@
+{
+  "family": "interrupt-or-finish",
+  "stage": "Marlow Cut",
+  "status": "clear-classic-only",
+  "discovery": {
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ],
+    "totalGames": 960,
+    "results": "discovery/summary.json",
+    "raw": "discovery/games.jsonl",
+    "protocol": "discovery/protocol.json"
+  },
+  "confirmation": {
+    "seeds": [
+      661136101,
+      661136102,
+      661136103,
+      661136104,
+      661136105,
+      661136106,
+      661136107,
+      661136108,
+      661136109,
+      661136110,
+      661136111,
+      661136112,
+      661136113,
+      661136114,
+      661136115,
+      661136116,
+      661136117,
+      661136118,
+      661136119,
+      661136120
+    ],
+    "totalGames": 60,
+    "results": [
+      {
+        "cell": [
+          "finish",
+          "clear",
+          "classic"
+        ],
+        "reference": "queued",
+        "wins": {
+          "hour8": 15,
+          "hour10": 14,
+          "queued": 20
+        },
+        "qualified": true,
+        "learnerScope": "hour10-only"
+      }
+    ],
+    "raw": "confirmation/games.jsonl",
+    "protocol": "confirmation/protocol.json"
+  },
+  "nonQualifiedConditions": 23,
+  "selection": "selection.json",
+  "nativeObservation": "observation-evidence.json",
+  "traces": {
+    "games": 54,
+    "raw": "traces/raw.jsonl.gz",
+    "objectives": "traces/objective-progress.json",
+    "protocol": "traces/protocol.json"
+  },
+  "opponents": {
+    "classic": {
+      "preset": "classic",
+      "blocks": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      }
+    },
+    "queued": {
+      "preset": "balanced",
+      "blocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "full": {
+      "preset": "predictor",
+      "blocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      }
+    },
+    "predictor": {
+      "preset": "predictor",
+      "blocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    }
+  },
+  "queuedPredictorAudit": {
+    "terminalPairs": 240,
+    "terminalDifferences": 0,
+    "replayPairs": 12,
+    "replayDifferences": 0,
+    "enemyPromotionsInReplays": {
+      "classic": 3,
+      "queued": 1,
+      "full": 0,
+      "predictor": 1
+    },
+    "recruitsInReplays": 0
+  },
+  "fogVariants": {
+    "clear": "Unlimited for both sides. Exact original Marlow Cut map/roster.",
+    "player-fog": "Radius three for the player and unlimited enemy vision.",
+    "both-fog": "Radius three for both sides."
+  },
+  "fixtureFolders": {
+    "interrupt/clear": "catalog/game/scenario/rl-marlow-cut-pass-interrupt",
+    "interrupt/player-fog": "catalog/game/scenario/rl-marlow-cut-pass-interrupt-player-fog",
+    "interrupt/both-fog": "catalog/game/scenario/rl-marlow-cut-pass-interrupt-both-fog",
+    "finish/clear": "catalog/game/scenario/rl-marlow-cut-pass-finish",
+    "finish/player-fog": "catalog/game/scenario/rl-marlow-cut-pass-finish-player-fog",
+    "finish/both-fog": "catalog/game/scenario/rl-marlow-cut-pass-finish-both-fog"
+  },
+  "methodSha256": {
+    "build.py": "c41eb80556fb4928ff2e4203148e8cee9bff4a99a902bf35583d1134cb2c3161",
+    "evaluate.py": "166ebb5ab4f41525ee6a18053afe0c0f3980c7175c278b256c173ce6c0f49449",
+    "observe.py": "5f5c3406082e4bd71b8d579b920022cc7d3f49df6099839ea91112b3948432a0",
+    "trace.py": "c6aca29cf50fd042094e511ce4b37eecd2a8a62d1b11ce14e02e8542ab0e87bf",
+    "summarize.py": "5edec23c7d19903aa0860977b3fc2503a589a79a0fea4594092ae88e7c48fd54"
+  },
+  "catalog": "catalog",
+  "referencePlacement": "clear Finish against Classic, Hour 10 criterion met"
+}

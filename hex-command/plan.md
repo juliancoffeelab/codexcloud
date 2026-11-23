@@ -913,3 +913,27 @@ in screening (reference2/8), not advertised as a validated fog encounter.
 No integration, reward/sampling edits, promotion or training authorized here.
 Next decision remains which validated scopes to wire, alongside the still-open
 single-stage targeted +2 versus ordinary arena +1 reward proposal; not implemented.
+
+### Expanded multi-objective opponents and fog — 2026-11-23
+
+User requested establishing fog competence and challenged Classic-only coverage.
+Existing authors ran2400 eight-seed discovery games across five starts, three
+explicit sight scopes and Classic/Queued/Predictor/Full enemies;1020 separate
+fresh-seed confirmation games followed, references selected from discovery.
+Exact matrices/evidence: same experiment archive, `expanded-opponents/`.
+
+Ashbank confirms non-Classic cases: clear Queued/Predictor enemies Hour10=4/20
+versusClassic16/20; clearFull10/20versusQueued19/20; player-onlyfogFull9/20
+versusQueued15/20; bothfogQueued/Predictor0/20versusQueued20/20; bothfogFull1/20
+versusFull18/20. Fresh clearClassic14/20reference versusHour10 8/20 is weaker
+than original18/20versus3/20; preserve both, not a blanket infeasibility claim.
+Hollowbank fresh clearClassic eastguard11/20versus20/20, reserve5/20versus17/20.
+Its selected fog/non-Classic cells failed reference reliability on confirmation.
+Marlow clearClassic Hour10=14/20versusQueued20/20; fog/non-Classic screening
+found no comparable deficit. Fog hides the exposed commander and defeat marker
+initially, so it does not preserve the same visible priority choice.
+
+Native two-side observations and living-faction re-hiding audited. Queued and
+Predictor have equal win counts here, but Ashbank terminal rounds/reasons differ
+on four matched pairs; do not describe the presets as identical. No integration,
+workload/reward edits, checkpoint promotion or training launched.

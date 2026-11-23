@@ -1,0 +1,782 @@
+[
+  {
+    "scope": "clear",
+    "opponent": "classic",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "classic",
+      "enemyBlocks": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 13,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The relief force arrived before both positions were secured.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "clear",
+    "opponent": "classic",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "classic",
+      "enemyBlocks": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "clear",
+    "opponent": "queued",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 8,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The eastern crossing was still enemy-held at the deadline.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "clear",
+    "opponent": "queued",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 8,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The eastern crossing was still enemy-held at the deadline.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "clear",
+    "opponent": "full",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 13,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The relief force arrived before both positions were secured.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "clear",
+    "opponent": "full",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "clear",
+    "opponent": "predictor",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 8,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The eastern crossing was still enemy-held at the deadline.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "clear",
+    "opponent": "predictor",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571241002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 8,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The eastern crossing was still enemy-held at the deadline.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "queued",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571241002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 10,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The commander fell.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "queued",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571241003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 13,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The relief force arrived before both positions were secured.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "full",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571241003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 10,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The commander fell.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "full",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571241004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 10,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The commander fell.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "predictor",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571241002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 10,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The commander fell.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "player-fog",
+    "opponent": "predictor",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "seed": 571241003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 13,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The relief force arrived before both positions were secured.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "queued",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571241001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 13,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The relief force arrived before both positions were secured.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "queued",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571241002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "balanced",
+      "enemyBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 9,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The commander fell.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "full",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571241001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 13,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The relief force arrived before both positions were secured.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "full",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571241002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 13,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The relief force arrived before both positions were secured.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "predictor",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571241001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 13,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The relief force arrived before both positions were secured.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  },
+  {
+    "scope": "both-fog",
+    "opponent": "predictor",
+    "policy": "hour8",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "seed": 571241002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "result": {
+      "failure": "leader_loss",
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 9,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The commander fell.",
+      "success": false,
+      "truncated": false
+    },
+    "cohort": "confirmation"
+  }
+]
