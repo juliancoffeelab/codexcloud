@@ -1,0 +1,27 @@
+{
+  "experiment": "2000 synthetic episodes, identical 40-decision lengths, same sampler/weights/RNG; only arena allocation-history resets every 20 completions differ. Not gameplay-strength results.",
+  "results": {
+    "False": {
+      "episodes": {
+        "targeted": 692,
+        "broad_campaign": 1000,
+        "ordinary": 308
+      },
+      "decisions": {
+        "targeted": 27680,
+        "broad_campaign": 40000,
+        "ordinary": 12320
+      }
+    },
+    "True": {
+      "episodes": {
+        "targeted": 1000,
+        "broad_campaign": 1000
+      },
+      "decisions": {
+        "targeted": 40000,
+        "broad_campaign": 40000
+      }
+    }
+  }
+}
