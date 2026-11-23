@@ -753,3 +753,29 @@ Fresh matched twenty-seed comparisons qualified Crown Road Relief, Briar Saddle
 and Lower Gallery Refuge; Rally and Tidegate candidates were rejected. See
 `experiments/2026-11-23-task-planners` for authored selectors, full outcomes,
 failed prototypes, matched hour-10 results, parity checks and limits.
+
+
+### Imitation eligibility
+
+Every training arena and campaign condition explicitly declares
+`"pretrain_enabled": true` or `false`, independently of `pretrain_imitator`.
+Only eligible conditions enter the prepared `imitation_train` and
+`imitation_validation` splits. The full `train`, gameplay validation, periodic
+and showcase splits remain unchanged. Mixed and diverse preparation both record
+the filtered cases and teacher identities in workload provenance; older broad
+corpora cannot be silently reused. Automatic collection rejects disabled or
+empty selections before writing shards. A disabled teacher can still be used in
+an explicitly requested diagnostic comparison.
+
+Eligibility is authored from matched learner/reference evidence, not inferred
+from teacher availability. Currently sixteen enemy/visibility conditions across
+nine targeted maps are enabled: Splitpine vs Classic; Echo Gate; North of
+Lantern Road (player fog); Lower Gallery; Herring Tide Road Three; Lair player
+fog vs Classic/Predictor and both fog vs Classic/Full; both clear Classic
+Hollowbank starts; and the five configured Ashbank conditions. Splitpine's other
+enemies and Lair's remaining conditions are disabled because their evidence does
+not meet the same combination of weak learner and dependable teacher. All other
+targets, ordinary arenas and broad campaigns are disabled for automatic imitation
+pending evidence. Their PPO cases, weights and adaptive sampling are retained.
+Imitation loss weights normalize over eligible maps/conditions only; PPO's
+25/25/50 allocation does not change. No training starts when setting this flag.

@@ -1,6 +1,6 @@
 # Learned policy training plan
 
-Updated 2026-11-23.
+Updated 2026-11-24.
 
 ## Goal
 
@@ -9,6 +9,11 @@ campaigns. Measure improvements through the model's own decisions on matched
 evaluation cases.
 
 ## Current wiring and next decision
+
+- Imitation eligibility is now explicit via `pretrain_enabled`:16 conditions
+  across nine targeted maps. Prepared imitation splits and collection enforce
+  this allowlist; PPO remains complete. Mastered and unqualified cases stay
+  disabled for imitation. No new training was started.
 
 - Implemented:25% ordinary arena /25% targeted /50% broad-campaign decisions,
   adaptive inside each group, authored mastery/base-weight controls, explicit

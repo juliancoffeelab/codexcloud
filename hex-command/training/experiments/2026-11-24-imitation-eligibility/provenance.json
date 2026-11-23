@@ -1,0 +1,8 @@
+{
+  "beforeSha256": "cc5a88cf2a9c138167f9d4331f1813943f76a44c15c66c0b780e6ab464314cb3",
+  "afterSha256": "c1ae9704d7206acbd0512d915031e06203d3ac09d65415cd904786d0b9c7e040",
+  "flag": "pretrain_enabled",
+  "requiredBoolean": true,
+  "ppoCasesAndWeightsUnchangedAllSplits": true,
+  "noOptimizerLaunched": true
+}
