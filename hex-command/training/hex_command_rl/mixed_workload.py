@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import os
+from collections import Counter
 from functools import lru_cache
 from pathlib import Path
 from .representative import prepare_catalog
@@ -34,7 +35,7 @@ def balance_description(spec):
     total = sum(budgets.values())
     return ("Base decision budgets: " + " / ".join(
         f"{100 * value / total:g}% {pool}" for pool, value in budgets.items()
-    ) + "; equal maps and base condition weights within pools; adaptive PPO within pools")
+    ) + "; authored map weights and equal conditions within maps; adaptive PPO within pools")
 
 
 def group(c):
@@ -67,13 +68,42 @@ def variant_opponents(spec, variant):
 
 
 def variant_for(config, spec):
-    return next(v for v in spec["campaigns"][config["campaign"]]
-                if v["objective"] == config["objective"] and v["diplomacy"] == config["diplomacy"])
+    enemy = group(config)[4]
+    matches = [v for v in spec["campaigns"][config["campaign"]]
+               if v["objective"] == config["objective"] and v["diplomacy"] == config["diplomacy"]
+               and enemy in variant_opponents(spec, v)]
+    if len(matches) != 1:
+        raise ValueError("training condition must match exactly one campaign variant")
+    return matches[0]
+
+
+def entry_for(config, spec):
+    if "campaign" in config:
+        return variant_for(config, spec)
+    return next(a for a in spec["arenas"] if a["id"] == config["landscape"])
+
+
+def task(config, spec):
+    """Logical map identity, shared by physical visibility variants."""
+    if config.get("campaign") in spec["campaigns"] or any(
+        a["id"] == config.get("landscape") for a in spec.get("arenas", [])
+    ):
+        return entry_for(config, spec)["samplingMap"]
+    # Evaluation-only layouts have no training allocation declarations.
+    return group(config)[1]
+
+
+def reward_rules(config, spec=None):
+    spec = definition() if spec is None else spec
+    return spec["rewardProfiles"][entry_for(config, spec)["rewardProfile"]]
 
 
 def sampling_group(config, spec=None):
     spec = definition() if spec is None else spec
     if "campaign" not in config:
+        arena = next((a for a in spec.get("arenas", []) if a["id"] == config["landscape"]), None)
+        if arena is not None:
+            return arena["samplingGroup"]
         return "arena"
     if config["campaign"] not in spec["campaigns"]:
         # Evaluation-only authored campaigns retain the broad-campaign budget.
@@ -84,12 +114,13 @@ def sampling_group(config, spec=None):
 
 def pretrain_imitator(config, spec=None):
     spec = definition() if spec is None else spec
-    entry = variant_for(config, spec) if "campaign" in config else next(
-        a for a in spec["arenas"] if a["id"] == config["landscape"])
+    entry = entry_for(config, spec)
     teacher = entry["pretrain_imitator"]
     if isinstance(teacher, str) and teacher in ("classic", "queued", "full", "objective_progress"):
         return teacher
     if isinstance(teacher, dict) and set(teacher) == {"path_to"}:
+        return teacher
+    if isinstance(teacher, dict) and set(teacher) == {"recruiter", "campaign", "planner"}:
         return teacher
     raise ValueError("unknown pretrain_imitator")
 
@@ -104,17 +135,32 @@ def mass(c):
     return _masses(json.dumps(definition(), sort_keys=True))[group(c)]
 
 
-def weights(cases, spec=None):
-    """Authored pool budgets, equal maps per pool, equal conditions per map."""
+def weights(cases, spec=None, *, evaluation=False):
+    """Authored pool budgets and map weights, equal conditions per logical map."""
     spec = definition() if spec is None else spec
     templates = {group(c): c for c in cases}
     buckets = {k: sampling_group(c, spec) for k, c in templates.items()}
     active = set(buckets.values())
-    budget = spec["samplingWeights"]
+    # Fixed evaluation gives each represented family equal mass; training
+    # curriculum changes must not move the checkpoint-selection goalposts.
+    budget = {b: 1.0 for b in active} if evaluation else spec["samplingWeights"]
     total = sum(budget[b] for b in active)
-    tasks = {b: {k[:2] for k in templates if buckets[k] == b} for b in active}
-    return {k: budget[buckets[k]] / total / len(tasks[buckets[k]]) /
-            sum(t[:2] == k[:2] for t in templates) for k in templates}
+    maps = {k: task(c, spec) for k, c in templates.items()}
+    tasks = {b: {maps[k] for k in templates if buckets[k] == b} for b in active}
+    def map_weight(name):
+        return 1.0 if evaluation else spec["mapWeights"].get(name, 1.0)
+    totals = {b: sum(map_weight(m) for m in tasks[b]) for b in active}
+    condition_weights = {k: (1.0 if evaluation else entry_for(c, spec)["conditionWeight"])
+                         for k, c in templates.items()
+                         if c.get("campaign") in spec["campaigns"] or any(
+                             a["id"] == c.get("landscape") for a in spec.get("arenas", []))}
+    condition_weights = {k: condition_weights.get(k, 1.0) for k in templates}
+    conditions = Counter()
+    for k in templates:
+        conditions[buckets[k], maps[k]] += condition_weights[k]
+    return {k: budget[buckets[k]] / total * map_weight(maps[k]) /
+            totals[buckets[k]] * condition_weights[k] / conditions[buckets[k], maps[k]]
+            for k in templates}
 
 
 def configs(split, spec=None, campaign_seeds=None):
@@ -129,12 +175,16 @@ def configs(split, spec=None, campaign_seeds=None):
         pairs = [(p["player"], p["enemy"]) for p in arena["pairs"]]
         multiplier = max_pairs // len(pairs)
         n = {"train": 8, "validation": 1, "test": 3}[split] * multiplier
-        for objective in spec["objectives"]:
-            for opponent in opponents:
-                for recruiter in spec["recruiters"]:
+        conditions = arena.get("conditions")
+        objectives = conditions["objectives"] if conditions else spec["objectives"]
+        enemies = [opponent_config(o) for o in conditions["opponents"]] if conditions else opponents
+        recruiters = conditions["recruiters"] if conditions else spec["recruiters"]
+        for objective in objectives:
+            for opponent in enemies:
+                for recruiter in recruiters:
                     for seed in range(arena_start, arena_start + n):
                         for player, foe in pairs:
-                            for first in ["player", "ai"]:
+                            for first in conditions["first"] if conditions else ["player", "ai"]:
                                 result.append(
                                     dict(
                                         seed=seed,
@@ -148,8 +198,8 @@ def configs(split, spec=None, campaign_seeds=None):
                                             planner="queued",
                                         ),
                                         first=first,
-                                        maxRounds=30 if split == "train" else 100,
-                                        recruitLimit=None,
+                                        maxRounds=conditions["maxRounds"] if conditions else (30 if split == "train" else 100),
+                                        recruitLimit=conditions["recruitLimit"] if conditions else None,
                                         objective=objective,
                                     )
                                 )
@@ -159,7 +209,7 @@ def configs(split, spec=None, campaign_seeds=None):
             objective, diplomacy = variant["objective"], variant["diplomacy"]
             for name in variant_opponents(spec, variant):
                 opponent = opponent_config(name)
-                for recruiter in spec["recruiters"]:
+                for recruiter in variant.get("recruiters") or spec["recruiters"]:
                     for seed in range(campaign_start, campaign_start + n):
                         result.append(
                             dict(
@@ -175,7 +225,7 @@ def configs(split, spec=None, campaign_seeds=None):
                                     planner="queued",
                                 ),
                                 maxRounds=100,
-                                recruitLimit=None,
+                                recruitLimit=variant.get("recruitLimit"),
                             )
                         )
     return result
@@ -213,6 +263,8 @@ def prepare(root):
         test=configs("test"),
         balance=balance_description(definition()),
         sampling_weights=definition()["samplingWeights"],
+        map_weights=definition()["mapWeights"],
+        reward_profiles=definition()["rewardProfiles"],
         adaptive_sampling=definition()["adaptiveSampling"],
     )
     spec["pretrain_imitators"] = {
@@ -221,7 +273,7 @@ def prepare(root):
     }
     spec["workload_sha256"] = hashlib.sha256(
         json.dumps(
-            {k: spec[k] for k in ["train", "validation", "periodic", "test", "imitation_validation", "pretrain_imitators", "sampling_weights", "adaptive_sampling"]},
+            {k: spec[k] for k in ["train", "validation", "periodic", "test", "imitation_validation", "pretrain_imitators", "sampling_weights", "map_weights", "reward_profiles", "adaptive_sampling"]},
             sort_keys=True,
         ).encode()
     ).hexdigest()

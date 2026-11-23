@@ -6,7 +6,7 @@ import hashlib
 import json
 import math
 
-from .mixed_workload import definition, group, sampling_group, weights
+from .mixed_workload import definition, group, sampling_group, task, weights
 
 
 def mastery_multiplier(completion, threshold, minimum):
@@ -29,7 +29,9 @@ class Sampler:
         for config in configs:
             base = deepcopy(config)
             base.pop("seed")
-            base["maxRounds"] = 100
+            conditions = next((a.get("conditions") for a in spec.get("arenas", [])
+                               if a["id"] == base.get("landscape")), None)
+            base["maxRounds"] = conditions["maxRounds"] if conditions else 100
             identity = json.dumps(base, sort_keys=True, separators=(",", ":"))
             key = hashlib.sha256(identity.encode()).hexdigest()
             self.templates[key] = base
@@ -45,7 +47,7 @@ class Sampler:
         self.bucket_weights = defaultdict(float)
         for k, value in self.base_weights.items():
             self.bucket_weights[self.buckets[k]] += value
-        self.maps = {k: (self.buckets[k], group(c)[:2]) for k, c in self.templates.items()}
+        self.maps = {k: (self.buckets[k], task(c, spec)) for k, c in self.templates.items()}
         self.map_cases = defaultdict(list)
         for k, m in self.maps.items():
             self.map_cases[json.dumps(m)].append(k)

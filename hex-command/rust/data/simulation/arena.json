@@ -949,6 +949,44 @@
         }
       ],
       "holdTurns": 3
+    },
+    {
+      "id": "rl-marlow-cut-pass-finish",
+      "variants": [
+        {
+          "map": "rl-marlow-cut-pass-finish",
+          "forces": {
+            "kind": "scenario"
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 4,
+          "row": 2
+        }
+      ],
+      "holdTurns": 6
+    },
+    {
+      "id": "rl-marlow-cut-pass-interrupt",
+      "variants": [
+        {
+          "map": "rl-marlow-cut-pass-interrupt",
+          "forces": {
+            "kind": "scenario"
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 4,
+          "row": 2
+        }
+      ],
+      "holdTurns": 6
     }
   ],
   "defaultScenarios": ["open", "wooded", "crossings", "islands", "wood-edge"],

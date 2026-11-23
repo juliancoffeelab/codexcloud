@@ -12,9 +12,11 @@ def fixture(**settings):
                     updateEveryEpisodes=20)
     adaptive.update(settings)
     spec = dict(samplingWeights=dict(arena=.25, campaign=.25, drill=.5),
+                opponents=["classic"],
+                mapWeights={name: 1.0 for name in ["arena", "broad", "a", "b"]},
                 adaptiveSampling=adaptive,
                 campaigns={cid: [dict(objective="authored", diplomacy="unrestricted",
-                                     samplingGroup=bucket)]
+                                     samplingGroup=bucket, samplingMap=cid, conditionWeight=1.0)]
                            for cid, bucket in [("broad", "campaign"), ("a", "drill"), ("b", "drill")]})
     base = dict(seed=1, player="balanced", enemy="classic", maxRounds=100,
                 objective="authored", diplomacy="unrestricted")

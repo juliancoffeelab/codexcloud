@@ -192,7 +192,9 @@
     "game/scenario/rl-quarry-ring/scenario.json",
     "game/scenario/rl-quarry-ring/scenario-sight.json",
     "game/scenario/rl-fordstep/scenario.json",
-    "game/scenario/rl-fordstep/scenario-fog.json"
+    "game/scenario/rl-fordstep/scenario-fog.json",
+    "game/scenario/rl-marlow-cut-pass-finish/scenario.json",
+    "game/scenario/rl-marlow-cut-pass-interrupt/scenario.json"
   ],
   "campaigns": [
     "game/campaigns/lantern-road/campaign.json",
@@ -233,7 +235,12 @@
     "game/campaigns/rl-breakthrough-ford-heal08/campaign.json",
     "game/campaigns/rl-bellmarket-courts/campaign.json",
     "game/campaigns/rl-thorn-verge/campaign.json",
-    "game/campaigns/rl-lair-outworks/campaign.json"
+    "game/campaigns/rl-lair-outworks/campaign.json",
+    "game/campaigns/rl-hollowbank-extraction-crossfire-late-guard/campaign.json",
+    "game/campaigns/rl-hollowbank-extraction-crossfire-nearside/campaign.json",
+    "game/campaigns/rl-ashbank-relay-fork-vigil/campaign.json",
+    "game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/campaign.json",
+    "game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/campaign.json"
   ],
   "simulation": {
     "rosters": "simulation/rosters.json",

@@ -178,6 +178,14 @@ fn collect_data(
                     return Err("targeted imitators collect the player side only".into());
                 }
                 learned(&mut config);
+            } else if let Some(value @ PretrainImitator::Blocks { .. }) = &spec {
+                let blocks =
+                    serde_json::from_value(serde_json::to_value(value).map_err(|e| e.to_string())?)
+                        .map_err(|e| e.to_string())?;
+                match &mut config {
+                    MatchConfig::Arena(c) => c.player_blocks = Some(blocks),
+                    MatchConfig::Campaign(c) => c.player_blocks = Some(blocks),
+                }
             } else if let Some(PretrainImitator::Named(name)) = &spec {
                 let planner = serde_json::from_value(serde_json::Value::String(name.clone()))
                     .map_err(|e| e.to_string())?;

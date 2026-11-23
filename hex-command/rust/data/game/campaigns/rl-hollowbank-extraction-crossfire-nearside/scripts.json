@@ -1,0 +1,540 @@
+{
+  "requiredCompanions": [],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false,
+  "events": [
+    {
+      "id": "commander-lost",
+      "observer": null,
+      "when": {
+        "noUnits": {
+          "character": "tavin",
+          "faction": "player",
+          "role": null,
+          "side": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Commander Tavin fell."
+        }
+      ],
+      "objective": null,
+      "priority": 100,
+      "remembers": true
+    },
+    {
+      "id": "mara-lost",
+      "observer": null,
+      "when": {
+        "noUnits": {
+          "character": "mara",
+          "faction": null,
+          "role": null,
+          "side": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Mara did not survive."
+        }
+      ],
+      "objective": null,
+      "priority": 100,
+      "remembers": true
+    },
+    {
+      "id": "secure-crossing",
+      "observer": null,
+      "when": {
+        "owner": {
+          "tile": {
+            "hex": {
+              "col": 7,
+              "row": 4
+            }
+          },
+          "faction": "player"
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "crossing-secured"
+        },
+        {
+          "log": "The crossing post is secure. Reach Mara at the northeast stockade."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Secure the crossing post",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 7,
+                "row": 4
+              }
+            }
+          ]
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": {
+          "tiles": [
+            {
+              "hex": {
+                "col": 7,
+                "row": 4
+              }
+            }
+          ],
+          "units": null,
+          "visibleInFog": true
+        }
+      },
+      "priority": 0,
+      "remembers": true
+    },
+    {
+      "id": "free-mara",
+      "observer": null,
+      "when": {
+        "all": [
+          {
+            "flag": "crossing-secured"
+          },
+          {
+            "proximity": {
+              "tile": null,
+              "target": {
+                "character": "mara",
+                "faction": "prisoners",
+                "role": "captive",
+                "side": null,
+                "unitType": null,
+                "unitTypes": [],
+                "aiGroup": null,
+                "retreating": null
+              },
+              "radius": 1,
+              "through": false,
+              "character": null,
+              "faction": null,
+              "role": null,
+              "side": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "changeAllegiance": {
+            "units": {
+              "character": "mara",
+              "faction": "prisoners",
+              "role": "captive",
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            },
+            "faction": "player"
+          }
+        },
+        {
+          "setFlag": "mara-freed"
+        },
+        {
+          "log": "Mara is free. Get her and Tavin to their separate exits."
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 3,
+                "row": 7
+              }
+            },
+            "area": [],
+            "radius": 1,
+            "aiGroup": null,
+            "units": ["skeleton"]
+          }
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Free Mara at the stockade",
+        "intent": {
+          "approach": {
+            "tile": null,
+            "target": {
+              "character": "mara",
+              "faction": "prisoners",
+              "role": "captive",
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            },
+            "radius": 1,
+            "through": false,
+            "character": null,
+            "faction": null,
+            "role": null,
+            "side": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "flag": "crossing-secured"
+        },
+        "availableWhen": {
+          "flag": "crossing-secured"
+        },
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": {
+          "tiles": [
+            {
+              "hex": {
+                "col": 13,
+                "row": 2
+              }
+            }
+          ],
+          "units": null,
+          "visibleInFog": true
+        }
+      },
+      "priority": 0,
+      "remembers": true
+    },
+    {
+      "id": "evacuate-mara",
+      "observer": null,
+      "when": {
+        "all": [
+          {
+            "flag": "mara-freed"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 2,
+                  "row": 9
+                }
+              },
+              "through": false,
+              "character": "mara",
+              "faction": "player",
+              "role": "captive",
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "log": "Mara reached her exit."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Get Mara to her exit",
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 2,
+                "row": 9
+              }
+            },
+            "through": false,
+            "character": "mara",
+            "faction": "player",
+            "role": "captive",
+            "side": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "flag": "mara-freed"
+        },
+        "availableWhen": {
+          "flag": "mara-freed"
+        },
+        "satisfiedWhen": {
+          "all": [
+            {
+              "flag": "mara-freed"
+            },
+            {
+              "stand": {
+                "tile": {
+                  "hex": {
+                    "col": 2,
+                    "row": 9
+                  }
+                },
+                "through": false,
+                "character": "mara",
+                "faction": "player",
+                "role": "captive",
+                "side": null,
+                "unitType": null,
+                "unitTypes": [],
+                "aiGroup": null,
+                "retreating": null
+              }
+            }
+          ]
+        },
+        "preserveLives": {
+          "character": "mara",
+          "faction": "player",
+          "role": "captive",
+          "side": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": {
+          "tiles": [
+            {
+              "hex": {
+                "col": 2,
+                "row": 9
+              }
+            }
+          ],
+          "units": null,
+          "visibleInFog": true
+        }
+      },
+      "priority": 0,
+      "remembers": true
+    },
+    {
+      "id": "evacuate-tavin",
+      "observer": null,
+      "when": {
+        "all": [
+          {
+            "flag": "mara-freed"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 16,
+                  "row": 9
+                }
+              },
+              "through": false,
+              "character": "tavin",
+              "faction": "player",
+              "role": "leader",
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "log": "Tavin reached his exit."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Get Tavin to his exit",
+        "intent": {
+          "escape": {
+            "tile": {
+              "hex": {
+                "col": 16,
+                "row": 9
+              }
+            },
+            "through": false,
+            "character": "tavin",
+            "faction": "player",
+            "role": "leader",
+            "side": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "flag": "mara-freed"
+        },
+        "availableWhen": {
+          "flag": "mara-freed"
+        },
+        "satisfiedWhen": {
+          "all": [
+            {
+              "flag": "mara-freed"
+            },
+            {
+              "stand": {
+                "tile": {
+                  "hex": {
+                    "col": 16,
+                    "row": 9
+                  }
+                },
+                "through": false,
+                "character": "tavin",
+                "faction": "player",
+                "role": "leader",
+                "side": null,
+                "unitType": null,
+                "unitTypes": [],
+                "aiGroup": null,
+                "retreating": null
+              }
+            }
+          ]
+        },
+        "preserveLives": null,
+        "playerMarker": {
+          "tiles": [
+            {
+              "hex": {
+                "col": 16,
+                "row": 9
+              }
+            }
+          ],
+          "units": null,
+          "visibleInFog": true
+        }
+      },
+      "priority": 0,
+      "remembers": true
+    },
+    {
+      "id": "evacuation-complete",
+      "observer": null,
+      "when": {
+        "all": [
+          {
+            "flag": "crossing-secured"
+          },
+          {
+            "flag": "mara-freed"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 2,
+                  "row": 9
+                }
+              },
+              "through": false,
+              "character": "mara",
+              "faction": "player",
+              "role": "captive",
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 16,
+                  "row": 9
+                }
+              },
+              "through": false,
+              "character": "tavin",
+              "faction": "player",
+              "role": "leader",
+              "side": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Mara and Tavin both reached safety."
+        }
+      ],
+      "objective": null,
+      "priority": -1,
+      "remembers": true
+    },
+    {
+      "id": "deadline",
+      "observer": null,
+      "when": {
+        "turnAtLeast": 14
+      },
+      "actions": [
+        {
+          "defeat": "The evacuation window closed."
+        }
+      ],
+      "objective": null,
+      "priority": -100,
+      "remembers": true
+    }
+  ]
+}

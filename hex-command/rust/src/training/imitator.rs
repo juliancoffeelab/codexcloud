@@ -130,7 +130,7 @@ pub fn controller(
                 Some(best.0)
             })))
         }
-        PretrainImitator::Named(_) => Ok(None),
+        PretrainImitator::Named(_) | PretrainImitator::Blocks { .. } => Ok(None),
         PretrainImitator::Path { path_to } => {
             let MatchConfig::Campaign(c) = config else {
                 return Err("path_to requires a campaign".into());

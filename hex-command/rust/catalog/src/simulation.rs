@@ -65,6 +65,8 @@ pub struct TrainingSettings {
     pub opponents: Vec<Text>,
     pub recruiters: Vec<Text>,
     pub sampling_weights: BTreeMap<Text, f64>,
+    pub map_weights: BTreeMap<Text, f64>,
+    pub reward_profiles: BTreeMap<Text, TrainingRewardProfile>,
     pub adaptive_sampling: AdaptiveSamplingSettings,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -99,8 +101,30 @@ impl AdaptiveSamplingSettings {
 pub struct TrainingArena {
     pub id: Text,
     pub pairs: Vec<TrainingArmies>,
+    pub sampling_group: Text,
+    pub sampling_map: Text,
+    pub condition_weight: f64,
+    pub reward_profile: Text,
+    /// None explicitly inherits the ordinary arena schedule.
+    pub conditions: Option<TrainingArenaConditions>,
     #[serde(rename = "pretrain_imitator")]
     pub pretrain_imitator: PretrainImitator,
+}
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct TrainingArenaConditions {
+    pub objectives: Vec<Text>,
+    pub opponents: Vec<Text>,
+    pub recruiters: Vec<Text>,
+    pub first: Vec<Text>,
+    pub recruit_limit: usize,
+    pub max_rounds: u32,
+}
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct TrainingRewardProfile {
+    pub win: f64,
+    pub chapter: f64,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -117,6 +141,12 @@ pub struct TrainingCampaignVariant {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub opponents: Option<Vec<Text>>,
     pub sampling_group: Text,
+    pub sampling_map: Text,
+    pub condition_weight: f64,
+    pub reward_profile: Text,
+    /// None inherits the global recruiters / policy recruitment limit.
+    pub recruiters: Option<Vec<Text>>,
+    pub recruit_limit: Option<usize>,
     #[serde(rename = "pretrain_imitator")]
     pub pretrain_imitator: PretrainImitator,
 }
@@ -125,7 +155,14 @@ pub struct TrainingCampaignVariant {
 #[serde(untagged, deny_unknown_fields)]
 pub enum PretrainImitator {
     Named(Text),
-    Path { path_to: crate::Hex },
+    Path {
+        path_to: crate::Hex,
+    },
+    Blocks {
+        recruiter: Text,
+        campaign: Text,
+        planner: Text,
+    },
 }
 impl PretrainImitator {
     pub fn valid(&self) -> bool {
@@ -135,6 +172,17 @@ impl PretrainImitator {
                 "classic" | "queued" | "full" | "objective_progress"
             ),
             Self::Path { .. } => true,
+            Self::Blocks {
+                recruiter,
+                campaign,
+                planner,
+            } => {
+                matches!(
+                    recruiter.as_str(),
+                    "classic" | "balanced" | "situational" | "predictor"
+                ) && campaign == "mission"
+                    && matches!(planner.as_str(), "classic" | "queued" | "full")
+            }
         }
     }
 }

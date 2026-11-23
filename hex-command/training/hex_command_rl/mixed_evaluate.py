@@ -26,7 +26,7 @@ def job(task):
 
 
 def summarize(rows):
-    masses = weights([r["config"] for r in rows])
+    masses = weights([r["config"] for r in rows], evaluation=True)
     groups = defaultdict(list)
     for r in rows:
         groups[group(r["config"])].append(r)

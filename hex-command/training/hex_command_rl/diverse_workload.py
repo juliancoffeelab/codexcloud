@@ -113,6 +113,8 @@ def prepare(root):
         validation=validation,
         imitation_validation=configs("validation", training),
         sampling_weights=training["samplingWeights"],
+        map_weights=training["mapWeights"],
+        reward_profiles=training["rewardProfiles"],
         adaptive_sampling=training["adaptiveSampling"],
         test=configs("test", showcase_panel),
         balance=balance_description(training) + "; synthetic selection and authored showcase",
@@ -123,7 +125,7 @@ def prepare(root):
     }
     spec["workload_sha256"] = hashlib.sha256(
         json.dumps(
-            {k: spec[k] for k in ("train", "periodic", "validation", "test", "imitation_validation", "pretrain_imitators", "sampling_weights", "adaptive_sampling")},
+            {k: spec[k] for k in ("train", "periodic", "validation", "test", "imitation_validation", "pretrain_imitators", "sampling_weights", "map_weights", "reward_profiles", "adaptive_sampling")},
             sort_keys=True,
         ).encode()
     ).hexdigest()

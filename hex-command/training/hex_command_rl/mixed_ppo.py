@@ -18,10 +18,7 @@ from .ppo import ActorCritic, pack, unpack, advantages, categorical, categorical
 from .spatial import SpatialPlanner
 from .recurrent import MemoryBank, windows, replay
 from .recovery import save_bundle, atomic_json, load_resume, read_jsonl
-
-
-CAMPAIGN_CHAPTER_REWARD = 1.0
-CAMPAIGN_FINALE_REWARD = 2.0
+from .mixed_workload import reward_rules, sampling_group, task, definition
 
 
 def terminal_reward(config, reward, truncated, result=None, campaign_cap=-2.0):
@@ -38,10 +35,10 @@ def terminal_reward(config, reward, truncated, result=None, campaign_cap=-2.0):
 
 def step_reward(config, reward, truncated, result, chapter_clears, campaign_cap):
     reward = terminal_reward(config, reward, truncated, result, campaign_cap)
-    if "campaign" in config:
-        if result and result["success"]:
-            reward = CAMPAIGN_FINALE_REWARD
-        reward += CAMPAIGN_CHAPTER_REWARD * chapter_clears
+    rules = reward_rules(config)
+    if result and result["success"] and not truncated:
+        reward = rules["win"]
+    reward += rules["chapter"] * chapter_clears
     return reward
 
 
@@ -78,6 +75,8 @@ def main():
     spec = json.loads((root / "workload.json").read_text())
     os.environ["HEX_COMMAND_DATA_ROOT"] = spec["catalog"]
     assert json.loads(native.fingerprints()) == spec["fingerprints"]
+    training_spec = definition()
+    profiles = training_spec["rewardProfiles"]
     torch.set_num_threads(1)
     torch.set_num_interop_threads(1)
     torch.manual_seed(271)
@@ -199,14 +198,15 @@ def main():
             reference_kl_coefficient=0.02,
             critic_warmup_episodes=a.critic_warmup_episodes,
             rewards=dict(
-                campaign_chapter=CAMPAIGN_CHAPTER_REWARD,
-                campaign_finale=CAMPAIGN_FINALE_REWARD,
+                profiles=profiles,
+                campaign_chapter=profiles["campaign"]["chapter"],
+                campaign_finale=profiles["campaign"]["win"],
                 campaign_defeat=-1,
                 campaign_cap=a.campaign_cap,
                 escort_loss=-2,
                 protected_loss=-1.5,
                 leader_loss=-1,
-                arena_win=1,
+                arena_win=profiles["arena"]["win"],
                 arena_defeat=-1,
                 arena_cap=-1,
             ),
@@ -326,6 +326,9 @@ def main():
                                 episode=episodes,
                                 config=c,
                                 group=json.loads(keys[i]),
+                                sampling_group=sampling_group(c, training_spec),
+                                sampling_map=task(c, training_spec),
+                                reward_profile=reward_rules(c, training_spec),
                                 reward=r,
                                 episode_return=episode_returns[i],
                                 success=result["success"],

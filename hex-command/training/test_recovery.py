@@ -54,7 +54,7 @@ class RecoveryContracts(unittest.TestCase):
         arena = next(c for c in configs("validation") if "campaign" not in c)
         heldout = dict(campaign="__held_out_campaign__", objective="authored",
                        diplomacy="unrestricted", player="balanced", enemy="classic")
-        result = weights([arena, heldout])
+        result = weights([arena, heldout], evaluation=True)
         self.assertAlmostEqual(result[group(arena)], 0.5)
         self.assertAlmostEqual(result[group(heldout)], 0.5)
         with self.assertRaises(KeyError):
@@ -66,8 +66,9 @@ class RecoveryContracts(unittest.TestCase):
         from hex_command_rl.mixed_workload import definition, variant_opponents
 
         spec = deepcopy(definition())
-        campaign = next(iter(spec["campaigns"]))
+        campaign = next(c for c, variants in spec["campaigns"].items() if len(variants) == 1)
         before = configs("train", spec)
+        before_weights = weights(before, spec)
         for variant in spec["campaigns"][campaign]:
             variant["opponents"] = ["classic"]
         for split in ("train", "validation", "test"):
@@ -85,7 +86,7 @@ class RecoveryContracts(unittest.TestCase):
             self.assertAlmostEqual(sum(mass(c) for c in unique.values()), 1.0)
             self.assertAlmostEqual(
                 sum(mass(c) for c in unique.values() if c.get("campaign") == campaign),
-                sum(weights(before)[group(c)] for c in {group(c): c for c in before if c.get("campaign") == campaign}.values()),
+                sum(before_weights[group(c)] for c in {group(c): c for c in before if c.get("campaign") == campaign}.values()),
             )
         for invalid in ([], ["unknown"], ["classic", "classic"]):
             with self.assertRaises(ValueError):

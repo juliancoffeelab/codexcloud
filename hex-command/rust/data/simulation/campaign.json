@@ -1350,6 +1350,26 @@
           }
         }
       }
+    },
+    "rl-hollowbank-extraction-crossfire-late-guard": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-hollowbank-extraction-crossfire-nearside": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-ashbank-relay-fork-vigil": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-ashbank-relay-fork-vigil-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-ashbank-relay-fork-vigil-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
     }
   },
   "escalationFlags": {}
