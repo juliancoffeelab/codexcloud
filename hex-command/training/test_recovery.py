@@ -38,7 +38,7 @@ class RecoveryContracts(unittest.TestCase):
 
     def test_pretrain_selector_does_not_change_rl_matches(self):
         from copy import deepcopy
-        from hex_command_rl.mixed_workload import pretrain_imitator
+        from hex_command_rl.mixed_workload import pretrain_imitator, pretrain_enabled, imitation_configs
 
         spec = deepcopy(definition())
         before = configs("validation", spec)
@@ -48,6 +48,14 @@ class RecoveryContracts(unittest.TestCase):
         arena["pretrain_imitator"] = "full" if previous != "full" else "classic"
         self.assertNotEqual(pretrain_imitator(sample, spec), previous)
         self.assertEqual(configs("validation", spec), before)
+        old_enabled = pretrain_enabled(sample, spec)
+        arena["pretrain_enabled"] = not old_enabled
+        self.assertEqual(pretrain_enabled(sample, spec), not old_enabled)
+        self.assertEqual(bool(imitation_configs([sample], spec)), not old_enabled)
+        self.assertEqual(configs("validation", spec), before)
+        arena["pretrain_enabled"] = "false"
+        with self.assertRaises(ValueError):
+            imitation_configs([sample], spec)
 
     def test_gameplay_holdouts_have_weights_but_no_imitation_teacher(self):
         from hex_command_rl.mixed_workload import pretrain_imitator

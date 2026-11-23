@@ -57,7 +57,8 @@
       "samplingMap": "rl-twin-fords",
       "rewardProfile": "arena",
       "conditions": null,
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-splitpine-clearing",
@@ -116,7 +117,8 @@
       "samplingMap": "rl-splitpine-clearing",
       "rewardProfile": "arena",
       "conditions": null,
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-crown-gap",
@@ -175,7 +177,8 @@
       "samplingMap": "rl-crown-gap",
       "rewardProfile": "arena",
       "conditions": null,
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-jawbone-crossing",
@@ -234,7 +237,8 @@
       "samplingMap": "rl-jawbone-crossing",
       "rewardProfile": "arena",
       "conditions": null,
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-sump-teeth",
@@ -293,7 +297,8 @@
       "samplingMap": "rl-sump-teeth",
       "rewardProfile": "arena",
       "conditions": null,
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-last-lantern",
@@ -352,7 +357,8 @@
       "samplingMap": "rl-last-lantern",
       "rewardProfile": "arena",
       "conditions": null,
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-switchback-saltworks",
@@ -411,7 +417,8 @@
       "samplingMap": "rl-switchback-saltworks",
       "rewardProfile": "arena",
       "conditions": null,
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-cinderfault",
@@ -470,7 +477,8 @@
       "samplingMap": "rl-cinderfault",
       "rewardProfile": "arena",
       "conditions": null,
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-sable-sound",
@@ -529,7 +537,8 @@
       "samplingMap": "rl-sable-sound",
       "rewardProfile": "arena",
       "conditions": null,
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-three-wells-trail",
@@ -588,7 +597,8 @@
       "samplingMap": "rl-three-wells-trail",
       "rewardProfile": "arena",
       "conditions": null,
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-frosthook-gate",
@@ -647,7 +657,8 @@
       "samplingMap": "rl-frosthook-gate",
       "rewardProfile": "arena",
       "conditions": null,
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-birch-pocket",
@@ -706,7 +717,8 @@
       "samplingMap": "rl-birch-pocket",
       "rewardProfile": "arena",
       "conditions": null,
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-quarry-ring",
@@ -765,7 +777,8 @@
       "samplingMap": "rl-quarry-ring",
       "rewardProfile": "arena",
       "conditions": null,
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-fordstep",
@@ -824,7 +837,8 @@
       "samplingMap": "rl-fordstep",
       "rewardProfile": "arena",
       "conditions": null,
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-marlow-cut-pass-finish",
@@ -850,7 +864,8 @@
         "recruitLimit": 0,
         "maxRounds": 30
       },
-      "conditionWeight": 1.0
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
       "id": "rl-marlow-cut-pass-interrupt",
@@ -876,7 +891,8 @@
         "recruitLimit": 0,
         "maxRounds": 30
       },
-      "conditionWeight": 0.25
+      "conditionWeight": 0.25,
+      "pretrain_enabled": false
     }
   ],
   "campaigns": {
@@ -890,7 +906,8 @@
         "rewardProfile": "campaign",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "fog",
@@ -901,7 +918,8 @@
         "rewardProfile": "campaign",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-splitwake-crossing": [
@@ -914,7 +932,8 @@
         "rewardProfile": "campaign",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "fog",
@@ -925,7 +944,8 @@
         "rewardProfile": "campaign",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-underground-escape": [
@@ -938,7 +958,8 @@
         "rewardProfile": "campaign",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "fog",
@@ -949,7 +970,8 @@
         "rewardProfile": "campaign",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-urgent-crossing": [
@@ -963,7 +985,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "authored",
@@ -979,7 +1002,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-deadline-wait7": [
@@ -1014,21 +1038,49 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-deadline-pines-relief8": [
       {
         "objective": "authored",
         "diplomacy": "unrestricted",
-        "opponents": ["classic", "predictor", "full"],
+        "opponents": ["classic"],
         "samplingGroup": "targeted",
         "pretrain_imitator": "objective_progress",
         "samplingMap": "rl-deadline-pines-relief8",
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      },
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["predictor"],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "objective_progress",
+        "samplingMap": "rl-deadline-pines-relief8",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["full"],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "objective_progress",
+        "samplingMap": "rl-deadline-pines-relief8",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-route-ambush": [
@@ -1042,7 +1094,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       }
     ],
     "rl-route-pocket-leader": [
@@ -1056,7 +1109,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-route-pass-road": [
@@ -1070,7 +1124,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       }
     ],
     "rl-escort-lantern-maze": [
@@ -1084,7 +1139,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-escort-mistfen-patrol": [
@@ -1098,7 +1154,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-escort-splitwake-patrol": [
@@ -1112,7 +1169,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-defend-lower-gallery-0": [
@@ -1146,7 +1204,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       }
     ],
     "rl-defend-tidegate-stand-110": [
@@ -1160,7 +1219,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "both-fog",
@@ -1172,7 +1232,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-defend-bracken-stand-010": [
@@ -1186,7 +1247,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "player-fog",
@@ -1198,7 +1260,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "both-fog",
@@ -1210,7 +1273,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-interrupt-siltbar-approach": [
@@ -1229,7 +1293,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-interrupt-herring-tide-road-three": [
@@ -1243,7 +1308,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       }
     ],
     "rl-interrupt-south-ford-west-post": [
@@ -1257,7 +1323,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-briar-saddle": [
@@ -1297,7 +1364,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-whitecap-ford": [
@@ -1311,7 +1379,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "player-fog",
@@ -1323,7 +1392,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "both-fog",
@@ -1335,7 +1405,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-slate-gallery": [
@@ -1349,7 +1420,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "player-fog",
@@ -1361,7 +1433,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "both-fog",
@@ -1373,7 +1446,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-vault-rally": [
@@ -1387,7 +1461,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-breakthrough-cave5": [
@@ -1401,7 +1476,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-breakthrough-ford-heal08": [
@@ -1415,7 +1491,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-bellmarket-courts": [
@@ -1429,7 +1506,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "player-fog",
@@ -1441,7 +1519,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "both-fog",
@@ -1453,7 +1532,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "both-fog",
@@ -1469,7 +1549,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-thorn-verge": [
@@ -1483,7 +1564,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "authored",
@@ -1495,7 +1577,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "player-fog",
@@ -1507,7 +1590,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "both-fog",
@@ -1519,7 +1603,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "both-fog",
@@ -1531,7 +1616,8 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
     "rl-lair-outworks": [
@@ -1545,31 +1631,86 @@
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "player-fog",
         "diplomacy": "unrestricted",
-        "opponents": ["classic", "predictor", "full"],
+        "opponents": ["classic"],
         "samplingGroup": "targeted",
         "pretrain_imitator": "full",
         "samplingMap": "rl-lair-outworks",
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["predictor"],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-lair-outworks",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["full"],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-lair-outworks",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       },
       {
         "objective": "both-fog",
         "diplomacy": "unrestricted",
-        "opponents": ["classic", "predictor", "full"],
+        "opponents": ["classic"],
         "samplingGroup": "targeted",
         "pretrain_imitator": "full",
         "samplingMap": "rl-lair-outworks",
         "rewardProfile": "arena",
         "recruiters": null,
         "recruitLimit": null,
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["predictor"],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-lair-outworks",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["full"],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-lair-outworks",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       }
     ],
     "rl-hollowbank-extraction-crossfire-late-guard": [
@@ -1587,7 +1728,8 @@
           "campaign": "mission",
           "planner": "classic"
         },
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       }
     ],
     "rl-hollowbank-extraction-crossfire-nearside": [
@@ -1605,7 +1747,8 @@
           "campaign": "mission",
           "planner": "classic"
         },
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       }
     ],
     "rl-ashbank-relay-fork-vigil": [
@@ -1623,7 +1766,8 @@
           "campaign": "mission",
           "planner": "classic"
         },
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       },
       {
         "objective": "authored",
@@ -1639,7 +1783,8 @@
           "campaign": "mission",
           "planner": "queued"
         },
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       }
     ],
     "rl-ashbank-relay-fork-vigil-player-fog": [
@@ -1657,7 +1802,8 @@
           "campaign": "mission",
           "planner": "queued"
         },
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       }
     ],
     "rl-ashbank-relay-fork-vigil-both-fog": [
@@ -1675,7 +1821,8 @@
           "campaign": "mission",
           "planner": "queued"
         },
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       },
       {
         "objective": "authored",
@@ -1691,7 +1838,8 @@
           "campaign": "mission",
           "planner": "full"
         },
-        "conditionWeight": 1.0
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       }
     ]
   },

@@ -109,6 +109,8 @@ pub struct TrainingArena {
     pub conditions: Option<TrainingArenaConditions>,
     #[serde(rename = "pretrain_imitator")]
     pub pretrain_imitator: PretrainImitator,
+    #[serde(rename = "pretrain_enabled")]
+    pub pretrain_enabled: bool,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -149,6 +151,8 @@ pub struct TrainingCampaignVariant {
     pub recruit_limit: Option<usize>,
     #[serde(rename = "pretrain_imitator")]
     pub pretrain_imitator: PretrainImitator,
+    #[serde(rename = "pretrain_enabled")]
+    pub pretrain_enabled: bool,
 }
 /// Pretraining-only action source. PPO never uses this selector.
 #[derive(Clone, Debug, Deserialize, Serialize)]

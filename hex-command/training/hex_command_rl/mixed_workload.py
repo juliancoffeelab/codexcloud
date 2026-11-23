@@ -112,6 +112,19 @@ def sampling_group(config, spec=None):
     return variant_for(config, spec)["samplingGroup"]
 
 
+def pretrain_enabled(config, spec=None):
+    spec = definition() if spec is None else spec
+    enabled = entry_for(config, spec)["pretrain_enabled"]
+    if type(enabled) is not bool:
+        raise ValueError("pretrain_enabled must be an explicit boolean")
+    return enabled
+
+
+def imitation_configs(cases, spec=None):
+    spec = definition() if spec is None else spec
+    return [c for c in cases if pretrain_enabled(c, spec)]
+
+
 def pretrain_imitator(config, spec=None):
     spec = definition() if spec is None else spec
     entry = entry_for(config, spec)
@@ -260,7 +273,8 @@ def prepare(root):
         fingerprints=json.loads(native.fingerprints()),
         train=configs("train"),
         validation=configs("validation"),
-        imitation_validation=configs("validation"),
+        imitation_train=imitation_configs(configs("train")),
+        imitation_validation=imitation_configs(configs("validation")),
         periodic=validation(),
         test=configs("test"),
         balance=balance_description(definition()),
@@ -271,11 +285,11 @@ def prepare(root):
     )
     spec["pretrain_imitators"] = {
         split: [pretrain_imitator(c) for c in spec[split]]
-        for split in ("train", "imitation_validation")
+        for split in ("imitation_train", "imitation_validation")
     }
     spec["workload_sha256"] = hashlib.sha256(
         json.dumps(
-            {k: spec[k] for k in ["train", "validation", "periodic", "test", "imitation_validation", "pretrain_imitators", "sampling_weights", "map_weights", "reward_profiles", "adaptive_sampling"]},
+            {k: spec[k] for k in ["train", "validation", "periodic", "test", "imitation_train", "imitation_validation", "pretrain_imitators", "sampling_weights", "map_weights", "reward_profiles", "adaptive_sampling"]},
             sort_keys=True,
         ).encode()
     ).hexdigest()

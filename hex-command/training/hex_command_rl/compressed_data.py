@@ -9,13 +9,15 @@ import multiprocessing
 from types import SimpleNamespace
 import numpy as np
 import hex_command_training as native
-from .mixed_workload import group, pretrain_imitator
+from .mixed_workload import group, pretrain_imitator, pretrain_enabled
 from .recovery import atomic_json
 from .imitation_sequences import SEQUENCE_SCHEMA, decision_streams
 
 
 def collect_one(task):
     path, configs = task
+    if not configs or not all(pretrain_enabled(c) for c in configs):
+        raise ValueError("teacher collection requires nonempty enabled conditions")
     path = Path(path)
     teachers = [pretrain_imitator(c) for c in configs]
     dense, spatial, contexts_json = native.collect_spatial_sequences(
@@ -59,6 +61,8 @@ def collect_one(task):
 
 
 def collect(configs, root, record, workers=2, games_per_shard=4):
+    if not configs or not all(pretrain_enabled(c) for c in configs):
+        raise ValueError("teacher collection requires nonempty enabled conditions")
     root = Path(root)
     root.mkdir(parents=True, exist_ok=True)
     manifest_path = root / "manifest.json"

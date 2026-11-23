@@ -12,7 +12,7 @@ import torch
 import hex_command_training as native
 from .checkpoint import warm_start
 from .compressed_data import collect, load
-from .mixed_workload import mass
+from .mixed_workload import weights, group, pretrain_enabled
 from .recovery import atomic_json, save_bundle, load_resume, read_jsonl
 from .spatial import SpatialPlanner
 from .imitation_sequences import SEQUENCE_SCHEMA, forward_window
@@ -22,6 +22,7 @@ from .training_clock import TrainingClock
 def measure(model, directory, manifest, sequence_length=8, sequence_batch_size=8):
     model.eval()
     rows = []
+    masses = weights(manifest["configs"])
     with torch.no_grad():
         for name, meta in manifest["shards"].items():
             data = load(directory / name)
@@ -42,7 +43,7 @@ def measure(model, directory, manifest, sequence_length=8, sequence_batch_size=8
                     loss=loss,
                     correct=correct,
                     n=n,
-                    mass=mass(meta["configs"][0]),
+                    mass=masses[group(meta["configs"][0])],
                 )
             )
     groups = {}
@@ -100,6 +101,9 @@ def main():
     spec = json.loads((root / "workload.json").read_text())
     os.environ["HEX_COMMAND_DATA_ROOT"] = spec["catalog"]
     assert json.loads(native.fingerprints()) == spec["fingerprints"]
+    for split in ("imitation_train", "imitation_validation"):
+        if split not in spec or not spec[split] or not all(pretrain_enabled(c) for c in spec[split]):
+            raise ValueError("prepare a workload with explicit nonempty enabled imitation splits")
     torch.set_num_threads(a.threads)
     torch.set_num_interop_threads(1)
     torch.manual_seed(42)
@@ -168,9 +172,11 @@ def main():
             clock.resume()
 
     checkpoint("initial")
-    record("started", budget=a.seconds, resumed=bool(old), balance=spec["balance"],
+    record("started", budget=a.seconds, resumed=bool(old),
+           balance="Normalized weights over enabled imitation conditions",
+           ppo_balance=spec["balance"],
            sequence_training=sequence_training)
-    train = collect(spec["train"], root / "corpus/train", record,
+    train = collect(spec["imitation_train"], root / "corpus/train", record,
                     workers=a.collection_workers, games_per_shard=a.games_per_shard)
     valid = collect(spec["imitation_validation"], root / "corpus/validation", record,
                     workers=a.collection_workers, games_per_shard=a.games_per_shard)
@@ -179,13 +185,14 @@ def main():
     for s in train["shards"].values():
         group_sizes[tuple(s["group"])] += s["decisions"]
     names = list(train["shards"])
+    imitation_masses = weights(train["configs"])
     next_save = (int(clock.seconds() // a.checkpoint_seconds) + 1) * a.checkpoint_seconds
     last_progress = time.monotonic()
     record(
         "collected",
         decisions=total,
         candidates=sum(s["candidates"] for s in train["shards"].values()),
-        games=len(spec["train"]),
+        games=len(spec["imitation_train"]),
     )
     if not old:
         initial = measure(model, root / "corpus/validation", valid,
@@ -209,7 +216,7 @@ def main():
                     progress["ids"] = rng.permutation(n).tolist()
                     progress["batch"] = 0
                 weight = (
-                    mass(meta["configs"][0]) * total / group_sizes[tuple(meta["group"])]
+                    imitation_masses[tuple(meta["group"])] * total / group_sizes[tuple(meta["group"])]
                 )
                 model.train()
                 while progress["batch"] < n and clock.seconds() < a.seconds:

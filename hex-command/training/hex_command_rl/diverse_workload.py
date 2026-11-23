@@ -5,7 +5,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
-from .mixed_workload import configs, group, pretrain_imitator, balance_description
+from .mixed_workload import configs, group, pretrain_imitator, imitation_configs, balance_description
 from .recovery import atomic_json
 from .representative import prepare_catalog
 
@@ -111,7 +111,8 @@ def prepare(root):
         train=configs("train", training),
         periodic=periodic,
         validation=validation,
-        imitation_validation=configs("validation", training),
+        imitation_train=imitation_configs(configs("train", training), training),
+        imitation_validation=imitation_configs(configs("validation", training), training),
         sampling_weights=training["samplingWeights"],
         map_weights=training["mapWeights"],
         reward_profiles=training["rewardProfiles"],
@@ -121,11 +122,11 @@ def prepare(root):
     )
     spec["pretrain_imitators"] = {
         split: [pretrain_imitator(c, training) for c in spec[split]]
-        for split in ("train", "imitation_validation")
+        for split in ("imitation_train", "imitation_validation")
     }
     spec["workload_sha256"] = hashlib.sha256(
         json.dumps(
-            {k: spec[k] for k in ("train", "periodic", "validation", "test", "imitation_validation", "pretrain_imitators", "sampling_weights", "map_weights", "reward_profiles", "adaptive_sampling")},
+            {k: spec[k] for k in ("train", "periodic", "validation", "test", "imitation_train", "imitation_validation", "pretrain_imitators", "sampling_weights", "map_weights", "reward_profiles", "adaptive_sampling")},
             sort_keys=True,
         ).encode()
     ).hexdigest()
