@@ -390,5 +390,29 @@
   "plots/final-lantern-chapters.png": {
     "bytes": 203495,
     "sha256": "e893b46fb55277077e4991c2c1a3ada5a004fc67c068789a2aaf6a5a156beb78"
+  },
+  "companion-regression/hour-9.jsonl.gz": {
+    "bytes": 183494,
+    "sha256": "638770947563504dea125379b445ff8c69b93f96043b1a86d24c2e7ebac2e706"
+  },
+  "companion-regression/hour-8.jsonl.gz": {
+    "bytes": 700503,
+    "sha256": "19332d4572784b449978918d64e0c6d82cc59d5a20627e8b43fc2c9130e19afc"
+  },
+  "companion-regression/README.md": {
+    "bytes": 1318,
+    "sha256": "db9531e7136720417c1191c0e283df10215f732d8673ab152602746fff7d60a4"
+  },
+  "companion-regression/probe.rs": {
+    "bytes": 1589,
+    "sha256": "91f4b978f64aca5459498c043fbc9a0222c1ccc2cfb6702334104aca300ebb1e"
+  },
+  "companion-regression/cases.json": {
+    "bytes": 1278,
+    "sha256": "8c94cd8177d5328c818bf02d1aaf0e6604d3c91587d1276a4154cfa758dc6e21"
+  },
+  "companion-regression/summary.json": {
+    "bytes": 1680373,
+    "sha256": "0ec0bbeb0bd6d8d92ebf92eba0931a2584259aa7dba7c1894acbc4092df677f7"
   }
 }
