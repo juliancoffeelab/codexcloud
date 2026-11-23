@@ -1,0 +1,114 @@
+{
+  "comparison": [
+    {
+      "hour": 8,
+      "ordinary": {
+        "wins": 33,
+        "runs": 84,
+        "equal_map_score": 0.39285714285714285
+      },
+      "targeted": {
+        "wins": 46,
+        "runs": 66,
+        "equal_map_score": 0.6930555555555555
+      },
+      "broad_campaigns": {
+        "wins": 6,
+        "runs": 18,
+        "equal_map_score": 0.3333333333333333
+      },
+      "heldout": {
+        "score": 0.23200757575757547,
+        "wins": 118,
+        "caps": 28,
+        "runs": 312
+      },
+      "lantern": {
+        "score": 0.25,
+        "wins": 6,
+        "caps": 4,
+        "runs": 24
+      }
+    },
+    {
+      "hour": 9,
+      "ordinary": {
+        "wins": 29,
+        "runs": 84,
+        "equal_map_score": 0.34523809523809523
+      },
+      "targeted": {
+        "wins": 50,
+        "runs": 66,
+        "equal_map_score": 0.7805555555555556
+      },
+      "broad_campaigns": {
+        "wins": 4,
+        "runs": 18,
+        "equal_map_score": 0.2222222222222222
+      },
+      "heldout": {
+        "score": 0.2045454545454543,
+        "wins": 108,
+        "caps": 35,
+        "runs": 312
+      },
+      "lantern": {
+        "score": 0.041666666666666664,
+        "wins": 1,
+        "caps": 13,
+        "runs": 24
+      }
+    },
+    {
+      "hour": 10,
+      "ordinary": {
+        "wins": 39,
+        "runs": 84,
+        "equal_map_score": 0.4642857142857143
+      },
+      "targeted": {
+        "wins": 46,
+        "runs": 66,
+        "equal_map_score": 0.6787037037037037
+      },
+      "broad_campaigns": {
+        "wins": 4,
+        "runs": 18,
+        "equal_map_score": 0.2222222222222222
+      },
+      "heldout": {
+        "score": 0.23295454545454516,
+        "wins": 105,
+        "caps": 34,
+        "runs": 312
+      },
+      "lantern": {
+        "score": 0.16666666666666666,
+        "wins": 4,
+        "caps": 7,
+        "runs": 24
+      }
+    }
+  ],
+  "training": {
+    "elapsed": 36000.90947743399,
+    "updates": 2737,
+    "episodes": 10711,
+    "decisions": 700600
+  },
+  "selected_hour": 5,
+  "extension": {
+    "authorized": "User: another hour with the same environments, then compare before choosing checkpoint/environment changes",
+    "started": 1795454969.342442,
+    "resume_checkpoint": "rl/checkpoints/last-1795443784064085378",
+    "resume_elapsed": 32400.54316014299,
+    "additional_training_seconds": 3600,
+    "target_training_seconds": 36000.54316014299,
+    "same_workload_sha256": "82609de6c5353652c8bd9cb2a4c18ef9e37848b3ebefd34b09cb7b69e79f46bc",
+    "preserve": "policy, critic, optimizers, reference, sampler credits/mastery, RNG and next training seed",
+    "evaluation": "Same fixed 312 heldout +168 diagnostic +24 Lantern cases; add hour10 and compare with8/9; no model promotion",
+    "previous_finish": "phases/nine-hour-completed/finished.json"
+  },
+  "coverage": "Same 504 fixed cases as before; no new seed panel. Allocation corrected only from7h14m. No model promoted."
+}

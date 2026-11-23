@@ -1,0 +1,332 @@
+[
+  {
+    "hour": 0,
+    "ordinary": {
+      "wins": 28,
+      "runs": 84,
+      "equal_map_score": 0.33333333333333337
+    },
+    "targeted": {
+      "wins": 31,
+      "runs": 66,
+      "equal_map_score": 0.555787037037037
+    },
+    "broad_campaigns": {
+      "wins": 3,
+      "runs": 18,
+      "equal_map_score": 0.16666666666666666
+    },
+    "heldout": {
+      "score": 0.24526515151515124,
+      "wins": 107,
+      "caps": 35,
+      "runs": 312
+    },
+    "lantern": {
+      "score": 0.16666666666666666,
+      "wins": 4,
+      "caps": 10,
+      "runs": 24
+    }
+  },
+  {
+    "hour": 1,
+    "ordinary": {
+      "wins": 31,
+      "runs": 84,
+      "equal_map_score": 0.36904761904761907
+    },
+    "targeted": {
+      "wins": 33,
+      "runs": 66,
+      "equal_map_score": 0.5185185185185185
+    },
+    "broad_campaigns": {
+      "wins": 3,
+      "runs": 18,
+      "equal_map_score": 0.16666666666666666
+    },
+    "heldout": {
+      "score": 0.2253787878787876,
+      "wins": 110,
+      "caps": 30,
+      "runs": 312
+    },
+    "lantern": {
+      "score": 0.25,
+      "wins": 6,
+      "caps": 8,
+      "runs": 24
+    }
+  },
+  {
+    "hour": 2,
+    "ordinary": {
+      "wins": 30,
+      "runs": 84,
+      "equal_map_score": 0.35714285714285715
+    },
+    "targeted": {
+      "wins": 29,
+      "runs": 66,
+      "equal_map_score": 0.4895833333333333
+    },
+    "broad_campaigns": {
+      "wins": 3,
+      "runs": 18,
+      "equal_map_score": 0.16666666666666666
+    },
+    "heldout": {
+      "score": 0.2481060606060603,
+      "wins": 122,
+      "caps": 26,
+      "runs": 312
+    },
+    "lantern": {
+      "score": 0.125,
+      "wins": 3,
+      "caps": 8,
+      "runs": 24
+    }
+  },
+  {
+    "hour": 3,
+    "ordinary": {
+      "wins": 29,
+      "runs": 84,
+      "equal_map_score": 0.34523809523809523
+    },
+    "targeted": {
+      "wins": 31,
+      "runs": 66,
+      "equal_map_score": 0.5583333333333333
+    },
+    "broad_campaigns": {
+      "wins": 3,
+      "runs": 18,
+      "equal_map_score": 0.16666666666666666
+    },
+    "heldout": {
+      "score": 0.22064393939393911,
+      "wins": 112,
+      "caps": 30,
+      "runs": 312
+    },
+    "lantern": {
+      "score": 0.08333333333333333,
+      "wins": 2,
+      "caps": 10,
+      "runs": 24
+    }
+  },
+  {
+    "hour": 4,
+    "ordinary": {
+      "wins": 33,
+      "runs": 84,
+      "equal_map_score": 0.39285714285714285
+    },
+    "targeted": {
+      "wins": 30,
+      "runs": 66,
+      "equal_map_score": 0.6090277777777778
+    },
+    "broad_campaigns": {
+      "wins": 4,
+      "runs": 18,
+      "equal_map_score": 0.2222222222222222
+    },
+    "heldout": {
+      "score": 0.25662878787878757,
+      "wins": 122,
+      "caps": 28,
+      "runs": 312
+    },
+    "lantern": {
+      "score": 0.041666666666666664,
+      "wins": 1,
+      "caps": 8,
+      "runs": 24
+    }
+  },
+  {
+    "hour": 5,
+    "ordinary": {
+      "wins": 33,
+      "runs": 84,
+      "equal_map_score": 0.39285714285714285
+    },
+    "targeted": {
+      "wins": 27,
+      "runs": 66,
+      "equal_map_score": 0.5590277777777778
+    },
+    "broad_campaigns": {
+      "wins": 2,
+      "runs": 18,
+      "equal_map_score": 0.1111111111111111
+    },
+    "heldout": {
+      "score": 0.2537878787878785,
+      "wins": 116,
+      "caps": 30,
+      "runs": 312
+    },
+    "lantern": {
+      "score": 0.125,
+      "wins": 3,
+      "caps": 11,
+      "runs": 24
+    }
+  },
+  {
+    "hour": 6,
+    "ordinary": {
+      "wins": 29,
+      "runs": 84,
+      "equal_map_score": 0.34523809523809523
+    },
+    "targeted": {
+      "wins": 35,
+      "runs": 66,
+      "equal_map_score": 0.6622685185185185
+    },
+    "broad_campaigns": {
+      "wins": 3,
+      "runs": 18,
+      "equal_map_score": 0.16666666666666666
+    },
+    "heldout": {
+      "score": 0.2244318181818179,
+      "wins": 114,
+      "caps": 29,
+      "runs": 312
+    },
+    "lantern": {
+      "score": 0.08333333333333333,
+      "wins": 2,
+      "caps": 13,
+      "runs": 24
+    }
+  },
+  {
+    "hour": 7,
+    "ordinary": {
+      "wins": 36,
+      "runs": 84,
+      "equal_map_score": 0.42857142857142855
+    },
+    "targeted": {
+      "wins": 49,
+      "runs": 66,
+      "equal_map_score": 0.7875
+    },
+    "broad_campaigns": {
+      "wins": 1,
+      "runs": 18,
+      "equal_map_score": 0.05555555555555555
+    },
+    "heldout": {
+      "score": 0.21022727272727249,
+      "wins": 111,
+      "caps": 27,
+      "runs": 312
+    },
+    "lantern": {
+      "score": 0.0,
+      "wins": 0,
+      "caps": 10,
+      "runs": 24
+    }
+  },
+  {
+    "hour": 8,
+    "ordinary": {
+      "wins": 33,
+      "runs": 84,
+      "equal_map_score": 0.39285714285714285
+    },
+    "targeted": {
+      "wins": 46,
+      "runs": 66,
+      "equal_map_score": 0.6930555555555555
+    },
+    "broad_campaigns": {
+      "wins": 6,
+      "runs": 18,
+      "equal_map_score": 0.3333333333333333
+    },
+    "heldout": {
+      "score": 0.23200757575757547,
+      "wins": 118,
+      "caps": 28,
+      "runs": 312
+    },
+    "lantern": {
+      "score": 0.25,
+      "wins": 6,
+      "caps": 4,
+      "runs": 24
+    }
+  },
+  {
+    "hour": 9,
+    "ordinary": {
+      "wins": 29,
+      "runs": 84,
+      "equal_map_score": 0.34523809523809523
+    },
+    "targeted": {
+      "wins": 50,
+      "runs": 66,
+      "equal_map_score": 0.7805555555555556
+    },
+    "broad_campaigns": {
+      "wins": 4,
+      "runs": 18,
+      "equal_map_score": 0.2222222222222222
+    },
+    "heldout": {
+      "score": 0.2045454545454543,
+      "wins": 108,
+      "caps": 35,
+      "runs": 312
+    },
+    "lantern": {
+      "score": 0.041666666666666664,
+      "wins": 1,
+      "caps": 13,
+      "runs": 24
+    }
+  },
+  {
+    "hour": 10,
+    "ordinary": {
+      "wins": 39,
+      "runs": 84,
+      "equal_map_score": 0.4642857142857143
+    },
+    "targeted": {
+      "wins": 46,
+      "runs": 66,
+      "equal_map_score": 0.6787037037037037
+    },
+    "broad_campaigns": {
+      "wins": 4,
+      "runs": 18,
+      "equal_map_score": 0.2222222222222222
+    },
+    "heldout": {
+      "score": 0.23295454545454516,
+      "wins": 105,
+      "caps": 34,
+      "runs": 312
+    },
+    "lantern": {
+      "score": 0.16666666666666666,
+      "wins": 4,
+      "caps": 7,
+      "runs": 24
+    }
+  }
+]

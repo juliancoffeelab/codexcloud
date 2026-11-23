@@ -823,3 +823,14 @@ mix, rewards and fixed evaluation cases. Preserve optimizer/critic/reference/RNG
 and adaptive sampling state. Additional3600 seconds; saved cumulative target
 36000.54316014299. Original nine-hour archive remains intact. Hour10 comparisons
 will inform the next decision; no environment changes or next run authorized.
+
+
+### One-hour extension completed — 2026-11-23
+
+Hour10 fixed-panel results: held-out23.30%, ordinary39/84, targeted equal-map67.87%,
+broad campaigns4/18, Lantern4/24 (7 caps). Lantern chapter clears/entrants
+10/24→9/10→4/9. Same workload/settings as final hour9; all14 ordinary maps sampled.
+Extra3600.20 saved trainer seconds,273 updates,1217 episodes,69888 decisions.
+Evidence/checkpoint/curves preserved under the parent experiment's
+`extension-one-hour/` folder, original nine-hour archive unchanged. Monitor
+disabled; no checkpoint promoted and no new run started.
