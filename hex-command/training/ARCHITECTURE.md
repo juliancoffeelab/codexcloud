@@ -303,9 +303,11 @@ manifest through the native binding. Isolated catalogs copy the current engine
 catalog; they do not create a second set of scenario definitions. See
 [the catalog contract](../rust/data/CATALOG.md) for visibility and simulation setup.
 
-Mixed sampling uses authored `samplingWeights`: 25% ordinary arenas, 25% broad
-campaigns, and 50% targeted encounters split equally across eight behavior
-families. Base weights give maps equal budgets and split each map across its
+Mixed sampling uses authored `samplingWeights`: 50% arena decisions and 50% broad
+campaign decisions. The 24 targeted encounters share the arena pool with the 14
+ordinary arenas, with no reserved targeted or behavior-family budget. Their scripted
+objectives still use single-chapter campaign matches and existing finale rewards.
+Base weights give maps equal budgets within pools and split each map across its
 selected opponent/visibility/recruiter conditions. Imitation uses these fixed
 weights; PPO applies the mastery multiplier within each pool. Recruiters and
 fixed opponents are explicit workload axes. Seed partitions separate training,

@@ -5,7 +5,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
-from .mixed_workload import configs, group, pretrain_imitator
+from .mixed_workload import configs, group, pretrain_imitator, balance_description
 from .recovery import atomic_json
 from .representative import prepare_catalog
 
@@ -115,7 +115,7 @@ def prepare(root):
         sampling_weights=training["samplingWeights"],
         adaptive_sampling=training["adaptiveSampling"],
         test=configs("test", showcase_panel),
-        balance="Base budgets:25% ordinary arenas / 25% broad campaigns / 50% targeted; equal behavior families and base map weights; adaptive PPO within pools; synthetic selection and authored showcase",
+        balance=balance_description(training) + "; synthetic selection and authored showcase",
     )
     spec["pretrain_imitators"] = {
         split: [pretrain_imitator(c, training) for c in spec[split]]

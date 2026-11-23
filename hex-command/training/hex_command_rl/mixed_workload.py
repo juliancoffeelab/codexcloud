@@ -29,6 +29,14 @@ def definition():
     return _definition(os.environ.get("HEX_COMMAND_DATA_ROOT", ""))
 
 
+def balance_description(spec):
+    budgets = spec["samplingWeights"]
+    total = sum(budgets.values())
+    return ("Base decision budgets: " + " / ".join(
+        f"{100 * value / total:g}% {pool}" for pool, value in budgets.items()
+    ) + "; equal maps and base condition weights within pools; adaptive PPO within pools")
+
+
 def group(c):
     rec = c.get("playerBlocks", {}).get("recruiter", c["player"])
     enemy = (
@@ -203,7 +211,7 @@ def prepare(root):
         imitation_validation=configs("validation"),
         periodic=validation(),
         test=configs("test"),
-        balance="Base budgets:25% ordinary arenas / 25% broad campaigns / 50% targeted; equal behavior families and base map/condition weights; adaptive PPO within pools",
+        balance=balance_description(definition()),
         sampling_weights=definition()["samplingWeights"],
         adaptive_sampling=definition()["adaptiveSampling"],
     )

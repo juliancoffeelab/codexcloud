@@ -770,3 +770,19 @@ large teacher corpus remains in the shared run backup. The completion monitor
 is disabled. Native performance profiling remains outstanding: historical V2
 and current imitation timings differed roughly sixfold on the sampled arenas,
 but used different engine/catalog versions and played different decisions.
+
+
+### Nine-hour PPO continuation — 2026-11-23
+
+Authorized initialization: five-minute recurrent imitation checkpoint
+`minute-0005-1795384800227451471`, not the final imitation model.
+Run: `tmp/rl/ppo-from-pretrain-5m-9h-20261123`; shared backup has the same basename.
+32400 seconds of trainer runtime, recovery from validated checkpoints.
+38 equal-base-weight arena maps (14 ordinary + 24 targeted), 50% decision budget;
+three broad campaigns share the other 50%. No reserved targeted-family allocation.
+Existing adaptive mastery sampling remains enabled within pools. Existing chapter
++1/finale +2 rewards remain; no objective-progress or kill rewards, fixed temperature.
+Hourly fixed panels: held-out 312, training diagnostics 168, Lantern showcase 24.
+Only held-out results select the checkpoint; initialization remains eligible.
+No large second confirmation sweep. Preserve every hourly checkpoint and raw results,
+training and per-chapter gameplay curves. Hourly automation checks recovery.

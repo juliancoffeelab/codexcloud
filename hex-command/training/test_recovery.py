@@ -32,11 +32,6 @@ class RecoveryContracts(unittest.TestCase):
                 self.assertFalse(seeds[i] & seeds[j])
         unique = {group(c): c for c in partitions[0]}
         self.assertAlmostEqual(sum(mass(c) for c in unique.values()), 1.0)
-        self.assertAlmostEqual(
-            sum(mass(c) for c in unique.values() if "campaign" in c),
-            1 - definition()["samplingWeights"]["arena"]
-        )
-
         for bucket, budget in definition()["samplingWeights"].items():
             self.assertAlmostEqual(sum(mass(c) for c in unique.values() if sampling_group(c) == bucket), budget)
         self.assertEqual(set(unique), set(weights(partitions[0])))
@@ -109,14 +104,12 @@ class RecoveryContracts(unittest.TestCase):
                 sampler.step(0)
             sampler.finish(0, n)
         totals = {
-            f: sum(
-                n
-                for k, n in sampler.counts.items()
-                if __import__("json").loads(k)[0] == f
-            )
-            for f in ["arena", "campaign"]
+            pool: sum(n for key, n in sampler.case_counts.items()
+                      if sampler.buckets[key] == pool)
+            for pool in sampler.bucket_weights
         }
-        self.assertLess(abs(totals["campaign"] / sum(totals.values()) - (1 - definition()["samplingWeights"]["arena"])), 0.08)
+        for pool, budget in sampler.bucket_weights.items():
+            self.assertLess(abs(totals[pool] / sum(totals.values()) - budget), 0.08)
 
     def test_caps_are_failures_with_family_specific_penalties(self):
         from hex_command_rl.mixed_ppo import terminal_reward
