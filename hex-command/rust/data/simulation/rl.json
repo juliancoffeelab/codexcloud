@@ -988,7 +988,28 @@
         "diplomacy": "unrestricted",
         "opponents": ["classic"],
         "samplingGroup": "targeted",
-        "pretrain_imitator": "objective_progress",
+        "pretrain_imitator": {
+          "tactical": {
+            "goal": {
+              "col": 16,
+              "row": 4
+            },
+            "home": {
+              "col": 2,
+              "row": 7
+            },
+            "leader": 1,
+            "plan": {
+              "kind": "relief",
+              "staging": {
+                "col": 4,
+                "row": 7
+              },
+              "advanceRound": 4,
+              "riskCost": 0.15
+            }
+          }
+        },
         "samplingMap": "rl-deadline-wait7",
         "rewardProfile": "arena",
         "recruiters": null,
@@ -1100,7 +1121,27 @@
         "diplomacy": "unrestricted",
         "opponents": ["classic"],
         "samplingGroup": "targeted",
-        "pretrain_imitator": "full",
+        "pretrain_imitator": {
+          "tactical": {
+            "goal": {
+              "col": 15,
+              "row": 25
+            },
+            "home": {
+              "col": 9,
+              "row": 5
+            },
+            "leader": 1,
+            "plan": {
+              "kind": "refuge",
+              "holder": 5,
+              "staging": {
+                "col": 7,
+                "row": 28
+              }
+            }
+          }
+        },
         "samplingMap": "rl-defend-lower-gallery-0",
         "rewardProfile": "arena",
         "recruiters": null,
@@ -1225,7 +1266,33 @@
         "diplomacy": "unrestricted",
         "opponents": ["classic"],
         "samplingGroup": "targeted",
-        "pretrain_imitator": "queued",
+        "pretrain_imitator": {
+          "tactical": {
+            "goal": {
+              "col": 6,
+              "row": 3
+            },
+            "home": {
+              "col": 1,
+              "row": 2
+            },
+            "leader": 1,
+            "plan": {
+              "kind": "recovery",
+              "protected": 2,
+              "healer": 4,
+              "retreat": {
+                "col": 2,
+                "row": 4
+              },
+              "healerStaging": {
+                "col": 2,
+                "row": 3
+              },
+              "recoveryFraction": 0.85
+            }
+          }
+        },
         "samplingMap": "rl-briar-saddle",
         "rewardProfile": "arena",
         "recruiters": null,

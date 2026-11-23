@@ -730,3 +730,26 @@ matched qualification. Existing teacher selectors remain on other conditions.
 See `experiments/2026-11-23-better-targeted-teachers` for positive and rejected
 results; unresolved Tidegate/Lower Gallery deficits still matter when deciding
 whether to run broad imitation.
+
+
+### Task-specific offline teachers
+
+`pretrain_imitator: {"tactical": {...}}` adds three explicit role policies:
+`relief` stages troops until an authored reinforcement round, `recovery` heals a
+protected attacker while stronger units engage the marked guard, and `refuge`
+retreats the holder, fights its pursuit and returns to hold once screened.
+Each declares its public goal/home coordinates and friendly roster actor IDs;
+plan-specific staging coordinates, recovery fraction and relief timing are
+explicit authored parameters. These selectors never enter PPO action selection.
+
+Controllers use the learner's legal candidate set, public friendly state and
+observed enemies. They keep no completion flags across calls because turn search
+may present tentative states; current observations remain authoritative. Route
+progress remains positively scored even far from the objective. Native collection
+supports the selectors through the existing recurrent sequence path, without
+changing observation channels, model architecture or reward scoring.
+
+Fresh matched twenty-seed comparisons qualified Crown Road Relief, Briar Saddle
+and Lower Gallery Refuge; Rally and Tidegate candidates were rejected. See
+`experiments/2026-11-23-task-planners` for authored selectors, full outcomes,
+failed prototypes, matched hour-10 results, parity checks and limits.

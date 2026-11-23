@@ -120,6 +120,8 @@ def pretrain_imitator(config, spec=None):
         return teacher
     if isinstance(teacher, dict) and set(teacher) == {"path_to"}:
         return teacher
+    if isinstance(teacher, dict) and set(teacher) == {"tactical"}:
+        return teacher
     if isinstance(teacher, dict) and set(teacher) == {"recruiter", "campaign", "planner"}:
         return teacher
     raise ValueError("unknown pretrain_imitator")

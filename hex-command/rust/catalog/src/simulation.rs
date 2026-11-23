@@ -158,6 +158,9 @@ pub enum PretrainImitator {
     Path {
         path_to: crate::Hex,
     },
+    Tactical {
+        tactical: TacticalTeacher,
+    },
     Blocks {
         recruiter: Text,
         campaign: Text,
@@ -172,6 +175,7 @@ impl PretrainImitator {
                 "classic" | "queued" | "full" | "objective_progress" | "visible_target_path"
             ),
             Self::Path { .. } => true,
+            Self::Tactical { tactical } => tactical.valid(),
             Self::Blocks {
                 recruiter,
                 campaign,
@@ -184,6 +188,65 @@ impl PretrainImitator {
                     && matches!(planner.as_str(), "classic" | "queued" | "full")
             }
         }
+    }
+}
+/// Authored roles for offline demonstration policies. Unit numbers bind only
+/// friendly roster actors; all tactical choices use faction-observed inputs.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct TacticalTeacher {
+    pub goal: Hex,
+    pub home: Hex,
+    pub leader: u32,
+    pub plan: TacticalTeacherPlan,
+}
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(tag = "kind", rename_all = "camelCase", deny_unknown_fields)]
+pub enum TacticalTeacherPlan {
+    Refuge {
+        holder: u32,
+        staging: Hex,
+    },
+    #[serde(rename_all = "camelCase")]
+    Relief {
+        staging: Hex,
+        advance_round: u32,
+        risk_cost: f32,
+    },
+    #[serde(rename_all = "camelCase")]
+    Recovery {
+        protected: u32,
+        healer: u32,
+        retreat: Hex,
+        healer_staging: Hex,
+        recovery_fraction: f32,
+    },
+}
+impl TacticalTeacher {
+    pub fn valid(&self) -> bool {
+        self.leader > 0
+            && match &self.plan {
+                TacticalTeacherPlan::Refuge { holder, .. } => *holder > 0 && *holder != self.leader,
+                TacticalTeacherPlan::Relief {
+                    advance_round,
+                    risk_cost,
+                    ..
+                } => *advance_round > 0 && risk_cost.is_finite() && *risk_cost >= 0.,
+                TacticalTeacherPlan::Recovery {
+                    protected,
+                    healer,
+                    recovery_fraction,
+                    ..
+                } => {
+                    *protected > 0
+                        && *healer > 0
+                        && *protected != self.leader
+                        && *healer != self.leader
+                        && protected != healer
+                        && recovery_fraction.is_finite()
+                        && (0.0..=1.0).contains(recovery_fraction)
+                }
+            }
     }
 }
 /// Named simulator-only routes. Keys are authored stage map identifiers.
