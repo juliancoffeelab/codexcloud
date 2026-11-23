@@ -1,0 +1,242 @@
+[
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire",
+    "seed": 493020001,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire",
+    "seed": 493020002,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire",
+    "seed": 493020003,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire",
+    "seed": 493020004,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire",
+    "seed": 493020005,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire",
+    "seed": 493020006,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire",
+    "seed": 493020007,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire",
+    "seed": 493020008,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-healer",
+    "seed": 493020001,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-healer",
+    "seed": 493020002,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-healer",
+    "seed": 493020003,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-healer",
+    "seed": 493020004,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-healer",
+    "seed": 493020005,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-healer",
+    "seed": 493020006,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-healer",
+    "seed": 493020007,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-healer",
+    "seed": 493020008,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  }
+]

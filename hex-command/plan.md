@@ -888,3 +888,28 @@ wounded diagnostic referenceClassic13/20,Full1/20 vsbothlearners0/20.
 Kiln rejected because discovery gap disappeared on fresh20seeds; Juniper untested.
 No environment integration, sampler changes, rewards or new training started.
 Native renders, raw counts, exact catalogs and trace evidence preserved.
+
+### Explicit fog scopes and multi-objective validation — 2026-11-23
+
+Completed user-authorized validation with three Sol workers. Archive:
+`training/experiments/2026-11-23-fog-and-multi-objective-validation`.
+Fog confirmation:900 commander+480 route games; blocked road stays0/20 for both
+learners versusFull/Classic20/20 under player-only and both-sides returning fog.
+Healthy commander player-only Hour10=4/20 versusQueued18/20; healer player-only
+0/20 versusQueued15/20. Healthy both-fog lacks a competent reference and is
+rejected; healer both-fog remains a harder diagnostic, Full10/20 only.
+
+Multi-objective fresh20seed gaps against active Classic opponents, clear both:
+Hollowbank capture/rescue/separate live exits Hour8/Hour10=8/20,8/20 versus
+Classic/Queued18/20; post-rescue reserve12/20,6/20 versusClassic16/20.
+Ashbank simultaneous ten-round staffed home hold plus forward fort1/20,3/20
+versusClassic18/20; Hour10 takes fort20/20 but loses home17/20.
+Marlow alternative-win priority pair: exposed commander13/20,12/20 versus
+allthree ordinary references20/20; hold-interruption control bothlearners20/20.
+Native replays verify actual objective handoffs, live exit positions, contested
+home defense and enemy countdown observations. Failed prototypes preserved.
+Multi-objective fog qualification is incomplete; Hollowbank player-fog rejected
+in screening (reference2/8), not advertised as a validated fog encounter.
+No integration, reward/sampling edits, promotion or training authorized here.
+Next decision remains which validated scopes to wire, alongside the still-open
+single-stage targeted +2 versus ordinary arena +1 reward proposal; not implemented.

@@ -1,0 +1,77 @@
+[
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+    "seed": 493021011,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+    "seed": 493021012,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+    "seed": 493021013,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+    "seed": 493021014,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+    "seed": 493021015,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  }
+]

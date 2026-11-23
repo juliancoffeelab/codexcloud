@@ -1,0 +1,3422 @@
+[
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-veteran",
+      "objective": "authored",
+      "seed": 571239020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-eastern",
+      "objective": "authored",
+      "seed": 571239020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "seed": 571239020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  }
+]

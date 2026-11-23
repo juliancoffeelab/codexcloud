@@ -1,0 +1,33 @@
+{
+  "title": "Marlow Cut \u2014 Finish start",
+  "notes": [
+    "Hold the watch post for six rounds or defeat the enemy commander.",
+    "Both starts use the same map and forces. The enemy commander starts at a different hex."
+  ],
+  "annotations": [
+    {
+      "col": 4,
+      "row": 2,
+      "text": "Watch post",
+      "color": "#f2c765",
+      "dy": -35,
+      "ring": true
+    },
+    {
+      "col": 16,
+      "row": 8,
+      "text": "Enemy commander",
+      "color": "#ea9f8f",
+      "dy": -28,
+      "ring": true
+    },
+    {
+      "col": 11,
+      "row": 7,
+      "text": "Knight",
+      "color": "#a9d7ff",
+      "dy": -32,
+      "ring": true
+    }
+  ]
+}

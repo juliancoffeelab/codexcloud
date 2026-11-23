@@ -1,0 +1,5156 @@
+{
+  "base": {
+    "id": "rl-ashbank-relay-base",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-base",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        10,
+        6
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": null,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        8,
+        3
+      ],
+      [
+        "revenant",
+        9,
+        5
+      ],
+      [
+        "skeleton-impact-caster",
+        9,
+        6
+      ],
+      [
+        "deatharcher",
+        10,
+        6
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "archer": {
+    "id": "rl-ashbank-relay-archer",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-archer",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        10,
+        6
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": null,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "archer",
+        4,
+        6
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        8,
+        3
+      ],
+      [
+        "revenant",
+        9,
+        5
+      ],
+      [
+        "skeleton-impact-caster",
+        9,
+        6
+      ],
+      [
+        "deatharcher",
+        10,
+        6
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "reserve": {
+    "id": "rl-ashbank-relay-reserve",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-reserve",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        10,
+        6
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": null,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "swordsman",
+        2,
+        5
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        8,
+        3
+      ],
+      [
+        "revenant",
+        9,
+        5
+      ],
+      [
+        "skeleton-impact-caster",
+        9,
+        6
+      ],
+      [
+        "deatharcher",
+        10,
+        6
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "reinforced": {
+    "id": "rl-ashbank-relay-reinforced",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-reinforced",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        10,
+        6
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": null,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "soldier",
+        2,
+        5
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        8,
+        3
+      ],
+      [
+        "revenant",
+        9,
+        5
+      ],
+      [
+        "skeleton-impact-caster",
+        9,
+        6
+      ],
+      [
+        "deatharcher",
+        10,
+        6
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "lighter": {
+    "id": "rl-ashbank-relay-lighter",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-lighter",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        10,
+        6
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": null,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        8,
+        3
+      ],
+      [
+        "revenant",
+        9,
+        5
+      ],
+      [
+        "skeleton-impact-caster",
+        9,
+        6
+      ],
+      [
+        "deatharcher",
+        10,
+        6
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ]
+    ]
+  },
+  "veteran": {
+    "id": "rl-ashbank-relay-veteran",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-veteran",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        10,
+        6
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": null,
+    "staffed": false,
+    "allies": [
+      [
+        "sentinel",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "warhammer",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        8,
+        3
+      ],
+      [
+        "revenant",
+        9,
+        5
+      ],
+      [
+        "skeleton-impact-caster",
+        9,
+        6
+      ],
+      [
+        "deatharcher",
+        10,
+        6
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "thinner-post": {
+    "id": "rl-ashbank-relay-thinner-post",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-thinner-post",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        10,
+        6
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": null,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        8,
+        3
+      ],
+      [
+        "revenant",
+        9,
+        5
+      ],
+      [
+        "skeleton-impact-caster",
+        9,
+        6
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "crossroad": {
+    "id": "rl-ashbank-relay-crossroad",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-crossroad",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        9,
+        6
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": null,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        8,
+        3
+      ],
+      [
+        "revenant",
+        9,
+        5
+      ],
+      [
+        "skeleton-impact-caster",
+        10,
+        5
+      ],
+      [
+        "deatharcher",
+        9,
+        6
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "defender": {
+    "id": "rl-ashbank-relay-defender",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-defender",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        10,
+        6
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": null,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "sentinel",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        8,
+        3
+      ],
+      [
+        "revenant",
+        9,
+        5
+      ],
+      [
+        "skeleton-impact-caster",
+        9,
+        6
+      ],
+      [
+        "deatharcher",
+        10,
+        6
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "early-raid": {
+    "id": "rl-ashbank-relay-early-raid",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-early-raid",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        10,
+        6
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": null,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        8,
+        3
+      ],
+      [
+        "revenant",
+        9,
+        5
+      ],
+      [
+        "skeleton-impact-caster",
+        9,
+        6
+      ],
+      [
+        "deatharcher",
+        10,
+        6
+      ]
+    ],
+    "waves": [
+      [
+        3,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        7,
+        [
+          6,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "vigil": {
+    "id": "rl-ashbank-relay-vigil",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-vigil",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        10,
+        6
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": null,
+    "staffed": true,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        8,
+        3
+      ],
+      [
+        "revenant",
+        9,
+        5
+      ],
+      [
+        "skeleton-impact-caster",
+        9,
+        6
+      ],
+      [
+        "deatharcher",
+        10,
+        6
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "vigil-reserve": {
+    "id": "rl-ashbank-relay-vigil-reserve",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-vigil-reserve",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        10,
+        6
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": null,
+    "staffed": true,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "soldier",
+        2,
+        5
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        8,
+        3
+      ],
+      [
+        "revenant",
+        9,
+        5
+      ],
+      [
+        "skeleton-impact-caster",
+        9,
+        6
+      ],
+      [
+        "deatharcher",
+        10,
+        6
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "push-first": {
+    "id": "rl-ashbank-relay-push-first",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-push-first",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        10,
+        6
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": null,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "swordsman",
+        2,
+        5
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        8,
+        3
+      ],
+      [
+        "revenant",
+        9,
+        5
+      ],
+      [
+        "skeleton-impact-caster",
+        9,
+        6
+      ],
+      [
+        "deatharcher",
+        10,
+        6
+      ]
+    ],
+    "waves": [
+      [
+        3,
+        [
+          12,
+          6
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        7,
+        [
+          12,
+          7
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "long": {
+    "id": "rl-ashbank-relay-long",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-long",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 9,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "revenant",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "long-reserve": {
+    "id": "rl-ashbank-relay-long-reserve",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-long-reserve",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 9,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "swordsman",
+        5,
+        5
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "revenant",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "long-open": {
+    "id": "rl-ashbank-relay-long-open",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-long-open",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 9,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "revenant",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "long-relay": {
+    "id": "rl-ashbank-relay-long-relay",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-long-relay",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 9,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        7,
+        7
+      ],
+      [
+        "healer",
+        5,
+        5
+      ],
+      [
+        "adept",
+        7,
+        6
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "revenant",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "long-veteran": {
+    "id": "rl-ashbank-relay-long-veteran",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-long-veteran",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 9,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "sentinel",
+        4,
+        3
+      ],
+      [
+        "warhammer",
+        5,
+        4
+      ],
+      [
+        "rider",
+        5,
+        6
+      ],
+      [
+        "healer",
+        4,
+        5
+      ],
+      [
+        "adept",
+        5,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "revenant",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "long-early": {
+    "id": "rl-ashbank-relay-long-early",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-long-early",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 7,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "scout",
+        5,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "revenant",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "long-pressure": {
+    "id": "rl-ashbank-relay-long-pressure",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-long-pressure",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 9,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "soldier",
+        5,
+        5
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "revenant",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          6,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "long-rush": {
+    "id": "rl-ashbank-relay-long-rush",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-long-rush",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 6,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "rider",
+        6,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "long-breach": {
+    "id": "rl-ashbank-relay-long-breach",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-long-breach",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 7,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "long-vigil": {
+    "id": "rl-ashbank-relay-long-vigil",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-long-vigil",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 9,
+    "staffed": true,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "soldier",
+        2,
+        5
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "revenant",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "long-defended": {
+    "id": "rl-ashbank-relay-long-defended",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-long-defended",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 9,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "soldier",
+        2,
+        5
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "revenant",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "long-push-first": {
+    "id": "rl-ashbank-relay-long-push-first",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-long-push-first",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 9,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "swordsman",
+        5,
+        5
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "revenant",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        3,
+        [
+          13,
+          5
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        7,
+        [
+          15,
+          6
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "breach-swift": {
+    "id": "rl-ashbank-relay-breach-swift",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-breach-swift",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 5,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "breach-rapid": {
+    "id": "rl-ashbank-relay-breach-rapid",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-breach-rapid",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 6,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "breach-west": {
+    "id": "rl-ashbank-relay-breach-west",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-breach-west",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 7,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "breach-west-swift": {
+    "id": "rl-ashbank-relay-breach-west-swift",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-breach-west-swift",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 5,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "breach-two-fronts": {
+    "id": "rl-ashbank-relay-breach-two-fronts",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-breach-two-fronts",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 7,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        6,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "breach-fort-relief": {
+    "id": "rl-ashbank-relay-breach-fort-relief",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-breach-fort-relief",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 8,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        6,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "breach-vigil": {
+    "id": "rl-ashbank-relay-breach-vigil",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-breach-vigil",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 7,
+    "staffed": true,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "breach-riders": {
+    "id": "rl-ashbank-relay-breach-riders",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-breach-riders",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 6,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "rider",
+        6,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "breach-strong-west": {
+    "id": "rl-ashbank-relay-breach-strong-west",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-breach-strong-west",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 7,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          6,
+          0
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "veteran-swift": {
+    "id": "rl-ashbank-relay-veteran-swift",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-veteran-swift",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 7,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "sentinel",
+        4,
+        3
+      ],
+      [
+        "warhammer",
+        5,
+        4
+      ],
+      [
+        "rider",
+        5,
+        6
+      ],
+      [
+        "healer",
+        4,
+        5
+      ],
+      [
+        "adept",
+        5,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "revenant",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "veteran-west": {
+    "id": "rl-ashbank-relay-veteran-west",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-veteran-west",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 8,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "sentinel",
+        4,
+        3
+      ],
+      [
+        "warhammer",
+        5,
+        4
+      ],
+      [
+        "rider",
+        5,
+        6
+      ],
+      [
+        "healer",
+        4,
+        5
+      ],
+      [
+        "adept",
+        5,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "revenant",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "veteran-vigil": {
+    "id": "rl-ashbank-relay-veteran-vigil",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-veteran-vigil",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 8,
+    "staffed": true,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "sentinel",
+        4,
+        3
+      ],
+      [
+        "warhammer",
+        5,
+        4
+      ],
+      [
+        "rider",
+        5,
+        6
+      ],
+      [
+        "healer",
+        4,
+        5
+      ],
+      [
+        "adept",
+        5,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "revenant",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          7,
+          1
+        ],
+        [
+          "skeletal-hound",
+          "skeleton"
+        ]
+      ],
+      [
+        8,
+        [
+          7,
+          0
+        ],
+        [
+          "skeletal-hound",
+          "skeleton-axeman"
+        ]
+      ]
+    ]
+  },
+  "veteran-two-fronts": {
+    "id": "rl-ashbank-relay-veteran-two-fronts",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-veteran-two-fronts",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 9,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "sentinel",
+        4,
+        3
+      ],
+      [
+        "warhammer",
+        5,
+        4
+      ],
+      [
+        "rider",
+        5,
+        6
+      ],
+      [
+        "healer",
+        4,
+        5
+      ],
+      [
+        "adept",
+        5,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "revenant",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        6,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "fork-base": {
+    "id": "rl-ashbank-relay-fork-base",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-base",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 6,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeleton-impact-caster"
+        ]
+      ],
+      [
+        5,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "fork-swift": {
+    "id": "rl-ashbank-relay-fork-swift",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-swift",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 5,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeleton-impact-caster"
+        ]
+      ],
+      [
+        5,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "fork-wounded": {
+    "id": "rl-ashbank-relay-fork-wounded",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-wounded",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 6,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3,
+        19
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeleton-impact-caster"
+        ]
+      ],
+      [
+        5,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "fork-reinforce": {
+    "id": "rl-ashbank-relay-fork-reinforce",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-reinforce",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 6,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ],
+      [
+        "archer",
+        2,
+        2
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeleton-impact-caster"
+        ]
+      ],
+      [
+        5,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "fork-veteran": {
+    "id": "rl-ashbank-relay-fork-veteran",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-veteran",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 6,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3,
+        21
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ],
+      [
+        "soldier",
+        4,
+        2
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeleton-impact-caster"
+        ]
+      ],
+      [
+        5,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "fork-closer": {
+    "id": "rl-ashbank-relay-fork-closer",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-closer",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 6,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          2
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeleton-impact-caster"
+        ]
+      ],
+      [
+        5,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          4,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "fork-flanked": {
+    "id": "rl-ashbank-relay-fork-flanked",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-flanked",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 6,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          3,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeleton-impact-caster"
+        ]
+      ],
+      [
+        5,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "fork-trident": {
+    "id": "rl-ashbank-relay-fork-trident",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-trident",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 6,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeleton-impact-caster-l2",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        5,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "fork-eastern": {
+    "id": "rl-ashbank-relay-fork-eastern",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-eastern",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 7,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          2
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeleton-impact-caster"
+        ]
+      ],
+      [
+        4,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton-axeman",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          4,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "fork-vigil": {
+    "id": "rl-ashbank-relay-fork-vigil",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 7,
+    "staffed": true,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3,
+        20
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeleton-impact-caster"
+        ]
+      ],
+      [
+        5,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  }
+}

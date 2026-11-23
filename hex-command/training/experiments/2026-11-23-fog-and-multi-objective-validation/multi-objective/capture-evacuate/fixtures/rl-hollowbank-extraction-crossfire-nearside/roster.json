@@ -1,0 +1,310 @@
+{
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": [
+          "fog"
+        ]
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": [
+          "fog"
+        ]
+      },
+      "explored": []
+    },
+    {
+      "id": "prisoners",
+      "sight": {
+        "range": 0,
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": [
+          "fog"
+        ]
+      },
+      "explored": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "swordsman",
+          "role": "leader",
+          "tile": {
+            "col": 2,
+            "row": 4
+          },
+          "id": "u1",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": "tavin",
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "swordsman",
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 4
+          },
+          "id": "u2",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "scout",
+          "role": null,
+          "tile": {
+            "col": 5,
+            "row": 5
+          },
+          "id": "u3",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "adept",
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 5
+          },
+          "id": "u4",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "healer",
+          "role": null,
+          "tile": {
+            "col": 3,
+            "row": 5
+          },
+          "id": "u5",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        }
+      ],
+      "relations": {
+        "enemy": "hostile",
+        "player": "allied",
+        "prisoners": "neutral"
+      },
+      "visionGroup": "player",
+      "name": null,
+      "transfer": null
+    },
+    {
+      "id": "enemy",
+      "phase": "ai",
+      "controller": {
+        "kind": "ai",
+        "policy": null
+      },
+      "palette": "enemy",
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "skeleton",
+          "role": null,
+          "tile": {
+            "col": 7,
+            "row": 4
+          },
+          "id": "u21",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "skeleton",
+          "role": null,
+          "tile": {
+            "col": 11,
+            "row": 4
+          },
+          "id": "u22",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "bonearcher",
+          "role": null,
+          "tile": {
+            "col": 12,
+            "row": 3
+          },
+          "id": "u23",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "skeleton",
+          "role": null,
+          "tile": {
+            "col": 5,
+            "row": 0
+          },
+          "id": "u24",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        }
+      ],
+      "relations": {
+        "player": "hostile",
+        "enemy": "allied",
+        "prisoners": "allied"
+      },
+      "visionGroup": "enemy",
+      "name": null,
+      "transfer": null
+    },
+    {
+      "id": "prisoners",
+      "phase": "ai",
+      "controller": {
+        "kind": "passive"
+      },
+      "palette": "passive",
+      "relations": {
+        "player": "neutral",
+        "enemy": "allied",
+        "prisoners": "allied"
+      },
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "type": "captives",
+          "role": "captive",
+          "tile": {
+            "col": 13,
+            "row": 2
+          },
+          "id": "u41",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": "mara",
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        }
+      ],
+      "visionGroup": "prisoners",
+      "name": null,
+      "transfer": null
+    }
+  ],
+  "arrivals": [],
+  "round": 1,
+  "turn": "player",
+  "log": [],
+  "combatRng": 1831565813
+}

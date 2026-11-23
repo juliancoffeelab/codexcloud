@@ -1,0 +1,298 @@
+{
+  "build.py": {
+    "bytes": 12337,
+    "sha256": "f08befbade388181e938b26b16badc809f4eb3197a11ed510e283e51abbf90fb"
+  },
+  "companion_trace.rs": {
+    "bytes": 1589,
+    "sha256": "91f4b978f64aca5459498c043fbc9a0222c1ccc2cfb6702334104aca300ebb1e"
+  },
+  "confirmation/protocol.json": {
+    "bytes": 1654,
+    "sha256": "b332db2076c292a11193b4a61a97f8047ddcad03d78395ff4e0f6f22e3212a74"
+  },
+  "confirmation/results.jsonl": {
+    "bytes": 176871,
+    "sha256": "246624f39894d373527c80c2e3c484aced278c48b375ecbfdcf2dfaa89b9af9c"
+  },
+  "confirmation/summary.json": {
+    "bytes": 3760,
+    "sha256": "6d61712fbf40d65d8bf4147538b8569c6e3f91ad104c04f25987be218de3a2cd"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/classic.jsonl.gz": {
+    "bytes": 793736,
+    "sha256": "f16b7a22fcb68a8bbef13bbdcc8dfe93e2b7f4fc6d168980755e16980405adcc"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/digest.jsonl.gz": {
+    "bytes": 152898,
+    "sha256": "575f41da142297ac29f1f1dff321b0bc1903175bef983629976aff19665a3704"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/full.jsonl.gz": {
+    "bytes": 843654,
+    "sha256": "a7485bdd199d2cb2528f870a45220e57711bd6b6238779b42472e95cc14a56b8"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-0.json": {
+    "bytes": 1848,
+    "sha256": "c732e2b8aa74d5781b92859542c2ac506505813cd4d6cbf009b1ad3c12f097cb"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-1.json": {
+    "bytes": 1848,
+    "sha256": "12801462bc60678c3e9120ae5e024bcedec226329515cd44f802c667a4986fb6"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-2.json": {
+    "bytes": 1848,
+    "sha256": "40c5b7eb69e5eacd4af4c357ea592e71a8d3fc8d77016f5049165c32eefe8de0"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-3.json": {
+    "bytes": 1848,
+    "sha256": "49f09dfce0ca03a0422a2b206e179064e164ed40eac46962f8d24f70ff5e4197"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-4.json": {
+    "bytes": 1858,
+    "sha256": "97967c50d5672da3162cfde36b0e43e0dad2a9a51fe42c82f9320e0e13917186"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-5.json": {
+    "bytes": 1858,
+    "sha256": "b40a882af639861639779024ed0582158cd5bdf9a41b6b5d58067d2052a9c20a"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-6.json": {
+    "bytes": 1858,
+    "sha256": "e755b894659dfd16ac0b589b229a3947963c109f6c1af8def86a517c4f98f7b6"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-7.json": {
+    "bytes": 1858,
+    "sha256": "c806fe4dbb3626bfcebd00304bc2aa477c5c3053f2f2925620ef2d9737c15aea"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10.jsonl.gz": {
+    "bytes": 781465,
+    "sha256": "1bf3e7f1942fcf068ee46124ba198921a727d20e9078d2bebb57e914bb4e0f8b"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-0.json": {
+    "bytes": 1848,
+    "sha256": "c732e2b8aa74d5781b92859542c2ac506505813cd4d6cbf009b1ad3c12f097cb"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-1.json": {
+    "bytes": 1848,
+    "sha256": "12801462bc60678c3e9120ae5e024bcedec226329515cd44f802c667a4986fb6"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-2.json": {
+    "bytes": 1848,
+    "sha256": "40c5b7eb69e5eacd4af4c357ea592e71a8d3fc8d77016f5049165c32eefe8de0"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-3.json": {
+    "bytes": 1848,
+    "sha256": "49f09dfce0ca03a0422a2b206e179064e164ed40eac46962f8d24f70ff5e4197"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-4.json": {
+    "bytes": 1858,
+    "sha256": "97967c50d5672da3162cfde36b0e43e0dad2a9a51fe42c82f9320e0e13917186"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-5.json": {
+    "bytes": 1858,
+    "sha256": "b40a882af639861639779024ed0582158cd5bdf9a41b6b5d58067d2052a9c20a"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-6.json": {
+    "bytes": 1858,
+    "sha256": "e755b894659dfd16ac0b589b229a3947963c109f6c1af8def86a517c4f98f7b6"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-7.json": {
+    "bytes": 1858,
+    "sha256": "c806fe4dbb3626bfcebd00304bc2aa477c5c3053f2f2925620ef2d9737c15aea"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8.jsonl.gz": {
+    "bytes": 745588,
+    "sha256": "d01036cbca4b761b5dfc0954108e3a7497183cb065009b1f5655a8fdf657b5ea"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/protocol.json": {
+    "bytes": 81134,
+    "sha256": "d7843cb7ff2347b8b2a35c72c5117a393b0b10e60f10bededb92bae6ca0f8616"
+  },
+  "confirmation/traces-crossfire-late-guard-crossfire-nearside/queued.jsonl.gz": {
+    "bytes": 829727,
+    "sha256": "0341557d4585af5af064e045967bf5114c021d822e179327e8f7c2c5593bcd8f"
+  },
+  "discovery/protocol.json": {
+    "bytes": 1523,
+    "sha256": "464d3d737d6e6eef7bb0a674a0062ddf28d1777a2be767adabcea45d3da627db"
+  },
+  "discovery/results.jsonl": {
+    "bytes": 137255,
+    "sha256": "f37af4c2a2671b8bfac5aac400e01e54c7d1e04a33345ec8ba981bef519573e1"
+  },
+  "discovery/summary.json": {
+    "bytes": 6609,
+    "sha256": "1635458d8d74e4b74665c025d17c5930694fb70f84837906fa56d982aa3f7cf8"
+  },
+  "discovery/traces-crossfire-crossfire-healer/classic.jsonl.gz": {
+    "bytes": 304490,
+    "sha256": "7ebf180a5599e30bbcbba66ff8ef002ea2838cd05177e8a38057ed4df40f56a0"
+  },
+  "discovery/traces-crossfire-crossfire-healer/digest.jsonl.gz": {
+    "bytes": 29642,
+    "sha256": "ace7fe975352d3f9a4cf55d7dc767b22f868787eb09bb9e5dea8b3c267a3748e"
+  },
+  "discovery/traces-crossfire-crossfire-healer/full.jsonl.gz": {
+    "bytes": 326437,
+    "sha256": "ed903f0e71dfead08fe5f94c298b9d11582eb3ee5e21084c062baca7f6107e0d"
+  },
+  "discovery/traces-crossfire-crossfire-healer/hour10-cases.json": {
+    "bytes": 5819,
+    "sha256": "2bb3a7ef0372496f9c17dfe62942c70648a27b54f309215caa696f7cc6fb0755"
+  },
+  "discovery/traces-crossfire-crossfire-healer/hour10.jsonl.gz": {
+    "bytes": 304349,
+    "sha256": "ee6f055e55503df7de0ed65980f0b7720d9088d3d81612f033fe382e2b664bfb"
+  },
+  "discovery/traces-crossfire-crossfire-healer/protocol.json": {
+    "bytes": 20050,
+    "sha256": "b5ab51b0e52f42e86b60a51f0bccd1920d0e2cccdfdc1dace1614d3328d49112"
+  },
+  "discovery-2/protocol.json": {
+    "bytes": 1611,
+    "sha256": "f42f833fbd8ab440a3821f1577491d639d6c4b9d22e400eeaf28dec2c123a292"
+  },
+  "discovery-2/results.jsonl": {
+    "bytes": 188930,
+    "sha256": "b5ee309f3ea7580c705de28ff3e3f33a2d274a04c5df4d80d6651378a26a377b"
+  },
+  "discovery-2/summary.json": {
+    "bytes": 9371,
+    "sha256": "985b7acdce52c00dfe50604aaa68dc95f38c42f9141c1e140f2fd1f278eecb97"
+  },
+  "evaluate.py": {
+    "bytes": 3400,
+    "sha256": "3a745931ae5dce094676e9ea7508f45fe43035c36ac4ed084f699bf59848d3c5"
+  },
+  "final-summary.json": {
+    "bytes": 29406,
+    "sha256": "02cef84b63f5e2d40886ec67b607e2e74e5fda77eb4d703e82f7f25c22502f2d"
+  },
+  "fixtures/rl-hollowbank-extraction-crossfire-late-guard/campaign.json": {
+    "bytes": 1020,
+    "sha256": "5f993cd510bd4862922dec9f4bc4eb56fb9170cab9b7e345e62c4473bd6ad55e"
+  },
+  "fixtures/rl-hollowbank-extraction-crossfire-late-guard/map.json": {
+    "bytes": 34438,
+    "sha256": "10e607d5b47c8692969313d97b5f02effffadb2886a3bacbca04ca500806306a"
+  },
+  "fixtures/rl-hollowbank-extraction-crossfire-late-guard/roster.json": {
+    "bytes": 6769,
+    "sha256": "253eacf08a9a419ef9848af1b2a8d4c698cdbc4f11c51084d78c46f5ff8e1989"
+  },
+  "fixtures/rl-hollowbank-extraction-crossfire-late-guard/scripts.json": {
+    "bytes": 12084,
+    "sha256": "0e5de2cdfebab2ed0e60d881cdf1d09fca259204185c8aa049aa13185d4af558"
+  },
+  "fixtures/rl-hollowbank-extraction-crossfire-late-guard/stage.json": {
+    "bytes": 162,
+    "sha256": "5771f608f2f6f8025c23bb31fe51910158fcce1da53badd2126ada666f028069"
+  },
+  "fixtures/rl-hollowbank-extraction-crossfire-late-guard/story.json": {
+    "bytes": 283,
+    "sha256": "77de1c0ef59fb49240898505f8ab35bcf80a209b25dc4e73dc3633bd22c41468"
+  },
+  "fixtures/rl-hollowbank-extraction-crossfire-nearside/campaign.json": {
+    "bytes": 1018,
+    "sha256": "a0dd4f539934e4cf212741748d7f36a04340ae5c21ca7d202dac15e6ee04393c"
+  },
+  "fixtures/rl-hollowbank-extraction-crossfire-nearside/map.json": {
+    "bytes": 34436,
+    "sha256": "d19ac5d0fe90634b34c2b6c8365cafd977ebb0d728d91392c5deadea63423af2"
+  },
+  "fixtures/rl-hollowbank-extraction-crossfire-nearside/roster.json": {
+    "bytes": 6769,
+    "sha256": "d9b19e1ed024349a4b1a25eb5b7144dd7eee802e35cffb19b2cf4fdf45c0afce"
+  },
+  "fixtures/rl-hollowbank-extraction-crossfire-nearside/scripts.json": {
+    "bytes": 12437,
+    "sha256": "eaa392299c32dad2ff958430b9722374584e398526e24fa81f429121b95f92c1"
+  },
+  "fixtures/rl-hollowbank-extraction-crossfire-nearside/stage.json": {
+    "bytes": 160,
+    "sha256": "4b4888cb7b05cb5566203cd0d0354d94d4414a74136fdd89ce98bee8db1ab5fc"
+  },
+  "fixtures/rl-hollowbank-extraction-crossfire-nearside/story.json": {
+    "bytes": 283,
+    "sha256": "77de1c0ef59fb49240898505f8ab35bcf80a209b25dc4e73dc3633bd22c41468"
+  },
+  "render-stage.py": {
+    "bytes": 1743,
+    "sha256": "70e42e84f56a102b7f109ff5e497f48a83c19e673a84e02bd5cd36c6d874dd63"
+  },
+  "renders/crossfire-banks/map.json": {
+    "bytes": 24242,
+    "sha256": "a13f34a279b1f680669a16ca4ee1b3beb41e7d8b96b642b0d98c7b80d851fdcc"
+  },
+  "renders/crossfire-banks/overlay.json": {
+    "bytes": 524,
+    "sha256": "9ea6ef52c3330fc369c4a8027a7c0ea87d3e4a2f6baaf0beb4ce40a2ba26dd04"
+  },
+  "renders/crossfire-banks/preview.png": {
+    "bytes": 275791,
+    "sha256": "3746142bd156bcb654124cae1427b9424dddedc606e48a8a85e04e22dd04f6a1"
+  },
+  "renders/crossfire-banks/roster.json": {
+    "bytes": 6769,
+    "sha256": "d9b19e1ed024349a4b1a25eb5b7144dd7eee802e35cffb19b2cf4fdf45c0afce"
+  },
+  "renders/crossfire-banks/scenario.json": {
+    "bytes": 171,
+    "sha256": "bc364b69713c209b776fb73b5e4a96434fdeaa77def660fe43ecfc5b1ff8a394"
+  },
+  "renders/crossfire-late-guard/map.json": {
+    "bytes": 24247,
+    "sha256": "b48692933d07324cbc23f019102c4ea3c94a3f210f0cdc6567ea2e840b159ca0"
+  },
+  "renders/crossfire-late-guard/overlay.json": {
+    "bytes": 714,
+    "sha256": "072f438cbfa4d8b87f4d4e502e92bc4b6ee5bba8b5a95995f529fa5c33b6505d"
+  },
+  "renders/crossfire-late-guard/preview.png": {
+    "bytes": 276377,
+    "sha256": "a7f0536dabc59f8c401374c66210905403b5641e1b1531d2c68101658867a330"
+  },
+  "renders/crossfire-late-guard/roster.json": {
+    "bytes": 6769,
+    "sha256": "253eacf08a9a419ef9848af1b2a8d4c698cdbc4f11c51084d78c46f5ff8e1989"
+  },
+  "renders/crossfire-late-guard/scenario.json": {
+    "bytes": 171,
+    "sha256": "bc364b69713c209b776fb73b5e4a96434fdeaa77def660fe43ecfc5b1ff8a394"
+  },
+  "renders/crossfire-nearside/map.json": {
+    "bytes": 24245,
+    "sha256": "90e080f1870eff1e5025dc6cf4dbdfe46a58dd4a03fc1061197319c6c86735ba"
+  },
+  "renders/crossfire-nearside/overlay.json": {
+    "bytes": 856,
+    "sha256": "78e7d05f73d0acdda7a75c1dd61600db5ba66c5b3351dc03e15676a998de5081"
+  },
+  "renders/crossfire-nearside/preview.png": {
+    "bytes": 278908,
+    "sha256": "47ad9802e43ed39753f3e760d90260092ed31a6f01bfa49d1372e768ef1a0551"
+  },
+  "renders/crossfire-nearside/roster.json": {
+    "bytes": 6769,
+    "sha256": "d9b19e1ed024349a4b1a25eb5b7144dd7eee802e35cffb19b2cf4fdf45c0afce"
+  },
+  "renders/crossfire-nearside/scenario.json": {
+    "bytes": 171,
+    "sha256": "bc364b69713c209b776fb73b5e4a96434fdeaa77def660fe43ecfc5b1ff8a394"
+  },
+  "report.md": {
+    "bytes": 5888,
+    "sha256": "e2b5ee74d1224c73e73a6f9e86157ff770fe00e2eb3407a695f8bbbbf0ef6aeb"
+  },
+  "summarize.py": {
+    "bytes": 10220,
+    "sha256": "2b99d625723a64dea2ee6a9e799ecab7c433ee74082d82041571615928d7577c"
+  },
+  "trace.py": {
+    "bytes": 5747,
+    "sha256": "33463395b605f74b51ff82e3ecfc764a7e141305d6d1230f3c2ada7c0fd8c53f"
+  },
+  "validated-catalog.tar.gz": {
+    "bytes": 572119,
+    "sha256": "ac8b68b2088cc3bace54d2a8f5b191dd0fe463c631376bca71bbf296c164553b"
+  }
+}

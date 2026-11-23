@@ -1,0 +1,522 @@
+{
+  "title": "Ashbank Relay",
+  "status": "validated candidate",
+  "case": {
+    "id": "rl-ashbank-relay-fork-vigil",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog/game/campaigns/rl-ashbank-relay-fork-vigil",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 7,
+    "staffed": true,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3,
+        20
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeleton-impact-caster"
+        ]
+      ],
+      [
+        5,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "stageFiles": {
+    "campaign": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog/game/campaigns/rl-ashbank-relay-fork-vigil/campaign.json",
+      "sha256": "47e5a04aaf9a3398b03e33a6e95bca760df53a2b355b0a889394ef2606a34cdc"
+    },
+    "map": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog/game/campaigns/rl-ashbank-relay-fork-vigil/map.json",
+      "sha256": "c85812c78dde523a8089d68e3dccf8ebe07d50271d4f7709113957322c9ea1a2"
+    },
+    "roster": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog/game/campaigns/rl-ashbank-relay-fork-vigil/roster.json",
+      "sha256": "a1a2f698308207b8dbdba1b2e8f5177418fad7c207b555e4eff00739a188b407"
+    },
+    "scripts": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog/game/campaigns/rl-ashbank-relay-fork-vigil/scripts.json",
+      "sha256": "148d8d4b407a4e2fea4f95b40912a70cf103b5ef001c41f43810f92ef12462ee"
+    },
+    "stage": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog/game/campaigns/rl-ashbank-relay-fork-vigil/stage.json",
+      "sha256": "a52767cdd5fef0a8beb7a3ba76030a2ac5b9d51a778f8849164b0c5fabcaa530"
+    },
+    "story": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog/game/campaigns/rl-ashbank-relay-fork-vigil/story.json",
+      "sha256": "b165c56b53482d0b905cad581b76c73c696e698cc5dbde22ebefaf1553fd7329"
+    }
+  },
+  "render": {
+    "map.json": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/render/map.json",
+      "sha256": "2f44bd5c2e0a99491ebb0470d3a1de4be1f3d9e1353ecafd08e95bb1fe5241b4"
+    },
+    "overlay.json": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/render/overlay.json",
+      "sha256": "0ac8c39e2ac99e6dd1051f2309572b301f653a3fbdddaf5f2f53bd52938b3a96"
+    },
+    "preview.png": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/render/preview.png",
+      "sha256": "864ad9f558d7626b17710dac95f27fb15b4f125f72d158ac8ce7a89c84386e42"
+    },
+    "roster.json": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/render/roster.json",
+      "sha256": "a1a2f698308207b8dbdba1b2e8f5177418fad7c207b555e4eff00739a188b407"
+    },
+    "scenario.json": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/render/scenario.json",
+      "sha256": "a403ffafaeea538c1e1e2532f2e3d882bce04b33ac60930bf72a8048cd455524"
+    }
+  },
+  "summaryPath": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/REPORT.md",
+  "catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog",
+  "catalogSha256": "d7424bbccc1a2481298bc56828e02189c9ec1467b44b3798a30d06ed840437d3",
+  "native": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/native/hex_command_training.so",
+  "nativeSha256": "7d7ab7ede88526b76ceb1c91de5fc9df2187c79c1ce0b7ba3b8b9b1f0cf322f2",
+  "models": {
+    "hour8": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/update-00002205-1795440240315037513/planner.json",
+      "sha256": "e7ef684d9e135e7817e390c533ec8b903d08db2d6ac0253c1aa340616b47a619"
+    },
+    "hour10": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/last-1795458575107520190/planner.json",
+      "sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee"
+    }
+  },
+  "confirmationSeeds": [
+    571239001,
+    571239002,
+    571239003,
+    571239004,
+    571239005,
+    571239006,
+    571239007,
+    571239008,
+    571239009,
+    571239010,
+    571239011,
+    571239012,
+    571239013,
+    571239014,
+    571239015,
+    571239016,
+    571239017,
+    571239018,
+    571239019,
+    571239020
+  ],
+  "discoverySeeds": [
+    571230001,
+    571230002,
+    571230003,
+    571230004,
+    571230005,
+    571230006,
+    571230007,
+    571230008
+  ],
+  "fixedOpponent": "classic",
+  "visibility": "Full for both sides",
+  "maxRounds": 100,
+  "recruitLimit": 0,
+  "outcomes": [
+    {
+      "variant": "fork-vigil",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 12,
+      "losses": 8,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 12,
+        "The eastern crossing was still enemy-held at the deadline.": 7,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "fork-vigil",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 10,
+      "losses": 10,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 10,
+        "The eastern crossing was still enemy-held at the deadline.": 9,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "fork-vigil",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 18,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 18,
+        "The relief force arrived before both positions were secured.": 2
+      }
+    },
+    {
+      "variant": "fork-vigil",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 1,
+      "losses": 19,
+      "caps": 0,
+      "winRounds": [
+        11
+      ],
+      "reasons": {
+        "The relief force arrived before both positions were secured.": 10,
+        "The eastern crossing was still enemy-held at the deadline.": 7,
+        "Ashbank held and the eastern crossing secured.": 1,
+        "The commander fell.": 2
+      }
+    },
+    {
+      "variant": "fork-vigil",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 3,
+      "losses": 17,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 3,
+        "The relief force arrived before both positions were secured.": 16,
+        "The commander fell.": 1
+      }
+    }
+  ],
+  "replayEvidence": [
+    {
+      "variant": "fork-vigil",
+      "enemy": "classic",
+      "policy": "classic",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 18,
+        "0/10 + 1/1": 1,
+        "2/10 + 1/1": 1
+      },
+      "villageLostMatches": 2,
+      "matchesWithVillageDamage": 20,
+      "matchesWithLiveAttacksAtBothFronts": 7,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 18,
+      "successfulFirstCaptureRounds": {
+        "7": 17,
+        "4": 1
+      },
+      "lossesWithoutFort": 0
+    },
+    {
+      "variant": "fork-vigil",
+      "enemy": "classic",
+      "policy": "full",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 12,
+        "7/10 + 0/1": 5,
+        "0/10 + 0/1": 2,
+        "1/10 + 1/1": 1
+      },
+      "villageLostMatches": 2,
+      "matchesWithVillageDamage": 17,
+      "matchesWithLiveAttacksAtBothFronts": 1,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 12,
+      "successfulFirstCaptureRounds": {
+        "6": 6,
+        "4": 6
+      },
+      "lossesWithoutFort": 7
+    },
+    {
+      "variant": "fork-vigil",
+      "enemy": "classic",
+      "policy": "hour10",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 3,
+        "4/10 + 1/1": 1,
+        "0/10 + 1/1": 9,
+        "3/10 + 1/1": 3,
+        "1/10 + 1/1": 2,
+        "2/10 + 1/1": 2
+      },
+      "villageLostMatches": 17,
+      "matchesWithVillageDamage": 20,
+      "matchesWithLiveAttacksAtBothFronts": 4,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 3,
+      "successfulFirstCaptureRounds": {
+        "4": 2,
+        "6": 1
+      },
+      "lossesWithoutFort": 0
+    },
+    {
+      "variant": "fork-vigil",
+      "enemy": "classic",
+      "policy": "hour8",
+      "replays": 20,
+      "terminalGoals": {
+        "1/10 + 1/1": 2,
+        "7/10 + 0/1": 1,
+        "10/10 + 1/1": 1,
+        "0/10 + 0/1": 6,
+        "0/10 + 1/1": 6,
+        "2/10 + 1/1": 2,
+        "3/10 + 1/1": 1,
+        "4/10 + 1/1": 1
+      },
+      "villageLostMatches": 14,
+      "matchesWithVillageDamage": 20,
+      "matchesWithLiveAttacksAtBothFronts": 4,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 1,
+      "successfulFirstCaptureRounds": {
+        "6": 1
+      },
+      "lossesWithoutFort": 7
+    },
+    {
+      "variant": "fork-vigil",
+      "enemy": "classic",
+      "policy": "queued",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 10,
+        "7/10 + 0/1": 6,
+        "0/10 + 0/1": 2,
+        "1/10 + 1/1": 1,
+        "2/10 + 0/1": 1
+      },
+      "villageLostMatches": 1,
+      "matchesWithVillageDamage": 16,
+      "matchesWithLiveAttacksAtBothFronts": 1,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 10,
+      "successfulFirstCaptureRounds": {
+        "4": 5,
+        "7": 5
+      },
+      "lossesWithoutFort": 9
+    }
+  ],
+  "matchedPairsAgainstClassic": {
+    "hour8": {
+      "classicWinLearnerLoss": 17,
+      "classicWinLearnerWin": 1,
+      "classicLossLearnerLoss": 2
+    },
+    "hour10": {
+      "classicWinLearnerWin": 2,
+      "classicWinLearnerLoss": 16,
+      "classicLossLearnerWin": 1,
+      "classicLossLearnerLoss": 1
+    }
+  },
+  "matchedExample": {
+    "seed": 571239002,
+    "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/matched-example-571239002.json"
+  },
+  "rawConfirmation": {
+    "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation.jsonl",
+    "sha256": "673566a558ac1d7a5113177c186efda88e2f9c3a8897479c396cd8481d881458"
+  },
+  "traceMetadata": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation-trace-summary.json",
+  "objectiveTrajectories": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation-objective-trajectories.jsonl",
+  "rawReplays": {
+    "references": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation-trace-references.jsonl.gz",
+      "sha256": "836c6d3c9a427e7d163eec15471c82150960c884cfcdff043cddf3a1c791b2fc"
+    },
+    "hour8": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation-trace-hour8.jsonl.gz",
+      "sha256": "778bb0647e5fa40c0c263d4c8099fdb423e402cfde8fb9e4fbd026a0c465b615"
+    },
+    "hour10": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation-trace-hour10.jsonl.gz",
+      "sha256": "3d389daf341c3c2d5828d0f598e016fecdda4204a467446b95bd812095504a36"
+    }
+  },
+  "comparisonPanels": [
+    {
+      "label": "Early timing-only test",
+      "variants": [
+        "breach-west-swift",
+        "breach-two-fronts"
+      ],
+      "summary": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/confirmation-summary.json",
+      "trace": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/confirmation-trace-summary.json"
+    },
+    {
+      "label": "Contested ownership comparisons",
+      "variants": [
+        "fork-veteran",
+        "fork-eastern"
+      ],
+      "summary": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation-summary.json",
+      "trace": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation-trace-summary.json"
+    }
+  ],
+  "discoverySummaries": [
+    "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/discovery-summary.json",
+    "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/discovery-long-summary.json",
+    "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/discovery-breach-summary.json",
+    "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/discovery-pressure-summary.json"
+  ]
+}

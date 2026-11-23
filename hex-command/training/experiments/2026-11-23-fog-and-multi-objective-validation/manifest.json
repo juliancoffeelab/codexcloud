@@ -1,7 +1,19 @@
 {
+  "README.md": {
+    "bytes": 4988,
+    "sha256": "fd8cc5588e6893d9ce26c6c7419a1962d2498c7d0d3850477eb0f1861d679f6f"
+  },
+  "multi-objective-gallery.jpg": {
+    "bytes": 884538,
+    "sha256": "2da7672ffda55c1902d51fb111d4543290f703141b47543d4308d7a6e44dfbe7"
+  },
   "fog/README.md": {
     "bytes": 2579,
     "sha256": "e61c54d467bd5703fa0780a7c8d008ac9f518f0d61df9274322e8cde2e69323e"
+  },
+  "multi-objective/independent-confirmation-audit.json": {
+    "bytes": 20376,
+    "sha256": "8901910c48630275267f5af83210c3c97627759985643b604a5fbeda35982497"
   },
   "fog/commander/discovery.jsonl.gz": {
     "bytes": 3277,
@@ -270,5 +282,781 @@
   "fog/routes/both-fog/confirmation/evidence/native-visible-information.json": {
     "bytes": 33907,
     "sha256": "7820a4d3f4a01bd28552546af922b5088d95154616a87b07c122bfb918a6b8c0"
+  },
+  "multi-objective/interrupt-finish/summarize.py": {
+    "bytes": 7225,
+    "sha256": "a26aa7aa5fc011fde8ac05a854dbcaeae2bb4998fe91ea1df662dca9bb78d448"
+  },
+  "multi-objective/interrupt-finish/render.py": {
+    "bytes": 1958,
+    "sha256": "ccc5dda450e39e72bc721da122e8da711b54af0fb3d3954c029bf1cd291476da"
+  },
+  "multi-objective/interrupt-finish/REPORT.md": {
+    "bytes": 3685,
+    "sha256": "1d529ed0414012a9c9958a18a3272828b274843e53c29697f53279b1371dfa77"
+  },
+  "multi-objective/interrupt-finish/trace.py": {
+    "bytes": 5796,
+    "sha256": "a6ae1a2dbe4ed174b92f20d11e31167629de2b7b6b0f2737a74aaf9366dd4051"
+  },
+  "multi-objective/interrupt-finish/final-summary.json": {
+    "bytes": 12928,
+    "sha256": "e91d112bd3306b7e0fec015087c2a9435bc11d72cc1e1464a2c4538a42c9c60f"
+  },
+  "multi-objective/interrupt-finish/observe.py": {
+    "bytes": 2730,
+    "sha256": "a4f1b90a5f7c6690e7fe15c72bdc44e374fb91e27937d6e7f0c75c1eab3a211f"
+  },
+  "multi-objective/interrupt-finish/catalog.tar.gz": {
+    "bytes": 612547,
+    "sha256": "655f83d1c7fd50583b60227017eabdcdf2d1a85ee78aa3020de252471a393f59"
+  },
+  "multi-objective/interrupt-finish/build.py": {
+    "bytes": 6734,
+    "sha256": "670e59a84721723412d0352c0af146d9d626b651906791008161ad4fddce25dd"
+  },
+  "multi-objective/interrupt-finish/evaluate.py": {
+    "bytes": 4046,
+    "sha256": "308b7ba918c5524ac48497426838ad0bfa304f26148fe4ebd89dc3935bdc9b95"
+  },
+  "multi-objective/hold-advance/trace-smoke.jsonl.gz": {
+    "bytes": 11882,
+    "sha256": "35280ea5d8b3cf45bd30837647357aae0a0f32dd1e324b79643cfcc2963a0c52"
+  },
+  "multi-objective/hold-advance/discovery.jsonl.gz": {
+    "bytes": 4873,
+    "sha256": "bfe683073a332a3423b18524c3875ef2775c8c7e349fed00ce4a7b89dba19ba8"
+  },
+  "multi-objective/hold-advance/confirmation-trace-summary.json": {
+    "bytes": 6917,
+    "sha256": "69c73b6769584efb0eee92450a62642ec57656f33b847991dfd965bb315014ea"
+  },
+  "multi-objective/hold-advance/pressure-catalog.tar.gz": {
+    "bytes": 602499,
+    "sha256": "6ce644cc1950e1b72a22a001605d2521bfc3e29b3ce3e845217dd551dd8be793"
+  },
+  "multi-objective/hold-advance/trace-veteran-hour10-jobs.json": {
+    "bytes": 2720,
+    "sha256": "58aa8dc744cef6bba9150abb159cfc721427d14c0ef49da1be78102cbb54b8cc"
+  },
+  "multi-objective/hold-advance/pressure-confirmation-summary.json": {
+    "bytes": 8746,
+    "sha256": "fa166162b3cf51e702fcc19c5ecbb32fef6edb7bcb1ef93c57c73aaedd1fc218"
+  },
+  "multi-objective/hold-advance/matched-example-571239002.json": {
+    "bytes": 134219,
+    "sha256": "74d28b468aa012eba7d0fbabd53cd89ed8f8ed7a56f18988fad2a137764476c4"
+  },
+  "multi-objective/hold-advance/pressure-confirmation-trace-hour8-jobs.json": {
+    "bytes": 26963,
+    "sha256": "977e9ed40d900ee84076c5a1c3eb89492e0024901b02b45597863425a79c7b54"
+  },
+  "multi-objective/hold-advance/trace-veteran-full.jsonl.gz": {
+    "bytes": 133993,
+    "sha256": "7ab13631bbdef78da7b7cac49976cc8d4961b9f991eece0f379e6049808384f3"
+  },
+  "multi-objective/hold-advance/pressure-confirmation-objective-trajectories.jsonl.gz": {
+    "bytes": 158450,
+    "sha256": "dcf5b9f00ecf8ea09ef04180be47586d16d250c5a7c66d82890c8f5aef111831"
+  },
+  "multi-objective/hold-advance/trace-veteran-hour10.jsonl.gz": {
+    "bytes": 121144,
+    "sha256": "e910fbe49829490e113ae82e794022a47cf608339f34e56e05dbacb176c3ff4f"
+  },
+  "multi-objective/hold-advance/pressure-confirmation-trace-references.jsonl.gz": {
+    "bytes": 3329959,
+    "sha256": "836c6d3c9a427e7d163eec15471c82150960c884cfcdff043cddf3a1c791b2fc"
+  },
+  "multi-objective/hold-advance/smoke-summary.json": {
+    "bytes": 863,
+    "sha256": "d98579c18b7be0b786fb86689198d715060191980b6b7b02bc1f5afb1487733a"
+  },
+  "multi-objective/hold-advance/discovery-pressure-summary.json": {
+    "bytes": 21620,
+    "sha256": "d965a815c4f4bccd912f5806a84495ac4c22532a133341932c73f60beee23933"
+  },
+  "multi-objective/hold-advance/discovery-pressure.jsonl.gz": {
+    "bytes": 4051,
+    "sha256": "5f7220d337079795c3b2b924de621944916996c4b552a01ac29a329b2d916183"
+  },
+  "multi-objective/hold-advance/confirmation.jsonl.gz": {
+    "bytes": 1740,
+    "sha256": "dc3a5139723bc29129bd2005ce62a4ea36d2210a6fcf4907a2e9a819f982cc4d"
+  },
+  "multi-objective/hold-advance/discovery-long-summary.json": {
+    "bytes": 24154,
+    "sha256": "94a9f9563e8fdd35877acc17eb7b3c0516a063ab20d044bf6611b8e7df98b74b"
+  },
+  "multi-objective/hold-advance/pressure-confirmation-trace-references-jobs.json": {
+    "bytes": 81243,
+    "sha256": "426a655f6d729950efa6352710c85d302b8e1cc56d75995158ee6993792944f3"
+  },
+  "multi-objective/hold-advance/REPORT.md": {
+    "bytes": 3489,
+    "sha256": "83771f9f20bc6f6ae237ff1e113c2271b802555577b462524967754268abda70"
+  },
+  "multi-objective/hold-advance/freeze.json": {
+    "bytes": 724,
+    "sha256": "de347731add769ec640016b5c7a7465ff17f4298d9ae69e6e1ae99fe0015f3ac"
+  },
+  "multi-objective/hold-advance/confirmation-trace-references-jobs.json": {
+    "bytes": 54843,
+    "sha256": "9f89399c4d7da002fcaec8670f58e313463e827cc65e0d71f8ddec023935b70d"
+  },
+  "multi-objective/hold-advance/smoke.jsonl.gz": {
+    "bytes": 341,
+    "sha256": "484d46fa53ab6e3b978fdd5bfc610c9c81cab6936721055315a03439613ca3c1"
+  },
+  "multi-objective/hold-advance/pressure-freeze.json": {
+    "bytes": 673,
+    "sha256": "b4b05865a0b53c6d5525377b28896bed14498bb89cfe854d386686d490ed9fe9"
+  },
+  "multi-objective/hold-advance/variants.json": {
+    "bytes": 72471,
+    "sha256": "bbd6bf170c825e966645030cdaabcaf0ccf41236b21dfadf1c7aad5d8aa336e1"
+  },
+  "multi-objective/hold-advance/discovery-breach-summary.json": {
+    "bytes": 26439,
+    "sha256": "b621a030ba1a05b9f9cead2e06c8ef80bd5fc27a525ffe216da7b4820d4b7514"
+  },
+  "multi-objective/hold-advance/run.py": {
+    "bytes": 3552,
+    "sha256": "b22a86071021f47f8236a7ed7f445f77d42006ebf00cce5f3bcbc9d2b6ce44e8"
+  },
+  "multi-objective/hold-advance/finalize.py": {
+    "bytes": 4327,
+    "sha256": "3c3b1dce582c46daa9a7b62cb0155bb1d7725befba67f270c0900cac10ee1145"
+  },
+  "multi-objective/hold-advance/trace-smoke-jobs.json": {
+    "bytes": 329,
+    "sha256": "11f6caae31a98b0c8cdac076eb7116b1c32cd24dc6bedb980c7bf945c139ac07"
+  },
+  "multi-objective/hold-advance/trace-veteran-hour8.jsonl.gz": {
+    "bytes": 111973,
+    "sha256": "c38aa27393c65b218561b7cc9ae5e9d937007e3787caab9fb225b383d8a4a088"
+  },
+  "multi-objective/hold-advance/trace.py": {
+    "bytes": 10743,
+    "sha256": "f38cd1f591dd68bce0f1a729ce1e311e548b674c2ca0884d62dcddda07fad861"
+  },
+  "multi-objective/hold-advance/discovery-breach.jsonl.gz": {
+    "bytes": 4655,
+    "sha256": "1214128fac63a439047abee8a7f71f408e562d2c021f1b3f450ad6689d3b5fce"
+  },
+  "multi-objective/hold-advance/confirmation-objective-trajectories.jsonl.gz": {
+    "bytes": 83626,
+    "sha256": "915d18f00b2e66bc3f005a4f423eabae4e1e1deab4379f9e316d608ebbf36f26"
+  },
+  "multi-objective/hold-advance/final-summary.json": {
+    "bytes": 14777,
+    "sha256": "3a2a3b01d954fd43a1b3d4235cf317bacb6b99da42b64e6e6454af43a3a17f9a"
+  },
+  "multi-objective/hold-advance/pressure-confirmation.jsonl.gz": {
+    "bytes": 2655,
+    "sha256": "00d3a4fdbbba514711e28420d6942ef694651740eb466f9550c944511e498a8f"
+  },
+  "multi-objective/hold-advance/confirmation-summary.json": {
+    "bytes": 6077,
+    "sha256": "410fb9c9dfae7edc07791481cea62739808875c60e342aa771636e12873459cc"
+  },
+  "multi-objective/hold-advance/trace-veteran-full-jobs.json": {
+    "bytes": 2696,
+    "sha256": "f52f954e40be34cc38e29cff015ccd43a77d2b4e9ac8f01f7760cf6e73547f07"
+  },
+  "multi-objective/hold-advance/pressure-confirmation-trace-hour10.jsonl.gz": {
+    "bytes": 1074406,
+    "sha256": "3d389daf341c3c2d5828d0f598e016fecdda4204a467446b95bd812095504a36"
+  },
+  "multi-objective/hold-advance/pressure-confirmation-trace-summary.json": {
+    "bytes": 10317,
+    "sha256": "366fefadfaee8a3a77efbc96e106ab4819d1f2d93f0e5ecdda589167a7031920"
+  },
+  "multi-objective/hold-advance/discovery-long.jsonl.gz": {
+    "bytes": 4512,
+    "sha256": "49615bba2af10b9f40fe556f53fb990ffa8de3653e84b26440f686c2edbe979e"
+  },
+  "multi-objective/hold-advance/confirmation-trace-hour8-jobs.json": {
+    "bytes": 18203,
+    "sha256": "b4418c57d7c74a4c831c1d41c932d9974406b2549ccb5fce48db15f1061b84b6"
+  },
+  "multi-objective/hold-advance/trace-veteran-hour8-jobs.json": {
+    "bytes": 2720,
+    "sha256": "58aa8dc744cef6bba9150abb159cfc721427d14c0ef49da1be78102cbb54b8cc"
+  },
+  "multi-objective/hold-advance/pressure-confirmation-trace-hour8.jsonl.gz": {
+    "bytes": 1090889,
+    "sha256": "778bb0647e5fa40c0c263d4c8099fdb423e402cfde8fb9e4fbd026a0c465b615"
+  },
+  "multi-objective/hold-advance/pressure-variants.json": {
+    "bytes": 5067,
+    "sha256": "f4b62f0478d2aeabd9d0db9764d5d167d66972bbac9a2c2e76b8cc210182c440"
+  },
+  "multi-objective/hold-advance/discovery-summary.json": {
+    "bytes": 26572,
+    "sha256": "80acb6af4b7669dab7444d1725812f3459a2caa3ff89a40ab67392561b44eeeb"
+  },
+  "multi-objective/hold-advance/confirmation-trace-references.jsonl.gz": {
+    "bytes": 2034701,
+    "sha256": "6ddee42c5401219dcbb24b3ee629b125ca812898c38d62c9333831276f440d02"
+  },
+  "multi-objective/hold-advance/catalog.tar.gz": {
+    "bytes": 733588,
+    "sha256": "2cfe8e7e7215bc1dc367799b5936164a713cf3da144a552581fad125ec701854"
+  },
+  "multi-objective/hold-advance/frozen-variants.json": {
+    "bytes": 3179,
+    "sha256": "e09593e44a3968ac3cf6f0c1842b15db1d4c73ebe8034c2d7872050acc330144"
+  },
+  "multi-objective/hold-advance/confirmation-trace-hour10-jobs.json": {
+    "bytes": 18203,
+    "sha256": "b4418c57d7c74a4c831c1d41c932d9974406b2549ccb5fce48db15f1061b84b6"
+  },
+  "multi-objective/hold-advance/frozen-catalog.tar.gz": {
+    "bytes": 599019,
+    "sha256": "5355a176feb0c3d2ba599eb7e83a06377d771dddbd2ca6b04b995ac8f6cc6590"
+  },
+  "multi-objective/hold-advance/build.py": {
+    "bytes": 15558,
+    "sha256": "03328bb401d0ac89e15e7e1c48cd000a09418c73b1a36ef6de820b51b1e544be"
+  },
+  "multi-objective/hold-advance/confirmation-trace-hour10.jsonl.gz": {
+    "bytes": 653946,
+    "sha256": "8088935d954d93931573279c0cd74617fc572473c34ff37dfe68823ee57042e1"
+  },
+  "multi-objective/hold-advance/confirmation-trace-hour8.jsonl.gz": {
+    "bytes": 607094,
+    "sha256": "2c9c99e299ca63ac4ee84e85cd78c9409d2f707477459ce82e924aad6f80ef2f"
+  },
+  "multi-objective/hold-advance/pressure-confirmation-trace-hour10-jobs.json": {
+    "bytes": 26963,
+    "sha256": "977e9ed40d900ee84076c5a1c3eb89492e0024901b02b45597863425a79c7b54"
+  },
+  "multi-objective/capture-evacuate/summarize.py": {
+    "bytes": 10220,
+    "sha256": "2b99d625723a64dea2ee6a9e799ecab7c433ee74082d82041571615928d7577c"
+  },
+  "multi-objective/capture-evacuate/catalog-discovery.tar.gz": {
+    "bytes": 615092,
+    "sha256": "111df302deedf8adf6797dcfe8e5726fd029f8a7da24dd95bf619d5ff0b606bb"
+  },
+  "multi-objective/capture-evacuate/ready.json": {
+    "bytes": 246,
+    "sha256": "6573e2beb9e97695bacf1a12ad375b23aa6c7a4e1ea81b40005021e152c38eac"
+  },
+  "multi-objective/capture-evacuate/catalog-discovery-2.tar.gz": {
+    "bytes": 623478,
+    "sha256": "75e9eef07608043f2a5cbb21c3a6ff6e859fa0f64b3b5f824f2df8cfc523b579"
+  },
+  "multi-objective/capture-evacuate/trace.py": {
+    "bytes": 5747,
+    "sha256": "33463395b605f74b51ff82e3ecfc764a7e141305d6d1230f3c2ada7c0fd8c53f"
+  },
+  "multi-objective/capture-evacuate/final-summary.json": {
+    "bytes": 29406,
+    "sha256": "02cef84b63f5e2d40886ec67b607e2e74e5fda77eb4d703e82f7f25c22502f2d"
+  },
+  "multi-objective/capture-evacuate/catalog-final.tar.gz": {
+    "bytes": 604155,
+    "sha256": "36eb73d6fa709be137fcc64890be0d6ac50d5550e94e9e3cbf671d9512f3916d"
+  },
+  "multi-objective/capture-evacuate/render-stage.py": {
+    "bytes": 1743,
+    "sha256": "70e42e84f56a102b7f109ff5e497f48a83c19e673a84e02bd5cd36c6d874dd63"
+  },
+  "multi-objective/capture-evacuate/report.md": {
+    "bytes": 5888,
+    "sha256": "e2b5ee74d1224c73e73a6f9e86157ff770fe00e2eb3407a695f8bbbbf0ef6aeb"
+  },
+  "multi-objective/capture-evacuate/build.py": {
+    "bytes": 12337,
+    "sha256": "f08befbade388181e938b26b16badc809f4eb3197a11ed510e283e51abbf90fb"
+  },
+  "multi-objective/capture-evacuate/companion_trace.rs": {
+    "bytes": 1589,
+    "sha256": "91f4b978f64aca5459498c043fbc9a0222c1ccc2cfb6702334104aca300ebb1e"
+  },
+  "multi-objective/capture-evacuate/evaluate.py": {
+    "bytes": 3400,
+    "sha256": "3a745931ae5dce094676e9ea7508f45fe43035c36ac4ed084f699bf59848d3c5"
+  },
+  "multi-objective/interrupt-finish/validated/catalog.tar.gz": {
+    "bytes": 597745,
+    "sha256": "100488346d364a606890fef2fb1afd8422ff8242ef09a38402f76f8d79d9da3b"
+  },
+  "multi-objective/interrupt-finish/iteration2/catalog.tar.gz": {
+    "bytes": 615240,
+    "sha256": "46177f368c3aee92d3ba533375966412f8cab681276b0fb553dbc4011e63b6ae"
+  },
+  "multi-objective/interrupt-finish/discovery/trace-hour10.json": {
+    "bytes": 2640,
+    "sha256": "0e516fd5cceebbcb972f952cb2de2e93009df3224875cc1e3d778dd3548da38c"
+  },
+  "multi-objective/interrupt-finish/discovery/games.jsonl.gz": {
+    "bytes": 1884,
+    "sha256": "9923e6be0c7b515e882f10fef5603dea44098a22aace27d89f284e24e74d769d"
+  },
+  "multi-objective/interrupt-finish/discovery/protocol.json": {
+    "bytes": 163732,
+    "sha256": "8527259ea8cad8ef443289d9c394a19707909ab0a63aea10b07f6ce7878b2577"
+  },
+  "multi-objective/interrupt-finish/discovery/trace-full.json": {
+    "bytes": 2624,
+    "sha256": "0e89011cd6e32cf15d9b5f78d876d662e979e198959494e429e7cee615d3a1b3"
+  },
+  "multi-objective/interrupt-finish/discovery/trace-full.jsonl.gz": {
+    "bytes": 75455,
+    "sha256": "b5b4f558b64138ae494acca12f8f0e795b1c8d5dcb17299a8078b603339a09ba"
+  },
+  "multi-objective/interrupt-finish/discovery/summary.json": {
+    "bytes": 9210,
+    "sha256": "e71977b0efe43b739f6c1d0ae7a6293dafae96c277fc6e423a6149bb21fc72ba"
+  },
+  "multi-objective/interrupt-finish/discovery-2/games.jsonl.gz": {
+    "bytes": 1981,
+    "sha256": "9d522992262ca911fb9b7b3bc7dd8f42ecb195bc0a4831321340bcff9cbe24e2"
+  },
+  "multi-objective/interrupt-finish/discovery-2/protocol.json": {
+    "bytes": 163831,
+    "sha256": "96e8c414cc243e6d7c02c2893527624fad400381163e5d1a5c875e75f927fa79"
+  },
+  "multi-objective/interrupt-finish/discovery-2/summary.json": {
+    "bytes": 9671,
+    "sha256": "e6092f8ed065767b975f93e47cd72922538fbb994ee8026e944eec681419f908"
+  },
+  "multi-objective/interrupt-finish/confirmation/representative-actions.json": {
+    "bytes": 208028,
+    "sha256": "e3d554d36dd18f4d57d6a41b95eed5088b3e0bb32d4b2fcbadc6fb415b6d8267"
+  },
+  "multi-objective/interrupt-finish/confirmation/trace-check.json": {
+    "bytes": 421,
+    "sha256": "50c3bd58a2a82a2246f6a65d22e3ff590f3accb051a9d100af24ffcab33c131f"
+  },
+  "multi-objective/interrupt-finish/confirmation/games.jsonl.gz": {
+    "bytes": 1396,
+    "sha256": "43bedd807da9858c5037ed8cfe26e03ffc0c55ac903060523a4f6e0d96736d07"
+  },
+  "multi-objective/interrupt-finish/confirmation/protocol.json": {
+    "bytes": 101186,
+    "sha256": "0daacaa701f8a47d2108388f2dcb6d69ab2a5304f615cbee2f61afe96c9937ea"
+  },
+  "multi-objective/interrupt-finish/confirmation/observation-evidence.json": {
+    "bytes": 4013,
+    "sha256": "49804d74602834410a8a8f76f05b742e6022026ac6b349bdf62a70ab2e5aecf1"
+  },
+  "multi-objective/interrupt-finish/confirmation/summary.json": {
+    "bytes": 2627,
+    "sha256": "2b59db8d5c6fd24a99ac07741f36257888f33ac8e817e539e01e52e55834de0a"
+  },
+  "multi-objective/interrupt-finish/probe/Cargo.toml": {
+    "bytes": 362,
+    "sha256": "9ce2665d524f0724f4f3543c70375ee7ae57ef8db69acab77323184f2358cddd"
+  },
+  "multi-objective/interrupt-finish/probe/Cargo.lock": {
+    "bytes": 32242,
+    "sha256": "028c8a206a6653b2aef22093ca674988e92b67ca50ed536d77f038fc14321fcb"
+  },
+  "multi-objective/interrupt-finish/renders/interrupt/roster.json": {
+    "bytes": 4298,
+    "sha256": "839cd253f4d0c9fd3272f07448f3ae5eb9f885b38ede0091da5ea0b5df1ad316"
+  },
+  "multi-objective/interrupt-finish/renders/interrupt/scenario.json": {
+    "bytes": 128,
+    "sha256": "cdf906f7ac929cd92e3e073db75cddcb6dd73162359b1ccc6216ca0755baf98c"
+  },
+  "multi-objective/interrupt-finish/renders/interrupt/preview.png": {
+    "bytes": 788566,
+    "sha256": "4b78924fa07169acfb9616d641137d3b968bcb2eed51e65af5fe238a86c8a523"
+  },
+  "multi-objective/interrupt-finish/renders/interrupt/overlay.json": {
+    "bytes": 667,
+    "sha256": "4dbf7de26db21a48e9b8809826625d9db5dc5adb98368c91d41c680ee77c082b"
+  },
+  "multi-objective/interrupt-finish/renders/interrupt/map.json": {
+    "bytes": 75541,
+    "sha256": "55b161785bdcb0afda3daad85e413f0efae63d74e1ee801fe4e8e83641d0615f"
+  },
+  "multi-objective/interrupt-finish/renders/finish/roster.json": {
+    "bytes": 4298,
+    "sha256": "6975324ffe9627e3d384aa3762babea61ac300801376ed0fc9628800b8f2cb23"
+  },
+  "multi-objective/interrupt-finish/renders/finish/scenario.json": {
+    "bytes": 128,
+    "sha256": "cdf906f7ac929cd92e3e073db75cddcb6dd73162359b1ccc6216ca0755baf98c"
+  },
+  "multi-objective/interrupt-finish/renders/finish/preview.png": {
+    "bytes": 786946,
+    "sha256": "b38273c3bd008a4af74affe0ceaa66e95227399207ccf38c07e387edbc6c3dc4"
+  },
+  "multi-objective/interrupt-finish/renders/finish/overlay.json": {
+    "bytes": 664,
+    "sha256": "0b5aa2eb6a69c913f2244074875f71dc3c37fb95e4a211ec018847ba6fd91974"
+  },
+  "multi-objective/interrupt-finish/renders/finish/map.json": {
+    "bytes": 75535,
+    "sha256": "ead839554186f787d83b7f8de396181e816f430a31923dab7c73f3f9025334cc"
+  },
+  "multi-objective/interrupt-finish/confirmation/traces/queued-cases.json": {
+    "bytes": 16663,
+    "sha256": "a2ec0ff960d8dc8b58385f1d24c8642f38378e576aa78685b94fcfad5314c8f2"
+  },
+  "multi-objective/interrupt-finish/confirmation/traces/hour10-cases.json": {
+    "bytes": 16663,
+    "sha256": "a2ec0ff960d8dc8b58385f1d24c8642f38378e576aa78685b94fcfad5314c8f2"
+  },
+  "multi-objective/interrupt-finish/confirmation/traces/classic-cases.json": {
+    "bytes": 16703,
+    "sha256": "6fc6d7c5c91c7ff3cc3c4b3edbcc2d2619a65abf8bf5c2f16c10815d1c6f6705"
+  },
+  "multi-objective/interrupt-finish/confirmation/traces/replay-protocol.json": {
+    "bytes": 440,
+    "sha256": "eab54b85c86fc2464df953588ef0671ce39854d6ba5456288004eb960d5aeae0"
+  },
+  "multi-objective/interrupt-finish/confirmation/traces/raw-phases.jsonl.gz": {
+    "bytes": 3052289,
+    "sha256": "bdf1994d76fd107b68a4ec3e19321981563b937bb69228138774df12282125f2"
+  },
+  "multi-objective/interrupt-finish/confirmation/traces/full-cases.json": {
+    "bytes": 16583,
+    "sha256": "3e9588a0edeb47d6449f24babc06fe1870d16e853ca24a2e39cdd0739fe05633"
+  },
+  "multi-objective/interrupt-finish/confirmation/traces/hour8-cases.json": {
+    "bytes": 16663,
+    "sha256": "a2ec0ff960d8dc8b58385f1d24c8642f38378e576aa78685b94fcfad5314c8f2"
+  },
+  "multi-objective/interrupt-finish/confirmation/traces/objective-traces.json": {
+    "bytes": 4790526,
+    "sha256": "77a2fe6b92221821aeb8c8405f6c921391f07db06997410b62dbc7f34fffde50"
+  },
+  "multi-objective/interrupt-finish/probe/src/main.rs": {
+    "bytes": 1303,
+    "sha256": "00deab1f02e78af0eba26c4599a6ad17310524ab62103a8172d299eb61aaec30"
+  },
+  "multi-objective/hold-advance/render-veteran/roster.json": {
+    "bytes": 7353,
+    "sha256": "d80f6b83298a8f5dcc4159932dd5ae21df68de940920dd54e44280ef2003e0f1"
+  },
+  "multi-objective/hold-advance/render-veteran/scenario.json": {
+    "bytes": 107,
+    "sha256": "a403ffafaeea538c1e1e2532f2e3d882bce04b33ac60930bf72a8048cd455524"
+  },
+  "multi-objective/hold-advance/render-veteran/preview.png": {
+    "bytes": 240565,
+    "sha256": "0d12850431c6c6273a799260d6815de65954e649491de29916fa489012acdd2f"
+  },
+  "multi-objective/hold-advance/render-veteran/overlay.json": {
+    "bytes": 382,
+    "sha256": "fa24c2a246c29a815dd418ed0dc43187fd9bdddcaf731290dcfc0bf400e0e60e"
+  },
+  "multi-objective/hold-advance/render-veteran/map.json": {
+    "bytes": 21437,
+    "sha256": "f7fd4ce13fb13ea0e9d86079b550afeaaa86082713de18f7d89eb7f50f264273"
+  },
+  "multi-objective/hold-advance/render-timing/roster.json": {
+    "bytes": 6903,
+    "sha256": "b1b1e2d1a171a81454c6b7d8b3a12d422a1096bf4bbfebb65b75febcb8b53570"
+  },
+  "multi-objective/hold-advance/render-timing/scenario.json": {
+    "bytes": 107,
+    "sha256": "a403ffafaeea538c1e1e2532f2e3d882bce04b33ac60930bf72a8048cd455524"
+  },
+  "multi-objective/hold-advance/render-timing/preview.png": {
+    "bytes": 239242,
+    "sha256": "5d1d06ec8aac6f4d5d4721f2547542989f024c143e62b57b713efd35d5ff3450"
+  },
+  "multi-objective/hold-advance/render-timing/overlay.json": {
+    "bytes": 382,
+    "sha256": "c54ae60a3314b57497cbb97096b78d7979ec14c5ed5f675f4bb1c8ea2e05fe92"
+  },
+  "multi-objective/hold-advance/render-timing/map.json": {
+    "bytes": 21442,
+    "sha256": "1b292930a871bdbaf635f5a57a179b41ca1d076b685a6af459e5e042f564b38e"
+  },
+  "multi-objective/hold-advance/render/roster.json": {
+    "bytes": 6899,
+    "sha256": "a1a2f698308207b8dbdba1b2e8f5177418fad7c207b555e4eff00739a188b407"
+  },
+  "multi-objective/hold-advance/render/scenario.json": {
+    "bytes": 107,
+    "sha256": "a403ffafaeea538c1e1e2532f2e3d882bce04b33ac60930bf72a8048cd455524"
+  },
+  "multi-objective/hold-advance/render/preview.png": {
+    "bytes": 240019,
+    "sha256": "864ad9f558d7626b17710dac95f27fb15b4f125f72d158ac8ce7a89c84386e42"
+  },
+  "multi-objective/hold-advance/render/overlay.json": {
+    "bytes": 481,
+    "sha256": "0ac8c39e2ac99e6dd1051f2309572b301f653a3fbdddaf5f2f53bd52938b3a96"
+  },
+  "multi-objective/hold-advance/render/map.json": {
+    "bytes": 21435,
+    "sha256": "2f44bd5c2e0a99491ebb0470d3a1de4be1f3d9e1353ecafd08e95bb1fe5241b4"
+  },
+  "multi-objective/capture-evacuate/discovery-partial/results.jsonl.gz": {
+    "bytes": 341,
+    "sha256": "af9729df7d226504d45ff0a8cf916c333377aaea539b32833255a995c57550c5"
+  },
+  "multi-objective/capture-evacuate/discovery-partial/protocol.json": {
+    "bytes": 1523,
+    "sha256": "464d3d737d6e6eef7bb0a674a0062ddf28d1777a2be767adabcea45d3da627db"
+  },
+  "multi-objective/capture-evacuate/discovery/results.jsonl.gz": {
+    "bytes": 2336,
+    "sha256": "9ae491b6a3fae5272849f9c38b77a1ea0b5f93bc17e6f35cb7029ffd57990a3b"
+  },
+  "multi-objective/capture-evacuate/discovery/protocol.json": {
+    "bytes": 1523,
+    "sha256": "464d3d737d6e6eef7bb0a674a0062ddf28d1777a2be767adabcea45d3da627db"
+  },
+  "multi-objective/capture-evacuate/discovery/summary.json": {
+    "bytes": 6609,
+    "sha256": "1635458d8d74e4b74665c025d17c5930694fb70f84837906fa56d982aa3f7cf8"
+  },
+  "multi-objective/capture-evacuate/discovery-2/results.jsonl.gz": {
+    "bytes": 3015,
+    "sha256": "cd096d0d0b3a80848e1b042c9588b46a9bbfa32c2a8a591d86f7f3f7c5bdb9ed"
+  },
+  "multi-objective/capture-evacuate/discovery-2/protocol.json": {
+    "bytes": 1611,
+    "sha256": "f42f833fbd8ab440a3821f1577491d639d6c4b9d22e400eeaf28dec2c123a292"
+  },
+  "multi-objective/capture-evacuate/discovery-2/summary.json": {
+    "bytes": 9371,
+    "sha256": "985b7acdce52c00dfe50604aaa68dc95f38c42f9141c1e140f2fd1f278eecb97"
+  },
+  "multi-objective/capture-evacuate/confirmation/results.jsonl.gz": {
+    "bytes": 2545,
+    "sha256": "4fab32a9c9a6baa66bc3eed6e69105d6463d04f24d9eef1ed014c56dc1bc6fcf"
+  },
+  "multi-objective/capture-evacuate/confirmation/protocol.json": {
+    "bytes": 1654,
+    "sha256": "b332db2076c292a11193b4a61a97f8047ddcad03d78395ff4e0f6f22e3212a74"
+  },
+  "multi-objective/capture-evacuate/confirmation/summary.json": {
+    "bytes": 3760,
+    "sha256": "6d61712fbf40d65d8bf4147538b8569c6e3f91ad104c04f25987be218de3a2cd"
+  },
+  "multi-objective/capture-evacuate/fixtures/rl-hollowbank-extraction-crossfire-late-guard/campaign.json": {
+    "bytes": 1020,
+    "sha256": "5f993cd510bd4862922dec9f4bc4eb56fb9170cab9b7e345e62c4473bd6ad55e"
+  },
+  "multi-objective/capture-evacuate/fixtures/rl-hollowbank-extraction-crossfire-late-guard/story.json": {
+    "bytes": 283,
+    "sha256": "77de1c0ef59fb49240898505f8ab35bcf80a209b25dc4e73dc3633bd22c41468"
+  },
+  "multi-objective/capture-evacuate/fixtures/rl-hollowbank-extraction-crossfire-late-guard/roster.json": {
+    "bytes": 6769,
+    "sha256": "253eacf08a9a419ef9848af1b2a8d4c698cdbc4f11c51084d78c46f5ff8e1989"
+  },
+  "multi-objective/capture-evacuate/fixtures/rl-hollowbank-extraction-crossfire-late-guard/scripts.json": {
+    "bytes": 12084,
+    "sha256": "0e5de2cdfebab2ed0e60d881cdf1d09fca259204185c8aa049aa13185d4af558"
+  },
+  "multi-objective/capture-evacuate/fixtures/rl-hollowbank-extraction-crossfire-late-guard/stage.json": {
+    "bytes": 162,
+    "sha256": "5771f608f2f6f8025c23bb31fe51910158fcce1da53badd2126ada666f028069"
+  },
+  "multi-objective/capture-evacuate/fixtures/rl-hollowbank-extraction-crossfire-late-guard/map.json": {
+    "bytes": 34438,
+    "sha256": "10e607d5b47c8692969313d97b5f02effffadb2886a3bacbca04ca500806306a"
+  },
+  "multi-objective/capture-evacuate/fixtures/rl-hollowbank-extraction-crossfire-nearside/campaign.json": {
+    "bytes": 1018,
+    "sha256": "a0dd4f539934e4cf212741748d7f36a04340ae5c21ca7d202dac15e6ee04393c"
+  },
+  "multi-objective/capture-evacuate/fixtures/rl-hollowbank-extraction-crossfire-nearside/story.json": {
+    "bytes": 283,
+    "sha256": "77de1c0ef59fb49240898505f8ab35bcf80a209b25dc4e73dc3633bd22c41468"
+  },
+  "multi-objective/capture-evacuate/fixtures/rl-hollowbank-extraction-crossfire-nearside/roster.json": {
+    "bytes": 6769,
+    "sha256": "d9b19e1ed024349a4b1a25eb5b7144dd7eee802e35cffb19b2cf4fdf45c0afce"
+  },
+  "multi-objective/capture-evacuate/fixtures/rl-hollowbank-extraction-crossfire-nearside/scripts.json": {
+    "bytes": 12437,
+    "sha256": "eaa392299c32dad2ff958430b9722374584e398526e24fa81f429121b95f92c1"
+  },
+  "multi-objective/capture-evacuate/fixtures/rl-hollowbank-extraction-crossfire-nearside/stage.json": {
+    "bytes": 160,
+    "sha256": "4b4888cb7b05cb5566203cd0d0354d94d4414a74136fdd89ce98bee8db1ab5fc"
+  },
+  "multi-objective/capture-evacuate/fixtures/rl-hollowbank-extraction-crossfire-nearside/map.json": {
+    "bytes": 34436,
+    "sha256": "d19ac5d0fe90634b34c2b6c8365cafd977ebb0d728d91392c5deadea63423af2"
+  },
+  "multi-objective/capture-evacuate/discovery/traces-crossfire-crossfire-healer/hour10.jsonl.gz": {
+    "bytes": 304349,
+    "sha256": "ee6f055e55503df7de0ed65980f0b7720d9088d3d81612f033fe382e2b664bfb"
+  },
+  "multi-objective/capture-evacuate/discovery/traces-crossfire-crossfire-healer/digest.jsonl.gz": {
+    "bytes": 29642,
+    "sha256": "ace7fe975352d3f9a4cf55d7dc767b22f868787eb09bb9e5dea8b3c267a3748e"
+  },
+  "multi-objective/capture-evacuate/discovery/traces-crossfire-crossfire-healer/hour10-cases.json": {
+    "bytes": 5819,
+    "sha256": "2bb3a7ef0372496f9c17dfe62942c70648a27b54f309215caa696f7cc6fb0755"
+  },
+  "multi-objective/capture-evacuate/discovery/traces-crossfire-crossfire-healer/classic.jsonl.gz": {
+    "bytes": 304490,
+    "sha256": "7ebf180a5599e30bbcbba66ff8ef002ea2838cd05177e8a38057ed4df40f56a0"
+  },
+  "multi-objective/capture-evacuate/discovery/traces-crossfire-crossfire-healer/protocol.json": {
+    "bytes": 20050,
+    "sha256": "b5ab51b0e52f42e86b60a51f0bccd1920d0e2cccdfdc1dace1614d3328d49112"
+  },
+  "multi-objective/capture-evacuate/discovery/traces-crossfire-crossfire-healer/full.jsonl.gz": {
+    "bytes": 326437,
+    "sha256": "ed903f0e71dfead08fe5f94c298b9d11582eb3ee5e21084c062baca7f6107e0d"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-late-guard/roster.json": {
+    "bytes": 6769,
+    "sha256": "253eacf08a9a419ef9848af1b2a8d4c698cdbc4f11c51084d78c46f5ff8e1989"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-late-guard/scenario.json": {
+    "bytes": 171,
+    "sha256": "bc364b69713c209b776fb73b5e4a96434fdeaa77def660fe43ecfc5b1ff8a394"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-late-guard/preview.png": {
+    "bytes": 276377,
+    "sha256": "a7f0536dabc59f8c401374c66210905403b5641e1b1531d2c68101658867a330"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-late-guard/overlay.json": {
+    "bytes": 714,
+    "sha256": "072f438cbfa4d8b87f4d4e502e92bc4b6ee5bba8b5a95995f529fa5c33b6505d"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-late-guard/map.json": {
+    "bytes": 24247,
+    "sha256": "b48692933d07324cbc23f019102c4ea3c94a3f210f0cdc6567ea2e840b159ca0"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-nearside/roster.json": {
+    "bytes": 6769,
+    "sha256": "d9b19e1ed024349a4b1a25eb5b7144dd7eee802e35cffb19b2cf4fdf45c0afce"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-nearside/scenario.json": {
+    "bytes": 171,
+    "sha256": "bc364b69713c209b776fb73b5e4a96434fdeaa77def660fe43ecfc5b1ff8a394"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-nearside/preview.png": {
+    "bytes": 278908,
+    "sha256": "47ad9802e43ed39753f3e760d90260092ed31a6f01bfa49d1372e768ef1a0551"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-nearside/overlay.json": {
+    "bytes": 856,
+    "sha256": "78e7d05f73d0acdda7a75c1dd61600db5ba66c5b3351dc03e15676a998de5081"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-nearside/map.json": {
+    "bytes": 24245,
+    "sha256": "90e080f1870eff1e5025dc6cf4dbdfe46a58dd4a03fc1061197319c6c86735ba"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-banks/roster.json": {
+    "bytes": 6769,
+    "sha256": "d9b19e1ed024349a4b1a25eb5b7144dd7eee802e35cffb19b2cf4fdf45c0afce"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-banks/scenario.json": {
+    "bytes": 171,
+    "sha256": "bc364b69713c209b776fb73b5e4a96434fdeaa77def660fe43ecfc5b1ff8a394"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-banks/preview.png": {
+    "bytes": 275791,
+    "sha256": "3746142bd156bcb654124cae1427b9424dddedc606e48a8a85e04e22dd04f6a1"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-banks/overlay.json": {
+    "bytes": 524,
+    "sha256": "9ea6ef52c3330fc369c4a8027a7c0ea87d3e4a2f6baaf0beb4ce40a2ba26dd04"
+  },
+  "multi-objective/capture-evacuate/renders/crossfire-banks/map.json": {
+    "bytes": 24242,
+    "sha256": "a13f34a279b1f680669a16ca4ee1b3beb41e7d8b96b642b0d98c7b80d851fdcc"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-0.json": {
+    "bytes": 1848,
+    "sha256": "c732e2b8aa74d5781b92859542c2ac506505813cd4d6cbf009b1ad3c12f097cb"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-0.json": {
+    "bytes": 1848,
+    "sha256": "c732e2b8aa74d5781b92859542c2ac506505813cd4d6cbf009b1ad3c12f097cb"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-7.json": {
+    "bytes": 1858,
+    "sha256": "c806fe4dbb3626bfcebd00304bc2aa477c5c3053f2f2925620ef2d9737c15aea"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-4.json": {
+    "bytes": 1858,
+    "sha256": "97967c50d5672da3162cfde36b0e43e0dad2a9a51fe42c82f9320e0e13917186"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-2.json": {
+    "bytes": 1848,
+    "sha256": "40c5b7eb69e5eacd4af4c357ea592e71a8d3fc8d77016f5049165c32eefe8de0"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10.jsonl.gz": {
+    "bytes": 781465,
+    "sha256": "1bf3e7f1942fcf068ee46124ba198921a727d20e9078d2bebb57e914bb4e0f8b"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-5.json": {
+    "bytes": 1858,
+    "sha256": "b40a882af639861639779024ed0582158cd5bdf9a41b6b5d58067d2052a9c20a"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/queued.jsonl.gz": {
+    "bytes": 829727,
+    "sha256": "0341557d4585af5af064e045967bf5114c021d822e179327e8f7c2c5593bcd8f"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-1.json": {
+    "bytes": 1848,
+    "sha256": "12801462bc60678c3e9120ae5e024bcedec226329515cd44f802c667a4986fb6"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-7.json": {
+    "bytes": 1858,
+    "sha256": "c806fe4dbb3626bfcebd00304bc2aa477c5c3053f2f2925620ef2d9737c15aea"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/digest.jsonl.gz": {
+    "bytes": 152898,
+    "sha256": "575f41da142297ac29f1f1dff321b0bc1903175bef983629976aff19665a3704"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-3.json": {
+    "bytes": 1848,
+    "sha256": "49f09dfce0ca03a0422a2b206e179064e164ed40eac46962f8d24f70ff5e4197"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-5.json": {
+    "bytes": 1858,
+    "sha256": "b40a882af639861639779024ed0582158cd5bdf9a41b6b5d58067d2052a9c20a"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-2.json": {
+    "bytes": 1848,
+    "sha256": "40c5b7eb69e5eacd4af4c357ea592e71a8d3fc8d77016f5049165c32eefe8de0"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-1.json": {
+    "bytes": 1848,
+    "sha256": "12801462bc60678c3e9120ae5e024bcedec226329515cd44f802c667a4986fb6"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-4.json": {
+    "bytes": 1858,
+    "sha256": "97967c50d5672da3162cfde36b0e43e0dad2a9a51fe42c82f9320e0e13917186"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/classic.jsonl.gz": {
+    "bytes": 793736,
+    "sha256": "f16b7a22fcb68a8bbef13bbdcc8dfe93e2b7f4fc6d168980755e16980405adcc"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-3.json": {
+    "bytes": 1848,
+    "sha256": "49f09dfce0ca03a0422a2b206e179064e164ed40eac46962f8d24f70ff5e4197"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/protocol.json": {
+    "bytes": 81134,
+    "sha256": "d7843cb7ff2347b8b2a35c72c5117a393b0b10e60f10bededb92bae6ca0f8616"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour10-cases-6.json": {
+    "bytes": 1858,
+    "sha256": "e755b894659dfd16ac0b589b229a3947963c109f6c1af8def86a517c4f98f7b6"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8-cases-6.json": {
+    "bytes": 1858,
+    "sha256": "e755b894659dfd16ac0b589b229a3947963c109f6c1af8def86a517c4f98f7b6"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/hour8.jsonl.gz": {
+    "bytes": 745588,
+    "sha256": "d01036cbca4b761b5dfc0954108e3a7497183cb065009b1f5655a8fdf657b5ea"
+  },
+  "multi-objective/capture-evacuate/confirmation/traces-crossfire-late-guard-crossfire-nearside/full.jsonl.gz": {
+    "bytes": 843654,
+    "sha256": "a7485bdd199d2cb2528f870a45220e57711bd6b6238779b42472e95cc14a56b8"
   }
 }

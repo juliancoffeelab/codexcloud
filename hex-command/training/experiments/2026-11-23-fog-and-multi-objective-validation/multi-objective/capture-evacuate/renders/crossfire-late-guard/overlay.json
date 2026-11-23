@@ -1,0 +1,40 @@
+{
+  "title": "Hollowbank Extraction",
+  "notes": [
+    "Secure the crossing post, free Mara, and reach both exits before turn 14."
+  ],
+  "annotations": [
+    {
+      "col": 13,
+      "row": 2,
+      "text": "Mara\u2019s stockade",
+      "color": "#e7cb7a",
+      "dy": -40,
+      "ring": true
+    },
+    {
+      "col": 7,
+      "row": 4,
+      "text": "Crossing post",
+      "color": "#e7cb7a",
+      "dy": -40,
+      "ring": true
+    },
+    {
+      "col": 2,
+      "row": 9,
+      "text": "Mara exit",
+      "color": "#e7cb7a",
+      "dy": -40,
+      "ring": true
+    },
+    {
+      "col": 16,
+      "row": 9,
+      "text": "Tavin exit",
+      "color": "#e7cb7a",
+      "dy": -40,
+      "ring": true
+    }
+  ]
+}

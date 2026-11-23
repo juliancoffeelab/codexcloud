@@ -1,0 +1,142 @@
+[
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "games": 20,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 19
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "games": 20,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 20
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "games": 20,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 20
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "games": 20,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 20
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "games": 20,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 20
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "games": 20,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 20
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "games": 20,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 20
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "games": 20,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 13
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 7
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "games": 20,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 9
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 11
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "games": 20,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 12
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  }
+]

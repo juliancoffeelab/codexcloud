@@ -1,0 +1,10 @@
+{
+  "ready": true,
+  "files_in_manifest": 74,
+  "confirmation_games": 300,
+  "matched_native_phase_traces": 200,
+  "summary": "final-summary.json",
+  "report": "report.md",
+  "catalog": "validated-catalog.tar.gz",
+  "manifest": "manifest.json"
+}

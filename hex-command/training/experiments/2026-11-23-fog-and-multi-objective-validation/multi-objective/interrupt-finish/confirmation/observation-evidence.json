@@ -1,0 +1,154 @@
+{
+  "spatialSchema": 19,
+  "post": {
+    "col": 4,
+    "row": 2
+  },
+  "channels": {
+    "opponent_hold_objective": 81,
+    "opponent_hold_turns_remaining": 82,
+    "enemy_owned": 43,
+    "capture_goal": 50
+  },
+  "denominator": 30,
+  "samples": [
+    {
+      "config": {
+        "objective": "territory",
+        "seed": 661135201,
+        "landscape": "rl-marlow-cut-pass-interrupt",
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "first": "player",
+        "recruitLimit": 0,
+        "player": "balanced",
+        "enemy": "classic",
+        "maxRounds": 30,
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "arena",
+          "planner": "queued"
+        }
+      },
+      "frames": [
+        {
+          "round": 1,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2,
+          "enemy_owned": 1.0,
+          "capture_goal": 2.4,
+          "enemyHoldTurns": 6
+        },
+        {
+          "round": 2,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.166667,
+          "enemy_owned": 1.0,
+          "capture_goal": 2.4,
+          "enemyHoldTurns": 5
+        },
+        {
+          "round": 3,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.133333,
+          "enemy_owned": 1.0,
+          "capture_goal": 2.4,
+          "enemyHoldTurns": 4
+        },
+        {
+          "round": 3,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.133333,
+          "enemy_owned": 0.0,
+          "capture_goal": 2.4,
+          "enemyHoldTurns": 4
+        },
+        {
+          "round": 4,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2,
+          "enemy_owned": 0.0,
+          "capture_goal": 2.4,
+          "enemyHoldTurns": 6
+        },
+        {
+          "round": 5,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2,
+          "enemy_owned": 0.0,
+          "capture_goal": 2.4,
+          "enemyHoldTurns": 6
+        },
+        {
+          "round": 6,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2,
+          "enemy_owned": 0.0,
+          "capture_goal": 2.4,
+          "enemyHoldTurns": 6
+        },
+        {
+          "round": 7,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2,
+          "enemy_owned": 0.0,
+          "capture_goal": 2.4,
+          "enemyHoldTurns": 6
+        },
+        {
+          "round": 8,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2,
+          "enemy_owned": 0.0,
+          "capture_goal": 2.4,
+          "enemyHoldTurns": 6
+        }
+      ]
+    },
+    {
+      "config": {
+        "objective": "territory",
+        "seed": 661135201,
+        "landscape": "rl-marlow-cut-pass-finish",
+        "armies": {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        "first": "player",
+        "recruitLimit": 0,
+        "player": "balanced",
+        "enemy": "classic",
+        "maxRounds": 30,
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "arena",
+          "planner": "queued"
+        }
+      },
+      "frames": [
+        {
+          "round": 1,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.2,
+          "enemy_owned": 1.0,
+          "capture_goal": 2.4,
+          "enemyHoldTurns": 6
+        },
+        {
+          "round": 2,
+          "opponent_hold_objective": 1.0,
+          "opponent_hold_turns_remaining": 0.166667,
+          "enemy_owned": 1.0,
+          "capture_goal": 2.4,
+          "enemyHoldTurns": 5
+        }
+      ]
+    }
+  ],
+  "nativeFingerprints": {
+    "content": "ae1067bac03318366d0622a56596b3af0feee6a09a9c29d760098b26b2bfb56a",
+    "engine": "8cf0581157741df24b8e5e5c57ab6b8d0b1caae00e3def9b5d4866ee71eb1859"
+  }
+}

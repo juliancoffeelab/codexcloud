@@ -1,0 +1,32 @@
+{
+  "primary": "fork-veteran",
+  "comparisons": [
+    "fork-eastern",
+    "fork-vigil"
+  ],
+  "catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog",
+  "catalogSha256": "d7424bbccc1a2481298bc56828e02189c9ec1467b44b3798a30d06ed840437d3",
+  "confirmationSeeds": [
+    571239001,
+    571239002,
+    571239003,
+    571239004,
+    571239005,
+    571239006,
+    571239007,
+    571239008,
+    571239009,
+    571239010,
+    571239011,
+    571239012,
+    571239013,
+    571239014,
+    571239015,
+    571239016,
+    571239017,
+    571239018,
+    571239019,
+    571239020
+  ],
+  "discovery": "discovery-pressure-summary.json"
+}

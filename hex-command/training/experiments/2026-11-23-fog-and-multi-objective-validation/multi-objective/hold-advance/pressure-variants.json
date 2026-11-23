@@ -1,0 +1,360 @@
+{
+  "fork-veteran": {
+    "id": "rl-ashbank-relay-fork-veteran",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog/game/campaigns/rl-ashbank-relay-fork-veteran",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 6,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3,
+        21
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ],
+      [
+        "soldier",
+        4,
+        2
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeleton-impact-caster"
+        ]
+      ],
+      [
+        5,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "fork-eastern": {
+    "id": "rl-ashbank-relay-fork-eastern",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog/game/campaigns/rl-ashbank-relay-fork-eastern",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 7,
+    "staffed": false,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          2
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeleton-impact-caster"
+        ]
+      ],
+      [
+        4,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton-axeman",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          4,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  },
+  "fork-vigil": {
+    "id": "rl-ashbank-relay-fork-vigil",
+    "stage": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog/game/campaigns/rl-ashbank-relay-fork-vigil",
+    "sites": {
+      "hold": [
+        4,
+        3
+      ],
+      "capture": [
+        14,
+        7
+      ]
+    },
+    "holdTurns": 10,
+    "deadline": 13,
+    "captureBy": 7,
+    "staffed": true,
+    "allies": [
+      [
+        "warden",
+        3,
+        4
+      ],
+      [
+        "soldier",
+        4,
+        3,
+        20
+      ],
+      [
+        "hammerman",
+        5,
+        4
+      ],
+      [
+        "rider",
+        4,
+        5
+      ],
+      [
+        "healer",
+        3,
+        5
+      ],
+      [
+        "adept",
+        4,
+        6
+      ],
+      [
+        "warhammer",
+        8,
+        7
+      ]
+    ],
+    "foes": [
+      [
+        "skeleton-axeman",
+        8,
+        2
+      ],
+      [
+        "skeleton",
+        7,
+        3
+      ],
+      [
+        "skeleton",
+        12,
+        6
+      ],
+      [
+        "skeleton-impact-caster",
+        13,
+        7
+      ],
+      [
+        "deatharcher",
+        14,
+        7
+      ]
+    ],
+    "waves": [
+      [
+        4,
+        [
+          6,
+          1
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeleton-impact-caster"
+        ]
+      ],
+      [
+        5,
+        [
+          15,
+          8
+        ],
+        [
+          "skeleton",
+          "skeletal-hound"
+        ]
+      ],
+      [
+        8,
+        [
+          5,
+          0
+        ],
+        [
+          "skeleton-axeman-l2",
+          "skeletal-hound"
+        ]
+      ]
+    ]
+  }
+}

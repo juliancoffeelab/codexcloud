@@ -1,0 +1,363 @@
+{
+  "binary": "/workspace/codexcloud/hex-command/rust/target/simulation/commander-trace-probe",
+  "binarySha256": "a577c0eeb127d6803157eda970b014e4e0218c66324452fbfeea7b2810c19a9a",
+  "inputs": {
+    "references": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation-trace-references-jobs.json",
+    "hour8": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation-trace-hour8-jobs.json",
+    "hour10": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation-trace-hour10-jobs.json"
+  },
+  "raw": {
+    "references": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation-trace-references.jsonl.gz",
+      "sha256": "836c6d3c9a427e7d163eec15471c82150960c884cfcdff043cddf3a1c791b2fc"
+    },
+    "hour8": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation-trace-hour8.jsonl.gz",
+      "sha256": "778bb0647e5fa40c0c263d4c8099fdb423e402cfde8fb9e4fbd026a0c465b615"
+    },
+    "hour10": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation-trace-hour10.jsonl.gz",
+      "sha256": "3d389daf341c3c2d5828d0f598e016fecdda4204a467446b95bd812095504a36"
+    }
+  },
+  "exactTerminalReplayCount": 300,
+  "catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog",
+  "catalogSha256": "d7424bbccc1a2481298bc56828e02189c9ec1467b44b3798a30d06ed840437d3",
+  "objectiveTrajectories": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-confirmation-objective-trajectories.jsonl",
+  "objectiveTrajectoriesSha256": "4d3eddda05462e7e845c6d871afe518691ce3da8b5c15018ed3dc03dabbba490",
+  "aggregate": [
+    {
+      "variant": "fork-eastern",
+      "enemy": "classic",
+      "policy": "classic",
+      "replays": 20,
+      "terminalGoals": {
+        "2/10 + 1/1": 4,
+        "1/10 + 1/1": 4,
+        "10/10 + 1/1": 12
+      },
+      "villageLostMatches": 8,
+      "matchesWithVillageDamage": 20,
+      "matchesWithLiveAttacksAtBothFronts": 1,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 12,
+      "successfulFirstCaptureRounds": {
+        "6": 12
+      },
+      "lossesWithoutFort": 0
+    },
+    {
+      "variant": "fork-eastern",
+      "enemy": "classic",
+      "policy": "full",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 12,
+        "7/10 + 0/1": 5,
+        "5/10 + 1/1": 2,
+        "0/10 + 0/1": 1
+      },
+      "villageLostMatches": 3,
+      "matchesWithVillageDamage": 16,
+      "matchesWithLiveAttacksAtBothFronts": 3,
+      "winsWithVillageRotation": 4,
+      "winsWithSplitAtCapture": 12,
+      "successfulFirstCaptureRounds": {
+        "5": 10,
+        "6": 1,
+        "7": 1
+      },
+      "lossesWithoutFort": 6
+    },
+    {
+      "variant": "fork-eastern",
+      "enemy": "classic",
+      "policy": "hour10",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 13,
+        "0/10 + 1/1": 4,
+        "7/10 + 0/1": 2,
+        "3/10 + 1/1": 1
+      },
+      "villageLostMatches": 5,
+      "matchesWithVillageDamage": 13,
+      "matchesWithLiveAttacksAtBothFronts": 10,
+      "winsWithVillageRotation": 3,
+      "winsWithSplitAtCapture": 13,
+      "successfulFirstCaptureRounds": {
+        "4": 1,
+        "7": 3,
+        "5": 6,
+        "6": 3
+      },
+      "lossesWithoutFort": 2
+    },
+    {
+      "variant": "fork-eastern",
+      "enemy": "classic",
+      "policy": "hour8",
+      "replays": 20,
+      "terminalGoals": {
+        "2/10 + 1/1": 5,
+        "0/10 + 1/1": 5,
+        "7/10 + 0/1": 2,
+        "10/10 + 1/1": 5,
+        "4/10 + 1/1": 1,
+        "5/10 + 1/1": 1,
+        "0/10 + 0/1": 1
+      },
+      "villageLostMatches": 13,
+      "matchesWithVillageDamage": 20,
+      "matchesWithLiveAttacksAtBothFronts": 3,
+      "winsWithVillageRotation": 4,
+      "winsWithSplitAtCapture": 5,
+      "successfulFirstCaptureRounds": {
+        "6": 4,
+        "7": 1
+      },
+      "lossesWithoutFort": 3
+    },
+    {
+      "variant": "fork-eastern",
+      "enemy": "classic",
+      "policy": "queued",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 9,
+        "5/10 + 1/1": 1,
+        "7/10 + 0/1": 7,
+        "2/10 + 1/1": 1,
+        "1/10 + 1/1": 1,
+        "0/10 + 1/1": 1
+      },
+      "villageLostMatches": 4,
+      "matchesWithVillageDamage": 12,
+      "matchesWithLiveAttacksAtBothFronts": 0,
+      "winsWithVillageRotation": 1,
+      "winsWithSplitAtCapture": 9,
+      "successfulFirstCaptureRounds": {
+        "6": 8,
+        "7": 1
+      },
+      "lossesWithoutFort": 7
+    },
+    {
+      "variant": "fork-veteran",
+      "enemy": "classic",
+      "policy": "classic",
+      "replays": 20,
+      "terminalGoals": {
+        "6/10 + 0/1": 14,
+        "10/10 + 1/1": 2,
+        "4/10 + 1/1": 1,
+        "5/10 + 1/1": 3
+      },
+      "villageLostMatches": 4,
+      "matchesWithVillageDamage": 20,
+      "matchesWithLiveAttacksAtBothFronts": 10,
+      "winsWithVillageRotation": 2,
+      "winsWithSplitAtCapture": 2,
+      "successfulFirstCaptureRounds": {
+        "4": 2
+      },
+      "lossesWithoutFort": 14
+    },
+    {
+      "variant": "fork-veteran",
+      "enemy": "classic",
+      "policy": "full",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 10,
+        "6/10 + 0/1": 8,
+        "5/10 + 1/1": 1,
+        "0/10 + 1/1": 1
+      },
+      "villageLostMatches": 2,
+      "matchesWithVillageDamage": 16,
+      "matchesWithLiveAttacksAtBothFronts": 1,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 10,
+      "successfulFirstCaptureRounds": {
+        "4": 4,
+        "6": 6
+      },
+      "lossesWithoutFort": 8
+    },
+    {
+      "variant": "fork-veteran",
+      "enemy": "classic",
+      "policy": "hour10",
+      "replays": 20,
+      "terminalGoals": {
+        "0/10 + 0/1": 6,
+        "3/10 + 1/1": 1,
+        "6/10 + 0/1": 11,
+        "1/10 + 1/1": 1,
+        "4/10 + 1/1": 1
+      },
+      "villageLostMatches": 9,
+      "matchesWithVillageDamage": 20,
+      "matchesWithLiveAttacksAtBothFronts": 4,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 0,
+      "successfulFirstCaptureRounds": {},
+      "lossesWithoutFort": 17
+    },
+    {
+      "variant": "fork-veteran",
+      "enemy": "classic",
+      "policy": "hour8",
+      "replays": 20,
+      "terminalGoals": {
+        "2/10 + 1/1": 2,
+        "6/10 + 0/1": 5,
+        "0/10 + 1/1": 7,
+        "0/10 + 0/1": 6
+      },
+      "villageLostMatches": 15,
+      "matchesWithVillageDamage": 20,
+      "matchesWithLiveAttacksAtBothFronts": 8,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 0,
+      "successfulFirstCaptureRounds": {},
+      "lossesWithoutFort": 11
+    },
+    {
+      "variant": "fork-veteran",
+      "enemy": "classic",
+      "policy": "queued",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 4,
+        "6/10 + 0/1": 16
+      },
+      "villageLostMatches": 0,
+      "matchesWithVillageDamage": 15,
+      "matchesWithLiveAttacksAtBothFronts": 0,
+      "winsWithVillageRotation": 1,
+      "winsWithSplitAtCapture": 4,
+      "successfulFirstCaptureRounds": {
+        "4": 3,
+        "6": 1
+      },
+      "lossesWithoutFort": 16
+    },
+    {
+      "variant": "fork-vigil",
+      "enemy": "classic",
+      "policy": "classic",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 18,
+        "0/10 + 1/1": 1,
+        "2/10 + 1/1": 1
+      },
+      "villageLostMatches": 2,
+      "matchesWithVillageDamage": 20,
+      "matchesWithLiveAttacksAtBothFronts": 7,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 18,
+      "successfulFirstCaptureRounds": {
+        "7": 17,
+        "4": 1
+      },
+      "lossesWithoutFort": 0
+    },
+    {
+      "variant": "fork-vigil",
+      "enemy": "classic",
+      "policy": "full",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 12,
+        "7/10 + 0/1": 5,
+        "0/10 + 0/1": 2,
+        "1/10 + 1/1": 1
+      },
+      "villageLostMatches": 2,
+      "matchesWithVillageDamage": 17,
+      "matchesWithLiveAttacksAtBothFronts": 1,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 12,
+      "successfulFirstCaptureRounds": {
+        "6": 6,
+        "4": 6
+      },
+      "lossesWithoutFort": 7
+    },
+    {
+      "variant": "fork-vigil",
+      "enemy": "classic",
+      "policy": "hour10",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 3,
+        "4/10 + 1/1": 1,
+        "0/10 + 1/1": 9,
+        "3/10 + 1/1": 3,
+        "1/10 + 1/1": 2,
+        "2/10 + 1/1": 2
+      },
+      "villageLostMatches": 17,
+      "matchesWithVillageDamage": 20,
+      "matchesWithLiveAttacksAtBothFronts": 4,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 3,
+      "successfulFirstCaptureRounds": {
+        "4": 2,
+        "6": 1
+      },
+      "lossesWithoutFort": 0
+    },
+    {
+      "variant": "fork-vigil",
+      "enemy": "classic",
+      "policy": "hour8",
+      "replays": 20,
+      "terminalGoals": {
+        "1/10 + 1/1": 2,
+        "7/10 + 0/1": 1,
+        "10/10 + 1/1": 1,
+        "0/10 + 0/1": 6,
+        "0/10 + 1/1": 6,
+        "2/10 + 1/1": 2,
+        "3/10 + 1/1": 1,
+        "4/10 + 1/1": 1
+      },
+      "villageLostMatches": 14,
+      "matchesWithVillageDamage": 20,
+      "matchesWithLiveAttacksAtBothFronts": 4,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 1,
+      "successfulFirstCaptureRounds": {
+        "6": 1
+      },
+      "lossesWithoutFort": 7
+    },
+    {
+      "variant": "fork-vigil",
+      "enemy": "classic",
+      "policy": "queued",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 10,
+        "7/10 + 0/1": 6,
+        "0/10 + 0/1": 2,
+        "1/10 + 1/1": 1,
+        "2/10 + 0/1": 1
+      },
+      "villageLostMatches": 1,
+      "matchesWithVillageDamage": 16,
+      "matchesWithLiveAttacksAtBothFronts": 1,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 10,
+      "successfulFirstCaptureRounds": {
+        "4": 5,
+        "7": 5
+      },
+      "lossesWithoutFort": 9
+    }
+  ]
+}

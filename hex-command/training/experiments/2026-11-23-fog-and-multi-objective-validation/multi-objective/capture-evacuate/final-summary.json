@@ -1,0 +1,1029 @@
+{
+  "name": "Hollowbank Extraction",
+  "decision": {
+    "crossfire-late-guard": "Validated challenge for both checkpoints against the strongest ordinary references.",
+    "crossfire-nearside": "Validated current-checkpoint challenge with an ordinary Skeleton activated after rescue.",
+    "crossfire-banks": "Rejected after its discovery gap shrank on the fresh panel.",
+    "crossfire-fog": "Rejected in discovery after reference success fell to Classic 2/8."
+  },
+  "required_sequence": [
+    "Own the crossing post at (7,4)",
+    "Approach neutral Mara at (13,2) after capture and transfer her to the player",
+    "Get Mara to (2,9) and Tavin to (16,9) alive at the same time"
+  ],
+  "scope": "Single authored stage, 18\u00d712, fixed rosters and clear vision on both sides for confirmed conditions, unrestricted diplomacy, Classic opposition. Independent random seeds on the same layout.",
+  "discovery": {
+    "seeds_per_condition": 8,
+    "panels": [
+      [
+        493020001,
+        493020002,
+        493020003,
+        493020004,
+        493020005,
+        493020006,
+        493020007,
+        493020008
+      ],
+      [
+        493020101,
+        493020102,
+        493020103,
+        493020104,
+        493020105,
+        493020106,
+        493020107,
+        493020108
+      ]
+    ],
+    "games": 560
+  },
+  "confirmation": {
+    "protocol": "confirmation/protocol.json",
+    "seeds": [
+      493021001,
+      493021002,
+      493021003,
+      493021004,
+      493021005,
+      493021006,
+      493021007,
+      493021008,
+      493021009,
+      493021010,
+      493021011,
+      493021012,
+      493021013,
+      493021014,
+      493021015,
+      493021016,
+      493021017,
+      493021018,
+      493021019,
+      493021020
+    ],
+    "games": 300,
+    "caps": 0,
+    "errors": 0,
+    "results": [
+      {
+        "player": "classic",
+        "variant": "crossfire-nearside",
+        "games": 20,
+        "wins": 16,
+        "caps": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 16,
+          "The evacuation window closed.": 4
+        },
+        "errors": 0
+      },
+      {
+        "player": "classic",
+        "variant": "crossfire-banks",
+        "games": 20,
+        "wins": 14,
+        "caps": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 14,
+          "The evacuation window closed.": 6
+        },
+        "errors": 0
+      },
+      {
+        "player": "classic",
+        "variant": "crossfire-late-guard",
+        "games": 20,
+        "wins": 18,
+        "caps": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 18,
+          "The evacuation window closed.": 2
+        },
+        "errors": 0
+      },
+      {
+        "player": "hour10",
+        "variant": "crossfire-nearside",
+        "games": 20,
+        "wins": 6,
+        "caps": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 6,
+          "The evacuation window closed.": 12,
+          "Mara did not survive.": 2
+        },
+        "errors": 0
+      },
+      {
+        "player": "hour10",
+        "variant": "crossfire-banks",
+        "games": 20,
+        "wins": 13,
+        "caps": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 13,
+          "The evacuation window closed.": 7
+        },
+        "errors": 0
+      },
+      {
+        "player": "hour10",
+        "variant": "crossfire-late-guard",
+        "games": 20,
+        "wins": 8,
+        "caps": 0,
+        "outcomes": {
+          "The evacuation window closed.": 12,
+          "Mara and Tavin both reached safety.": 8
+        },
+        "errors": 0
+      },
+      {
+        "player": "full",
+        "variant": "crossfire-nearside",
+        "games": 20,
+        "wins": 10,
+        "caps": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 10,
+          "The evacuation window closed.": 10
+        },
+        "errors": 0
+      },
+      {
+        "player": "full",
+        "variant": "crossfire-banks",
+        "games": 20,
+        "wins": 10,
+        "caps": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 10,
+          "The evacuation window closed.": 10
+        },
+        "errors": 0
+      },
+      {
+        "player": "full",
+        "variant": "crossfire-late-guard",
+        "games": 20,
+        "wins": 14,
+        "caps": 0,
+        "outcomes": {
+          "The evacuation window closed.": 6,
+          "Mara and Tavin both reached safety.": 14
+        },
+        "errors": 0
+      },
+      {
+        "player": "queued",
+        "variant": "crossfire-nearside",
+        "games": 20,
+        "wins": 12,
+        "caps": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 12,
+          "The evacuation window closed.": 8
+        },
+        "errors": 0
+      },
+      {
+        "player": "queued",
+        "variant": "crossfire-banks",
+        "games": 20,
+        "wins": 16,
+        "caps": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 16,
+          "The evacuation window closed.": 4
+        },
+        "errors": 0
+      },
+      {
+        "player": "queued",
+        "variant": "crossfire-late-guard",
+        "games": 20,
+        "wins": 18,
+        "caps": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 18,
+          "The evacuation window closed.": 2
+        },
+        "errors": 0
+      },
+      {
+        "player": "hour8",
+        "variant": "crossfire-nearside",
+        "games": 20,
+        "wins": 12,
+        "caps": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 12,
+          "The evacuation window closed.": 8
+        },
+        "errors": 0
+      },
+      {
+        "player": "hour8",
+        "variant": "crossfire-banks",
+        "games": 20,
+        "wins": 12,
+        "caps": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 12,
+          "The evacuation window closed.": 8
+        },
+        "errors": 0
+      },
+      {
+        "player": "hour8",
+        "variant": "crossfire-late-guard",
+        "games": 20,
+        "wins": 8,
+        "caps": 0,
+        "outcomes": {
+          "The evacuation window closed.": 12,
+          "Mara and Tavin both reached safety.": 8
+        },
+        "errors": 0
+      }
+    ],
+    "paired_comparisons": {
+      "crossfire-nearside": {
+        "hour8": {
+          "classic": {
+            "reference_only": 6,
+            "learner_only": 2,
+            "both_win": 10,
+            "both_lose": 2
+          },
+          "queued": {
+            "reference_only": 5,
+            "learner_only": 5,
+            "both_win": 7,
+            "both_lose": 3
+          },
+          "full": {
+            "reference_only": 4,
+            "learner_only": 6,
+            "both_win": 6,
+            "both_lose": 4
+          }
+        },
+        "hour10": {
+          "classic": {
+            "reference_only": 11,
+            "learner_only": 1,
+            "both_win": 5,
+            "both_lose": 3
+          },
+          "queued": {
+            "reference_only": 9,
+            "learner_only": 3,
+            "both_win": 3,
+            "both_lose": 5
+          },
+          "full": {
+            "reference_only": 5,
+            "learner_only": 1,
+            "both_win": 5,
+            "both_lose": 9
+          }
+        }
+      },
+      "crossfire-banks": {
+        "hour8": {
+          "classic": {
+            "reference_only": 6,
+            "learner_only": 4,
+            "both_win": 8,
+            "both_lose": 2
+          },
+          "queued": {
+            "reference_only": 7,
+            "learner_only": 3,
+            "both_win": 9,
+            "both_lose": 1
+          },
+          "full": {
+            "reference_only": 5,
+            "learner_only": 7,
+            "both_win": 5,
+            "both_lose": 3
+          }
+        },
+        "hour10": {
+          "classic": {
+            "reference_only": 5,
+            "learner_only": 4,
+            "both_win": 9,
+            "both_lose": 2
+          },
+          "queued": {
+            "reference_only": 7,
+            "learner_only": 4,
+            "both_win": 9,
+            "both_lose": 0
+          },
+          "full": {
+            "reference_only": 4,
+            "learner_only": 7,
+            "both_win": 6,
+            "both_lose": 3
+          }
+        }
+      },
+      "crossfire-late-guard": {
+        "hour8": {
+          "classic": {
+            "reference_only": 11,
+            "learner_only": 1,
+            "both_win": 7,
+            "both_lose": 1
+          },
+          "queued": {
+            "reference_only": 11,
+            "learner_only": 1,
+            "both_win": 7,
+            "both_lose": 1
+          },
+          "full": {
+            "reference_only": 9,
+            "learner_only": 3,
+            "both_win": 5,
+            "both_lose": 3
+          }
+        },
+        "hour10": {
+          "classic": {
+            "reference_only": 11,
+            "learner_only": 1,
+            "both_win": 7,
+            "both_lose": 1
+          },
+          "queued": {
+            "reference_only": 11,
+            "learner_only": 1,
+            "both_win": 7,
+            "both_lose": 1
+          },
+          "full": {
+            "reference_only": 8,
+            "learner_only": 2,
+            "both_win": 6,
+            "both_lose": 4
+          }
+        }
+      }
+    }
+  },
+  "trace": {
+    "path": "confirmation/traces-crossfire-late-guard-crossfire-nearside",
+    "games": 200,
+    "matched_terminal_round_and_winner": true,
+    "per_policy": {
+      "crossfire-late-guard": {
+        "classic": {
+          "matches": 20,
+          "first_reached": {
+            "Secure the crossing post": 20,
+            "Free Mara at the stockade": 20,
+            "Get Mara to her exit": 18,
+            "Get Tavin to his exit": 20
+          },
+          "median_first_round": {
+            "Secure the crossing post": 2.0,
+            "Free Mara at the stockade": 8.0,
+            "Get Mara to her exit": 12.0,
+            "Get Tavin to his exit": 11.5
+          },
+          "stages": [
+            {
+              "goal": "Secure the crossing post",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Free Mara at the stockade",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Both exits alive",
+              "entered": 20,
+              "completed": 18
+            }
+          ],
+          "losses_by_goals_reached": [
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade",
+                "Get Tavin to his exit"
+              ],
+              "games": 2
+            }
+          ],
+          "goals_recorded_in_player_orders": {
+            "evacuate-tavin": 20,
+            "free-mara": 20,
+            "secure-crossing": 20,
+            "evacuate-mara": 20
+          },
+          "reserve_observed_after_rescue": 0,
+          "reserve_acting_matches": 0,
+          "mara_westbound_crossing_row_in_wins": {
+            "11": 18
+          }
+        },
+        "hour10": {
+          "matches": 20,
+          "first_reached": {
+            "Secure the crossing post": 20,
+            "Free Mara at the stockade": 17,
+            "Get Tavin to his exit": 11,
+            "Get Mara to her exit": 13
+          },
+          "median_first_round": {
+            "Secure the crossing post": 2.0,
+            "Free Mara at the stockade": 5,
+            "Get Mara to her exit": 11,
+            "Get Tavin to his exit": 12
+          },
+          "stages": [
+            {
+              "goal": "Secure the crossing post",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Free Mara at the stockade",
+              "entered": 20,
+              "completed": 17
+            },
+            {
+              "goal": "Both exits alive",
+              "entered": 17,
+              "completed": 8
+            }
+          ],
+          "losses_by_goals_reached": [
+            {
+              "goals_reached": [
+                "Secure the crossing post"
+              ],
+              "games": 3
+            },
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade"
+              ],
+              "games": 1
+            },
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade",
+                "Get Mara to her exit"
+              ],
+              "games": 5
+            },
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade",
+                "Get Tavin to his exit"
+              ],
+              "games": 3
+            }
+          ],
+          "goals_recorded_in_player_orders": {
+            "free-mara": 20,
+            "secure-crossing": 20,
+            "evacuate-tavin": 17,
+            "evacuate-mara": 17
+          },
+          "reserve_observed_after_rescue": 0,
+          "reserve_acting_matches": 0,
+          "mara_westbound_crossing_row_in_wins": {
+            "4": 1,
+            "8": 5,
+            "11": 2
+          }
+        },
+        "full": {
+          "matches": 20,
+          "first_reached": {
+            "Secure the crossing post": 20,
+            "Free Mara at the stockade": 20,
+            "Get Tavin to his exit": 20,
+            "Get Mara to her exit": 14
+          },
+          "median_first_round": {
+            "Secure the crossing post": 2.0,
+            "Free Mara at the stockade": 5.0,
+            "Get Mara to her exit": 12.0,
+            "Get Tavin to his exit": 10.0
+          },
+          "stages": [
+            {
+              "goal": "Secure the crossing post",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Free Mara at the stockade",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Both exits alive",
+              "entered": 20,
+              "completed": 14
+            }
+          ],
+          "losses_by_goals_reached": [
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade",
+                "Get Tavin to his exit"
+              ],
+              "games": 6
+            }
+          ],
+          "goals_recorded_in_player_orders": {
+            "evacuate-tavin": 20,
+            "free-mara": 20,
+            "secure-crossing": 20,
+            "evacuate-mara": 20
+          },
+          "reserve_observed_after_rescue": 0,
+          "reserve_acting_matches": 0,
+          "mara_westbound_crossing_row_in_wins": {
+            "4": 6,
+            "11": 8
+          }
+        },
+        "queued": {
+          "matches": 20,
+          "first_reached": {
+            "Secure the crossing post": 20,
+            "Free Mara at the stockade": 20,
+            "Get Tavin to his exit": 20,
+            "Get Mara to her exit": 18
+          },
+          "median_first_round": {
+            "Secure the crossing post": 2.0,
+            "Free Mara at the stockade": 4.0,
+            "Get Mara to her exit": 10.5,
+            "Get Tavin to his exit": 9.0
+          },
+          "stages": [
+            {
+              "goal": "Secure the crossing post",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Free Mara at the stockade",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Both exits alive",
+              "entered": 20,
+              "completed": 18
+            }
+          ],
+          "losses_by_goals_reached": [
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade",
+                "Get Tavin to his exit"
+              ],
+              "games": 2
+            }
+          ],
+          "goals_recorded_in_player_orders": {
+            "evacuate-tavin": 20,
+            "free-mara": 20,
+            "secure-crossing": 20,
+            "evacuate-mara": 20
+          },
+          "reserve_observed_after_rescue": 0,
+          "reserve_acting_matches": 0,
+          "mara_westbound_crossing_row_in_wins": {
+            "11": 13,
+            "4": 5
+          }
+        },
+        "hour8": {
+          "matches": 20,
+          "first_reached": {
+            "Secure the crossing post": 20,
+            "Free Mara at the stockade": 20,
+            "Get Tavin to his exit": 20,
+            "Get Mara to her exit": 8
+          },
+          "median_first_round": {
+            "Secure the crossing post": 1.0,
+            "Free Mara at the stockade": 3.0,
+            "Get Mara to her exit": 9.5,
+            "Get Tavin to his exit": 9.0
+          },
+          "stages": [
+            {
+              "goal": "Secure the crossing post",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Free Mara at the stockade",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Both exits alive",
+              "entered": 20,
+              "completed": 8
+            }
+          ],
+          "losses_by_goals_reached": [
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade",
+                "Get Tavin to his exit"
+              ],
+              "games": 12
+            }
+          ],
+          "goals_recorded_in_player_orders": {
+            "evacuate-tavin": 20,
+            "free-mara": 20,
+            "evacuate-mara": 20
+          },
+          "reserve_observed_after_rescue": 0,
+          "reserve_acting_matches": 0,
+          "mara_westbound_crossing_row_in_wins": {
+            "4": 8
+          }
+        }
+      },
+      "crossfire-nearside": {
+        "classic": {
+          "matches": 20,
+          "first_reached": {
+            "Secure the crossing post": 20,
+            "Free Mara at the stockade": 20,
+            "Get Mara to her exit": 20,
+            "Get Tavin to his exit": 16
+          },
+          "median_first_round": {
+            "Secure the crossing post": 2.0,
+            "Free Mara at the stockade": 6.0,
+            "Get Mara to her exit": 11.0,
+            "Get Tavin to his exit": 12.0
+          },
+          "stages": [
+            {
+              "goal": "Secure the crossing post",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Free Mara at the stockade",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Both exits alive",
+              "entered": 20,
+              "completed": 16
+            }
+          ],
+          "losses_by_goals_reached": [
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade",
+                "Get Mara to her exit"
+              ],
+              "games": 4
+            }
+          ],
+          "goals_recorded_in_player_orders": {
+            "evacuate-tavin": 20,
+            "free-mara": 20,
+            "secure-crossing": 20,
+            "evacuate-mara": 20
+          },
+          "reserve_observed_after_rescue": 20,
+          "reserve_acting_matches": 20,
+          "mara_westbound_crossing_row_in_wins": {
+            "11": 16
+          }
+        },
+        "hour10": {
+          "matches": 20,
+          "first_reached": {
+            "Secure the crossing post": 20,
+            "Free Mara at the stockade": 20,
+            "Get Mara to her exit": 18,
+            "Get Tavin to his exit": 7
+          },
+          "median_first_round": {
+            "Secure the crossing post": 2.0,
+            "Free Mara at the stockade": 5.0,
+            "Get Mara to her exit": 11.0,
+            "Get Tavin to his exit": 11
+          },
+          "stages": [
+            {
+              "goal": "Secure the crossing post",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Free Mara at the stockade",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Both exits alive",
+              "entered": 20,
+              "completed": 6
+            }
+          ],
+          "losses_by_goals_reached": [
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade"
+              ],
+              "games": 1
+            },
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade",
+                "Get Mara to her exit"
+              ],
+              "games": 12
+            },
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade",
+                "Get Tavin to his exit"
+              ],
+              "games": 1
+            }
+          ],
+          "goals_recorded_in_player_orders": {
+            "evacuate-tavin": 20,
+            "free-mara": 20,
+            "secure-crossing": 20,
+            "evacuate-mara": 20
+          },
+          "reserve_observed_after_rescue": 20,
+          "reserve_acting_matches": 20,
+          "mara_westbound_crossing_row_in_wins": {
+            "11": 4,
+            "8": 1,
+            "4": 1
+          }
+        },
+        "full": {
+          "matches": 20,
+          "first_reached": {
+            "Secure the crossing post": 20,
+            "Free Mara at the stockade": 20,
+            "Get Tavin to his exit": 18,
+            "Get Mara to her exit": 12
+          },
+          "median_first_round": {
+            "Secure the crossing post": 2.0,
+            "Free Mara at the stockade": 5.0,
+            "Get Mara to her exit": 11.0,
+            "Get Tavin to his exit": 9.0
+          },
+          "stages": [
+            {
+              "goal": "Secure the crossing post",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Free Mara at the stockade",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Both exits alive",
+              "entered": 20,
+              "completed": 10
+            }
+          ],
+          "losses_by_goals_reached": [
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade",
+                "Get Tavin to his exit"
+              ],
+              "games": 8
+            },
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade",
+                "Get Mara to her exit"
+              ],
+              "games": 2
+            }
+          ],
+          "goals_recorded_in_player_orders": {
+            "evacuate-tavin": 20,
+            "free-mara": 20,
+            "secure-crossing": 20,
+            "evacuate-mara": 20
+          },
+          "reserve_observed_after_rescue": 20,
+          "reserve_acting_matches": 20,
+          "mara_westbound_crossing_row_in_wins": {
+            "4": 5,
+            "11": 4,
+            "8": 1
+          }
+        },
+        "queued": {
+          "matches": 20,
+          "first_reached": {
+            "Secure the crossing post": 20,
+            "Free Mara at the stockade": 20,
+            "Get Tavin to his exit": 20,
+            "Get Mara to her exit": 12
+          },
+          "median_first_round": {
+            "Secure the crossing post": 2.0,
+            "Free Mara at the stockade": 4.0,
+            "Get Mara to her exit": 11.0,
+            "Get Tavin to his exit": 9.0
+          },
+          "stages": [
+            {
+              "goal": "Secure the crossing post",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Free Mara at the stockade",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Both exits alive",
+              "entered": 20,
+              "completed": 12
+            }
+          ],
+          "losses_by_goals_reached": [
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade",
+                "Get Tavin to his exit"
+              ],
+              "games": 8
+            }
+          ],
+          "goals_recorded_in_player_orders": {
+            "evacuate-tavin": 20,
+            "free-mara": 20,
+            "secure-crossing": 20,
+            "evacuate-mara": 20
+          },
+          "reserve_observed_after_rescue": 20,
+          "reserve_acting_matches": 20,
+          "mara_westbound_crossing_row_in_wins": {
+            "4": 7,
+            "11": 5
+          }
+        },
+        "hour8": {
+          "matches": 20,
+          "first_reached": {
+            "Secure the crossing post": 20,
+            "Free Mara at the stockade": 20,
+            "Get Mara to her exit": 12,
+            "Get Tavin to his exit": 17
+          },
+          "median_first_round": {
+            "Secure the crossing post": 1.0,
+            "Free Mara at the stockade": 3.0,
+            "Get Mara to her exit": 8.0,
+            "Get Tavin to his exit": 10
+          },
+          "stages": [
+            {
+              "goal": "Secure the crossing post",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Free Mara at the stockade",
+              "entered": 20,
+              "completed": 20
+            },
+            {
+              "goal": "Both exits alive",
+              "entered": 20,
+              "completed": 12
+            }
+          ],
+          "losses_by_goals_reached": [
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade",
+                "Get Tavin to his exit"
+              ],
+              "games": 5
+            },
+            {
+              "goals_reached": [
+                "Secure the crossing post",
+                "Free Mara at the stockade"
+              ],
+              "games": 3
+            }
+          ],
+          "goals_recorded_in_player_orders": {
+            "evacuate-tavin": 20,
+            "free-mara": 20,
+            "evacuate-mara": 20
+          },
+          "reserve_observed_after_rescue": 20,
+          "reserve_acting_matches": 20,
+          "mara_westbound_crossing_row_in_wins": {
+            "4": 7,
+            "11": 3,
+            "8": 2
+          }
+        }
+      }
+    },
+    "witnesses": [
+      {
+        "variant": "crossfire-late-guard",
+        "seed": 493021006,
+        "reference": "classic",
+        "observation": "Hour10 frees Mara on round 5 and she reaches her exit on 11. With all hostiles gone, Tavin stays on post (7,4) from round 6 until the round 14 deadline. Classic frees Mara on 6 and both actors reach their exits on 11."
+      },
+      {
+        "variant": "crossfire-late-guard",
+        "seed": 493021001,
+        "reference": "classic",
+        "observation": "Both capture on round 2. Hour10 sees the rescue target but never frees Mara, even after the last hostile disappears on round 7. Classic frees her on round 8 and exits with both actors on 13."
+      },
+      {
+        "variant": "crossfire-nearside",
+        "seed": 493021011,
+        "reference": "classic",
+        "observation": "Hour10 frees Mara on round 5. The newly spawned Skeleton pursues her, leaves her at 6 HP at her exit on 11 and kills her on 12 while Tavin waits at the post. Classic kills the reserve, secures Mara on round 11 and evacuates Tavin on 13."
+      }
+    ]
+  },
+  "artifacts": {
+    "catalog": "validated-catalog.tar.gz",
+    "catalog_sha256": "ac8b68b2088cc3bace54d2a8f5b191dd0fe463c631376bca71bbf296c164553b",
+    "builder": "build.py",
+    "evaluation": "evaluate.py",
+    "trace": "trace.py",
+    "report": "report.md",
+    "fixtures": "fixtures",
+    "renderer": "render-stage.py",
+    "primary_preview": "renders/crossfire-late-guard/preview.png",
+    "reserve_preview": "renders/crossfire-nearside/preview.png"
+  },
+  "frozen_training_run": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123",
+  "frozen_source_commit": "bfa39dacfe6ce4bcbdb6eedafc92250deb15b4e4",
+  "models": {
+    "hour10": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/last-1795458575107520190/planner.json",
+      "sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee"
+    },
+    "hour8": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/update-00002205-1795440240315037513/planner.json",
+      "sha256": "e7ef684d9e135e7817e390c533ec8b903d08db2d6ac0253c1aa340616b47a619"
+    }
+  },
+  "native": {
+    "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/native/hex_command_training.so",
+    "sha256": "7d7ab7ede88526b76ceb1c91de5fc9df2187c79c1ce0b7ba3b8b9b1f0cf322f2"
+  }
+}

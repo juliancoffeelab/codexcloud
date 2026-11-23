@@ -1,0 +1,77 @@
+[
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+    "seed": 493021001,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+    "seed": 493021002,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+    "seed": 493021003,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+    "seed": 493021004,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  },
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+    "seed": 493021005,
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "enemy": "classic",
+    "diplomacy": "unrestricted",
+    "objective": "authored",
+    "maxRounds": 100,
+    "recruitLimit": 0
+  }
+]
