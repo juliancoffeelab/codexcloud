@@ -382,5 +382,9 @@
   "recovery/hour-01/planner.json.gz": {
     "bytes": 684157,
     "sha256": "3f4f5ad0268664b950264affef4f420889183331d36280ff145fdbe0d587629a"
+  },
+  "plots/final-targeted-families.png": {
+    "bytes": 474909,
+    "sha256": "415b172a3feac0e008fa79acfb8223456a8fdae2cb6e291cb41f1a444b8c647e"
   }
 }
