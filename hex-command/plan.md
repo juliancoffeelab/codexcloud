@@ -873,3 +873,18 @@ Record reward latency/event density in subsequent prototypes; no automatic rewar
 normalization or new sampler/reward changes authorized. New Lair matched probe
 againstClassic found hour10/reference5/8vs7/8 fullvision,0/8vs6/8 playerfog,
 0/8vs6/8 bothfog. Full configs/results preserved.
+
+### New environment prototypes simulated and confirmed — 2026-11-23
+
+User authorized implementing/running proposals to completion. Three Sol agents
+completed tuning and600 fresh native confirmation games, plus matched behavior
+replays. Archive: `training/experiments/2026-11-23-new-env-validation`.
+Strong candidates: Commander Left Behind healthy (Hour8=0/20,Hour10=2/20,Full20/20),
+wounded+healer (0/20,6/20,Classic18/20), blocked-road Scree route (0/20,0/20,
+Full20/20). Accepted qualification scope clear vision both sides, Classic enemy,
+fixed authored forces, no recruits. Direct-route counterexample Hour10=20/20;
+retain as control rather than advertise it as an unsolved training task. HP-only
+wounded diagnostic referenceClassic13/20,Full1/20 vsbothlearners0/20.
+Kiln rejected because discovery gap disappeared on fresh20seeds; Juniper untested.
+No environment integration, sampler changes, rewards or new training started.
+Native renders, raw counts, exact catalogs and trace evidence preserved.
