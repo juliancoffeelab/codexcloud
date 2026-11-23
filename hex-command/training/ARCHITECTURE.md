@@ -426,6 +426,11 @@ relaunching processes; persisted optimizer/RNG state does not keep a process ali
   checkpoint. It includes native weights and training resume state. V4 names
   the final checkpoint; it also won this run's recorded validation selection.
   See the detailed V4 training history below.
+- `experiments/2026-11-22-recurrent-imitation/experiment.json` records the one-hour
+  V4 imitation continuation with the coarse branch and GRU. Its targeted gains
+  came with regressions on broader campaigns, held-out gameplay and Lantern.
+  The archived mixed-score winner is experimental; no default model was promoted.
+  Five-minute native policies and exact sequence-resume states are preserved.
 - `experiments/2026-11-15-visibility/experiment.json` records that continuation,
   including hourly validation, unused final-test seeds, actor-conditioned input
   diagrams, training curves, native rulebot comparisons and exact recovery data.

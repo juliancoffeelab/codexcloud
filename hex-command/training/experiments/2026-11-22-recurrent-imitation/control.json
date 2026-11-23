@@ -1,0 +1,11 @@
+{
+  "budget_seconds": 3600,
+  "phase": "imitation",
+  "threads": 2,
+  "sequence_length": 8,
+  "sequence_batch_size": 1,
+  "games_per_shard": 1,
+  "collection_workers": 2,
+  "checkpoint_seconds": 300,
+  "warm_start": "/workspace/codexcloud/hex-command/tmp/rl/pretrain-v4-recurrent-60m-20261122/v4-policy.pt"
+}

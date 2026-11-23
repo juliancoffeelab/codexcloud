@@ -745,3 +745,28 @@ are in `tmp/rl/pretrain-v4-recurrent-60m-20261122/protocol.json`.
 
 Kill rewards remain an outstanding PPO experiment and are not part of this
 imitation run. No PPO continuation is authorized by this launch.
+
+### One-hour imitation completed: measured outcome
+
+The run completed 3,600.005 training seconds, 40,283 updates and 311,262
+decisions. Independent confirmation compared V4 and the 30-minute checkpoint.
+Balanced targeted completion rose from 8.53% to 55.70%, while broad training
+campaign completion fell from 24.72% to 20.56%, held-out gameplay from 32.49%
+to 29.84%, and Lantern Road from 5/60 to 2/60. This recipe did not deliver the
+intended broader improvement. The recorded selection rule weighted targeted,
+training-campaign and held-out scores equally: two thirds therefore came from
+training maps on separate seeds. Its winner is not an overall-strength claim,
+and no default model was promoted.
+
+A focused follow-up evaluated the saved five-minute checkpoint on the exact
+monitor cases: targeted balanced score 45.22% (243/528 raw successes), Lantern
+3/24. V4 scored 8.38% (52/528) and 5/24 on those same cases; the 30-minute
+checkpoint scored 56.11% (351/528) and 2/24. Matched V2 Lantern results are
+6/24. Each opponent has eight Lantern cases, so small differences remain noisy.
+
+The completed archive, all five-minute recovery states, frozen workloads and
+curves are under `training/experiments/2026-11-22-recurrent-imitation/`. The
+large teacher corpus remains in the shared run backup. The completion monitor
+is disabled. Native performance profiling remains outstanding: historical V2
+and current imitation timings differed roughly sixfold on the sampled arenas,
+but used different engine/catalog versions and played different decisions.

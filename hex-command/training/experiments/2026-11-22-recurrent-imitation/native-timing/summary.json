@@ -1,0 +1,34 @@
+{
+  "source_revision": "210f7e83f02cc247186e16bac5c610bf78297fb8",
+  "runtime": "Standalone optimized Rust, V2 weights and archived V2 catalog; no Python; match timer excludes startup and catalog/model loading",
+  "tasks": {
+    "open": {
+      "games": 5,
+      "mean": 0.007491507999999999,
+      "median": 0.00707719,
+      "min": 0.006108006,
+      "max": 0.009239907
+    },
+    "river-valley": {
+      "games": 5,
+      "mean": 0.056549176199999995,
+      "median": 0.055595588,
+      "min": 0.045568191,
+      "max": 0.077275967
+    },
+    "lantern-road": {
+      "games": 20,
+      "mean": 0.7882474774999999,
+      "median": 0.8695447095,
+      "min": 0.088179917,
+      "max": 1.513374657,
+      "successful_full_campaigns": {
+        "games": 12,
+        "mean": 1.0774339219166666,
+        "median": 1.0607093065000002,
+        "min": 0.534320857,
+        "max": 1.513374657
+      }
+    }
+  }
+}
