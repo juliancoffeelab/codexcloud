@@ -854,3 +854,22 @@ advance; rear pursuer punishes abandonment. Include a wounded-withdrawal variant
 so following the army is not always correct. Validate a current learned-policy
 gap against a successful rule-based/targeted reference before integration.
 No map, allocation config, reward or new training run changed by this audit.
+
+
+### New environment proposals from three Sol agents — 2026-11-23
+
+Proposals archived in `training/experiments/2026-11-23-new-env-proposals`.
+Prototype priorities: Commander Left Behind (healthy/wounded split-force pair),
+Kiln Crossing (fog contact and coordinated battery assault), Scree Relay
+(threat-dependent route switch plus named-actor handoff). Reserves: Two Banks
+Under Pressure (deathmatch coordination without commander waypoint), Juniper
+Works (ten-turn fort defense under ranged/recruitment pressure). Designs unrun;
+qualify learner/reference gap and counterexamples before wiring any map.
+
+Additional finding requested by user: short envs provide much faster terminal
+feedback. Final hour completed-episode mean decisions: targeted20.7, ordinary79.4,
+broad366.6; Thorn Verge1.6. Broad campaigns also pay intermediate chapter rewards.
+Record reward latency/event density in subsequent prototypes; no automatic reward
+normalization or new sampler/reward changes authorized. New Lair matched probe
+againstClassic found hour10/reference5/8vs7/8 fullvision,0/8vs6/8 playerfog,
+0/8vs6/8 bothfog. Full configs/results preserved.
