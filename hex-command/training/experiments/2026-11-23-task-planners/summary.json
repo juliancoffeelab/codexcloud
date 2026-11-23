@@ -1,0 +1,82 @@
+[
+  {
+    "campaign": "rl-deadline-wait7",
+    "objective": "authored",
+    "opponent": "classic",
+    "specialist": {
+      "wins": 20,
+      "games": 20,
+      "caps": 0
+    },
+    "previous_teacher": {
+      "wins": 14,
+      "games": 20,
+      "caps": 0
+    },
+    "hour10": {
+      "wins": 18,
+      "games": 20,
+      "caps": 0
+    }
+  },
+  {
+    "campaign": "rl-briar-saddle",
+    "objective": "authored",
+    "opponent": "classic",
+    "specialist": {
+      "wins": 20,
+      "games": 20,
+      "caps": 0
+    },
+    "previous_teacher": {
+      "wins": 9,
+      "games": 20,
+      "caps": 0
+    },
+    "hour10": {
+      "wins": 20,
+      "games": 20,
+      "caps": 0
+    }
+  },
+  {
+    "campaign": "rl-vault-rally",
+    "objective": "authored",
+    "opponent": "predictor",
+    "specialist": {
+      "wins": 6,
+      "games": 20,
+      "caps": 0
+    },
+    "previous_teacher": {
+      "wins": 14,
+      "games": 20,
+      "caps": 0
+    },
+    "hour10": {
+      "wins": 7,
+      "games": 20,
+      "caps": 0
+    }
+  },
+  {
+    "campaign": "rl-defend-lower-gallery-0",
+    "objective": "authored",
+    "opponent": "classic",
+    "specialist": {
+      "wins": 16,
+      "games": 20,
+      "caps": 0
+    },
+    "previous_teacher": {
+      "wins": 9,
+      "games": 20,
+      "caps": 0
+    },
+    "hour10": {
+      "wins": 0,
+      "games": 20,
+      "caps": 0
+    }
+  }
+]

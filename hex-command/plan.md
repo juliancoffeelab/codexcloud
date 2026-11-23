@@ -14,6 +14,9 @@ evaluation cases.
   adaptive inside each group, authored mastery/base-weight controls, explicit
   single-stage+1 versus chapter+1/finale+2 rewards, eight new validated challenge
   conditions and a quarter-weight Marlow control sharing its map budget.
+- Three validated task-specific offline teachers are wired for Crown Road Relief,
+  Briar Saddle and Lower Gallery Refuge. Rally keeps Classic; Tidegate still
+  lacks a demonstrated teacher improvement. See the task-planner results below.
 - Teacher blocks and ordered recurrent imitation are wired. Whether to run a
   short mixed imitation pretrain before the next PPO run is still undecided.
   No new optimizer, training supervisor, promotion or deployment was started.
@@ -1021,3 +1024,32 @@ Rally Full did not confirm (12/20 versus Classic13/20 and learner12/20); keep
 existing teacher. Tidegate still lacks a teacher matching the learner in several
 conditions. Lower Gallery references remain5/20. Do not claim all teacher deficits
 are resolved. Evidence: `training/experiments/2026-11-23-better-targeted-teachers`.
+
+
+## Task-specific teachers — 2026-11-23
+
+Implemented explicit `pretrain_imitator.tactical` roles for relief timing,
+recovery before assault, and retreat/screen/return-to-hold. Authored coordinates
+and friendly actor bindings live in `simulation/rl.json`; controllers consume
+legal candidates and faction-observed spatial features. They do not freeze
+opponents, inspect hidden units or RNG, or change playable rules. The controller
+recomputes from each supplied observation, including tentative planning states.
+
+Fresh confirmation used twenty disjoint seeds per map on unchanged configured
+opponents/visibility, with matched hour-10 and previous-teacher games:
+
+| Map | Previous teacher | Hour 10 | Task planner | Decision |
+|---|---:|---:|---:|---|
+| Crown Road Relief, clear vs Classic | 14/20 | 18/20 | 20/20 | Wire relief teacher |
+| Briar Saddle, clear vs Classic | 9/20 | 20/20 | 20/20 | Wire recovery teacher |
+| Lower Gallery Refuge, clear vs Classic | 9/20 | 0/20 | 16/20 | Wire refuge teacher |
+| Rally at the Vault, clear vs Predictor | 14/20 | 7/20 | 6/20 | Keep Classic |
+
+Tidegate task-planner screens did not beat the existing learner/reference;
+rejected prototypes are preserved rather than wired. Its four configured
+clear/both-fog enemy conditions were screened, but the three promoted teachers
+are qualified only on their current clear conditions. These are teacher-quality
+results on fixed layouts, not evidence of post-imitation improvement or unseen
+layout generalization. No pretraining or PPO was started. Pool budgets,
+conditions, sampling controls, reward profiles and model weights are unchanged.
+Evidence: `training/experiments/2026-11-23-task-planners`.
