@@ -1,0 +1,94 @@
+{
+  "confirmation-teachers.jsonl.gz": {
+    "bytes": 2621,
+    "sha256": "bd0a44fffc6944a5f6cffe8067a32681d7a954d4c5d47f41f38e69ad6f7814ad"
+  },
+  "existing-controller-results.jsonl.gz": {
+    "bytes": 784,
+    "sha256": "56195e2f7ff15c5bec1ffaff7e5f88c4a8eb91cf4f9acff10d22f63980c59bd5"
+  },
+  "gank-results.jsonl.gz": {
+    "bytes": 967,
+    "sha256": "ca6ca4e30651e14a2adff7065ac38bf0264c59102f40110657bd1f20da00341f"
+  },
+  "original-path-controller.rs": {
+    "bytes": 2330,
+    "sha256": "239a45a242d4941ec4df3096a0a8e17be7bdb8729847673dcf4197d7244779ed"
+  },
+  "ported-parity.json": {
+    "bytes": 60,
+    "sha256": "04acbd860dcb603232c7b19a04c98ae4799d246e5c6e8077a8d19758756ca66a"
+  },
+  "ported-results.jsonl.gz": {
+    "bytes": 929,
+    "sha256": "4bf69e36861ea4c6fbc04dc3b5f4bd36e8973230b60d892e0ab8da4ca15dabe0"
+  },
+  "confirmation-learners.json.gz": {
+    "bytes": 1232,
+    "sha256": "2cee184cc037d5207d955fa7d0f88ccff9bafd86ca9f09ac749fb62a84561b4b"
+  },
+  "candidate-jobs.json.gz": {
+    "bytes": 6322,
+    "sha256": "69b6fa633ae7d524622ecbe3fe362ccb595d71ecb949b99cdde138cf850930ed"
+  },
+  "python-tests.log.gz": {
+    "bytes": 340,
+    "sha256": "6496035eacd18156248bde945bf398ac958cbb23a820f46849947b0e49e2b526"
+  },
+  "confirmation-learner-results.jsonl.gz": {
+    "bytes": 1902,
+    "sha256": "621622b28fd497fb645b31648d1137f58f61c1b352c8b44e78eef4f5935da00a"
+  },
+  "predictor-recruiter-results.jsonl.gz": {
+    "bytes": 605,
+    "sha256": "fd88b605c910e73e463e1b6a62229bd857fa34bf93439c8ea3b1def128d62bd7"
+  },
+  "README.md": {
+    "bytes": 4133,
+    "sha256": "d549913833389e7827c549f66e6dbcae84b936cdc6dfe340636608b4afc439a3"
+  },
+  "collection-smoke.json": {
+    "bytes": 2277,
+    "sha256": "8a5e926ddc5b70a9278080fdfc5970f4ce65ecfe556d858effd16b358e604fd2"
+  },
+  "full-verify.log.gz": {
+    "bytes": 10104,
+    "sha256": "7c7de3ddca01d6e255a446291d848bf46733f94a415a306c63f901fdf5f4e5b2"
+  },
+  "candidate-results.jsonl.gz": {
+    "bytes": 6358,
+    "sha256": "242d920aedd4726d74b3a3b09b0327d0a6ba8789e1a1a4ee285e37b196163625"
+  },
+  "guard-v2-results.jsonl.gz": {
+    "bytes": 631,
+    "sha256": "9bb13b1983f055c8ad534979914d723b6653929e6d27979b746dd3c80e07ba84"
+  },
+  "ported-jobs.json.gz": {
+    "bytes": 868,
+    "sha256": "4981d39da7c4239e71fa3d2fbe12275fb73e32f178434cea0d2fe0b6e52b85de"
+  },
+  "fresh-confirmation.json": {
+    "bytes": 6978,
+    "sha256": "3433a9fb7a4c0b47fb54183ce68e1c5b37460f0c5c483b745f379b8dbc714b98"
+  },
+  "protocol.json": {
+    "bytes": 914,
+    "sha256": "540572c29b59cd4f857770dff4b0f969818645ec5e718d03e21b082b6634c526"
+  },
+  "confirmation-jobs.json.gz": {
+    "bytes": 2489,
+    "sha256": "730b7c0f7da04b7c5c7df00a0ea3d9f2a3fa38b3e3af31e045b26217c1a2ec44"
+  },
+  "specialist-screened-v1.rs": {
+    "bytes": 5694,
+    "sha256": "305ab094a3ad831ca7052343858cb51444a7c45dcdb0b6691795849dad55b7fa"
+  },
+  "checks.json": {
+    "bytes": 294,
+    "sha256": "5ae23065523e46d8bac747cf1709cf6b755b8435daf17d942b49a5317d783ea7"
+  },
+  "specialist-with-guard-v2.rs": {
+    "bytes": 5767,
+    "sha256": "6db44b4252f273c99ccb71994da3c4a666848a89d7c2943707b0286e39bde84d"
+  }
+}

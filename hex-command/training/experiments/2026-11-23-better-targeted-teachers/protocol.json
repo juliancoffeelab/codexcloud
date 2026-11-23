@@ -1,0 +1,33 @@
+{
+  "sourceBefore": "12dc0d8d52f08caa013b8cebdf95df0d78467543",
+  "counts": {
+    "existing-controller-results.jsonl": 64,
+    "candidate-results.jsonl": 1256,
+    "gank-results.jsonl": 112,
+    "guard-v2-results.jsonl": 40,
+    "confirmation-teachers.jsonl": 400,
+    "confirmation-learner-results.jsonl": 200,
+    "ported-results.jsonl": 100,
+    "predictor-recruiter-results.jsonl": 60
+  },
+  "totalGames": 2232,
+  "screeningSeeds": "Exact prior fresh eight-seed cases490000001 onward",
+  "confirmationSeeds": [
+    493070001,
+    493070020
+  ],
+  "screeningAndConfirmationDisjoint": true,
+  "workers": 1,
+  "caps": 0,
+  "changedTrainingConditions": 5,
+  "changedMaps": 3,
+  "ppoConfigurationSetsAndWeightsUnchanged": true,
+  "unqualifiedCandidatesNotWired": [
+    "Rally Full",
+    "Tidegate Classic",
+    "Lower Gallery Classic",
+    "guard_anchor v1/v2",
+    "gank_visible"
+  ],
+  "trainingStarted": false
+}

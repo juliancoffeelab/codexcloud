@@ -1000,3 +1000,24 @@ is materially worse than learner31/32; several solved maps also have weaker
 teachers. Do not assume mixed imitation is universally beneficial. Short3–5min
 pretrain remains a user decision, not launched. Evidence:
 `training/experiments/2026-11-23-targeted-teacher-scores`.
+
+### Better teachers: reuse and extend targeted bots — 2026-11-23
+
+Existing objective_progress/path_to teachers were already included in the prior
+scores. Tested them on weaker movement tasks, then screened other full block
+configurations plus visible-target and defense specialists.1472 screening games,
+600 matched fresh confirmations; failed defense heuristics rejected.
+
+Five condition-specific teacher replacements now wired without changing any PPO
+case, reward, sampling weight, map or objective: Force/clear/Full now uses
+Situational+Mission+Full (fresh19/20 versus old12/20, learner18/20); Bellmarket/
+both-fog/Full uses Situational+Mission+Queued (20/20 versus17/20, learner20/20);
+Thorn clearPredictor/Full and both-fogFull use visible_target_path (60/60 versus
+51/60, learner60/60). The specialist reuses the native path controller and only
+observed hostile positions/defeat markers. Production parity100/100, additional
+Predictor-recruiter specialist60/60. Pretraining remains undecided/not launched.
+
+Rally Full did not confirm (12/20 versus Classic13/20 and learner12/20); keep
+existing teacher. Tidegate still lacks a teacher matching the learner in several
+conditions. Lower Gallery references remain5/20. Do not claim all teacher deficits
+are resolved. Evidence: `training/experiments/2026-11-23-better-targeted-teachers`.

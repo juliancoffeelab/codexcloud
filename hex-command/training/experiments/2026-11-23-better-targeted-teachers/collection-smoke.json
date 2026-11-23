@@ -1,0 +1,105 @@
+[
+  {
+    "config": {
+      "campaign": "rl-thorn-verge",
+      "diplomacy": "unrestricted",
+      "enemy": "predictor",
+      "maxRounds": 100,
+      "objective": "authored",
+      "player": "balanced",
+      "playerBlocks": {
+        "campaign": "mission",
+        "planner": "queued",
+        "recruiter": "situational"
+      },
+      "recruitLimit": null,
+      "seed": 493070001
+    },
+    "decisions": 1,
+    "missingLabels": 0,
+    "sequenceContexts": [
+      {
+        "game": 0,
+        "context": {
+          "observer": "player",
+          "map": "rl-thorn-verge",
+          "round": 1,
+          "decision": 0,
+          "generation": 2
+        }
+      }
+    ]
+  },
+  {
+    "config": {
+      "campaign": "rl-thorn-verge",
+      "diplomacy": "unrestricted",
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "campaign": "mission",
+        "planner": "full",
+        "recruiter": "predictor"
+      },
+      "maxRounds": 100,
+      "objective": "authored",
+      "player": "balanced",
+      "playerBlocks": {
+        "campaign": "mission",
+        "planner": "queued",
+        "recruiter": "situational"
+      },
+      "recruitLimit": null,
+      "seed": 493070001
+    },
+    "decisions": 1,
+    "missingLabels": 0,
+    "sequenceContexts": [
+      {
+        "game": 0,
+        "context": {
+          "observer": "player",
+          "map": "rl-thorn-verge",
+          "round": 1,
+          "decision": 0,
+          "generation": 2
+        }
+      }
+    ]
+  },
+  {
+    "config": {
+      "campaign": "rl-thorn-verge",
+      "diplomacy": "unrestricted",
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "campaign": "mission",
+        "planner": "full",
+        "recruiter": "predictor"
+      },
+      "maxRounds": 100,
+      "objective": "both-fog",
+      "player": "balanced",
+      "playerBlocks": {
+        "campaign": "mission",
+        "planner": "queued",
+        "recruiter": "situational"
+      },
+      "recruitLimit": null,
+      "seed": 493070001
+    },
+    "decisions": 1,
+    "missingLabels": 0,
+    "sequenceContexts": [
+      {
+        "game": 0,
+        "context": {
+          "observer": "player",
+          "map": "rl-thorn-verge",
+          "round": 1,
+          "decision": 0,
+          "generation": 2
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "fullVerifyPassed": true,
+  "frontendTests": 272,
+  "trainingTests": 41,
+  "optionalTrainingSkip": 1,
+  "productionParity": 100,
+  "additionalRecruiterWins": 60,
+  "additionalRecruiterGames": 60,
+  "collectionScopes": 3,
+  "ppoConfigAndWeightsUnchanged": true,
+  "trainingStarted": false
+}

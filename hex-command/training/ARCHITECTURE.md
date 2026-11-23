@@ -720,3 +720,13 @@ start. `--checkpoint-seconds` sets training-time checkpoint spacing (300 seconds
 by default). `--collection-workers` and `--games-per-shard` bound collection
 concurrency and retained games without truncating their teacher trajectories.
 The corpus manifest pins its shard layout for recovery.
+
+The optional `visible_target_path` offline teacher reuses the actor-specific
+path controller, selecting only observed hostile tiles and prioritizing observed
+defeat markers. It is configured for three validated Thorn Verge conditions;
+it is not a new PPO planner or a hidden-information oracle. Force the Crossing
+and Bellmarket also select different teachers by opponent/visibility after fresh
+matched qualification. Existing teacher selectors remain on other conditions.
+See `experiments/2026-11-23-better-targeted-teachers` for positive and rejected
+results; unresolved Tidegate/Lower Gallery deficits still matter when deciding
+whether to run broad imitation.
