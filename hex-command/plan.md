@@ -987,3 +987,16 @@ keeps static family/map weights independent of training allocation changes.
 
 No pretrain/PPO launched. Optional short imitation pretrain decision is still
 open. Frozen earlier experiment workloads/checkpoints were not rewritten.
+
+### Matched teacher audit before deciding on short pretraining — 2026-11-23
+
+Completed all528 teacher matches for the exact66-condition fresh hour10 panel,
+including the configured objective_progress/path_to controllers. No caps;24 prior
+teacher results reproduced through terminal round. Teacher447/528 versus learner
+383/528; equal-map85.99% versus70.55%. Teachers improve eleven maps, tie six and
+are worse on seven. Splitpine0/24learner versus16/24teacher; Echo0/8versus8/8;
+North of Lantern0/8versus8/8; Lower Gallery0/8versus3/8. Tidegate's teacher21/32
+is materially worse than learner31/32; several solved maps also have weaker
+teachers. Do not assume mixed imitation is universally beneficial. Short3–5min
+pretrain remains a user decision, not launched. Evidence:
+`training/experiments/2026-11-23-targeted-teacher-scores`.

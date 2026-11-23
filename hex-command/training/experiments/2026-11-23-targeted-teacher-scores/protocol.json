@@ -1,0 +1,19 @@
+{
+  "sourceCommit": "41eecf457b5e6366e088a9edea82ca458c7a776d",
+  "catalog": "rust/data",
+  "baseline": "training/experiments/2026-11-23-targeted-curriculum-audit/fresh.jsonl.gz",
+  "baselineSha256": "7f63d2de33539282d43aebe1218da63c7f10beee9a40f7b1532b7a10fa225a25",
+  "games": 528,
+  "conditions": 66,
+  "seedsPerCondition": 8,
+  "pairedConfigs": 528,
+  "oldTeacherReferenceMatches": 24,
+  "caps": 0,
+  "workers": 1,
+  "runner": {
+    "source": "teacher_scores.rs",
+    "sha256": "cac45e23137a6822e98da26d3cc7cf624165f1fffca74ca3af12d803d652b737"
+  },
+  "teacherSemantics": "Named teacher replaces planner only, retaining each original Situational recruiter and Mission Campaigner. objective_progress and path_to run the actual configured legal-action native controllers; path_to receives spatial choices. Explicit blocks, if authored, replace all three blocks.",
+  "newTraining": false
+}
