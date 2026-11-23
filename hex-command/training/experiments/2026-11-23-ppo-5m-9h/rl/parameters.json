@@ -1,0 +1,32 @@
+{
+  "seconds": 32400.0,
+  "seed_start": 450000001,
+  "temperature": 0.35,
+  "envs": 4,
+  "horizon": 64,
+  "minibatch_size": 8,
+  "recurrent_window": 8,
+  "reference_outputs_cached": true,
+  "optimization_epochs": 3,
+  "max_gradient_norm": 0.5,
+  "actor_lr": 5e-06,
+  "critic_lr": 0.001,
+  "gamma": 0.999,
+  "gae_lambda": 0.95,
+  "clip": 0.2,
+  "entropy_coefficient": 0.001,
+  "reference_kl_coefficient": 0.02,
+  "critic_warmup_episodes": 24,
+  "rewards": {
+    "campaign_chapter": 1.0,
+    "campaign_finale": 2.0,
+    "campaign_defeat": -1,
+    "campaign_cap": -2.0,
+    "escort_loss": -2,
+    "protected_loss": -1.5,
+    "leader_loss": -1,
+    "arena_win": 1,
+    "arena_defeat": -1,
+    "arena_cap": -1
+  }
+}
