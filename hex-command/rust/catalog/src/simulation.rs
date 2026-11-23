@@ -169,7 +169,7 @@ impl PretrainImitator {
         match self {
             Self::Named(name) => matches!(
                 name.as_str(),
-                "classic" | "queued" | "full" | "objective_progress"
+                "classic" | "queued" | "full" | "objective_progress" | "visible_target_path"
             ),
             Self::Path { .. } => true,
             Self::Blocks {

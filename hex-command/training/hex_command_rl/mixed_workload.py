@@ -116,7 +116,7 @@ def pretrain_imitator(config, spec=None):
     spec = definition() if spec is None else spec
     entry = entry_for(config, spec)
     teacher = entry["pretrain_imitator"]
-    if isinstance(teacher, str) and teacher in ("classic", "queued", "full", "objective_progress"):
+    if isinstance(teacher, str) and teacher in ("classic", "queued", "full", "objective_progress", "visible_target_path"):
         return teacher
     if isinstance(teacher, dict) and set(teacher) == {"path_to"}:
         return teacher

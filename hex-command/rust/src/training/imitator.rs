@@ -4,6 +4,41 @@ use super::{
     spatial::{ACTOR_CHANNELS, KERNEL},
 };
 use crate::{data::*, simulation::MatchConfig};
+
+/// Follow the nearest observed defeat target using the existing path teacher.
+/// Both hostile occupancy and objective markers come from the faction's view.
+fn visible_target_controller() -> DecisionController {
+    Box::new(move |c: &Choices| {
+        let board = &c.spatial.as_ref().unwrap().board;
+        let cells = board.height * board.width;
+        let friends: Vec<_> = (0..cells)
+            .filter(|&p| board.values[cells + p] > 0.5)
+            .collect();
+        let foes: Vec<_> = (0..cells)
+            .filter(|&p| board.values[2 * cells + p] > 0.5)
+            .collect();
+        let marked: Vec<_> = foes
+            .iter()
+            .copied()
+            .filter(|&p| board.values[51 * cells + p] > 0.5)
+            .collect();
+        let targets = if marked.is_empty() { &foes } else { &marked };
+        let distance = |a: usize, b: usize| {
+            let (ar, aq) = ((a / board.width) as i32, (a % board.width) as i32);
+            let (br, bq) = ((b / board.width) as i32, (b % board.width) as i32);
+            ((ar - br).abs() + (aq - bq).abs() + (ar + aq - br - bq).abs()) / 2
+        };
+        let goal = targets.iter().min_by_key(|&&p| {
+            friends
+                .iter()
+                .map(|&a| distance(a, p))
+                .min()
+                .unwrap_or(i32::MAX)
+        });
+        goal.map_or(Some(0), |&p| path_controller(p)(c))
+    })
+}
+
 fn path_controller(goal: usize) -> DecisionController {
     Box::new(move |c: &Choices| {
         let b = &c.spatial.as_ref().unwrap().board;
@@ -107,6 +142,9 @@ pub fn controller(
         return Err("unknown pretrain_imitator".into());
     }
     match spec {
+        PretrainImitator::Named(name) if name == "visible_target_path" => {
+            Ok(Some(visible_target_controller()))
+        }
         PretrainImitator::Named(name) if name == "objective_progress" => {
             Ok(Some(Box::new(|c: &Choices| {
                 let mut best = (0, 0.0f32);

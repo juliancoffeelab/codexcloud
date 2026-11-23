@@ -956,9 +956,25 @@
       {
         "objective": "authored",
         "diplomacy": "unrestricted",
-        "opponents": ["classic", "full"],
+        "opponents": ["classic"],
         "samplingGroup": "targeted",
         "pretrain_imitator": "objective_progress",
+        "samplingMap": "rl-urgent-crossing",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0
+      },
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["full"],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "full"
+        },
         "samplingMap": "rl-urgent-crossing",
         "rewardProfile": "arena",
         "recruiters": null,
@@ -1363,9 +1379,25 @@
       {
         "objective": "both-fog",
         "diplomacy": "unrestricted",
-        "opponents": ["classic", "full"],
+        "opponents": ["classic"],
         "samplingGroup": "targeted",
         "pretrain_imitator": "classic",
+        "samplingMap": "rl-bellmarket-courts",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["full"],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "queued"
+        },
         "samplingMap": "rl-bellmarket-courts",
         "rewardProfile": "arena",
         "recruiters": null,
@@ -1377,9 +1409,21 @@
       {
         "objective": "authored",
         "diplomacy": "unrestricted",
-        "opponents": ["classic", "predictor", "full"],
+        "opponents": ["classic"],
         "samplingGroup": "targeted",
         "pretrain_imitator": "classic",
+        "samplingMap": "rl-thorn-verge",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0
+      },
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": ["predictor", "full"],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "visible_target_path",
         "samplingMap": "rl-thorn-verge",
         "rewardProfile": "arena",
         "recruiters": null,
@@ -1401,9 +1445,21 @@
       {
         "objective": "both-fog",
         "diplomacy": "unrestricted",
-        "opponents": ["classic", "predictor", "full"],
+        "opponents": ["classic", "predictor"],
         "samplingGroup": "targeted",
         "pretrain_imitator": "classic",
+        "samplingMap": "rl-thorn-verge",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": ["full"],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "visible_target_path",
         "samplingMap": "rl-thorn-verge",
         "rewardProfile": "arena",
         "recruiters": null,
