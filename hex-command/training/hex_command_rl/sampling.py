@@ -16,7 +16,7 @@ def mastery_multiplier(completion, threshold, minimum):
 class Sampler:
     """Balance decisions, reserving work for live episodes and retaining mastery."""
 
-    SCHEMA = 2
+    SCHEMA = 3
 
     def __init__(self, configs, rng, state=None, *, spec=None):
         spec = definition() if spec is None else spec
@@ -45,6 +45,13 @@ class Sampler:
         self.bucket_weights = defaultdict(float)
         for k, value in self.base_weights.items():
             self.bucket_weights[self.buckets[k]] += value
+        self.maps = {k: (self.buckets[k], group(c)[:2]) for k, c in self.templates.items()}
+        self.map_cases = defaultdict(list)
+        for k, m in self.maps.items():
+            self.map_cases[json.dumps(m)].append(k)
+        self.map_keys = {k: json.dumps(m) for k, m in self.maps.items()}
+        self.map_credits = {m: 0.0 for m in self.map_cases}
+        self.case_credits = {k: 0.0 for k in self.templates}
         self.counts = {k: 0 for k in sizes}
         self.case_counts = {k: 0 for k in self.templates}
         self.allocation_counts = dict(self.case_counts)
@@ -63,7 +70,7 @@ class Sampler:
         # Live environments restart on resume; unfinished episodes supply no outcome.
         self.pending = {}
         if state is not None:
-            if state.get("schema") != self.SCHEMA:
+            if state.get("schema") not in (2, self.SCHEMA):
                 raise ValueError("sampler checkpoint schema differs; use a fresh workload")
             if state["settings"] != self.settings:
                 raise ValueError("adaptive sampling settings differ from checkpoint")
@@ -73,6 +80,14 @@ class Sampler:
                 setattr(self, field, deepcopy(state[field]))
             if set(state["counts"]) != set(self.counts):
                 raise ValueError("sampler checkpoint groups differ")
+            if state["schema"] == self.SCHEMA:
+                for field in ("map_credits", "case_credits"):
+                    values = state[field]
+                    if set(values) != set(getattr(self, field)) or any(not math.isfinite(v) for v in values.values()):
+                        raise ValueError("invalid checkpoint allocation credits")
+                    setattr(self, field, deepcopy(values))
+            # Schema 2 lifetime exposure remains evidence, not catch-up debt:
+            # start prospective fair allocation when migrating the broken sampler.
             self.counts = deepcopy(state["counts"])
             self.completed = state["completed"]
             self.recent = set(state["recent"])
@@ -102,24 +117,30 @@ class Sampler:
             k: value * self.bucket_weights[self.buckets[k]] / totals[self.buckets[k]]
             for k, value in raw.items()
         }
+        self.map_weights = {m: sum(self.weights[k] for k in keys)
+                            for m, keys in self.map_cases.items()}
 
     def choose(self, slot):
         if slot in self.pending:
             raise ValueError("sampling slot already has a live episode")
-        lifetime = {k: float(self.case_counts[k]) for k in self.templates}
-        allocated = {k: float(self.allocation_counts[k]) for k in self.templates}
-        for key, remaining in self.pending.values():
-            lifetime[key] += remaining
-            allocated[key] += remaining
         bucket_loads = Counter()
-        for k, value in lifetime.items():
+        for k, value in self.case_counts.items():
             bucket_loads[self.buckets[k]] += value
+        reserved_maps = Counter()
+        reserved_cases = Counter()
+        for key, remaining in self.pending.values():
+            bucket_loads[self.buckets[key]] += remaining
+            reserved_maps[self.map_keys[key]] += remaining
+            reserved_cases[key] += remaining
         bucket = min(self.bucket_weights,
                      key=lambda b: bucket_loads[b] / self.bucket_weights[b])
-        keys = [k for k in self.templates if self.buckets[k] == bucket]
-        total = sum(allocated[k] for k in keys)
-        key = max(keys, key=lambda k: self.weights[k] / self.bucket_weights[bucket] *
-                  (total + 200) - allocated[k] + float(self.rng.uniform(0, 1e-5)))
+        maps = [m for m, keys in self.map_cases.items() if self.buckets[keys[0]] == bucket]
+        m = max(maps, key=lambda m: self.map_credits[m] +
+                200 * self.map_weights[m] / self.bucket_weights[bucket] - reserved_maps[m] +
+                float(self.rng.uniform(0, 1e-5)))
+        key = max(self.map_cases[m], key=lambda k: self.case_credits[k] +
+                  200 * self.weights[k] / self.map_weights[m] - reserved_cases[k] +
+                  float(self.rng.uniform(0, 1e-5)))
         config = deepcopy(self.templates[key])
         config["seed"] = self.next_seed
         self.next_seed += 1
@@ -128,6 +149,15 @@ class Sampler:
 
     def step(self, slot):
         key, remaining = self.pending[slot]
+        m = self.map_keys[key]
+        bucket = self.buckets[key]
+        for other, keys in self.map_cases.items():
+            if self.buckets[keys[0]] == bucket:
+                self.map_credits[other] += self.map_weights[other] / self.bucket_weights[bucket]
+        self.map_credits[m] -= 1
+        for other in self.map_cases[m]:
+            self.case_credits[other] += self.weights[other] / self.map_weights[m]
+        self.case_credits[key] -= 1
         self.counts[self.groups[key]] += 1
         self.case_counts[key] += 1
         self.allocation_counts[key] += 1
@@ -146,7 +176,6 @@ class Sampler:
         self.completed += 1
         if self.completed % self.settings["updateEveryEpisodes"]:
             return None
-        previous = self.weights
         for k, value in self.estimates.items():
             eligible = self.settings["enabled"] and value["observations"] >= self.settings["warmupEpisodes"]
             self.multipliers[k] = mastery_multiplier(
@@ -154,15 +183,8 @@ class Sampler:
                 self.settings["minimumMultiplier"],
             ) if eligible else 1.0
         self._reweight()
-        affected = {self.buckets[k] for k in self.weights
-                    if abs(self.weights[k] - previous[k]) > 1e-15}
-        if affected:
-            # Old allocations must not create a long catch-up debt at new weights.
-            # Remaining live-episode work is still reserved by choose().
-            self.allocation_counts = {
-                k: 0 if self.buckets[k] in affected else value
-                for k, value in self.allocation_counts.items()
-            }
+        # Credits integrate the weights in effect at each decision. Reweighting
+        # must not erase unpaid map/condition exposure or restart a priority race.
         total_decisions = sum(self.case_counts.values())
         report = dict(completed=self.completed, cases=[self._row(k, total_decisions) for k in sorted(self.recent)])
         self.recent.clear()
@@ -186,6 +208,7 @@ class Sampler:
     def state(self):
         return deepcopy(dict(
             schema=self.SCHEMA, settings=self.settings, counts=self.counts,
+            map_credits=self.map_credits, case_credits=self.case_credits,
             case_counts=self.case_counts, allocation_counts=self.allocation_counts,
             average=self.average, estimates=self.estimates,
             multipliers=self.multipliers, completed=self.completed,

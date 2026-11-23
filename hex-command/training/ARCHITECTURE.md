@@ -314,6 +314,13 @@ fixed opponents are explicit workload axes. Seed partitions separate training,
 validation and final testing. Fixed-opponent comparisons measure that opponent
 set; authored rosters, diplomacy and objective routes remain part of the case.
 
+PPO allocation is hierarchical: pool, then map, then condition. Map and condition
+credits accumulate the decision share owed under the weights in effect at each
+step. Mastery changes retain those credits; live episodes reserve estimated
+remaining work. Schema 3 checkpoints persist both credit sets. Schema 2 resumes
+retain lifetime exposure and mastery statistics but initialize prospective credits
+at zero, avoiding catch-up against the historical starvation bug.
+
 Imitation learns a teacher's candidate selection. PPO uses fresh stochastic
 rollouts, a critic, GAE, clipping, entropy regularization and a frozen-reference
 KL anchor. The native step API returns 0 for truncation. The mixed PPO trainer

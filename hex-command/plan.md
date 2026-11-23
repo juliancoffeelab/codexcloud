@@ -786,3 +786,20 @@ Hourly fixed panels: held-out 312, training diagnostics 168, Lantern showcase 24
 Only held-out results select the checkpoint; initialization remains eligible.
 No large second confirmation sweep. Preserve every hourly checkpoint and raw results,
 training and per-chapter gameplay curves. Hourly automation checks recovery.
+
+
+### Arena allocation correction — 2026-11-23
+
+User authorized pausing, fixing and continuing the existing nine-hour run.
+Paused with a fresh checkpoint at 26041.891 trainer seconds (7h14m), leaving
+6358.109 seconds. Ordinary arenas had only 860 decisions in six games; nine
+received none. Pool-level accounting hid per-map starvation.
+Fixed sampler: hierarchical map/condition allocation and persistent integrated
+credits; no allocation-history resets when mastery changes. Schema 2 migration
+preserves policy, optimizers, RNG, mastery and lifetime exposure, starting new
+credits prospectively. The workload, reward rules, evaluation cases and original
+32400-second total budget remain unchanged. All hourly results before correction
+belong to the faulty-allocation phase, not the intended training distribution.
+Validation: heterogeneous full-workload scheduling, changing mastery with four
+concurrent slots, migration and deterministic resume; all ordinary maps receive
+work. Full training suite: 41 tests pass, one optional LightGBM skip.
