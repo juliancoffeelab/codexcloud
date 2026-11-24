@@ -779,3 +779,10 @@ targets, ordinary arenas and broad campaigns are disabled for automatic imitatio
 pending evidence. Their PPO cases, weights and adaptive sampling are retained.
 Imitation loss weights normalize over eligible maps/conditions only; PPO's
 25/25/50 allocation does not change. No training starts when setting this flag.
+
+
+The eligible-only imitation experiment of 2026-11-24 starts from the final
+hour-10 PPO actor with unchanged CNN/coarse/GRU/head architecture and a fresh Adam
+optimizer. Requested 1/3/5-minute checkpoints and full results are archived under
+`experiments/2026-11-24-targeted-imitation-5m`. It improves selected targets but
+regresses ordinary and Lantern retention; none is a promoted model version.

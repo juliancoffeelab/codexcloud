@@ -13,7 +13,7 @@ evaluation cases.
 - Imitation eligibility is now explicit via `pretrain_enabled`:16 conditions
   across nine targeted maps. Prepared imitation splits and collection enforce
   this allowlist; PPO remains complete. Mastered and unqualified cases stay
-  disabled for imitation. No new training was started.
+  disabled for imitation. PPO allocation remains unchanged.
 
 - Implemented:25% ordinary arena /25% targeted /50% broad-campaign decisions,
   adaptive inside each group, authored mastery/base-weight controls, explicit
@@ -22,9 +22,12 @@ evaluation cases.
 - Three validated task-specific offline teachers are wired for Crown Road Relief,
   Briar Saddle and Lower Gallery Refuge. Rally keeps Classic; Tidegate still
   lacks a demonstrated teacher improvement. See the task-planner results below.
-- Teacher blocks and ordered recurrent imitation are wired. Whether to run a
-  short mixed imitation pretrain before the next PPO run is still undecided.
-  No new optimizer, training supervisor, promotion or deployment was started.
+- Teacher blocks and ordered recurrent imitation are wired. Whether to run
+  further imitation treatment or PPO continuation is still undecided. The
+  eligible-only five-minute trial from hour 10 is complete: targeted wins improved
+  24→78/128 while ordinary retention fell 14→5/28 and Lantern 4→0/24.
+  Checkpoints 1/3/5 are saved; no policy was promoted or deployed. See
+  `training/experiments/2026-11-24-targeted-imitation-5m`.
 - Kill/objective-progress rewards and exploration experiments remain outstanding
   work; current vanilla workload keeps those bonuses off. Do not treat earlier
   proposals or historical experiment protocols below as current configuration.
