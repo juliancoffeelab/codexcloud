@@ -33,9 +33,9 @@ healthy checks are silent. The monitor reports final results after training and
 all 13 panels finish, then disables itself.
 
 Local run:
-`tmp/rl/ppo-hour 10-continuation-12h-20261124`.
+`tmp/rl/ppo-hour10-continuation-12h-20261124`.
 Shared recovery:
-`/workspace/shared/ppo-hour 10-continuation-12h-20261124`.
+`/workspace/shared/ppo-hour10-continuation-12h-20261124`.
 Frozen code/catalog/native/workload and model state live in those directories.
 `launch` preserves the protocol, source identities, controls and verified launch
 snapshot. This file will be updated with completed results; startup evidence is
