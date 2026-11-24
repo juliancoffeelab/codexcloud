@@ -1,0 +1,366 @@
+{
+  "time": 1795495385.1808975,
+  "healthAgeSeconds": 4.015805721282959,
+  "training": {
+    "event": "episode",
+    "seconds": 14481.383622378984,
+    "updates": 1132,
+    "episodes": 4288,
+    "decisions": 289888,
+    "rss_mib": 1705.890625
+  },
+  "processes": {
+    "trainer": [
+      82957
+    ],
+    "evaluator": [
+      82958
+    ],
+    "supervisor": [
+      83099
+    ]
+  },
+  "validatedCheckpoints": {
+    "local": {
+      "path": "checkpoints/update-00001128-1795495326129428692",
+      "elapsed": 14430.477922004007,
+      "updates": 1128,
+      "episodes": 4271,
+      "modelSha256": "dacb32162bd18bc165584e6c61fbb1701a421e06740d4ca635325a5e5defd3d8"
+    },
+    "shared": {
+      "path": "checkpoints/update-00001128-1795495326129428692",
+      "elapsed": 14430.477922004007,
+      "updates": 1128,
+      "episodes": 4271,
+      "modelSha256": "dacb32162bd18bc165584e6c61fbb1701a421e06740d4ca635325a5e5defd3d8"
+    }
+  },
+  "decisionShares": {
+    "arena": 0.24955322730619398,
+    "targeted": 0.24953594402983784,
+    "campaign": 0.5009108286639682
+  },
+  "pools": {
+    "arena": 72195,
+    "targeted": 72190,
+    "campaign": 144912
+  },
+  "maps": {
+    "arena:rl-twin-fords": 5132,
+    "arena:rl-splitpine-clearing": 5146,
+    "arena:rl-crown-gap": 5095,
+    "arena:rl-jawbone-crossing": 5123,
+    "arena:rl-sump-teeth": 5103,
+    "arena:rl-last-lantern": 5152,
+    "arena:rl-switchback-saltworks": 5192,
+    "arena:rl-cinderfault": 5302,
+    "arena:rl-sable-sound": 5124,
+    "arena:rl-three-wells-trail": 5180,
+    "arena:rl-frosthook-gate": 5277,
+    "arena:rl-birch-pocket": 5129,
+    "arena:rl-quarry-ring": 5094,
+    "arena:rl-fordstep": 5146,
+    "targeted:rl-marlow-cut-pass-finish": 1797,
+    "targeted:rl-ashbank-relay-fork-vigil": 3454,
+    "targeted:rl-bellmarket-courts": 719,
+    "targeted:rl-breakthrough-cave5": 2442,
+    "targeted:rl-breakthrough-ford-heal08": 1111,
+    "targeted:rl-briar-saddle": 1763,
+    "targeted:rl-deadline-pines-relief8": 3444,
+    "targeted:rl-deadline-wait7": 3088,
+    "targeted:rl-defend-bracken-stand-010": 3411,
+    "targeted:rl-defend-lower-gallery-0": 3464,
+    "targeted:rl-defend-tidegate-stand-110": 3496,
+    "targeted:rl-escort-lantern-maze": 1190,
+    "targeted:rl-escort-mistfen-patrol": 1179,
+    "targeted:rl-escort-splitwake-patrol": 1140,
+    "targeted:rl-hollowbank-extraction-crossfire-late-guard": 3433,
+    "targeted:rl-hollowbank-extraction-crossfire-nearside": 3488,
+    "targeted:rl-interrupt-herring-tide-road-three": 3461,
+    "targeted:rl-interrupt-siltbar-approach": 3451,
+    "targeted:rl-interrupt-south-ford-west-post": 1172,
+    "targeted:rl-lair-outworks": 3443,
+    "targeted:rl-route-ambush": 3434,
+    "targeted:rl-route-pass-road": 3434,
+    "targeted:rl-route-pocket-leader": 3462,
+    "targeted:rl-slate-gallery": 3368,
+    "campaign:rl-splitwake-crossing": 48323,
+    "targeted:rl-thorn-verge": 550,
+    "campaign:rl-underground-escape": 48286,
+    "targeted:rl-urgent-crossing": 2390,
+    "targeted:rl-vault-rally": 3438,
+    "targeted:rl-whitecap-ford": 1968,
+    "campaign:rl-woodland-defense": 48303
+  },
+  "deltaMaps": {
+    "arena:rl-twin-fords": 1131,
+    "arena:rl-splitpine-clearing": 1290,
+    "arena:rl-crown-gap": 1261,
+    "arena:rl-jawbone-crossing": 1210,
+    "arena:rl-sump-teeth": 1228,
+    "arena:rl-last-lantern": 1277,
+    "arena:rl-switchback-saltworks": 1206,
+    "arena:rl-cinderfault": 1296,
+    "arena:rl-sable-sound": 1232,
+    "arena:rl-three-wells-trail": 1331,
+    "arena:rl-frosthook-gate": 1339,
+    "arena:rl-birch-pocket": 1257,
+    "arena:rl-quarry-ring": 1235,
+    "arena:rl-fordstep": 1316,
+    "targeted:rl-marlow-cut-pass-finish": 262,
+    "targeted:rl-ashbank-relay-fork-vigil": 928,
+    "targeted:rl-bellmarket-courts": 140,
+    "targeted:rl-breakthrough-cave5": 623,
+    "targeted:rl-breakthrough-ford-heal08": 153,
+    "targeted:rl-briar-saddle": 255,
+    "targeted:rl-deadline-pines-relief8": 895,
+    "targeted:rl-deadline-wait7": 736,
+    "targeted:rl-defend-bracken-stand-010": 869,
+    "targeted:rl-defend-lower-gallery-0": 909,
+    "targeted:rl-defend-tidegate-stand-110": 966,
+    "targeted:rl-escort-lantern-maze": 347,
+    "targeted:rl-escort-mistfen-patrol": 331,
+    "targeted:rl-escort-splitwake-patrol": 294,
+    "targeted:rl-hollowbank-extraction-crossfire-late-guard": 902,
+    "targeted:rl-hollowbank-extraction-crossfire-nearside": 922,
+    "targeted:rl-interrupt-herring-tide-road-three": 915,
+    "targeted:rl-interrupt-siltbar-approach": 913,
+    "targeted:rl-interrupt-south-ford-west-post": 156,
+    "targeted:rl-lair-outworks": 911,
+    "targeted:rl-route-ambush": 898,
+    "targeted:rl-route-pass-road": 904,
+    "targeted:rl-route-pocket-leader": 936,
+    "targeted:rl-slate-gallery": 847,
+    "campaign:rl-splitwake-crossing": 11765,
+    "targeted:rl-thorn-verge": 82,
+    "campaign:rl-underground-escape": 12001,
+    "targeted:rl-urgent-crossing": 414,
+    "targeted:rl-vault-rally": 700,
+    "targeted:rl-whitecap-ford": 393,
+    "campaign:rl-woodland-defense": 12105
+  },
+  "zeroIncrementMaps": [],
+  "previousCheck": 1795491832.3719997,
+  "lastUpdate": {
+    "event": "update",
+    "seconds": 14488.565786155988,
+    "update": 1133,
+    "decisions": 290048,
+    "episodes": 4288,
+    "policy_loss": -0.00440765901779135,
+    "value_loss": 0.0442988983484914,
+    "entropy": 0.35695718804989457,
+    "reference_kl": 0.08019883924187828,
+    "clip_fraction": 0.0,
+    "gradient_norm": 9.083780583382273,
+    "critic_explained_variance": 0.49928778614793046,
+    "warmup": false,
+    "family_decisions": {
+      "arena": 74383,
+      "campaign": 215665
+    },
+    "action_counts": {
+      "end_turn": 49814,
+      "move": 197619,
+      "attack": 40222,
+      "advance": 2393
+    }
+  },
+  "recentTraining": {
+    "arena": {
+      "lastEpisodes": 50,
+      "wins": 25,
+      "caps": 2,
+      "meanReturn": 0.0
+    },
+    "targeted": {
+      "lastEpisodes": 50,
+      "wins": 32,
+      "caps": 0,
+      "meanReturn": 0.24
+    },
+    "campaign": {
+      "lastEpisodes": 50,
+      "wins": 9,
+      "caps": 0,
+      "meanReturn": 0.14
+    }
+  },
+  "hourlyResults": [
+    {
+      "hour": 0,
+      "actualSeconds": 0,
+      "panels": {
+        "heldout": {
+          "score": 0.23295454545454516,
+          "wins": 105,
+          "caps": 34,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.4556216931216936,
+          "wins": 123,
+          "caps": 0,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.16666666666666666,
+          "wins": 4,
+          "caps": 7,
+          "runs": 24
+        }
+      }
+    },
+    {
+      "hour": 1,
+      "actualSeconds": 3690.7571609749866,
+      "panels": {
+        "heldout": {
+          "score": 0.2481060606060603,
+          "wins": 122,
+          "caps": 27,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.4641534391534399,
+          "wins": 125,
+          "caps": 1,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.08333333333333333,
+          "wins": 2,
+          "caps": 8,
+          "runs": 24
+        }
+      }
+    },
+    {
+      "hour": 2,
+      "actualSeconds": 7203.634608663997,
+      "panels": {
+        "heldout": {
+          "score": 0.27367424242424215,
+          "wins": 131,
+          "caps": 26,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.4914682539682547,
+          "wins": 131,
+          "caps": 1,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.125,
+          "wins": 3,
+          "caps": 4,
+          "runs": 24
+        }
+      }
+    },
+    {
+      "hour": 3,
+      "actualSeconds": 10898.52912798,
+      "panels": {
+        "heldout": {
+          "score": 0.23484848484848456,
+          "wins": 115,
+          "caps": 31,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.4853835978835984,
+          "wins": 141,
+          "caps": 0,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.041666666666666664,
+          "wins": 1,
+          "caps": 12,
+          "runs": 24
+        }
+      }
+    }
+  ],
+  "evaluationStatus": {
+    "time": 1795495435.5903437,
+    "label": "hour-04",
+    "phase": "monitor",
+    "panel": "heldout",
+    "completed": 200,
+    "total": 312
+  },
+  "nativeAndWorkloadUnchanged": true,
+  "fullWorkloadContentHashValidated": true,
+  "recoveryNeeded": false,
+  "diskFreeGiB": 7.641395568847656,
+  "allocationHistorySnapshots": 481,
+  "allocationHistoryLastTime": 1795495366.1355155,
+  "checkpointCount": 115,
+  "plotRefreshSucceeded": true,
+  "successfulCampaignRewardExamples": [
+    {
+      "campaign": "rl-woodland-defense",
+      "episodeReturn": 4.0,
+      "missionCount": 3,
+      "missionWinners": [
+        "playerVictory",
+        "playerVictory",
+        "playerVictory"
+      ]
+    },
+    {
+      "campaign": "rl-woodland-defense",
+      "episodeReturn": 4.0,
+      "missionCount": 3,
+      "missionWinners": [
+        "playerVictory",
+        "playerVictory",
+        "playerVictory"
+      ]
+    },
+    {
+      "campaign": "rl-underground-escape",
+      "episodeReturn": 4.0,
+      "missionCount": 3,
+      "missionWinners": [
+        "playerVictory",
+        "playerVictory",
+        "playerVictory"
+      ]
+    },
+    {
+      "campaign": "rl-woodland-defense",
+      "episodeReturn": 4.0,
+      "missionCount": 3,
+      "missionWinners": [
+        "playerVictory",
+        "playerVictory",
+        "playerVictory"
+      ]
+    },
+    {
+      "campaign": "rl-woodland-defense",
+      "episodeReturn": 4.0,
+      "missionCount": 3,
+      "missionWinners": [
+        "playerVictory",
+        "playerVictory",
+        "playerVictory"
+      ]
+    },
+    {
+      "campaign": "rl-underground-escape",
+      "episodeReturn": 4.0,
+      "missionCount": 3,
+      "missionWinners": [
+        "playerVictory",
+        "playerVictory",
+        "playerVictory"
+      ]
+    }
+  ]
+}

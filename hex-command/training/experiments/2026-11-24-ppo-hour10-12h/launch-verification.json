@@ -1,0 +1,39 @@
+{
+  "time": 1795481318.4956217,
+  "oneTrainer": true,
+  "oneEvaluator": true,
+  "supervisorRestartAttachedWithoutRestartingChildren": true,
+  "initialActorExactlyHour10": true,
+  "latestCheckpoint": "update-00000030",
+  "latestElapsed": 387.59948742898996,
+  "localAndSharedValidated": true,
+  "samplerSchema": 3,
+  "actualCheckpointDecisions": {
+    "arena": 1999,
+    "targeted": 1844,
+    "campaign": 3837
+  },
+  "logicalMapsWithDecisions": {
+    "arena": 14,
+    "targeted": 26,
+    "campaign": 3
+  },
+  "warmupFinished": true,
+  "optimizerUpdates": 32,
+  "panels": {
+    "heldout": 312,
+    "training_diagnostic": 214,
+    "lantern_showcase": 24
+  },
+  "verifiedLiveProcessIds": {
+    "trainer": [
+      82957
+    ],
+    "evaluator": [
+      82958
+    ],
+    "supervisor": [
+      83099
+    ]
+  }
+}

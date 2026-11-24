@@ -1,0 +1,899 @@
+[
+  {
+    "label": "hour-00",
+    "hour": 0,
+    "actual_seconds": 0,
+    "model": "/workspace/codexcloud/hex-command/tmp/rl/ppo-hour10-continuation-12h-20261124/warm-start/planner.json",
+    "reliability_key": [
+      0.0625,
+      0.23295454545454516,
+      -0.06439393939393934
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.5681818181818181,
+        "wins": 50,
+        "runs": 88,
+        "caps": 8
+      },
+      "arena/full": {
+        "score": 0.2727272727272727,
+        "wins": 24,
+        "runs": 88,
+        "caps": 17
+      },
+      "arena/predictor": {
+        "score": 0.3068181818181818,
+        "wins": 27,
+        "runs": 88,
+        "caps": 9
+      },
+      "campaign/classic": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.125,
+        "wins": 2,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      }
+    },
+    "panels": {
+      "heldout": {
+        "score": 0.23295454545454516,
+        "wins": 105,
+        "caps": 34,
+        "runs": 312
+      },
+      "training_diagnostic": {
+        "score": 0.4556216931216936,
+        "wins": 123,
+        "caps": 0,
+        "runs": 214
+      },
+      "lantern_showcase": {
+        "score": 0.16666666666666666,
+        "wins": 4,
+        "caps": 7,
+        "runs": 24
+      }
+    }
+  },
+  {
+    "label": "hour-01",
+    "hour": 1,
+    "actual_seconds": 3690.7571609749866,
+    "model": "/workspace/codexcloud/hex-command/tmp/rl/ppo-hour10-continuation-12h-20261124/rl/checkpoints/update-00000288-1795484586406970077/planner.json",
+    "reliability_key": [
+      0.0,
+      0.2481060606060603,
+      -0.0511363636363636
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.7045454545454545,
+        "wins": 62,
+        "runs": 88,
+        "caps": 5
+      },
+      "arena/full": {
+        "score": 0.3181818181818182,
+        "wins": 28,
+        "runs": 88,
+        "caps": 14
+      },
+      "arena/predictor": {
+        "score": 0.3409090909090909,
+        "wins": 30,
+        "runs": 88,
+        "caps": 8
+      },
+      "campaign/classic": {
+        "score": 0.0,
+        "wins": 0,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      }
+    },
+    "panels": {
+      "heldout": {
+        "score": 0.2481060606060603,
+        "wins": 122,
+        "caps": 27,
+        "runs": 312
+      },
+      "training_diagnostic": {
+        "score": 0.4641534391534399,
+        "wins": 125,
+        "caps": 1,
+        "runs": 214
+      },
+      "lantern_showcase": {
+        "score": 0.08333333333333333,
+        "wins": 2,
+        "caps": 8,
+        "runs": 24
+      }
+    }
+  },
+  {
+    "label": "hour-02",
+    "hour": 2,
+    "actual_seconds": 7203.634608663997,
+    "model": "/workspace/codexcloud/hex-command/tmp/rl/ppo-hour10-continuation-12h-20261124/rl/checkpoints/update-00000568-1795488099284737382/planner.json",
+    "reliability_key": [
+      0.0,
+      0.27367424242424215,
+      -0.049242424242424206
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.6931818181818181,
+        "wins": 61,
+        "runs": 88,
+        "caps": 3
+      },
+      "arena/full": {
+        "score": 0.3636363636363636,
+        "wins": 32,
+        "runs": 88,
+        "caps": 13
+      },
+      "arena/predictor": {
+        "score": 0.39772727272727265,
+        "wins": 35,
+        "runs": 88,
+        "caps": 10
+      },
+      "campaign/classic": {
+        "score": 0.0,
+        "wins": 0,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.125,
+        "wins": 2,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      }
+    },
+    "panels": {
+      "heldout": {
+        "score": 0.27367424242424215,
+        "wins": 131,
+        "caps": 26,
+        "runs": 312
+      },
+      "training_diagnostic": {
+        "score": 0.4914682539682547,
+        "wins": 131,
+        "caps": 1,
+        "runs": 214
+      },
+      "lantern_showcase": {
+        "score": 0.125,
+        "wins": 3,
+        "caps": 4,
+        "runs": 24
+      }
+    }
+  },
+  {
+    "label": "hour-03",
+    "hour": 3,
+    "actual_seconds": 10898.52912798,
+    "model": "/workspace/codexcloud/hex-command/tmp/rl/ppo-hour10-continuation-12h-20261124/rl/checkpoints/update-00000849-1795491794179678492/planner.json",
+    "reliability_key": [
+      0.0,
+      0.23484848484848456,
+      -0.05871212121212116
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.6477272727272727,
+        "wins": 57,
+        "runs": 88,
+        "caps": 8
+      },
+      "arena/full": {
+        "score": 0.3181818181818182,
+        "wins": 28,
+        "runs": 88,
+        "caps": 17
+      },
+      "arena/predictor": {
+        "score": 0.3181818181818182,
+        "wins": 28,
+        "runs": 88,
+        "caps": 6
+      },
+      "campaign/classic": {
+        "score": 0.125,
+        "wins": 2,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.0,
+        "wins": 0,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.0,
+        "wins": 0,
+        "runs": 16,
+        "caps": 0
+      }
+    },
+    "panels": {
+      "heldout": {
+        "score": 0.23484848484848456,
+        "wins": 115,
+        "caps": 31,
+        "runs": 312
+      },
+      "training_diagnostic": {
+        "score": 0.4853835978835984,
+        "wins": 141,
+        "caps": 0,
+        "runs": 214
+      },
+      "lantern_showcase": {
+        "score": 0.041666666666666664,
+        "wins": 1,
+        "caps": 12,
+        "runs": 24
+      }
+    }
+  },
+  {
+    "label": "hour-04",
+    "hour": 4,
+    "actual_seconds": 14430.477922004007,
+    "model": "/workspace/codexcloud/hex-command/tmp/rl/ppo-hour10-continuation-12h-20261124/rl/checkpoints/update-00001128-1795495326129428692/planner.json",
+    "reliability_key": [
+      0.0,
+      0.21780303030303005,
+      -0.05681818181818177
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.6590909090909091,
+        "wins": 58,
+        "runs": 88,
+        "caps": 7
+      },
+      "arena/full": {
+        "score": 0.3409090909090909,
+        "wins": 30,
+        "runs": 88,
+        "caps": 14
+      },
+      "arena/predictor": {
+        "score": 0.3068181818181818,
+        "wins": 27,
+        "runs": 88,
+        "caps": 9
+      },
+      "campaign/classic": {
+        "score": 0.0,
+        "wins": 0,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.0,
+        "wins": 0,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.0,
+        "wins": 0,
+        "runs": 16,
+        "caps": 0
+      }
+    },
+    "panels": {
+      "heldout": {
+        "score": 0.21780303030303005,
+        "wins": 115,
+        "caps": 30,
+        "runs": 312
+      },
+      "training_diagnostic": {
+        "score": 0.4833664021164027,
+        "wins": 130,
+        "caps": 1,
+        "runs": 214
+      },
+      "lantern_showcase": {
+        "score": 0.125,
+        "wins": 3,
+        "caps": 15,
+        "runs": 24
+      }
+    }
+  },
+  {
+    "label": "hour-05",
+    "hour": 5,
+    "actual_seconds": 18002.45957214199,
+    "model": "/workspace/codexcloud/hex-command/tmp/rl/ppo-hour10-continuation-12h-20261124/rl/checkpoints/update-00001397-1795498898109788426/planner.json",
+    "reliability_key": [
+      0.0,
+      0.2727272727272725,
+      -0.05871212121212116
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.6590909090909091,
+        "wins": 58,
+        "runs": 88,
+        "caps": 7
+      },
+      "arena/full": {
+        "score": 0.37499999999999994,
+        "wins": 33,
+        "runs": 88,
+        "caps": 12
+      },
+      "arena/predictor": {
+        "score": 0.35227272727272724,
+        "wins": 31,
+        "runs": 88,
+        "caps": 12
+      },
+      "campaign/classic": {
+        "score": 0.125,
+        "wins": 2,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.0,
+        "wins": 0,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.125,
+        "wins": 2,
+        "runs": 16,
+        "caps": 0
+      }
+    },
+    "panels": {
+      "heldout": {
+        "score": 0.2727272727272725,
+        "wins": 126,
+        "caps": 31,
+        "runs": 312
+      },
+      "training_diagnostic": {
+        "score": 0.4204365079365085,
+        "wins": 124,
+        "caps": 1,
+        "runs": 214
+      },
+      "lantern_showcase": {
+        "score": 0.08333333333333333,
+        "wins": 2,
+        "caps": 13,
+        "runs": 24
+      }
+    }
+  },
+  {
+    "label": "hour-06",
+    "hour": 6,
+    "actual_seconds": 21669.083543833985,
+    "model": "/workspace/codexcloud/hex-command/tmp/rl/ppo-hour10-continuation-12h-20261124/rl/checkpoints/update-00001670-1795502564733756666/planner.json",
+    "reliability_key": [
+      0.0,
+      0.2462121212121209,
+      -0.049242424242424206
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.6818181818181818,
+        "wins": 60,
+        "runs": 88,
+        "caps": 7
+      },
+      "arena/full": {
+        "score": 0.3636363636363636,
+        "wins": 32,
+        "runs": 88,
+        "caps": 12
+      },
+      "arena/predictor": {
+        "score": 0.3068181818181818,
+        "wins": 27,
+        "runs": 88,
+        "caps": 7
+      },
+      "campaign/classic": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.0,
+        "wins": 0,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      }
+    },
+    "panels": {
+      "heldout": {
+        "score": 0.2462121212121209,
+        "wins": 121,
+        "caps": 26,
+        "runs": 312
+      },
+      "training_diagnostic": {
+        "score": 0.4865079365079372,
+        "wins": 138,
+        "caps": 0,
+        "runs": 214
+      },
+      "lantern_showcase": {
+        "score": 0.0,
+        "wins": 0,
+        "caps": 10,
+        "runs": 24
+      }
+    }
+  },
+  {
+    "label": "hour-07",
+    "hour": 7,
+    "actual_seconds": 25236.57375158099,
+    "model": "/workspace/codexcloud/hex-command/tmp/rl/ppo-hour10-continuation-12h-20261124/rl/checkpoints/update-00001933-1795506132224455955/planner.json",
+    "reliability_key": [
+      0.0,
+      0.25662878787878757,
+      -0.06060606060606055
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.6704545454545454,
+        "wins": 59,
+        "runs": 88,
+        "caps": 7
+      },
+      "arena/full": {
+        "score": 0.2954545454545454,
+        "wins": 26,
+        "runs": 88,
+        "caps": 17
+      },
+      "arena/predictor": {
+        "score": 0.3863636363636363,
+        "wins": 34,
+        "runs": 88,
+        "caps": 8
+      },
+      "campaign/classic": {
+        "score": 0.0,
+        "wins": 0,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.125,
+        "wins": 2,
+        "runs": 16,
+        "caps": 0
+      }
+    },
+    "panels": {
+      "heldout": {
+        "score": 0.25662878787878757,
+        "wins": 122,
+        "caps": 32,
+        "runs": 312
+      },
+      "training_diagnostic": {
+        "score": 0.49411375661375717,
+        "wins": 138,
+        "caps": 2,
+        "runs": 214
+      },
+      "lantern_showcase": {
+        "score": 0.041666666666666664,
+        "wins": 1,
+        "caps": 9,
+        "runs": 24
+      }
+    }
+  },
+  {
+    "label": "hour-08",
+    "hour": 8,
+    "actual_seconds": 28803.307855647,
+    "model": "/workspace/codexcloud/hex-command/tmp/rl/ppo-hour10-continuation-12h-20261124/rl/checkpoints/update-00002203-1795509698959911854/planner.json",
+    "reliability_key": [
+      0.0625,
+      0.26041666666666635,
+      -0.05681818181818177
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.7045454545454545,
+        "wins": 62,
+        "runs": 88,
+        "caps": 8
+      },
+      "arena/full": {
+        "score": 0.3409090909090909,
+        "wins": 30,
+        "runs": 88,
+        "caps": 16
+      },
+      "arena/predictor": {
+        "score": 0.32954545454545453,
+        "wins": 29,
+        "runs": 88,
+        "caps": 6
+      },
+      "campaign/classic": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      }
+    },
+    "panels": {
+      "heldout": {
+        "score": 0.26041666666666635,
+        "wins": 124,
+        "caps": 30,
+        "runs": 312
+      },
+      "training_diagnostic": {
+        "score": 0.45972222222222275,
+        "wins": 133,
+        "caps": 1,
+        "runs": 214
+      },
+      "lantern_showcase": {
+        "score": 0.0,
+        "wins": 0,
+        "caps": 13,
+        "runs": 24
+      }
+    }
+  },
+  {
+    "label": "hour-09",
+    "hour": 9,
+    "actual_seconds": 32490.66806157201,
+    "model": "/workspace/codexcloud/hex-command/tmp/rl/ppo-hour10-continuation-12h-20261124/rl/checkpoints/update-00002483-1795513386319391560/planner.json",
+    "reliability_key": [
+      0.0,
+      0.24337121212121182,
+      -0.04356060606060603
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.7045454545454545,
+        "wins": 62,
+        "runs": 88,
+        "caps": 2
+      },
+      "arena/full": {
+        "score": 0.35227272727272724,
+        "wins": 31,
+        "runs": 88,
+        "caps": 14
+      },
+      "arena/predictor": {
+        "score": 0.3409090909090909,
+        "wins": 30,
+        "runs": 88,
+        "caps": 7
+      },
+      "campaign/classic": {
+        "score": 0.0,
+        "wins": 0,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.0,
+        "wins": 0,
+        "runs": 16,
+        "caps": 0
+      }
+    },
+    "panels": {
+      "heldout": {
+        "score": 0.24337121212121182,
+        "wins": 124,
+        "caps": 23,
+        "runs": 312
+      },
+      "training_diagnostic": {
+        "score": 0.539748677248678,
+        "wins": 142,
+        "caps": 0,
+        "runs": 214
+      },
+      "lantern_showcase": {
+        "score": 0.08333333333333333,
+        "wins": 2,
+        "caps": 11,
+        "runs": 24
+      }
+    }
+  },
+  {
+    "label": "hour-10",
+    "hour": 10,
+    "actual_seconds": 36053.31012577901,
+    "model": "/workspace/codexcloud/hex-command/tmp/rl/ppo-hour10-continuation-12h-20261124/rl/checkpoints/update-00002747-1795516948961844503/planner.json",
+    "reliability_key": [
+      0.0625,
+      0.258522727272727,
+      -0.04356060606060603
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.7045454545454545,
+        "wins": 62,
+        "runs": 88,
+        "caps": 3
+      },
+      "arena/full": {
+        "score": 0.32954545454545453,
+        "wins": 29,
+        "runs": 88,
+        "caps": 10
+      },
+      "arena/predictor": {
+        "score": 0.32954545454545453,
+        "wins": 29,
+        "runs": 88,
+        "caps": 10
+      },
+      "campaign/classic": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      }
+    },
+    "panels": {
+      "heldout": {
+        "score": 0.258522727272727,
+        "wins": 123,
+        "caps": 23,
+        "runs": 312
+      },
+      "training_diagnostic": {
+        "score": 0.5148148148148154,
+        "wins": 140,
+        "caps": 0,
+        "runs": 214
+      },
+      "lantern_showcase": {
+        "score": 0.041666666666666664,
+        "wins": 1,
+        "caps": 16,
+        "runs": 24
+      }
+    }
+  },
+  {
+    "label": "hour-11",
+    "hour": 11,
+    "actual_seconds": 39619.57562186601,
+    "model": "/workspace/codexcloud/hex-command/tmp/rl/ppo-hour10-continuation-12h-20261124/rl/checkpoints/update-00003027-1795520515226074607/planner.json",
+    "reliability_key": [
+      0.0625,
+      0.28409090909090884,
+      -0.0511363636363636
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.7159090909090908,
+        "wins": 63,
+        "runs": 88,
+        "caps": 3
+      },
+      "arena/full": {
+        "score": 0.28409090909090906,
+        "wins": 25,
+        "runs": 88,
+        "caps": 13
+      },
+      "arena/predictor": {
+        "score": 0.32954545454545453,
+        "wins": 29,
+        "runs": 88,
+        "caps": 11
+      },
+      "campaign/classic": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.125,
+        "wins": 2,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.1875,
+        "wins": 3,
+        "runs": 16,
+        "caps": 0
+      }
+    },
+    "panels": {
+      "heldout": {
+        "score": 0.28409090909090884,
+        "wins": 123,
+        "caps": 27,
+        "runs": 312
+      },
+      "training_diagnostic": {
+        "score": 0.5416005291005298,
+        "wins": 142,
+        "caps": 1,
+        "runs": 214
+      },
+      "lantern_showcase": {
+        "score": 0.16666666666666666,
+        "wins": 4,
+        "caps": 6,
+        "runs": 24
+      }
+    }
+  },
+  {
+    "label": "hour-12",
+    "hour": 12,
+    "actual_seconds": 43200.194862209,
+    "model": "/workspace/codexcloud/hex-command/tmp/rl/ppo-hour10-continuation-12h-20261124/rl/checkpoints/last-1795524095845528690/planner.json",
+    "reliability_key": [
+      0.0,
+      0.2462121212121209,
+      -0.039772727272727244
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.6704545454545454,
+        "wins": 59,
+        "runs": 88,
+        "caps": 5
+      },
+      "arena/full": {
+        "score": 0.3181818181818182,
+        "wins": 28,
+        "runs": 88,
+        "caps": 10
+      },
+      "arena/predictor": {
+        "score": 0.3636363636363636,
+        "wins": 32,
+        "runs": 88,
+        "caps": 6
+      },
+      "campaign/classic": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.0625,
+        "wins": 1,
+        "runs": 16,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.0,
+        "wins": 0,
+        "runs": 16,
+        "caps": 0
+      }
+    },
+    "panels": {
+      "heldout": {
+        "score": 0.2462121212121209,
+        "wins": 121,
+        "caps": 21,
+        "runs": 312
+      },
+      "training_diagnostic": {
+        "score": 0.5506613756613764,
+        "wins": 142,
+        "caps": 1,
+        "runs": 214
+      },
+      "lantern_showcase": {
+        "score": 0.041666666666666664,
+        "wins": 1,
+        "caps": 6,
+        "runs": 24
+      }
+    }
+  }
+]

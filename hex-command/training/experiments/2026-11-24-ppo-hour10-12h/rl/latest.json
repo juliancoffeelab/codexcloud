@@ -1,0 +1,14 @@
+{
+  "path": "checkpoints/last-1795524095845528690",
+  "label": "last",
+  "files": {
+    "planner.json": {
+      "bytes": 2187941,
+      "sha256": "da26cde88dde2918a2f39eab5b8144ea4cfb98c8bdda7f6f61e2f7983c976bf2"
+    },
+    "resume.pt": {
+      "bytes": 2141001,
+      "sha256": "39ed5d2813c99072bb2b1c5336145c69479f497431408400464211b3d71e9cba"
+    }
+  }
+}
