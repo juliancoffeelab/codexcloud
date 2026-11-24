@@ -4,7 +4,6 @@ use super::{
     spatial::{ACTOR_CHANNELS, KERNEL},
 };
 use crate::{data::*, simulation::MatchConfig};
-mod tactical;
 
 /// Follow the nearest observed defeat target using the existing path teacher.
 /// Both hostile occupancy and objective markers come from the faction's view.
@@ -143,9 +142,6 @@ pub fn controller(
         return Err("unknown pretrain_imitator".into());
     }
     match spec {
-        PretrainImitator::Tactical { tactical } => {
-            Ok(Some(tactical::controller(tactical, rules, config)?))
-        }
         PretrainImitator::Named(name) if name == "visible_target_path" => {
             Ok(Some(visible_target_controller()))
         }

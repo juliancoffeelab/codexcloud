@@ -53,9 +53,8 @@ mod tests;
 pub use simulation::{
     AdaptiveSamplingSettings, ArenaForces, ArenaScenario, ArenaSettings, ArenaVariant, ArmyRoster,
     CampaignSettings, CampaignSimulation, PretrainImitator, SimulationObjective,
-    SimulationSettings, SimulationStageObjective, TacticalTeacher, TacticalTeacherPlan,
-    TrainingArena, TrainingArenaConditions, TrainingArmies, TrainingCampaignVariant,
-    TrainingRewardProfile, TrainingSettings,
+    SimulationSettings, SimulationStageObjective, TrainingArena, TrainingArenaConditions,
+    TrainingArmies, TrainingCampaignVariant, TrainingRewardProfile, TrainingSettings,
 };
 
 mod prepared_combat;
