@@ -1,0 +1,111 @@
+{
+  "score": 0.0,
+  "weighted_caps": 0.9166666666666665,
+  "wins": 0,
+  "caps": 22,
+  "runs": 24,
+  "groups": [
+    {
+      "group": [
+        "campaign",
+        "lantern-road",
+        "authored",
+        "unrestricted",
+        "classic",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 0,
+      "defeats": 0,
+      "caps": 8,
+      "mass": 0.3333333333333333,
+      "stages": {
+        "lantern-ferry": {
+          "entered": 8,
+          "wins": 0,
+          "defeats": 0,
+          "caps": 8,
+          "rounds": [
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "lantern-road",
+        "authored",
+        "unrestricted",
+        "predictor",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 0,
+      "defeats": 2,
+      "caps": 6,
+      "mass": 0.3333333333333333,
+      "stages": {
+        "lantern-ferry": {
+          "entered": 8,
+          "wins": 0,
+          "defeats": 2,
+          "caps": 6,
+          "rounds": [
+            100,
+            88,
+            18,
+            100,
+            100,
+            100,
+            100,
+            100
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "lantern-road",
+        "authored",
+        "unrestricted",
+        "full",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 0,
+      "defeats": 0,
+      "caps": 8,
+      "mass": 0.3333333333333333,
+      "stages": {
+        "lantern-ferry": {
+          "entered": 8,
+          "wins": 0,
+          "defeats": 0,
+          "caps": 8,
+          "rounds": [
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100
+          ]
+        }
+      }
+    }
+  ],
+  "model_sha256": "459314bd06cee1a88bbe836bea37db17f7edb28a3e6366fb94a0ec97fd0ab4de",
+  "minute": 3,
+  "panel": "lantern_showcase"
+}

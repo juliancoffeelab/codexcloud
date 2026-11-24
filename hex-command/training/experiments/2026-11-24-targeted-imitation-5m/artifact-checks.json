@@ -1,0 +1,13 @@
+{
+  "checkpointBundlesHashValidated": 4,
+  "matchedNativeGames": 720,
+  "baselineLanternParity": 24,
+  "requestedCheckpointSeconds": {
+    "0": 0.0,
+    "1": 60.02411109500099,
+    "3": 180.0031111939752,
+    "5": 300.0110019699787
+  },
+  "noPromotion": true,
+  "noPpoStarted": true
+}

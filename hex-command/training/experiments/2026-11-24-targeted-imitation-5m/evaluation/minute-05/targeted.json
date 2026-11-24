@@ -1,0 +1,540 @@
+{
+  "score": 0.4770833333333332,
+  "weighted_caps": 0.0,
+  "wins": 78,
+  "caps": 0,
+  "runs": 128,
+  "groups": [
+    {
+      "group": [
+        "campaign",
+        "rl-ashbank-relay-fork-vigil",
+        "authored",
+        "unrestricted",
+        "predictor",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 4,
+      "defeats": 4,
+      "caps": 0,
+      "mass": 0.02222222222222222,
+      "stages": {
+        "rl-ashbank-relay-fork-vigil": {
+          "entered": 8,
+          "wins": 4,
+          "defeats": 4,
+          "caps": 0,
+          "rounds": [
+            11,
+            13,
+            11,
+            13,
+            11,
+            10,
+            8,
+            11
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-ashbank-relay-fork-vigil",
+        "authored",
+        "unrestricted",
+        "full",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 7,
+      "defeats": 1,
+      "caps": 0,
+      "mass": 0.02222222222222222,
+      "stages": {
+        "rl-ashbank-relay-fork-vigil": {
+          "entered": 8,
+          "wins": 7,
+          "defeats": 1,
+          "caps": 0,
+          "rounds": [
+            11,
+            11,
+            11,
+            11,
+            9,
+            11,
+            11,
+            11
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-ashbank-relay-fork-vigil-both-fog",
+        "authored",
+        "unrestricted",
+        "predictor",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 7,
+      "defeats": 1,
+      "caps": 0,
+      "mass": 0.02222222222222222,
+      "stages": {
+        "rl-ashbank-relay-fork-vigil-both-fog": {
+          "entered": 8,
+          "wins": 7,
+          "defeats": 1,
+          "caps": 0,
+          "rounds": [
+            11,
+            11,
+            8,
+            11,
+            11,
+            11,
+            11,
+            11
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-ashbank-relay-fork-vigil-both-fog",
+        "authored",
+        "unrestricted",
+        "full",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 8,
+      "defeats": 0,
+      "caps": 0,
+      "mass": 0.02222222222222222,
+      "stages": {
+        "rl-ashbank-relay-fork-vigil-both-fog": {
+          "entered": 8,
+          "wins": 8,
+          "defeats": 0,
+          "caps": 0,
+          "rounds": [
+            11,
+            11,
+            11,
+            11,
+            11,
+            11,
+            11,
+            11
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-ashbank-relay-fork-vigil-player-fog",
+        "authored",
+        "unrestricted",
+        "full",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 7,
+      "defeats": 1,
+      "caps": 0,
+      "mass": 0.02222222222222222,
+      "stages": {
+        "rl-ashbank-relay-fork-vigil-player-fog": {
+          "entered": 8,
+          "wins": 7,
+          "defeats": 1,
+          "caps": 0,
+          "rounds": [
+            11,
+            11,
+            11,
+            11,
+            11,
+            11,
+            10,
+            11
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-deadline-pines-relief8",
+        "authored",
+        "unrestricted",
+        "classic",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 8,
+      "defeats": 0,
+      "caps": 0,
+      "mass": 0.1111111111111111,
+      "stages": {
+        "rl-deadline-pines-relief8": {
+          "entered": 8,
+          "wins": 8,
+          "defeats": 0,
+          "caps": 0,
+          "rounds": [
+            5,
+            5,
+            5,
+            5,
+            5,
+            7,
+            5,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-defend-lower-gallery-0",
+        "authored",
+        "unrestricted",
+        "classic",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 1,
+      "defeats": 7,
+      "caps": 0,
+      "mass": 0.1111111111111111,
+      "stages": {
+        "rl-defend-lower-gallery-0": {
+          "entered": 8,
+          "wins": 1,
+          "defeats": 7,
+          "caps": 0,
+          "rounds": [
+            5,
+            6,
+            6,
+            6,
+            6,
+            6,
+            7,
+            6
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-hollowbank-extraction-crossfire-late-guard",
+        "authored",
+        "unrestricted",
+        "classic",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 0,
+      "defeats": 8,
+      "caps": 0,
+      "mass": 0.1111111111111111,
+      "stages": {
+        "rl-hollowbank-extraction-crossfire-late-guard": {
+          "entered": 8,
+          "wins": 0,
+          "defeats": 8,
+          "caps": 0,
+          "rounds": [
+            14,
+            14,
+            14,
+            14,
+            14,
+            14,
+            14,
+            14
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-hollowbank-extraction-crossfire-nearside",
+        "authored",
+        "unrestricted",
+        "classic",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 0,
+      "defeats": 8,
+      "caps": 0,
+      "mass": 0.1111111111111111,
+      "stages": {
+        "rl-hollowbank-extraction-crossfire-nearside": {
+          "entered": 8,
+          "wins": 0,
+          "defeats": 8,
+          "caps": 0,
+          "rounds": [
+            14,
+            14,
+            14,
+            14,
+            14,
+            14,
+            14,
+            14
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-interrupt-herring-tide-road-three",
+        "authored",
+        "unrestricted",
+        "classic",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 8,
+      "defeats": 0,
+      "caps": 0,
+      "mass": 0.1111111111111111,
+      "stages": {
+        "rl-interrupt-herring-tide-road-three": {
+          "entered": 8,
+          "wins": 8,
+          "defeats": 0,
+          "caps": 0,
+          "rounds": [
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-lair-outworks",
+        "player-fog",
+        "unrestricted",
+        "classic",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 5,
+      "defeats": 3,
+      "caps": 0,
+      "mass": 0.027777777777777776,
+      "stages": {
+        "rl-lair-outworks": {
+          "entered": 8,
+          "wins": 5,
+          "defeats": 3,
+          "caps": 0,
+          "rounds": [
+            4,
+            5,
+            4,
+            4,
+            5,
+            4,
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-lair-outworks",
+        "player-fog",
+        "unrestricted",
+        "predictor",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 2,
+      "defeats": 6,
+      "caps": 0,
+      "mass": 0.027777777777777776,
+      "stages": {
+        "rl-lair-outworks": {
+          "entered": 8,
+          "wins": 2,
+          "defeats": 6,
+          "caps": 0,
+          "rounds": [
+            5,
+            5,
+            5,
+            4,
+            5,
+            4,
+            5,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-lair-outworks",
+        "both-fog",
+        "unrestricted",
+        "classic",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 8,
+      "defeats": 0,
+      "caps": 0,
+      "mass": 0.027777777777777776,
+      "stages": {
+        "rl-lair-outworks": {
+          "entered": 8,
+          "wins": 8,
+          "defeats": 0,
+          "caps": 0,
+          "rounds": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-lair-outworks",
+        "both-fog",
+        "unrestricted",
+        "full",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 8,
+      "defeats": 0,
+      "caps": 0,
+      "mass": 0.027777777777777776,
+      "stages": {
+        "rl-lair-outworks": {
+          "entered": 8,
+          "wins": 8,
+          "defeats": 0,
+          "caps": 0,
+          "rounds": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-route-ambush",
+        "authored",
+        "unrestricted",
+        "classic",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 0,
+      "defeats": 8,
+      "caps": 0,
+      "mass": 0.1111111111111111,
+      "stages": {
+        "rl-route-ambush": {
+          "entered": 8,
+          "wins": 0,
+          "defeats": 8,
+          "caps": 0,
+          "rounds": [
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "rl-route-pass-road",
+        "player-fog",
+        "unrestricted",
+        "classic",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 5,
+      "defeats": 3,
+      "caps": 0,
+      "mass": 0.1111111111111111,
+      "stages": {
+        "rl-route-pass-road": {
+          "entered": 8,
+          "wins": 5,
+          "defeats": 3,
+          "caps": 0,
+          "rounds": [
+            5,
+            9,
+            9,
+            7,
+            5,
+            9,
+            7,
+            5
+          ]
+        }
+      }
+    }
+  ],
+  "model_sha256": "06c2b40d0edf11e6d589514bd3fc7890667c914af3ce08886c2a538cd9e9871a",
+  "minute": 5,
+  "panel": "targeted"
+}

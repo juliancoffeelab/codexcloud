@@ -1,0 +1,120 @@
+{
+  "score": 0.0,
+  "weighted_caps": 0.9166666666666666,
+  "wins": 0,
+  "caps": 22,
+  "runs": 24,
+  "groups": [
+    {
+      "group": [
+        "campaign",
+        "lantern-road",
+        "authored",
+        "unrestricted",
+        "classic",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 0,
+      "defeats": 1,
+      "caps": 7,
+      "mass": 0.3333333333333333,
+      "stages": {
+        "lantern-ferry": {
+          "entered": 8,
+          "wins": 0,
+          "defeats": 1,
+          "caps": 7,
+          "rounds": [
+            100,
+            100,
+            100,
+            100,
+            17,
+            100,
+            100,
+            100
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "lantern-road",
+        "authored",
+        "unrestricted",
+        "predictor",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 0,
+      "defeats": 0,
+      "caps": 8,
+      "mass": 0.3333333333333333,
+      "stages": {
+        "lantern-ferry": {
+          "entered": 8,
+          "wins": 0,
+          "defeats": 0,
+          "caps": 8,
+          "rounds": [
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "lantern-road",
+        "authored",
+        "unrestricted",
+        "full",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 0,
+      "defeats": 1,
+      "caps": 7,
+      "mass": 0.3333333333333333,
+      "stages": {
+        "lantern-ferry": {
+          "entered": 8,
+          "wins": 1,
+          "defeats": 0,
+          "caps": 7,
+          "rounds": [
+            100,
+            22,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100
+          ]
+        },
+        "lantern-villages": {
+          "entered": 1,
+          "wins": 0,
+          "defeats": 1,
+          "caps": 0,
+          "rounds": [
+            31
+          ]
+        }
+      }
+    }
+  ],
+  "model_sha256": "06c2b40d0edf11e6d589514bd3fc7890667c914af3ce08886c2a538cd9e9871a",
+  "minute": 5,
+  "panel": "lantern_showcase"
+}

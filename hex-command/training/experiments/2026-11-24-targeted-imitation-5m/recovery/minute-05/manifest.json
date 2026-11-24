@@ -1,0 +1,13 @@
+{
+  "label": "minute-0005",
+  "files": {
+    "planner.json": {
+      "bytes": 2186769,
+      "sha256": "06c2b40d0edf11e6d589514bd3fc7890667c914af3ce08886c2a538cd9e9871a"
+    },
+    "resume.pt": {
+      "bytes": 885040,
+      "sha256": "3fe318c2ca4a5179c53888dbc2742ebee31338730e203b159297bfeed112bf78"
+    }
+  }
+}
