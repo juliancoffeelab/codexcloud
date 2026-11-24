@@ -1,0 +1,9 @@
+{
+  "selection": "User-selected continuation baseline: unmodified final hour-10 PPO checkpoint",
+  "model": "training/experiments/2026-11-23-ppo-5m-9h/extension-one-hour/recovery/hour-10/planner.json.gz",
+  "modelSha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee",
+  "ppoState": "training/experiments/2026-11-23-ppo-5m-9h/extension-one-hour/recovery/hour-10/resume.pt.gz",
+  "ppoStateSha256": "46f0b9675a19b985bcbdf5029e6001c67ee767ec1a24fc4bd2a2eb2cebef74ae",
+  "imitationCheckpointsUsed": false,
+  "newTrainingStarted": false
+}

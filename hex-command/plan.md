@@ -10,8 +10,12 @@ evaluation cases.
 
 ## Current wiring and next decision
 
-- Imitation eligibility is now explicit via `pretrain_enabled`:16 conditions
-  across nine targeted maps. Prepared imitation splits and collection enforce
+- Selected baseline: the unmodified final **hour-10 PPO checkpoint** at
+  `training/experiments/2026-11-23-ppo-5m-9h/extension-one-hour/recovery/hour-10`.
+  Do not initialize from the 1/3/5-minute imitation models. No new run started.
+
+- Imitation eligibility is now explicit via `pretrain_enabled`:15 conditions
+  across eight targeted maps. Prepared imitation splits and collection enforce
   this allowlist; PPO remains complete. Mastered and unqualified cases stay
   disabled for imitation. PPO allocation remains unchanged.
 
@@ -19,11 +23,11 @@ evaluation cases.
   adaptive inside each group, authored mastery/base-weight controls, explicit
   single-stage+1 versus chapter+1/finale+2 rewards, eight new validated challenge
   conditions and a quarter-weight Marlow control sharing its map budget.
-- Three validated task-specific offline teachers are wired for Crown Road Relief,
-  Briar Saddle and Lower Gallery Refuge. Rally keeps Classic; Tidegate still
-  lacks a demonstrated teacher improvement. See the task-planner results below.
+- The experimental relief/recovery/refuge planners have been removed. Crown
+  Road, Briar Saddle and Lower Gallery use existing Full selectors and have
+  pretraining disabled. Historical experiment artifacts remain archived.
 - Teacher blocks and ordered recurrent imitation are wired. Whether to run
-  further imitation treatment or PPO continuation is still undecided. The
+  further treatment or PPO continuation is still undecided. The
   eligible-only five-minute trial from hour 10 is complete: targeted wins improved
   24→78/128 while ordinary retention fell 14→5/28 and Lantern 4→0/24.
   Checkpoints 1/3/5 are saved; no policy was promoted or deployed. See
@@ -1034,7 +1038,7 @@ conditions. Lower Gallery references remain5/20. Do not claim all teacher defici
 are resolved. Evidence: `training/experiments/2026-11-23-better-targeted-teachers`.
 
 
-## Task-specific teachers — 2026-11-23
+## Task-specific teachers — 2026-11-23 (historical; removed 2026-11-24)
 
 Implemented explicit `pretrain_imitator.tactical` roles for relief timing,
 recovery before assault, and retreat/screen/return-to-hold. Authored coordinates

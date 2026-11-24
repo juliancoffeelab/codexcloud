@@ -732,28 +732,14 @@ results; unresolved Tidegate/Lower Gallery deficits still matter when deciding
 whether to run broad imitation.
 
 
-### Task-specific offline teachers
+### Removed task-specific offline teachers
 
-`pretrain_imitator: {"tactical": {...}}` adds three explicit role policies:
-`relief` stages troops until an authored reinforcement round, `recovery` heals a
-protected attacker while stronger units engage the marked guard, and `refuge`
-retreats the holder, fights its pursuit and returns to hold once screened.
-Each declares its public goal/home coordinates and friendly roster actor IDs;
-plan-specific staging coordinates, recovery fraction and relief timing are
-explicit authored parameters. These selectors never enter PPO action selection.
-
-Controllers use the learner's legal candidate set, public friendly state and
-observed enemies. They keep no completion flags across calls because turn search
-may present tentative states; current observations remain authoritative. Route
-progress remains positively scored even far from the objective. Native collection
-supports the selectors through the existing recurrent sequence path, without
-changing observation channels, model architecture or reward scoring.
-
-Fresh matched twenty-seed comparisons qualified Crown Road Relief, Briar Saddle
-and Lower Gallery Refuge; Rally and Tidegate candidates were rejected. See
-`experiments/2026-11-23-task-planners` for authored selectors, full outcomes,
-failed prototypes, matched hour-10 results, parity checks and limits.
-
+The experimental relief/recovery/refuge controllers and their `tactical` selector
+were removed on 2026-11-24 after the five-minute imitation trial. Crown Road
+Relief, Briar Saddle and Lower Gallery Refuge now select the existing Full
+planner and explicitly disable pretraining. Their maps remain in PPO.
+Historical experiment results and checkpoints remain archived; their old teacher
+API is not maintained in the current runtime.
 
 ### Imitation eligibility
 
@@ -768,9 +754,9 @@ empty selections before writing shards. A disabled teacher can still be used in
 an explicitly requested diagnostic comparison.
 
 Eligibility is authored from matched learner/reference evidence, not inferred
-from teacher availability. Currently sixteen enemy/visibility conditions across
-nine targeted maps are enabled: Splitpine vs Classic; Echo Gate; North of
-Lantern Road (player fog); Lower Gallery; Herring Tide Road Three; Lair player
+from teacher availability. Currently fifteen enemy/visibility conditions across
+eight targeted maps are enabled: Splitpine vs Classic; Echo Gate; North of
+Lantern Road (player fog); Herring Tide Road Three; Lair player
 fog vs Classic/Predictor and both fog vs Classic/Full; both clear Classic
 Hollowbank starts; and the five configured Ashbank conditions. Splitpine's other
 enemies and Lair's remaining conditions are disabled because their evidence does
@@ -786,3 +772,11 @@ hour-10 PPO actor with unchanged CNN/coarse/GRU/head architecture and a fresh Ad
 optimizer. Requested 1/3/5-minute checkpoints and full results are archived under
 `experiments/2026-11-24-targeted-imitation-5m`. It improves selected targets but
 regresses ordinary and Lantern retention; none is a promoted model version.
+
+
+The selected baseline for subsequent work is the **unmodified final hour-10 PPO
+checkpoint**, not any 1/3/5-minute imitation result. Its native model SHA-256 is
+`e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee`.
+Actor and complete PPO recovery state are preserved at
+`experiments/2026-11-23-ppo-5m-9h/extension-one-hour/recovery/hour-10/`.
+This selection starts no run and does not deploy or rename an existing model.
