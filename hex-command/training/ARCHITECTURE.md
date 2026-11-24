@@ -782,9 +782,22 @@ Actor and complete PPO recovery state are preserved at
 This selection starts no run and does not deploy or rename an existing model.
 
 
-A twelve-hour PPO continuation from that actor is active under
+A twelve-hour PPO continuation from that actor completed under
 `experiments/2026-11-24-ppo-hour10-12h`. It freezes the current 25/25/50 curriculum
 and uses the existing policy-warm-start path (fresh critic/optimizers/sampler,
 reference hour 10), then full-state recovery. Hourly fixed evaluation retains
 the baseline and selects using held-out cases only. No imitation or automatic
 model promotion is part of this run.
+
+
+Completed run result (2026-11-24): 43,200.359 trainer seconds, 3,301 updates,
+845,056 decisions. Held-out-only selection chose new-run hour 11 (actual
+39,619.576 seconds), with balanced held-out score 28.41% versus 23.30% at start;
+final hour 12 scored 24.62%. Hour 11 arena wins were 117/264 versus 101/264,
+held-out campaign clears 6/48 versus 4/48, and Lantern 4/24 versus 4/24.
+Final hour 12 retained arena gains (119/264), but held-out campaigns fell to
+2/48 and Lantern to 1/24. Training diagnostics improved to 55.07% at hour 12;
+they did not select the candidate. No model was promoted or deployed.
+All hourly actors and full PPO recovery states, frozen runtime inputs, raw
+results, actual allocation, visibility-specific chapter curves and limitations
+are archived in `experiments/2026-11-24-ppo-hour10-12h/`.

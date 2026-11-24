@@ -12,8 +12,8 @@ evaluation cases.
 
 - Selected baseline: the unmodified final **hour-10 PPO checkpoint** at
   `training/experiments/2026-11-23-ppo-5m-9h/extension-one-hour/recovery/hour-10`.
-  Do not initialize from the 1/3/5-minute imitation models. A 12-hour PPO warm-start
-  run is now active: `tmp/rl/ppo-hour10-continuation-12h-20261124`.
+  Do not initialize from the 1/3/5-minute imitation models. The 12-hour PPO warm-start
+  run is complete: `tmp/rl/ppo-hour10-continuation-12h-20261124`.
   New-workload launch uses fresh critic/optimizers/sampler and hour-10 reference;
   recovery restores full state. See `training/experiments/2026-11-24-ppo-hour10-12h`.
 
@@ -29,8 +29,10 @@ evaluation cases.
 - The experimental relief/recovery/refuge planners have been removed. Crown
   Road, Briar Saddle and Lower Gallery use existing Full selectors and have
   pretraining disabled. Historical experiment artifacts remain archived.
-- Teacher blocks and ordered recurrent imitation are wired. The new 12-hour PPO
-  continuation is active with no imitation. The
+- Teacher blocks and ordered recurrent imitation are wired. The 12-hour PPO
+  continuation completed with no imitation; held-out-only selection chose its
+  hour-11 candidate (28.41% versus 23.30% at start), not the final hour 12
+  (24.62%). No candidate has been promoted or deployed. The
   eligible-only five-minute trial from hour 10 is complete: targeted wins improved
   24→78/128 while ordinary retention fell 14→5/28 and Lantern 4→0/24.
   Checkpoints 1/3/5 are saved; no policy was promoted or deployed. See
