@@ -780,3 +780,11 @@ checkpoint**, not any 1/3/5-minute imitation result. Its native model SHA-256 is
 Actor and complete PPO recovery state are preserved at
 `experiments/2026-11-23-ppo-5m-9h/extension-one-hour/recovery/hour-10/`.
 This selection starts no run and does not deploy or rename an existing model.
+
+
+A twelve-hour PPO continuation from that actor is active under
+`experiments/2026-11-24-ppo-hour10-12h`. It freezes the current 25/25/50 curriculum
+and uses the existing policy-warm-start path (fresh critic/optimizers/sampler,
+reference hour 10), then full-state recovery. Hourly fixed evaluation retains
+the baseline and selects using held-out cases only. No imitation or automatic
+model promotion is part of this run.
