@@ -1,0 +1,8 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "executable": "/workspace/codexcloud/hex-command/tmp/rl/runtime/venv/bin/python",
+  "torch": "2.9.1+cpu",
+  "numpy": "2.3.5",
+  "matplotlib": "3.10.8",
+  "venvConfig": "home = /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin\ninclude-system-site-packages = true\nversion = 3.12.14\nexecutable = /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12\ncommand = /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python -m venv --system-site-packages /workspace/codexcloud/hex-command/tmp/rl/runtime/venv\n"
+}
