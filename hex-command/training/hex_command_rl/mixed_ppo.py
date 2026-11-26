@@ -66,6 +66,7 @@ def main():
     p.add_argument("--precision", choices=["auto", "fp32", "fp16"], default="auto")
     p.add_argument("--window-batch", type=int, default=None)
     p.add_argument("--actor-lr", type=float, default=None)
+    p.add_argument("--checkpoint-seconds", type=float, default=120.0)
     p.add_argument("--critic-warmup-episodes", type=int, default=24)
     p.add_argument("--horizon", type=int, default=64)
     p.add_argument("--temperature", type=float)
@@ -81,6 +82,7 @@ def main():
         or a.temperature is not None
         and not 0.05 <= a.temperature <= 2
         or a.horizon < 1
+        or a.checkpoint_seconds <= 0
     ):
         p.error("invalid PPO budget")
     try:
@@ -228,6 +230,7 @@ def main():
             optimization_epochs=3,
             max_gradient_norm=0.5,
             actor_lr=actor_lr,
+            checkpoint_seconds=a.checkpoint_seconds,
             critic_lr=1e-3,
             gamma=0.999,
             gae_lambda=0.95,
@@ -533,7 +536,7 @@ def main():
                         family_decisions=family,
                         action_counts=dict(action_counts),
                     )
-                if time.monotonic() - last_save >= 120:
+                if time.monotonic() - last_save >= a.checkpoint_seconds:
                     checkpoint(f"update-{update:08d}")
                     last_save = time.monotonic()
     finally:
