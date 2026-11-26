@@ -54,7 +54,27 @@ def unpack(obs, spatial):
     }
 
 
-def pack(samples):
+def resolve_device(name="cpu"):
+    if name == "auto":
+        if torch.backends.mps.is_available():
+            return torch.device("mps")
+        if torch.cuda.is_available():
+            return torch.device("cuda")
+        return torch.device("cpu")
+    if name == "cpu":
+        return torch.device("cpu")
+    if name == "mps":
+        if not torch.backends.mps.is_available():
+            raise ValueError("MPS device requested but torch.backends.mps.is_available() is False")
+        return torch.device("mps")
+    if name == "cuda":
+        if not torch.cuda.is_available():
+            raise ValueError("CUDA device requested but torch.cuda.is_available() is False")
+        return torch.device("cuda")
+    raise ValueError(f"unsupported device: {name}")
+
+
+def pack(samples, device=None):
     count = max(len(s[0]) for s in samples)
     height = max(s[1].shape[1] for s in samples)
     width = max(s[1].shape[2] for s in samples)
@@ -84,8 +104,12 @@ def pack(samples):
             context_values.append(padded)
             owners.append(row)
             sites.append(-1 if site < 0 else (site // w) * width + site % w)
+    def as_tensor(v):
+        t = torch.from_numpy(v)
+        return t.to(device) if device is not None else t
+
     bundle = tuple(
-        torch.from_numpy(v)
+        as_tensor(v)
         for v in (
             board,
             np.stack(context_values),
@@ -94,10 +118,10 @@ def pack(samples):
         )
     )
     return (
-        torch.from_numpy(x),
+        as_tensor(x),
         bundle,
-        torch.from_numpy(positions),
-        torch.from_numpy(mask),
+        as_tensor(positions),
+        as_tensor(mask),
     )
 
 

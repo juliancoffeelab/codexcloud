@@ -89,3 +89,98 @@ class RecurrentBoundaries(unittest.TestCase):
             self.assertEqual(len({(s['slot'],s['context'][1]) for s in seq}), 1)
             steps = [s['step'] for s in seq]
             self.assertEqual(steps, list(range(steps[0], steps[0]+len(steps))))
+
+    def test_resolve_device_validation(self):
+        from hex_command_rl.ppo import resolve_device
+        self.assertEqual(resolve_device("cpu").type, "cpu")
+        self.assertIn(resolve_device("auto").type, ("cpu", "mps", "cuda"))
+        with self.assertRaises(ValueError):
+            resolve_device("tpu")
+
+    def test_replay_batch_matches_unbatched_and_transfers_across_devices(self):
+        import tempfile
+        import hex_command_training as native
+        from hex_command_rl.spatial import SpatialPlanner
+        from hex_command_rl.ppo import ActorCritic, pack, categorical
+        from hex_command_rl.recurrent import replay, replay_batch
+        from hex_command_rl.recovery import save_bundle, load_resume
+
+        torch.manual_seed(99)
+        policy = SpatialPlanner(dropout=0.0).eval()
+        ac = ActorCritic(policy).eval()
+
+        def make_sample(n_cand, h, w, action):
+            feats = np.random.default_rng(n_cand + h).standard_normal(
+                (n_cand, len(native.FEATURE_NAMES))
+            ).astype(np.float32)
+            board = np.random.default_rng(n_cand + w).standard_normal(
+                (len(native.SPATIAL_CHANNEL_NAMES), h, w)
+            ).astype(np.float32)
+            board[0] = 1.0
+            ix = np.zeros((n_cand, 3), np.int64)
+            obs = (feats, board, ix, [])
+            mem = np.zeros(64, np.float32)
+            with torch.no_grad():
+                dist, _, _ = ac.forward_recurrent(*pack([obs]), 0.35, torch.zeros(1, 64))
+                ref = categorical(dist.logits + 0.05, torch.ones(1, n_cand, dtype=torch.bool), 0.35)
+                lp = float(dist.log_prob(torch.tensor([action])))
+            return dict(
+                memory=mem,
+                observation=obs,
+                action=action,
+                old_log_prob=lp,
+                advantage=0.25,
+                target=0.5,
+                reference_logits=ref.logits[0].numpy().copy(),
+            )
+
+        seq_a = [make_sample(3, 4, 5, 1), make_sample(4, 4, 5, 2)]
+        seq_b = [make_sample(5, 5, 6, 0)]
+
+        # Single-window parity: replay_batch([seq]) == replay(seq)
+        single_ref = replay(ac, seq_a, 0.35)
+        single_batched = replay_batch(ac, [seq_a], 0.35)
+        for a, b in zip(single_ref, single_batched):
+            self.assertAlmostEqual(float(a), float(b), places=5)
+
+        # Uneven-length multi-window parity: weighted average of individual windows
+        ref_b = replay(ac, seq_b, 0.35)
+        multi_batched = replay_batch(ac, [seq_a, seq_b], 0.35)
+        for a, b, m in zip(single_ref, ref_b, multi_batched):
+            expected = (len(seq_a) * float(a) + len(seq_b) * float(b)) / (len(seq_a) + len(seq_b))
+            self.assertAlmostEqual(float(m), expected, places=5)
+
+        # Cross-device MPS <-> CPU parity & checkpoint portability
+        if torch.backends.mps.is_available():
+            mps = torch.device("mps")
+            policy_mps = SpatialPlanner(dropout=0.0).eval()
+            policy_mps.load_state_dict(policy.state_dict())
+            ac_mps = ActorCritic(policy_mps).eval()
+            ac_mps.critic.load_state_dict(ac.critic.state_dict())
+            ac_mps = ac_mps.to(mps)
+
+            mps_vals = replay_batch(ac_mps, [seq_a, seq_b], 0.35, device=mps)
+            for c_val, m_val in zip(multi_batched, mps_vals):
+                self.assertAlmostEqual(float(c_val), float(m_val.cpu()), places=4)
+
+            opt_mps = torch.optim.Adam(ac_mps.parameters(), lr=1e-4)
+            loss = mps_vals[0] + mps_vals[1]
+            loss.backward()
+            opt_mps.step()
+
+            with tempfile.TemporaryDirectory() as d:
+                save_bundle(
+                    d,
+                    dict(policy=policy_mps.state_dict(), opt=opt_mps.state_dict()),
+                    policy_mps,
+                    "mps-to-cpu",
+                )
+                loaded = load_resume(d)
+                for tensor in loaded["policy"].values():
+                    self.assertEqual(tensor.device.type, "cpu")
+                policy_cpu = SpatialPlanner(dropout=0.0).eval()
+                policy_cpu.load_state_dict(loaded["policy"])
+                # And back to MPS
+                policy_mps2 = SpatialPlanner(dropout=0.0).eval().to(mps)
+                policy_mps2.load_state_dict(loaded["policy"])
+                self.assertEqual(next(policy_mps2.parameters()).device.type, "mps")

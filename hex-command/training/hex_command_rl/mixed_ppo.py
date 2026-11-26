@@ -14,9 +14,9 @@ import torch
 from torch.nn import functional as F
 import hex_command_training as native
 from .sampling import Sampler
-from .ppo import ActorCritic, pack, unpack, advantages, categorical, categorical_kl
+from .ppo import ActorCritic, pack, unpack, advantages, categorical, resolve_device
 from .spatial import SpatialPlanner
-from .recurrent import MemoryBank, windows, replay
+from .recurrent import MemoryBank, windows, replay, replay_batch
 from .recovery import save_bundle, atomic_json, load_resume, read_jsonl
 from .mixed_workload import reward_rules, sampling_group, task, definition
 
@@ -54,6 +54,8 @@ def main():
         help="fresh rollout seeds for a warm start (at least 7000001)",
     )
     p.add_argument("--envs", type=int, default=4)
+    p.add_argument("--device", choices=["auto", "cpu", "mps", "cuda"], default="cpu")
+    p.add_argument("--window-batch", type=int, default=None)
     p.add_argument("--critic-warmup-episodes", type=int, default=24)
     p.add_argument("--horizon", type=int, default=64)
     p.add_argument("--temperature", type=float)
@@ -63,12 +65,19 @@ def main():
     a = p.parse_args()
     if (
         not 0 < a.seconds <= 43200
-        or not 1 <= a.envs <= 4
+        or not 1 <= a.envs <= 16
+        or a.window_batch is not None
+        and a.window_batch < 1
         or a.temperature is not None
         and not 0.05 <= a.temperature <= 2
         or a.horizon < 1
     ):
         p.error("invalid PPO budget")
+    try:
+        device = resolve_device(a.device)
+    except ValueError as err:
+        p.error(str(err))
+    window_batch = a.window_batch or (1 if device.type == "cpu" else 16)
     root = a.root
     run = root / "rl"
     run.mkdir(exist_ok=True)
@@ -107,9 +116,11 @@ def main():
         from .checkpoint import expand_state
 
         expand_state(policy, warm["policy"])
-    ac = ActorCritic(policy).eval()
+    policy = policy.to(device)
+    ac = ActorCritic(policy).eval().to(device)
     reference = SpatialPlanner().eval().requires_grad_(False)
     reference.load_state_dict(old["reference"] if old else policy.state_dict())
+    reference = reference.to(device)
     actor_opt = torch.optim.Adam(policy.parameters(), lr=5e-6)
     critic_opt = torch.optim.Adam(ac.critic.parameters(), lr=1e-3)
     if old:
@@ -183,6 +194,8 @@ def main():
             seed_start=seed_start,
             temperature=a.temperature,
             envs=a.envs,
+            device=str(device),
+            window_batch=window_batch,
             horizon=a.horizon,
             minibatch_size=8,
             recurrent_window=8,
@@ -260,10 +273,10 @@ def main():
                         for i, obs in observations.items()
                     }
                     ids = list(views)
-                    tensors = pack(list(views.values()))
+                    tensors = pack(list(views.values()), device=device)
                     contexts = [envs[i].decision_contexts()[0] for i in ids]
-                    memory, memory_resets = memory_bank.inputs(ids, contexts)
-                    ref_memory, _ = reference_bank.inputs(ids, contexts)
+                    memory, memory_resets = memory_bank.inputs(ids, contexts, device=device)
+                    ref_memory, _ = reference_bank.inputs(ids, contexts, device=device)
                     with torch.no_grad():
                         dist, v, next_memory = ac.forward_recurrent(*tensors, a.temperature, memory)
                         ref_scores, _, next_ref = reference.forward_recurrent(*tensors[:3], ref_memory)
@@ -272,8 +285,13 @@ def main():
                         old_lp = dist.log_prob(acts)
                     memory_bank.commit(ids, contexts, memory, next_memory)
                     reference_bank.commit(ids, contexts, ref_memory, next_ref)
+                    acts_cpu = acts.cpu().tolist()
+                    vals_cpu = v.cpu().tolist()
+                    old_lp_cpu = old_lp.cpu().tolist()
+                    mem_cpu = memory.detach().cpu().numpy()
+                    ref_logits_cpu = ref_dist.logits.detach().cpu().numpy()
                     futures = {
-                        i: pool.submit(envs[i].step, [int(acts[j])])
+                        i: pool.submit(envs[i].step, [int(acts_cpu[j])])
                         for j, i in enumerate(ids)
                     }
                     rewards = np.zeros(a.envs, np.float32)
@@ -298,25 +316,25 @@ def main():
                         chapters_cleared[i] = cleared
                         episode_returns[i] += r
                         rewards[i] = r
-                        values[i] = float(v[j])
+                        values[i] = float(vals_cpu[j])
                         dones[i] = terminal
                         sampler.step(i)
                         lengths[i] += 1
                         decisions += 1
                         action_counts[
                             ["end_turn", "move", "attack", "advance"][
-                                int(views[i][0][int(acts[j]), :4].argmax())
+                                int(views[i][0][int(acts_cpu[j]), :4].argmax())
                             ]
                         ] += 1
                         step.append(
                             dict(
                                 slot=i,
-                                context=contexts[j], memory=memory[j].numpy().copy(),
+                                context=contexts[j], memory=mem_cpu[j].copy(),
                                 memory_reset=memory_resets[j],
-                                reference_logits=ref_dist.logits[j, :len(views[i][0])].numpy().copy(),
+                                reference_logits=ref_logits_cpu[j, :len(views[i][0])].copy(),
                                 observation=views[i],
-                                action=int(acts[j]),
-                                old_log_prob=float(old_lp[j]),
+                                action=int(acts_cpu[j]),
+                                old_log_prob=float(old_lp_cpu[j]),
                             )
                         )
                         if terminal:
@@ -364,10 +382,13 @@ def main():
                 with torch.no_grad():
                     ids = list(views)
                     contexts = [envs[i].decision_contexts()[0] for i in ids]
-                    memory, _ = memory_bank.inputs(ids, contexts)
-                    _, next_v, _ = ac.forward_recurrent(*pack(list(views.values())), a.temperature, memory)
+                    memory, _ = memory_bank.inputs(ids, contexts, device=device)
+                    _, next_v, _ = ac.forward_recurrent(
+                        *pack(list(views.values()), device=device), a.temperature, memory
+                    )
+                next_v_cpu = next_v.cpu().tolist()
                 for j, i in enumerate(views):
-                    bootstrap[i] = float(next_v[j])
+                    bootstrap[i] = float(next_v_cpu[j])
                 advantage, returns = advantages(
                     np.asarray(rew),
                     np.asarray(vals),
@@ -393,10 +414,23 @@ def main():
                 update += 1
                 stats = []
                 for epoch in range(3):
-                    for batch in windows(flat, rng):
+                    seqs = windows(flat, rng)
+                    batches = (
+                        seqs
+                        if window_batch == 1
+                        else [
+                            seqs[i : i + window_batch]
+                            for i in range(0, len(seqs), window_batch)
+                        ]
+                    )
+                    for batch in batches:
                         if time.monotonic() >= deadline:
                             break
-                        policy_loss, value_loss, entropy, kl, clip_fraction = replay(ac, batch, a.temperature)
+                        policy_loss, value_loss, entropy, kl, clip_fraction = (
+                            replay(ac, batch, a.temperature, device=device)
+                            if window_batch == 1
+                            else replay_batch(ac, batch, a.temperature, device=device)
+                        )
                         loss = value_loss + (
                             0 if warmup else policy_loss + 0.02 * kl - 0.001 * entropy
                         )

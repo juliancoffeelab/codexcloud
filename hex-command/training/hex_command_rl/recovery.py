@@ -35,6 +35,18 @@ def atomic_json(path, value):
             os.unlink(name)
 
 
+def to_cpu(value):
+    if isinstance(value, torch.Tensor):
+        return value.detach().cpu()
+    if isinstance(value, dict):
+        return {k: to_cpu(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [to_cpu(v) for v in value]
+    if isinstance(value, tuple):
+        return tuple(to_cpu(v) for v in value)
+    return value
+
+
 def finite_tensors(value):
     if isinstance(value, torch.Tensor):
         if value.is_floating_point() and not torch.isfinite(value).all():
@@ -48,8 +60,9 @@ def finite_tensors(value):
 
 
 def save_bundle(root, state, policy, label, best=False):
+    state = to_cpu(state)
     finite_tensors(state)
-    finite_tensors(policy.state_dict())
+    finite_tensors(to_cpu(policy.state_dict()))
     root = Path(root)
     folder = root / "checkpoints"
     folder.mkdir(parents=True, exist_ok=True)
