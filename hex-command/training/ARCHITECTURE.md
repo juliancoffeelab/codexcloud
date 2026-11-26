@@ -801,3 +801,13 @@ they did not select the candidate. No model was promoted or deployed.
 All hourly actors and full PPO recovery states, frozen runtime inputs, raw
 results, actual allocation, visibility-specific chapter curves and limitations
 are archived in `experiments/2026-11-24-ppo-hour10-12h/`.
+
+
+On 2026-11-26 an additional twelve hours were authorized and launched from the
+final hour-12 actor/full PPO state (SHA `da26cde88dde2918a2f39eab5b8144ea4cfb98c8bdda7f6f61e2f7983c976bf2`).
+All state components were compared exactly at resume, including optimizers,
+critic, reference, RNG and sampler. The original hour10 KL anchor and all training
+controls remain unchanged. Target cumulative trainer time is 86,400.194862209;
+hour 13–24 panels use identical heldout/diagnostic/Lantern cases. Original hour11
+remains selection-eligible; no model is promoted. Extension evidence lives under
+`experiments/2026-11-24-ppo-hour10-12h/extension-twelve-hours-20261126/`.

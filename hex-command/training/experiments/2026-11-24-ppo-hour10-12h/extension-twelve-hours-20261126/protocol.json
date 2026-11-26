@@ -1,0 +1,114 @@
+{
+  "source_commit": "60537725f26b968b5d8eb3597e931a06b3efb0d2",
+  "budget_seconds": 86400.194862209,
+  "start_model": "Unmodified final hour-10 PPO actor",
+  "start_model_sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee",
+  "warm_start_semantics": "Existing mixed_ppo warm start: preserve actor only; fresh actor/critic optimizers, critic, schema3 sampler and RNG; KL reference is starting hour10 actor. Subsequent recovery preserves complete state.",
+  "imitation": false,
+  "architecture_changed": false,
+  "seed_start": 510000001,
+  "temperature": 0.35,
+  "envs": 4,
+  "horizon": 64,
+  "critic_warmup_episodes": 24,
+  "sampling_weights": {
+    "arena": 0.25,
+    "campaign": 0.5,
+    "targeted": 0.25
+  },
+  "logical_maps": {
+    "arena": 14,
+    "targeted": 28,
+    "campaign": 3
+  },
+  "adaptive": {
+    "enabled": true,
+    "completionThreshold": 0.8,
+    "minimumMultiplier": 0.1,
+    "emaRate": 0.1,
+    "initialCompletionRate": 0.5,
+    "warmupEpisodes": 10,
+    "updateEveryEpisodes": 20
+  },
+  "reward_profiles": {
+    "arena": {
+      "win": 1.0,
+      "chapter": 0.0
+    },
+    "campaign": {
+      "win": 2.0,
+      "chapter": 1.0
+    }
+  },
+  "kill_rewards": false,
+  "objective_progress_rewards": false,
+  "panels": {
+    "heldout": 312,
+    "training_diagnostic": 214,
+    "lantern_showcase": 24
+  },
+  "hourly_checkpoints": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "selection": "Held-out312 only; baseline eligible; same reliable_choice criterion as prior PPO. Diagnostics and Lantern excluded. No automatic deployment/promotion.",
+  "timing": "43200 saved trainer-wall seconds, excluding recovery downtime; rollout and optimization time included. Evaluation runs separately. Actual checkpoint times retained.",
+  "visibility": "Authored arena/target clear/player-fog/both-fog/sight conditions. Broad campaign fog is player-only. Preserve faction visibility settings.",
+  "workload_sha256": "d2865dbd18ae32161f363a26d0cb114921db324ea387c0a7000607dcce60710b",
+  "native_sha256": "cb439b1a8cacba30fb5d04b3cacae681e34a1d95967aeda83dbe1a50e014e663",
+  "original_budget_seconds": 43200,
+  "extension": {
+    "authorized_date": "2026-11-26",
+    "requested_additional_seconds": 43200,
+    "start_saved_seconds": 43200.194862209,
+    "total_target_seconds": 86400.194862209,
+    "start_model_sha256": "da26cde88dde2918a2f39eab5b8144ea4cfb98c8bdda7f6f61e2f7983c976bf2",
+    "start_checkpoint": "checkpoints/last-1795524095845528690",
+    "preserve": [
+      "policy",
+      "critic",
+      "reference",
+      "actor_optimizer",
+      "critic_optimizer",
+      "torch_rng",
+      "numpy_rng",
+      "python_rng",
+      "sampler",
+      "update",
+      "episodes",
+      "decisions",
+      "action_counts"
+    ],
+    "reference": "unchanged original hour10 actor",
+    "workload": "unchanged frozen 14 ordinary25% /28 targeted25% /3 broad campaigns50%, adaptive inside groups",
+    "rewards": "unchanged arena+1/chapter+1/finale+2; no objective-progress or kill bonuses",
+    "evaluation": "Reuse immutable completed hour0\u201312 panels; evaluate hour13\u201324 at first checkpoints >= start_saved_seconds + additional_hour*3600. Same heldout312, diagnostic214, Lantern24. Selection among all0\u201324 uses heldout only, previous selected hour11 eligible.",
+    "patch_scope": "Only increase frozen CLI absolute-time validation ceiling and supervisor target; evaluator adds twelve hourly panels. No model/training equations/workload changes.",
+    "original_archive": "training/experiments/2026-11-24-ppo-hour10-12h",
+    "archive_extension": "training/experiments/2026-11-24-ppo-hour10-12h/extension-twelve-hours-20261126",
+    "created": 1795651667.6211865
+  }
+}

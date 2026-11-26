@@ -10,6 +10,12 @@ evaluation cases.
 
 ## Current wiring and next decision
 
+- **Active 2026-11-26:** another 12 hours, full-state resume from final hour12
+  (not selected hour11). Start 43,200.194862209 → target 86,400.194862209 trainer
+  seconds. Same frozen settings, curriculum and original hour10 KL reference.
+  Hourly evaluations13–24; all earlier heldout candidates remain eligible.
+  See `training/experiments/2026-11-24-ppo-hour10-12h/extension-twelve-hours-20261126`.
+
 - Selected baseline: the unmodified final **hour-10 PPO checkpoint** at
   `training/experiments/2026-11-23-ppo-5m-9h/extension-one-hour/recovery/hour-10`.
   Do not initialize from the 1/3/5-minute imitation models. The 12-hour PPO warm-start

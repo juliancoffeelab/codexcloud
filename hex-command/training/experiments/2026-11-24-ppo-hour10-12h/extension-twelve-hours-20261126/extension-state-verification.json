@@ -1,0 +1,22 @@
+{
+  "time": 1795651733.8071299,
+  "source_checkpoint": "checkpoints/last-1795524095845528690",
+  "resumed_initial": "checkpoints/initial-1795651688437363106",
+  "full_state_exact": {
+    "policy": true,
+    "critic": true,
+    "reference": true,
+    "actor_optimizer": true,
+    "critic_optimizer": true,
+    "torch_rng": true,
+    "numpy_rng": true,
+    "python_rng": true,
+    "sampler": true,
+    "update": true,
+    "episodes": true,
+    "decisions": true,
+    "action_counts": true
+  },
+  "starting_actor_sha256": "da26cde88dde2918a2f39eab5b8144ea4cfb98c8bdda7f6f61e2f7983c976bf2",
+  "initial_saved_seconds": 43200.597344142
+}
