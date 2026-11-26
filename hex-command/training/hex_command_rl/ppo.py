@@ -125,6 +125,7 @@ def pack(samples, device=None):
 
 def categorical(scores, mask, temperature):
     # Finite padding avoids NaN gradients in KL's 0 * (-inf - -inf).
+    scores = scores.float()
     logits = (scores / temperature).masked_fill(~mask, torch.finfo(scores.dtype).min)
     return torch.distributions.Categorical(logits=logits)
 
@@ -155,8 +156,12 @@ class ActorCritic(nn.Module):
         dist = categorical(scores, mask, temperature)
         # Critic training initially leaves the pretrained policy encoder untouched.
         with torch.no_grad():
-            mean = (x * mask[:, :, None]).sum(1) / mask.sum(1, keepdim=True)
-        value = self.critic(torch.cat([pooled.detach(), memory.detach(), mean], -1)).squeeze(-1)
+            xf = x.float()
+            mean = (xf * mask[:, :, None]).sum(1) / mask.sum(1, keepdim=True)
+        with torch.amp.autocast(x.device.type, enabled=False):
+            value = self.critic(
+                torch.cat([pooled.detach().float(), memory.detach().float(), mean], -1)
+            ).squeeze(-1)
         return dist, value, memory
 
 

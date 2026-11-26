@@ -101,11 +101,13 @@ class SpatialPlanner(nn.Module):
 
     def forward_recurrent(self, features, boards, indices, memory=None):
         features, parts, pooled = self.encode_spatial(features, boards, indices)
+        pooled_f32 = pooled.float()
         if memory is None:
-            memory = pooled.new_zeros((len(pooled), 64))
-        memory = self.gru(pooled, memory)
-        parts.append(memory[:, None, :].expand(-1, features.shape[1], -1))
-        return self.head(torch.cat([features, *parts], dim=-1)).squeeze(-1), pooled, memory
+            memory = pooled_f32.new_zeros((len(pooled_f32), 64))
+        with torch.amp.autocast(pooled_f32.device.type, enabled=False):
+            memory = self.gru(pooled_f32, memory.float())
+        parts.append(memory.to(features.dtype)[:, None, :].expand(-1, features.shape[1], -1))
+        return self.head(torch.cat([features, *parts], dim=-1)).squeeze(-1), pooled_f32, memory
 
     def encode_candidates(self, boards, indices, layers, stride, context_lookup=None):
         base = boards[0] if isinstance(boards, tuple) else boards

@@ -4,6 +4,7 @@ import argparse
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 import json
+import math
 import os
 from pathlib import Path
 import random
@@ -64,6 +65,7 @@ def main():
     p.add_argument("--device", choices=["auto", "cpu", "mps", "cuda"], default="cpu")
     p.add_argument("--precision", choices=["auto", "fp32", "fp16"], default="auto")
     p.add_argument("--window-batch", type=int, default=None)
+    p.add_argument("--actor-lr", type=float, default=None)
     p.add_argument("--critic-warmup-episodes", type=int, default=24)
     p.add_argument("--horizon", type=int, default=64)
     p.add_argument("--temperature", type=float)
@@ -86,6 +88,13 @@ def main():
     except ValueError as err:
         p.error(str(err))
     window_batch = a.window_batch or (1 if device.type == "cpu" else 16)
+    actor_lr = (
+        a.actor_lr
+        if a.actor_lr is not None
+        else 5e-6 * math.sqrt(window_batch)
+    )
+    if not actor_lr > 0:
+        p.error("--actor-lr must be positive")
     use_fp16 = (
         device.type != "cpu"
         if a.precision == "auto"
@@ -136,7 +145,7 @@ def main():
     reference = SpatialPlanner().eval().requires_grad_(False)
     reference.load_state_dict(old["reference"] if old else policy.state_dict())
     reference = reference.to(device)
-    actor_opt = torch.optim.Adam(policy.parameters(), lr=5e-6)
+    actor_opt = torch.optim.Adam(policy.parameters(), lr=actor_lr)
     critic_opt = torch.optim.Adam(ac.critic.parameters(), lr=1e-3)
     if old:
         ac.critic.load_state_dict(old["critic"])
@@ -218,7 +227,7 @@ def main():
             reference_outputs_cached=True,
             optimization_epochs=3,
             max_gradient_norm=0.5,
-            actor_lr=5e-6,
+            actor_lr=actor_lr,
             critic_lr=1e-3,
             gamma=0.999,
             gae_lambda=0.95,
@@ -293,7 +302,9 @@ def main():
                     contexts = [envs[i].decision_contexts()[0] for i in ids]
                     memory, memory_resets = memory_bank.inputs(ids, contexts, device=device)
                     ref_memory, _ = reference_bank.inputs(ids, contexts, device=device)
-                    with torch.no_grad():
+                    with torch.no_grad(), torch.amp.autocast(
+                        device.type, dtype=torch.float16, enabled=use_fp16
+                    ):
                         dist, v, next_memory = ac.forward_recurrent(*tensors, a.temperature, memory)
                         acts = dist.sample()
                         old_lp = dist.log_prob(acts)
@@ -303,7 +314,9 @@ def main():
                         i: pool.submit(envs[i].step, [int(acts_cpu[j])])
                         for j, i in enumerate(ids)
                     }
-                    with torch.no_grad():
+                    with torch.no_grad(), torch.amp.autocast(
+                        device.type, dtype=torch.float16, enabled=use_fp16
+                    ):
                         ref_scores, _, next_ref = reference.forward_recurrent(*tensors[:3], ref_memory)
                         ref_dist = categorical(ref_scores, tensors[3], a.temperature)
                     memory_bank.commit(ids, contexts, memory, next_memory)
@@ -397,7 +410,9 @@ def main():
                     for i, obs in observations.items()
                 }
                 bootstrap = np.zeros(a.envs, np.float32)
-                with torch.no_grad():
+                with torch.no_grad(), torch.amp.autocast(
+                    device.type, dtype=torch.float16, enabled=use_fp16
+                ):
                     ids = list(views)
                     contexts = [envs[i].decision_contexts()[0] for i in ids]
                     memory, _ = memory_bank.inputs(ids, contexts, device=device)
