@@ -811,3 +811,14 @@ controls remain unchanged. Target cumulative trainer time is 86,400.194862209;
 hour 13–24 panels use identical heldout/diagnostic/Lantern cases. Original hour11
 remains selection-eligible; no model is promoted. Extension evidence lives under
 `experiments/2026-11-24-ppo-hour10-12h/extension-twelve-hours-20261126/`.
+
+
+The additional twelve hours completed on 2026-11-26. Heldout-only selection across
+hours 0–24 chose hour 13 (28.98% balanced score, 120/264 arena wins, 6/48 campaign
+clears, 3/24 Lantern); final hour 24 scored 23.20%, 117/264 arenas, 1/48 campaigns and 0/24
+Lantern. Targeted diagnostic wins rose 115→121/150 from extension start to final,
+but held-out campaign and Lantern gains did not persist. Whole-extension decision
+allocation was 25.0176% ordinary/25.0151% targeted/49.9673% broad campaigns, with
+all 45 maps receiving additional work. All hourly full recovery states and raw
+results are archived in `experiments/2026-11-24-ppo-hour10-12h/extension-twelve-hours-20261126/`.
+Original archive artifacts are unchanged; no model was promoted or deployed.

@@ -10,10 +10,11 @@ evaluation cases.
 
 ## Current wiring and next decision
 
-- **Active 2026-11-26:** another 12 hours, full-state resume from final hour12
-  (not selected hour11). Start 43,200.194862209 → target 86,400.194862209 trainer
+- **Completed 2026-11-26:** another 12 hours, full-state resume from final hour 12
+  (not selected hour 11). Start 43,200.194862209 → target 86,400.194862209 trainer
   seconds. Same frozen settings, curriculum and original hour10 KL reference.
-  Hourly evaluations13–24; all earlier heldout candidates remain eligible.
+  Hourly evaluations 13–24 completed. Heldout-only selection chose hour 13
+  (28.98%); final hour 24 scored 23.20%, Lantern 0/24. No model promoted.
   See `training/experiments/2026-11-24-ppo-hour10-12h/extension-twelve-hours-20261126`.
 
 - Selected baseline: the unmodified final **hour-10 PPO checkpoint** at
