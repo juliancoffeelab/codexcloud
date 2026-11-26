@@ -87,68 +87,113 @@ def group_windows(sequences, window_batch, rng):
     return [batches[i] for i in rng.permutation(len(batches))]
 
 
-def prepare_replay_batch(sequences, device):
-    """Pack and transfer a batch of windows once so multi-epoch PPO reuses device tensors."""
+def prepare_replay_batch(sequences, device, fp16=False):
+    """Pack all TBPTT steps in a window batch into one flat CNN batch on-device."""
     from .ppo import pack
     if not sequences:
         raise ValueError("sequences must be nonempty")
     device = torch.device(device)
+    if fp16 and device.type == "cpu":
+        raise ValueError("fp16 mixed precision is only supported on MPS/CUDA")
     batch_size = len(sequences)
     max_len = max(len(seq) for seq in sequences)
     init_memory = torch.as_tensor(
         np.stack([np.asarray(seq[0]['memory'], np.float32) for seq in sequences]),
         device=device,
     )
-    pad_logit = float(np.finfo(np.float32).min)
-    steps = []
-    total_steps = 0
+    flat_samples = []
+    step_slices = []
     for t in range(max_len):
         active = [i for i, seq in enumerate(sequences) if t < len(seq)]
-        step_samples = [sequences[i][t] for i in active]
-        tensors = pack([s['observation'] for s in step_samples], device=device)
-        actions = torch.tensor([s['action'] for s in step_samples], dtype=torch.long, device=device)
-        old_lp = torch.tensor([s['old_log_prob'] for s in step_samples], dtype=torch.float32, device=device)
-        adv = torch.tensor([s['advantage'] for s in step_samples], dtype=torch.float32, device=device)
-        target = torch.tensor([s['target'] for s in step_samples], dtype=torch.float32, device=device)
-        width = tensors[0].shape[1]
-        ref_logits = np.full((len(step_samples), width), pad_logit, dtype=np.float32)
-        for j, s in enumerate(step_samples):
-            rl = np.asarray(s['reference_logits'], dtype=np.float32)
-            ref_logits[j, : len(rl)] = rl
-        ref_logits_t = torch.from_numpy(ref_logits).to(device)
-        steps.append((active, tensors, actions, old_lp, adv, target, ref_logits_t))
-        total_steps += len(step_samples)
-    return batch_size, init_memory, steps, total_steps
+        start = len(flat_samples)
+        for i in active:
+            flat_samples.append(sequences[i][t])
+        step_slices.append((active, start, len(flat_samples)))
+    tensors = pack([s['observation'] for s in flat_samples], device=device)
+    if fp16:
+        x, (board, contexts, owners, sites), pos, mask = tensors
+        tensors = (x.half(), (board.half(), contexts.half(), owners, sites), pos, mask)
+    actions = torch.tensor([s['action'] for s in flat_samples], dtype=torch.long, device=device)
+    old_lp = torch.tensor([s['old_log_prob'] for s in flat_samples], dtype=torch.float32, device=device)
+    adv = torch.tensor([s['advantage'] for s in flat_samples], dtype=torch.float32, device=device)
+    target = torch.tensor([s['target'] for s in flat_samples], dtype=torch.float32, device=device)
+    width = tensors[0].shape[1]
+    pad_logit = float(np.finfo(np.float32).min)
+    ref_logits = np.full((len(flat_samples), width), pad_logit, dtype=np.float32)
+    for j, s in enumerate(flat_samples):
+        rl = np.asarray(s['reference_logits'], dtype=np.float32)
+        ref_logits[j, : len(rl)] = rl
+    ref_logits_t = torch.from_numpy(ref_logits).to(device)
+    return (
+        device.type,
+        fp16,
+        batch_size,
+        init_memory,
+        step_slices,
+        tensors,
+        actions,
+        old_lp,
+        adv,
+        target,
+        ref_logits_t,
+    )
 
 
 def replay_prepared_batch(ac, prepared, temperature):
-    """Run TBPTT over a pre-packed batch of windows on-device."""
-    from .ppo import categorical_kl
+    """Run flattened CNN + sequential GRU TBPTT over a pre-packed batch of windows."""
+    from .ppo import categorical, categorical_kl
     from torch.distributions import Categorical
-    batch_size, memory, steps, total_steps = prepared
-    totals = None
-    for active, tensors, actions, old_lp, adv, target, ref_logits in steps:
+    (
+        device_type,
+        fp16,
+        batch_size,
+        memory,
+        step_slices,
+        tensors,
+        actions,
+        old_lp,
+        adv,
+        target,
+        ref_logits,
+    ) = prepared
+    x, boards, positions, mask = tensors
+    with torch.amp.autocast(device_type, dtype=torch.float16, enabled=fp16):
+        features, parts, pooled = ac.policy.encode_spatial(x, boards, positions)
+    pooled_f32 = pooled.float()
+    mem_steps = []
+    for active, start, end in step_slices:
         mem_in = memory[active] if len(active) < batch_size else memory
-        dist, value, mem_out = ac.forward_recurrent(*tensors, temperature, mem_in)
+        mem_out = ac.policy.gru(pooled_f32[start:end], mem_in)
+        mem_steps.append(mem_out)
         if len(active) < batch_size:
             updated = memory.clone()
             updated[active] = mem_out
             memory = updated
         else:
             memory = mem_out
-        ratio = (dist.log_prob(actions) - old_lp).clamp(-20, 20).exp()
-        pg = -torch.minimum(ratio * adv, ratio.clamp(0.8, 1.2) * adv).sum()
-        vl = F.mse_loss(value, target, reduction='sum')
-        ref = Categorical(logits=ref_logits)
-        kl = categorical_kl(dist, ref).sum()
-        ent = dist.entropy().sum()
-        clip_frac = ((ratio - 1).abs() > 0.2).float().sum()
-        step_totals = torch.stack([pg, vl, ent, kl, clip_frac])
-        totals = step_totals if totals is None else totals + step_totals
-    return (totals / total_steps).unbind()
+    all_mem = torch.cat(mem_steps, dim=0)
+    with torch.amp.autocast(device_type, dtype=torch.float16, enabled=fp16):
+        mem_exp = all_mem.to(features.dtype)[:, None, :].expand(-1, features.shape[1], -1)
+        scores = ac.policy.head(torch.cat([features, *parts, mem_exp], dim=-1)).squeeze(-1)
+    scores = scores.float()
+    dist = categorical(scores, mask, temperature)
+    with torch.no_grad():
+        x_f32 = x.float()
+        mean = (x_f32 * mask[:, :, None]).sum(1) / mask.sum(1, keepdim=True)
+    value = ac.critic(torch.cat([pooled_f32.detach(), all_mem.detach(), mean], -1)).squeeze(-1)
+    ratio = (dist.log_prob(actions) - old_lp).clamp(-20, 20).exp()
+    pg = -torch.minimum(ratio * adv, ratio.clamp(0.8, 1.2) * adv).mean()
+    vl = F.mse_loss(value, target)
+    ref = Categorical(logits=ref_logits)
+    kl = categorical_kl(dist, ref).mean()
+    ent = dist.entropy().mean()
+    clip_frac = ((ratio - 1).abs() > 0.2).float().mean()
+    return pg, vl, ent, kl, clip_frac
 
 
-def replay_batch(ac, sequences, temperature, device=None):
+def replay_batch(ac, sequences, temperature, device=None, fp16=False):
     """Batched TBPTT across multiple windows, stepping all active windows together."""
     device = next(ac.parameters()).device if device is None else torch.device(device)
-    return replay_prepared_batch(ac, prepare_replay_batch(sequences, device), temperature)
+    return replay_prepared_batch(
+        ac, prepare_replay_batch(sequences, device, fp16=fp16), temperature
+    )

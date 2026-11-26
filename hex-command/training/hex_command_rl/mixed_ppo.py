@@ -62,6 +62,7 @@ def main():
     )
     p.add_argument("--envs", type=int, default=4)
     p.add_argument("--device", choices=["auto", "cpu", "mps", "cuda"], default="cpu")
+    p.add_argument("--precision", choices=["auto", "fp32", "fp16"], default="auto")
     p.add_argument("--window-batch", type=int, default=None)
     p.add_argument("--critic-warmup-episodes", type=int, default=24)
     p.add_argument("--horizon", type=int, default=64)
@@ -85,6 +86,13 @@ def main():
     except ValueError as err:
         p.error(str(err))
     window_batch = a.window_batch or (1 if device.type == "cpu" else 16)
+    use_fp16 = (
+        device.type != "cpu"
+        if a.precision == "auto"
+        else a.precision == "fp16"
+    )
+    if use_fp16 and device.type == "cpu":
+        p.error("--precision fp16 requires --device mps or cuda")
     root = a.root
     run = root / "rl"
     run.mkdir(exist_ok=True)
@@ -202,6 +210,7 @@ def main():
             temperature=a.temperature,
             envs=a.envs,
             device=str(device),
+            precision="fp16" if use_fp16 else "fp32",
             window_batch=window_batch,
             horizon=a.horizon,
             minibatch_size=8,
@@ -424,7 +433,7 @@ def main():
                 stats = []
                 prepared_batches = (
                     [
-                        prepare_replay_batch(batch, device)
+                        prepare_replay_batch(batch, device, fp16=use_fp16)
                         for batch in group_windows(windows(flat, rng), window_batch, rng)
                     ]
                     if window_batch > 1

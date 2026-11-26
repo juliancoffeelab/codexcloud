@@ -163,6 +163,12 @@ class RecurrentBoundaries(unittest.TestCase):
             for c_val, m_val in zip(multi_batched, mps_vals):
                 self.assertAlmostEqual(float(c_val), float(m_val.cpu()), places=4)
 
+            mps_fp16_vals = replay_batch(
+                ac_mps, [seq_a, seq_b], 0.35, device=mps, fp16=True
+            )
+            for c_val, m_val in zip(multi_batched, mps_fp16_vals):
+                self.assertAlmostEqual(float(c_val), float(m_val.cpu()), places=2)
+
             opt_mps = torch.optim.Adam(ac_mps.parameters(), lr=1e-4)
             loss = mps_vals[0] + mps_vals[1]
             loss.backward()

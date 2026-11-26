@@ -859,7 +859,7 @@
       "conditions": {
         "objectives": ["territory"],
         "opponents": ["classic"],
-        "recruiters": ["situational"],
+        "recruiters": ["predictor"],
         "first": ["player"],
         "recruitLimit": 0,
         "maxRounds": 30
@@ -886,7 +886,7 @@
       "conditions": {
         "objectives": ["territory"],
         "opponents": ["classic"],
-        "recruiters": ["situational"],
+        "recruiters": ["predictor"],
         "first": ["player"],
         "recruitLimit": 0,
         "maxRounds": 30
@@ -1653,7 +1653,7 @@
         "samplingGroup": "targeted",
         "samplingMap": "rl-hollowbank-extraction-crossfire-late-guard",
         "rewardProfile": "arena",
-        "recruiters": ["situational"],
+        "recruiters": ["predictor"],
         "recruitLimit": 0,
         "opponents": ["classic"],
         "pretrain_imitator": {
@@ -1672,7 +1672,7 @@
         "samplingGroup": "targeted",
         "samplingMap": "rl-hollowbank-extraction-crossfire-nearside",
         "rewardProfile": "arena",
-        "recruiters": ["situational"],
+        "recruiters": ["predictor"],
         "recruitLimit": 0,
         "opponents": ["classic"],
         "pretrain_imitator": {
@@ -1691,7 +1691,7 @@
         "samplingGroup": "targeted",
         "samplingMap": "rl-ashbank-relay-fork-vigil",
         "rewardProfile": "arena",
-        "recruiters": ["situational"],
+        "recruiters": ["predictor"],
         "recruitLimit": 0,
         "opponents": ["predictor"],
         "pretrain_imitator": {
@@ -1708,7 +1708,7 @@
         "samplingGroup": "targeted",
         "samplingMap": "rl-ashbank-relay-fork-vigil",
         "rewardProfile": "arena",
-        "recruiters": ["situational"],
+        "recruiters": ["predictor"],
         "recruitLimit": 0,
         "opponents": ["full"],
         "pretrain_imitator": {
@@ -1727,7 +1727,7 @@
         "samplingGroup": "targeted",
         "samplingMap": "rl-ashbank-relay-fork-vigil",
         "rewardProfile": "arena",
-        "recruiters": ["situational"],
+        "recruiters": ["predictor"],
         "recruitLimit": 0,
         "opponents": ["full"],
         "pretrain_imitator": {
@@ -1746,7 +1746,7 @@
         "samplingGroup": "targeted",
         "samplingMap": "rl-ashbank-relay-fork-vigil",
         "rewardProfile": "arena",
-        "recruiters": ["situational"],
+        "recruiters": ["predictor"],
         "recruitLimit": 0,
         "opponents": ["predictor"],
         "pretrain_imitator": {
@@ -1763,7 +1763,7 @@
         "samplingGroup": "targeted",
         "samplingMap": "rl-ashbank-relay-fork-vigil",
         "rewardProfile": "arena",
-        "recruiters": ["situational"],
+        "recruiters": ["predictor"],
         "recruitLimit": 0,
         "opponents": ["full"],
         "pretrain_imitator": {
@@ -1790,20 +1790,6 @@
       }
     ],
     "broken-siege-player-fog": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted",
-        "samplingGroup": "campaign",
-        "pretrain_imitator": "queued",
-        "samplingMap": "broken-siege",
-        "rewardProfile": "campaign",
-        "recruiters": null,
-        "recruitLimit": null,
-        "conditionWeight": 1.0,
-        "pretrain_enabled": false
-      }
-    ],
-    "broken-siege-both-fog": [
       {
         "objective": "authored",
         "diplomacy": "unrestricted",
@@ -1845,20 +1831,6 @@
         "pretrain_enabled": false
       }
     ],
-    "contested-refuge-both-fog": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted",
-        "samplingGroup": "campaign",
-        "pretrain_imitator": "queued",
-        "samplingMap": "contested-refuge",
-        "rewardProfile": "campaign",
-        "recruiters": null,
-        "recruitLimit": null,
-        "conditionWeight": 1.0,
-        "pretrain_enabled": false
-      }
-    ],
     "occupied-village-chain": [
       {
         "objective": "authored",
@@ -1874,20 +1846,6 @@
       }
     ],
     "occupied-village-chain-player-fog": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted",
-        "samplingGroup": "campaign",
-        "pretrain_imitator": "queued",
-        "samplingMap": "occupied-village-chain",
-        "rewardProfile": "campaign",
-        "recruiters": null,
-        "recruitLimit": null,
-        "conditionWeight": 1.0,
-        "pretrain_enabled": false
-      }
-    ],
-    "occupied-village-chain-both-fog": [
       {
         "objective": "authored",
         "diplomacy": "unrestricted",
@@ -1929,20 +1887,6 @@
         "pretrain_enabled": false
       }
     ],
-    "proto-flooded-prison-both-fog": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted",
-        "samplingGroup": "campaign",
-        "pretrain_imitator": "queued",
-        "samplingMap": "proto-flooded-prison",
-        "rewardProfile": "campaign",
-        "recruiters": null,
-        "recruitLimit": null,
-        "conditionWeight": 1.0,
-        "pretrain_enabled": false
-      }
-    ],
     "proto-last-ferry": [
       {
         "objective": "authored",
@@ -1958,20 +1902,6 @@
       }
     ],
     "proto-last-ferry-player-fog": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted",
-        "samplingGroup": "campaign",
-        "pretrain_imitator": "queued",
-        "samplingMap": "proto-last-ferry",
-        "rewardProfile": "campaign",
-        "recruiters": null,
-        "recruitLimit": null,
-        "conditionWeight": 1.0,
-        "pretrain_enabled": false
-      }
-    ],
-    "proto-last-ferry-both-fog": [
       {
         "objective": "authored",
         "diplomacy": "unrestricted",
@@ -2013,20 +1943,6 @@
         "pretrain_enabled": false
       }
     ],
-    "draft-hunt-both-fog": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted",
-        "samplingGroup": "campaign",
-        "pretrain_imitator": "queued",
-        "samplingMap": "draft-hunt",
-        "rewardProfile": "campaign",
-        "recruiters": null,
-        "recruitLimit": null,
-        "conditionWeight": 1.0,
-        "pretrain_enabled": false
-      }
-    ],
     "draft-quarry": [
       {
         "objective": "authored",
@@ -2042,20 +1958,6 @@
       }
     ],
     "draft-quarry-player-fog": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted",
-        "samplingGroup": "campaign",
-        "pretrain_imitator": "queued",
-        "samplingMap": "draft-quarry",
-        "rewardProfile": "campaign",
-        "recruiters": null,
-        "recruitLimit": null,
-        "conditionWeight": 1.0,
-        "pretrain_enabled": false
-      }
-    ],
-    "draft-quarry-both-fog": [
       {
         "objective": "authored",
         "diplomacy": "unrestricted",
@@ -2096,24 +1998,10 @@
         "conditionWeight": 1.0,
         "pretrain_enabled": false
       }
-    ],
-    "three-gates-both-fog": [
-      {
-        "objective": "authored",
-        "diplomacy": "unrestricted",
-        "samplingGroup": "campaign",
-        "pretrain_imitator": "queued",
-        "samplingMap": "three-gates",
-        "rewardProfile": "campaign",
-        "recruiters": null,
-        "recruitLimit": null,
-        "conditionWeight": 1.0,
-        "pretrain_enabled": false
-      }
     ]
   },
   "opponents": ["classic", "predictor", "full"],
-  "recruiters": ["situational", "predictor"],
+  "recruiters": ["predictor"],
   "objectives": ["deathmatch", "territory"],
   "samplingWeights": {
     "arena": 0.1,

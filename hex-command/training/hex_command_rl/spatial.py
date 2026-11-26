@@ -73,7 +73,7 @@ class SpatialPlanner(nn.Module):
         scores, pooled, _ = self.forward_recurrent(features, boards, indices)
         return scores, pooled
 
-    def forward_recurrent(self, features, boards, indices, memory=None):
+    def encode_spatial(self, features, boards, indices):
         if features.shape[-1] < len(native.FEATURE_NAMES):
             features = F.pad(features, (0, len(native.FEATURE_NAMES) - features.shape[-1]))
         context_lookup = None
@@ -97,6 +97,10 @@ class SpatialPlanner(nn.Module):
             parts.extend([gathered, candidate_pool])
             if stride == 1:
                 pooled = summary  # Preserve the existing critic's 16-value input.
+        return features, parts, pooled
+
+    def forward_recurrent(self, features, boards, indices, memory=None):
+        features, parts, pooled = self.encode_spatial(features, boards, indices)
         if memory is None:
             memory = pooled.new_zeros((len(pooled), 64))
         memory = self.gru(pooled, memory)
