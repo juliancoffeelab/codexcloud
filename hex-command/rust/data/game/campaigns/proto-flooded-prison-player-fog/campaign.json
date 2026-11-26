@@ -1,0 +1,54 @@
+{
+  "tags": [
+    "simulation"
+  ],
+  "id": "proto-flooded-prison-player-fog",
+  "name": "The Flooded Prison (player fog)",
+  "tagline": "The Flooded Prison",
+  "description": "Free the two island prison groups. Open the sluice to drain a direct crossing, then escort both groups to the eastern shore and bring the commander out. Opening the lock also admits merfolk.",
+  "shortDescription": "A single-map encounter prototype.",
+  "race": "human",
+  "leader": "commander",
+  "characters": [
+    {
+      "id": "captain",
+      "name": "captain"
+    },
+    {
+      "id": "north-gaoler",
+      "name": "north-gaoler"
+    },
+    {
+      "id": "north-prisoners",
+      "name": "north-prisoners"
+    },
+    {
+      "id": "south-gaoler",
+      "name": "south-gaoler"
+    },
+    {
+      "id": "south-prisoners",
+      "name": "south-prisoners"
+    },
+    {
+      "id": "warden",
+      "name": "warden"
+    }
+  ],
+  "ending": [],
+  "stages": [
+    "stage.json"
+  ],
+  "carryover": {
+    "goldLimit": 8,
+    "veteranLimit": 4,
+    "deploymentRadius": 3,
+    "weights": {
+      "hp": 1,
+      "damage": 2,
+      "healing": 5,
+      "level": 3,
+      "experience": 0.3333333333333333
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "id": "proto-last-ferry-player-fog",
+  "map": "map.json",
+  "roster": "roster.json",
+  "story": "story.json",
+  "scripts": "scripts.json"
+}

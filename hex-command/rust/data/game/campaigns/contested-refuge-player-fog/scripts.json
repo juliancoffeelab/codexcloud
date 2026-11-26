@@ -1,0 +1,265 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "hold-north",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 13,
+              "row": 6
+            }
+          },
+          "faction": "player",
+          "turns": 10,
+          "when": null
+        }
+      },
+      "actions": [],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Control the north refuge for ten consecutive turns",
+        "intent": {
+          "own": {
+            "tile": {
+              "hex": {
+                "col": 13,
+                "row": 6
+              }
+            },
+            "faction": "player",
+            "turns": 10,
+            "when": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "own": {
+            "tile": {
+              "hex": {
+                "col": 13,
+                "row": 6
+              }
+            },
+            "faction": "player",
+            "turns": 10,
+            "when": null
+          }
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    },
+    {
+      "id": "hold-south",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 18,
+              "row": 17
+            }
+          },
+          "faction": "player",
+          "turns": 10,
+          "when": null
+        }
+      },
+      "actions": [],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Control the south refuge for ten consecutive turns",
+        "intent": {
+          "own": {
+            "tile": {
+              "hex": {
+                "col": 18,
+                "row": 17
+              }
+            },
+            "faction": "player",
+            "turns": 10,
+            "when": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "own": {
+            "tile": {
+              "hex": {
+                "col": 18,
+                "row": 17
+              }
+            },
+            "faction": "player",
+            "turns": 10,
+            "when": null
+          }
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    },
+    {
+      "id": "counterattack-1",
+      "when": {
+        "turn": 7
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 25,
+                "row": 5
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "skeleton",
+              "bonearcher"
+            ]
+          }
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "counterattack-2",
+      "when": {
+        "turn": 13
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 25,
+                "row": 19
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "skeleton-axeman",
+              "skeleton-impact-caster"
+            ]
+          }
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "both-held",
+      "when": {
+        "all": [
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 13,
+                  "row": 6
+                }
+              },
+              "faction": "player",
+              "turns": 10,
+              "when": null
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 18,
+                  "row": 17
+                }
+              },
+              "faction": "player",
+              "turns": 10,
+              "when": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Both refuges are secure and their approaches held."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "leader-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The commander has fallen."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 100
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turnAtLeast": 71
+      },
+      "actions": [
+        {
+          "defeat": "The surrounding enemy closes the valley."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": -100
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

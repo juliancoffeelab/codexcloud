@@ -1,0 +1,42 @@
+{
+  "tags": [
+    "simulation"
+  ],
+  "id": "draft-quarry-both-fog",
+  "name": "The Awakening Quarry (both fog)",
+  "tagline": "The Awakening Quarry",
+  "description": "Recover the abandoned quarry tools from the inner chamber. Choose when to enter: the old guard will awaken when the cache is disturbed. Bring the cache back to the entry or destroy that guardian.",
+  "shortDescription": "The Awakening Quarry",
+  "race": "human",
+  "leader": "commander",
+  "characters": [
+    {
+      "id": "player-leader",
+      "name": "Captain Marra"
+    },
+    {
+      "id": "hunter",
+      "name": "The cave hunter"
+    },
+    {
+      "id": "awakened",
+      "name": "The quarry guardian"
+    }
+  ],
+  "ending": [],
+  "stages": [
+    "stage.json"
+  ],
+  "carryover": {
+    "goldLimit": 8,
+    "veteranLimit": 4,
+    "deploymentRadius": 3,
+    "weights": {
+      "hp": 1,
+      "damage": 2,
+      "healing": 5,
+      "level": 3,
+      "experience": 0.3333333333333333
+    }
+  }
+}

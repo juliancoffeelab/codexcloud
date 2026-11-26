@@ -1,0 +1,42 @@
+{
+  "tags": [
+    "simulation"
+  ],
+  "id": "broken-siege-both-fog",
+  "name": "The Broken Siege (both fog)",
+  "tagline": "The Broken Siege",
+  "description": "Break the siege by holding the enemy camp for ten consecutive turns OR eliminating its entire force. Then reunite the commander and relief captain at the garrison. The northern tunnel is a continuous alternate approach. Both captains must survive; complete the rendezvous before turn 71.",
+  "shortDescription": "Hold the enemy camp or destroy the enemy force, then rendezvous at the garrison.",
+  "race": "human",
+  "leader": "commander",
+  "characters": [
+    {
+      "id": "player-leader",
+      "name": "Player Leader"
+    },
+    {
+      "id": "enemy-leader",
+      "name": "Enemy Leader"
+    },
+    {
+      "id": "relief-captain",
+      "name": "Relief Captain"
+    }
+  ],
+  "ending": [],
+  "stages": [
+    "stage.json"
+  ],
+  "carryover": {
+    "goldLimit": 8,
+    "veteranLimit": 4,
+    "deploymentRadius": 3,
+    "weights": {
+      "hp": 1,
+      "damage": 2,
+      "healing": 5,
+      "level": 3,
+      "experience": 0.3333333333333333
+    }
+  }
+}

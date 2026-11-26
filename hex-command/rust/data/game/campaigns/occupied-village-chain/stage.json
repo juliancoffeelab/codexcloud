@@ -1,0 +1,7 @@
+{
+  "id": "occupied-village-chain",
+  "map": "map.json",
+  "roster": "roster.json",
+  "scripts": "scripts.json",
+  "story": "story.json"
+}

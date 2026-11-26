@@ -1,0 +1,6446 @@
+{
+  "mapRevision": 1,
+  "mapId": "proto-last-ferry",
+  "cols": 32,
+  "rows": 24,
+  "tiles": [
+    {
+      "col": 0,
+      "row": 0,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 0,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 0,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 0,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 0,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 0,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 0,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 0,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 0,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 0,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 0,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 0,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 0,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 0,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 0,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 0,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 0,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 1,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 1,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 1,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 1,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 1,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 1,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 1,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 1,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 1,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 2,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 2,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 2,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 2,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 2,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 2,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 2,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 2,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 2,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 2,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 2,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 2,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 3,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 3,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 3,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 3,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 3,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 3,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 3,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 3,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 3,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 3,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 3,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 3,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 3,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 3,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 3,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 3,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 3,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 3,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 3,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 3,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 3,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 4,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 4,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 4,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 4,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 4,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 4,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 4,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 4,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 4,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 4,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 4,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 4,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 4,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 4,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 4,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 4,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 4,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 4,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 4,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 4,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 4,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 4,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 5,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 5,
+      "terrain": "village",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": "player",
+      "id": "convoy-start"
+    },
+    {
+      "col": 5,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 5,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 5,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 5,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 5,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 5,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 5,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 5,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 5,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 5,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 5,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 5,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 5,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 5,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 5,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 5,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 5,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 5,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 5,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 5,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 6,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 6,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 6,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 6,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 6,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 6,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 6,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 6,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 6,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 6,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 6,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 6,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 6,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "sw"
+      ]
+    },
+    {
+      "col": 23,
+      "row": 6,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 24,
+      "row": 6,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 25,
+      "row": 6,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 26,
+      "row": 6,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 27,
+      "row": 6,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 28,
+      "row": 6,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "id": "draft-objective",
+      "connections": [
+        "w"
+      ]
+    },
+    {
+      "col": 29,
+      "row": 6,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 6,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 6,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 7,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 7,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 7,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 7,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 7,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "sw"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 7,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 7,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 7,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 7,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 7,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 7,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 7,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 7,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 7,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 7,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 7,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 7,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "sw",
+        "ne"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 7,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "sw",
+        "ne"
+      ]
+    },
+    {
+      "col": 25,
+      "row": 7,
+      "terrain": "keep",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": "enemy"
+    },
+    {
+      "col": 26,
+      "row": 7,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 7,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 7,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 7,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 7,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 7,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 8,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 8,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 8,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 8,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "id": "draft-entry",
+      "connections": [
+        "e",
+        "se"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 8,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 8,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 8,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 8,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 8,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 8,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 8,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 8,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 8,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 8,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "id": "draft-crossing-1"
+    },
+    {
+      "col": 19,
+      "row": 8,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 8,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 8,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 8,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "se",
+        "w"
+      ]
+    },
+    {
+      "col": 23,
+      "row": 8,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "sw"
+      ]
+    },
+    {
+      "col": 24,
+      "row": 8,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 25,
+      "row": 8,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 8,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 8,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 8,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 8,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 8,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 8,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 9,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 9,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 9,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 9,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 9,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "se",
+        "nw"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 9,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 9,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 9,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 9,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 9,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 9,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 9,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 9,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 9,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 9,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 9,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 23,
+      "row": 9,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 9,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 9,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 9,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 9,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 9,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 9,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 9,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 9,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 10,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 10,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 10,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 10,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 10,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 10,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "se",
+        "nw"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 10,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 10,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 10,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 10,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 10,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 10,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 10,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 10,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 10,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 10,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 10,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "sw",
+        "ne"
+      ]
+    },
+    {
+      "col": 23,
+      "row": 10,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "se",
+        "nw"
+      ]
+    },
+    {
+      "col": 24,
+      "row": 10,
+      "terrain": "village",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": "enemy"
+    },
+    {
+      "col": 25,
+      "row": 10,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 10,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 10,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 10,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 10,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 10,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 10,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 11,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 11,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 11,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 11,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 11,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 11,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "se",
+        "nw"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 11,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 11,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 11,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 11,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 11,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 11,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "sw"
+      ]
+    },
+    {
+      "col": 21,
+      "row": 11,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 11,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "sw",
+        "nw"
+      ]
+    },
+    {
+      "col": 24,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 11,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 12,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 12,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 12,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 12,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 12,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 12,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 12,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "nw"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 12,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 12,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "se",
+        "w"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 12,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 12,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 12,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 12,
+      "terrain": "village",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": "player",
+      "id": "landing"
+    },
+    {
+      "col": 13,
+      "row": 12,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 12,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 12,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 12,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 12,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 12,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 12,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 12,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 21,
+      "row": 12,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 12,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 12,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "id": "draft-guard-post"
+    },
+    {
+      "col": 24,
+      "row": 12,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 12,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 12,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 12,
+      "terrain": "village",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "id": "safe-shore"
+    },
+    {
+      "col": 28,
+      "row": 12,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 12,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 12,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 12,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 13,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 13,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 13,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 13,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 13,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 13,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 13,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 13,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "se",
+        "nw"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 13,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 13,
+      "terrain": "keep",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": "player"
+    },
+    {
+      "col": 11,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 13,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "sw"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 13,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 13,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 13,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 14,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 14,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 14,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 14,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 14,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 14,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 14,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "se",
+        "nw"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 14,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 14,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 14,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 15,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 15,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 15,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 15,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 15,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "nw"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 15,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "se",
+        "w"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 15,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 15,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 15,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 15,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 16,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 16,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 16,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 16,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 16,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 16,
+      "terrain": "road",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "nw"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 16,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 16,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 16,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "id": "draft-crossing-2",
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 16,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 16,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 16,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 17,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 17,
+      "terrain": "village",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 17,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 17,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 17,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 17,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 17,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 17,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 17,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 17,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 17,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 17,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 18,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 18,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 18,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 18,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 18,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 18,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 18,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 18,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 18,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 18,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 18,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 18,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 18,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 18,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 18,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 18,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 18,
+      "terrain": "village",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": "enemy"
+    },
+    {
+      "col": 24,
+      "row": 18,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 18,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 18,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 18,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 18,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 18,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 18,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 18,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 19,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 19,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 19,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 19,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 19,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 19,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 19,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 19,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 19,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 19,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 19,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 19,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 19,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 19,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 19,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 19,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 19,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 19,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 19,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 19,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 21,
+      "row": 19,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 19,
+      "terrain": "ford",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null,
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 23,
+      "row": 19,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 19,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 19,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 19,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 19,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 19,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 19,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 19,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 19,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 20,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 20,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 20,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 20,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 20,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 20,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 20,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 20,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 20,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 20,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 20,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 20,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 20,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 20,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 20,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 20,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 20,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 20,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 20,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 20,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 20,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 20,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 20,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 20,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 20,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 21,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 21,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 21,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 21,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 21,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 21,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 21,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 21,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 21,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 21,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 21,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 21,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 21,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 21,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 21,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 21,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 21,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 21,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 21,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 21,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 21,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 21,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 21,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 21,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 21,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 21,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 21,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 21,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 21,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 21,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 21,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 21,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 22,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 22,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 22,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 22,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 22,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 22,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 22,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 22,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 22,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 22,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 22,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 22,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 22,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 22,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 22,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 22,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 22,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 22,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 0,
+      "row": 23,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 1,
+      "row": 23,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 2,
+      "row": 23,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 3,
+      "row": 23,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 4,
+      "row": 23,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 5,
+      "row": 23,
+      "terrain": "mountain",
+      "floor": "mountain-rock",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 6,
+      "row": 23,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 7,
+      "row": 23,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 8,
+      "row": 23,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 9,
+      "row": 23,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 10,
+      "row": 23,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 11,
+      "row": 23,
+      "terrain": "shallow-water",
+      "floor": "shallow-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 12,
+      "row": 23,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 13,
+      "row": 23,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 14,
+      "row": 23,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 15,
+      "row": 23,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 16,
+      "row": 23,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 17,
+      "row": 23,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 18,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 19,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 20,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 21,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 22,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 23,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 24,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 25,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 26,
+      "row": 23,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 27,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 28,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 29,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 30,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    },
+    {
+      "col": 31,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": [],
+      "owner": null
+    }
+  ],
+  "name": "The Last Ferry",
+  "description": "The Last Ferry",
+  "lighting": {
+    "time": "day"
+  },
+  "modifiers": {
+    "sight": {
+      "range": 0,
+      "unlimited": false,
+      "sightModifiers": {
+        "lit": 0,
+        "unlit": 0,
+        "darkness": 0
+      },
+      "penetrates": []
+    },
+    "damageModifiers": {
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "terrainModifiers": {}
+  }
+}

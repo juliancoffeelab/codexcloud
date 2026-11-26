@@ -1,0 +1,7 @@
+{
+  "id": "contested-refuge-player-fog",
+  "map": "map.json",
+  "roster": "roster.json",
+  "scripts": "scripts.json",
+  "story": "story.json"
+}

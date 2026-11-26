@@ -1,0 +1,166 @@
+{
+  "events": [
+    {
+      "id": "leader-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "objective": null,
+      "priority": 100,
+      "remembers": true,
+      "observer": null
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turnAtLeast": 61
+      },
+      "actions": [
+        {
+          "defeat": "The underground passages have become untenable."
+        }
+      ],
+      "objective": null,
+      "priority": -100,
+      "remembers": true,
+      "observer": null
+    },
+    {
+      "id": "hunt-finished",
+      "when": {
+        "noUnits": {
+          "character": "hunter",
+          "role": null,
+          "side": null,
+          "faction": "enemy",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "hunt-finished"
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Defeat the cave hunter",
+        "intent": {
+          "defeat": {
+            "character": "hunter",
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "remembers": true,
+      "observer": null
+    },
+    {
+      "id": "leave-caves",
+      "when": {
+        "all": [
+          {
+            "flag": "hunt-finished"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 21,
+                  "row": 10
+                }
+              },
+              "through": false,
+              "character": "player-leader",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "The hunter is dead. The survivors have reached daylight."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Take the commander to the eastern exit",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 21,
+                "row": 10
+              }
+            },
+            "through": false,
+            "character": "player-leader",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "flag": "hunt-finished"
+        },
+        "availableWhen": {
+          "flag": "hunt-finished"
+        },
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "remembers": true,
+      "observer": null
+    }
+  ],
+  "requiredCompanions": [],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

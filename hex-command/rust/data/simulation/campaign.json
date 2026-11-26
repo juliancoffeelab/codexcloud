@@ -1370,6 +1370,102 @@
     "rl-ashbank-relay-fork-vigil-both-fog": {
       "diplomacy": ["unrestricted"],
       "routes": {}
+    },
+    "broken-siege": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "broken-siege-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "broken-siege-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "contested-refuge": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "contested-refuge-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "contested-refuge-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "occupied-village-chain": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "occupied-village-chain-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "occupied-village-chain-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "proto-flooded-prison": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "proto-flooded-prison-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "proto-flooded-prison-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "proto-last-ferry": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "proto-last-ferry-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "proto-last-ferry-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "draft-hunt": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "draft-hunt-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "draft-hunt-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "draft-quarry": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "draft-quarry-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "draft-quarry-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "three-gates": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "three-gates-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "three-gates-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
     }
   },
   "escalationFlags": {}
