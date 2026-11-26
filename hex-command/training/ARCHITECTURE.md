@@ -360,8 +360,17 @@ selection metric; teacher agreement alone does not establish game strength.
 ## Diverse tactical continuation
 
 The active RL maps and campaigns are fixed, engine-owned JSON registered in
-`rust/data/simulation/rl.json`. They include 14 arenas and the Underground Escape,
-Woodland Defense, and Splitwake Crossing campaigns. The V3 training catalog and
+`rust/data/simulation/rl.json`. The decision budget is 10% ordinary arenas (14 maps), 5% targeted encounters
+(28 maps), and 85% campaigns (11 maps). Adaptive sampling operates within each
+group; authored map weights and condition weights remain in effect.
+
+The campaign pool includes Underground Escape, Woodland Defense, Splitwake
+Crossing, Broken Siege, Contested Refuge, Occupied Village Chain, Flooded Prison,
+Last Ferry, Underground Hunt, Awakening Quarry, and The Three Gates. Each of the
+eight new single-map campaigns has clear, player-only fog, and both-sides fog
+conditions sharing one logical map budget. Imitation is disabled for these maps.
+The Three Gates starts with exactly one defending commander and two attacking
+liches, with 18/28/28 gold and no scripted reinforcements. The V3 training catalog and
 workload remain available in the [archived experiment](experiments/2026-11-15-visibility/experiment.json).
 
 Prepare a new workload with:
@@ -374,8 +383,8 @@ Prepare a new workload with:
 ```
 
 Run `mixed_evaluate --root tmp/rl/new-run --phase rl` in a second process during
-training. Training uses the fixtures in `simulation/rl.json` with equal
-arena and campaign decision budgets. Each task splits opponent coverage
+training. Training uses the fixtures and 10% / 5% / 85% group decision budgets in
+`simulation/rl.json`. Each task splits opponent coverage
 between Classic, Predictor, and Full with the Predictor recruiter.
 Checkpoint selection uses separate synthetic arenas and the Coastal Assault
 and Whitebank Relief campaigns. The authored showcase evaluates Lantern Road

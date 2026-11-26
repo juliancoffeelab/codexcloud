@@ -1774,15 +1774,351 @@
         "conditionWeight": 1.0,
         "pretrain_enabled": true
       }
+    ],
+    "broken-siege": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "broken-siege",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "broken-siege-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "broken-siege",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "broken-siege-both-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "broken-siege",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "contested-refuge": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "contested-refuge",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "contested-refuge-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "contested-refuge",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "contested-refuge-both-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "contested-refuge",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "occupied-village-chain": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "occupied-village-chain",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "occupied-village-chain-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "occupied-village-chain",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "occupied-village-chain-both-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "occupied-village-chain",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "proto-flooded-prison": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "proto-flooded-prison",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "proto-flooded-prison-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "proto-flooded-prison",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "proto-flooded-prison-both-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "proto-flooded-prison",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "proto-last-ferry": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "proto-last-ferry",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "proto-last-ferry-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "proto-last-ferry",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "proto-last-ferry-both-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "proto-last-ferry",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "draft-hunt": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "draft-hunt",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "draft-hunt-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "draft-hunt",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "draft-hunt-both-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "draft-hunt",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "draft-quarry": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "draft-quarry",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "draft-quarry-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "draft-quarry",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "draft-quarry-both-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "draft-quarry",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "three-gates": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "three-gates",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "three-gates-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "three-gates",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "three-gates-both-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "three-gates",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
     ]
   },
   "opponents": ["classic", "predictor", "full"],
   "recruiters": ["situational", "predictor"],
   "objectives": ["deathmatch", "territory"],
   "samplingWeights": {
-    "arena": 0.25,
-    "targeted": 0.25,
-    "campaign": 0.5
+    "arena": 0.1,
+    "targeted": 0.05,
+    "campaign": 0.85
   },
   "adaptiveSampling": {
     "enabled": true,
@@ -1838,7 +2174,15 @@
     "rl-lair-outworks": 1.0,
     "rl-hollowbank-extraction-crossfire-late-guard": 1.0,
     "rl-hollowbank-extraction-crossfire-nearside": 1.0,
-    "rl-ashbank-relay-fork-vigil": 1.0
+    "rl-ashbank-relay-fork-vigil": 1.0,
+    "broken-siege": 1.0,
+    "contested-refuge": 1.0,
+    "occupied-village-chain": 1.0,
+    "proto-flooded-prison": 1.0,
+    "proto-last-ferry": 1.0,
+    "draft-hunt": 1.0,
+    "draft-quarry": 1.0,
+    "three-gates": 1.0
   },
   "rewardProfiles": {
     "arena": {
