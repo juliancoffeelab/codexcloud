@@ -16,7 +16,14 @@ import hex_command_training as native
 from .sampling import Sampler
 from .ppo import ActorCritic, pack, unpack, advantages, categorical, resolve_device
 from .spatial import SpatialPlanner
-from .recurrent import MemoryBank, windows, replay, replay_batch
+from .recurrent import (
+    MemoryBank,
+    windows,
+    replay,
+    group_windows,
+    prepare_replay_batch,
+    replay_prepared_batch,
+)
 from .recovery import save_bundle, atomic_json, load_resume, read_jsonl
 from .mixed_workload import reward_rules, sampling_group, task, definition
 
@@ -279,21 +286,23 @@ def main():
                     ref_memory, _ = reference_bank.inputs(ids, contexts, device=device)
                     with torch.no_grad():
                         dist, v, next_memory = ac.forward_recurrent(*tensors, a.temperature, memory)
-                        ref_scores, _, next_ref = reference.forward_recurrent(*tensors[:3], ref_memory)
-                        ref_dist = categorical(ref_scores, tensors[3], a.temperature)
                         acts = dist.sample()
                         old_lp = dist.log_prob(acts)
-                    memory_bank.commit(ids, contexts, memory, next_memory)
-                    reference_bank.commit(ids, contexts, ref_memory, next_ref)
                     acts_cpu = acts.cpu().tolist()
-                    vals_cpu = v.cpu().tolist()
-                    old_lp_cpu = old_lp.cpu().tolist()
-                    mem_cpu = memory.detach().cpu().numpy()
-                    ref_logits_cpu = ref_dist.logits.detach().cpu().numpy()
+                    # Submit Rust env steps before running reference so CPU stepping overlaps GPU inference.
                     futures = {
                         i: pool.submit(envs[i].step, [int(acts_cpu[j])])
                         for j, i in enumerate(ids)
                     }
+                    with torch.no_grad():
+                        ref_scores, _, next_ref = reference.forward_recurrent(*tensors[:3], ref_memory)
+                        ref_dist = categorical(ref_scores, tensors[3], a.temperature)
+                    memory_bank.commit(ids, contexts, memory, next_memory)
+                    reference_bank.commit(ids, contexts, ref_memory, next_ref)
+                    vals_cpu = v.cpu().tolist()
+                    old_lp_cpu = old_lp.cpu().tolist()
+                    mem_cpu = memory.detach().cpu().numpy()
+                    ref_logits_cpu = ref_dist.logits.detach().cpu().numpy()
                     rewards = np.zeros(a.envs, np.float32)
                     values = np.zeros(a.envs, np.float32)
                     dones = np.zeros(a.envs, np.float32)
@@ -413,14 +422,21 @@ def main():
                 warmup = episodes < a.critic_warmup_episodes or update < 4
                 update += 1
                 stats = []
+                prepared_batches = (
+                    [
+                        prepare_replay_batch(batch, device)
+                        for batch in group_windows(windows(flat, rng), window_batch, rng)
+                    ]
+                    if window_batch > 1
+                    else None
+                )
                 for epoch in range(3):
-                    seqs = windows(flat, rng)
                     batches = (
-                        seqs
+                        windows(flat, rng)
                         if window_batch == 1
                         else [
-                            seqs[i : i + window_batch]
-                            for i in range(0, len(seqs), window_batch)
+                            prepared_batches[i]
+                            for i in rng.permutation(len(prepared_batches))
                         ]
                     )
                     for batch in batches:
@@ -429,7 +445,7 @@ def main():
                         policy_loss, value_loss, entropy, kl, clip_fraction = (
                             replay(ac, batch, a.temperature, device=device)
                             if window_batch == 1
-                            else replay_batch(ac, batch, a.temperature, device=device)
+                            else replay_prepared_batch(ac, batch, a.temperature)
                         )
                         loss = value_loss + (
                             0 if warmup else policy_loss + 0.02 * kl - 0.001 * entropy

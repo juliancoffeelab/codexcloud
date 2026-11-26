@@ -84,7 +84,13 @@ def pack(samples, device=None):
     )
     positions = np.full((len(samples), count, 3), -1, np.int64)
     mask = np.zeros((len(samples), count), bool)
-    context_values, owners, sites = [], [], []
+    total_contexts = sum(1 + (len(s[3]) if len(s) > 3 else 0) for s in samples)
+    context_values = np.zeros(
+        (total_contexts, len(native.ACTOR_SPATIAL_CHANNELS), height, width), np.float32
+    )
+    owners = np.empty(total_contexts, np.int64)
+    sites = np.empty(total_contexts, np.int64)
+    ctx_idx = 0
     for row, sample in enumerate(samples):
         features, b, ix = sample[:3]
         contexts = sample[3] if len(sample) > 3 else []
@@ -95,28 +101,20 @@ def pack(samples, device=None):
         positions[row, :n] = np.where(ix < 0, -1, (ix // w) * width + ix % w)
         mask[row, :n] = True
         # Context zero is the actor-free board for EndTurn and critic pooling.
-        for site, planes in [(-1, None), *contexts]:
-            padded = np.zeros(
-                (len(native.ACTOR_SPATIAL_CHANNELS), height, width), np.float32
-            )
+        owners[ctx_idx] = row
+        sites[ctx_idx] = -1
+        ctx_idx += 1
+        for site, planes in contexts:
             if planes is not None:
-                padded[:, :h, :w] = planes
-            context_values.append(padded)
-            owners.append(row)
-            sites.append(-1 if site < 0 else (site // w) * width + site % w)
+                context_values[ctx_idx, :, :h, :w] = planes
+            owners[ctx_idx] = row
+            sites[ctx_idx] = -1 if site < 0 else (site // w) * width + site % w
+            ctx_idx += 1
     def as_tensor(v):
         t = torch.from_numpy(v)
         return t.to(device) if device is not None else t
 
-    bundle = tuple(
-        as_tensor(v)
-        for v in (
-            board,
-            np.stack(context_values),
-            np.asarray(owners, np.int64),
-            np.asarray(sites, np.int64),
-        )
-    )
+    bundle = tuple(as_tensor(v) for v in (board, context_values, owners, sites))
     return (
         as_tensor(x),
         bundle,

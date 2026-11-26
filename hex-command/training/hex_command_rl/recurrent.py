@@ -71,26 +71,63 @@ def replay(ac, sequence, temperature, device=None):
     return torch.stack(terms).mean(0).unbind()
 
 
-def replay_batch(ac, sequences, temperature, device=None):
-    """Batched TBPTT across multiple windows, stepping all active windows together."""
-    from .ppo import pack, categorical_kl
-    from torch.distributions import Categorical
+def group_windows(sequences, window_batch, rng):
+    """Group windows of similar board size to minimize padding waste, then shuffle batches."""
+    if window_batch <= 1:
+        return [[seq] for seq in sequences]
+    # Break ties randomly so equal-size maps mix across batches.
+    ordered = sorted(
+        sequences,
+        key=lambda seq: (
+            max(s['observation'][1].shape[1] * s['observation'][1].shape[2] for s in seq),
+            float(rng.random()),
+        ),
+    )
+    batches = [ordered[i : i + window_batch] for i in range(0, len(ordered), window_batch)]
+    return [batches[i] for i in rng.permutation(len(batches))]
+
+
+def prepare_replay_batch(sequences, device):
+    """Pack and transfer a batch of windows once so multi-epoch PPO reuses device tensors."""
+    from .ppo import pack
     if not sequences:
         raise ValueError("sequences must be nonempty")
-    device = next(ac.parameters()).device if device is None else torch.device(device)
+    device = torch.device(device)
     batch_size = len(sequences)
     max_len = max(len(seq) for seq in sequences)
-    memory = torch.as_tensor(
+    init_memory = torch.as_tensor(
         np.stack([np.asarray(seq[0]['memory'], np.float32) for seq in sequences]),
         device=device,
     )
-    totals = None
-    steps = 0
     pad_logit = float(np.finfo(np.float32).min)
+    steps = []
+    total_steps = 0
     for t in range(max_len):
         active = [i for i, seq in enumerate(sequences) if t < len(seq)]
         step_samples = [sequences[i][t] for i in active]
         tensors = pack([s['observation'] for s in step_samples], device=device)
+        actions = torch.tensor([s['action'] for s in step_samples], dtype=torch.long, device=device)
+        old_lp = torch.tensor([s['old_log_prob'] for s in step_samples], dtype=torch.float32, device=device)
+        adv = torch.tensor([s['advantage'] for s in step_samples], dtype=torch.float32, device=device)
+        target = torch.tensor([s['target'] for s in step_samples], dtype=torch.float32, device=device)
+        width = tensors[0].shape[1]
+        ref_logits = np.full((len(step_samples), width), pad_logit, dtype=np.float32)
+        for j, s in enumerate(step_samples):
+            rl = np.asarray(s['reference_logits'], dtype=np.float32)
+            ref_logits[j, : len(rl)] = rl
+        ref_logits_t = torch.from_numpy(ref_logits).to(device)
+        steps.append((active, tensors, actions, old_lp, adv, target, ref_logits_t))
+        total_steps += len(step_samples)
+    return batch_size, init_memory, steps, total_steps
+
+
+def replay_prepared_batch(ac, prepared, temperature):
+    """Run TBPTT over a pre-packed batch of windows on-device."""
+    from .ppo import categorical_kl
+    from torch.distributions import Categorical
+    batch_size, memory, steps, total_steps = prepared
+    totals = None
+    for active, tensors, actions, old_lp, adv, target, ref_logits in steps:
         mem_in = memory[active] if len(active) < batch_size else memory
         dist, value, mem_out = ac.forward_recurrent(*tensors, temperature, mem_in)
         if len(active) < batch_size:
@@ -99,23 +136,19 @@ def replay_batch(ac, sequences, temperature, device=None):
             memory = updated
         else:
             memory = mem_out
-        actions = torch.tensor([s['action'] for s in step_samples], dtype=torch.long, device=device)
-        old_lp = torch.tensor([s['old_log_prob'] for s in step_samples], dtype=torch.float32, device=device)
-        adv = torch.tensor([s['advantage'] for s in step_samples], dtype=torch.float32, device=device)
-        target = torch.tensor([s['target'] for s in step_samples], dtype=torch.float32, device=device)
         ratio = (dist.log_prob(actions) - old_lp).clamp(-20, 20).exp()
         pg = -torch.minimum(ratio * adv, ratio.clamp(0.8, 1.2) * adv).sum()
         vl = F.mse_loss(value, target, reduction='sum')
-        width = dist.logits.shape[-1]
-        ref_logits = np.full((len(step_samples), width), pad_logit, dtype=np.float32)
-        for j, s in enumerate(step_samples):
-            rl = np.asarray(s['reference_logits'], dtype=np.float32)
-            ref_logits[j, : len(rl)] = rl
-        ref = Categorical(logits=torch.from_numpy(ref_logits).to(device))
+        ref = Categorical(logits=ref_logits)
         kl = categorical_kl(dist, ref).sum()
         ent = dist.entropy().sum()
         clip_frac = ((ratio - 1).abs() > 0.2).float().sum()
         step_totals = torch.stack([pg, vl, ent, kl, clip_frac])
         totals = step_totals if totals is None else totals + step_totals
-        steps += len(step_samples)
-    return (totals / steps).unbind()
+    return (totals / total_steps).unbind()
+
+
+def replay_batch(ac, sequences, temperature, device=None):
+    """Batched TBPTT across multiple windows, stepping all active windows together."""
+    device = next(ac.parameters()).device if device is None else torch.device(device)
+    return replay_prepared_batch(ac, prepare_replay_batch(sequences, device), temperature)

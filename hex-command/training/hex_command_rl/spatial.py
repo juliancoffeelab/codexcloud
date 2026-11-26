@@ -76,10 +76,24 @@ class SpatialPlanner(nn.Module):
     def forward_recurrent(self, features, boards, indices, memory=None):
         if features.shape[-1] < len(native.FEATURE_NAMES):
             features = F.pad(features, (0, len(native.FEATURE_NAMES) - features.shape[-1]))
+        context_lookup = None
+        if isinstance(boards, tuple):
+            base, _, owners, sites = boards
+            batch_ids = torch.arange(len(base), device=owners.device)
+            matches = (owners[None, None, :] == batch_ids[:, None, None]) & (
+                sites[None, None, :] == indices[:, :, 0, None]
+            )
+            defaults = (owners[None, :] == batch_ids[:, None]).long().argmax(-1)
+            context_ids = torch.where(
+                matches.any(-1), matches.long().argmax(-1), defaults[:, None]
+            )
+            context_lookup = (context_ids, defaults)
         parts = []
         pooled = None
         for layers, stride in [(self.convs, 1), (self.coarse, 2)]:
-            gathered, candidate_pool, summary = self.encode_candidates(boards, indices, layers, stride)
+            gathered, candidate_pool, summary = self.encode_candidates(
+                boards, indices, layers, stride, context_lookup=context_lookup
+            )
             parts.extend([gathered, candidate_pool])
             if stride == 1:
                 pooled = summary  # Preserve the existing critic's 16-value input.
@@ -89,7 +103,7 @@ class SpatialPlanner(nn.Module):
         parts.append(memory[:, None, :].expand(-1, features.shape[1], -1))
         return self.head(torch.cat([features, *parts], dim=-1)).squeeze(-1), pooled, memory
 
-    def encode_candidates(self, boards, indices, layers, stride):
+    def encode_candidates(self, boards, indices, layers, stride, context_lookup=None):
         base = boards[0] if isinstance(boards, tuple) else boards
         if base.shape[1] < len(native.SPATIAL_CHANNEL_NAMES):
             base = F.pad(base, (0, 0, 0, 0, 0, len(native.SPATIAL_CHANNEL_NAMES) - base.shape[1]))
@@ -107,9 +121,17 @@ class SpatialPlanner(nn.Module):
             first = F.relu(shared[owners] + relative) * mask[owners]
             spatial = F.relu(layers[1](first)) * mask[owners]
             summaries = spatial.sum((-2, -1)) / mask[owners].sum((-2, -1)).clamp_min(1)
-            matches = (owners[None, None, :] == torch.arange(len(base), device=owners.device)[:, None, None]) & (sites[None, None, :] == indices[:, :, 0, None])
-            defaults = (owners[None, :] == torch.arange(len(base), device=owners.device)[:, None]).long().argmax(-1)
-            context_ids = torch.where(matches.any(-1), matches.long().argmax(-1), defaults[:, None])
+            if context_lookup is None:
+                batch_ids = torch.arange(len(base), device=owners.device)
+                matches = (owners[None, None, :] == batch_ids[:, None, None]) & (
+                    sites[None, None, :] == indices[:, :, 0, None]
+                )
+                defaults = (owners[None, :] == batch_ids[:, None]).long().argmax(-1)
+                context_ids = torch.where(
+                    matches.any(-1), matches.long().argmax(-1), defaults[:, None]
+                )
+            else:
+                context_ids, defaults = context_lookup
             gathered = spatial.flatten(2).permute(0, 2, 1)[context_ids[:, :, None], ix]
             candidate_pool = summaries[context_ids]
             pooled = summaries[defaults]
