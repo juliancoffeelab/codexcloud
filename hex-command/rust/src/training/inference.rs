@@ -150,6 +150,7 @@ impl Evaluator {
             // SAFETY: x is count×width, weights are outputs×width, and y is
             // count×outputs. Transposing the weight strides gives width×outputs.
             // All buffers are contiguous, initialized, disjoint and live for the call.
+            #[cfg(not(target_arch = "wasm32"))]
             unsafe {
                 gemm::gemm(
                     count,
@@ -172,6 +173,17 @@ impl Evaluator {
                     false,
                     gemm::Parallelism::None,
                 );
+            }
+            #[cfg(target_arch = "wasm32")]
+            for row in 0..count {
+                for out in 0..outputs {
+                    let mut sum = 0f32;
+                    for channel in 0..width {
+                        sum += self.input[row * width + channel]
+                            * self.weights[i][out * width + channel];
+                    }
+                    self.output[row * outputs + out] = sum;
+                }
             }
             for row in self.output.chunks_exact_mut(outputs) {
                 for (value, bias) in row.iter_mut().zip(&layer.bias) {

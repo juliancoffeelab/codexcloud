@@ -101,6 +101,7 @@ type view = {
 and factory = {
   handle : Domain.NativeEngineFactory.t;
   catalog : Catalog.t;
+  mutable learned_loading : unit Js.Promise.t option;
   mutable topologies : ((string * float) * topology) list;
   mutable disposed : bool;
   mutable battles : battle list;
@@ -198,7 +199,14 @@ let create_factory ?documents () =
                      Catalog.of_view (foreign (fun () -> Domain.NativeEngineFactory.catalog handle))
                    in
                    let factory =
-                     { handle; catalog; topologies = []; disposed = false; battles = [] }
+                     {
+                       handle;
+                       catalog;
+                       learned_loading = None;
+                       topologies = [];
+                       disposed = false;
+                       battles = [];
+                     }
                    in
                    factories := weak factory :: List.map weak (registered ());
                    factory
@@ -560,6 +568,51 @@ let apply battle expected command =
     Fault.raise_original error
 
 let dispatch battle command = apply battle battle.current.revision command
+
+type model_response
+type model_signal
+
+external model_deadline : int -> model_signal = "timeout" [@@mel.scope "AbortSignal"]
+
+external model_fetch : string -> < signal : model_signal > Js.t -> model_response Js.Promise.t
+  = "fetch"
+
+external model_ok : model_response -> bool = "ok" [@@mel.get]
+external model_text : model_response -> string Js.Promise.t = "text" [@@mel.send]
+
+let ensure_learned battle =
+  ensure battle;
+  let factory = battle.factory in
+  match factory.learned_loading with
+  | Some loading -> loading
+  | None ->
+      let loading =
+        Js.Promise.then_
+          (fun response ->
+            if not (model_ok response) then
+              raise
+                (Rejected
+                   (Invalid_request {js|Could not download the learned planner. Try again.|js}));
+            Js.Promise.then_
+              (fun source ->
+                ensure battle;
+                ignore
+                  (foreign (fun () ->
+                       value (Domain.NativeEngineFactory.load_learned_model factory.handle source)));
+                Js.Promise.resolve ())
+              (model_text response))
+          (model_fetch {js|/assets/models/ppo-hour13-d40eaa679134.json|js}
+             [%mel.obj { signal = model_deadline 30000 }])
+      in
+      let loading =
+        Js.Promise.catch
+          (fun error ->
+            factory.learned_loading <- None;
+            raise (Rejected (Publication (Foreign_error.Rejection error))))
+          loading
+      in
+      factory.learned_loading <- Some loading;
+      loading
 
 let choose_ai_command battle options =
   ensure battle;

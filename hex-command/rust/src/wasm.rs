@@ -178,6 +178,7 @@ struct Battle {
     workspace: Option<PlanningWorkspace>,
     options: Option<AiOptions>,
     pending: Option<Command>,
+    learned: Option<crate::training::LearnedSession>,
 }
 impl Battle {
     fn game<'a>(&'a self, rules: &'a Catalogue) -> RuntimeLoan<'a> {
@@ -212,6 +213,7 @@ pub struct NativeEngineFactory {
     rules: Catalogue,
     battles: HashMap<u32, Battle>,
     next_id: u32,
+    learned_model: Option<crate::training::Model>,
 }
 
 #[ocamljs_bindgen(module=NativeEngineFactory,name="create")]
@@ -250,6 +252,7 @@ fn factory_with_rules(
         rules,
         battles: HashMap::new(),
         next_id: 1,
+        learned_model: None,
     })
 }
 #[ocamljs_bindgen(module=NativeEngineFactory)]
@@ -467,6 +470,35 @@ pub fn dispatch_update(
     Encoded::new(ocamljs_bindgen::ResultProjection(update))
 }
 #[ocamljs_bindgen(module=NativeEngineFactory)]
+pub fn load_learned_model(
+    factory: &mut NativeEngineFactory,
+    source: Text,
+) -> Result<(), EngineError> {
+    let mut model: crate::training::Model =
+        serde_json::from_str(&source).map_err(|e| EngineError::InvalidRequest {
+            message: format!("Invalid learned model: {e}"),
+        })?;
+    if model.schema != crate::training::SCHEMA {
+        return Err(EngineError::InvalidRequest {
+            message: "Unsupported learned model schema".into(),
+        });
+    }
+    model
+        .upgrade()
+        .map_err(|message| EngineError::InvalidRequest { message })?;
+    factory.learned_model = Some(model);
+    for battle in factory.battles.values_mut() {
+        if battle.learned.is_some() {
+            battle.learned = None;
+            battle.pending = None;
+            battle.workspace = None;
+            battle.options = None;
+        }
+    }
+    Ok(())
+}
+
+#[ocamljs_bindgen(module=NativeEngineFactory)]
 pub fn choose_ai_command(
     factory: &mut NativeEngineFactory,
     id: u32,
@@ -554,6 +586,10 @@ impl NativeEngineFactory {
         let mut game = RuntimeLoan::new(&battle.runtime, &self.rules);
         let ends_turn = matches!(command, Command::EndTurn);
         let planned = battle.pending.as_ref() == Some(&command);
+        // A human intervention discards speculative planner history and memory.
+        if !planned {
+            battle.learned = None;
+        }
         if planned {
             let faction = battle
                 .workspace
@@ -645,12 +681,34 @@ impl NativeEngineFactory {
                 command: command.clone(),
             });
         }
+        if options
+            .blocks
+            .is_some_and(|b| b.planner == ai::PlannerKind::Learned)
+            && battle.learned.is_none()
+        {
+            let model = self
+                .learned_model
+                .clone()
+                .ok_or_else(|| EngineError::InvalidRequest {
+                    message: "Load a learned model before selecting the learned planner".into(),
+                })?;
+            battle.learned = Some(
+                crate::training::LearnedSession::new(model)
+                    .map_err(|message| EngineError::InvalidRequest { message })?,
+            );
+        }
         let game = RuntimeLoan::new(&battle.runtime, &self.rules);
-        let command = ai::choose_game_command(
-            &game,
-            options.policy,
-            battle.workspace.as_mut().expect("workspace initialized"),
-        )?;
+        let mut choose = || {
+            ai::choose_game_command(
+                &game,
+                options.policy,
+                battle.workspace.as_mut().expect("workspace initialized"),
+            )
+        };
+        let command = match &mut battle.learned {
+            Some(session) => session.with(choose),
+            None => choose(),
+        }?;
         let command = game.command_snapshot(&command)?;
         battle.pending = Some(command.clone());
         Ok(AiDecision {
@@ -701,6 +759,7 @@ impl NativeEngineFactory {
             workspace: None,
             options: None,
             pending: None,
+            learned: None,
         };
         let view = battle.view(&self.rules);
         self.battles.insert(id, battle);
@@ -892,6 +951,7 @@ mod tests {
             rules: Catalogue::embedded(),
             battles: HashMap::new(),
             next_id: 1,
+            learned_model: None,
         };
         let state = BattleSession::new(&factory.rules, "mirror").state();
         let runtime = BattleSession::from_state(&factory.rules, state.clone()).into_runtime();

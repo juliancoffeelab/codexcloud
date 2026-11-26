@@ -110,7 +110,7 @@ impl<'catalog> PlanningContext<'catalog> {
             combat_boundary: false,
         }
     }
-    #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+    #[cfg(feature = "training")]
     pub(super) fn record_stop(&self, orders: &TacticalOrders) {
         if self.draft.winner().is_none() {
             crate::training::record(&self.draft, orders, &RuntimeCommand::EndTurn);
@@ -221,7 +221,7 @@ impl<'context, 'catalog> TacticalContext<'context, 'catalog> {
     pub(in crate::ai) fn battle(&self) -> &BattleView<'_, 'catalog> {
         self.draft
     }
-    #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+    #[cfg(feature = "training")]
     pub(in crate::ai) fn observation_orders(&self) -> &TacticalOrders {
         self.workspace
             .state
@@ -233,7 +233,7 @@ impl<'context, 'catalog> TacticalContext<'context, 'catalog> {
         if !self.draft.permits_runtime(&command) {
             return Err(CommandError::IllegalIntent);
         }
-        #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+        #[cfg(feature = "training")]
         crate::training::record(
             self.draft,
             &self

@@ -3,6 +3,7 @@ module Command = Domain.Command
 type recording = {
   checkpoint : string;
   setup : Setup.t;
+  learned_model : string option;
   mutable commands : Domain.Command.t list;
   mutable completed : bool;
 }
@@ -12,8 +13,8 @@ type t = recording list ref
 let create () = ref []
 let clear turns = turns := []
 
-let begin_turn turns checkpoint setup =
-  let recording = { checkpoint; setup; commands = []; completed = false } in
+let begin_turn ?learned_model turns checkpoint setup =
+  let recording = { checkpoint; setup; learned_model; commands = []; completed = false } in
   turns :=
     List.filteri (fun index _ -> index >= max 0 (List.length !turns - 4)) !turns @ [ recording ];
   recording
@@ -101,6 +102,7 @@ let download ?browser_saves turns checkpoint setup (state : Domain.state) =
                       [
                         ({js|checkpoint|js}, Js.Json.parseExn turn.checkpoint);
                         ({js|setup|js}, Setup.to_json turn.setup);
+                        ({js|learnedModel|js}, optional text turn.learned_model);
                         ( {js|commands|js},
                           Js.Json.array (Array.of_list (List.map command (List.rev turn.commands)))
                         );

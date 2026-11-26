@@ -28,6 +28,7 @@ type model = private {
   status : string;
   sound : bool;
   player_ai : Setup.policy option;
+  learned_player : bool;
   follow_ai : bool;
   ai_focus : string array;
   can_undo : bool;
@@ -127,3 +128,4 @@ val set_enemy_combat_details : t -> bool -> unit
 val set_player_ai : t -> Setup.policy option -> unit
 val set_follow_ai : t -> bool -> unit
 val continue_ai : t -> unit
+val set_learned_player : t -> unit

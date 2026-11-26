@@ -28,11 +28,13 @@ let string_of_hex_direction (value : Hex_direction.t) =
 
 let string_of_planner_kind (value : Planner_kind.t) =
   match value with
+  | Planner_kind.Learned -> {js|learned|js}
   | Planner_kind.Classic -> {js|classic|js}
   | Planner_kind.Full -> {js|full|js}
   | Planner_kind.Queued -> {js|queued|js}
 
 let planner_kind_of_string = function
+  | "learned" -> Some (Planner_kind.Learned : Planner_kind.t)
   | matched_text_0 when matched_text_0 = {js|classic|js} ->
       Some (Planner_kind.Classic : Planner_kind.t)
   | matched_text_1 when matched_text_1 = {js|full|js} -> Some (Planner_kind.Full : Planner_kind.t)

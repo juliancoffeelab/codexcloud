@@ -486,7 +486,7 @@ pub(super) fn run_campaign_capturing(
     mut capture: Option<&mut super::phase_fixtures::Capture>,
     mut on_chapter_clear: impl FnMut(),
 ) -> Result<CampaignResult, SimulationError> {
-    #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+    #[cfg(feature = "training")]
     crate::training::reset_history();
     validate_limits(config.max_rounds, config.recruit_limit)?;
     if definition.id() != config.campaign {
@@ -516,7 +516,7 @@ pub(super) fn run_campaign_capturing(
     game.set_combat_rng(config.seed);
     let mut missions = vec![];
     for _ in 0..chapters {
-        #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+        #[cfg(feature = "training")]
         crate::training::reset_history();
         if !game.is_campaign() {
             return Err("Campaign state missing".into());

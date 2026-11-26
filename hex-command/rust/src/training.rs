@@ -340,6 +340,37 @@ struct TrainingSession {
     generation: u64,
 }
 thread_local! { static SESSION: RefCell<TrainingSession> = RefCell::new(TrainingSession::default()); }
+
+/// Inference state belongs to one live battle; the observation contract is shared
+/// with native training. A scoped loan also restores the previous session on unwind.
+#[derive(Default)]
+pub(crate) struct LearnedSession(TrainingSession);
+impl LearnedSession {
+    pub(crate) fn new(model: Model) -> Result<Self, String> {
+        Ok(Self(TrainingSession {
+            model: Some(Evaluator::new(model)?),
+            ..Default::default()
+        }))
+    }
+    pub(crate) fn with<T>(&mut self, f: impl FnOnce() -> T) -> T {
+        struct Loan<'a> {
+            destination: &'a mut TrainingSession,
+            previous: Option<TrainingSession>,
+        }
+        impl Drop for Loan<'_> {
+            fn drop(&mut self) {
+                *self.destination = SESSION.with(|s| s.replace(self.previous.take().unwrap()));
+            }
+        }
+        let previous = SESSION.with(|s| s.replace(std::mem::take(&mut self.0)));
+        let _loan = Loan {
+            destination: &mut self.0,
+            previous: Some(previous),
+        };
+        f()
+    }
+}
+
 struct Restore(Option<TrainingSession>);
 impl Drop for Restore {
     fn drop(&mut self) {

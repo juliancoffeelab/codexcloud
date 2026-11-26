@@ -42,6 +42,7 @@ let planner_from : H.save35_setup_enemy_blocks_member1_planner -> Domain.Planner
   | `Queued -> Queued
 
 let planner_to : Domain.Planner_kind.t -> H.save35_setup_enemy_blocks_member1_planner = function
+  | Learned -> invalid_arg "Learned AI-play selection is transient"
   | Classic -> `Classic
   | Full -> `Full
   | Queued -> `Queued

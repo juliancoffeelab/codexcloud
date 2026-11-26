@@ -3,6 +3,7 @@ use super::super::{
     FEATURES,
     spatial::{self, EMBEDDING, KERNEL, SpatialBoard},
 };
+#[cfg(not(target_arch = "wasm32"))]
 use pulp::{Simd, WithSimd};
 
 struct ConvolutionLayer {
@@ -13,6 +14,7 @@ struct ConvolutionLayer {
 
 pub(super) struct ConvolutionEncoder {
     layers: Vec<ConvolutionLayer>,
+    #[cfg(not(target_arch = "wasm32"))]
     arch: pulp::Arch,
     stride: usize,
     coarse: Option<Box<ConvolutionEncoder>>,
@@ -54,6 +56,7 @@ impl ConvolutionEncoder {
             .collect();
         Self {
             layers,
+            #[cfg(not(target_arch = "wasm32"))]
             arch: pulp::Arch::new(),
             stride,
             coarse: None,
@@ -182,28 +185,30 @@ impl ConvolutionEncoder {
             self.first = vec![0.; cells * EMBEDDING];
             self.embedding = vec![0.; cells * EMBEDDING];
         }
-        dispatch(
-            self.arch,
-            Kernel::<true> {
-                layer: &self.layers[0],
-                input: &board.values,
-                output: &mut self.first,
-                cells: original_cells,
-                sites: &self.sites,
-                neighbors: &self.neighbors,
-            },
-        );
-        dispatch(
-            self.arch,
-            Kernel::<false> {
-                layer: &self.layers[1],
-                input: &self.first,
-                output: &mut self.embedding,
-                cells,
-                sites: &self.sites,
-                neighbors: &self.next_neighbors,
-            },
-        );
+        let first = Kernel::<true> {
+            layer: &self.layers[0],
+            input: &board.values,
+            output: &mut self.first,
+            cells: original_cells,
+            sites: &self.sites,
+            neighbors: &self.neighbors,
+        };
+        #[cfg(not(target_arch = "wasm32"))]
+        dispatch(self.arch, first);
+        #[cfg(target_arch = "wasm32")]
+        first.scalar();
+        let second = Kernel::<false> {
+            layer: &self.layers[1],
+            input: &self.first,
+            output: &mut self.embedding,
+            cells,
+            sites: &self.sites,
+            neighbors: &self.next_neighbors,
+        };
+        #[cfg(not(target_arch = "wasm32"))]
+        dispatch(self.arch, second);
+        #[cfg(target_arch = "wasm32")]
+        second.scalar();
     }
     fn pooled(&self) -> [f32; EMBEDDING] {
         let mut pooled = [0.; EMBEDDING];
@@ -251,6 +256,7 @@ fn append(
     input.extend_from_slice(pooled);
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 #[inline]
 fn dispatch<K: WithSimd>(arch: pulp::Arch, kernel: K) -> K::Output {
     // Host-specific builds select a concrete SIMD type before entering the
@@ -275,6 +281,7 @@ struct Kernel<'a, const CHANNEL_MAJOR: bool> {
     neighbors: &'a [[usize; 7]],
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 impl<const CHANNEL_MAJOR: bool> WithSimd for Kernel<'_, CHANNEL_MAJOR> {
     type Output = ();
 
@@ -293,6 +300,7 @@ impl<const CHANNEL_MAJOR: bool> WithSimd for Kernel<'_, CHANNEL_MAJOR> {
     }
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 impl<const CHANNEL_MAJOR: bool> Kernel<'_, CHANNEL_MAJOR> {
     #[inline(always)]
     fn run<S: Simd, const VECTORS: usize>(self, simd: S) {
@@ -326,6 +334,34 @@ impl<const CHANNEL_MAJOR: bool> Kernel<'_, CHANNEL_MAJOR> {
             let (output, _) = S::as_mut_simd_f32s(&mut self.output[a..a + EMBEDDING]);
             for ((out, sum), &bias) in output.iter_mut().zip(&sums).zip(bias) {
                 *out = simd.max_f32s(simd.add_f32s(*sum, bias), zero);
+            }
+        }
+    }
+}
+
+#[cfg(any(target_arch = "wasm32", test))]
+impl<const CHANNEL_MAJOR: bool> Kernel<'_, CHANNEL_MAJOR> {
+    fn scalar(self) {
+        for (&site, neighbors) in self.sites.iter().zip(self.neighbors) {
+            let mut sums = [0f32; EMBEDDING];
+            for channel in 0..self.layer.channels {
+                for (k, &neighbor) in neighbors.iter().enumerate() {
+                    if neighbor == usize::MAX {
+                        continue;
+                    }
+                    let value = self.input[if CHANNEL_MAJOR {
+                        channel * self.cells + neighbor
+                    } else {
+                        neighbor * EMBEDDING + channel
+                    }];
+                    let offset = (channel * 7 + k) * EMBEDDING;
+                    for (out, sum) in sums.iter_mut().enumerate() {
+                        *sum += value * self.layer.weights[offset + out];
+                    }
+                }
+            }
+            for (out, sum) in sums.into_iter().enumerate() {
+                self.output[site * EMBEDDING + out] = (sum + self.layer.bias[out]).max(0.);
             }
         }
     }

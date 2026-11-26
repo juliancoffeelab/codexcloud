@@ -40,7 +40,7 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
         orders.tactics.promotions = self
             .recruiter
             .promotions(recruitment_context.battle(), workspace.state.seed);
-        #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+        #[cfg(feature = "training")]
         {
             let observed = workspace
                 .state
@@ -77,7 +77,7 @@ impl<R: Recruiter, C: Campaigner, P: Planner> Tactic<R, C, P> {
         let planning = self
             .planner
             .plan(&mut draft.tactical_context(workspace), &orders.tactics)?;
-        #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+        #[cfg(feature = "training")]
         if workspace.finished() {
             draft.record_stop(
                 workspace

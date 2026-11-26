@@ -130,6 +130,7 @@ let explanation = difficulty =>
   };
 let plannerHelp = value =>
   switch (value) {
+  | Domain.Planner_kind.Learned => {js|Uses the learned policy.|js}
   | Domain.Planner_kind.Classic => {js|Straightforward tactical plans.|js}
   | Domain.Planner_kind.Queued => {js|Plans actions as a sequence.|js}
   | Domain.Planner_kind.Full => {js|Considers a wider set of actions.|js}

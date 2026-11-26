@@ -140,7 +140,10 @@ let setup_of_json value : setup =
           || text (field value {js|campaign|js}) <> {js|mission|js}
         then invalid ();
         ({
-           planner = parse Enum.planner_kind_of_string (field value {js|planner|js});
+           planner =
+             (match parse Enum.planner_kind_of_string (field value {js|planner|js}) with
+             | Domain.Planner_kind.Learned -> invalid ()
+             | value -> value);
            recruiter = parse Enum.recruiter_kind_of_string (field value {js|recruiter|js});
            campaign = `Mission;
          }
@@ -191,6 +194,7 @@ let setup_to_json ({ first; enemy; player } : setup) =
            ]
           @ Option.fold ~none:[]
               ~some:(fun ({ planner; recruiter; campaign = `Mission } : blocks) ->
+                if planner = Domain.Planner_kind.Learned then invalid ();
                 [
                   ( {js|blocks|js},
                     json_object

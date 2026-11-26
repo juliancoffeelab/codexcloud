@@ -41,7 +41,7 @@ pub(super) struct TurnState {
     #[cfg(any(feature = "wasm", test))]
     pub(super) blocks: Option<Blocks>,
     pub(super) orders: Option<CampaignOrders>,
-    #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+    #[cfg(feature = "training")]
     pub(super) observation_orders: Option<TacticalOrders>,
     pub(super) report: PlanningReport,
     #[cfg(any(feature = "wasm", test))]
@@ -139,7 +139,7 @@ impl PlanningWorkspace {
                 #[cfg(any(feature = "wasm", test))]
                 blocks: None,
                 orders: None,
-                #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+                #[cfg(feature = "training")]
                 observation_orders: None,
                 report: PlanningReport::default(),
                 #[cfg(any(feature = "wasm", test))]
@@ -176,7 +176,6 @@ impl PlanningWorkspace {
     pub(crate) fn orders(&self) -> Option<&CampaignOrders> {
         self.state.orders.as_ref()
     }
-    #[cfg(not(target_arch = "wasm32"))]
     pub(crate) fn finished(&self) -> bool {
         self.state.finished
     }
@@ -273,7 +272,7 @@ impl PlanningWorkspace {
     fn reset_planning(&mut self) {
         let state = &mut self.state;
         state.orders = None;
-        #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+        #[cfg(feature = "training")]
         {
             state.observation_orders = None;
         }

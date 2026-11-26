@@ -26,7 +26,7 @@ simulation = [
     "dep:flate2", "dep:mimalloc", "dep:clap",
 ]
 runtime-catalog = ["hex-command-catalog/runtime-catalog", "hex-command-battle/runtime-catalog"]
-wasm = ["dep:ocamljsify", "dep:ocamljs_bindgen", "hex-command-catalog/wasm", "hex-command-battle/wasm"]
+wasm = ["training", "dep:ocamljsify", "dep:ocamljs_bindgen", "hex-command-catalog/wasm", "hex-command-battle/wasm"]
 
 [dependencies]
 ocamljsify={path="../../ocaml-js-bindgen/crates/ocamljsify",optional=true}
