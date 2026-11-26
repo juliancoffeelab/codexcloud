@@ -1,0 +1,106 @@
+[
+  {
+    "hour": 12,
+    "actual_seconds": 43200.194862209,
+    "extension_seconds": 0.0,
+    "source_folder": "rl/checkpoints/last-1795524095845528690",
+    "model_sha256": "da26cde88dde2918a2f39eab5b8144ea4cfb98c8bdda7f6f61e2f7983c976bf2",
+    "archive": "recovery/hour-12/planner.json.gz"
+  },
+  {
+    "hour": 13,
+    "actual_seconds": 46916.639304104,
+    "extension_seconds": 3716.4444418950006,
+    "source_folder": "rl/checkpoints/update-00003544-1795655404477377079",
+    "model_sha256": "d40eaa679134c9ca6637097eced903ecf9881e5c972be3d587bf1e8a2928885a",
+    "archive": "recovery/hour-13/planner.json.gz"
+  },
+  {
+    "hour": 14,
+    "actual_seconds": 50507.712175547,
+    "extension_seconds": 7307.517313338001,
+    "source_folder": "rl/checkpoints/update-00003773-1795658995552354464",
+    "model_sha256": "cbc653ac6f776e001f8145aa13dd948dead819efe8efadf34dccea5f2b2e1ffe",
+    "archive": "recovery/hour-14/planner.json.gz"
+  },
+  {
+    "hour": 15,
+    "actual_seconds": 54120.245668357,
+    "extension_seconds": 10920.050806148,
+    "source_folder": "rl/checkpoints/update-00004000-1795662608085530182",
+    "model_sha256": "ca4d9f3546196e66416b7d24edf5f9474c5cb6ec43e676c3616a207f7fe6a36a",
+    "archive": "recovery/hour-15/planner.json.gz"
+  },
+  {
+    "hour": 16,
+    "actual_seconds": 57685.441629648,
+    "extension_seconds": 14485.246767438999,
+    "source_folder": "rl/checkpoints/update-00004213-1795666173283013239",
+    "model_sha256": "0556c53049cc1825cb97bbe877b739b35f8d17fbc8582283e82ef7d480e318fc",
+    "archive": "recovery/hour-16/planner.json.gz"
+  },
+  {
+    "hour": 17,
+    "actual_seconds": 61250.421067055,
+    "extension_seconds": 18050.226204846003,
+    "source_folder": "rl/checkpoints/update-00004421-1795669738263054853",
+    "model_sha256": "597a04e31780680ee6f1f809bbea7ed1433190307c4757c953cf869825e172f8",
+    "archive": "recovery/hour-17/planner.json.gz"
+  },
+  {
+    "hour": 18,
+    "actual_seconds": 64901.180283093,
+    "extension_seconds": 21700.985420884004,
+    "source_folder": "rl/checkpoints/update-00004625-1795673389021555623",
+    "model_sha256": "49f4854880256206a0c248ff43463118c124d411984257d70a0cfb16b41ac0d2",
+    "archive": "recovery/hour-18/planner.json.gz"
+  },
+  {
+    "hour": 19,
+    "actual_seconds": 68506.38385563,
+    "extension_seconds": 25306.188993421005,
+    "source_folder": "rl/checkpoints/update-00004818-1795676994225435253",
+    "model_sha256": "2b0bd79f01b3f6cb6f6cf592fd1d866de872802eebe9160c115abba451a4d879",
+    "archive": "recovery/hour-19/planner.json.gz"
+  },
+  {
+    "hour": 20,
+    "actual_seconds": 72032.13277846901,
+    "extension_seconds": 28831.93791626001,
+    "source_folder": "rl/checkpoints/update-00005000-1795680519976850842",
+    "model_sha256": "ff6363af6a27d3b0b4bb05eaaa9de932c5adb3667b84ddf79af9c3b93d845a09",
+    "archive": "recovery/hour-20/planner.json.gz"
+  },
+  {
+    "hour": 21,
+    "actual_seconds": 75679.82933869198,
+    "extension_seconds": 32479.634476482985,
+    "source_folder": "rl/checkpoints/update-00005181-1795684167670116271",
+    "model_sha256": "8f0bb9481be2caa06ad08ba83fcfbe4589e91de211357ad7cd00fb0c60e8fb5b",
+    "archive": "recovery/hour-21/planner.json.gz"
+  },
+  {
+    "hour": 22,
+    "actual_seconds": 79324.814936143,
+    "extension_seconds": 36124.620073934,
+    "source_folder": "rl/checkpoints/update-00005359-1795687812660105156",
+    "model_sha256": "65192b5a453d98fd934bf8106c055b6794d028a252d2a2af2327e94aa1b1fd64",
+    "archive": "recovery/hour-22/planner.json.gz"
+  },
+  {
+    "hour": 23,
+    "actual_seconds": 82813.684822323,
+    "extension_seconds": 39613.489960114006,
+    "source_folder": "rl/checkpoints/update-00005535-1795691301531390614",
+    "model_sha256": "dc87be87d60d57e0cc67d989446dac16d057d6993b3c657a59d7e9222e1b8c80",
+    "archive": "recovery/hour-23/planner.json.gz"
+  },
+  {
+    "hour": 24,
+    "actual_seconds": 86400.29728268698,
+    "extension_seconds": 43200.10242047798,
+    "source_folder": "rl/checkpoints/update-00005727-1795694888138412767",
+    "model_sha256": "5e38c4bbae46cd6d13afc80823bf5c11f23528c445f05acf23b7cea21b545a40",
+    "archive": "recovery/hour-24/planner.json.gz"
+  }
+]

@@ -1,0 +1,4748 @@
+{
+  "initial-1795480895666217428": {
+    "path": "checkpoints/initial-1795480895666217428",
+    "elapsed": 0.017401538003468886,
+    "updates": 0,
+    "episodes": 0,
+    "model_sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee"
+  },
+  "update-00000010-1795481025790885466": {
+    "path": "checkpoints/update-00000010-1795481025790885466",
+    "elapsed": 130.14055695501156,
+    "updates": 10,
+    "episodes": 25,
+    "model_sha256": "69027740f1337daf71950aa184ad87367ee24e659be61cc2825e40691b3751b5"
+  },
+  "update-00000020-1795481152587091585": {
+    "path": "checkpoints/update-00000020-1795481152587091585",
+    "elapsed": 256.9356259960041,
+    "updates": 20,
+    "episodes": 66,
+    "model_sha256": "68f628fe943ba241e4fa62103d83939a4c1c8c3019d9249dca75a68c7aabfb0f"
+  },
+  "update-00000030-1795481283250862729": {
+    "path": "checkpoints/update-00000030-1795481283250862729",
+    "elapsed": 387.59948742898996,
+    "updates": 30,
+    "episodes": 98,
+    "model_sha256": "9227df375b75d241277c1254dce7b7aef7a408c920b6d6a3f1321c72418558f7"
+  },
+  "update-00000040-1795481409090985810": {
+    "path": "checkpoints/update-00000040-1795481409090985810",
+    "elapsed": 513.4404060439847,
+    "updates": 40,
+    "episodes": 137,
+    "model_sha256": "ab564cb7dc529172bb174a55dbcf1848badee0a5bedbf075cc26d63ac4db5e2b"
+  },
+  "update-00000050-1795481535627170678": {
+    "path": "checkpoints/update-00000050-1795481535627170678",
+    "elapsed": 639.9764368000033,
+    "updates": 50,
+    "episodes": 189,
+    "model_sha256": "2926bac183f42d6ae05942df21aa9c9df90b7f1ebcdc524ac6571c90d7c14461"
+  },
+  "update-00000061-1795481657741615656": {
+    "path": "checkpoints/update-00000061-1795481657741615656",
+    "elapsed": 762.0915019350068,
+    "updates": 61,
+    "episodes": 218,
+    "model_sha256": "bfdeb6ab65cf135faa629d2296ac06ee0ebbcae4622096763c0bfcd08852a6ed"
+  },
+  "update-00000072-1795481787401060118": {
+    "path": "checkpoints/update-00000072-1795481787401060118",
+    "elapsed": 891.7500724359998,
+    "updates": 72,
+    "episodes": 277,
+    "model_sha256": "bbe7d0b92b2b69144dc9626c01bcfc71947ec023ba64bb6f0eda9eb754210e6d"
+  },
+  "update-00000082-1795481910405621089": {
+    "path": "checkpoints/update-00000082-1795481910405621089",
+    "elapsed": 1014.7546807379986,
+    "updates": 82,
+    "episodes": 327,
+    "model_sha256": "cb66c3cabd6425b749a34a0505be1b4dfe83c98610bcb4359b3241bd9b5914c5"
+  },
+  "update-00000093-1795482038349294825": {
+    "path": "checkpoints/update-00000093-1795482038349294825",
+    "elapsed": 1142.6993132109928,
+    "updates": 93,
+    "episodes": 367,
+    "model_sha256": "2567560927210f2e6efb55f1bff8b6988036ed23ba674be0f1c4041c3e9a0fa9"
+  },
+  "update-00000102-1795482166251956362": {
+    "path": "checkpoints/update-00000102-1795482166251956362",
+    "elapsed": 1270.6012944199902,
+    "updates": 102,
+    "episodes": 405,
+    "model_sha256": "eb267ce6d5711bb8a3e2d496d2755e45b4c0153da757af9963b442750a5c53f1"
+  },
+  "update-00000111-1795482288765198213": {
+    "path": "checkpoints/update-00000111-1795482288765198213",
+    "elapsed": 1393.1148271719867,
+    "updates": 111,
+    "episodes": 445,
+    "model_sha256": "b7131bb713b83189b7f780ef4e86ca53d3407f309689735a9cbb983d86f7ae8b"
+  },
+  "update-00000119-1795482422964459573": {
+    "path": "checkpoints/update-00000119-1795482422964459573",
+    "elapsed": 1527.31403903701,
+    "updates": 119,
+    "episodes": 474,
+    "model_sha256": "c70eef8d94b732d9640f847674f80920012cba0c01f2fb70026dd575855fe22a"
+  },
+  "update-00000129-1795482554626327859": {
+    "path": "checkpoints/update-00000129-1795482554626327859",
+    "elapsed": 1658.975476202002,
+    "updates": 129,
+    "episodes": 517,
+    "model_sha256": "274408025c37fdcad9fd4b5ae304879426df3f419917a799396fbc78b871b255"
+  },
+  "update-00000136-1795482676360884865": {
+    "path": "checkpoints/update-00000136-1795482676360884865",
+    "elapsed": 1780.7093137810007,
+    "updates": 136,
+    "episodes": 543,
+    "model_sha256": "62cc16263aa9628989147609667a6166436e18f00ea3d1ad9cb11052277c755f"
+  },
+  "update-00000147-1795482800473445915": {
+    "path": "checkpoints/update-00000147-1795482800473445915",
+    "elapsed": 1904.8230940529902,
+    "updates": 147,
+    "episodes": 589,
+    "model_sha256": "727f1ed4c54ca6c1f6aa921c112c9a51b62c14c7dd0e7671a01e6ff69822f9c7"
+  },
+  "update-00000157-1795482920910184842": {
+    "path": "checkpoints/update-00000157-1795482920910184842",
+    "elapsed": 2025.2603253209963,
+    "updates": 157,
+    "episodes": 636,
+    "model_sha256": "5acf52c9a0d383ead4948add948eca863cc0008859ec8f5ec121d9c6c9dc435a"
+  },
+  "update-00000167-1795483050889877256": {
+    "path": "checkpoints/update-00000167-1795483050889877256",
+    "elapsed": 2155.2395736039907,
+    "updates": 167,
+    "episodes": 663,
+    "model_sha256": "9866b542b10203278e3133be7bcf50189f4bb3cb238f9e6826c7f263da49bc71"
+  },
+  "update-00000176-1795483173756514862": {
+    "path": "checkpoints/update-00000176-1795483173756514862",
+    "elapsed": 2278.1066551409895,
+    "updates": 176,
+    "episodes": 704,
+    "model_sha256": "c0fc805b751135cf405a306b11c1b7270dc98b763c7e447bb8f825de257631f2"
+  },
+  "update-00000186-1795483306010047357": {
+    "path": "checkpoints/update-00000186-1795483306010047357",
+    "elapsed": 2410.3598283059837,
+    "updates": 186,
+    "episodes": 751,
+    "model_sha256": "3bcb89b56303af3a32e3ea90548cb62b49f2d97a6b78ef21688bab2ab5cc903b"
+  },
+  "update-00000195-1795483426480792751": {
+    "path": "checkpoints/update-00000195-1795483426480792751",
+    "elapsed": 2530.8098684819997,
+    "updates": 195,
+    "episodes": 777,
+    "model_sha256": "701d310a3500d946ecdcdaeb853b18b20419a09439f07a6cd213c9f53053d831"
+  },
+  "update-00000206-1795483551323858251": {
+    "path": "checkpoints/update-00000206-1795483551323858251",
+    "elapsed": 2655.6735221039853,
+    "updates": 206,
+    "episodes": 821,
+    "model_sha256": "4776459d2dce78a989497ad8d9443f38184d58f71cb4ea7f8a947e5ce1db7644"
+  },
+  "update-00000217-1795483683461365610": {
+    "path": "checkpoints/update-00000217-1795483683461365610",
+    "elapsed": 2787.8107995660102,
+    "updates": 217,
+    "episodes": 872,
+    "model_sha256": "eee11397ef9e908687c17353834c83c6c3d86945efc69b3760b98bc867d87437"
+  },
+  "update-00000226-1795483812882896066": {
+    "path": "checkpoints/update-00000226-1795483812882896066",
+    "elapsed": 2917.2321606049954,
+    "updates": 226,
+    "episodes": 912,
+    "model_sha256": "0d103212f04a7c6447d3ef8457fac2ca4b037e914a934ffbd1ac36b3220f1eed"
+  },
+  "update-00000236-1795483945771937953": {
+    "path": "checkpoints/update-00000236-1795483945771937953",
+    "elapsed": 3050.121678872005,
+    "updates": 236,
+    "episodes": 955,
+    "model_sha256": "f3fd765278de337c5188d9ecd58f6c8947bea3f4de36f1ed86c8e3649eb0f85d"
+  },
+  "update-00000246-1795484077104713788": {
+    "path": "checkpoints/update-00000246-1795484077104713788",
+    "elapsed": 3181.4543497519917,
+    "updates": 246,
+    "episodes": 991,
+    "model_sha256": "fc7c9c397e36cf75fce13b302f6d525492ff98a3363e94a03440a406ab068284"
+  },
+  "update-00000257-1795484200264493438": {
+    "path": "checkpoints/update-00000257-1795484200264493438",
+    "elapsed": 3304.613905456994,
+    "updates": 257,
+    "episodes": 1046,
+    "model_sha256": "d25dc92938060c5521b1470e91d257ed6c8d5a63f9a606ae49e5392e027f17c8"
+  },
+  "update-00000268-1795484333165754604": {
+    "path": "checkpoints/update-00000268-1795484333165754604",
+    "elapsed": 3437.514829246007,
+    "updates": 268,
+    "episodes": 1085,
+    "model_sha256": "46e6b15fbc63c3c9bd343a9f7b30f3109c08200b6436da99b268e4c0d19419e3"
+  },
+  "update-00000278-1795484459155484435": {
+    "path": "checkpoints/update-00000278-1795484459155484435",
+    "elapsed": 3563.50483511301,
+    "updates": 278,
+    "episodes": 1129,
+    "model_sha256": "d6236bfccc9b8bc2030fc39eb5ff6c10fd81769e4a8fbb448ae91ccbf1f13ef2"
+  },
+  "update-00000288-1795484586406970077": {
+    "path": "checkpoints/update-00000288-1795484586406970077",
+    "elapsed": 3690.7571609749866,
+    "updates": 288,
+    "episodes": 1171,
+    "model_sha256": "af7e53ecbdf9fae93b395aad5081a8b4f2c785d1fbee224ee2ec4f6e097ae9b5"
+  },
+  "update-00000297-1795484707259109622": {
+    "path": "checkpoints/update-00000297-1795484707259109622",
+    "elapsed": 3811.6083871409937,
+    "updates": 297,
+    "episodes": 1206,
+    "model_sha256": "83cc9f61b2bdbcd6f5eb3ec67412b79e8c46dc2430f6f8d1c415634327d60977"
+  },
+  "update-00000308-1795484831640250694": {
+    "path": "checkpoints/update-00000308-1795484831640250694",
+    "elapsed": 3935.9894175239897,
+    "updates": 308,
+    "episodes": 1258,
+    "model_sha256": "a1cca98f2bfbf20df5b482f8571731c4505eb72b338e68f1efc028e0cd67449c"
+  },
+  "update-00000317-1795484957323831717": {
+    "path": "checkpoints/update-00000317-1795484957323831717",
+    "elapsed": 4061.6727565799956,
+    "updates": 317,
+    "episodes": 1289,
+    "model_sha256": "31293b3d4cd471a6c9e2891d167c09874d99289e4f73e6b777fb8d5844c82190"
+  },
+  "update-00000327-1795485080163957516": {
+    "path": "checkpoints/update-00000327-1795485080163957516",
+    "elapsed": 4184.5134716389875,
+    "updates": 327,
+    "episodes": 1313,
+    "model_sha256": "b35977297dbe524e6940cd599bf5d869f5202b94ea39ce0b94923aa719f006d0"
+  },
+  "update-00000337-1795485208406932297": {
+    "path": "checkpoints/update-00000337-1795485208406932297",
+    "elapsed": 4312.7555820969865,
+    "updates": 337,
+    "episodes": 1359,
+    "model_sha256": "b43b8f8663bd53dd2ddb67b3364d6ecc8dbbf888979d5cb6f7cef2e5e6108cf2"
+  },
+  "update-00000346-1795485335378351709": {
+    "path": "checkpoints/update-00000346-1795485335378351709",
+    "elapsed": 4439.728361302987,
+    "updates": 346,
+    "episodes": 1392,
+    "model_sha256": "088daee92d60d626c22b46ce97192bbd20bca18bac2942f63b5f59acd2bce67e"
+  },
+  "update-00000358-1795485459513658256": {
+    "path": "checkpoints/update-00000358-1795485459513658256",
+    "elapsed": 4563.862366493995,
+    "updates": 358,
+    "episodes": 1450,
+    "model_sha256": "d0b6ab47b80a730e7c22eb4ea96e7d167c242bb292a2ae5871d1d49126a95884"
+  },
+  "update-00000368-1795485583087643024": {
+    "path": "checkpoints/update-00000368-1795485583087643024",
+    "elapsed": 4687.436968786991,
+    "updates": 368,
+    "episodes": 1482,
+    "model_sha256": "b73f8ce1a9a829ffde12977a407e459667bdfe9877121ab9f51cb1f01089ed9e"
+  },
+  "update-00000378-1795485705152327845": {
+    "path": "checkpoints/update-00000378-1795485705152327845",
+    "elapsed": 4809.502029344003,
+    "updates": 378,
+    "episodes": 1513,
+    "model_sha256": "2a030c1bb2c70699a7dc8ee8c77e2f823dde3fdabeb7bb2f6d7d3bf7fc5a5d66"
+  },
+  "update-00000387-1795485829157362040": {
+    "path": "checkpoints/update-00000387-1795485829157362040",
+    "elapsed": 4933.491638006992,
+    "updates": 387,
+    "episodes": 1556,
+    "model_sha256": "5bdf61271af9bef955804833e379d217a775c27271c53d0ce72a2f00ab4f5589"
+  },
+  "update-00000398-1795485952511305666": {
+    "path": "checkpoints/update-00000398-1795485952511305666",
+    "elapsed": 5056.858671766997,
+    "updates": 398,
+    "episodes": 1604,
+    "model_sha256": "90d1eff68571d6101e71bf1bc55c1827c2325c66281e616e4b9cde6e29f8523c"
+  },
+  "update-00000408-1795486072789502395": {
+    "path": "checkpoints/update-00000408-1795486072789502395",
+    "elapsed": 5177.1390323560045,
+    "updates": 408,
+    "episodes": 1652,
+    "model_sha256": "b2a4a24b8599b53af5141deae10bbfbe4d68528083c8273b74b9f17081a0a599"
+  },
+  "update-00000416-1795486193662262796": {
+    "path": "checkpoints/update-00000416-1795486193662262796",
+    "elapsed": 5298.011534636986,
+    "updates": 416,
+    "episodes": 1682,
+    "model_sha256": "83de738816193963a293bb609db02b918150b313bfda2ab7500a54679b5c7575"
+  },
+  "update-00000426-1795486323051712228": {
+    "path": "checkpoints/update-00000426-1795486323051712228",
+    "elapsed": 5427.401036469004,
+    "updates": 426,
+    "episodes": 1729,
+    "model_sha256": "e175528711a088ae1523411de8bedcfb573d382f9a1cfa6140c1fe4c5948481a"
+  },
+  "update-00000435-1795486443592496393": {
+    "path": "checkpoints/update-00000435-1795486443592496393",
+    "elapsed": 5547.9420164389885,
+    "updates": 435,
+    "episodes": 1759,
+    "model_sha256": "07f99cc9737c9adc4eb434ee431464a008ebda5b1c607a4c177fedaa0c47ae63"
+  },
+  "update-00000445-1795486572839291909": {
+    "path": "checkpoints/update-00000445-1795486572839291909",
+    "elapsed": 5677.189425240009,
+    "updates": 445,
+    "episodes": 1796,
+    "model_sha256": "4642f31b4ad9603d9987d9ac2ca9806b1ea414b4b9c19a75431359b85d866d7a"
+  },
+  "update-00000455-1795486705412952613": {
+    "path": "checkpoints/update-00000455-1795486705412952613",
+    "elapsed": 5809.762615735002,
+    "updates": 455,
+    "episodes": 1832,
+    "model_sha256": "faf97c956e17dc8c9ee9fc0a2b63bbd9c3f9bb947ad599351754b332fd19aa37"
+  },
+  "update-00000465-1795486835133171669": {
+    "path": "checkpoints/update-00000465-1795486835133171669",
+    "elapsed": 5939.483313714009,
+    "updates": 465,
+    "episodes": 1872,
+    "model_sha256": "cb6d9e4595574509dfb28599122d69f8daf83840d8a85bed12299605f5a701f3"
+  },
+  "update-00000476-1795486959906463790": {
+    "path": "checkpoints/update-00000476-1795486959906463790",
+    "elapsed": 6064.255238960992,
+    "updates": 476,
+    "episodes": 1914,
+    "model_sha256": "fcb497c4de09a2f7a01037ea4e4d53b0f06e3a71b7da35d237840f1437603df8"
+  },
+  "update-00000486-1795487081175702855": {
+    "path": "checkpoints/update-00000486-1795487081175702855",
+    "elapsed": 6185.5247532420035,
+    "updates": 486,
+    "episodes": 1945,
+    "model_sha256": "289ff98c2d95153f6110453cdf563d235bd54104b9c4344e7d70fd2e35566e12"
+  },
+  "update-00000496-1795487209623670711": {
+    "path": "checkpoints/update-00000496-1795487209623670711",
+    "elapsed": 6313.973833013006,
+    "updates": 496,
+    "episodes": 1977,
+    "model_sha256": "cd5dd3b2ea3f706231c9f26dd7237ad8d30c2c9d798b6470177b6a497403ff3e"
+  },
+  "update-00000507-1795487330914842329": {
+    "path": "checkpoints/update-00000507-1795487330914842329",
+    "elapsed": 6435.264772955998,
+    "updates": 507,
+    "episodes": 2032,
+    "model_sha256": "f20dfc7085415a791a1d7194c62a6d121069e15bce2908fc927c5b2fd4b4740b"
+  },
+  "update-00000516-1795487453457339864": {
+    "path": "checkpoints/update-00000516-1795487453457339864",
+    "elapsed": 6557.80641663901,
+    "updates": 516,
+    "episodes": 2059,
+    "model_sha256": "51b782aecb58012c85030b1e3728111ad968193667fd5d929ec431499bc95c25"
+  },
+  "update-00000526-1795487584105631090": {
+    "path": "checkpoints/update-00000526-1795487584105631090",
+    "elapsed": 6688.451963070984,
+    "updates": 526,
+    "episodes": 2108,
+    "model_sha256": "33ff4e4d82f51c27b9729bdffc1ee28cb5cc57a36a99e3455b33834bd346aef2"
+  },
+  "update-00000535-1795487706350523160": {
+    "path": "checkpoints/update-00000535-1795487706350523160",
+    "elapsed": 6810.699162375007,
+    "updates": 535,
+    "episodes": 2143,
+    "model_sha256": "183b3cc776d712be4997c645051661c0d11077e14c881c7daa4f4b5e1778b02c"
+  },
+  "update-00000546-1795487839180972448": {
+    "path": "checkpoints/update-00000546-1795487839180972448",
+    "elapsed": 6943.52953184201,
+    "updates": 546,
+    "episodes": 2195,
+    "model_sha256": "95d1e6872fdd7994912d727f5ae6f4e264688ac2f5add14c4919a33e6e6c7631"
+  },
+  "update-00000557-1795487969308312845": {
+    "path": "checkpoints/update-00000557-1795487969308312845",
+    "elapsed": 7073.658357762994,
+    "updates": 557,
+    "episodes": 2234,
+    "model_sha256": "f056eea0b3c6850e26db78b0ff90b0643401492f9d5fb2f77439d14c075b7016"
+  },
+  "update-00000568-1795488099284737382": {
+    "path": "checkpoints/update-00000568-1795488099284737382",
+    "elapsed": 7203.634608663997,
+    "updates": 568,
+    "episodes": 2282,
+    "model_sha256": "d46bf455dad12266fe2b51cc820b1ea7ce1280cadbac84928fd1ee9718912c6a"
+  },
+  "update-00000577-1795488231090702586": {
+    "path": "checkpoints/update-00000577-1795488231090702586",
+    "elapsed": 7335.440330977988,
+    "updates": 577,
+    "episodes": 2315,
+    "model_sha256": "37e11ad47aa1f6d095c79f5b8d50e54b03633794b67a78eb5cd5abb242e8d7f1"
+  },
+  "update-00000587-1795488364786093732": {
+    "path": "checkpoints/update-00000587-1795488364786093732",
+    "elapsed": 7469.135219193995,
+    "updates": 587,
+    "episodes": 2348,
+    "model_sha256": "98c04a99b508ded0a2fbed7bcd5e53afc63b75b3cd981c8e403c60d29f2869a9"
+  },
+  "update-00000596-1795488491723158081": {
+    "path": "checkpoints/update-00000596-1795488491723158081",
+    "elapsed": 7596.072622764012,
+    "updates": 596,
+    "episodes": 2390,
+    "model_sha256": "ee3db5db8c89ffbffc432b34622d37f129e92a903b02014416523b180bbd3bf1"
+  },
+  "update-00000605-1795488616784488965": {
+    "path": "checkpoints/update-00000605-1795488616784488965",
+    "elapsed": 7721.133164964995,
+    "updates": 605,
+    "episodes": 2421,
+    "model_sha256": "c107ae6266638fb40418baa25296cb4dcb95479f45177566f11fdb033c5799f6"
+  },
+  "update-00000615-1795488740448018526": {
+    "path": "checkpoints/update-00000615-1795488740448018526",
+    "elapsed": 7844.797772785008,
+    "updates": 615,
+    "episodes": 2449,
+    "model_sha256": "965cd8c1ec3f53e62cd803529890322518b6ebc688f900c67d1c7b0c426e83a1"
+  },
+  "update-00000626-1795488864873503155": {
+    "path": "checkpoints/update-00000626-1795488864873503155",
+    "elapsed": 7969.223188528995,
+    "updates": 626,
+    "episodes": 2479,
+    "model_sha256": "f1b69f887395aca049622ab9f200c7dac95dc0c8346e406e9a66622f299e6593"
+  },
+  "update-00000636-1795488989232805810": {
+    "path": "checkpoints/update-00000636-1795488989232805810",
+    "elapsed": 8093.581779897999,
+    "updates": 636,
+    "episodes": 2513,
+    "model_sha256": "f939f4993e70618ee447aa0a9617ffa09a181759924d1715f07f74d99dab089c"
+  },
+  "update-00000645-1795489111420624584": {
+    "path": "checkpoints/update-00000645-1795489111420624584",
+    "elapsed": 8215.769279641012,
+    "updates": 645,
+    "episodes": 2549,
+    "model_sha256": "e0c3e5e1e7f07e86468a1e5f74948f0ac3306522addbbcff725e7d6f07051df7"
+  },
+  "update-00000656-1795489238731549426": {
+    "path": "checkpoints/update-00000656-1795489238731549426",
+    "elapsed": 8343.081227732997,
+    "updates": 656,
+    "episodes": 2592,
+    "model_sha256": "0026c11acd21497a389b054f7df062126d9b7a2f6834a1e70588240b44cff0db"
+  },
+  "update-00000667-1795489369234049316": {
+    "path": "checkpoints/update-00000667-1795489369234049316",
+    "elapsed": 8473.583294932003,
+    "updates": 667,
+    "episodes": 2636,
+    "model_sha256": "04493ee62c678ce14eec255ce413179c192eecd572247d96487c9831ce7c83c3"
+  },
+  "update-00000675-1795489502741133715": {
+    "path": "checkpoints/update-00000675-1795489502741133715",
+    "elapsed": 8607.090198285005,
+    "updates": 675,
+    "episodes": 2657,
+    "model_sha256": "b0286bf4d88064256fc4eff664bb849663aa232fb2b0f6f9594efca0ae98ff32"
+  },
+  "update-00000685-1795489630990391057": {
+    "path": "checkpoints/update-00000685-1795489630990391057",
+    "elapsed": 8735.338952825987,
+    "updates": 685,
+    "episodes": 2708,
+    "model_sha256": "5e4c103c9688e464e0e48c670adc00c8ac1feefe48ced0aafc5cb1beff4533c9"
+  },
+  "update-00000694-1795489753281211415": {
+    "path": "checkpoints/update-00000694-1795489753281211415",
+    "elapsed": 8857.626575879985,
+    "updates": 694,
+    "episodes": 2734,
+    "model_sha256": "21d4ae49cffb19ba48eab3d243a75f946c129ca919747abcf1fb0d2d3f2ba9ba"
+  },
+  "update-00000703-1795489885835597074": {
+    "path": "checkpoints/update-00000703-1795489885835597074",
+    "elapsed": 8990.185055245995,
+    "updates": 703,
+    "episodes": 2776,
+    "model_sha256": "2d55969f1ff0a1b67889abb97803ff33d38344563b71e54829bbae821b9c0690"
+  },
+  "update-00000713-1795490009644051314": {
+    "path": "checkpoints/update-00000713-1795490009644051314",
+    "elapsed": 9113.994230718003,
+    "updates": 713,
+    "episodes": 2809,
+    "model_sha256": "6a89f39dc7f776f57e4ef7c5a9c98a7b46e10edc13d1d195ed81e6e1c6f19411"
+  },
+  "update-00000722-1795490138900030341": {
+    "path": "checkpoints/update-00000722-1795490138900030341",
+    "elapsed": 9243.250080069993,
+    "updates": 722,
+    "episodes": 2839,
+    "model_sha256": "b8204f91046e404472454a2b95b9588af6bfd35382562e3fe9fc97754d7e1a84"
+  },
+  "update-00000731-1795490262170659344": {
+    "path": "checkpoints/update-00000731-1795490262170659344",
+    "elapsed": 9366.519837725995,
+    "updates": 731,
+    "episodes": 2860,
+    "model_sha256": "bf3ee610a94dc635569c8499bc8e4879ed3293f1e2a76aa34a0d28bc3763abaf"
+  },
+  "update-00000741-1795490383861648231": {
+    "path": "checkpoints/update-00000741-1795490383861648231",
+    "elapsed": 9488.205498962983,
+    "updates": 741,
+    "episodes": 2901,
+    "model_sha256": "e809db30d03c1896d9ad920536091e4a943b79cbb5b285dec07666984b53027b"
+  },
+  "update-00000751-1795490516708495462": {
+    "path": "checkpoints/update-00000751-1795490516708495462",
+    "elapsed": 9621.057249301986,
+    "updates": 751,
+    "episodes": 2940,
+    "model_sha256": "04a93502ee9d716b7647fca1913943deb7eef0f44d14db250278bf6443a7c1bd"
+  },
+  "update-00000761-1795490642058390153": {
+    "path": "checkpoints/update-00000761-1795490642058390153",
+    "elapsed": 9746.40816414301,
+    "updates": 761,
+    "episodes": 2981,
+    "model_sha256": "d0c7e5743134b42021d1fa6aac6db6546f27f40e7f3062ef6ee5e466050b3289"
+  },
+  "update-00000771-1795490775600074716": {
+    "path": "checkpoints/update-00000771-1795490775600074716",
+    "elapsed": 9879.949534309999,
+    "updates": 771,
+    "episodes": 3012,
+    "model_sha256": "1661ffd68a3f1e38d61feff95a1b3bed6d2e938f2e449ec7e179d046360c00cb"
+  },
+  "update-00000780-1795490898041408175": {
+    "path": "checkpoints/update-00000780-1795490898041408175",
+    "elapsed": 10002.390595256991,
+    "updates": 780,
+    "episodes": 3045,
+    "model_sha256": "6b00a5405c95d5aa0384cacc59b800f611295f03df6a21e044669c998738fe7f"
+  },
+  "update-00000790-1795491031823611500": {
+    "path": "checkpoints/update-00000790-1795491031823611500",
+    "elapsed": 10136.173222021986,
+    "updates": 790,
+    "episodes": 3079,
+    "model_sha256": "550b1963580818fa2f4669e0ae56e0d9492e108aea4b74727dbd425f7837d2a6"
+  },
+  "update-00000800-1795491152207846548": {
+    "path": "checkpoints/update-00000800-1795491152207846548",
+    "elapsed": 10256.557097738987,
+    "updates": 800,
+    "episodes": 3114,
+    "model_sha256": "c5370204fae338e2191957c6e4ca7445c9f07d33d0e61f50d36e5ca216a40c0e"
+  },
+  "update-00000810-1795491285194291037": {
+    "path": "checkpoints/update-00000810-1795491285194291037",
+    "elapsed": 10389.543968796992,
+    "updates": 810,
+    "episodes": 3149,
+    "model_sha256": "5070bbfe24594c34d102415fc715deef2893541dd2dbdf1b94e09a916d4a6def"
+  },
+  "update-00000819-1795491406790074030": {
+    "path": "checkpoints/update-00000819-1795491406790074030",
+    "elapsed": 10511.138834623009,
+    "updates": 819,
+    "episodes": 3175,
+    "model_sha256": "1d06d638f16378accb1d94876880fccf27c7ab1017557009689482fc56afdf67"
+  },
+  "update-00000830-1795491538501603485": {
+    "path": "checkpoints/update-00000830-1795491538501603485",
+    "elapsed": 10642.851007716992,
+    "updates": 830,
+    "episodes": 3210,
+    "model_sha256": "3da4b64d4c19722d8339f16058c0db332a580f578326b738c797318c9eb70d2d"
+  },
+  "update-00000839-1795491665993420682": {
+    "path": "checkpoints/update-00000839-1795491665993420682",
+    "elapsed": 10770.340112225997,
+    "updates": 839,
+    "episodes": 3236,
+    "model_sha256": "1bc7ee40f3ce8e5a85e4e1a9f89be19eb7db7c62018575cd652bf25f25b78636"
+  },
+  "update-00000849-1795491794179678492": {
+    "path": "checkpoints/update-00000849-1795491794179678492",
+    "elapsed": 10898.52912798,
+    "updates": 849,
+    "episodes": 3272,
+    "model_sha256": "b0600b9b27f3b7e4463bccc35d223cd749e4445365b797ac0efadf3f79bef168"
+  },
+  "update-00000858-1795491915356108699": {
+    "path": "checkpoints/update-00000858-1795491915356108699",
+    "elapsed": 11019.706188980985,
+    "updates": 858,
+    "episodes": 3309,
+    "model_sha256": "92c215c25ab28eb04bc8922005bd6bbf7478210933c9b86085f4978de4143e22"
+  },
+  "update-00000867-1795492040938417097": {
+    "path": "checkpoints/update-00000867-1795492040938417097",
+    "elapsed": 11145.286280400003,
+    "updates": 867,
+    "episodes": 3349,
+    "model_sha256": "08ef05ae8901ff0609b8943c00aef27474e770aa976e23fa6a875e34e258671a"
+  },
+  "update-00000876-1795492165636473996": {
+    "path": "checkpoints/update-00000876-1795492165636473996",
+    "elapsed": 11269.985352535994,
+    "updates": 876,
+    "episodes": 3379,
+    "model_sha256": "d6c0ff5e9513adc3a56460070c69adce8cb4d2dd33b33e0adacdd059189ace8c"
+  },
+  "update-00000885-1795492286549034732": {
+    "path": "checkpoints/update-00000885-1795492286549034732",
+    "elapsed": 11390.899038831994,
+    "updates": 885,
+    "episodes": 3410,
+    "model_sha256": "7724c9ff5948a67d889e7d8488f4601774abf155f8e3e16112312f0b7591e0c4"
+  },
+  "update-00000896-1795492409459329023": {
+    "path": "checkpoints/update-00000896-1795492409459329023",
+    "elapsed": 11513.809188234998,
+    "updates": 896,
+    "episodes": 3462,
+    "model_sha256": "28ca5bfb9f8bf0e92ac2d8f2c91918a2816344ffb48caa7cd8f113daf0501be3"
+  },
+  "update-00000904-1795492542910700342": {
+    "path": "checkpoints/update-00000904-1795492542910700342",
+    "elapsed": 11647.260285527009,
+    "updates": 904,
+    "episodes": 3481,
+    "model_sha256": "2b8f01e17bfba84d1cd8275b2c3f1cc3754feeb621706b46bebeeda9f74d0b4f"
+  },
+  "update-00000915-1795492668292384022": {
+    "path": "checkpoints/update-00000915-1795492668292384022",
+    "elapsed": 11772.641352295002,
+    "updates": 915,
+    "episodes": 3537,
+    "model_sha256": "2eda9bd8fea98747137eaf17f7d84eb11745befe8e98444b84d4d74d035ed969"
+  },
+  "update-00000925-1795492795636652741": {
+    "path": "checkpoints/update-00000925-1795492795636652741",
+    "elapsed": 11899.986559651996,
+    "updates": 925,
+    "episodes": 3561,
+    "model_sha256": "2e4d4f495601903414b098010c0e848a7f1a252eda24e8692349d8dee24d09c0"
+  },
+  "update-00000936-1795492921041711901": {
+    "path": "checkpoints/update-00000936-1795492921041711901",
+    "elapsed": 12025.391785532003,
+    "updates": 936,
+    "episodes": 3605,
+    "model_sha256": "9a7de9db9522a3e971f93265dec1544f0a1681caf506dc25aa325620d5843d56"
+  },
+  "update-00000946-1795493045778057569": {
+    "path": "checkpoints/update-00000946-1795493045778057569",
+    "elapsed": 12150.127819991001,
+    "updates": 946,
+    "episodes": 3637,
+    "model_sha256": "1481cc5531d72ef198cd0e12e4feecc07ca15a5c4ae714b8cabb823bc6d4b283"
+  },
+  "update-00000956-1795493176035832741": {
+    "path": "checkpoints/update-00000956-1795493176035832741",
+    "elapsed": 12280.385641436005,
+    "updates": 956,
+    "episodes": 3666,
+    "model_sha256": "fbb49ae8181d658900301a69c0766f5f6ff875d0e9fdb40588f87406fa517bf5"
+  },
+  "update-00000967-1795493306270087292": {
+    "path": "checkpoints/update-00000967-1795493306270087292",
+    "elapsed": 12410.620261253993,
+    "updates": 967,
+    "episodes": 3706,
+    "model_sha256": "12f2d52ef27402440724fcd954d597662cec2b41730b45c076c338607a08c9fd"
+  },
+  "update-00000977-1795493432613728371": {
+    "path": "checkpoints/update-00000977-1795493432613728371",
+    "elapsed": 12536.96201593001,
+    "updates": 977,
+    "episodes": 3742,
+    "model_sha256": "8ab50080c17dcc1c0817829986639109a6263491fb2916aea3d03f8680ff1d41"
+  },
+  "update-00000986-1795493556811813865": {
+    "path": "checkpoints/update-00000986-1795493556811813865",
+    "elapsed": 12661.161663931009,
+    "updates": 986,
+    "episodes": 3784,
+    "model_sha256": "54e0b0971d12b1cf807a291c8e5d128621d76c43d8c8fbb87289038050b6ec8b"
+  },
+  "update-00000997-1795493684403924375": {
+    "path": "checkpoints/update-00000997-1795493684403924375",
+    "elapsed": 12788.752684064006,
+    "updates": 997,
+    "episodes": 3811,
+    "model_sha256": "3b0970214301e284b83edcf8aa850060ec63e171bc2f058c6c68d5a5c9ca0b35"
+  },
+  "update-00001006-1795493811664780404": {
+    "path": "checkpoints/update-00001006-1795493811664780404",
+    "elapsed": 12916.01457526401,
+    "updates": 1006,
+    "episodes": 3841,
+    "model_sha256": "3269aace194788a360cbfe37505599d20f007acd211efb346924c7c01d23553d"
+  },
+  "update-00001018-1795493942589110085": {
+    "path": "checkpoints/update-00001018-1795493942589110085",
+    "elapsed": 13046.938792945002,
+    "updates": 1018,
+    "episodes": 3894,
+    "model_sha256": "fd88725ea8eebb26e1192c459ef8c7301c893794df171d4e8e5ef470e1925058"
+  },
+  "update-00001028-1795494071504810782": {
+    "path": "checkpoints/update-00001028-1795494071504810782",
+    "elapsed": 13175.854385290004,
+    "updates": 1028,
+    "episodes": 3935,
+    "model_sha256": "2024006f01c821b3f4cf029e4a9ddc3382b4fe83510905cf5b8ba2012e95a0ba"
+  },
+  "update-00001037-1795494196555961219": {
+    "path": "checkpoints/update-00001037-1795494196555961219",
+    "elapsed": 13300.904709958995,
+    "updates": 1037,
+    "episodes": 3961,
+    "model_sha256": "8916d904c55db851f264b403f414d0e90cca4dd35b686ab5e08d4b2eeeb9d491"
+  },
+  "update-00001048-1795494318197635612": {
+    "path": "checkpoints/update-00001048-1795494318197635612",
+    "elapsed": 13422.546811967011,
+    "updates": 1048,
+    "episodes": 4005,
+    "model_sha256": "6b72f0577116756dfb64f4635d77999f778c2fc9aad803f548bef815afbeac9d"
+  },
+  "update-00001057-1795494439104162271": {
+    "path": "checkpoints/update-00001057-1795494439104162271",
+    "elapsed": 13543.454283220985,
+    "updates": 1057,
+    "episodes": 4032,
+    "model_sha256": "e3d713f41b8aac6c27dc4522326cede99e73ac0d456972b7412fda2fbcae0785"
+  },
+  "update-00001068-1795494570424501182": {
+    "path": "checkpoints/update-00001068-1795494570424501182",
+    "elapsed": 13674.773897984996,
+    "updates": 1068,
+    "episodes": 4073,
+    "model_sha256": "684c553605455e47db2bf6bddd45a8cc8357f4b983f09d6423993612dae2ccbb"
+  },
+  "update-00001078-1795494694688158804": {
+    "path": "checkpoints/update-00001078-1795494694688158804",
+    "elapsed": 13799.038233067986,
+    "updates": 1078,
+    "episodes": 4111,
+    "model_sha256": "ef67274e41677a33f03b21f78c5d43d4bd6a6d241068898af6c3e71f355cbce7"
+  },
+  "update-00001089-1795494824205867006": {
+    "path": "checkpoints/update-00001089-1795494824205867006",
+    "elapsed": 13928.555800097005,
+    "updates": 1089,
+    "episodes": 4143,
+    "model_sha256": "22e3ce22b46e77d52c8235ce67cab4963ff004739e0da76a4484a1eebeeced7e"
+  },
+  "update-00001099-1795494953071130037": {
+    "path": "checkpoints/update-00001099-1795494953071130037",
+    "elapsed": 14057.421264100005,
+    "updates": 1099,
+    "episodes": 4179,
+    "model_sha256": "7f6a33194c6ebf3a6bd04e09b3593e6e0fa2003d0e53af2d751c370236e6e687"
+  },
+  "update-00001109-1795495076037521765": {
+    "path": "checkpoints/update-00001109-1795495076037521765",
+    "elapsed": 14180.387147261004,
+    "updates": 1109,
+    "episodes": 4209,
+    "model_sha256": "ab67f57f4c493b7fee4788e622846916ab5c0fb8c2e740bd0f717a99af99410e"
+  },
+  "update-00001119-1795495196499103873": {
+    "path": "checkpoints/update-00001119-1795495196499103873",
+    "elapsed": 14300.848936105991,
+    "updates": 1119,
+    "episodes": 4250,
+    "model_sha256": "9d68976fc3ce3126fb127320821ae2a4e9e9ffa06875a4f530e19df377ec50b9"
+  },
+  "update-00001128-1795495326129428692": {
+    "path": "checkpoints/update-00001128-1795495326129428692",
+    "elapsed": 14430.477922004007,
+    "updates": 1128,
+    "episodes": 4271,
+    "model_sha256": "dacb32162bd18bc165584e6c61fbb1701a421e06740d4ca635325a5e5defd3d8"
+  },
+  "update-00001139-1795495457700863872": {
+    "path": "checkpoints/update-00001139-1795495457700863872",
+    "elapsed": 14562.049707723985,
+    "updates": 1139,
+    "episodes": 4311,
+    "model_sha256": "5b91ab088f38e74ca924dd88c5891ed53f9e0dbd45746a70131eadde3e2d60f3"
+  },
+  "update-00001148-1795495583864076168": {
+    "path": "checkpoints/update-00001148-1795495583864076168",
+    "elapsed": 14688.204784120986,
+    "updates": 1148,
+    "episodes": 4341,
+    "model_sha256": "6d1953ea9fc27114e86c2adbab4bb2274fb1e493e1dac956d337b998ca6242c5"
+  },
+  "update-00001157-1795495709022598674": {
+    "path": "checkpoints/update-00001157-1795495709022598674",
+    "elapsed": 14813.37249234601,
+    "updates": 1157,
+    "episodes": 4371,
+    "model_sha256": "29a56c39c4e593038aebea963aff78ce1121ca329d3ed5b343a186f36a710f47"
+  },
+  "update-00001166-1795495834661761628": {
+    "path": "checkpoints/update-00001166-1795495834661761628",
+    "elapsed": 14939.011249186005,
+    "updates": 1166,
+    "episodes": 4407,
+    "model_sha256": "c43393ae0d048cdabdc135663b45e7532f2b2300d5e964e6f0ce1b17d3ca6482"
+  },
+  "update-00001175-1795495963947208925": {
+    "path": "checkpoints/update-00001175-1795495963947208925",
+    "elapsed": 15068.296495057992,
+    "updates": 1175,
+    "episodes": 4433,
+    "model_sha256": "bdbf3a4ac49cd4098a221cd2db9157ac91ef01cb4b6fba5ff4f547469385cbd9"
+  },
+  "update-00001186-1795496096671420624": {
+    "path": "checkpoints/update-00001186-1795496096671420624",
+    "elapsed": 15201.020746185997,
+    "updates": 1186,
+    "episodes": 4470,
+    "model_sha256": "7c6c8f4f6f4e53a91966c0c2722369d5e8340adbac2d83cf0c02e63946bbaffb"
+  },
+  "update-00001196-1795496225304537864": {
+    "path": "checkpoints/update-00001196-1795496225304537864",
+    "elapsed": 15329.653217387997,
+    "updates": 1196,
+    "episodes": 4513,
+    "model_sha256": "eb5efc15d90a1065d7a24eb6a64f040b320a05f27db9371be8911c073573ded3"
+  },
+  "update-00001206-1795496353189767274": {
+    "path": "checkpoints/update-00001206-1795496353189767274",
+    "elapsed": 15457.539051020984,
+    "updates": 1206,
+    "episodes": 4549,
+    "model_sha256": "a7a091c398bfb991584ce425ca1ca2c9c219edd68d3df416dea4e7918e5614b9"
+  },
+  "update-00001214-1795496477191718317": {
+    "path": "checkpoints/update-00001214-1795496477191718317",
+    "elapsed": 15581.540260412003,
+    "updates": 1214,
+    "episodes": 4572,
+    "model_sha256": "20c15108c351b9b3144181b72c1599b2047456f3343b41a481abf7bf1fe0cfdd"
+  },
+  "update-00001222-1795496606378934723": {
+    "path": "checkpoints/update-00001222-1795496606378934723",
+    "elapsed": 15710.728401259985,
+    "updates": 1222,
+    "episodes": 4595,
+    "model_sha256": "e887a97af8df12de6a187223ee66d97b9b241e5a47fb77393b3e7e4d48a0dea5"
+  },
+  "update-00001233-1795496739224027058": {
+    "path": "checkpoints/update-00001233-1795496739224027058",
+    "elapsed": 15843.571937953006,
+    "updates": 1233,
+    "episodes": 4644,
+    "model_sha256": "b4251ba7414bd3d09d1c00f39761ebea1aceba62119999e0ce34847578f51439"
+  },
+  "update-00001243-1795496862477642169": {
+    "path": "checkpoints/update-00001243-1795496862477642169",
+    "elapsed": 15966.827101258998,
+    "updates": 1243,
+    "episodes": 4685,
+    "model_sha256": "d6a3030527b9d86ca9a95dc1bccbbb3606a207f30ffd2212683c0fcf322bf1a8"
+  },
+  "update-00001252-1795496990437879822": {
+    "path": "checkpoints/update-00001252-1795496990437879822",
+    "elapsed": 16094.787543034006,
+    "updates": 1252,
+    "episodes": 4709,
+    "model_sha256": "302706f8595b869beca34868dbd07eba1e449fddc40e89f4281fc6645e35dc76"
+  },
+  "update-00001262-1795497114925786078": {
+    "path": "checkpoints/update-00001262-1795497114925786078",
+    "elapsed": 16219.274563373008,
+    "updates": 1262,
+    "episodes": 4734,
+    "model_sha256": "a09422faddc675a984021c936c294e1141e94b4ba52ffffdf4aa6979f5cbbc49"
+  },
+  "update-00001272-1795497243500770253": {
+    "path": "checkpoints/update-00001272-1795497243500770253",
+    "elapsed": 16347.850648255,
+    "updates": 1272,
+    "episodes": 4759,
+    "model_sha256": "c7f8263f16f48d130442c03cd81e8107ecdeb7f2faef466fe627c22ef23f0df9"
+  },
+  "update-00001282-1795497369262154724": {
+    "path": "checkpoints/update-00001282-1795497369262154724",
+    "elapsed": 16473.61206104199,
+    "updates": 1282,
+    "episodes": 4801,
+    "model_sha256": "f42e4c78d597f3b19822a746580fa1e250b6245865f3e011fb5e755406d716c7"
+  },
+  "update-00001292-1795497498105241928": {
+    "path": "checkpoints/update-00001292-1795497498105241928",
+    "elapsed": 16602.454706574994,
+    "updates": 1292,
+    "episodes": 4837,
+    "model_sha256": "3472a43e695301ba156628ddcfdaa1861fa72980460c8bd3910666c4a9a362b4"
+  },
+  "update-00001302-1795497630267205678": {
+    "path": "checkpoints/update-00001302-1795497630267205678",
+    "elapsed": 16734.615132390987,
+    "updates": 1302,
+    "episodes": 4874,
+    "model_sha256": "5bb8a8962210354ec6e5ce50241beaa27b3705253db9683e6699d43a68150259"
+  },
+  "update-00001311-1795497754054054310": {
+    "path": "checkpoints/update-00001311-1795497754054054310",
+    "elapsed": 16858.402367853996,
+    "updates": 1311,
+    "episodes": 4906,
+    "model_sha256": "5e516d084f4ae2549448ea3689b18f3e5a04dd01a1bbb9c2b087a19511d91f2d"
+  },
+  "update-00001320-1795497879948965373": {
+    "path": "checkpoints/update-00001320-1795497879948965373",
+    "elapsed": 16984.298450017,
+    "updates": 1320,
+    "episodes": 4932,
+    "model_sha256": "603039a0d54723a577ff087986b5829708a0bf88abe9f6b6d4fbee322255c1ee"
+  },
+  "update-00001329-1795498010829221528": {
+    "path": "checkpoints/update-00001329-1795498010829221528",
+    "elapsed": 17115.176979171985,
+    "updates": 1329,
+    "episodes": 4953,
+    "model_sha256": "9b61fd2fb57d5ba6c3204abc3d9f386e4c10614e2f85e6a15a1c3336bd6955d3"
+  },
+  "update-00001339-1795498135129179528": {
+    "path": "checkpoints/update-00001339-1795498135129179528",
+    "elapsed": 17239.475173557992,
+    "updates": 1339,
+    "episodes": 4993,
+    "model_sha256": "ed1fe12d533599898ae7e24fd20c3f72155b918929bdbc43a4516b972c285402"
+  },
+  "update-00001349-1795498265906617523": {
+    "path": "checkpoints/update-00001349-1795498265906617523",
+    "elapsed": 17370.256293037004,
+    "updates": 1349,
+    "episodes": 5020,
+    "model_sha256": "fae1ff6a9dc2cd4315ae4365f08e2fd9b3c55d9bbe358ef39723c90714b91aeb"
+  },
+  "update-00001359-1795498390147746858": {
+    "path": "checkpoints/update-00001359-1795498390147746858",
+    "elapsed": 17494.497391260986,
+    "updates": 1359,
+    "episodes": 5060,
+    "model_sha256": "60112f83ff17c0d6cb5324d0b20be18bc5351c971fc370878fa401f08370df5f"
+  },
+  "update-00001368-1795498510576545096": {
+    "path": "checkpoints/update-00001368-1795498510576545096",
+    "elapsed": 17614.92626457801,
+    "updates": 1368,
+    "episodes": 5086,
+    "model_sha256": "c214c24675dd5fd43707ae4a481cce163a92e08755be3c8a0b0da5feec941220"
+  },
+  "update-00001377-1795498642703324217": {
+    "path": "checkpoints/update-00001377-1795498642703324217",
+    "elapsed": 17747.051588489005,
+    "updates": 1377,
+    "episodes": 5124,
+    "model_sha256": "4ceff2d8e20050531a2d872bbd9f9294ad76cc693c20f869878d0f406b9d52e0"
+  },
+  "update-00001386-1795498763272559514": {
+    "path": "checkpoints/update-00001386-1795498763272559514",
+    "elapsed": 17867.621029775008,
+    "updates": 1386,
+    "episodes": 5157,
+    "model_sha256": "3bdbe50979aa274c4668b5342a601eec858c40a10af31f876c36c40ba776084d"
+  },
+  "update-00001397-1795498898109788426": {
+    "path": "checkpoints/update-00001397-1795498898109788426",
+    "elapsed": 18002.45957214199,
+    "updates": 1397,
+    "episodes": 5191,
+    "model_sha256": "4124719052da829b579ea548aca72c839f859aa090721f9773aff2f3769a0337"
+  },
+  "update-00001403-1795499023000404695": {
+    "path": "checkpoints/update-00001403-1795499023000404695",
+    "elapsed": 18127.348788222007,
+    "updates": 1403,
+    "episodes": 5200,
+    "model_sha256": "f1bc412e568e3de89b8bd9e2188c647dc2e8b8988c4b3125b4fe590723fe13b5"
+  },
+  "update-00001413-1795499154181271499": {
+    "path": "checkpoints/update-00001413-1795499154181271499",
+    "elapsed": 18258.531220022007,
+    "updates": 1413,
+    "episodes": 5231,
+    "model_sha256": "16138f5443e3c1544b681ae5a1138b25d799482ebeceb0b92da0df1aae67b1ca"
+  },
+  "update-00001421-1795499276999675578": {
+    "path": "checkpoints/update-00001421-1795499276999675578",
+    "elapsed": 18381.349647302995,
+    "updates": 1421,
+    "episodes": 5258,
+    "model_sha256": "8412cbcf206ddecefaf11321674cf67d5da5c27ed3b184a25af56c94ec606152"
+  },
+  "update-00001429-1795499399739106481": {
+    "path": "checkpoints/update-00001429-1795499399739106481",
+    "elapsed": 18504.088389118,
+    "updates": 1429,
+    "episodes": 5283,
+    "model_sha256": "1606faf304e333b579198d7bc23bc277c683d627c05ab0074028bf51330bd709"
+  },
+  "update-00001440-1795499520032712844": {
+    "path": "checkpoints/update-00001440-1795499520032712844",
+    "elapsed": 18624.38194170699,
+    "updates": 1440,
+    "episodes": 5338,
+    "model_sha256": "6dc8522fbde017bd24461e32cb759d602f372b07cfb1cc9d78e7f21cb4c4b084"
+  },
+  "update-00001450-1795499649147489834": {
+    "path": "checkpoints/update-00001450-1795499649147489834",
+    "elapsed": 18753.494748289,
+    "updates": 1450,
+    "episodes": 5360,
+    "model_sha256": "f1fab6eda446c9b59944845fd84eaa68c7383597435559d9377012bb8a5140a1"
+  },
+  "update-00001460-1795499778843419789": {
+    "path": "checkpoints/update-00001460-1795499778843419789",
+    "elapsed": 18883.19260148899,
+    "updates": 1460,
+    "episodes": 5395,
+    "model_sha256": "f5bdb1db99a7491ce31eeb7d45a26fae12611306bf00e66210fc97e9f56dd716"
+  },
+  "update-00001471-1795499914934962434": {
+    "path": "checkpoints/update-00001471-1795499914934962434",
+    "elapsed": 19019.284063417,
+    "updates": 1471,
+    "episodes": 5433,
+    "model_sha256": "1cc1fc1d9ce1493c8973860828414defddc9289a4d945db48d2bcb26ba7a13a0"
+  },
+  "update-00001480-1795500038251116212": {
+    "path": "checkpoints/update-00001480-1795500038251116212",
+    "elapsed": 19142.600831063,
+    "updates": 1480,
+    "episodes": 5458,
+    "model_sha256": "ae8ce1fa65e763341e21e00fa2e9a70f194505b008aa622753cb0eeb18609b0a"
+  },
+  "update-00001490-1795500165787265551": {
+    "path": "checkpoints/update-00001490-1795500165787265551",
+    "elapsed": 19270.137199885008,
+    "updates": 1490,
+    "episodes": 5502,
+    "model_sha256": "1d8bcfdecc9d616c17a25b677f6cd2f048a1a80b4ea97a53edc9c81cd9e63e2d"
+  },
+  "update-00001499-1795500296728672889": {
+    "path": "checkpoints/update-00001499-1795500296728672889",
+    "elapsed": 19401.077333881985,
+    "updates": 1499,
+    "episodes": 5531,
+    "model_sha256": "7ffecf97380de457aadfd60a61bd56ba3513efb2c6fbbbdf213b18beac3e0f01"
+  },
+  "update-00001509-1795500418801777719": {
+    "path": "checkpoints/update-00001509-1795500418801777719",
+    "elapsed": 19523.150942570996,
+    "updates": 1509,
+    "episodes": 5563,
+    "model_sha256": "31f0953bdc2560232f4dda7b987a7f987d49492a58a70d3147a53a08d827ed9b"
+  },
+  "update-00001518-1795500548728675450": {
+    "path": "checkpoints/update-00001518-1795500548728675450",
+    "elapsed": 19653.078256912006,
+    "updates": 1518,
+    "episodes": 5588,
+    "model_sha256": "53f08496474372a29a3da5b33df831de9d60c8e96cf3d033eb9dfbc37d9c3e5b"
+  },
+  "update-00001527-1795500673532536078": {
+    "path": "checkpoints/update-00001527-1795500673532536078",
+    "elapsed": 19777.881826572004,
+    "updates": 1527,
+    "episodes": 5626,
+    "model_sha256": "bd795b6f81ffd3d9f0cdd62fac8f5df5ffb318ee393118e50fe4682c0748c7a5"
+  },
+  "update-00001536-1795500800924186794": {
+    "path": "checkpoints/update-00001536-1795500800924186794",
+    "elapsed": 19905.273838970985,
+    "updates": 1536,
+    "episodes": 5653,
+    "model_sha256": "81649e32d98eeb3e431a55cfd81d1ce2404b5067d659900b4099ea27f2b06df0"
+  },
+  "update-00001546-1795500934174534203": {
+    "path": "checkpoints/update-00001546-1795500934174534203",
+    "elapsed": 20038.524263166997,
+    "updates": 1546,
+    "episodes": 5675,
+    "model_sha256": "9fcff78c67b600dcf6a2d6613d0ed5b0c8e91f796ee1ed53b8746ccf62b86427"
+  },
+  "update-00001556-1795501054527007188": {
+    "path": "checkpoints/update-00001556-1795501054527007188",
+    "elapsed": 20158.87641300299,
+    "updates": 1556,
+    "episodes": 5716,
+    "model_sha256": "d16c2280917a4552171ecfa7f1d9e0abaeabb5b5451eac4e333fcf2a221f8b0c"
+  },
+  "update-00001565-1795501191323124104": {
+    "path": "checkpoints/update-00001565-1795501191323124104",
+    "elapsed": 20295.672192378,
+    "updates": 1565,
+    "episodes": 5734,
+    "model_sha256": "663d401d9fd5cf53d3056b0d9791faad1ee68ccce81d7390fc1aa1e39f9114ce"
+  },
+  "update-00001575-1795501313573097917": {
+    "path": "checkpoints/update-00001575-1795501313573097917",
+    "elapsed": 20417.923060383007,
+    "updates": 1575,
+    "episodes": 5773,
+    "model_sha256": "a9665b3abb568dfc2155699235b2b2198d44b6cb1d6e7b0e2ae0b000d171b42e"
+  },
+  "update-00001584-1795501440572279130": {
+    "path": "checkpoints/update-00001584-1795501440572279130",
+    "elapsed": 20544.921089079988,
+    "updates": 1584,
+    "episodes": 5800,
+    "model_sha256": "30f485886330947caf833a2b3ce5c5f3456cfc6d15545422f3ec7818e2d626d8"
+  },
+  "update-00001595-1795501562481608549": {
+    "path": "checkpoints/update-00001595-1795501562481608549",
+    "elapsed": 20666.831612671987,
+    "updates": 1595,
+    "episodes": 5840,
+    "model_sha256": "d1fafe672a95390d251bcfb9bcb24b7d5fc3a31a3e00f760995767ea3eebe2fb"
+  },
+  "update-00001605-1795501687914304502": {
+    "path": "checkpoints/update-00001605-1795501687914304502",
+    "elapsed": 20792.263939216995,
+    "updates": 1605,
+    "episodes": 5867,
+    "model_sha256": "45165d527a0221a1f16c41065529dc89ae697599078ced56a711d2d46a651200"
+  },
+  "update-00001613-1795501809609343380": {
+    "path": "checkpoints/update-00001613-1795501809609343380",
+    "elapsed": 20913.95871837801,
+    "updates": 1613,
+    "episodes": 5899,
+    "model_sha256": "61713e03409cab4a94259a04d30b03274fc1dcbd3cd1b6b02c9ec2295fac95ba"
+  },
+  "update-00001622-1795501942976938431": {
+    "path": "checkpoints/update-00001622-1795501942976938431",
+    "elapsed": 21047.326272968,
+    "updates": 1622,
+    "episodes": 5918,
+    "model_sha256": "f09dd7ce43d5a8b744a41c43ef38f9d0c778ccd811c353b760c12402add540c8"
+  },
+  "update-00001632-1795502073747977698": {
+    "path": "checkpoints/update-00001632-1795502073747977698",
+    "elapsed": 21178.097067305993,
+    "updates": 1632,
+    "episodes": 5943,
+    "model_sha256": "83c06b5bc4dec57133ef4d7afbcc7c075951d20aab91348a614816d6dc6ebcd2"
+  },
+  "update-00001641-1795502195174257798": {
+    "path": "checkpoints/update-00001641-1795502195174257798",
+    "elapsed": 21299.523933560005,
+    "updates": 1641,
+    "episodes": 5973,
+    "model_sha256": "98a639e8b2cdff53bd046c9c7d6fd2c9c4f163c0d7066b24481561365d85d46b"
+  },
+  "update-00001650-1795502320256707150": {
+    "path": "checkpoints/update-00001650-1795502320256707150",
+    "elapsed": 21424.605498165998,
+    "updates": 1650,
+    "episodes": 5996,
+    "model_sha256": "c0ce8de4bea29fb933a9d7ac44555cc1422d2b6457113e74928d510ed7adb35d"
+  },
+  "update-00001660-1795502440779198572": {
+    "path": "checkpoints/update-00001660-1795502440779198572",
+    "elapsed": 21545.128780055995,
+    "updates": 1660,
+    "episodes": 6042,
+    "model_sha256": "57cc19590489dcfeaa1d02e02860f9992ac07b21af766d02fe42cda660fd5b2d"
+  },
+  "update-00001670-1795502564733756666": {
+    "path": "checkpoints/update-00001670-1795502564733756666",
+    "elapsed": 21669.083543833985,
+    "updates": 1670,
+    "episodes": 6069,
+    "model_sha256": "99e807b39dc6d8143f063aa2aaf5ab8bb6fdd6ab05b39a8e33653f1d23a6ea16"
+  },
+  "update-00001678-1795502690509855509": {
+    "path": "checkpoints/update-00001678-1795502690509855509",
+    "elapsed": 21794.85238503001,
+    "updates": 1678,
+    "episodes": 6097,
+    "model_sha256": "b15c8ae3559b7982ef015353e9059cfbeb13a4265ba6c2d7701d4194cbeb8da9"
+  },
+  "update-00001687-1795502821217211454": {
+    "path": "checkpoints/update-00001687-1795502821217211454",
+    "elapsed": 21925.56729303801,
+    "updates": 1687,
+    "episodes": 6125,
+    "model_sha256": "31e8dcfcdf139221d5cde14f70f89c9497f136f66d488fe4c7bbb3d92cadb86b"
+  },
+  "update-00001697-1795502950517031651": {
+    "path": "checkpoints/update-00001697-1795502950517031651",
+    "elapsed": 22054.866610908008,
+    "updates": 1697,
+    "episodes": 6155,
+    "model_sha256": "bc63c1ab9180ca4244116d028cc19fb86507a7d9ff62a72b7a746526f8c60ec3"
+  },
+  "update-00001707-1795503078394866709": {
+    "path": "checkpoints/update-00001707-1795503078394866709",
+    "elapsed": 22182.744448668993,
+    "updates": 1707,
+    "episodes": 6199,
+    "model_sha256": "df7d2012cc9e10f4fdba22b9761368dc82f196763653c4df770c57f46f051cbf"
+  },
+  "update-00001717-1795503203289667031": {
+    "path": "checkpoints/update-00001717-1795503203289667031",
+    "elapsed": 22307.638915265008,
+    "updates": 1717,
+    "episodes": 6228,
+    "model_sha256": "47144c666b9713463c077d1759a63d811a57f6178baa37d04b032cd7e3724987"
+  },
+  "update-00001728-1795503334701615347": {
+    "path": "checkpoints/update-00001728-1795503334701615347",
+    "elapsed": 22439.050307113008,
+    "updates": 1728,
+    "episodes": 6270,
+    "model_sha256": "47170798e2325ad70c5b8e6f309f93da2a0bec9af4fc8c00d5518c7e85a3e841"
+  },
+  "update-00001738-1795503459786377634": {
+    "path": "checkpoints/update-00001738-1795503459786377634",
+    "elapsed": 22564.13596335199,
+    "updates": 1738,
+    "episodes": 6298,
+    "model_sha256": "b803834c65119502fe06367a82f3e3c9d8eb19383abd9c2834a61dc3990e1c5f"
+  },
+  "update-00001747-1795503588729396405": {
+    "path": "checkpoints/update-00001747-1795503588729396405",
+    "elapsed": 22693.078908786003,
+    "updates": 1747,
+    "episodes": 6323,
+    "model_sha256": "191f4b18e1b95e80eb9a185090ba9c0af41e9174fde7b39601c18c4c34de467c"
+  },
+  "update-00001758-1795503720329068441": {
+    "path": "checkpoints/update-00001758-1795503720329068441",
+    "elapsed": 22824.677695424005,
+    "updates": 1758,
+    "episodes": 6361,
+    "model_sha256": "a592d2ecd190738d5941409ba276d718ac9691371615dabb9c4dee780db2c982"
+  },
+  "update-00001768-1795503847771497227": {
+    "path": "checkpoints/update-00001768-1795503847771497227",
+    "elapsed": 22952.12155367501,
+    "updates": 1768,
+    "episodes": 6397,
+    "model_sha256": "9f7f3588e3a5c04a46fc8d313883c06710d5271aeda59964aa3d8855d1005de3"
+  },
+  "update-00001778-1795503972884949200": {
+    "path": "checkpoints/update-00001778-1795503972884949200",
+    "elapsed": 23077.233543489012,
+    "updates": 1778,
+    "episodes": 6433,
+    "model_sha256": "d86609fae1393d94c4b2903802ef484b23051982adc6cc4fa8196823bfd61e9e"
+  },
+  "update-00001785-1795504098330787925": {
+    "path": "checkpoints/update-00001785-1795504098330787925",
+    "elapsed": 23202.679430897,
+    "updates": 1785,
+    "episodes": 6447,
+    "model_sha256": "224da680ded9cce4568a8949e88bf13dd58aaf7cdf57f48129ef3cc3429bdcfd"
+  },
+  "update-00001795-1795504232465996092": {
+    "path": "checkpoints/update-00001795-1795504232465996092",
+    "elapsed": 23336.815705582994,
+    "updates": 1795,
+    "episodes": 6477,
+    "model_sha256": "9d414607aa0c8cea77230d0379414c3d5d13f87d037e24d3910a5cbb4bc18c4d"
+  },
+  "update-00001803-1795504353096996736": {
+    "path": "checkpoints/update-00001803-1795504353096996736",
+    "elapsed": 23457.445693541988,
+    "updates": 1803,
+    "episodes": 6497,
+    "model_sha256": "c7205ae536a56e8e37805a0084aa40bc5f31d7feab14227141733c38a496e29e"
+  },
+  "update-00001812-1795504475371712985": {
+    "path": "checkpoints/update-00001812-1795504475371712985",
+    "elapsed": 23579.721348047984,
+    "updates": 1812,
+    "episodes": 6525,
+    "model_sha256": "79216401f743811e39921d8526da937ea71fe193424b334279bf62f8dabec5c2"
+  },
+  "update-00001822-1795504609707784165": {
+    "path": "checkpoints/update-00001822-1795504609707784165",
+    "elapsed": 23714.057322693,
+    "updates": 1822,
+    "episodes": 6556,
+    "model_sha256": "bcfa2a51b1f6242df57002de6a9c97f7086993933817e98556a32675312d9f69"
+  },
+  "update-00001831-1795504734232745525": {
+    "path": "checkpoints/update-00001831-1795504734232745525",
+    "elapsed": 23838.58243988501,
+    "updates": 1831,
+    "episodes": 6584,
+    "model_sha256": "85c8570fee500c979542080b637230c0a0a9fb03385bf91b12033a95e87192e4"
+  },
+  "update-00001841-1795504863855614116": {
+    "path": "checkpoints/update-00001841-1795504863855614116",
+    "elapsed": 23968.20418922801,
+    "updates": 1841,
+    "episodes": 6620,
+    "model_sha256": "9a8a2ea28082910e4b90b264f2be5eba225f22655a1ab11b23412395a3ea8ca0"
+  },
+  "update-00001850-1795504991963179020": {
+    "path": "checkpoints/update-00001850-1795504991963179020",
+    "elapsed": 24096.311877786007,
+    "updates": 1850,
+    "episodes": 6652,
+    "model_sha256": "ef56f27d9fe4ea052c30afa5efc3709c5130b5de134e4e9023ad9c3011fab9a1"
+  },
+  "update-00001857-1795505117284323268": {
+    "path": "checkpoints/update-00001857-1795505117284323268",
+    "elapsed": 24221.628001520003,
+    "updates": 1857,
+    "episodes": 6675,
+    "model_sha256": "5eb64123ab9629d3067961330a59c197f989c6524737d581960bcb0d33052a66"
+  },
+  "update-00001867-1795505244570342939": {
+    "path": "checkpoints/update-00001867-1795505244570342939",
+    "elapsed": 24348.91941882501,
+    "updates": 1867,
+    "episodes": 6703,
+    "model_sha256": "a07a02695f202e7695a0bd58da562563ea73d2c75789bbcae54a42ceb4944698"
+  },
+  "update-00001877-1795505370344170978": {
+    "path": "checkpoints/update-00001877-1795505370344170978",
+    "elapsed": 24474.693604444008,
+    "updates": 1877,
+    "episodes": 6741,
+    "model_sha256": "7c492a5e423c728f365225821d996791592ad94355fb416225a4b34bebe3b897"
+  },
+  "update-00001886-1795505500509296656": {
+    "path": "checkpoints/update-00001886-1795505500509296656",
+    "elapsed": 24604.85853456799,
+    "updates": 1886,
+    "episodes": 6758,
+    "model_sha256": "30141a94070495c6c14a9235ea50bec099d7728be5c2d2f4f3b31dcb3dbe1ec6"
+  },
+  "update-00001895-1795505627603130299": {
+    "path": "checkpoints/update-00001895-1795505627603130299",
+    "elapsed": 24731.952910880995,
+    "updates": 1895,
+    "episodes": 6794,
+    "model_sha256": "9f7f44231f4144d0fb1e52baa01464aa73ae5b332e91813087007b49d0b0dfd9"
+  },
+  "update-00001904-1795505749555979586": {
+    "path": "checkpoints/update-00001904-1795505749555979586",
+    "elapsed": 24853.905987670994,
+    "updates": 1904,
+    "episodes": 6832,
+    "model_sha256": "845d8733eba5dd99ac530b207863f13d612da95fbfbbf431f5f21ed61b658982"
+  },
+  "update-00001913-1795505872304199558": {
+    "path": "checkpoints/update-00001913-1795505872304199558",
+    "elapsed": 24976.652933879,
+    "updates": 1913,
+    "episodes": 6851,
+    "model_sha256": "3a755e4f7aa03d482083067d5d9f0fa67ba802e7204d5698544d7ba2df5a5c04"
+  },
+  "update-00001923-1795506006678283430": {
+    "path": "checkpoints/update-00001923-1795506006678283430",
+    "elapsed": 25111.02733192299,
+    "updates": 1923,
+    "episodes": 6885,
+    "model_sha256": "b94d848aa396509f43208ba3d9e2b3e267a2ac9d8ba900bdaac995746740b50d"
+  },
+  "update-00001933-1795506132224455955": {
+    "path": "checkpoints/update-00001933-1795506132224455955",
+    "elapsed": 25236.57375158099,
+    "updates": 1933,
+    "episodes": 6920,
+    "model_sha256": "06744c07b8384ca3c19906ac5b774bc951c1df76d3e56f477c60c5d4fd215e24"
+  },
+  "update-00001942-1795506254891972744": {
+    "path": "checkpoints/update-00001942-1795506254891972744",
+    "elapsed": 25359.24050133201,
+    "updates": 1942,
+    "episodes": 6955,
+    "model_sha256": "390bbde794cc595a9d314aece8a736a6bb1c90aef1e04d57156749f7a14c085b"
+  },
+  "update-00001950-1795506383887170914": {
+    "path": "checkpoints/update-00001950-1795506383887170914",
+    "elapsed": 25488.235425097984,
+    "updates": 1950,
+    "episodes": 6972,
+    "model_sha256": "fb8b4ccab7ef929040f5a8e45f3cadd61f72759fbd4d9c2b958748743bc87bbf"
+  },
+  "update-00001959-1795506504820241538": {
+    "path": "checkpoints/update-00001959-1795506504820241538",
+    "elapsed": 25609.16931948799,
+    "updates": 1959,
+    "episodes": 7000,
+    "model_sha256": "51d0971a7fdd6d422c024bf02cbb71b677fdd51b8d330b3e8cc2e0e098e1bb25"
+  },
+  "update-00001968-1795506638470839527": {
+    "path": "checkpoints/update-00001968-1795506638470839527",
+    "elapsed": 25742.819974454003,
+    "updates": 1968,
+    "episodes": 7022,
+    "model_sha256": "33cc4e031e4184bbfd5701f881972a75bd1b052e9a61d2f42d1143e26ad308ea"
+  },
+  "update-00001977-1795506758963626710": {
+    "path": "checkpoints/update-00001977-1795506758963626710",
+    "elapsed": 25863.313405046996,
+    "updates": 1977,
+    "episodes": 7055,
+    "model_sha256": "514f2216fa187503923e385432513b9dcc32c1b2e9947ba9ef8c9f7f550a052c"
+  },
+  "update-00001987-1795506889719601124": {
+    "path": "checkpoints/update-00001987-1795506889719601124",
+    "elapsed": 25994.069689077995,
+    "updates": 1987,
+    "episodes": 7089,
+    "model_sha256": "ab4e9a2ce41ca819e0374c6fb03868a0ba5228fbd1e701dc5d4a8440cb107b97"
+  },
+  "update-00001997-1795507017725020626": {
+    "path": "checkpoints/update-00001997-1795507017725020626",
+    "elapsed": 26122.073709836986,
+    "updates": 1997,
+    "episodes": 7118,
+    "model_sha256": "22f456a64a3946589e96f6009a2d50aa2f2f1a4adf8fe8b3642080ccb86a462a"
+  },
+  "update-00002007-1795507142234285837": {
+    "path": "checkpoints/update-00002007-1795507142234285837",
+    "elapsed": 26246.582485569,
+    "updates": 2007,
+    "episodes": 7160,
+    "model_sha256": "0ad206f01dac3cbcbc9c60e9fbd837ecbe56faf3c191f1134e1f949fa6980ca8"
+  },
+  "update-00002017-1795507269593837850": {
+    "path": "checkpoints/update-00002017-1795507269593837850",
+    "elapsed": 26373.942111284006,
+    "updates": 2017,
+    "episodes": 7191,
+    "model_sha256": "ece7b8ed2adac64944bf8753dbfe8709fad0f27989503f9f5d31722b11e488f5"
+  },
+  "update-00002027-1795507389829627314": {
+    "path": "checkpoints/update-00002027-1795507389829627314",
+    "elapsed": 26494.178566012008,
+    "updates": 2027,
+    "episodes": 7227,
+    "model_sha256": "86296acb20416ac49a32022cf0fc6857ed994f9773c64a3b9712fed7aaceaaaa"
+  },
+  "update-00002036-1795507512297523786": {
+    "path": "checkpoints/update-00002036-1795507512297523786",
+    "elapsed": 26616.646443265985,
+    "updates": 2036,
+    "episodes": 7249,
+    "model_sha256": "7994b3ba174538aeb0eacdc188ede66cee7c89cad174b269495111c852985374"
+  },
+  "update-00002046-1795507643674116906": {
+    "path": "checkpoints/update-00002046-1795507643674116906",
+    "elapsed": 26748.023457089002,
+    "updates": 2046,
+    "episodes": 7281,
+    "model_sha256": "9983d67c075eb691b10a06d51ba213514e98c070d9be17e2e96ad2c66d8342c6"
+  },
+  "update-00002055-1795507767706449037": {
+    "path": "checkpoints/update-00002055-1795507767706449037",
+    "elapsed": 26872.055413500988,
+    "updates": 2055,
+    "episodes": 7317,
+    "model_sha256": "c8ae6b67abe2dd0ec847807b7d720ef3e354c0944ca8a4daaee5a3e05a3ca0a7"
+  },
+  "update-00002065-1795507901257089702": {
+    "path": "checkpoints/update-00002065-1795507901257089702",
+    "elapsed": 27005.604910844995,
+    "updates": 2065,
+    "episodes": 7345,
+    "model_sha256": "c1eba372d35bf82b2ee8917aa50dc80cdf437e26dba327ef95eaf83499303c7c"
+  },
+  "update-00002075-1795508040384809841": {
+    "path": "checkpoints/update-00002075-1795508040384809841",
+    "elapsed": 27144.73300593,
+    "updates": 2075,
+    "episodes": 7376,
+    "model_sha256": "0b604d548792d041e75f01937835ba3409c4b2fd9398dca71d6b16501a61117d"
+  },
+  "update-00002084-1795508176784370167": {
+    "path": "checkpoints/update-00002084-1795508176784370167",
+    "elapsed": 27281.132202195004,
+    "updates": 2084,
+    "episodes": 7401,
+    "model_sha256": "04b57ea11f287be470e192e137f32c545ac96b86b776e6107946bedeb8fa066e"
+  },
+  "update-00002093-1795508303979931385": {
+    "path": "checkpoints/update-00002093-1795508303979931385",
+    "elapsed": 27408.323079427006,
+    "updates": 2093,
+    "episodes": 7429,
+    "model_sha256": "9f25df81af6959282a4c420b72ceb36df2d4b0f92e451cfd311c09c83350ceec"
+  },
+  "update-00002103-1795508431685765935": {
+    "path": "checkpoints/update-00002103-1795508431685765935",
+    "elapsed": 27536.035201135004,
+    "updates": 2103,
+    "episodes": 7467,
+    "model_sha256": "c6c4d9c34a39515339e1f2a9c65fccab5d10fbce03bc6651f8a985b95123811b"
+  },
+  "update-00002112-1795508556638657905": {
+    "path": "checkpoints/update-00002112-1795508556638657905",
+    "elapsed": 27660.98837832501,
+    "updates": 2112,
+    "episodes": 7495,
+    "model_sha256": "fb7561cfaea827a4e17284b31bc3087d5c3e3662ea448ef240d8600f7b528381"
+  },
+  "update-00002122-1795508680929633405": {
+    "path": "checkpoints/update-00002122-1795508680929633405",
+    "elapsed": 27785.279433285003,
+    "updates": 2122,
+    "episodes": 7518,
+    "model_sha256": "ac09a3467cc0ef2eba2616c39e4ffd75ed154a415a2bcbb8353d4f3207d5ba36"
+  },
+  "update-00002132-1795508812006764986": {
+    "path": "checkpoints/update-00002132-1795508812006764986",
+    "elapsed": 27916.355237665004,
+    "updates": 2132,
+    "episodes": 7549,
+    "model_sha256": "7d7f79bcf1ab2fbb3672b9cbbbea311e19939f72056975a49c66e847b045053e"
+  },
+  "update-00002141-1795508934572433286": {
+    "path": "checkpoints/update-00002141-1795508934572433286",
+    "elapsed": 28038.91542019599,
+    "updates": 2141,
+    "episodes": 7572,
+    "model_sha256": "421fb58c6d563fc1dc67e2fdd42cbe1567b397242356c494e2fa69e600b32ce9"
+  },
+  "update-00002153-1795509057039157952": {
+    "path": "checkpoints/update-00002153-1795509057039157952",
+    "elapsed": 28161.388948378008,
+    "updates": 2153,
+    "episodes": 7622,
+    "model_sha256": "d9ace3960df5451b5ac6a72ff55c4308ec4e2c773babded471e46a4d56671d1c"
+  },
+  "update-00002162-1795509180231997961": {
+    "path": "checkpoints/update-00002162-1795509180231997961",
+    "elapsed": 28284.58200770701,
+    "updates": 2162,
+    "episodes": 7641,
+    "model_sha256": "0d5659ea0097e23f033282568199d4a87742aad027f0af6ea79102f42c640211"
+  },
+  "update-00002173-1795509307286419035": {
+    "path": "checkpoints/update-00002173-1795509307286419035",
+    "elapsed": 28411.63314205699,
+    "updates": 2173,
+    "episodes": 7681,
+    "model_sha256": "e135769729e280a9314bee1f459ef2e0a1c01b099810b085fe48ca0b83a29dac"
+  },
+  "update-00002183-1795509440901649815": {
+    "path": "checkpoints/update-00002183-1795509440901649815",
+    "elapsed": 28545.251651700004,
+    "updates": 2183,
+    "episodes": 7712,
+    "model_sha256": "416a31854e2054a869e067177a654aa84e5a3bfae7985b542381686a2f916dbe"
+  },
+  "update-00002194-1795509572280280646": {
+    "path": "checkpoints/update-00002194-1795509572280280646",
+    "elapsed": 28676.625952490984,
+    "updates": 2194,
+    "episodes": 7754,
+    "model_sha256": "71644912edb541bee6de6bb9d4e8137049dafcc269c3d313cbca6d76a7173819"
+  },
+  "update-00002203-1795509698959911854": {
+    "path": "checkpoints/update-00002203-1795509698959911854",
+    "elapsed": 28803.307855647,
+    "updates": 2203,
+    "episodes": 7783,
+    "model_sha256": "1ec4e7885479bf2a6f3011c113e79373e70959fd9c4845fdfd2a243b7d8de6e5"
+  },
+  "update-00002212-1795509819532611366": {
+    "path": "checkpoints/update-00002212-1795509819532611366",
+    "elapsed": 28923.881182635,
+    "updates": 2212,
+    "episodes": 7804,
+    "model_sha256": "f88704f1704e1727c9bb4d9fa570d87932b19e619b868ea698b77a42b6f26ff5"
+  },
+  "update-00002221-1795509949235238505": {
+    "path": "checkpoints/update-00002221-1795509949235238505",
+    "elapsed": 29053.584583518008,
+    "updates": 2221,
+    "episodes": 7832,
+    "model_sha256": "2fe3c2ca351b8080910920a55b4ce80e9860e6963babe2df35beb18660529692"
+  },
+  "update-00002231-1795510078987335573": {
+    "path": "checkpoints/update-00002231-1795510078987335573",
+    "elapsed": 29183.336834399,
+    "updates": 2231,
+    "episodes": 7867,
+    "model_sha256": "bbe599d5aa344eda3bd3c23a4b6b4094d0dcadf4b24820735dfa9e3ff94f67d6"
+  },
+  "update-00002241-1795510204705746779": {
+    "path": "checkpoints/update-00002241-1795510204705746779",
+    "elapsed": 29309.05547305799,
+    "updates": 2241,
+    "episodes": 7906,
+    "model_sha256": "0711720b706887370318aebb4c96ee7a0848fea5e4011f0dea2ab02b9acde094"
+  },
+  "update-00002249-1795510328370338546": {
+    "path": "checkpoints/update-00002249-1795510328370338546",
+    "elapsed": 29432.719744431,
+    "updates": 2249,
+    "episodes": 7926,
+    "model_sha256": "86670f2b1edde8b6a9d5783b7335e037af3965f89a1ba138b3c3dd4c5997b3f2"
+  },
+  "update-00002258-1795510458600313016": {
+    "path": "checkpoints/update-00002258-1795510458600313016",
+    "elapsed": 29562.949531016988,
+    "updates": 2258,
+    "episodes": 7958,
+    "model_sha256": "8849d398d55e0f9c2bc9751232a096393d75ad2e4d0a0dc30bc1b950d7bb6cc6"
+  },
+  "update-00002269-1795510583921374244": {
+    "path": "checkpoints/update-00002269-1795510583921374244",
+    "elapsed": 29688.271079128986,
+    "updates": 2269,
+    "episodes": 8000,
+    "model_sha256": "4cb57f43dd369cee37bcf223374abb916406f1b8e339ddd4c659d5c580cebb9b"
+  },
+  "update-00002278-1795510711346268731": {
+    "path": "checkpoints/update-00002278-1795510711346268731",
+    "elapsed": 29815.695297586004,
+    "updates": 2278,
+    "episodes": 8026,
+    "model_sha256": "89a8ceb82f6fedec91917c2da5b26b68d98545bd5efc60bb2fe0c52e22a4876a"
+  },
+  "update-00002289-1795510840745134567": {
+    "path": "checkpoints/update-00002289-1795510840745134567",
+    "elapsed": 29945.09451276099,
+    "updates": 2289,
+    "episodes": 8066,
+    "model_sha256": "cd0b20c3e50c579b0a9450d3bc4ee442e8f7c6f59643feec1feb2fbd24ab54a5"
+  },
+  "update-00002299-1795510965632444682": {
+    "path": "checkpoints/update-00002299-1795510965632444682",
+    "elapsed": 30069.98161110599,
+    "updates": 2299,
+    "episodes": 8101,
+    "model_sha256": "65be31841447ec6b08403fdc94a0caeb6d698fd6381c40a5d0f9f14d04260c03"
+  },
+  "update-00002309-1795511096961967562": {
+    "path": "checkpoints/update-00002309-1795511096961967562",
+    "elapsed": 30201.311988128,
+    "updates": 2309,
+    "episodes": 8135,
+    "model_sha256": "6309c25e33412105f6c24eb5fe55c45e383d73c52e59ff2f3fbe29719c33afd1"
+  },
+  "update-00002318-1795511224764295495": {
+    "path": "checkpoints/update-00002318-1795511224764295495",
+    "elapsed": 30329.113623793004,
+    "updates": 2318,
+    "episodes": 8153,
+    "model_sha256": "656e622eb797acf526bd300338df7d170e64632235bc2194442c99cca724ed1b"
+  },
+  "update-00002328-1795511345908646188": {
+    "path": "checkpoints/update-00002328-1795511345908646188",
+    "elapsed": 30450.258350241988,
+    "updates": 2328,
+    "episodes": 8184,
+    "model_sha256": "48ac42f14e1883ecc2f37f2484fe4ee98a34c2c1d10c31a1267ebf564d17894f"
+  },
+  "update-00002339-1795511470941090700": {
+    "path": "checkpoints/update-00002339-1795511470941090700",
+    "elapsed": 30575.29083736101,
+    "updates": 2339,
+    "episodes": 8225,
+    "model_sha256": "9b226ad1e68214b5960324fdb31efc68d825b84f9b242287945b2f0dcf816c66"
+  },
+  "update-00002347-1795511603338773439": {
+    "path": "checkpoints/update-00002347-1795511603338773439",
+    "elapsed": 30707.687112301006,
+    "updates": 2347,
+    "episodes": 8237,
+    "model_sha256": "d650c1f09d9468a4cdd54bed4c3a3e37ebb9023063b4e8824585bd936a36ed4e"
+  },
+  "update-00002358-1795511735156772740": {
+    "path": "checkpoints/update-00002358-1795511735156772740",
+    "elapsed": 30839.506190443004,
+    "updates": 2358,
+    "episodes": 8277,
+    "model_sha256": "85aa26669d55ca0ff6fb57953d4f9bde4012090174f1028c8fcf5978d2513c42"
+  },
+  "update-00002367-1795511860437257358": {
+    "path": "checkpoints/update-00002367-1795511860437257358",
+    "elapsed": 30964.78683984501,
+    "updates": 2367,
+    "episodes": 8306,
+    "model_sha256": "224b85e9276e487e999d270795ea1693f4a55060a793ced0f86fa02eb6137b44"
+  },
+  "update-00002377-1795511995728968391": {
+    "path": "checkpoints/update-00002377-1795511995728968391",
+    "elapsed": 31100.078486157,
+    "updates": 2377,
+    "episodes": 8339,
+    "model_sha256": "a22294f279e9519b56f2f21ea8105d7f6cc4b59a30927a2257e2bc735396f948"
+  },
+  "update-00002387-1795512121782225739": {
+    "path": "checkpoints/update-00002387-1795512121782225739",
+    "elapsed": 31226.13162038999,
+    "updates": 2387,
+    "episodes": 8378,
+    "model_sha256": "00df07302c7e334b81d2f352264e0b824c400f4dab54b9da159a5f7b70c20a28"
+  },
+  "update-00002398-1795512253534738134": {
+    "path": "checkpoints/update-00002398-1795512253534738134",
+    "elapsed": 31357.883348978008,
+    "updates": 2398,
+    "episodes": 8402,
+    "model_sha256": "5d47dc9dc30d9077c74fb872f8aafeddc224ec4e60b954e143c7d9f4c906df17"
+  },
+  "update-00002408-1795512374403187775": {
+    "path": "checkpoints/update-00002408-1795512374403187775",
+    "elapsed": 31478.752557814994,
+    "updates": 2408,
+    "episodes": 8430,
+    "model_sha256": "78c53057deec2e025c835d228255448baa712f8a5c4e4289f7aedf68c94024c7"
+  },
+  "update-00002419-1795512506969701020": {
+    "path": "checkpoints/update-00002419-1795512506969701020",
+    "elapsed": 31611.318580749998,
+    "updates": 2419,
+    "episodes": 8463,
+    "model_sha256": "50dc19fdfef64c569532b5f306676ba0fc80d73571076fbc02d1e57f83440358"
+  },
+  "update-00002428-1795512633345483322": {
+    "path": "checkpoints/update-00002428-1795512633345483322",
+    "elapsed": 31737.695393425995,
+    "updates": 2428,
+    "episodes": 8493,
+    "model_sha256": "0af510aa4a6b04b197c9f0a4053a0873953adb96a0a9cedcd734e437d9468f9f"
+  },
+  "update-00002436-1795512759762251519": {
+    "path": "checkpoints/update-00002436-1795512759762251519",
+    "elapsed": 31864.11165527001,
+    "updates": 2436,
+    "episodes": 8511,
+    "model_sha256": "2a2a5696e6a67c070e0ccb2c7fc79b78aa331de7bd06e1da69ff4fdc4f137c3c"
+  },
+  "update-00002444-1795512882178333223": {
+    "path": "checkpoints/update-00002444-1795512882178333223",
+    "elapsed": 31986.527615675994,
+    "updates": 2444,
+    "episodes": 8538,
+    "model_sha256": "e254880d1f2142c94b6e670ed3e1e1f284f6175598e20d9ac146427a563d9aaa"
+  },
+  "update-00002454-1795513005514252942": {
+    "path": "checkpoints/update-00002454-1795513005514252942",
+    "elapsed": 32109.863934430003,
+    "updates": 2454,
+    "episodes": 8579,
+    "model_sha256": "5dd71da2bb6afda63300d2c7fc1cf3d392bbe97a13b87c0c22002158d410358f"
+  },
+  "update-00002465-1795513131942551864": {
+    "path": "checkpoints/update-00002465-1795513131942551864",
+    "elapsed": 32236.291519435996,
+    "updates": 2465,
+    "episodes": 8614,
+    "model_sha256": "fd09f839f5761c63c8868ff244b4a5d09219a4d44e808c57b3656b7a6c748ed3"
+  },
+  "update-00002473-1795513259999321612": {
+    "path": "checkpoints/update-00002473-1795513259999321612",
+    "elapsed": 32364.347576509987,
+    "updates": 2473,
+    "episodes": 8643,
+    "model_sha256": "1fdb38a46cd7f2e6cbbb21066051357efea5e2a3cae957a7f58912ebf4154eae"
+  },
+  "update-00002483-1795513386319391560": {
+    "path": "checkpoints/update-00002483-1795513386319391560",
+    "elapsed": 32490.66806157201,
+    "updates": 2483,
+    "episodes": 8676,
+    "model_sha256": "8680c1dc57fadd35410a299fa73c5d09c8a6ee039d08579a25370ae33247e340"
+  },
+  "update-00002492-1795513518366646046": {
+    "path": "checkpoints/update-00002492-1795513518366646046",
+    "elapsed": 32622.714694239985,
+    "updates": 2492,
+    "episodes": 8707,
+    "model_sha256": "03c210682cc6979a382ec533f652d2ab63d895d86795587f08b87fc0d722776b"
+  },
+  "update-00002501-1795513652984663678": {
+    "path": "checkpoints/update-00002501-1795513652984663678",
+    "elapsed": 32757.331701775984,
+    "updates": 2501,
+    "episodes": 8728,
+    "model_sha256": "c17549ffb33c6ee5007f5567ce5a87ec74eeae923ebba8dfb98fcca7d5de482f"
+  },
+  "update-00002510-1795513781119613132": {
+    "path": "checkpoints/update-00002510-1795513781119613132",
+    "elapsed": 32885.46876151199,
+    "updates": 2510,
+    "episodes": 8754,
+    "model_sha256": "898abba2c1ebf0046d0af24cb94b76a8d1e9ca704a8a4ad834eabde97455e963"
+  },
+  "update-00002519-1795513912302295030": {
+    "path": "checkpoints/update-00002519-1795513912302295030",
+    "elapsed": 33016.65181179601,
+    "updates": 2519,
+    "episodes": 8786,
+    "model_sha256": "cc1b513681cce8a22aad42cd6b2c6c12b67c1ebcb0192c2450d6ae75783cab31"
+  },
+  "update-00002529-1795514038406788264": {
+    "path": "checkpoints/update-00002529-1795514038406788264",
+    "elapsed": 33142.753562428,
+    "updates": 2529,
+    "episodes": 8816,
+    "model_sha256": "d3d4686d8ae0998f05ed0dd76a5ed38f5dfe44755ce3d04c020d0262384ee78f"
+  },
+  "update-00002540-1795514171667101821": {
+    "path": "checkpoints/update-00002540-1795514171667101821",
+    "elapsed": 33276.015940482,
+    "updates": 2540,
+    "episodes": 8854,
+    "model_sha256": "061f5d5d0001142e18107202d3f4b343f159b66ac832c9c1d6f834f6e9dba9bd"
+  },
+  "update-00002551-1795514301170695567": {
+    "path": "checkpoints/update-00002551-1795514301170695567",
+    "elapsed": 33405.51956523099,
+    "updates": 2551,
+    "episodes": 8902,
+    "model_sha256": "2e6a87d92325b8c7a3bb7efbf7301026c36c93e1d4589646d8ff8a90c3024a29"
+  },
+  "update-00002561-1795514424505541747": {
+    "path": "checkpoints/update-00002561-1795514424505541747",
+    "elapsed": 33528.85496140199,
+    "updates": 2561,
+    "episodes": 8934,
+    "model_sha256": "9ffbef66d00ac471b7933770afa3bc10908687455a5bdb085f2d05233df622da"
+  },
+  "update-00002572-1795514555668390360": {
+    "path": "checkpoints/update-00002572-1795514555668390360",
+    "elapsed": 33660.01790176399,
+    "updates": 2572,
+    "episodes": 8966,
+    "model_sha256": "7dc93c83ceb683417c84852d48ae8521e51869ec073838aa11181e09a2a2eb8e"
+  },
+  "update-00002580-1795514677057929768": {
+    "path": "checkpoints/update-00002580-1795514677057929768",
+    "elapsed": 33781.405658703006,
+    "updates": 2580,
+    "episodes": 8986,
+    "model_sha256": "2918fd9796633757e97c184d9555e9789a9d3bfc681b4154158a329608421cc2"
+  },
+  "update-00002588-1795514806517861087": {
+    "path": "checkpoints/update-00002588-1795514806517861087",
+    "elapsed": 33910.867831941985,
+    "updates": 2588,
+    "episodes": 9012,
+    "model_sha256": "5119dff2a90c48c5965e860a98e3d2cd0bbd9670d71cb297d08667b4e9168caf"
+  },
+  "update-00002599-1795514937217211823": {
+    "path": "checkpoints/update-00002599-1795514937217211823",
+    "elapsed": 34041.567017405,
+    "updates": 2599,
+    "episodes": 9048,
+    "model_sha256": "c4cc0b81995188351e0e7ea2168e6cb57d5377c63a736bba482916c5c56142d9"
+  },
+  "update-00002608-1795515057724198703": {
+    "path": "checkpoints/update-00002608-1795515057724198703",
+    "elapsed": 34162.074252297985,
+    "updates": 2608,
+    "episodes": 9087,
+    "model_sha256": "7deda95cecd2ea472104de5d778bb44c090b3932cc5ea4532ee732898b6de98b"
+  },
+  "update-00002617-1795515184033114182": {
+    "path": "checkpoints/update-00002617-1795515184033114182",
+    "elapsed": 34288.38043893501,
+    "updates": 2617,
+    "episodes": 9117,
+    "model_sha256": "78300f648f8867fbaa16013a49b769c60b9d8fdcae3d785a7e02dd3d73f6b087"
+  },
+  "update-00002626-1795515314578921804": {
+    "path": "checkpoints/update-00002626-1795515314578921804",
+    "elapsed": 34418.92822482399,
+    "updates": 2626,
+    "episodes": 9150,
+    "model_sha256": "c12813291b269013ba820644429d5c9b870034307c761705aa5b7032aca0db9d"
+  },
+  "update-00002635-1795515434966468453": {
+    "path": "checkpoints/update-00002635-1795515434966468453",
+    "elapsed": 34539.313984632,
+    "updates": 2635,
+    "episodes": 9179,
+    "model_sha256": "235a49cbefa28719b6a7dd0c870ce6026cb9ccaaa48e8bcf6ee23b41870f8b1d"
+  },
+  "update-00002643-1795515560564563288": {
+    "path": "checkpoints/update-00002643-1795515560564563288",
+    "elapsed": 34664.912037715985,
+    "updates": 2643,
+    "episodes": 9191,
+    "model_sha256": "bc2374bc2d5819c24175cfbde0cddcc8c57b1a54ab389c8f952f164c2d3462bb"
+  },
+  "update-00002652-1795515684344656943": {
+    "path": "checkpoints/update-00002652-1795515684344656943",
+    "elapsed": 34788.693922381004,
+    "updates": 2652,
+    "episodes": 9222,
+    "model_sha256": "b0bb225df6bd69f3314c46469544c873e7e82cd5e37d510d39a9df7565fe77a5"
+  },
+  "update-00002661-1795515818810650552": {
+    "path": "checkpoints/update-00002661-1795515818810650552",
+    "elapsed": 34923.158997689985,
+    "updates": 2661,
+    "episodes": 9248,
+    "model_sha256": "dd27d7d2c71eb8df03ad9a73bbe2f0c89afa2102454708295f467b40694ac24f"
+  },
+  "update-00002671-1795515941641532282": {
+    "path": "checkpoints/update-00002671-1795515941641532282",
+    "elapsed": 35045.98978534201,
+    "updates": 2671,
+    "episodes": 9281,
+    "model_sha256": "692e9d8a19bcaf44518787e7955351e36bffa2dc165ecf38891260479486bdd8"
+  },
+  "update-00002680-1795516064260157922": {
+    "path": "checkpoints/update-00002680-1795516064260157922",
+    "elapsed": 35168.609795914,
+    "updates": 2680,
+    "episodes": 9318,
+    "model_sha256": "04677ef8b6721f0e207f4c46f258e4e78746ca8f4b1eada5fe44f3fb16fddac4"
+  },
+  "update-00002691-1795516190631306554": {
+    "path": "checkpoints/update-00002691-1795516190631306554",
+    "elapsed": 35294.98132779999,
+    "updates": 2691,
+    "episodes": 9355,
+    "model_sha256": "fe4b62ce0c82c68b4997c4492ee94cf3ff1499bd84afb4f75d163dedff925a26"
+  },
+  "update-00002702-1795516323959348835": {
+    "path": "checkpoints/update-00002702-1795516323959348835",
+    "elapsed": 35428.30802124299,
+    "updates": 2702,
+    "episodes": 9392,
+    "model_sha256": "7bc572ab9f7324f1b40a970bdadae7ebde4e9ead62eb5070c9695663575e6232"
+  },
+  "update-00002713-1795516457670047424": {
+    "path": "checkpoints/update-00002713-1795516457670047424",
+    "elapsed": 35562.01975899999,
+    "updates": 2713,
+    "episodes": 9430,
+    "model_sha256": "1a304f2a405a859752b5db00dcd5a589c31863285b604875fb425b18252949bc"
+  },
+  "update-00002720-1795516578472847591": {
+    "path": "checkpoints/update-00002720-1795516578472847591",
+    "elapsed": 35682.82221735199,
+    "updates": 2720,
+    "episodes": 9443,
+    "model_sha256": "6fb722458c3e8507d9ffbdd4fb61e3ec31345d6ef58d2bcc9d19cd1ebd18dad7"
+  },
+  "update-00002728-1795516703535944729": {
+    "path": "checkpoints/update-00002728-1795516703535944729",
+    "elapsed": 35807.885350041994,
+    "updates": 2728,
+    "episodes": 9457,
+    "model_sha256": "a39b4c85ab942a5538204bec40904e9780ce5a7ffd0d6337bf78eebe3787a983"
+  },
+  "update-00002737-1795516827901310765": {
+    "path": "checkpoints/update-00002737-1795516827901310765",
+    "elapsed": 35932.24892526801,
+    "updates": 2737,
+    "episodes": 9483,
+    "model_sha256": "19bf370b06a7ac6402004190f6216cd05e2fdd09fa078237ec05ca90d97e7d87"
+  },
+  "update-00002747-1795516948961844503": {
+    "path": "checkpoints/update-00002747-1795516948961844503",
+    "elapsed": 36053.31012577901,
+    "updates": 2747,
+    "episodes": 9531,
+    "model_sha256": "f4e872cbe90bb7e0e4e430890689dd79c6e3a6caa51f42460281f1e00d683124"
+  },
+  "update-00002757-1795517070870822030": {
+    "path": "checkpoints/update-00002757-1795517070870822030",
+    "elapsed": 36175.220049828,
+    "updates": 2757,
+    "episodes": 9571,
+    "model_sha256": "5af80a02bd1c76c152bd55c2837ada2b7fa3508a5caddb27ed71e357c987c2d5"
+  },
+  "update-00002766-1795517195510864585": {
+    "path": "checkpoints/update-00002766-1795517195510864585",
+    "elapsed": 36299.857327946986,
+    "updates": 2766,
+    "episodes": 9595,
+    "model_sha256": "45110ca8555f6cddf17f0c83efcd045a2dbc46d787b3b5a38ac6996a551531e6"
+  },
+  "update-00002775-1795517318112712732": {
+    "path": "checkpoints/update-00002775-1795517318112712732",
+    "elapsed": 36422.451201666,
+    "updates": 2775,
+    "episodes": 9628,
+    "model_sha256": "3496dc0a501e89387ea35b0842c8c2b79db72aa6a3f1a60dc03c3e2b8d208741"
+  },
+  "update-00002785-1795517441504332276": {
+    "path": "checkpoints/update-00002785-1795517441504332276",
+    "elapsed": 36545.853906665,
+    "updates": 2785,
+    "episodes": 9674,
+    "model_sha256": "842a757840ef431acd0320f4b0706bebcc524ee3b7269aab9cc4b20fd838d5ad"
+  },
+  "update-00002795-1795517569271084488": {
+    "path": "checkpoints/update-00002795-1795517569271084488",
+    "elapsed": 36673.62057211701,
+    "updates": 2795,
+    "episodes": 9711,
+    "model_sha256": "053cb35296d4cbfbe6f658e8fdb218e12e505ce44efecffd0a008f8888b7506f"
+  },
+  "update-00002805-1795517699997181720": {
+    "path": "checkpoints/update-00002805-1795517699997181720",
+    "elapsed": 36804.34698794401,
+    "updates": 2805,
+    "episodes": 9746,
+    "model_sha256": "3d3187ae8a46cdacd942fe02ba58af3ee2720635028f0eb5122c044cdd3f9637"
+  },
+  "update-00002816-1795517827683460569": {
+    "path": "checkpoints/update-00002816-1795517827683460569",
+    "elapsed": 36932.033642372,
+    "updates": 2816,
+    "episodes": 9778,
+    "model_sha256": "2a880bb12cc57a15ceebdcc8f2a4eb6a9b5e403be1abb9c66236ac96c6b0344f"
+  },
+  "update-00002827-1795517956864967741": {
+    "path": "checkpoints/update-00002827-1795517956864967741",
+    "elapsed": 37061.214628394984,
+    "updates": 2827,
+    "episodes": 9822,
+    "model_sha256": "c38dcbceb25dd689c1524d2538867b3230c066bd3f407dda5a06d28eb117daeb"
+  },
+  "update-00002837-1795518084792053359": {
+    "path": "checkpoints/update-00002837-1795518084792053359",
+    "elapsed": 37189.141210017,
+    "updates": 2837,
+    "episodes": 9848,
+    "model_sha256": "7e9ec6b50d681b7848eaeff9d5ee63bef91676f575091c5cab5246da39e6c6f1"
+  },
+  "update-00002847-1795518214447457174": {
+    "path": "checkpoints/update-00002847-1795518214447457174",
+    "elapsed": 37318.796656288,
+    "updates": 2847,
+    "episodes": 9885,
+    "model_sha256": "67815149f22bfd4efbf7a62923643028ff64b5f944d1cd9acb24a7cb069bfd08"
+  },
+  "update-00002857-1795518349975657538": {
+    "path": "checkpoints/update-00002857-1795518349975657538",
+    "elapsed": 37454.32578276101,
+    "updates": 2857,
+    "episodes": 9915,
+    "model_sha256": "dca47aca24c43988098e616353dcd26c9623e944cde7b1962e4bc099b2a1979a"
+  },
+  "update-00002867-1795518475335181848": {
+    "path": "checkpoints/update-00002867-1795518475335181848",
+    "elapsed": 37579.684469634,
+    "updates": 2867,
+    "episodes": 9948,
+    "model_sha256": "b79d98a92b9b16f163e71f63fbe6f45ffcd612be4309c9083df11189bec2ba0f"
+  },
+  "update-00002878-1795518607911255698": {
+    "path": "checkpoints/update-00002878-1795518607911255698",
+    "elapsed": 37712.260393125995,
+    "updates": 2878,
+    "episodes": 9986,
+    "model_sha256": "8981437cc06a51dcb6c498da7086d50e54c6b8632f8285f7bf196deb9d8ede7a"
+  },
+  "update-00002886-1795518738050576722": {
+    "path": "checkpoints/update-00002886-1795518738050576722",
+    "elapsed": 37842.40003681299,
+    "updates": 2886,
+    "episodes": 10005,
+    "model_sha256": "4c2bc8a73b42e6bf3c7a7f552287b7c3f7dfd2dea8d02fc661241335e0255276"
+  },
+  "update-00002895-1795518864652599373": {
+    "path": "checkpoints/update-00002895-1795518864652599373",
+    "elapsed": 37969.00225855701,
+    "updates": 2895,
+    "episodes": 10036,
+    "model_sha256": "379a10771acb61fe67880974d42bd0b441c5558c2d9b26f38cfcdb0a81a900ad"
+  },
+  "update-00002906-1795518993778414882": {
+    "path": "checkpoints/update-00002906-1795518993778414882",
+    "elapsed": 38098.128073194006,
+    "updates": 2906,
+    "episodes": 10076,
+    "model_sha256": "0dc62fa4a229ea38ee5f82218420c854b102bb65510cd35439fa8ea1d67dc77d"
+  },
+  "update-00002916-1795519121506254025": {
+    "path": "checkpoints/update-00002916-1795519121506254025",
+    "elapsed": 38225.85441449899,
+    "updates": 2916,
+    "episodes": 10108,
+    "model_sha256": "2ff69313501131c7fc626c31a4a387be8245e213428f15a4f1eaffd4d623638b"
+  },
+  "update-00002928-1795519251297711714": {
+    "path": "checkpoints/update-00002928-1795519251297711714",
+    "elapsed": 38355.647391634004,
+    "updates": 2928,
+    "episodes": 10141,
+    "model_sha256": "5c14985b625c28f74684b042feb191c24decff301171f0444cc03b9e0c3b4f9c"
+  },
+  "update-00002936-1795519373663607700": {
+    "path": "checkpoints/update-00002936-1795519373663607700",
+    "elapsed": 38478.01292874801,
+    "updates": 2936,
+    "episodes": 10163,
+    "model_sha256": "fdc11c3b73968de0e9eb115d81ed2628dcf3fa4b03f5bf447b7e8dee66d0d474"
+  },
+  "update-00002946-1795519498307731365": {
+    "path": "checkpoints/update-00002946-1795519498307731365",
+    "elapsed": 38602.656399898,
+    "updates": 2946,
+    "episodes": 10202,
+    "model_sha256": "c10a455d269e8ef18c6c1075c8774904657836cd233533995dfb6024a9b9f2d3"
+  },
+  "update-00002955-1795519626882869753": {
+    "path": "checkpoints/update-00002955-1795519626882869753",
+    "elapsed": 38731.23239134299,
+    "updates": 2955,
+    "episodes": 10227,
+    "model_sha256": "ac90e5ec79225001e15218954c201f1e3f1f3ee4c5ea41e0b20d9d7651d11a28"
+  },
+  "update-00002965-1795519747235079509": {
+    "path": "checkpoints/update-00002965-1795519747235079509",
+    "elapsed": 38851.58352399801,
+    "updates": 2965,
+    "episodes": 10257,
+    "model_sha256": "8dca67e6a01027bd494587beec413f45f9bdaf40abc792d4f6ff46d30561ff0b"
+  },
+  "update-00002976-1795519870402914843": {
+    "path": "checkpoints/update-00002976-1795519870402914843",
+    "elapsed": 38974.749296275,
+    "updates": 2976,
+    "episodes": 10301,
+    "model_sha256": "d5c7587657ddd9a3db276b9852866121fa72979d524aae57e06558c501a586b1"
+  },
+  "update-00002987-1795519998621524114": {
+    "path": "checkpoints/update-00002987-1795519998621524114",
+    "elapsed": 39102.97095831801,
+    "updates": 2987,
+    "episodes": 10336,
+    "model_sha256": "95b4f52b483dd0321b700975085fb5a003a492d62fae8cb74de5e664abb3ad17"
+  },
+  "update-00002996-1795520130287179929": {
+    "path": "checkpoints/update-00002996-1795520130287179929",
+    "elapsed": 39234.634815114,
+    "updates": 2996,
+    "episodes": 10358,
+    "model_sha256": "ffb498c1ccd8e6607b2151bf3a0dd54c647c24a013fa1cb8e989d7728cc8a3e9"
+  },
+  "update-00003006-1795520263179197130": {
+    "path": "checkpoints/update-00003006-1795520263179197130",
+    "elapsed": 39367.528382224,
+    "updates": 3006,
+    "episodes": 10389,
+    "model_sha256": "6360b56a57fcbfbd247e46878e739c8dcde70b6979aa690ea94f2b80e95703fd"
+  },
+  "update-00003017-1795520387642345225": {
+    "path": "checkpoints/update-00003017-1795520387642345225",
+    "elapsed": 39491.9923402,
+    "updates": 3017,
+    "episodes": 10426,
+    "model_sha256": "1f0ac8ee49cc4654d582f5b8ff14ac3cebc59e749964e3b5ef589c4c1a1ba653"
+  },
+  "update-00003027-1795520515226074607": {
+    "path": "checkpoints/update-00003027-1795520515226074607",
+    "elapsed": 39619.57562186601,
+    "updates": 3027,
+    "episodes": 10449,
+    "model_sha256": "b31ab6acb3457f1ab0dec56211752d37740c869a578265f0b31bea6a7f9c59bb"
+  },
+  "update-00003036-1795520640947876022": {
+    "path": "checkpoints/update-00003036-1795520640947876022",
+    "elapsed": 39745.296940903005,
+    "updates": 3036,
+    "episodes": 10486,
+    "model_sha256": "4fc9b0c92a785944751b8173159ee291050aefcedd76ce1d7c19a1ecd5e69ce6"
+  },
+  "update-00003045-1795520772612290154": {
+    "path": "checkpoints/update-00003045-1795520772612290154",
+    "elapsed": 39876.96174947801,
+    "updates": 3045,
+    "episodes": 10506,
+    "model_sha256": "d762403bd25cee3e16eeb71c3af8618c08fc6f984e35bf53ef0c00135d57a298"
+  },
+  "update-00003056-1795520910060739109": {
+    "path": "checkpoints/update-00003056-1795520910060739109",
+    "elapsed": 40014.40879706299,
+    "updates": 3056,
+    "episodes": 10548,
+    "model_sha256": "82b507074cfcf038cc70264fbc7583fcc2ef376528204001f3aca06ea60203bc"
+  },
+  "update-00003064-1795521041621755699": {
+    "path": "checkpoints/update-00003064-1795521041621755699",
+    "elapsed": 40145.97054686799,
+    "updates": 3064,
+    "episodes": 10567,
+    "model_sha256": "3fcb4e62f9a3b4eddf3fd0ca6a9d0d3b41c8701fa9a73aa0ad2952e9f8ae2602"
+  },
+  "update-00003075-1795521174793080246": {
+    "path": "checkpoints/update-00003075-1795521174793080246",
+    "elapsed": 40279.143070155,
+    "updates": 3075,
+    "episodes": 10610,
+    "model_sha256": "74db5d1d7adb6772c235d3a0b9b4316d8684f443bae030c577eb909541c99540"
+  },
+  "update-00003085-1795521304482048863": {
+    "path": "checkpoints/update-00003085-1795521304482048863",
+    "elapsed": 40408.830567317986,
+    "updates": 3085,
+    "episodes": 10646,
+    "model_sha256": "427d122f779982f6f957eafe02abb4e31ea481214550f12406ff7f92d51c0e9f"
+  },
+  "update-00003095-1795521426266055633": {
+    "path": "checkpoints/update-00003095-1795521426266055633",
+    "elapsed": 40530.61544301099,
+    "updates": 3095,
+    "episodes": 10683,
+    "model_sha256": "7a97f810ffeb6411de78cb9b01b87078b7a2aec6c1a2d8f4540ad7d6a268eae6"
+  },
+  "update-00003105-1795521556294754472": {
+    "path": "checkpoints/update-00003105-1795521556294754472",
+    "elapsed": 40660.64156217399,
+    "updates": 3105,
+    "episodes": 10714,
+    "model_sha256": "ffb87ffb05601d9b64af8bfe4479a1f3413d45a90804042b1cf8076dcbed8082"
+  },
+  "update-00003116-1795521682427863022": {
+    "path": "checkpoints/update-00003116-1795521682427863022",
+    "elapsed": 40786.77581794601,
+    "updates": 3116,
+    "episodes": 10746,
+    "model_sha256": "c44f6aa95bf683bd752e6d978ae2a4c90b0d5c1acea622dd02ba2d1bfa2f7c62"
+  },
+  "update-00003125-1795521805149914810": {
+    "path": "checkpoints/update-00003125-1795521805149914810",
+    "elapsed": 40909.49942214301,
+    "updates": 3125,
+    "episodes": 10788,
+    "model_sha256": "cbc271f7de50ee3fba27a9aaf043266356d21257428d5c3da78d42abb3ef5651"
+  },
+  "update-00003136-1795521932948072236": {
+    "path": "checkpoints/update-00003136-1795521932948072236",
+    "elapsed": 41037.29768727301,
+    "updates": 3136,
+    "episodes": 10821,
+    "model_sha256": "2617a0f5ba39f2dc5a094c6f656a9e51bfaecf9c95ab142409d537887d2d6c82"
+  },
+  "update-00003146-1795522062787732243": {
+    "path": "checkpoints/update-00003146-1795522062787732243",
+    "elapsed": 41167.13693721499,
+    "updates": 3146,
+    "episodes": 10855,
+    "model_sha256": "aeab927250d1740059cc44e636fb4042088f1fa325b8f18fe4d0b13526029375"
+  },
+  "update-00003154-1795522187781903043": {
+    "path": "checkpoints/update-00003154-1795522187781903043",
+    "elapsed": 41292.13057312899,
+    "updates": 3154,
+    "episodes": 10874,
+    "model_sha256": "674bfed18f77b8b4815dd20fc0064c3c4149b4748cbaac290ab51b938488474e"
+  },
+  "update-00003164-1795522321985834906": {
+    "path": "checkpoints/update-00003164-1795522321985834906",
+    "elapsed": 41426.33523353099,
+    "updates": 3164,
+    "episodes": 10906,
+    "model_sha256": "edb22b633507b98d9c01a6d974eac29bf2dc296dc5e1b7c189525a93f141cdd3"
+  },
+  "update-00003175-1795522453054750204": {
+    "path": "checkpoints/update-00003175-1795522453054750204",
+    "elapsed": 41557.40305003099,
+    "updates": 3175,
+    "episodes": 10953,
+    "model_sha256": "aeec91c1a12606bc06e13aebb84fa00d4ee636f6606b4d9a4bc8c9967c2df933"
+  },
+  "update-00003184-1795522576117477806": {
+    "path": "checkpoints/update-00003184-1795522576117477806",
+    "elapsed": 41680.46586667601,
+    "updates": 3184,
+    "episodes": 10977,
+    "model_sha256": "629812938e02c1523630372a21feda080117ba6ec6ae5c36d52c22ffb3b03bae"
+  },
+  "update-00003192-1795522708863512553": {
+    "path": "checkpoints/update-00003192-1795522708863512553",
+    "elapsed": 41813.21288499801,
+    "updates": 3192,
+    "episodes": 10993,
+    "model_sha256": "aaafc70a98aca279edd122878176d845a73d4550ceb415c0349c2328bca7b042"
+  },
+  "update-00003202-1795522842184281579": {
+    "path": "checkpoints/update-00003202-1795522842184281579",
+    "elapsed": 41946.53298069301,
+    "updates": 3202,
+    "episodes": 11032,
+    "model_sha256": "3611525f1b81e77b8d015d633d55c8419cacea8bacba97e883c7cf1bec8b7a70"
+  },
+  "update-00003213-1795522967853514957": {
+    "path": "checkpoints/update-00003213-1795522967853514957",
+    "elapsed": 42072.20258202599,
+    "updates": 3213,
+    "episodes": 11076,
+    "model_sha256": "ff0d9b98f237d652fb40a6ba29573dad43611fa2c6eb5656c370fb80ec4b9ba7"
+  },
+  "update-00003223-1795523093729533546": {
+    "path": "checkpoints/update-00003223-1795523093729533546",
+    "elapsed": 42198.07938197101,
+    "updates": 3223,
+    "episodes": 11114,
+    "model_sha256": "9d1d0f51e2100ef74feede98df478350708674abce24bac24576425de802bd9e"
+  },
+  "update-00003232-1795523225218920051": {
+    "path": "checkpoints/update-00003232-1795523225218920051",
+    "elapsed": 42329.568371625995,
+    "updates": 3232,
+    "episodes": 11139,
+    "model_sha256": "cefe9face12cef7cf26df94dec4e754c8fa8265d0da6f16fe3d8e43630b722cc"
+  },
+  "update-00003242-1795523356826784791": {
+    "path": "checkpoints/update-00003242-1795523356826784791",
+    "elapsed": 42461.176826938,
+    "updates": 3242,
+    "episodes": 11181,
+    "model_sha256": "5963b2d679f6f192a08ce753f4c86945fbe20c947a9c6cd703edcbc5da24fa79"
+  },
+  "update-00003252-1795523488619501635": {
+    "path": "checkpoints/update-00003252-1795523488619501635",
+    "elapsed": 42592.96932344901,
+    "updates": 3252,
+    "episodes": 11212,
+    "model_sha256": "7b84f465bc788fe9fb90b29522c916c7ea93e14fdba6cd3c5f7cabf74ff71ce4"
+  },
+  "update-00003262-1795523615701772616": {
+    "path": "checkpoints/update-00003262-1795523615701772616",
+    "elapsed": 42720.05093961899,
+    "updates": 3262,
+    "episodes": 11247,
+    "model_sha256": "f8b9da247a61163495c26f0c76e1d4f4e71b0cbccd3f12ec062cce645ff6c35b"
+  },
+  "update-00003272-1795523742586852865": {
+    "path": "checkpoints/update-00003272-1795523742586852865",
+    "elapsed": 42846.935332472,
+    "updates": 3272,
+    "episodes": 11283,
+    "model_sha256": "159bc7e49a07d65b7b85de10a80ee2562613d7dcaa7540d5cb94425378938668"
+  },
+  "update-00003282-1795523865100417718": {
+    "path": "checkpoints/update-00003282-1795523865100417718",
+    "elapsed": 42969.449994858005,
+    "updates": 3282,
+    "episodes": 11304,
+    "model_sha256": "08658c2e009b8de93d7f30695c77ba0809c6b43717a2e9c9096dee66ec54c6de"
+  },
+  "update-00003293-1795523997584625482": {
+    "path": "checkpoints/update-00003293-1795523997584625482",
+    "elapsed": 43101.933438551,
+    "updates": 3293,
+    "episodes": 11342,
+    "model_sha256": "afbe8c49380308f8211ee7cc2349e10faaf119f67381488ca530f629c1b85bd5"
+  },
+  "last-1795524095845528690": {
+    "path": "checkpoints/last-1795524095845528690",
+    "elapsed": 43200.194862209,
+    "updates": 3301,
+    "episodes": 11370,
+    "model_sha256": "da26cde88dde2918a2f39eab5b8144ea4cfb98c8bdda7f6f61e2f7983c976bf2"
+  },
+  "initial-1795651688437363106": {
+    "path": "checkpoints/initial-1795651688437363106",
+    "elapsed": 43200.597344142,
+    "updates": 3301,
+    "episodes": 11370,
+    "model_sha256": "da26cde88dde2918a2f39eab5b8144ea4cfb98c8bdda7f6f61e2f7983c976bf2"
+  },
+  "update-00003309-1795651815479067130": {
+    "path": "checkpoints/update-00003309-1795651815479067130",
+    "elapsed": 43327.640717994,
+    "updates": 3309,
+    "episodes": 11396,
+    "model_sha256": "96a2d897d8260a44cb9eda342ec727e1bf647e3317d73da39f1809571c7cc378"
+  },
+  "update-00003318-1795651936922073312": {
+    "path": "checkpoints/update-00003318-1795651936922073312",
+    "elapsed": 43449.083620596,
+    "updates": 3318,
+    "episodes": 11429,
+    "model_sha256": "87844a5d4adc2c6e063d98293a7f93047b27637dd869afd5689a76ac18f460d0"
+  },
+  "update-00003328-1795652071033955331": {
+    "path": "checkpoints/update-00003328-1795652071033955331",
+    "elapsed": 43583.195893106,
+    "updates": 3328,
+    "episodes": 11457,
+    "model_sha256": "3aff78ffdd035630ce9bdfc9b671c822a8225b16e47d0838be6eaa6c1bb7a0a7"
+  },
+  "update-00003336-1795652200986814560": {
+    "path": "checkpoints/update-00003336-1795652200986814560",
+    "elapsed": 43713.148169996995,
+    "updates": 3336,
+    "episodes": 11495,
+    "model_sha256": "f3f902c67bb7af706ec5ebf9173baf73636a21d6bfdda7f8ad13a8008b96e267"
+  },
+  "update-00003344-1795652328942336284": {
+    "path": "checkpoints/update-00003344-1795652328942336284",
+    "elapsed": 43841.104109866,
+    "updates": 3344,
+    "episodes": 11509,
+    "model_sha256": "26efb72cd5e1045c41e7e6d03a01d0f5c47adfdb03a726155adcd81967dbb8a6"
+  },
+  "update-00003352-1795652457414474973": {
+    "path": "checkpoints/update-00003352-1795652457414474973",
+    "elapsed": 43969.576544228,
+    "updates": 3352,
+    "episodes": 11540,
+    "model_sha256": "823a3ed37e9a2f5c3d342fce3b9cd103ca86a1431117f6949c8190487ac63a07"
+  },
+  "update-00003360-1795652582019948327": {
+    "path": "checkpoints/update-00003360-1795652582019948327",
+    "elapsed": 44094.181760728,
+    "updates": 3360,
+    "episodes": 11559,
+    "model_sha256": "938112d62bb1bb1a6cb136d70356c58ba81020fef1ca54eee006ad727fa7b165"
+  },
+  "update-00003368-1795652702831148361": {
+    "path": "checkpoints/update-00003368-1795652702831148361",
+    "elapsed": 44214.993248258,
+    "updates": 3368,
+    "episodes": 11588,
+    "model_sha256": "453944c6b561436658490f395cfbe607e4d5e1c076566ef11c179c1177455ce1"
+  },
+  "update-00003379-1795652833693940718": {
+    "path": "checkpoints/update-00003379-1795652833693940718",
+    "elapsed": 44345.855880865995,
+    "updates": 3379,
+    "episodes": 11633,
+    "model_sha256": "d3d5a8378a27d8a7c2ffe8244ccdbb6a508aca9ced92e0fbfc0e20d2ca10ec12"
+  },
+  "update-00003386-1795652954937589212": {
+    "path": "checkpoints/update-00003386-1795652954937589212",
+    "elapsed": 44467.099088035,
+    "updates": 3386,
+    "episodes": 11650,
+    "model_sha256": "928bf40ba3bd20b04d3674fd45dde23790eade1058132ff15a60b9691291c8c0"
+  },
+  "update-00003394-1795653076919850813": {
+    "path": "checkpoints/update-00003394-1795653076919850813",
+    "elapsed": 44589.081927636,
+    "updates": 3394,
+    "episodes": 11687,
+    "model_sha256": "ee59df34a56e46a5f37108e134c5a49e4a90c6c53824f2066426112bc8b8c735"
+  },
+  "update-00003402-1795653208065145252": {
+    "path": "checkpoints/update-00003402-1795653208065145252",
+    "elapsed": 44720.227055908,
+    "updates": 3402,
+    "episodes": 11701,
+    "model_sha256": "2f40dc2a68b3d8ca0138eb6bcf76d5e130212b00ecf4ba1846fd298c9e3d8e5f"
+  },
+  "update-00003412-1795653344214389078": {
+    "path": "checkpoints/update-00003412-1795653344214389078",
+    "elapsed": 44856.376193744,
+    "updates": 3412,
+    "episodes": 11730,
+    "model_sha256": "08d2195d075d5c6c471793dd19abe4c5a02f19ff6e42850e4ca424aa74d048a9"
+  },
+  "update-00003421-1795653476515676560": {
+    "path": "checkpoints/update-00003421-1795653476515676560",
+    "elapsed": 44988.677510793,
+    "updates": 3421,
+    "episodes": 11761,
+    "model_sha256": "8b9a1ef25ce6d508555fd5746fe9dd00461ecaa995bbeb22fbff7b2be869359d"
+  },
+  "update-00003430-1795653605362783522": {
+    "path": "checkpoints/update-00003430-1795653605362783522",
+    "elapsed": 45117.524573564,
+    "updates": 3430,
+    "episodes": 11793,
+    "model_sha256": "4dc7ef3911c1d00d2b7ac27fed7e032df145d7c3c5be2695bbc55874f7a48b58"
+  },
+  "update-00003438-1795653732026097449": {
+    "path": "checkpoints/update-00003438-1795653732026097449",
+    "elapsed": 45244.188051411,
+    "updates": 3438,
+    "episodes": 11815,
+    "model_sha256": "d54177395c8c43757782780a0e8063bc2a7f8a554a8472436d88068c115e0974"
+  },
+  "update-00003446-1795653859118989369": {
+    "path": "checkpoints/update-00003446-1795653859118989369",
+    "elapsed": 45371.280683114,
+    "updates": 3446,
+    "episodes": 11838,
+    "model_sha256": "af4b1e84c731f70442d0bf8f23cb330fc45892c25538853b016d8e619d0a61d2"
+  },
+  "update-00003454-1795653986372430141": {
+    "path": "checkpoints/update-00003454-1795653986372430141",
+    "elapsed": 45498.534213924,
+    "updates": 3454,
+    "episodes": 11864,
+    "model_sha256": "56497dd9731a9b4a254dd6a705bb7db9ac54468701253ecce357a2ddb6bee6d4"
+  },
+  "update-00003462-1795654110059469261": {
+    "path": "checkpoints/update-00003462-1795654110059469261",
+    "elapsed": 45622.221331771,
+    "updates": 3462,
+    "episodes": 11904,
+    "model_sha256": "f2e75a94a41c380e72f3f9cbbb955db51b504ec0f76354f6ae169001d23d5446"
+  },
+  "update-00003470-1795654231422646983": {
+    "path": "checkpoints/update-00003470-1795654231422646983",
+    "elapsed": 45743.58471628,
+    "updates": 3470,
+    "episodes": 11922,
+    "model_sha256": "e504196871df4124826d193cfe56ecc272f553fe1ade233ecc2d7e03b963ef6e"
+  },
+  "update-00003480-1795654361998221097": {
+    "path": "checkpoints/update-00003480-1795654361998221097",
+    "elapsed": 45874.159957004,
+    "updates": 3480,
+    "episodes": 11956,
+    "model_sha256": "8341fd72ea926f83ced0844b474868912e47c4909b335e0a201e0b9d8b684f6a"
+  },
+  "update-00003488-1795654491109297032": {
+    "path": "checkpoints/update-00003488-1795654491109297032",
+    "elapsed": 46003.270376784,
+    "updates": 3488,
+    "episodes": 11986,
+    "model_sha256": "50429891babfaac812d5456c7ab66cbb0536f4db619e90e6b301f042d6b6fb53"
+  },
+  "update-00003496-1795654623830230265": {
+    "path": "checkpoints/update-00003496-1795654623830230265",
+    "elapsed": 46135.991376344995,
+    "updates": 3496,
+    "episodes": 12012,
+    "model_sha256": "402dd925a7d9ed56b3d37f13e8b93c129aa6d54f3e31797d618a87fd047d20bc"
+  },
+  "update-00003505-1795654745680030956": {
+    "path": "checkpoints/update-00003505-1795654745680030956",
+    "elapsed": 46257.841943944,
+    "updates": 3505,
+    "episodes": 12037,
+    "model_sha256": "9bb9c6cffa8392b21482238ac2ed85a1042d16bb5b24b7d0eff5a6e1a86efe9b"
+  },
+  "update-00003512-1795654886125567621": {
+    "path": "checkpoints/update-00003512-1795654886125567621",
+    "elapsed": 46398.287712014,
+    "updates": 3512,
+    "episodes": 12057,
+    "model_sha256": "3f8673545e17f89f3258cac39ab45913d2ec2a97857c6d105d44eeda73f377b7"
+  },
+  "update-00003517-1795655013013007276": {
+    "path": "checkpoints/update-00003517-1795655013013007276",
+    "elapsed": 46525.174779543,
+    "updates": 3517,
+    "episodes": 12065,
+    "model_sha256": "377eec472cac7b133f45ccf2dd5fd64402fde0bde22a8cefd7edfc0ebcfd493f"
+  },
+  "update-00003526-1795655145670674512": {
+    "path": "checkpoints/update-00003526-1795655145670674512",
+    "elapsed": 46657.832338531996,
+    "updates": 3526,
+    "episodes": 12103,
+    "model_sha256": "7da3349a107cbb2f88c3703efb3cb208162bd114fd420ad2fd7ad08df43c3d6f"
+  },
+  "update-00003534-1795655275918743578": {
+    "path": "checkpoints/update-00003534-1795655275918743578",
+    "elapsed": 46788.080361707,
+    "updates": 3534,
+    "episodes": 12134,
+    "model_sha256": "99f259b50bdc8065617a7dea3d121aac7bfc1c4e3c0ed9faf51933eba856202e"
+  },
+  "update-00003544-1795655404477377079": {
+    "path": "checkpoints/update-00003544-1795655404477377079",
+    "elapsed": 46916.639304104,
+    "updates": 3544,
+    "episodes": 12167,
+    "model_sha256": "d40eaa679134c9ca6637097eced903ecf9881e5c972be3d587bf1e8a2928885a"
+  },
+  "update-00003552-1795655528230094950": {
+    "path": "checkpoints/update-00003552-1795655528230094950",
+    "elapsed": 47040.391679781,
+    "updates": 3552,
+    "episodes": 12190,
+    "model_sha256": "c93ff2fef624257b98fc9353e8fca1c8e59e3c3cb0be531a674fdccb31fe1356"
+  },
+  "update-00003560-1795655663278576416": {
+    "path": "checkpoints/update-00003560-1795655663278576416",
+    "elapsed": 47175.439251559,
+    "updates": 3560,
+    "episodes": 12214,
+    "model_sha256": "96b4443345d6e027f62fb1805f764401a8340c0e98f2c93a5689470a81ee6341"
+  },
+  "update-00003568-1795655799800431351": {
+    "path": "checkpoints/update-00003568-1795655799800431351",
+    "elapsed": 47311.961896408,
+    "updates": 3568,
+    "episodes": 12238,
+    "model_sha256": "ea9751f0eff93db6c2c7823f4d3da41429885318440e490dadefd79e01c89596"
+  },
+  "update-00003576-1795655928602852616": {
+    "path": "checkpoints/update-00003576-1795655928602852616",
+    "elapsed": 47440.763092264,
+    "updates": 3576,
+    "episodes": 12264,
+    "model_sha256": "91ca1de94b6a877483d3b71e767cec34ff6aeb4445dfd3b038b4a0f503f976c6"
+  },
+  "update-00003583-1795656054345342993": {
+    "path": "checkpoints/update-00003583-1795656054345342993",
+    "elapsed": 47566.507212986,
+    "updates": 3583,
+    "episodes": 12293,
+    "model_sha256": "734faa1cfa1d6ac29323997170f510eb7a73c6d28d8d7cd105347adcd59fa287"
+  },
+  "update-00003593-1795656175704855946": {
+    "path": "checkpoints/update-00003593-1795656175704855946",
+    "elapsed": 47687.865792624994,
+    "updates": 3593,
+    "episodes": 12327,
+    "model_sha256": "f478862074c355bb88e5812d829efe3ad39a3123b4150e61140831f14c265d67"
+  },
+  "update-00003600-1795656303840476872": {
+    "path": "checkpoints/update-00003600-1795656303840476872",
+    "elapsed": 47816.002402911,
+    "updates": 3600,
+    "episodes": 12352,
+    "model_sha256": "85ad25103709f33216e6278673b5ef4bcc09eaac24165f5229ba3d0b26a8f927"
+  },
+  "update-00003606-1795656424118760143": {
+    "path": "checkpoints/update-00003606-1795656424118760143",
+    "elapsed": 47936.28036642,
+    "updates": 3606,
+    "episodes": 12363,
+    "model_sha256": "8b9399243b7eecad0d2bcf80c00099c855384064d037fab3f75aa6c89ad024fb"
+  },
+  "update-00003614-1795656551083143897": {
+    "path": "checkpoints/update-00003614-1795656551083143897",
+    "elapsed": 48063.244677785,
+    "updates": 3614,
+    "episodes": 12388,
+    "model_sha256": "e7e02af981b666f55b1bdfa2aadd9650051290627e6b5c7c7f03946898e8e9db"
+  },
+  "update-00003624-1795656684942270184": {
+    "path": "checkpoints/update-00003624-1795656684942270184",
+    "elapsed": 48197.103577064,
+    "updates": 3624,
+    "episodes": 12424,
+    "model_sha256": "94ccaf84a5da1507c27805ec69d015f54c89a90cd7cea5d05fdc06d1a8f353b8"
+  },
+  "update-00003633-1795656818539434846": {
+    "path": "checkpoints/update-00003633-1795656818539434846",
+    "elapsed": 48330.700423211,
+    "updates": 3633,
+    "episodes": 12451,
+    "model_sha256": "bd69af06099f2215d2bcb7bdb4db07ed447bac5e1ede13a0dc628775c9a3da36"
+  },
+  "update-00003641-1795656942046728200": {
+    "path": "checkpoints/update-00003641-1795656942046728200",
+    "elapsed": 48454.207714532,
+    "updates": 3641,
+    "episodes": 12475,
+    "model_sha256": "7adad15d4b11f76fd796838375345b75eaaf343ab25ef8c5457487de094d7ea9"
+  },
+  "update-00003650-1795657070642628145": {
+    "path": "checkpoints/update-00003650-1795657070642628145",
+    "elapsed": 48582.803688865,
+    "updates": 3650,
+    "episodes": 12499,
+    "model_sha256": "f745b7f78b3b6bf41b37d94df8311b8e4b62c5a426d725bf37c8fb4e231c2a8e"
+  },
+  "update-00003660-1795657200544619823": {
+    "path": "checkpoints/update-00003660-1795657200544619823",
+    "elapsed": 48712.706452627,
+    "updates": 3660,
+    "episodes": 12540,
+    "model_sha256": "c1bbb3a1f27fcf81b5022143cbc3653d2e4606a4d944386d84291986fccc4840"
+  },
+  "update-00003667-1795657324600429462": {
+    "path": "checkpoints/update-00003667-1795657324600429462",
+    "elapsed": 48836.760905409,
+    "updates": 3667,
+    "episodes": 12557,
+    "model_sha256": "4175de1fb4a5b07dae94716356b330f97b9f34bdd045f395dbc2cbb60f98097c"
+  },
+  "update-00003675-1795657457065294120": {
+    "path": "checkpoints/update-00003675-1795657457065294120",
+    "elapsed": 48969.226326416996,
+    "updates": 3675,
+    "episodes": 12586,
+    "model_sha256": "c286380a7560063fe5d40662a402f1a6138b2ebadbbaf70f3f258c9f6a0d3b59"
+  },
+  "update-00003682-1795657584112800842": {
+    "path": "checkpoints/update-00003682-1795657584112800842",
+    "elapsed": 49096.27403679,
+    "updates": 3682,
+    "episodes": 12606,
+    "model_sha256": "028276ddb910367681485ec275cb9ab346cebcdcb225ab766733b12e3f293fd9"
+  },
+  "update-00003690-1795657717798362476": {
+    "path": "checkpoints/update-00003690-1795657717798362476",
+    "elapsed": 49229.959428628,
+    "updates": 3690,
+    "episodes": 12628,
+    "model_sha256": "21c5a902075b08aae6a4876ba35f1b0972e92431a8d656827afebae699ff555e"
+  },
+  "update-00003698-1795657840191644756": {
+    "path": "checkpoints/update-00003698-1795657840191644756",
+    "elapsed": 49352.351029502,
+    "updates": 3698,
+    "episodes": 12662,
+    "model_sha256": "e9e4a90679b75e0e5737f1c3038fb600f10c59f17f50c7e1aebfd94baf8234b5"
+  },
+  "update-00003706-1795657965938752013": {
+    "path": "checkpoints/update-00003706-1795657965938752013",
+    "elapsed": 49478.100004839995,
+    "updates": 3706,
+    "episodes": 12686,
+    "model_sha256": "be750100b33ac425ba4d045fed94f37184c769df876d5c487e7eb703cec061b5"
+  },
+  "update-00003714-1795658095861590787": {
+    "path": "checkpoints/update-00003714-1795658095861590787",
+    "elapsed": 49608.023019155,
+    "updates": 3714,
+    "episodes": 12710,
+    "model_sha256": "d56736fc554f9d9e5c58335bf515a1d4ff7a8d40a11f95fb2666b7b69f299802"
+  },
+  "update-00003724-1795658227013888711": {
+    "path": "checkpoints/update-00003724-1795658227013888711",
+    "elapsed": 49739.169371519,
+    "updates": 3724,
+    "episodes": 12750,
+    "model_sha256": "304ba7cddbe7d1098b50d9f00c2f8536e8ae28e4c11481bccd63b3a1fed3d408"
+  },
+  "update-00003733-1795658356148167715": {
+    "path": "checkpoints/update-00003733-1795658356148167715",
+    "elapsed": 49868.309864407,
+    "updates": 3733,
+    "episodes": 12770,
+    "model_sha256": "471388995771fbb3bb66e0bcf26b009a3ddde0cfddaee3243ecaba51105eafbd"
+  },
+  "update-00003740-1795658483226312076": {
+    "path": "checkpoints/update-00003740-1795658483226312076",
+    "elapsed": 49995.386827631,
+    "updates": 3740,
+    "episodes": 12792,
+    "model_sha256": "45de80b0f711af3caef1bdecf8c76c96ca8e0905b75faccf916c8ee76a30d3da"
+  },
+  "update-00003749-1795658609309945507": {
+    "path": "checkpoints/update-00003749-1795658609309945507",
+    "elapsed": 50121.470806503,
+    "updates": 3749,
+    "episodes": 12836,
+    "model_sha256": "bb3efe9c6143db76e68996c5b02b4a95078aeb5e057e4fc09ec2c95e26660869"
+  },
+  "update-00003757-1795658740621638714": {
+    "path": "checkpoints/update-00003757-1795658740621638714",
+    "elapsed": 50252.780989977,
+    "updates": 3757,
+    "episodes": 12852,
+    "model_sha256": "601d2e84aeacb00f551a53df65e1b13bfd89388f0be7da8f2a39e7b841804a6f"
+  },
+  "update-00003766-1795658874014309188": {
+    "path": "checkpoints/update-00003766-1795658874014309188",
+    "elapsed": 50386.175596051,
+    "updates": 3766,
+    "episodes": 12882,
+    "model_sha256": "55adf84e3cef5db6a2a41503b0813976467da505f9d0aa5b0b0ae32e615f81d4"
+  },
+  "update-00003773-1795658995552354464": {
+    "path": "checkpoints/update-00003773-1795658995552354464",
+    "elapsed": 50507.712175547,
+    "updates": 3773,
+    "episodes": 12905,
+    "model_sha256": "cbc653ac6f776e001f8145aa13dd948dead819efe8efadf34dccea5f2b2e1ffe"
+  },
+  "update-00003780-1795659130110443112": {
+    "path": "checkpoints/update-00003780-1795659130110443112",
+    "elapsed": 50642.258785656995,
+    "updates": 3780,
+    "episodes": 12928,
+    "model_sha256": "e99f909c5c58282cf3b36f3f4066e32864d1579fbac4ac2f118c00c97e8f0e06"
+  },
+  "update-00003787-1795659261146107832": {
+    "path": "checkpoints/update-00003787-1795659261146107832",
+    "elapsed": 50773.3071025,
+    "updates": 3787,
+    "episodes": 12949,
+    "model_sha256": "a291930cb418ee544d29bf63bf5e63b88287fcaaee199b6695240f1c2da1d84b"
+  },
+  "update-00003794-1795659382350031652": {
+    "path": "checkpoints/update-00003794-1795659382350031652",
+    "elapsed": 50894.500847142,
+    "updates": 3794,
+    "episodes": 12970,
+    "model_sha256": "fc506c00d9df4b2b652b5349e6af3ff6e5f22632eccf3d09013c7eb075e94678"
+  },
+  "update-00003802-1795659509200111535": {
+    "path": "checkpoints/update-00003802-1795659509200111535",
+    "elapsed": 51021.360487206,
+    "updates": 3802,
+    "episodes": 13003,
+    "model_sha256": "b623742ec5fde009565b8eee71a20a838c6a4078f487122de776be3386b31d44"
+  },
+  "update-00003810-1795659635407469891": {
+    "path": "checkpoints/update-00003810-1795659635407469891",
+    "elapsed": 51147.566223477,
+    "updates": 3810,
+    "episodes": 13026,
+    "model_sha256": "9a2fc2534dd669e4eaa6da676bd266424581c719e2599e194893e3c870c16a6d"
+  },
+  "update-00003820-1795659769208927410": {
+    "path": "checkpoints/update-00003820-1795659769208927410",
+    "elapsed": 51281.370010302,
+    "updates": 3820,
+    "episodes": 13059,
+    "model_sha256": "df545aa1fdea8549a4aa3ce6d3b3f4375d093d74094f80b17bb2c4da79b8f5fc"
+  },
+  "update-00003828-1795659890357231620": {
+    "path": "checkpoints/update-00003828-1795659890357231620",
+    "elapsed": 51402.518754494,
+    "updates": 3828,
+    "episodes": 13087,
+    "model_sha256": "0d37889f5b1a70a9d993ad462b178ec203876ae38c092828d21efbf5e060b59a"
+  },
+  "update-00003837-1795660024427838928": {
+    "path": "checkpoints/update-00003837-1795660024427838928",
+    "elapsed": 51536.589437626004,
+    "updates": 3837,
+    "episodes": 13118,
+    "model_sha256": "e8b694f4da88e692641d746523de3d600ef39576c541b6cdb9235ca992ca9009"
+  },
+  "update-00003845-1795660150949612252": {
+    "path": "checkpoints/update-00003845-1795660150949612252",
+    "elapsed": 51663.110930578,
+    "updates": 3845,
+    "episodes": 13137,
+    "model_sha256": "fe1dfb1a4eaf7906dc7ea040dab4cb0cc1f04b7ed258e814dfa6025294f6074f"
+  },
+  "update-00003852-1795660282746823935": {
+    "path": "checkpoints/update-00003852-1795660282746823935",
+    "elapsed": 51794.906975936,
+    "updates": 3852,
+    "episodes": 13146,
+    "model_sha256": "ea1bceee2fe05fd9eabe0b9a0e3fb7d7132c70ca1fe20947ea34b0a6474a2dbc"
+  },
+  "update-00003860-1795660404109766534": {
+    "path": "checkpoints/update-00003860-1795660404109766534",
+    "elapsed": 51916.270987603995,
+    "updates": 3860,
+    "episodes": 13188,
+    "model_sha256": "72b83c6328182492f8372673b4122abc38f0ad6f19e71ad1745acc13ac1cfdb4"
+  },
+  "update-00003869-1795660539361778545": {
+    "path": "checkpoints/update-00003869-1795660539361778545",
+    "elapsed": 52051.522585729,
+    "updates": 3869,
+    "episodes": 13213,
+    "model_sha256": "66aa921e23a62955cd27a34895b273ecade706bb95dbf3f64720bfad51b47f9f"
+  },
+  "update-00003877-1795660659711198183": {
+    "path": "checkpoints/update-00003877-1795660659711198183",
+    "elapsed": 52171.871855759,
+    "updates": 3877,
+    "episodes": 13250,
+    "model_sha256": "e66ca5ebc8d001ec15e45c043e78c59a01c816e4632bae84479fe3eb7fe1918e"
+  },
+  "update-00003886-1795660793341278889": {
+    "path": "checkpoints/update-00003886-1795660793341278889",
+    "elapsed": 52305.502282292,
+    "updates": 3886,
+    "episodes": 13280,
+    "model_sha256": "483e711a02499457c4396bff5a7ed926080bf73e7e7388697741778fb1148b61"
+  },
+  "update-00003894-1795660926976121980": {
+    "path": "checkpoints/update-00003894-1795660926976121980",
+    "elapsed": 52439.136582508,
+    "updates": 3894,
+    "episodes": 13306,
+    "model_sha256": "0357c7f6eb84b3e71df9fc6c7459a9da03a3978ce59b3c83a1c0627281eb8421"
+  },
+  "update-00003901-1795661050750946930": {
+    "path": "checkpoints/update-00003901-1795661050750946930",
+    "elapsed": 52562.911976872,
+    "updates": 3901,
+    "episodes": 13330,
+    "model_sha256": "66463dabb33d020293354d8397016b80793be7e1988679f34eb9b0a65d135b43"
+  },
+  "update-00003910-1795661176256097647": {
+    "path": "checkpoints/update-00003910-1795661176256097647",
+    "elapsed": 52688.417523378994,
+    "updates": 3910,
+    "episodes": 13352,
+    "model_sha256": "a008fcc9f6a633ec156f859ce0b528846c31013c803b6678f63454c6469fa293"
+  },
+  "update-00003917-1795661298574836046": {
+    "path": "checkpoints/update-00003917-1795661298574836046",
+    "elapsed": 52810.736605161,
+    "updates": 3917,
+    "episodes": 13366,
+    "model_sha256": "19c5fb011b3113c149820105b92ce9ec937f9a5d0e903974bcc0f8f61b65fa00"
+  },
+  "update-00003927-1795661438427874096": {
+    "path": "checkpoints/update-00003927-1795661438427874096",
+    "elapsed": 52950.589230374004,
+    "updates": 3927,
+    "episodes": 13399,
+    "model_sha256": "9086b038cc26c93eed577afb787d3641502a481642a088aeac688fd0298b8d40"
+  },
+  "update-00003936-1795661567209050361": {
+    "path": "checkpoints/update-00003936-1795661567209050361",
+    "elapsed": 53079.369964565,
+    "updates": 3936,
+    "episodes": 13436,
+    "model_sha256": "73e6abd9cad4c67682ab67fd6ae896eab3ef82debe7e2893ee20a23842035206"
+  },
+  "update-00003945-1795661705718804967": {
+    "path": "checkpoints/update-00003945-1795661705718804967",
+    "elapsed": 53217.87996948,
+    "updates": 3945,
+    "episodes": 13467,
+    "model_sha256": "67582d7e38af7d2b80648259dfb348b82c393a7f54298c52b7372e1a01b0ab8b"
+  },
+  "update-00003953-1795661842142521677": {
+    "path": "checkpoints/update-00003953-1795661842142521677",
+    "elapsed": 53354.304260625,
+    "updates": 3953,
+    "episodes": 13496,
+    "model_sha256": "3312bb8ef74d65f83b728e8a7f4fa21cc9761ebddb8f05bf17263817765b9ebe"
+  },
+  "update-00003960-1795661962893056630": {
+    "path": "checkpoints/update-00003960-1795661962893056630",
+    "elapsed": 53475.048554286004,
+    "updates": 3960,
+    "episodes": 13521,
+    "model_sha256": "4d50ddd0cb2bd46fc0f18b1b9ebd68bd66eb7c882b53bba8fafe4ef456f50bc7"
+  },
+  "update-00003969-1795662096800598806": {
+    "path": "checkpoints/update-00003969-1795662096800598806",
+    "elapsed": 53608.961751372,
+    "updates": 3969,
+    "episodes": 13546,
+    "model_sha256": "170edd9844f017b6c9770dd8b6fcbd3e0eb3b7acb9e23e9fa79eb5146f70c5dd"
+  },
+  "update-00003976-1795662219239003364": {
+    "path": "checkpoints/update-00003976-1795662219239003364",
+    "elapsed": 53731.399312921,
+    "updates": 3976,
+    "episodes": 13576,
+    "model_sha256": "766f016e4be24b47d646263f23bca4d0f641de37b5174f9d5af638ffcda7748f"
+  },
+  "update-00003984-1795662354346405427": {
+    "path": "checkpoints/update-00003984-1795662354346405427",
+    "elapsed": 53866.507119918,
+    "updates": 3984,
+    "episodes": 13594,
+    "model_sha256": "0369eed4ba3411877e64efd23979d50f0550bd30f41d12af7baed0b3791ef20c"
+  },
+  "update-00003992-1795662487598966436": {
+    "path": "checkpoints/update-00003992-1795662487598966436",
+    "elapsed": 53999.760259662995,
+    "updates": 3992,
+    "episodes": 13625,
+    "model_sha256": "e82bc16130fdbab2076ebb9a635ad36125c1a442928adc5d24427a5fde5d58f1"
+  },
+  "update-00004000-1795662608085530182": {
+    "path": "checkpoints/update-00004000-1795662608085530182",
+    "elapsed": 54120.245668357,
+    "updates": 4000,
+    "episodes": 13653,
+    "model_sha256": "ca4d9f3546196e66416b7d24edf5f9474c5cb6ec43e676c3616a207f7fe6a36a"
+  },
+  "update-00004008-1795662740605596899": {
+    "path": "checkpoints/update-00004008-1795662740605596899",
+    "elapsed": 54252.767003887,
+    "updates": 4008,
+    "episodes": 13674,
+    "model_sha256": "0457c21badaf6fc14e5f44a13af766235688bc0f81ad457a8a6f542c039f535a"
+  },
+  "update-00004016-1795662861177454513": {
+    "path": "checkpoints/update-00004016-1795662861177454513",
+    "elapsed": 54373.334559995994,
+    "updates": 4016,
+    "episodes": 13699,
+    "model_sha256": "b0eba477b0d133e53caccd8fae76fc6541e3189e87943301dfdd6fca7aa449bb"
+  },
+  "update-00004022-1795662982047338584": {
+    "path": "checkpoints/update-00004022-1795662982047338584",
+    "elapsed": 54494.208425674,
+    "updates": 4022,
+    "episodes": 13712,
+    "model_sha256": "0844ee10042d9da4d184c7b9c30fd937453d1f33aee7072797aeb75ff99dba32"
+  },
+  "update-00004030-1795663111285660472": {
+    "path": "checkpoints/update-00004030-1795663111285660472",
+    "elapsed": 54623.447025181995,
+    "updates": 4030,
+    "episodes": 13742,
+    "model_sha256": "285d245bfafa9f58325d31505481641ecb985c3bf015b85f9985d289e43f4920"
+  },
+  "update-00004039-1795663248575007517": {
+    "path": "checkpoints/update-00004039-1795663248575007517",
+    "elapsed": 54760.734634137,
+    "updates": 4039,
+    "episodes": 13760,
+    "model_sha256": "64f3e8c386781ebf512426cb94b6ce51fa6399bc85bce9ebd03f60b7407aba98"
+  },
+  "update-00004047-1795663380118580636": {
+    "path": "checkpoints/update-00004047-1795663380118580636",
+    "elapsed": 54892.280401858,
+    "updates": 4047,
+    "episodes": 13793,
+    "model_sha256": "dfa2f824197406fbea4ac655615e73767e672568352198015a83a2c47eb3be0f"
+  },
+  "update-00004054-1795663502565131318": {
+    "path": "checkpoints/update-00004054-1795663502565131318",
+    "elapsed": 55014.725849813,
+    "updates": 4054,
+    "episodes": 13811,
+    "model_sha256": "63fef42ea69cbf47450a43f9e50c31def8abd8f1a8fe6de4348f593ec44e3d71"
+  },
+  "update-00004062-1795663624867414533": {
+    "path": "checkpoints/update-00004062-1795663624867414533",
+    "elapsed": 55137.02846352899,
+    "updates": 4062,
+    "episodes": 13840,
+    "model_sha256": "2c4dc7379187a39f1f401252ea07612327eb1b81769c0233b904669fcb8effdf"
+  },
+  "update-00004068-1795663745080451045": {
+    "path": "checkpoints/update-00004068-1795663745080451045",
+    "elapsed": 55257.240122805,
+    "updates": 4068,
+    "episodes": 13861,
+    "model_sha256": "3b5a08bcb25f3be46ccb7d97924444dd0954b70992fa312e117c07185dbd52c8"
+  },
+  "update-00004076-1795663865717584785": {
+    "path": "checkpoints/update-00004076-1795663865717584785",
+    "elapsed": 55377.87816861,
+    "updates": 4076,
+    "episodes": 13892,
+    "model_sha256": "8be29f6c9d97306aa8d7a2a9e66b422a5e08c6292929b49cfe605d0183c313b3"
+  },
+  "update-00004084-1795663985952249103": {
+    "path": "checkpoints/update-00004084-1795663985952249103",
+    "elapsed": 55498.113853790994,
+    "updates": 4084,
+    "episodes": 13926,
+    "model_sha256": "75df105f1cb7fe191f9b6cd308014023c8dca57ef932fafcea56c6308f1535b8"
+  },
+  "update-00004092-1795664113743175273": {
+    "path": "checkpoints/update-00004092-1795664113743175273",
+    "elapsed": 55625.903736558,
+    "updates": 4092,
+    "episodes": 13944,
+    "model_sha256": "3174acf73c5db7dda967c0f1bc70723a6ab50373c9d60a225c9d04fb95b749b7"
+  },
+  "update-00004100-1795664242815741267": {
+    "path": "checkpoints/update-00004100-1795664242815741267",
+    "elapsed": 55754.975278401,
+    "updates": 4100,
+    "episodes": 13973,
+    "model_sha256": "bb5f82adc501b4ec0db6b3b33def9a14422eb1b83b64944abe4a8e2b75326ac3"
+  },
+  "update-00004106-1795664363475460111": {
+    "path": "checkpoints/update-00004106-1795664363475460111",
+    "elapsed": 55875.636175274,
+    "updates": 4106,
+    "episodes": 13989,
+    "model_sha256": "6d7a3eaed0a60bc7213890ef2e3d494c1e62d942b310847291daf06680c9c56f"
+  },
+  "update-00004113-1795664502025310778": {
+    "path": "checkpoints/update-00004113-1795664502025310778",
+    "elapsed": 56014.186313392995,
+    "updates": 4113,
+    "episodes": 14003,
+    "model_sha256": "4c786b7576779eb7963a555c32fe8d6151af1bafbcf78f05b73b6f3750b9cfaf"
+  },
+  "update-00004120-1795664627810504538": {
+    "path": "checkpoints/update-00004120-1795664627810504538",
+    "elapsed": 56139.971117096,
+    "updates": 4120,
+    "episodes": 14022,
+    "model_sha256": "9479f2fd46defe8e9a2b7c331f2232efd6403c9fbe325df6775cb1588a00e280"
+  },
+  "update-00004128-1795664761506409652": {
+    "path": "checkpoints/update-00004128-1795664761506409652",
+    "elapsed": 56273.664324855,
+    "updates": 4128,
+    "episodes": 14047,
+    "model_sha256": "416601bea4eb7f3527527d2ef0f7ec561425930d3ec0dfab9c841719a176d77d"
+  },
+  "update-00004137-1795664894470832046": {
+    "path": "checkpoints/update-00004137-1795664894470832046",
+    "elapsed": 56406.630431484,
+    "updates": 4137,
+    "episodes": 14073,
+    "model_sha256": "35c01e6577af2c274221609900808fb705db858106208b827c5b6ed15be62c9b"
+  },
+  "update-00004143-1795665032539922183": {
+    "path": "checkpoints/update-00004143-1795665032539922183",
+    "elapsed": 56544.69613657799,
+    "updates": 4143,
+    "episodes": 14089,
+    "model_sha256": "9e60c0512e79b4b4b9d7e98bb9d985466a551f88530b49071e96c778fc2fb5a2"
+  },
+  "update-00004149-1795665154107565319": {
+    "path": "checkpoints/update-00004149-1795665154107565319",
+    "elapsed": 56666.268076211,
+    "updates": 4149,
+    "episodes": 14111,
+    "model_sha256": "f6335e95fc715945c6a13d92e1f385c24b5cec198b5c58d7ac58596c9a03ac51"
+  },
+  "update-00004156-1795665274500414692": {
+    "path": "checkpoints/update-00004156-1795665274500414692",
+    "elapsed": 56786.660998111,
+    "updates": 4156,
+    "episodes": 14135,
+    "model_sha256": "dadc111bc6345a7cb309dd1faa82bb3285d45dd81813d253830f591995660ea2"
+  },
+  "update-00004164-1795665398070723892": {
+    "path": "checkpoints/update-00004164-1795665398070723892",
+    "elapsed": 56910.232443142995,
+    "updates": 4164,
+    "episodes": 14163,
+    "model_sha256": "84f004f18e11eb5f469389a4a400f49ed6b1ff10862d1a7aa813b5a72fc7c0ff"
+  },
+  "update-00004173-1795665520155710757": {
+    "path": "checkpoints/update-00004173-1795665520155710757",
+    "elapsed": 57032.316654813,
+    "updates": 4173,
+    "episodes": 14187,
+    "model_sha256": "be0a62ed14bb88cca578aea428e6f5b32fba3b99d271e20e4ba793012ae8f57e"
+  },
+  "update-00004181-1795665655131066918": {
+    "path": "checkpoints/update-00004181-1795665655131066918",
+    "elapsed": 57167.29108250299,
+    "updates": 4181,
+    "episodes": 14226,
+    "model_sha256": "19c6d362f3406041561593ed67247383c36f2c22d7e0ac8fea20ae1d0c974c85"
+  },
+  "update-00004189-1795665778197354881": {
+    "path": "checkpoints/update-00004189-1795665778197354881",
+    "elapsed": 57290.352480956,
+    "updates": 4189,
+    "episodes": 14262,
+    "model_sha256": "ed34b381dbd2a2cbd26deb98099e364b95dd8ebb60e88f2295a092fa6e20cd93"
+  },
+  "update-00004197-1795665908872604558": {
+    "path": "checkpoints/update-00004197-1795665908872604558",
+    "elapsed": 57421.033600614996,
+    "updates": 4197,
+    "episodes": 14280,
+    "model_sha256": "a77f89fb70150ee0994cde13d93a3e2c512595587d2b094d111813c4ee62e106"
+  },
+  "update-00004205-1795666042061442429": {
+    "path": "checkpoints/update-00004205-1795666042061442429",
+    "elapsed": 57554.220696189,
+    "updates": 4205,
+    "episodes": 14300,
+    "model_sha256": "e00c921284eedc3ef867e0b59cfe41d305217ac379e7ccd372117dbc5e1b1a9d"
+  },
+  "update-00004213-1795666173283013239": {
+    "path": "checkpoints/update-00004213-1795666173283013239",
+    "elapsed": 57685.441629648,
+    "updates": 4213,
+    "episodes": 14327,
+    "model_sha256": "0556c53049cc1825cb97bbe877b739b35f8d17fbc8582283e82ef7d480e318fc"
+  },
+  "update-00004220-1795666301010728443": {
+    "path": "checkpoints/update-00004220-1795666301010728443",
+    "elapsed": 57813.17143664399,
+    "updates": 4220,
+    "episodes": 14348,
+    "model_sha256": "42c5b0d6cfea1e160bfe8135f2d55a821469a6c8f34aefa3580c8fb8cf0e5f93"
+  },
+  "update-00004228-1795666421783561105": {
+    "path": "checkpoints/update-00004228-1795666421783561105",
+    "elapsed": 57933.944750706,
+    "updates": 4228,
+    "episodes": 14380,
+    "model_sha256": "639eff87096680fdf10d9653b36b2fedd11025a1b8e064eb53ac2bb9cc122689"
+  },
+  "update-00004235-1795666554800003718": {
+    "path": "checkpoints/update-00004235-1795666554800003718",
+    "elapsed": 58066.956419489004,
+    "updates": 4235,
+    "episodes": 14410,
+    "model_sha256": "99a6591c4ecb8c462dcacde948da30b4b1c822354510074e378bf933f4104580"
+  },
+  "update-00004242-1795666675815466129": {
+    "path": "checkpoints/update-00004242-1795666675815466129",
+    "elapsed": 58187.97669151,
+    "updates": 4242,
+    "episodes": 14433,
+    "model_sha256": "d4c5543fb139429d5ec5ae47b050ea0b847271fa37f0dfe3a3b73fcf8cd39cce"
+  },
+  "update-00004249-1795666799835513982": {
+    "path": "checkpoints/update-00004249-1795666799835513982",
+    "elapsed": 58311.996630999995,
+    "updates": 4249,
+    "episodes": 14451,
+    "model_sha256": "475c78d272f697f50b66c9936c27fcfa5570271bdc1adbd1788692253b75d164"
+  },
+  "update-00004256-1795666922099517522": {
+    "path": "checkpoints/update-00004256-1795666922099517522",
+    "elapsed": 58434.260360780005,
+    "updates": 4256,
+    "episodes": 14493,
+    "model_sha256": "d96fc0470307732c6bd57791b84adc8af293c7ba9f6bfda4cdc3625ed44b61b5"
+  },
+  "update-00004263-1795667047667263049": {
+    "path": "checkpoints/update-00004263-1795667047667263049",
+    "elapsed": 58559.82785583099,
+    "updates": 4263,
+    "episodes": 14508,
+    "model_sha256": "65c4c152f477dcc7230f3c2f753bc54b0f26b220b823abf070b9bb9f3a63ec87"
+  },
+  "update-00004270-1795667170259541273": {
+    "path": "checkpoints/update-00004270-1795667170259541273",
+    "elapsed": 58682.42058362699,
+    "updates": 4270,
+    "episodes": 14532,
+    "model_sha256": "589810fa1b0cd3f4529da8f7d3a54e16f0a1689d9e24e02c82042c0808385d0d"
+  },
+  "update-00004278-1795667292641655971": {
+    "path": "checkpoints/update-00004278-1795667292641655971",
+    "elapsed": 58804.800888299,
+    "updates": 4278,
+    "episodes": 14557,
+    "model_sha256": "a3ea2c84b75700bcbacf41263560a1501dfa726a31dcd70405bf1ca32905d937"
+  },
+  "update-00004284-1795667415171134999": {
+    "path": "checkpoints/update-00004284-1795667415171134999",
+    "elapsed": 58927.326179175994,
+    "updates": 4284,
+    "episodes": 14575,
+    "model_sha256": "762aa024b281bcbe508e8839e75a3c8bc95863ee8b3d720f25deff44bea610f3"
+  },
+  "update-00004291-1795667549807383028": {
+    "path": "checkpoints/update-00004291-1795667549807383028",
+    "elapsed": 59061.968524079995,
+    "updates": 4291,
+    "episodes": 14601,
+    "model_sha256": "53d2d73c653ec180c3cbd87db99dd9d47b4bad582af6ef5c0ea761482818b137"
+  },
+  "update-00004299-1795667675976411763": {
+    "path": "checkpoints/update-00004299-1795667675976411763",
+    "elapsed": 59188.136143235,
+    "updates": 4299,
+    "episodes": 14626,
+    "model_sha256": "35be2bf7308ad1142ac658af90af8133f12ef5d3586dec77a883ef5b33d1d032"
+  },
+  "update-00004306-1795667809816501503": {
+    "path": "checkpoints/update-00004306-1795667809816501503",
+    "elapsed": 59321.975904175,
+    "updates": 4306,
+    "episodes": 14642,
+    "model_sha256": "eaa74c8f1ffde91be29b40f631c5d2cdb149a4377c38a6dbae413b159bb2863f"
+  },
+  "update-00004314-1795667931509240075": {
+    "path": "checkpoints/update-00004314-1795667931509240075",
+    "elapsed": 59443.669821917,
+    "updates": 4314,
+    "episodes": 14674,
+    "model_sha256": "e09c363aaf0355abb24f5d9943e3a4721d024a18c09d6ec192e21422d87ca626"
+  },
+  "update-00004322-1795668056266199828": {
+    "path": "checkpoints/update-00004322-1795668056266199828",
+    "elapsed": 59568.42720572299,
+    "updates": 4322,
+    "episodes": 14695,
+    "model_sha256": "381702596bacb5d8ff9c0c6dad788400144684928d0c04905344757913cf3ea3"
+  },
+  "update-00004329-1795668178497224363": {
+    "path": "checkpoints/update-00004329-1795668178497224363",
+    "elapsed": 59690.657849227,
+    "updates": 4329,
+    "episodes": 14715,
+    "model_sha256": "a90a66d7e0626d5503908890ee0589132b7a2126be130c8d1f8ae806cc46a76c"
+  },
+  "update-00004337-1795668307911019085": {
+    "path": "checkpoints/update-00004337-1795668307911019085",
+    "elapsed": 59820.070462403,
+    "updates": 4337,
+    "episodes": 14752,
+    "model_sha256": "6f34a5253c2d40c5928174bf8aa5bd25938271953744ecdbd132caffb25aa806"
+  },
+  "update-00004344-1795668433830652741": {
+    "path": "checkpoints/update-00004344-1795668433830652741",
+    "elapsed": 59945.989496755,
+    "updates": 4344,
+    "episodes": 14764,
+    "model_sha256": "2b268e79d837498e8d57ec114b531e913f4c37d32e3b6befbb26f898fb88ff58"
+  },
+  "update-00004351-1795668568679168621": {
+    "path": "checkpoints/update-00004351-1795668568679168621",
+    "elapsed": 60080.840521478,
+    "updates": 4351,
+    "episodes": 14794,
+    "model_sha256": "4e3cb13b3a21da57b8fdbe8cc71421141bd5c0630409332f0840494d8b5df9ad"
+  },
+  "update-00004359-1795668689388871919": {
+    "path": "checkpoints/update-00004359-1795668689388871919",
+    "elapsed": 60201.549709652994,
+    "updates": 4359,
+    "episodes": 14822,
+    "model_sha256": "d99b9bd3624054d5afa3d265c20b6ae1bdd82f5548a84e22587b92771f27e97d"
+  },
+  "update-00004367-1795668815927922192": {
+    "path": "checkpoints/update-00004367-1795668815927922192",
+    "elapsed": 60328.087313463,
+    "updates": 4367,
+    "episodes": 14846,
+    "model_sha256": "d8f79e81652d0f3ad09ea8e7f54c631a6e0f5240d8de1a1c66e0edda814f97ea"
+  },
+  "update-00004375-1795668954991075701": {
+    "path": "checkpoints/update-00004375-1795668954991075701",
+    "elapsed": 60467.15181481699,
+    "updates": 4375,
+    "episodes": 14876,
+    "model_sha256": "ba837a44abb8f8ea512b1ae63f30b341f58db6996fe11fcdfdf9e1f631540c06"
+  },
+  "update-00004383-1795669085077637314": {
+    "path": "checkpoints/update-00004383-1795669085077637314",
+    "elapsed": 60597.23801395301,
+    "updates": 4383,
+    "episodes": 14895,
+    "model_sha256": "2d0aaef596d93bc4d9f72ca7c6c55a668e761b0b6c4defb08635d42b5ca318ab"
+  },
+  "update-00004391-1795669217650389627": {
+    "path": "checkpoints/update-00004391-1795669217650389627",
+    "elapsed": 60729.809563787996,
+    "updates": 4391,
+    "episodes": 14929,
+    "model_sha256": "1766ca570128168a0d0126433656ca38140f90e9eb909b2b5ea36f9522ef2d70"
+  },
+  "update-00004399-1795669350994327367": {
+    "path": "checkpoints/update-00004399-1795669350994327367",
+    "elapsed": 60863.15405799999,
+    "updates": 4399,
+    "episodes": 14951,
+    "model_sha256": "233ef8f9a013fcc3ac5e0bd56bbac6071b2ae003e61cff2a0d9fc4d5470d3cb8"
+  },
+  "update-00004407-1795669478070110515": {
+    "path": "checkpoints/update-00004407-1795669478070110515",
+    "elapsed": 60990.230423466004,
+    "updates": 4407,
+    "episodes": 14984,
+    "model_sha256": "171e6024c434929b1f9d41686c7f1df8a7eb356e1dd78c7f98b9b685a121b96d"
+  },
+  "update-00004413-1795669606960051931": {
+    "path": "checkpoints/update-00004413-1795669606960051931",
+    "elapsed": 61119.116698644,
+    "updates": 4413,
+    "episodes": 15000,
+    "model_sha256": "bcd2c5dbe8196a5103ca7d26a43db1ea73a49d38fad9fa1dcef44edac66ea4e9"
+  },
+  "update-00004421-1795669738263054853": {
+    "path": "checkpoints/update-00004421-1795669738263054853",
+    "elapsed": 61250.421067055,
+    "updates": 4421,
+    "episodes": 15016,
+    "model_sha256": "597a04e31780680ee6f1f809bbea7ed1433190307c4757c953cf869825e172f8"
+  },
+  "update-00004429-1795669875819405151": {
+    "path": "checkpoints/update-00004429-1795669875819405151",
+    "elapsed": 61387.971396053,
+    "updates": 4429,
+    "episodes": 15047,
+    "model_sha256": "f38c9c3af2ce3e285d613d95b244dc388a0ea53e2870e1ac66bdf0530b8e2892"
+  },
+  "update-00004437-1795670004043964614": {
+    "path": "checkpoints/update-00004437-1795670004043964614",
+    "elapsed": 61516.192522991994,
+    "updates": 4437,
+    "episodes": 15078,
+    "model_sha256": "3c843011e036526a882221eae7d63d5927d47fbcec0943baf7442de2557c2309"
+  },
+  "update-00004443-1795670144455829879": {
+    "path": "checkpoints/update-00004443-1795670144455829879",
+    "elapsed": 61656.616319190995,
+    "updates": 4443,
+    "episodes": 15091,
+    "model_sha256": "f52c6edfd893e4022d222afe629e6e766720fda882bfe4d46294f805fa446fa6"
+  },
+  "update-00004451-1795670275178596742": {
+    "path": "checkpoints/update-00004451-1795670275178596742",
+    "elapsed": 61787.332813422,
+    "updates": 4451,
+    "episodes": 15118,
+    "model_sha256": "054132e6c029a2f00ffd8948ce048b49620efe33c88a3641b4a15881b2ec3d37"
+  },
+  "update-00004459-1795670406780673521": {
+    "path": "checkpoints/update-00004459-1795670406780673521",
+    "elapsed": 61918.93999868399,
+    "updates": 4459,
+    "episodes": 15154,
+    "model_sha256": "d47a2c7e1d8510b70044cf9f3018615837dfd686b44e479a31433da24374f68a"
+  },
+  "update-00004467-1795670545382219425": {
+    "path": "checkpoints/update-00004467-1795670545382219425",
+    "elapsed": 62057.524747004,
+    "updates": 4467,
+    "episodes": 15190,
+    "model_sha256": "427b9d1df8e2f6607bcc963043c4d27ddd6a2c6cbf1218f2e27ed72b8ad80772"
+  },
+  "update-00004474-1795670666288103503": {
+    "path": "checkpoints/update-00004474-1795670666288103503",
+    "elapsed": 62178.447328096,
+    "updates": 4474,
+    "episodes": 15213,
+    "model_sha256": "6fac0e192c91642cef07ec1ecbaeff12eb6998b52ccbb5b7c15d5cac786bf6af"
+  },
+  "update-00004482-1795670797816852382": {
+    "path": "checkpoints/update-00004482-1795670797816852382",
+    "elapsed": 62309.975989638995,
+    "updates": 4482,
+    "episodes": 15227,
+    "model_sha256": "242b7ba479be4f6fe2dce9e8523fa5a7f636f24bdd5c11cdd2911bd3b84f938e"
+  },
+  "update-00004489-1795670932976038177": {
+    "path": "checkpoints/update-00004489-1795670932976038177",
+    "elapsed": 62445.136617364995,
+    "updates": 4489,
+    "episodes": 15248,
+    "model_sha256": "5df9fe606e74bcd2720f698d0800c3fac5fd142812dcef8c6603b86a057bb01f"
+  },
+  "update-00004496-1795671058811498414": {
+    "path": "checkpoints/update-00004496-1795671058811498414",
+    "elapsed": 62570.970689787,
+    "updates": 4496,
+    "episodes": 15259,
+    "model_sha256": "ac2ecdd57956c658bc2002cdb33bf7f142f13ef98f599f07b19357f1fa62f354"
+  },
+  "update-00004503-1795671181203783193": {
+    "path": "checkpoints/update-00004503-1795671181203783193",
+    "elapsed": 62693.36116923,
+    "updates": 4503,
+    "episodes": 15278,
+    "model_sha256": "47904faebdbfb5a37233a9f450fe7a60515f225fc4ba632d52df6bfec4b723c1"
+  },
+  "update-00004510-1795671311765140435": {
+    "path": "checkpoints/update-00004510-1795671311765140435",
+    "elapsed": 62823.919322776994,
+    "updates": 4510,
+    "episodes": 15305,
+    "model_sha256": "644a04c7eec64960d974d73a0b9b352610c434859b0b12552f1b8589983d11ed"
+  },
+  "update-00004516-1795671448444386934": {
+    "path": "checkpoints/update-00004516-1795671448444386934",
+    "elapsed": 62960.60597578099,
+    "updates": 4516,
+    "episodes": 15323,
+    "model_sha256": "781f53f4463a9be24e3821fc7c28a9e95302f9c6444520ffab6b29589a4465cd"
+  },
+  "update-00004522-1795671577344126803": {
+    "path": "checkpoints/update-00004522-1795671577344126803",
+    "elapsed": 63089.501015512,
+    "updates": 4522,
+    "episodes": 15335,
+    "model_sha256": "627a1ab2dd80905c9746cac9525c72098f1539e7332ec64a9c1c6a3bb841d6c6"
+  },
+  "update-00004528-1795671701451178455": {
+    "path": "checkpoints/update-00004528-1795671701451178455",
+    "elapsed": 63213.61134345699,
+    "updates": 4528,
+    "episodes": 15359,
+    "model_sha256": "20197b01329e4cab184527019651db3335728400b7d13785a50649851cfdffc3"
+  },
+  "update-00004536-1795671835623745185": {
+    "path": "checkpoints/update-00004536-1795671835623745185",
+    "elapsed": 63347.783960918,
+    "updates": 4536,
+    "episodes": 15390,
+    "model_sha256": "8bb4a1b03f261d76671db1a1c1edea4769f8e452411464f16235c4a65a7f5cfb"
+  },
+  "update-00004543-1795671976549948083": {
+    "path": "checkpoints/update-00004543-1795671976549948083",
+    "elapsed": 63488.710989552004,
+    "updates": 4543,
+    "episodes": 15401,
+    "model_sha256": "27a891b7d57ca4641e11b50b06a71c03fdb5a5880170222905b1849ec076e248"
+  },
+  "update-00004552-1795672105790497333": {
+    "path": "checkpoints/update-00004552-1795672105790497333",
+    "elapsed": 63617.949374366006,
+    "updates": 4552,
+    "episodes": 15437,
+    "model_sha256": "3c66d958e39d04a22f5adcd7d3f3521cf98e7cc5469b485d2fbb929566f25eb8"
+  },
+  "update-00004560-1795672230926148710": {
+    "path": "checkpoints/update-00004560-1795672230926148710",
+    "elapsed": 63743.084456168996,
+    "updates": 4560,
+    "episodes": 15466,
+    "model_sha256": "5a2dd3eb2be75495e6500de215ba697fe66c786a6feb8a0b46df3b57dbe307e9"
+  },
+  "update-00004567-1795672361276181945": {
+    "path": "checkpoints/update-00004567-1795672361276181945",
+    "elapsed": 63873.435273156,
+    "updates": 4567,
+    "episodes": 15483,
+    "model_sha256": "be79bfa3f38b02988b10a9c5983ec3635a8bde392dd3bfa384f15ffd2a74a7d9"
+  },
+  "update-00004574-1795672483283527426": {
+    "path": "checkpoints/update-00004574-1795672483283527426",
+    "elapsed": 63995.439289733,
+    "updates": 4574,
+    "episodes": 15504,
+    "model_sha256": "8d1f75aa4e75afbe50a1120eb18ec1cdad45f0bd2f4cddc7aeab46bc1588804a"
+  },
+  "update-00004581-1795672607211647651": {
+    "path": "checkpoints/update-00004581-1795672607211647651",
+    "elapsed": 64119.372471406,
+    "updates": 4581,
+    "episodes": 15529,
+    "model_sha256": "1525cbd4985c66040614f72a16f2999d7d5265898d2b7701670c665a7bce7714"
+  },
+  "update-00004589-1795672738674831502": {
+    "path": "checkpoints/update-00004589-1795672738674831502",
+    "elapsed": 64250.83505691001,
+    "updates": 4589,
+    "episodes": 15550,
+    "model_sha256": "313e13da2d50184a2fc0fe060eb33610dd5e144ad79ce24be2864f16cc4ff0a2"
+  },
+  "update-00004597-1795672871648375766": {
+    "path": "checkpoints/update-00004597-1795672871648375766",
+    "elapsed": 64383.80694775101,
+    "updates": 4597,
+    "episodes": 15580,
+    "model_sha256": "0fb0fdd13d30460b71ab71f6f850e9c9ad9f04a1d348c866cb8471f64bdfb11e"
+  },
+  "update-00004604-1795673006819975858": {
+    "path": "checkpoints/update-00004604-1795673006819975858",
+    "elapsed": 64518.979728652,
+    "updates": 4604,
+    "episodes": 15608,
+    "model_sha256": "eb7ae9f918b8ea9c3cbdc073e81a26a4ad9931b9469be09843cfea4514785eb1"
+  },
+  "update-00004612-1795673136482490471": {
+    "path": "checkpoints/update-00004612-1795673136482490471",
+    "elapsed": 64648.641363908995,
+    "updates": 4612,
+    "episodes": 15631,
+    "model_sha256": "45c2dae7a2240ef66d82126dd8c6793d5f20379a6922f16fd67bbfe04d22c7fe"
+  },
+  "update-00004619-1795673258360654168": {
+    "path": "checkpoints/update-00004619-1795673258360654168",
+    "elapsed": 64770.52055336501,
+    "updates": 4619,
+    "episodes": 15657,
+    "model_sha256": "1135605212dc5dd990c477da52f4420db02a82ea9b33a85a0604a156499ff657"
+  },
+  "update-00004625-1795673389021555623": {
+    "path": "checkpoints/update-00004625-1795673389021555623",
+    "elapsed": 64901.180283093,
+    "updates": 4625,
+    "episodes": 15671,
+    "model_sha256": "49f4854880256206a0c248ff43463118c124d411984257d70a0cfb16b41ac0d2"
+  },
+  "update-00004632-1795673512876426584": {
+    "path": "checkpoints/update-00004632-1795673512876426584",
+    "elapsed": 65025.026895396,
+    "updates": 4632,
+    "episodes": 15707,
+    "model_sha256": "7a039c571c4ff889289e97b4f2f5f1169445ae559663bd41e8c5a7a197de9f1c"
+  },
+  "update-00004639-1795673635503922125": {
+    "path": "checkpoints/update-00004639-1795673635503922125",
+    "elapsed": 65147.664001608,
+    "updates": 4639,
+    "episodes": 15736,
+    "model_sha256": "a3c68a17a041dd6eb7eee78330d12c92e310ecb7b6b19738f70e5e31cb698ab3"
+  },
+  "update-00004645-1795673764715162288": {
+    "path": "checkpoints/update-00004645-1795673764715162288",
+    "elapsed": 65276.871298526,
+    "updates": 4645,
+    "episodes": 15751,
+    "model_sha256": "700f714931ba6e2bc5d64d3013cb5984a307792640158cbe029f92ad14d448d9"
+  },
+  "update-00004652-1795673900880099200": {
+    "path": "checkpoints/update-00004652-1795673900880099200",
+    "elapsed": 65413.03509124599,
+    "updates": 4652,
+    "episodes": 15778,
+    "model_sha256": "465ca0ab8586fed5671f1588170bef1cc653883625809d4ae3203e372cfb58b9"
+  },
+  "update-00004659-1795674021308476637": {
+    "path": "checkpoints/update-00004659-1795674021308476637",
+    "elapsed": 65533.460707248996,
+    "updates": 4659,
+    "episodes": 15801,
+    "model_sha256": "0502114ab60858f0aae4a5b967f223f23f3f55a4977329943643f85e65213432"
+  },
+  "update-00004668-1795674151932097440": {
+    "path": "checkpoints/update-00004668-1795674151932097440",
+    "elapsed": 65664.092049433,
+    "updates": 4668,
+    "episodes": 15832,
+    "model_sha256": "cc6f6bbd9456f4993c19b064b9a8eb8d69297b6f67db4780c05877a646160b99"
+  },
+  "update-00004676-1795674281607914800": {
+    "path": "checkpoints/update-00004676-1795674281607914800",
+    "elapsed": 65793.76807400899,
+    "updates": 4676,
+    "episodes": 15866,
+    "model_sha256": "7bf1d74f50bd9cf5badd289e1b82786a5710b2c8c239b696b77f3f0656efc100"
+  },
+  "update-00004684-1795674412190011646": {
+    "path": "checkpoints/update-00004684-1795674412190011646",
+    "elapsed": 65924.342388096,
+    "updates": 4684,
+    "episodes": 15901,
+    "model_sha256": "0a35110c5fe05fb933e0c5465bb55ffc150f3685748f26c20bd5b702b940b214"
+  },
+  "update-00004691-1795674545760951434": {
+    "path": "checkpoints/update-00004691-1795674545760951434",
+    "elapsed": 66057.921052519,
+    "updates": 4691,
+    "episodes": 15919,
+    "model_sha256": "aaf8282b5548fd5165ef7781c205c252814eeeb960e2b042b026b7a43c0749da"
+  },
+  "update-00004698-1795674676425673020": {
+    "path": "checkpoints/update-00004698-1795674676425673020",
+    "elapsed": 66188.58618359,
+    "updates": 4698,
+    "episodes": 15948,
+    "model_sha256": "c3ec025df3570b809e97895bc2801a5b43f0a94e8a4a649f768f8ae191cab7b9"
+  },
+  "update-00004705-1795674804666619193": {
+    "path": "checkpoints/update-00004705-1795674804666619193",
+    "elapsed": 66316.827466132,
+    "updates": 4705,
+    "episodes": 15970,
+    "model_sha256": "a30265430e107bdb93cd7f9e945acd292b04c9634bfa7d397cbbf23fce23aef4"
+  },
+  "update-00004713-1795674936945568094": {
+    "path": "checkpoints/update-00004713-1795674936945568094",
+    "elapsed": 66449.104224145,
+    "updates": 4713,
+    "episodes": 15992,
+    "model_sha256": "1253a852e2c6ec5646d298854c73a697d0fa262462507954120ad2446708df40"
+  },
+  "update-00004719-1795675068165298354": {
+    "path": "checkpoints/update-00004719-1795675068165298354",
+    "elapsed": 66580.319322592,
+    "updates": 4719,
+    "episodes": 16009,
+    "model_sha256": "8dcc3714ba1557b815ca6c8b1f6ab7f5a9fab0e8b80c30cd9d80a60aeb3e1d8f"
+  },
+  "update-00004724-1795675191210213166": {
+    "path": "checkpoints/update-00004724-1795675191210213166",
+    "elapsed": 66703.36654232998,
+    "updates": 4724,
+    "episodes": 16018,
+    "model_sha256": "fd9f920d5c9e61b7a51cb9da25023f9ef3d87962a352dfb1b68085c49a1f682e"
+  },
+  "update-00004731-1795675319056464741": {
+    "path": "checkpoints/update-00004731-1795675319056464741",
+    "elapsed": 66831.21344442599,
+    "updates": 4731,
+    "episodes": 16049,
+    "model_sha256": "d525af1d52c11bff2df3bf9215b190775c3fa57cf506289be8b5deb4863b703f"
+  },
+  "update-00004737-1795675444126214424": {
+    "path": "checkpoints/update-00004737-1795675444126214424",
+    "elapsed": 66956.28195973099,
+    "updates": 4737,
+    "episodes": 16068,
+    "model_sha256": "0c2be50b853bc29b4ec067c9b0cc7d29a3ae46cee3dbf8aee629da089c529de1"
+  },
+  "update-00004743-1795675568092381911": {
+    "path": "checkpoints/update-00004743-1795675568092381911",
+    "elapsed": 67080.25179804399,
+    "updates": 4743,
+    "episodes": 16079,
+    "model_sha256": "ed8105d1239c816ac21a32dc1e78bf3881ec029c82e4e32fa8e8c2c98f3ca620"
+  },
+  "update-00004749-1795675692320898489": {
+    "path": "checkpoints/update-00004749-1795675692320898489",
+    "elapsed": 67204.480525939,
+    "updates": 4749,
+    "episodes": 16104,
+    "model_sha256": "5cdeef9c7babea0abf855cdee5cce1f8a2bc555fc6cf58a085c3410fb07b9a1a"
+  },
+  "update-00004756-1795675829775155826": {
+    "path": "checkpoints/update-00004756-1795675829775155826",
+    "elapsed": 67341.925067843,
+    "updates": 4756,
+    "episodes": 16135,
+    "model_sha256": "6626e8467553d24fcacc8c358ceabfe2801bfb775a6c4222f2bfd6ffd468afe4"
+  },
+  "update-00004763-1795675954497141683": {
+    "path": "checkpoints/update-00004763-1795675954497141683",
+    "elapsed": 67466.655495366,
+    "updates": 4763,
+    "episodes": 16152,
+    "model_sha256": "ec12db5ccf0dc5b865f55981c532ee83f77b84ed3a11a85e4857815b27f0e1d9"
+  },
+  "update-00004769-1795676096388223432": {
+    "path": "checkpoints/update-00004769-1795676096388223432",
+    "elapsed": 67608.548840417,
+    "updates": 4769,
+    "episodes": 16165,
+    "model_sha256": "0e0e8265b19ec3bf81d2e5ee6bf08b4ec74dad4b6e4ae5bfa7e72ecb713216dc"
+  },
+  "update-00004775-1795676221704090963": {
+    "path": "checkpoints/update-00004775-1795676221704090963",
+    "elapsed": 67733.86381573099,
+    "updates": 4775,
+    "episodes": 16181,
+    "model_sha256": "fae28aee547913657d247030c04d4eae406910b3e865665645deb6cc2edda415"
+  },
+  "update-00004782-1795676351880026800": {
+    "path": "checkpoints/update-00004782-1795676351880026800",
+    "elapsed": 67864.039790051,
+    "updates": 4782,
+    "episodes": 16208,
+    "model_sha256": "52e5baa97025d9ba750b5fa0b42cb83bd4fa0cf087a5cdb6ae85d8bb2cdbc86a"
+  },
+  "update-00004789-1795676473298033543": {
+    "path": "checkpoints/update-00004789-1795676473298033543",
+    "elapsed": 67985.45776786,
+    "updates": 4789,
+    "episodes": 16232,
+    "model_sha256": "ae0eb409454945e8f1d41c7e219af9806300b41a5b08f2e93d04115f7b7d8765"
+  },
+  "update-00004797-1795676602646327110": {
+    "path": "checkpoints/update-00004797-1795676602646327110",
+    "elapsed": 68114.80572601999,
+    "updates": 4797,
+    "episodes": 16265,
+    "model_sha256": "769457e7662d4e9d04f608a48aa3bbcafbea2b3b8adaf78ad2fecc98f17e9039"
+  },
+  "update-00004804-1795676740364903673": {
+    "path": "checkpoints/update-00004804-1795676740364903673",
+    "elapsed": 68252.51843540199,
+    "updates": 4804,
+    "episodes": 16287,
+    "model_sha256": "ba9d2e1c57ea7dc8d0b07b1f6325c0d22f8987ccd6b69704954eaf03994db465"
+  },
+  "update-00004811-1795676870641373084": {
+    "path": "checkpoints/update-00004811-1795676870641373084",
+    "elapsed": 68382.80147991699,
+    "updates": 4811,
+    "episodes": 16302,
+    "model_sha256": "5a7fbf89e619d5cb82ffded1acf05fbfab3452c8ce715a55ab0cd0b5dbcdc047"
+  },
+  "update-00004818-1795676994225435253": {
+    "path": "checkpoints/update-00004818-1795676994225435253",
+    "elapsed": 68506.38385563,
+    "updates": 4818,
+    "episodes": 16328,
+    "model_sha256": "2b0bd79f01b3f6cb6f6cf592fd1d866de872802eebe9160c115abba451a4d879"
+  },
+  "update-00004824-1795677115517399425": {
+    "path": "checkpoints/update-00004824-1795677115517399425",
+    "elapsed": 68627.678134888,
+    "updates": 4824,
+    "episodes": 16344,
+    "model_sha256": "3a1970604eda205e40a11fcf88afe91c61b1caa221184f382042d10453f93907"
+  },
+  "update-00004830-1795677244735375175": {
+    "path": "checkpoints/update-00004830-1795677244735375175",
+    "elapsed": 68756.89198684899,
+    "updates": 4830,
+    "episodes": 16358,
+    "model_sha256": "98f1e1552ea892284e4bae0f23a1e8f0477cb646e83b6346d6369f1fffaf3385"
+  },
+  "update-00004836-1795677381434075684": {
+    "path": "checkpoints/update-00004836-1795677381434075684",
+    "elapsed": 68893.58403838001,
+    "updates": 4836,
+    "episodes": 16383,
+    "model_sha256": "a5e26ed61679f92cf7f158bcf4897006966d896e46bd975356f3a0927af620ae"
+  },
+  "update-00004844-1795677519056797673": {
+    "path": "checkpoints/update-00004844-1795677519056797673",
+    "elapsed": 69031.206019111,
+    "updates": 4844,
+    "episodes": 16407,
+    "model_sha256": "3f34a5f296d7f06bdf7338c9075561aec3eb4dcd51da9a0651fb9a2b6fd79c9e"
+  },
+  "update-00004851-1795677647557028649": {
+    "path": "checkpoints/update-00004851-1795677647557028649",
+    "elapsed": 69159.715562319,
+    "updates": 4851,
+    "episodes": 16442,
+    "model_sha256": "9930fdb958ccc20908898a47ebb5082034c8f44d5742555c80af59fbc4b0319b"
+  },
+  "update-00004858-1795677768834269458": {
+    "path": "checkpoints/update-00004858-1795677768834269458",
+    "elapsed": 69280.994169596,
+    "updates": 4858,
+    "episodes": 16465,
+    "model_sha256": "caa89c62a247a42e66fd735f90701f70ee9513485b954dfd26e7543b34990f33"
+  },
+  "update-00004865-1795677900638728403": {
+    "path": "checkpoints/update-00004865-1795677900638728403",
+    "elapsed": 69412.79803998998,
+    "updates": 4865,
+    "episodes": 16481,
+    "model_sha256": "71339b86370c81cfbf908db4801fd135e073e278de3470ad2796825480f31d8f"
+  },
+  "update-00004871-1795678022136826624": {
+    "path": "checkpoints/update-00004871-1795678022136826624",
+    "elapsed": 69534.289813299,
+    "updates": 4871,
+    "episodes": 16503,
+    "model_sha256": "e4753eaea47c621eb802c698631f52b50e70362c756ff1f06461ec7ca07e4208"
+  },
+  "update-00004878-1795678149450938537": {
+    "path": "checkpoints/update-00004878-1795678149450938537",
+    "elapsed": 69661.610222441,
+    "updates": 4878,
+    "episodes": 16534,
+    "model_sha256": "93c1544a03d3c263ed28732e71856c636796756079479a734dcad84e68200863"
+  },
+  "update-00004885-1795678269724675412": {
+    "path": "checkpoints/update-00004885-1795678269724675412",
+    "elapsed": 69781.87468933099,
+    "updates": 4885,
+    "episodes": 16561,
+    "model_sha256": "533c096abec1c2c8b1e8be8ae02bcffe099c3f421b0aed129fa1047b73373e07"
+  },
+  "update-00004893-1795678398001402555": {
+    "path": "checkpoints/update-00004893-1795678398001402555",
+    "elapsed": 69910.160389664,
+    "updates": 4893,
+    "episodes": 16588,
+    "model_sha256": "0d13870d53a6977019b81ba2a6ad077872205eb174dea947559a4868788116dc"
+  },
+  "update-00004900-1795678536537790829": {
+    "path": "checkpoints/update-00004900-1795678536537790829",
+    "elapsed": 70048.69734227701,
+    "updates": 4900,
+    "episodes": 16609,
+    "model_sha256": "8a0e12ea50a40e9ff3373f4ea384b309bb318c0442c3c28c8e577e857cee37e5"
+  },
+  "update-00004906-1795678664804392325": {
+    "path": "checkpoints/update-00004906-1795678664804392325",
+    "elapsed": 70176.962850176,
+    "updates": 4906,
+    "episodes": 16619,
+    "model_sha256": "9d5400d58255d2e4c805e66e99e70b3807d4c8a7f6d694acee89882b0d4bfdc2"
+  },
+  "update-00004914-1795678797936524035": {
+    "path": "checkpoints/update-00004914-1795678797936524035",
+    "elapsed": 70310.09624697198,
+    "updates": 4914,
+    "episodes": 16647,
+    "model_sha256": "fcf5261b620e5955773fbd42b1143613df4c751a78bd882ef2846f5c5a5bfdfe"
+  },
+  "update-00004920-1795678925165261821": {
+    "path": "checkpoints/update-00004920-1795678925165261821",
+    "elapsed": 70437.324053247,
+    "updates": 4920,
+    "episodes": 16666,
+    "model_sha256": "d78d42b21c86e85c1b69f5e4496a0314be2c3be9d0ea2da597bc421fdf8f9a5c"
+  },
+  "update-00004927-1795679058471220048": {
+    "path": "checkpoints/update-00004927-1795679058471220048",
+    "elapsed": 70570.628510977,
+    "updates": 4927,
+    "episodes": 16691,
+    "model_sha256": "5dd8549b8344053b67411e06a9e9cac9b4320fa0b96e3ba0c48da010b0f5389f"
+  },
+  "update-00004934-1795679191510107157": {
+    "path": "checkpoints/update-00004934-1795679191510107157",
+    "elapsed": 70703.670350117,
+    "updates": 4934,
+    "episodes": 16712,
+    "model_sha256": "126b01e2b658c4f3141b64f9ff42a0973fe836bdbb57affb785c6b783a3ddcdc"
+  },
+  "update-00004942-1795679316196644440": {
+    "path": "checkpoints/update-00004942-1795679316196644440",
+    "elapsed": 70828.355896708,
+    "updates": 4942,
+    "episodes": 16737,
+    "model_sha256": "c7080b3ddb65e3e5dfdf31837ec6a9d0b9308928175f76f806c310dbd4d9807b"
+  },
+  "update-00004949-1795679448907517700": {
+    "path": "checkpoints/update-00004949-1795679448907517700",
+    "elapsed": 70961.06617281199,
+    "updates": 4949,
+    "episodes": 16758,
+    "model_sha256": "995bd6b2cbcdcc6c3877ff47c3f6de7345c069381b069c3e705c50348227b444"
+  },
+  "update-00004954-1795679576290795297": {
+    "path": "checkpoints/update-00004954-1795679576290795297",
+    "elapsed": 71088.448698792,
+    "updates": 4954,
+    "episodes": 16768,
+    "model_sha256": "074063e4c7204e860ff4e599b5ef6467bca25d666576c6650e13cac10fde2e25"
+  },
+  "update-00004961-1795679708810678982": {
+    "path": "checkpoints/update-00004961-1795679708810678982",
+    "elapsed": 71220.969430483,
+    "updates": 4961,
+    "episodes": 16795,
+    "model_sha256": "792acc45169eb122213418ce2cc52553c2784d02121ec297f25a586a0cf8a1b3"
+  },
+  "update-00004968-1795679841063351489": {
+    "path": "checkpoints/update-00004968-1795679841063351489",
+    "elapsed": 71353.21214084601,
+    "updates": 4968,
+    "episodes": 16824,
+    "model_sha256": "e4dcb5da593ea8786a5d30639274e802ac974e9eeb0572b71ddf8ed27600e383"
+  },
+  "update-00004974-1795679966984495849": {
+    "path": "checkpoints/update-00004974-1795679966984495849",
+    "elapsed": 71479.14054961599,
+    "updates": 4974,
+    "episodes": 16845,
+    "model_sha256": "2c7559e5b996ce107fe7d7fcab5232438a6d43430f6ab6ed7b95cdacb7b1de82"
+  },
+  "update-00004981-1795680110573384187": {
+    "path": "checkpoints/update-00004981-1795680110573384187",
+    "elapsed": 71622.732038969,
+    "updates": 4981,
+    "episodes": 16855,
+    "model_sha256": "9351e10867b561de7a25d37094142861c532bc832da88ba4f9d57a21c56e3935"
+  },
+  "update-00004988-1795680250337007955": {
+    "path": "checkpoints/update-00004988-1795680250337007955",
+    "elapsed": 71762.49680556598,
+    "updates": 4988,
+    "episodes": 16877,
+    "model_sha256": "ad13215ef6d1814bf9ef00b6a4d4a436d950365ba39a0927cb978537c5ad66cd"
+  },
+  "update-00004994-1795680375820979481": {
+    "path": "checkpoints/update-00004994-1795680375820979481",
+    "elapsed": 71887.981028635,
+    "updates": 4994,
+    "episodes": 16894,
+    "model_sha256": "ab0f491f7e2d3ff0d55a54d6c6b889d8b608e0c16eb5df4face7bff4834b8c4c"
+  },
+  "update-00005000-1795680519976850842": {
+    "path": "checkpoints/update-00005000-1795680519976850842",
+    "elapsed": 72032.13277846901,
+    "updates": 5000,
+    "episodes": 16907,
+    "model_sha256": "ff6363af6a27d3b0b4bb05eaaa9de932c5adb3667b84ddf79af9c3b93d845a09"
+  },
+  "update-00005006-1795680659297368976": {
+    "path": "checkpoints/update-00005006-1795680659297368976",
+    "elapsed": 72171.457996869,
+    "updates": 5006,
+    "episodes": 16924,
+    "model_sha256": "0a84ec444ef19bce19c8859096b73b9902cd9d4a0bb22fd3421de0398c20fbdb"
+  },
+  "update-00005012-1795680794282816203": {
+    "path": "checkpoints/update-00005012-1795680794282816203",
+    "elapsed": 72306.439207699,
+    "updates": 5012,
+    "episodes": 16946,
+    "model_sha256": "237729c062bea486380e45b8cef23f77289d2e792a9cea8b0978bc82612bf19d"
+  },
+  "update-00005019-1795680924585279802": {
+    "path": "checkpoints/update-00005019-1795680924585279802",
+    "elapsed": 72436.74599329499,
+    "updates": 5019,
+    "episodes": 16970,
+    "model_sha256": "fdae71381947051ec9c70f3b094352200d1ad52370d6d6cd76733879f4ff508b"
+  },
+  "update-00005025-1795681050821882940": {
+    "path": "checkpoints/update-00005025-1795681050821882940",
+    "elapsed": 72562.97111343901,
+    "updates": 5025,
+    "episodes": 16999,
+    "model_sha256": "95f4c82690791abecb46c8a93efa40e1512e5938ac56fce6860f1eac2158a0ff"
+  },
+  "update-00005031-1795681172954241561": {
+    "path": "checkpoints/update-00005031-1795681172954241561",
+    "elapsed": 72685.113288486,
+    "updates": 5031,
+    "episodes": 17009,
+    "model_sha256": "4d79eeaf6661dcfbd59481d7de6d409deb049f0e9f3309e4c6792806fe246cbf"
+  },
+  "update-00005038-1795681311828538092": {
+    "path": "checkpoints/update-00005038-1795681311828538092",
+    "elapsed": 72823.988264388,
+    "updates": 5038,
+    "episodes": 17035,
+    "model_sha256": "53ca58af732dee4a3bf75ff4e76a67976f40940a2597b0424ed88026e54917c5"
+  },
+  "update-00005045-1795681444154365317": {
+    "path": "checkpoints/update-00005045-1795681444154365317",
+    "elapsed": 72956.303746838,
+    "updates": 5045,
+    "episodes": 17058,
+    "model_sha256": "dc5eec0aa9b13a576da33ed3ec6220a9b10820897556a07e0c8f19e6c8dd2b6a"
+  },
+  "update-00005051-1795681566168331065": {
+    "path": "checkpoints/update-00005051-1795681566168331065",
+    "elapsed": 73078.328298228,
+    "updates": 5051,
+    "episodes": 17078,
+    "model_sha256": "3cc6e4a7bad654cbcaf118e27eebd05e2973f6741215ef44ff6c30eab9e2704e"
+  },
+  "update-00005057-1795681693469443947": {
+    "path": "checkpoints/update-00005057-1795681693469443947",
+    "elapsed": 73205.63019545499,
+    "updates": 5057,
+    "episodes": 17095,
+    "model_sha256": "83d8406422023be7fce87dfa59657776fcd3792697195533ba174cbc03042008"
+  },
+  "update-00005064-1795681814625743684": {
+    "path": "checkpoints/update-00005064-1795681814625743684",
+    "elapsed": 73326.78438046499,
+    "updates": 5064,
+    "episodes": 17130,
+    "model_sha256": "986aa2db941e3868379e4e69288f1cb827b8d086653f08cb6d86d9c91a78fe46"
+  },
+  "update-00005070-1795681941146363455": {
+    "path": "checkpoints/update-00005070-1795681941146363455",
+    "elapsed": 73453.306031704,
+    "updates": 5070,
+    "episodes": 17141,
+    "model_sha256": "d0000f3538959058c573c9a783da589cd823f2769c5f7c5539c4f10a0f751b70"
+  },
+  "update-00005076-1795682064030901354": {
+    "path": "checkpoints/update-00005076-1795682064030901354",
+    "elapsed": 73576.190562668,
+    "updates": 5076,
+    "episodes": 17162,
+    "model_sha256": "33c2ec1e03cef142f6486ccdf76690e7e6d3f488ad6e782b9cab4ad374e72bfc"
+  },
+  "update-00005083-1795682194782013474": {
+    "path": "checkpoints/update-00005083-1795682194782013474",
+    "elapsed": 73706.93581312298,
+    "updates": 5083,
+    "episodes": 17184,
+    "model_sha256": "d2ab4fbac286ef1e814ecb9e0d71b80c8f04740affc10807ef4ffb0536ecdd68"
+  },
+  "update-00005090-1795682315935938735": {
+    "path": "checkpoints/update-00005090-1795682315935938735",
+    "elapsed": 73828.0949416,
+    "updates": 5090,
+    "episodes": 17202,
+    "model_sha256": "c180416e3f86de2c3d68ca7d63f81c0b69eca46cd882e57c3b3e5494807ea358"
+  },
+  "update-00005096-1795682439778625469": {
+    "path": "checkpoints/update-00005096-1795682439778625469",
+    "elapsed": 73951.93005006001,
+    "updates": 5096,
+    "episodes": 17217,
+    "model_sha256": "00228f80d9eb975a0924d6ee9459a3173c11c3c2ebf97f13e68e8232a1b5814b"
+  },
+  "update-00005102-1795682575842798062": {
+    "path": "checkpoints/update-00005102-1795682575842798062",
+    "elapsed": 74088.00328641999,
+    "updates": 5102,
+    "episodes": 17231,
+    "model_sha256": "6151556da87ad24f8ea6cb4da256a7a13f67c549a280c623e3889559142262d5"
+  },
+  "update-00005109-1795682709283158919": {
+    "path": "checkpoints/update-00005109-1795682709283158919",
+    "elapsed": 74221.439055277,
+    "updates": 5109,
+    "episodes": 17252,
+    "model_sha256": "99f9f55efb8f8f79432d2ac49e3ad28f6e185b0c31c2c0b081ad1ebc02acba7e"
+  },
+  "update-00005115-1795682845152969173": {
+    "path": "checkpoints/update-00005115-1795682845152969173",
+    "elapsed": 74357.304112082,
+    "updates": 5115,
+    "episodes": 17269,
+    "model_sha256": "25081f1588e84d80208f4513d87f75e9fa20b9fdb63e9a15726baf3ae661224b"
+  },
+  "update-00005120-1795682970978637953": {
+    "path": "checkpoints/update-00005120-1795682970978637953",
+    "elapsed": 74483.12446696998,
+    "updates": 5120,
+    "episodes": 17285,
+    "model_sha256": "bb25b93840840acaaabd6e809944e90afa4e3cd5e4c73b1f16585c6898ff631c"
+  },
+  "update-00005127-1795683103584205509": {
+    "path": "checkpoints/update-00005127-1795683103584205509",
+    "elapsed": 74615.743975599,
+    "updates": 5127,
+    "episodes": 17310,
+    "model_sha256": "b85d7cd6de91aa9a7bfab3d166e38e4dddee3eef08d442b47c7321c7431d4d2b"
+  },
+  "update-00005133-1795683236652948009": {
+    "path": "checkpoints/update-00005133-1795683236652948009",
+    "elapsed": 74748.806410736,
+    "updates": 5133,
+    "episodes": 17322,
+    "model_sha256": "94e53b9a6e2e9efeb738443430b40d5d8f0933dcd937d516a7d47361d403591d"
+  },
+  "update-00005140-1795683370316122096": {
+    "path": "checkpoints/update-00005140-1795683370316122096",
+    "elapsed": 74882.47008300401,
+    "updates": 5140,
+    "episodes": 17351,
+    "model_sha256": "6e19b6b4c0b4fa9d6c5afa25622ced6716cc55a155556b4bbf0a29e871e043ab"
+  },
+  "update-00005148-1795683505606098194": {
+    "path": "checkpoints/update-00005148-1795683505606098194",
+    "elapsed": 75017.763431992,
+    "updates": 5148,
+    "episodes": 17388,
+    "model_sha256": "01a36ed33292d77c11cf62ca7d901da790b95ff5a5eef0c23cd8f5f60a298f42"
+  },
+  "update-00005155-1795683647781790109": {
+    "path": "checkpoints/update-00005155-1795683647781790109",
+    "elapsed": 75159.92922800398,
+    "updates": 5155,
+    "episodes": 17412,
+    "model_sha256": "f4e1c0003fa6c1c6b398b62956310f8f045f822c68afc29605e491566c1b8266"
+  },
+  "update-00005162-1795683780839870296": {
+    "path": "checkpoints/update-00005162-1795683780839870296",
+    "elapsed": 75292.99934516699,
+    "updates": 5162,
+    "episodes": 17439,
+    "model_sha256": "75e9c663396522bba234799b0b90561e6aea958231cf1e822443d9bb55dc72ee"
+  },
+  "update-00005169-1795683908920186195": {
+    "path": "checkpoints/update-00005169-1795683908920186195",
+    "elapsed": 75421.07960587498,
+    "updates": 5169,
+    "episodes": 17461,
+    "model_sha256": "96b1111aeb0d3c7651ddf9a9d2a2dc65cdb5dc169058e1c897697a495c34ae1a"
+  },
+  "update-00005176-1795684045491419218": {
+    "path": "checkpoints/update-00005176-1795684045491419218",
+    "elapsed": 75557.65063045401,
+    "updates": 5176,
+    "episodes": 17484,
+    "model_sha256": "c2b2ffc408e709a78af459816e9c31704620058f7aee92f4db9e735d312ff057"
+  },
+  "update-00005181-1795684167670116271": {
+    "path": "checkpoints/update-00005181-1795684167670116271",
+    "elapsed": 75679.82933869198,
+    "updates": 5181,
+    "episodes": 17489,
+    "model_sha256": "8f0bb9481be2caa06ad08ba83fcfbe4589e91de211357ad7cd00fb0c60e8fb5b"
+  },
+  "update-00005188-1795684298157870828": {
+    "path": "checkpoints/update-00005188-1795684298157870828",
+    "elapsed": 75810.315216861,
+    "updates": 5188,
+    "episodes": 17515,
+    "model_sha256": "0c17153376c8e8d9dcb4ada4ce8b69b46892fb5362ee5882055fe582bdb172e3"
+  },
+  "update-00005195-1795684426939910377": {
+    "path": "checkpoints/update-00005195-1795684426939910377",
+    "elapsed": 75939.08989849,
+    "updates": 5195,
+    "episodes": 17543,
+    "model_sha256": "52b902488733cedc069441e5133b05b55e9952853185de3372680c3e3936cf02"
+  },
+  "update-00005200-1795684562222379054": {
+    "path": "checkpoints/update-00005200-1795684562222379054",
+    "elapsed": 76074.372430616,
+    "updates": 5200,
+    "episodes": 17555,
+    "model_sha256": "76c235bfeabe8ffdc9750f7161c056a3297071826712cdff764b4b68c21a63d5"
+  },
+  "update-00005205-1795684692557116714": {
+    "path": "checkpoints/update-00005205-1795684692557116714",
+    "elapsed": 76204.705482889,
+    "updates": 5205,
+    "episodes": 17569,
+    "model_sha256": "4730c80361418d8364291e912e9f06408eddbf1cee7022b7c5db693a47c3a080"
+  },
+  "update-00005211-1795684833168475278": {
+    "path": "checkpoints/update-00005211-1795684833168475278",
+    "elapsed": 76345.31824317199,
+    "updates": 5211,
+    "episodes": 17599,
+    "model_sha256": "25a3b230cc10a034c3a68c54e58c972e7e82b18ced862fbec0c91abe7a9d29b2"
+  },
+  "update-00005217-1795684953478248967": {
+    "path": "checkpoints/update-00005217-1795684953478248967",
+    "elapsed": 76465.637719661,
+    "updates": 5217,
+    "episodes": 17610,
+    "model_sha256": "7fd2272f8f455882613ce96ecc6e6d864b2483124c1a3afa4ce945f7a077991e"
+  },
+  "update-00005222-1795685080454958671": {
+    "path": "checkpoints/update-00005222-1795685080454958671",
+    "elapsed": 76592.614181362,
+    "updates": 5222,
+    "episodes": 17616,
+    "model_sha256": "f9643cc67d6493c1a1b03fa3d0b9bebd3b7b7f490b88dcffd1ee6ed0d3af0c5a"
+  },
+  "update-00005228-1795685205062729731": {
+    "path": "checkpoints/update-00005228-1795685205062729731",
+    "elapsed": 76717.22333012099,
+    "updates": 5228,
+    "episodes": 17638,
+    "model_sha256": "d72113f74773562e7367ebbbe03dffb8a38c41dc74cb6dfc3b392c7b09f4bd47"
+  },
+  "update-00005235-1795685346376963267": {
+    "path": "checkpoints/update-00005235-1795685346376963267",
+    "elapsed": 76858.53355276899,
+    "updates": 5235,
+    "episodes": 17660,
+    "model_sha256": "4a928c10020acbf05d7a924419f854b0e3cec3d449b25de9c5df9db10a87a2d2"
+  },
+  "update-00005241-1795685472235624865": {
+    "path": "checkpoints/update-00005241-1795685472235624865",
+    "elapsed": 76984.39059313099,
+    "updates": 5241,
+    "episodes": 17678,
+    "model_sha256": "85e38d5b8961dc9357cf9c1ff25296bdfab78ffdcfe9a3a67184746dd0a98cfc"
+  },
+  "update-00005247-1795685608658373857": {
+    "path": "checkpoints/update-00005247-1795685608658373857",
+    "elapsed": 77120.815198773,
+    "updates": 5247,
+    "episodes": 17692,
+    "model_sha256": "7bd8e76741be0d9a80592c7d12e9009a1a4ecfd780f6b63e9a2e0080020a1aa4"
+  },
+  "update-00005254-1795685734471347411": {
+    "path": "checkpoints/update-00005254-1795685734471347411",
+    "elapsed": 77246.62909792099,
+    "updates": 5254,
+    "episodes": 17724,
+    "model_sha256": "5affbf2e34474afd26ab213c0722941e4e2db83fb9d7623ea151a1694ce6aeba"
+  },
+  "update-00005260-1795685864928962989": {
+    "path": "checkpoints/update-00005260-1795685864928962989",
+    "elapsed": 77377.08891073699,
+    "updates": 5260,
+    "episodes": 17738,
+    "model_sha256": "e146a42fbfc71a05dde0d03387fafaa7073680456434f89fa4db549a61dca3df"
+  },
+  "update-00005266-1795685996349305877": {
+    "path": "checkpoints/update-00005266-1795685996349305877",
+    "elapsed": 77508.50747101099,
+    "updates": 5266,
+    "episodes": 17759,
+    "model_sha256": "95b1a664d140e1308878112d036b66bf0a7e293b8b5835dd0490d9020f811969"
+  },
+  "update-00005272-1795686116927023624": {
+    "path": "checkpoints/update-00005272-1795686116927023624",
+    "elapsed": 77629.08627889899,
+    "updates": 5272,
+    "episodes": 17786,
+    "model_sha256": "ab517a6569c41c7aa1ca77247d9989e36222f0f80306c3f25e564d7ea11373a9"
+  },
+  "update-00005278-1795686243360526873": {
+    "path": "checkpoints/update-00005278-1795686243360526873",
+    "elapsed": 77755.51834590099,
+    "updates": 5278,
+    "episodes": 17802,
+    "model_sha256": "0d26d9af5ec778c6043f553baa82dda1374afd75044bc38f62c855522d7f06a6"
+  },
+  "update-00005284-1795686377609958518": {
+    "path": "checkpoints/update-00005284-1795686377609958518",
+    "elapsed": 77889.767584847,
+    "updates": 5284,
+    "episodes": 17822,
+    "model_sha256": "10fb4e1883b88509889402be97a2dbfa535e3bba8ff12ccf1b3b1c7566de1cc6"
+  },
+  "update-00005291-1795686511506273373": {
+    "path": "checkpoints/update-00005291-1795686511506273373",
+    "elapsed": 78023.65883996998,
+    "updates": 5291,
+    "episodes": 17847,
+    "model_sha256": "5456f6d35084936eb523d8307b08a8db8c595928924cefd43929ae17c265c116"
+  },
+  "update-00005299-1795686637443937752": {
+    "path": "checkpoints/update-00005299-1795686637443937752",
+    "elapsed": 78149.60144295898,
+    "updates": 5299,
+    "episodes": 17865,
+    "model_sha256": "98da8d71f7becc4ba2d898ba04fbb91c6567372cc0bd68845e04ac854f52e33e"
+  },
+  "update-00005304-1795686760298737071": {
+    "path": "checkpoints/update-00005304-1795686760298737071",
+    "elapsed": 78272.458054649,
+    "updates": 5304,
+    "episodes": 17883,
+    "model_sha256": "9f14162f596aaa32b550c199009c8ff573f3af7f584f2700fe2a381a69519ba5"
+  },
+  "update-00005310-1795686900313286763": {
+    "path": "checkpoints/update-00005310-1795686900313286763",
+    "elapsed": 78412.472747438,
+    "updates": 5310,
+    "episodes": 17896,
+    "model_sha256": "82c3298cb28cab1377308b648ddb367445848ddefa80623292da3666cdb6a3df"
+  },
+  "update-00005315-1795687022167386443": {
+    "path": "checkpoints/update-00005315-1795687022167386443",
+    "elapsed": 78534.326777524,
+    "updates": 5315,
+    "episodes": 17913,
+    "model_sha256": "c3a8211a71deb0c17ed4a0144d98db62275c80cfb50e84b887fbd7d15304fc44"
+  },
+  "update-00005322-1795687163270790263": {
+    "path": "checkpoints/update-00005322-1795687163270790263",
+    "elapsed": 78675.410427241,
+    "updates": 5322,
+    "episodes": 17936,
+    "model_sha256": "0287109ed2f14c80b9189ad61d5c6035b9aa0f5b3dc4cbe49bcd6c25837f7698"
+  },
+  "update-00005329-1795687292868407319": {
+    "path": "checkpoints/update-00005329-1795687292868407319",
+    "elapsed": 78805.025051506,
+    "updates": 5329,
+    "episodes": 17947,
+    "model_sha256": "32e5a844ff9ade7bdd4cedf15b5ebcda8aa97752a4545d91fa7ff7bb6ff897a2"
+  },
+  "update-00005337-1795687417079467654": {
+    "path": "checkpoints/update-00005337-1795687417079467654",
+    "elapsed": 78929.239479276,
+    "updates": 5337,
+    "episodes": 17979,
+    "model_sha256": "bd5d75a8b54112f4f9c31a5bf27c5aa3ad17c74bd23732ad48dbed1e456a69e5"
+  },
+  "update-00005344-1795687552871571286": {
+    "path": "checkpoints/update-00005344-1795687552871571286",
+    "elapsed": 79065.03213136201,
+    "updates": 5344,
+    "episodes": 17999,
+    "model_sha256": "ae665351f8a87ef8788539ac14d329d57badc45df0fc5f0ade218dadaa59ed87"
+  },
+  "update-00005352-1795687680944953531": {
+    "path": "checkpoints/update-00005352-1795687680944953531",
+    "elapsed": 79193.09842868798,
+    "updates": 5352,
+    "episodes": 18024,
+    "model_sha256": "83b8c7d2d4b0971effb47a435b30ee02dbf88ddd79a59d85684d94f6dc3854cb"
+  },
+  "update-00005359-1795687812660105156": {
+    "path": "checkpoints/update-00005359-1795687812660105156",
+    "elapsed": 79324.814936143,
+    "updates": 5359,
+    "episodes": 18050,
+    "model_sha256": "65192b5a453d98fd934bf8106c055b6794d028a252d2a2af2327e94aa1b1fd64"
+  },
+  "update-00005364-1795687949937991436": {
+    "path": "checkpoints/update-00005364-1795687949937991436",
+    "elapsed": 79462.086359342,
+    "updates": 5364,
+    "episodes": 18064,
+    "model_sha256": "ace80935eec5813d24c0338903e6a3f0f2a667a3060b98dba8f5daa2561fa93b"
+  },
+  "update-00005370-1795688081804225650": {
+    "path": "checkpoints/update-00005370-1795688081804225650",
+    "elapsed": 79593.957567999,
+    "updates": 5370,
+    "episodes": 18082,
+    "model_sha256": "d59c9377bbc8d1215cc4631f9b707524fb98da84a227c87f3317bfc1be30acf2"
+  },
+  "update-00005374-1795688202918842497": {
+    "path": "checkpoints/update-00005374-1795688202918842497",
+    "elapsed": 79715.077540467,
+    "updates": 5374,
+    "episodes": 18088,
+    "model_sha256": "4adb8e093ecf1b0f82dbb0dfeb166eb04d0dcd02cb3b1f8cb0f81c86f907c6ca"
+  },
+  "update-00005379-1795688331518759521": {
+    "path": "checkpoints/update-00005379-1795688331518759521",
+    "elapsed": 79843.678042863,
+    "updates": 5379,
+    "episodes": 18111,
+    "model_sha256": "364b9bd92e88e291ceb4f35210569ebe7b849ef4ae98cc9b911e03800770dfd7"
+  },
+  "update-00005385-1795688457408234832": {
+    "path": "checkpoints/update-00005385-1795688457408234832",
+    "elapsed": 79969.56181511199,
+    "updates": 5385,
+    "episodes": 18133,
+    "model_sha256": "b92969026884601aa827ec32cfd4f927232b7133462485472f5c85f1705cb88e"
+  },
+  "update-00005391-1795688585083186038": {
+    "path": "checkpoints/update-00005391-1795688585083186038",
+    "elapsed": 80097.241101474,
+    "updates": 5391,
+    "episodes": 18154,
+    "model_sha256": "726dab75f3a163d08924456a5548341c9a7157a7934ad0659491c472b15a4005"
+  },
+  "update-00005397-1795688711183966834": {
+    "path": "checkpoints/update-00005397-1795688711183966834",
+    "elapsed": 80223.341421096,
+    "updates": 5397,
+    "episodes": 18180,
+    "model_sha256": "b20b08e818cc92e2b2bc19689dda7d4ce257d2411b780a9ed0b27084a72e2394"
+  },
+  "update-00005404-1795688833486648137": {
+    "path": "checkpoints/update-00005404-1795688833486648137",
+    "elapsed": 80345.64657462499,
+    "updates": 5404,
+    "episodes": 18202,
+    "model_sha256": "623e1e637f1733291a8c424ecc8bb4c59872199385d84c8a2bc0fadde84b9298"
+  },
+  "update-00005410-1795688954916255707": {
+    "path": "checkpoints/update-00005410-1795688954916255707",
+    "elapsed": 80467.073069731,
+    "updates": 5410,
+    "episodes": 18216,
+    "model_sha256": "c75a8dc6f77810d88c2be2eaed51ff4b7c6c254f45008cd02adc7e484e3eda7d"
+  },
+  "update-00005417-1795689088080621218": {
+    "path": "checkpoints/update-00005417-1795689088080621218",
+    "elapsed": 80600.233718434,
+    "updates": 5417,
+    "episodes": 18243,
+    "model_sha256": "534ef78b5eeb9b8fc278494dee65ad4610b93b8dfd7d4595fb441ba968fecbb9"
+  },
+  "update-00005425-1795689223373680632": {
+    "path": "checkpoints/update-00005425-1795689223373680632",
+    "elapsed": 80735.53353799699,
+    "updates": 5425,
+    "episodes": 18268,
+    "model_sha256": "b803dc1b89425a5743253abab476b002f62e5ccc53291934bf5c9f395bbaf6ad"
+  },
+  "update-00005431-1795689362023377343": {
+    "path": "checkpoints/update-00005431-1795689362023377343",
+    "elapsed": 80874.181105213,
+    "updates": 5431,
+    "episodes": 18275,
+    "model_sha256": "d072cda59c3846d47ba5b8abbd70c84b0cd8b5495c3e30915d3d0d7f586111e4"
+  },
+  "update-00005438-1795689504208072830": {
+    "path": "checkpoints/update-00005438-1795689504208072830",
+    "elapsed": 81016.36705278698,
+    "updates": 5438,
+    "episodes": 18296,
+    "model_sha256": "d3b1f39bab2c4f301d8f6861b94c5f8678079639a93d9b4c2b960bb5e6dbad1a"
+  },
+  "update-00005444-1795689624806363928": {
+    "path": "checkpoints/update-00005444-1795689624806363928",
+    "elapsed": 81136.964984752,
+    "updates": 5444,
+    "episodes": 18316,
+    "model_sha256": "c0dc17037690c007cfdade8e2b4d38c90563f76bc17a8f94707ee344f4e16f1a"
+  },
+  "update-00005450-1795689760191693608": {
+    "path": "checkpoints/update-00005450-1795689760191693608",
+    "elapsed": 81272.349445673,
+    "updates": 5450,
+    "episodes": 18338,
+    "model_sha256": "cdb368a9b9ce62ede3a35e4f9bc0dbe1611cd4d5de61840f905a823a58e8c7e3"
+  },
+  "update-00005458-1795689903413341931": {
+    "path": "checkpoints/update-00005458-1795689903413341931",
+    "elapsed": 81415.57265720499,
+    "updates": 5458,
+    "episodes": 18366,
+    "model_sha256": "93e66ab72532c49f9d681fb39f007bf5306cc5b4fc4df1c11f5920f15f31497b"
+  },
+  "update-00005464-1795690027635290512": {
+    "path": "checkpoints/update-00005464-1795690027635290512",
+    "elapsed": 81539.795105342,
+    "updates": 5464,
+    "episodes": 18386,
+    "model_sha256": "4f103dc56f743b455fd7d5a30745cb9321375f4b3ed81bdd609cabe0b7787557"
+  },
+  "update-00005471-1795690148638400641": {
+    "path": "checkpoints/update-00005471-1795690148638400641",
+    "elapsed": 81660.79931781499,
+    "updates": 5471,
+    "episodes": 18410,
+    "model_sha256": "5f4fa07afc7e446735dfa038c49cdc57076d2fa62d0d4e65039eddaca2f45957"
+  },
+  "update-00005479-1795690284467132681": {
+    "path": "checkpoints/update-00005479-1795690284467132681",
+    "elapsed": 81796.625380432,
+    "updates": 5479,
+    "episodes": 18437,
+    "model_sha256": "15be2b401606debe8ab60bac58b3b71ccfc9df06dfdaf9d820d347ba1fcd01b4"
+  },
+  "update-00005485-1795690406613378747": {
+    "path": "checkpoints/update-00005485-1795690406613378747",
+    "elapsed": 81918.77381928399,
+    "updates": 5485,
+    "episodes": 18451,
+    "model_sha256": "27e707bf46f56ac665967c90a72d4adffefe6157a9d501033516f45ac8648dd3"
+  },
+  "update-00005492-1795690539388074678": {
+    "path": "checkpoints/update-00005492-1795690539388074678",
+    "elapsed": 82051.547771663,
+    "updates": 5492,
+    "episodes": 18477,
+    "model_sha256": "4fe7828896feb65345d85a3ce1a6960706aa752cc0fab8a9262c1772afc254d9"
+  },
+  "update-00005499-1795690666666579040": {
+    "path": "checkpoints/update-00005499-1795690666666579040",
+    "elapsed": 82178.82590160499,
+    "updates": 5499,
+    "episodes": 18503,
+    "model_sha256": "3786e36705d3d55da19a9686e2406b8f12e1eced4e04a1e1d720bdef30b9af6d"
+  },
+  "update-00005506-1795690803959449668": {
+    "path": "checkpoints/update-00005506-1795690803959449668",
+    "elapsed": 82316.118554932,
+    "updates": 5506,
+    "episodes": 18525,
+    "model_sha256": "d5b0e3321877c00043d617d3f93f04a7944234bf02fa76b68a810e9fe2c19a2a"
+  },
+  "update-00005513-1795690927715559566": {
+    "path": "checkpoints/update-00005513-1795690927715559566",
+    "elapsed": 82439.8675234,
+    "updates": 5513,
+    "episodes": 18550,
+    "model_sha256": "7320698fcba91867926a71d8752e2f6c6c55811fc40901284ba0356527735d7c"
+  },
+  "update-00005520-1795691053713605937": {
+    "path": "checkpoints/update-00005520-1795691053713605937",
+    "elapsed": 82565.87286174801,
+    "updates": 5520,
+    "episodes": 18570,
+    "model_sha256": "f3f18c4ee4f8c850956de7dbd210f13ab07baf797791a5eb6dbfbbf2df7a4661"
+  },
+  "update-00005528-1795691180675664823": {
+    "path": "checkpoints/update-00005528-1795691180675664823",
+    "elapsed": 82692.836425521,
+    "updates": 5528,
+    "episodes": 18589,
+    "model_sha256": "f6965128d58405131a7ccd887e53c835339a58755f5cd8461eb556e69e260237"
+  },
+  "update-00005535-1795691301531390614": {
+    "path": "checkpoints/update-00005535-1795691301531390614",
+    "elapsed": 82813.684822323,
+    "updates": 5535,
+    "episodes": 18613,
+    "model_sha256": "dc87be87d60d57e0cc67d989446dac16d057d6993b3c657a59d7e9222e1b8c80"
+  },
+  "update-00005542-1795691430042637460": {
+    "path": "checkpoints/update-00005542-1795691430042637460",
+    "elapsed": 82942.195034837,
+    "updates": 5542,
+    "episodes": 18628,
+    "model_sha256": "046bd4b29eefa1712ee8a60e27e9a9e9e65efbf0a205165586c22739785d2227"
+  },
+  "update-00005549-1795691560433945035": {
+    "path": "checkpoints/update-00005549-1795691560433945035",
+    "elapsed": 83072.594341144,
+    "updates": 5549,
+    "episodes": 18654,
+    "model_sha256": "91259353f9c9fc92e7780f55726799f931c21d6c9e58af4cd3ef278fcdf43a62"
+  },
+  "update-00005555-1795691684266398897": {
+    "path": "checkpoints/update-00005555-1795691684266398897",
+    "elapsed": 83196.425221707,
+    "updates": 5555,
+    "episodes": 18676,
+    "model_sha256": "a419dbb18803e126b366af063aac128f6fa8494695a1436319e5432ed72816fd"
+  },
+  "update-00005561-1795691821763425729": {
+    "path": "checkpoints/update-00005561-1795691821763425729",
+    "elapsed": 83333.91378533599,
+    "updates": 5561,
+    "episodes": 18686,
+    "model_sha256": "0905ed77e09021b9ba94dc2109029ee7cbce863bc3ff679316cd9227d8de7518"
+  },
+  "update-00005567-1795691949591349721": {
+    "path": "checkpoints/update-00005567-1795691949591349721",
+    "elapsed": 83461.75187183899,
+    "updates": 5567,
+    "episodes": 18712,
+    "model_sha256": "35045796735f6ac9f7cb2cbaf38520511584fc35854fd12afcd323653c910ec4"
+  },
+  "update-00005573-1795692077947505124": {
+    "path": "checkpoints/update-00005573-1795692077947505124",
+    "elapsed": 83590.108533058,
+    "updates": 5573,
+    "episodes": 18731,
+    "model_sha256": "aa761e068ae80a8e1c597dcc4f5232ef6e8c3a9f6450f4315aad7430dfa861c5"
+  },
+  "update-00005580-1795692198528895161": {
+    "path": "checkpoints/update-00005580-1795692198528895161",
+    "elapsed": 83710.681867896,
+    "updates": 5580,
+    "episodes": 18755,
+    "model_sha256": "3ba88a74c21bbffccff03b514a7cdaf154bd734aa9a94c2b1f2827053f68a8fa"
+  },
+  "update-00005588-1795692322777227362": {
+    "path": "checkpoints/update-00005588-1795692322777227362",
+    "elapsed": 83834.938206886,
+    "updates": 5588,
+    "episodes": 18792,
+    "model_sha256": "b5f165941e6d54e11133050cf86870496aea9e5c840d533c62c941d0997cc378"
+  },
+  "update-00005595-1795692454816270695": {
+    "path": "checkpoints/update-00005595-1795692454816270695",
+    "elapsed": 83966.977401585,
+    "updates": 5595,
+    "episodes": 18808,
+    "model_sha256": "4d139c09c8eca277bbfbb33bad20d81adba7126dc6db219a61f6a33a117d605f"
+  },
+  "update-00005602-1795692583168609780": {
+    "path": "checkpoints/update-00005602-1795692583168609780",
+    "elapsed": 84095.32718277498,
+    "updates": 5602,
+    "episodes": 18824,
+    "model_sha256": "43cc2023f37337498be06643c86fae22605033d8e2c913f64c8e2c6028b695c3"
+  },
+  "update-00005608-1795692703459402567": {
+    "path": "checkpoints/update-00005608-1795692703459402567",
+    "elapsed": 84215.61960543098,
+    "updates": 5608,
+    "episodes": 18842,
+    "model_sha256": "9de896705f12d124455ac53212e95d93b1c6e731345d93f6a9e50f3af9bce4f2"
+  },
+  "update-00005616-1795692831611729212": {
+    "path": "checkpoints/update-00005616-1795692831611729212",
+    "elapsed": 84343.77073721398,
+    "updates": 5616,
+    "episodes": 18871,
+    "model_sha256": "11f9f680725bb2e7f9dd5b08dcaa1ad7eeef0fadd79a60e664b09b660478ebdb"
+  },
+  "update-00005623-1795692962819770605": {
+    "path": "checkpoints/update-00005623-1795692962819770605",
+    "elapsed": 84474.979232501,
+    "updates": 5623,
+    "episodes": 18897,
+    "model_sha256": "a063294aadca61a90424ac89b9a8038301bc97f6e19b9ad1ae410d05aa2e6d5a"
+  },
+  "update-00005630-1795693092175318320": {
+    "path": "checkpoints/update-00005630-1795693092175318320",
+    "elapsed": 84604.33448356,
+    "updates": 5630,
+    "episodes": 18919,
+    "model_sha256": "f9f9f59f45e4d676ceb7845f69bf4b7bab72035abf56a6a1d1ac5604a2504772"
+  },
+  "update-00005637-1795693218076824913": {
+    "path": "checkpoints/update-00005637-1795693218076824913",
+    "elapsed": 84730.23733855199,
+    "updates": 5637,
+    "episodes": 18940,
+    "model_sha256": "96688cf675224df2d561a56983a7f8d22ebe12358f3578384e76f4ed32df4889"
+  },
+  "update-00005643-1795693338785235701": {
+    "path": "checkpoints/update-00005643-1795693338785235701",
+    "elapsed": 84850.94382030598,
+    "updates": 5643,
+    "episodes": 18957,
+    "model_sha256": "0db00a78ada353c65463604890b6659193b2be716e8ebbd47db484a4258e2724"
+  },
+  "update-00005649-1795693476171886069": {
+    "path": "checkpoints/update-00005649-1795693476171886069",
+    "elapsed": 84988.30506080101,
+    "updates": 5649,
+    "episodes": 18970,
+    "model_sha256": "b7584b493b17a4ae5e0db964b6ca094f88abdd8022d61dddbbc52240fca140e5"
+  },
+  "update-00005656-1795693599996463983": {
+    "path": "checkpoints/update-00005656-1795693599996463983",
+    "elapsed": 85112.15509668601,
+    "updates": 5656,
+    "episodes": 18999,
+    "model_sha256": "e2c2efabd1b03bc5061731041bc26a9b11261db8d1ed704158bb12e62753e22e"
+  },
+  "update-00005662-1795693725475341978": {
+    "path": "checkpoints/update-00005662-1795693725475341978",
+    "elapsed": 85237.63573488398,
+    "updates": 5662,
+    "episodes": 19020,
+    "model_sha256": "6603842481c1d52248b41027c5e48e58192ddf26e6fc906d364c47c9622cf5bc"
+  },
+  "update-00005670-1795693850315532838": {
+    "path": "checkpoints/update-00005670-1795693850315532838",
+    "elapsed": 85362.475855622,
+    "updates": 5670,
+    "episodes": 19054,
+    "model_sha256": "05576b4c06fc5a09015d4d55276dcbbd297ec202263dfc5b3aab5292217eeb0a"
+  },
+  "update-00005677-1795693977139384491": {
+    "path": "checkpoints/update-00005677-1795693977139384491",
+    "elapsed": 85489.299490109,
+    "updates": 5677,
+    "episodes": 19068,
+    "model_sha256": "48641689e6686dff4eeb6c7512a96dc17d46e5157b0c92f434b728403e979528"
+  },
+  "update-00005685-1795694111094534535": {
+    "path": "checkpoints/update-00005685-1795694111094534535",
+    "elapsed": 85623.25433698899,
+    "updates": 5685,
+    "episodes": 19102,
+    "model_sha256": "5cc49b87eeec9c3e7e710b4044f05dc25d95058e76e22f2b1d85b97b6e12c4b1"
+  },
+  "update-00005692-1795694253669945686": {
+    "path": "checkpoints/update-00005692-1795694253669945686",
+    "elapsed": 85765.83012010899,
+    "updates": 5692,
+    "episodes": 19129,
+    "model_sha256": "c4fa07d190c5a7a651257494e31d36563541e2a7fece528cf27737a539d9dfe0"
+  },
+  "update-00005699-1795694381603463293": {
+    "path": "checkpoints/update-00005699-1795694381603463293",
+    "elapsed": 85893.751409038,
+    "updates": 5699,
+    "episodes": 19151,
+    "model_sha256": "d2d94aec2e14d833532964136352fb6025c69a6ab79ab73d14e60f96c4688a27"
+  },
+  "update-00005706-1795694514657594806": {
+    "path": "checkpoints/update-00005706-1795694514657594806",
+    "elapsed": 86026.817775286,
+    "updates": 5706,
+    "episodes": 19175,
+    "model_sha256": "eb868ff0498dc34a4054d2df9d9b70deefa64708af87091dcd4c39661eb05000"
+  },
+  "update-00005712-1795694636585736456": {
+    "path": "checkpoints/update-00005712-1795694636585736456",
+    "elapsed": 86148.746033726,
+    "updates": 5712,
+    "episodes": 19192,
+    "model_sha256": "7b98a5d4aeabecd5ca60afaec791062d9da22ab52d4c84388cfe1dea16801c5d"
+  },
+  "update-00005719-1795694767669859346": {
+    "path": "checkpoints/update-00005719-1795694767669859346",
+    "elapsed": 86279.828927072,
+    "updates": 5719,
+    "episodes": 19224,
+    "model_sha256": "39cbffece181c71cc38f6caea306733d406568aeae6e5886d0a04d5b448589d7"
+  },
+  "last-1795694888552953562": {
+    "path": "checkpoints/last-1795694888552953562",
+    "elapsed": 86400.71145510298,
+    "updates": 5727,
+    "episodes": 19246,
+    "model_sha256": "5e38c4bbae46cd6d13afc80823bf5c11f23528c445f05acf23b7cea21b545a40"
+  },
+  "update-00005727-1795694888138412767": {
+    "path": "checkpoints/update-00005727-1795694888138412767",
+    "elapsed": 86400.29728268698,
+    "updates": 5727,
+    "episodes": 19246,
+    "model_sha256": "5e38c4bbae46cd6d13afc80823bf5c11f23528c445f05acf23b7cea21b545a40"
+  }
+}
