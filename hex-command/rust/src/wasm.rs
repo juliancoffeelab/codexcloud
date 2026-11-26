@@ -474,17 +474,12 @@ pub fn load_learned_model(
     factory: &mut NativeEngineFactory,
     source: Text,
 ) -> Result<(), EngineError> {
-    let mut model: crate::training::Model =
+    let model: crate::training::Model =
         serde_json::from_str(&source).map_err(|e| EngineError::InvalidRequest {
             message: format!("Invalid learned model: {e}"),
         })?;
-    if model.schema != crate::training::SCHEMA {
-        return Err(EngineError::InvalidRequest {
-            message: "Unsupported learned model schema".into(),
-        });
-    }
     model
-        .upgrade()
+        .validate()
         .map_err(|message| EngineError::InvalidRequest { message })?;
     factory.learned_model = Some(model);
     for battle in factory.battles.values_mut() {
@@ -586,10 +581,6 @@ impl NativeEngineFactory {
         let mut game = RuntimeLoan::new(&battle.runtime, &self.rules);
         let ends_turn = matches!(command, Command::EndTurn);
         let planned = battle.pending.as_ref() == Some(&command);
-        // A human intervention discards speculative planner history and memory.
-        if !planned {
-            battle.learned = None;
-        }
         if planned {
             let faction = battle
                 .workspace
@@ -601,6 +592,10 @@ impl NativeEngineFactory {
         let applied = game.execute(command);
         game.set_active_faction(None);
         applied?;
+        // Discard speculative history only after an accepted human intervention.
+        if !planned {
+            battle.learned = None;
+        }
         let terrain = if terrain_replaced(&battle.terrain, &game) {
             battle.terrain = PublishedTerrain::new(&game);
             TerrainDelta::Replace

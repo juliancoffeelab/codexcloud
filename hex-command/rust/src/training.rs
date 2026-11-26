@@ -644,6 +644,25 @@ pub fn learned_blocks(mut blocks: crate::ai::Blocks) -> crate::ai::Blocks {
 mod tests {
     use super::*;
     #[test]
+    fn battle_sessions_keep_history_separate_and_restore_nested_loans() {
+        let rules = Catalogue::load().unwrap();
+        let game = crate::logic::BattleSession::new(&rules, "mirror");
+        let mut first = LearnedSession::default();
+        let mut second = LearnedSession::default();
+        first.with(|| {
+            mark_history(&game.view(), &RuntimeCommand::EndTurn);
+            assert_eq!(decision_context(&game.view()).decision, 1);
+            second.with(|| {
+                assert_eq!(decision_context(&game.view()).decision, 0);
+                mark_history(&game.view(), &RuntimeCommand::EndTurn);
+                mark_history(&game.view(), &RuntimeCommand::EndTurn);
+            });
+            assert_eq!(decision_context(&game.view()).decision, 1);
+        });
+        second.with(|| assert_eq!(decision_context(&game.view()).decision, 2));
+        first.with(|| assert_eq!(decision_context(&game.view()).decision, 1));
+    }
+    #[test]
     fn equal_logits_follow_pytorch_argmax() {
         let model = Model {
             recurrent: None,

@@ -379,7 +379,7 @@ module Settings = {
             {view.learned_player
                ? <p className={js|help|js}>
                    {text(
-                      {js|Learned planner with Predictor recruitment. Reopening the game returns to the regular AI.|js},
+                      {js|Learned planner with Predictor recruitment. Learned control lasts for this session.|js},
                     )}
                  </p>
                : React.null}

@@ -363,7 +363,8 @@ let rec publish ?(render = true) ?(winner = true) ?(effects = fun () -> ()) ?(ne
         settling = Option.is_some t.enemy;
         status;
         sound = Phaser_sound.enabled t.audio;
-        player_ai = Setup.player_ai t.latest.setup;
+        player_ai =
+          (if t.latest.learned_player then Some Setup.Veteran else Setup.player_ai t.latest.setup);
         can_undo = t.latest.failure = None && can_undo t;
         completed_turns = Setup.completed_turns t.latest.setup s;
         revision;
@@ -1046,15 +1047,7 @@ let set_player_ai t policy =
 let set_learned_player t =
   alive t;
   if (state t).turn = Domain.Turn_phase.Player then (
-    let policy = Some Setup.Veteran in
-    t.latest <-
-      {
-        t.latest with
-        player_ai = policy;
-        learned_player = true;
-        setup = Setup.with_player_ai t.latest.setup policy;
-      };
-    if t.initialized && not (Save.awaiting t.saves) then persist t false;
+    t.latest <- { t.latest with player_ai = Some Setup.Veteran; learned_player = true };
     publish t)
 
 let set_follow_ai t enabled =
@@ -1132,6 +1125,7 @@ let replace ?setup ?(new_run = true) ?(persist = true) t replacement game =
     {
       t.latest with
       setup = Option.value ~default:t.latest.setup setup;
+      learned_player = (if Option.is_some setup then false else t.latest.learned_player);
       player_ai = Setup.player_ai (Option.value ~default:t.latest.setup setup);
       ai_focus = [||];
       details = Battle_details.None_;

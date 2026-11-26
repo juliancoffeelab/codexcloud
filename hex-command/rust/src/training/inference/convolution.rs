@@ -366,3 +366,54 @@ impl<const CHANNEL_MAJOR: bool> Kernel<'_, CHANNEL_MAJOR> {
         }
     }
 }
+
+#[cfg(test)]
+mod portable_tests {
+    use super::*;
+    fn compare<const CHANNEL_MAJOR: bool>(channels: usize) {
+        let cells = 9;
+        let layer = ConvolutionLayer {
+            channels,
+            weights: (0..channels * 7 * EMBEDDING)
+                .map(|i| (i as f32 % 23. - 11.) / 37.)
+                .collect(),
+            bias: (0..EMBEDDING).map(|i| i as f32 / 100.).collect(),
+        };
+        let input: Vec<f32> = (0..cells * channels)
+            .map(|i| (i as f32 % 17. - 8.) / 13.)
+            .collect();
+        let sites = vec![0, 1, 3, 4, 7, 8];
+        let neighbors: Vec<_> = sites
+            .iter()
+            .map(|&i| super::neighbors(i / 3, i % 3, 3, 3))
+            .collect();
+        let mut scalar = vec![0.; cells * EMBEDDING];
+        let mut native = scalar.clone();
+        Kernel::<CHANNEL_MAJOR> {
+            layer: &layer,
+            input: &input,
+            output: &mut scalar,
+            cells,
+            sites: &sites,
+            neighbors: &neighbors,
+        }
+        .scalar();
+        dispatch(
+            pulp::Arch::new(),
+            Kernel::<CHANNEL_MAJOR> {
+                layer: &layer,
+                input: &input,
+                output: &mut native,
+                cells,
+                sites: &sites,
+                neighbors: &neighbors,
+            },
+        );
+        assert_eq!(scalar, native);
+    }
+    #[test]
+    fn portable_convolution_matches_native_layouts_and_edges() {
+        compare::<true>(3);
+        compare::<false>(16);
+    }
+}
