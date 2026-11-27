@@ -85,18 +85,14 @@
           }
         ]
       },
-      "actions": [
-        {
-          "setFlag": "rl-bone-march-1-all-villages"
-        }
-      ],
+      "actions": [],
       "observer": null,
-      "remembers": true,
+      "remembers": false,
       "priority": 0,
       "objective": {
         "faction": "player",
         "id": null,
-        "label": "Capture all woodland villages",
+        "label": "Hold all woodland villages",
         "intent": {
           "capture": [
             {
@@ -145,7 +141,86 @@
           "always": true
         },
         "satisfiedWhen": {
-          "flag": "rl-bone-march-1-all-villages"
+          "all": [
+            {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 6,
+                    "row": 3
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            },
+            {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 4,
+                    "row": 6
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            },
+            {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 19,
+                    "row": 6
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            },
+            {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 4,
+                    "row": 11
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            },
+            {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 19,
+                    "row": 11
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            },
+            {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 7,
+                    "row": 15
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            }
+          ]
         },
         "preserveLives": null,
         "playerMarker": null
@@ -244,10 +319,89 @@
       "when": {
         "all": [
           {
-            "flag": "rl-bone-march-1-all-villages"
+            "flag": "rl-bone-march-1-commander-slain"
           },
           {
-            "flag": "rl-bone-march-1-commander-slain"
+            "all": [
+              {
+                "own": {
+                  "tile": {
+                    "hex": {
+                      "col": 6,
+                      "row": 3
+                    }
+                  },
+                  "faction": "player",
+                  "turns": null,
+                  "when": null
+                }
+              },
+              {
+                "own": {
+                  "tile": {
+                    "hex": {
+                      "col": 4,
+                      "row": 6
+                    }
+                  },
+                  "faction": "player",
+                  "turns": null,
+                  "when": null
+                }
+              },
+              {
+                "own": {
+                  "tile": {
+                    "hex": {
+                      "col": 19,
+                      "row": 6
+                    }
+                  },
+                  "faction": "player",
+                  "turns": null,
+                  "when": null
+                }
+              },
+              {
+                "own": {
+                  "tile": {
+                    "hex": {
+                      "col": 4,
+                      "row": 11
+                    }
+                  },
+                  "faction": "player",
+                  "turns": null,
+                  "when": null
+                }
+              },
+              {
+                "own": {
+                  "tile": {
+                    "hex": {
+                      "col": 19,
+                      "row": 11
+                    }
+                  },
+                  "faction": "player",
+                  "turns": null,
+                  "when": null
+                }
+              },
+              {
+                "own": {
+                  "tile": {
+                    "hex": {
+                      "col": 7,
+                      "row": 15
+                    }
+                  },
+                  "faction": "player",
+                  "turns": null,
+                  "when": null
+                }
+              }
+            ]
           }
         ]
       },
