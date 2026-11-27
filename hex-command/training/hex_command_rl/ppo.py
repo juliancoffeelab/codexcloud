@@ -90,12 +90,13 @@ def pack(samples, device=None, bucket_shapes=None):
     width = max(s[1].shape[2] for s in samples)
     total_contexts = sum(1 + (len(s[3]) if len(s) > 3 else 0) for s in samples)
     if bucket_shapes:
-        # Fixed shape buckets prevent unbounded MPSGraphCache growth on macOS
-        # while staying tight around real arena (9-16) and campaign (24-36 x 38-54) boards.
-        count = _bucket_from(count, (64, 128, 256, 512), 256)
-        height = _bucket_from(height, (16, 24, 36, 48), 16)
-        width = _bucket_from(width, (16, 32, 44, 56, 64), 16)
-        total_contexts = _bucket_from(total_contexts, (16, 32, 64, 128, 256, 384, 512), 128)
+        # Collapse dynamic shapes to a tiny fixed set (1 rollout shape, 1 replay shape)
+        # so Apple's unbounded MPSGraphCache cannot grow over long runs.
+        count = _bucket_from(count, (256, 512), 256)
+        height = _bucket_from(height, (36, 48), 16)
+        width = _bucket_from(width, (56, 64), 16)
+        ctx_buckets = (32, 64, 128) if len(samples) <= 8 else (384, 512, 768)
+        total_contexts = _bucket_from(total_contexts, ctx_buckets, 256)
     x = np.zeros((len(samples), count, len(native.FEATURE_NAMES)), np.float32)
     board = np.zeros(
         (len(samples), len(native.SPATIAL_CHANNEL_NAMES), height, width), np.float32
