@@ -83,9 +83,9 @@ class SpatialPlanner(nn.Module):
             matches = (owners[None, None, :] == batch_ids[:, None, None]) & (
                 sites[None, None, :] == indices[:, :, 0, None]
             )
-            defaults = (owners[None, :] == batch_ids[:, None]).long().argmax(-1)
+            defaults = (owners[None, :] == batch_ids[:, None]).to(torch.uint8).argmax(-1)
             context_ids = torch.where(
-                matches.any(-1), matches.long().argmax(-1), defaults[:, None]
+                matches.any(-1), matches.to(torch.uint8).argmax(-1), defaults[:, None]
             )
             context_lookup = (context_ids, defaults)
         parts = []

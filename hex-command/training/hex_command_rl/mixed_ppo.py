@@ -89,7 +89,7 @@ def main():
         device = resolve_device(a.device)
     except ValueError as err:
         p.error(str(err))
-    window_batch = a.window_batch or (1 if device.type == "cpu" else 16)
+    window_batch = a.window_batch or (1 if device.type == "cpu" else 8)
     actor_lr = (
         a.actor_lr
         if a.actor_lr is not None
