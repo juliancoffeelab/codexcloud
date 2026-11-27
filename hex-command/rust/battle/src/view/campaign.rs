@@ -20,49 +20,30 @@ impl<'a, 'catalog> std::ops::Deref for CampaignObservation<'a, 'catalog> {
 
 impl<'a, 'catalog> CampaignObservation<'a, 'catalog> {
     /// A gameplay rule for strategic searching, not a sighting. Guide patrols
-    /// loosely toward the hostile army's centre without disclosing its roster.
+    /// loosely toward the nearest hostile unit in pathfinding terms without
+    /// disclosing its roster or exact position.
     pub fn search_guidance(&self, origin: &Unit) -> Option<SearchGuidance> {
         let faction = self.game.unit_faction(origin);
-        let mut count = 0i64;
-        let mut q = 0i64;
-        let mut r = 0i64;
-        for unit in self.game.position.units.iter().filter(|unit| {
-            self.game
-                .faction_relation(faction, self.game.unit_faction(unit))
-                == Relation::Hostile
-        }) {
-            let (col, row) = self.game.position.board.positions[unit.tile];
-            q += i64::from(col - row.div_euclid(2));
-            r += i64::from(row);
-            count += 1;
-        }
-        if count == 0 {
-            return None;
-        }
-        // Project the same hostile centre onto reachable terrain. Connected
-        // regions and reverse cost fields are cached by movement class.
-        let reachable = self.view.engine().reachability(origin, origin.tile);
-        let goal = self
-            .view
-            .board()
-            .positions
+        let mut goals: Vec<usize> = self
+            .game
+            .position
+            .units
             .iter()
-            .enumerate()
-            .filter(|&(tile, _)| {
-                reachable.contains(tile) && self.view.engine().step_cost(&origin, tile) != u16::MAX
+            .filter(|unit| {
+                self.game
+                    .faction_relation(faction, self.game.unit_faction(unit))
+                    == Relation::Hostile
             })
-            .min_by_key(|&(tile, &(col, row))| {
-                let dq = count * i64::from(col - row.div_euclid(2)) - q;
-                let dr = count * i64::from(row) - r;
-                (dq.abs() + dr.abs() + (dq + dr).abs(), tile)
-            })?
-            .0;
-        if goal == origin.tile {
+            .map(|unit| unit.tile)
+            .collect();
+        if goals.is_empty() {
             return None;
         }
-        let routes = self.view.routes(origin, &[goal]);
+        goals.sort_unstable();
+        goals.dedup();
+        let routes = self.view.routes(origin, &goals);
         let origin_cost = routes[origin.tile];
-        (origin_cost != u16::MAX).then_some(SearchGuidance {
+        (origin_cost != u16::MAX && origin_cost > 0).then_some(SearchGuidance {
             routes,
             origin_cost,
         })
