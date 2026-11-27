@@ -2,7 +2,7 @@
   "requiredCompanions": [],
   "events": [
     {
-      "id": "rl-bone-march-2-hold-island",
+      "id": "rl-bone-march-2-hold-cavern",
       "when": {
         "all": [
           {
@@ -12,7 +12,7 @@
             "held": {
               "tile": {
                 "hex": {
-                  "col": 14,
+                  "col": 19,
                   "row": 10
                 }
               },
@@ -32,7 +32,7 @@
       },
       "actions": [
         {
-          "setFlag": "rl-bone-march-2-hold-island"
+          "setFlag": "rl-bone-march-2-hold-cavern"
         },
         {
           "gold": {
@@ -47,12 +47,12 @@
       "objective": {
         "faction": "player",
         "id": null,
-        "label": "Hold the island keep with the necromancer for 14 turns",
+        "label": "Hold the cavern keep with the necromancer for 14 turns",
         "intent": {
           "hold": {
             "tile": {
               "hex": {
-                "col": 14,
+                "col": 19,
                 "row": 10
               }
             },
@@ -76,7 +76,7 @@
           "always": true
         },
         "satisfiedWhen": {
-          "flag": "rl-bone-march-2-hold-island"
+          "flag": "rl-bone-march-2-hold-cavern"
         },
         "preserveLives": {
           "character": "player-leader",
@@ -151,7 +151,7 @@
       }
     },
     {
-      "id": "rl-bone-march-2-east-supply",
+      "id": "rl-bone-march-2-north-cache",
       "when": {
         "all": [
           {
@@ -161,8 +161,8 @@
             "own": {
               "tile": {
                 "hex": {
-                  "col": 22,
-                  "row": 10
+                  "col": 5,
+                  "row": 4
                 }
               },
               "faction": "player",
@@ -174,7 +174,7 @@
       },
       "actions": [
         {
-          "setFlag": "rl-bone-march-2-east-supply"
+          "setFlag": "rl-bone-march-2-north-cache"
         },
         {
           "gold": {
@@ -189,13 +189,13 @@
       "objective": {
         "faction": "player",
         "id": null,
-        "label": "Seize the eastern supply village for 8 gold",
+        "label": "Seize the northern gallery cache for 8 gold",
         "intent": {
           "capture": [
             {
               "hex": {
-                "col": 22,
-                "row": 10
+                "col": 5,
+                "row": 4
               }
             }
           ]
@@ -208,14 +208,14 @@
           "always": true
         },
         "satisfiedWhen": {
-          "flag": "rl-bone-march-2-east-supply"
+          "flag": "rl-bone-march-2-north-cache"
         },
         "preserveLives": null,
         "playerMarker": null
       }
     },
     {
-      "id": "rl-bone-march-2-east-wave-1",
+      "id": "rl-bone-march-2-deep-wave-1",
       "when": {
         "turn": 7
       },
@@ -225,8 +225,8 @@
             "faction": "enemy",
             "tile": {
               "hex": {
-                "col": 22,
-                "row": 9
+                "col": 19,
+                "row": 17
               }
             },
             "area": [],
@@ -245,7 +245,7 @@
       "objective": null
     },
     {
-      "id": "rl-bone-march-2-east-wave-2",
+      "id": "rl-bone-march-2-deep-wave-2",
       "when": {
         "turn": 14
       },
@@ -255,8 +255,8 @@
             "faction": "enemy",
             "tile": {
               "hex": {
-                "col": 22,
-                "row": 9
+                "col": 5,
+                "row": 4
               }
             },
             "area": [],
@@ -279,7 +279,7 @@
       "when": {
         "any": [
           {
-            "flag": "rl-bone-march-2-hold-island"
+            "flag": "rl-bone-march-2-hold-cavern"
           },
           {
             "flag": "rl-bone-march-2-commander-slain"

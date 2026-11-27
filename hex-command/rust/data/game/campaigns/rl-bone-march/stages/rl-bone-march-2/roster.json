@@ -63,7 +63,7 @@
           "type": "necromancer",
           "role": "leader",
           "tile": {
-            "col": 14,
+            "col": 19,
             "row": 10
           },
           "id": "u1",
@@ -82,8 +82,8 @@
           "type": "skeleton",
           "role": null,
           "tile": {
-            "col": 13,
-            "row": 8
+            "col": 17,
+            "row": 7
           },
           "id": "u2",
           "hp": "full",
@@ -101,8 +101,8 @@
           "type": "skeleton-axeman",
           "role": null,
           "tile": {
-            "col": 14,
-            "row": 8
+            "col": 18,
+            "row": 7
           },
           "id": "u3",
           "hp": "full",
@@ -120,8 +120,8 @@
           "type": "bonearcher",
           "role": null,
           "tile": {
-            "col": 15,
-            "row": 8
+            "col": 19,
+            "row": 7
           },
           "id": "u4",
           "hp": "full",
@@ -177,7 +177,7 @@
           "role": "leader",
           "tile": {
             "col": 3,
-            "row": 6
+            "row": 10
           },
           "id": "u5",
           "hp": "full",
@@ -196,7 +196,7 @@
           "role": null,
           "tile": {
             "col": 2,
-            "row": 5
+            "row": 9
           },
           "id": "u6",
           "hp": "full",
@@ -215,7 +215,7 @@
           "role": null,
           "tile": {
             "col": 3,
-            "row": 5
+            "row": 9
           },
           "id": "u7",
           "hp": "full",
@@ -234,7 +234,7 @@
           "role": null,
           "tile": {
             "col": 2,
-            "row": 6
+            "row": 10
           },
           "id": "u8",
           "hp": "full",
@@ -252,8 +252,8 @@
           "type": "healer",
           "role": null,
           "tile": {
-            "col": 4,
-            "row": 6
+            "col": 2,
+            "row": 11
           },
           "id": "u9",
           "hp": "full",
@@ -281,7 +281,7 @@
   "round": 1,
   "turn": "player",
   "log": [
-    "Hold the island fortress for 14 turns or slay the human siege commander."
+    "Hold the cavern fortress for 14 turns or slay the human siege commander."
   ],
   "combatRng": 410202
 }
