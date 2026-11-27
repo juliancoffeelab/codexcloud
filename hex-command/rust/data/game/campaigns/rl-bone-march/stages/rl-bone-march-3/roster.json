@@ -35,7 +35,7 @@
         "kind": "human"
       },
       "palette": "player",
-      "gold": 40,
+      "gold": 30,
       "recruits": [
         {
           "unit": "skeleton",
@@ -171,7 +171,7 @@
         "policy": null
       },
       "palette": "enemy",
-      "gold": 42,
+      "gold": 64,
       "recruits": [
         {
           "unit": "swordsman",
@@ -294,6 +294,63 @@
             "row": 7
           },
           "id": "u11",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "swordsman",
+          "role": null,
+          "tile": {
+            "col": 20,
+            "row": 7
+          },
+          "id": "u12",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "spearman",
+          "role": null,
+          "tile": {
+            "col": 16,
+            "row": 8
+          },
+          "id": "u13",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "archer",
+          "role": null,
+          "tile": {
+            "col": 21,
+            "row": 8
+          },
+          "id": "u14",
           "hp": "full",
           "items": [],
           "perceptionEffects": [],

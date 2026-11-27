@@ -2,7 +2,157 @@
   "requiredCompanions": [],
   "events": [
     {
-      "id": "rl-bone-march-1-garrison-destroyed",
+      "id": "rl-bone-march-1-all-villages",
+      "when": {
+        "all": [
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 6,
+                  "row": 3
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 4,
+                  "row": 6
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 19,
+                  "row": 6
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 4,
+                  "row": 11
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 19,
+                  "row": 11
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 7,
+                  "row": 15
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-bone-march-1-all-villages"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Capture all woodland villages",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 6,
+                "row": 3
+              }
+            },
+            {
+              "hex": {
+                "col": 4,
+                "row": 6
+              }
+            },
+            {
+              "hex": {
+                "col": 19,
+                "row": 6
+              }
+            },
+            {
+              "hex": {
+                "col": 4,
+                "row": 11
+              }
+            },
+            {
+              "hex": {
+                "col": 19,
+                "row": 11
+              }
+            },
+            {
+              "hex": {
+                "col": 7,
+                "row": 15
+              }
+            }
+          ]
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-bone-march-1-all-villages"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-bone-march-1-commander-slain",
       "when": {
         "all": [
           {
@@ -10,7 +160,7 @@
           },
           {
             "noUnits": {
-              "character": null,
+              "character": "enemy-leader",
               "role": null,
               "side": null,
               "faction": "enemy",
@@ -24,7 +174,7 @@
       },
       "actions": [
         {
-          "setFlag": "rl-bone-march-1-garrison-destroyed"
+          "setFlag": "rl-bone-march-1-commander-slain"
         }
       ],
       "observer": null,
@@ -33,10 +183,10 @@
       "objective": {
         "faction": "player",
         "id": null,
-        "label": "Destroy the human garrison in the fog",
+        "label": "Slay the human garrison commander",
         "intent": {
           "defeat": {
-            "character": null,
+            "character": "enemy-leader",
             "role": null,
             "side": null,
             "faction": "enemy",
@@ -54,80 +204,52 @@
           "always": true
         },
         "satisfiedWhen": {
-          "flag": "rl-bone-march-1-garrison-destroyed"
+          "flag": "rl-bone-march-1-commander-slain"
         },
         "preserveLives": null,
         "playerMarker": null
       }
     },
     {
-      "id": "rl-bone-march-1-north-outpost",
+      "id": "rl-bone-march-1-fog-wave",
       "when": {
-        "all": [
-          {
-            "always": true
-          },
-          {
-            "own": {
-              "tile": {
-                "hex": {
-                  "col": 6,
-                  "row": 3
-                }
-              },
-              "faction": "player",
-              "turns": null,
-              "when": null
-            }
-          }
-        ]
+        "turn": 9
       },
       "actions": [
         {
-          "setFlag": "rl-bone-march-1-north-outpost"
-        },
-        {
-          "gold": {
-            "faction": "player",
-            "amount": 8
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 23,
+                "row": 12
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "swordsman"
+            ]
           }
         }
       ],
       "observer": null,
       "remembers": true,
       "priority": 0,
-      "objective": {
-        "faction": "player",
-        "id": null,
-        "label": "Plunder the northern outpost for 8 gold",
-        "intent": {
-          "capture": [
-            {
-              "hex": {
-                "col": 6,
-                "row": 3
-              }
-            }
-          ]
-        },
-        "optional": true,
-        "visibleWhen": {
-          "always": true
-        },
-        "availableWhen": {
-          "always": true
-        },
-        "satisfiedWhen": {
-          "flag": "rl-bone-march-1-north-outpost"
-        },
-        "preserveLives": null,
-        "playerMarker": null
-      }
+      "objective": null
     },
     {
       "id": "rl-bone-march-1-victory",
       "when": {
-        "flag": "rl-bone-march-1-garrison-destroyed"
+        "all": [
+          {
+            "flag": "rl-bone-march-1-all-villages"
+          },
+          {
+            "flag": "rl-bone-march-1-commander-slain"
+          }
+        ]
       },
       "actions": [
         {
@@ -166,11 +288,11 @@
     {
       "id": "rl-bone-march-1-deadline",
       "when": {
-        "turn": 46
+        "turn": 56
       },
       "actions": [
         {
-          "defeat": "The raid exceeded its 45-turn deadline."
+          "defeat": "The raid exceeded its 55-turn deadline."
         }
       ],
       "observer": null,

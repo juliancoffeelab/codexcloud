@@ -204,6 +204,127 @@
       }
     },
     {
+      "id": "rl-bone-march-3-reinf-1",
+      "when": {
+        "turn": 6
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 25,
+                "row": 12
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "swordsman",
+              "archer"
+            ]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-bone-march-3-reinf-2",
+      "when": {
+        "turn": 12
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 25,
+                "row": 12
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "hammerman",
+              "archer"
+            ]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-bone-march-3-reinf-3",
+      "when": {
+        "turn": 18
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 25,
+                "row": 12
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "swordsman",
+              "spearman",
+              "archer"
+            ]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-bone-march-3-reinf-4",
+      "when": {
+        "turn": 24
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 25,
+                "row": 12
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "knight",
+              "marksman"
+            ]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
       "id": "rl-bone-march-3-victory",
       "when": {
         "flag": "rl-bone-march-3-commander-slain"

@@ -35,7 +35,7 @@
         "kind": "human"
       },
       "palette": "player",
-      "gold": 34,
+      "gold": 28,
       "recruits": [
         {
           "unit": "skeleton",
@@ -98,32 +98,13 @@
           "rebuilding": null
         },
         {
-          "type": "skeleton-axeman",
-          "role": null,
-          "tile": {
-            "col": 18,
-            "row": 7
-          },
-          "id": "u3",
-          "hp": "full",
-          "items": [],
-          "perceptionEffects": [],
-          "aiGroup": null,
-          "character": null,
-          "moved": false,
-          "attackSpent": false,
-          "experience": 0,
-          "retreating": null,
-          "rebuilding": null
-        },
-        {
           "type": "bonearcher",
           "role": null,
           "tile": {
-            "col": 19,
-            "row": 7
+            "col": 18,
+            "row": 10
           },
-          "id": "u4",
+          "id": "u3",
           "hp": "full",
           "items": [],
           "perceptionEffects": [],
@@ -152,8 +133,12 @@
         "policy": null
       },
       "palette": "enemy",
-      "gold": 36,
+      "gold": 50,
       "recruits": [
+        {
+          "unit": "hammerman",
+          "cost": null
+        },
         {
           "unit": "swordsman",
           "cost": null
@@ -266,6 +251,101 @@
           "experience": 0,
           "retreating": null,
           "rebuilding": null
+        },
+        {
+          "type": "hammerman",
+          "role": null,
+          "tile": {
+            "col": 2,
+            "row": 8
+          },
+          "id": "u10",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "spearman",
+          "role": null,
+          "tile": {
+            "col": 3,
+            "row": 8
+          },
+          "id": "u11",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "archer",
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 8
+          },
+          "id": "u12",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "archer",
+          "role": null,
+          "tile": {
+            "col": 1,
+            "row": 9
+          },
+          "id": "u13",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "swordsman",
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 9
+          },
+          "id": "u14",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
         }
       ],
       "relations": {
@@ -281,7 +361,7 @@
   "round": 1,
   "turn": "player",
   "log": [
-    "Hold the cavern fortress for 14 turns or slay the human siege commander."
+    "Hold the cavern fortress for 30 consecutive turns against the human siege."
   ],
   "combatRng": 410202
 }

@@ -16,7 +16,7 @@
                   "row": 10
                 }
               },
-              "turns": 14,
+              "turns": 30,
               "when": null,
               "character": "player-leader",
               "role": null,
@@ -47,7 +47,7 @@
       "objective": {
         "faction": "player",
         "id": null,
-        "label": "Hold the cavern keep with the necromancer for 14 turns",
+        "label": "Hold the cavern keep with the necromancer for 30 turns",
         "intent": {
           "hold": {
             "tile": {
@@ -56,7 +56,7 @@
                 "row": 10
               }
             },
-            "turns": 14,
+            "turns": 30,
             "when": null,
             "character": "player-leader",
             "role": null,
@@ -92,132 +92,39 @@
       }
     },
     {
-      "id": "rl-bone-march-2-commander-slain",
+      "id": "rl-bone-march-2-wave-1",
       "when": {
-        "all": [
-          {
-            "always": true
-          },
-          {
-            "noUnits": {
-              "character": "enemy-leader",
-              "role": null,
-              "side": null,
-              "faction": "enemy",
-              "unitType": null,
-              "unitTypes": [],
-              "aiGroup": null,
-              "retreating": null
-            }
-          }
-        ]
+        "turn": 5
       },
       "actions": [
         {
-          "setFlag": "rl-bone-march-2-commander-slain"
-        }
-      ],
-      "observer": null,
-      "remembers": true,
-      "priority": 0,
-      "objective": {
-        "faction": "player",
-        "id": null,
-        "label": "Slay the human siege commander",
-        "intent": {
-          "defeat": {
-            "character": "enemy-leader",
-            "role": null,
-            "side": null,
+          "spawn": {
             "faction": "enemy",
-            "unitType": null,
-            "unitTypes": [],
+            "tile": {
+              "hex": {
+                "col": 13,
+                "row": 10
+              }
+            },
+            "area": [],
+            "radius": 3,
             "aiGroup": null,
-            "retreating": null
-          }
-        },
-        "optional": false,
-        "visibleWhen": {
-          "always": true
-        },
-        "availableWhen": {
-          "always": true
-        },
-        "satisfiedWhen": {
-          "flag": "rl-bone-march-2-commander-slain"
-        },
-        "preserveLives": null,
-        "playerMarker": null
-      }
-    },
-    {
-      "id": "rl-bone-march-2-north-cache",
-      "when": {
-        "all": [
-          {
-            "always": true
-          },
-          {
-            "own": {
-              "tile": {
-                "hex": {
-                  "col": 5,
-                  "row": 4
-                }
-              },
-              "faction": "player",
-              "turns": null,
-              "when": null
-            }
-          }
-        ]
-      },
-      "actions": [
-        {
-          "setFlag": "rl-bone-march-2-north-cache"
-        },
-        {
-          "gold": {
-            "faction": "player",
-            "amount": 8
+            "units": [
+              "hammerman",
+              "archer"
+            ]
           }
         }
       ],
       "observer": null,
       "remembers": true,
       "priority": 0,
-      "objective": {
-        "faction": "player",
-        "id": null,
-        "label": "Seize the northern gallery cache for 8 gold",
-        "intent": {
-          "capture": [
-            {
-              "hex": {
-                "col": 5,
-                "row": 4
-              }
-            }
-          ]
-        },
-        "optional": true,
-        "visibleWhen": {
-          "always": true
-        },
-        "availableWhen": {
-          "always": true
-        },
-        "satisfiedWhen": {
-          "flag": "rl-bone-march-2-north-cache"
-        },
-        "preserveLives": null,
-        "playerMarker": null
-      }
+      "objective": null
     },
     {
-      "id": "rl-bone-march-2-deep-wave-1",
+      "id": "rl-bone-march-2-wave-2",
       "when": {
-        "turn": 7
+        "turn": 11
       },
       "actions": [
         {
@@ -234,6 +141,38 @@
             "aiGroup": null,
             "units": [
               "swordsman",
+              "archer",
+              "healer"
+            ]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-bone-march-2-wave-3",
+      "when": {
+        "turn": 17
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 13,
+                "row": 10
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "hammerman",
+              "swordsman",
               "archer"
             ]
           }
@@ -245,9 +184,9 @@
       "objective": null
     },
     {
-      "id": "rl-bone-march-2-deep-wave-2",
+      "id": "rl-bone-march-2-wave-4",
       "when": {
-        "turn": 14
+        "turn": 23
       },
       "actions": [
         {
@@ -255,16 +194,16 @@
             "faction": "enemy",
             "tile": {
               "hex": {
-                "col": 5,
-                "row": 4
+                "col": 19,
+                "row": 17
               }
             },
             "area": [],
             "radius": 3,
             "aiGroup": null,
             "units": [
-              "spearman",
-              "archer"
+              "hammerman",
+              "swordsman"
             ]
           }
         }
@@ -277,14 +216,7 @@
     {
       "id": "rl-bone-march-2-victory",
       "when": {
-        "any": [
-          {
-            "flag": "rl-bone-march-2-hold-cavern"
-          },
-          {
-            "flag": "rl-bone-march-2-commander-slain"
-          }
-        ]
+        "flag": "rl-bone-march-2-hold-cavern"
       },
       "actions": [
         {
@@ -323,11 +255,11 @@
     {
       "id": "rl-bone-march-2-deadline",
       "when": {
-        "turn": 46
+        "turn": 61
       },
       "actions": [
         {
-          "defeat": "The defense exceeded its 45-turn deadline."
+          "defeat": "The defense exceeded its 60-turn deadline."
         }
       ],
       "observer": null,
