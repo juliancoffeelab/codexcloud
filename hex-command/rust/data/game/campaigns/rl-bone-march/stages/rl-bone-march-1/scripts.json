@@ -1,0 +1,185 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "rl-bone-march-1-garrison-destroyed",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-bone-march-1-garrison-destroyed"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Destroy the human garrison in the fog",
+        "intent": {
+          "defeat": {
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-bone-march-1-garrison-destroyed"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-bone-march-1-north-outpost",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 6,
+                  "row": 3
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-bone-march-1-north-outpost"
+        },
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 8
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Plunder the northern outpost for 8 gold",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 6,
+                "row": 3
+              }
+            }
+          ]
+        },
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-bone-march-1-north-outpost"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-bone-march-1-victory",
+      "when": {
+        "flag": "rl-bone-march-1-garrison-destroyed"
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-bone-march-1-commander-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The necromancer fell."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "rl-bone-march-1-deadline",
+      "when": {
+        "turn": 46
+      },
+      "actions": [
+        {
+          "defeat": "The raid exceeded its 45-turn deadline."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

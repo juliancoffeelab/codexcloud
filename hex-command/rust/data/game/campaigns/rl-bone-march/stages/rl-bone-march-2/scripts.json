@@ -1,0 +1,342 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "rl-bone-march-2-hold-island",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "held": {
+              "tile": {
+                "hex": {
+                  "col": 14,
+                  "row": 10
+                }
+              },
+              "turns": 14,
+              "when": null,
+              "character": "player-leader",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-bone-march-2-hold-island"
+        },
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 8
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Hold the island keep with the necromancer for 14 turns",
+        "intent": {
+          "hold": {
+            "tile": {
+              "hex": {
+                "col": 14,
+                "row": 10
+              }
+            },
+            "turns": 14,
+            "when": null,
+            "character": "player-leader",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-bone-march-2-hold-island"
+        },
+        "preserveLives": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-bone-march-2-commander-slain",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": "enemy-leader",
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-bone-march-2-commander-slain"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Slay the human siege commander",
+        "intent": {
+          "defeat": {
+            "character": "enemy-leader",
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-bone-march-2-commander-slain"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-bone-march-2-east-supply",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 22,
+                  "row": 10
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-bone-march-2-east-supply"
+        },
+        {
+          "gold": {
+            "faction": "player",
+            "amount": 8
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Seize the eastern supply village for 8 gold",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 22,
+                "row": 10
+              }
+            }
+          ]
+        },
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-bone-march-2-east-supply"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-bone-march-2-east-wave-1",
+      "when": {
+        "turn": 7
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 22,
+                "row": 9
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "swordsman",
+              "archer"
+            ]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-bone-march-2-east-wave-2",
+      "when": {
+        "turn": 14
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 22,
+                "row": 9
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "spearman",
+              "archer"
+            ]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-bone-march-2-victory",
+      "when": {
+        "any": [
+          {
+            "flag": "rl-bone-march-2-hold-island"
+          },
+          {
+            "flag": "rl-bone-march-2-commander-slain"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-bone-march-2-commander-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The necromancer fell."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "rl-bone-march-2-deadline",
+      "when": {
+        "turn": 46
+      },
+      "actions": [
+        {
+          "defeat": "The defense exceeded its 45-turn deadline."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

@@ -264,7 +264,8 @@
     "game/campaigns/draft-quarry-both-fog/campaign.json",
     "game/campaigns/three-gates/campaign.json",
     "game/campaigns/three-gates-player-fog/campaign.json",
-    "game/campaigns/three-gates-both-fog/campaign.json"
+    "game/campaigns/three-gates-both-fog/campaign.json",
+    "game/campaigns/rl-bone-march/campaign.json"
   ],
   "simulation": {
     "rosters": "simulation/rosters.json",
