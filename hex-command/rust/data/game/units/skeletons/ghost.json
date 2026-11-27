@@ -77,9 +77,10 @@
   "level": 1,
   "family": "ghost",
   "experienceNeeded": 10,
-  "advancesTo": ["wraith"],
+  "advancesTo": [
+    "wraith"
+  ],
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

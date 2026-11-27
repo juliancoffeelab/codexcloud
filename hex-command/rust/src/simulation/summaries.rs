@@ -400,7 +400,7 @@ mod tests {
 
     fn fixture() -> MatchResult {
         let state = State {
-            map_modifiers: serde_json::from_value(json!({"sight":{"range":0,"unlimited":false,"sightModifiers":{"lit":0,"unlit":0,"darkness":0},"penetrates":[]},"damageModifiers":{"blade":0,"pierce":0,"impact":0},"terrainModifiers":{}})).unwrap(),
+            map_modifiers: serde_json::from_value(json!({"sight":{"unlimited":false,"sightModifiers":{"lit":0,"unlit":0,"darkness":0},"penetrates":[]},"damageModifiers":{"blade":0,"pierce":0,"impact":0},"terrainModifiers":{}})).unwrap(),
             lighting: crate::data::MapLighting { time:crate::data::TimeOfDay::Day },
             vision_groups: vec![],
             factions: serde_json::from_value(json!([

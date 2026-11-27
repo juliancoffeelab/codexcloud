@@ -54,10 +54,11 @@
   "level": 2,
   "family": "thorncaller",
   "experienceNeeded": 18,
-  "advancesTo": ["woodland-thorn-oracle"],
+  "advancesTo": [
+    "woodland-thorn-oracle"
+  ],
   "terrainModifiers": {},
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

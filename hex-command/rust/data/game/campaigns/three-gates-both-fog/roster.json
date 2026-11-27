@@ -3,8 +3,7 @@
     {
       "id": "player",
       "sight": {
-        "range": 3,
-        "unlimited": false,
+        "unlimited": true,
         "sightModifiers": {
           "lit": 0,
           "unlit": 0,
@@ -17,8 +16,7 @@
     {
       "id": "enemy",
       "sight": {
-        "range": 3,
-        "unlimited": false,
+        "unlimited": true,
         "sightModifiers": {
           "lit": 0,
           "unlit": 0,

@@ -3,28 +3,30 @@
     {
       "id": "player",
       "sight": {
-        "range": 0,
         "unlimited": true,
         "sightModifiers": {
           "lit": 0,
           "unlit": 0,
           "darkness": 0
         },
-        "penetrates": ["fog"]
+        "penetrates": [
+          "fog"
+        ]
       },
       "explored": []
     },
     {
       "id": "enemy",
       "sight": {
-        "range": 0,
         "unlimited": true,
         "sightModifiers": {
           "lit": 0,
           "unlit": 0,
           "darkness": 0
         },
-        "penetrates": ["fog"]
+        "penetrates": [
+          "fog"
+        ]
       },
       "explored": []
     }
@@ -324,6 +326,8 @@
   "arrivals": [],
   "round": 1,
   "turn": "player",
-  "log": ["Capture villages for gold. Defeat the enemy commander."],
+  "log": [
+    "Capture villages for gold. Defeat the enemy commander."
+  ],
   "combatRng": 1831565813
 }

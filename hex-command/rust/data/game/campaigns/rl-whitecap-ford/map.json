@@ -332,7 +332,10 @@
       "owner": null,
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -341,7 +344,10 @@
       "owner": null,
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -631,7 +637,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,

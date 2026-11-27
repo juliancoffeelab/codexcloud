@@ -2413,7 +2413,9 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw"],
+      "connections": [
+        "sw"
+      ],
       "id": "ledge-spring"
     },
     {
@@ -2727,7 +2729,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 20,
@@ -2736,7 +2741,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 21,
@@ -3041,7 +3049,9 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["ne"]
+      "connections": [
+        "ne"
+      ]
     },
     {
       "col": 19,
@@ -6077,7 +6087,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 38,
@@ -6086,7 +6099,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 39,
@@ -6383,7 +6399,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 36,
@@ -6392,7 +6411,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 37,
@@ -6705,7 +6727,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 36,
@@ -6763,7 +6788,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 3,
@@ -6772,7 +6800,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 4,
@@ -7013,7 +7044,9 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 34,
@@ -7022,7 +7055,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 35,
@@ -7103,7 +7139,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 5,
@@ -7112,7 +7151,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 6,
@@ -7433,7 +7475,9 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["nw"],
+      "connections": [
+        "nw"
+      ],
       "id": "goat-well"
     },
     {
@@ -8899,7 +8943,9 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw"]
+      "connections": [
+        "sw"
+      ]
     },
     {
       "col": 29,
@@ -9172,7 +9218,9 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 23,
@@ -9181,7 +9229,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 24,
@@ -9190,7 +9241,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 25,
@@ -9207,7 +9261,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "sw"],
+      "connections": [
+        "e",
+        "sw"
+      ],
       "id": "split-basin"
     },
     {
@@ -9217,7 +9274,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 28,
@@ -9226,7 +9286,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 29,
@@ -9515,7 +9578,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 25,
@@ -9524,7 +9590,10 @@
       "floor": "autumn-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 26,
@@ -12844,7 +12913,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,

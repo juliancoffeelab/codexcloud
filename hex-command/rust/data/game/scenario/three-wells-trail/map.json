@@ -10,7 +10,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,
@@ -27,27 +26,153 @@
     "terrainModifiers": {}
   },
   "tiles": [
-    { "col": 0, "row": 0, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 1, "row": 0, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 0, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 4, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 5, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 6, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 7, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 8, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 9, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 10, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 11, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 12, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 13, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 14, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 15, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 16, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 17, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 18, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 19, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 20, "row": 0, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 0,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 0,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 21,
       "row": 0,
@@ -69,12 +194,48 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 1, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 1, "row": 1, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 1, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 4, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 5, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 6,
       "row": 1,
@@ -83,19 +244,97 @@
       "environmentEffects": [],
       "id": "draft-entry"
     },
-    { "col": 7, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 8, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 9, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 10, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 11, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 12, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 13, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 14, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 15, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 16, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 17, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 18, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 19, "row": 1, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 7,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 20,
       "row": 1,
@@ -124,16 +363,76 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 2, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 1, "row": 2, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 2, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 2, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 4, "row": 2, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 5, "row": 2, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 6, "row": 2, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 7, "row": 2, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 8, "row": 2, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 9, "row": 2, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 2,
@@ -162,12 +461,48 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 14, "row": 2, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 15, "row": 2, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 16, "row": 2, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 17, "row": 2, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 18, "row": 2, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 19, "row": 2, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 14,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 20,
       "row": 2,
@@ -196,15 +531,69 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 3, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 1, "row": 3, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 3, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 3, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 4, "row": 3, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 5, "row": 3, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 6, "row": 3, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 7, "row": 3, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 8, "row": 3, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 9,
       "row": 3,
@@ -247,10 +636,34 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 15, "row": 3, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 16, "row": 3, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 17, "row": 3, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 18, "row": 3, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 19,
       "row": 3,
@@ -286,15 +699,69 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 4, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 1, "row": 4, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 4, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 4, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 4, "row": 4, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 5, "row": 4, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 6, "row": 4, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 7, "row": 4, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 8, "row": 4, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 4,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 9,
       "row": 4,
@@ -344,9 +811,27 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 16, "row": 4, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 17, "row": 4, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 18, "row": 4, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 4,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 4,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 4,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 19,
       "row": 4,
@@ -382,15 +867,69 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 5, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 1, "row": 5, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 5, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 5, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 4, "row": 5, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 5, "row": 5, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 6, "row": 5, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 7, "row": 5, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 8, "row": 5, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 5,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 5,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 9,
       "row": 5,
@@ -447,7 +986,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 17, "row": 5, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 17,
+      "row": 5,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 18,
       "row": 5,
@@ -490,12 +1035,48 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 6, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 1, "row": 6, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 6, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 6, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 4, "row": 6, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 5, "row": 6, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 6,
       "row": 6,
@@ -581,7 +1162,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 18, "row": 6, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 18,
+      "row": 6,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 19,
       "row": 6,
@@ -617,14 +1204,62 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 7, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 1, "row": 7, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 7, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 7, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 4, "row": 7, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 5, "row": 7, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 6, "row": 7, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 7, "row": 7, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 7,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 7,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 8,
       "row": 7,
@@ -695,8 +1330,20 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 18, "row": 7, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 19, "row": 7, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 18,
+      "row": 7,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 7,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 20,
       "row": 7,
@@ -725,15 +1372,69 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 8, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 1, "row": 8, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 8, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 8, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 4, "row": 8, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 5, "row": 8, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 6, "row": 8, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 7, "row": 8, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 8, "row": 8, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 8,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 8,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 9,
       "row": 8,
@@ -790,9 +1491,27 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 17, "row": 8, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 18, "row": 8, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 19, "row": 8, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 17,
+      "row": 8,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 8,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 8,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 20,
       "row": 8,
@@ -821,15 +1540,69 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 9, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 1, "row": 9, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 9, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 9, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 4, "row": 9, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 5, "row": 9, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 6, "row": 9, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 7, "row": 9, "terrain": "plains", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 8, "row": 9, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 9,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 9,
       "row": 9,
@@ -879,8 +1652,20 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 16, "row": 9, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 17, "row": 9, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 9,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 9,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 18,
       "row": 9,
@@ -979,7 +1764,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 8, "row": 10, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 8,
+      "row": 10,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 9,
       "row": 10,
@@ -1022,8 +1813,20 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 15, "row": 10, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 16, "row": 10, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 10,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 10,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 17,
       "row": 10,
@@ -1131,12 +1934,48 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 8, "row": 11, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 9, "row": 11, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 10, "row": 11, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 11, "row": 11, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 12, "row": 11, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 13, "row": 11, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 8,
+      "row": 11,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 11,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 11,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 11,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 11,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 11,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 14,
       "row": 11,
@@ -1144,7 +1983,13 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 15, "row": 11, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 11,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 11,
@@ -1257,13 +2102,55 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 8, "row": 12, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 9, "row": 12, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 10, "row": 12, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 11, "row": 12, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 12, "row": 12, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 13, "row": 12, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 14, "row": 12, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
+    {
+      "col": 8,
+      "row": 12,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 12,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 12,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 12,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 12,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 12,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 12,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
     {
       "col": 15,
       "row": 12,
@@ -1271,7 +2158,13 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 16, "row": 12, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 12,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
     {
       "col": 17,
       "row": 12,
@@ -1293,9 +2186,27 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 20, "row": 12, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 21, "row": 12, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 22, "row": 12, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 20,
+      "row": 12,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 12,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 12,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 23,
       "row": 12,
@@ -1366,9 +2277,27 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 9, "row": 13, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 10, "row": 13, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 11, "row": 13, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 9,
+      "row": 13,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 13,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 13,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 13,
@@ -1420,11 +2349,41 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 19, "row": 13, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 20, "row": 13, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 21, "row": 13, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 22, "row": 13, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 23, "row": 13, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 19,
+      "row": 13,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 13,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 13,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 13,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 13,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 0,
       "row": 14,
@@ -1525,7 +2484,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 14, "row": 14, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
+    {
+      "col": 14,
+      "row": 14,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
     {
       "col": 15,
       "row": 14,
@@ -1533,7 +2498,13 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 16, "row": 14, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 14,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
     {
       "col": 17,
       "row": 14,
@@ -1541,8 +2512,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 18, "row": 14, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 19, "row": 14, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 18,
+      "row": 14,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 14,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 20,
       "row": 14,
@@ -1564,7 +2547,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 23, "row": 14, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 23,
+      "row": 14,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 0,
       "row": 15,
@@ -1670,7 +2659,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 15, "row": 15, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 15,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 15,
@@ -1860,7 +2855,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 19, "row": 16, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 19,
+      "row": 16,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 20,
       "row": 16,
@@ -2015,7 +3016,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 18, "row": 17, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 18,
+      "row": 17,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 19,
       "row": 17,
@@ -2023,7 +3030,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 20, "row": 17, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 20,
+      "row": 17,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 21,
       "row": 17,
@@ -2045,9 +3058,27 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 0, "row": 18, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 1, "row": 18, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 18, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 18,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 18,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 18,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 3,
       "row": 18,
@@ -2146,7 +3177,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 17, "row": 18, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 17,
+      "row": 18,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 18,
       "row": 18,
@@ -2168,8 +3205,20 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 21, "row": 18, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 22, "row": 18, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 21,
+      "row": 18,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 18,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 23,
       "row": 18,
@@ -2324,9 +3373,27 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 21, "row": 19, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 22, "row": 19, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 23, "row": 19, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 21,
+      "row": 19,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 19,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 19,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 0,
       "row": 20,
@@ -2369,7 +3436,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 6, "row": 20, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 6,
+      "row": 20,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 7,
       "row": 20,
@@ -2426,7 +3499,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 15, "row": 20, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 20,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 20,
@@ -2525,7 +3604,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 6, "row": 21, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 6,
+      "row": 21,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 7,
       "row": 21,
@@ -2561,10 +3646,34 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 12, "row": 21, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 13, "row": 21, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 14, "row": 21, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 15, "row": 21, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 12,
+      "row": 21,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 21,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 21,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 21,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 21,
@@ -2663,16 +3772,76 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 6, "row": 22, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 7, "row": 22, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 8, "row": 22, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 9, "row": 22, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 10, "row": 22, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 11, "row": 22, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 12, "row": 22, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 13, "row": 22, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 14, "row": 22, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 15, "row": 22, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 6,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 22,
@@ -2701,11 +3870,41 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 20, "row": 22, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 21, "row": 22, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 22, "row": 22, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 23, "row": 22, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 0, "row": 23, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 20,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 23,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 1,
       "row": 23,
@@ -2784,7 +3983,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 12, "row": 23, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 12,
+      "row": 23,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 13,
       "row": 23,
@@ -2793,8 +3998,20 @@
       "environmentEffects": [],
       "id": "draft-east-pass"
     },
-    { "col": 14, "row": 23, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 15, "row": 23, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 14,
+      "row": 23,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 23,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 23,
@@ -2823,7 +4040,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 20, "row": 23, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 20,
+      "row": 23,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 21,
       "row": 23,
@@ -2831,8 +4054,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 22, "row": 23, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 23, "row": 23, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 22,
+      "row": 23,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 23,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 0,
       "row": 24,
@@ -2840,8 +4075,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 1, "row": 24, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 24, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 1,
+      "row": 24,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 24,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 3,
       "row": 24,
@@ -2905,10 +4152,34 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 12, "row": 24, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 13, "row": 24, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 14, "row": 24, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 15, "row": 24, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 12,
+      "row": 24,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 24,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 24,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 24,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 24,
@@ -2923,8 +4194,20 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 18, "row": 24, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 19, "row": 24, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 18,
+      "row": 24,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 24,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 20,
       "row": 24,
@@ -2946,7 +4229,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 23, "row": 24, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 23,
+      "row": 24,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 0,
       "row": 25,
@@ -3031,11 +4320,41 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 12, "row": 25, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 13, "row": 25, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 14, "row": 25, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 15, "row": 25, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 16, "row": 25, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 12,
+      "row": 25,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 25,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 25,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 25,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 25,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 17,
       "row": 25,
@@ -3169,7 +4488,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 12, "row": 26, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 12,
+      "row": 26,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 13,
       "row": 26,
@@ -3303,7 +4628,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 8, "row": 27, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 8,
+      "row": 27,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 9,
       "row": 27,
@@ -3325,7 +4656,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 12, "row": 27, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 12,
+      "row": 27,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 13,
       "row": 27,
@@ -3473,8 +4810,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 10, "row": 28, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 11, "row": 28, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 10,
+      "row": 28,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 28,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 28,
@@ -3608,9 +4957,27 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 7, "row": 29, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 8, "row": 29, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
-    { "col": 9, "row": 29, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
+    {
+      "col": 7,
+      "row": 29,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 29,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 29,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 29,
@@ -3751,10 +5118,34 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 6, "row": 30, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 7, "row": 30, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
-    { "col": 8, "row": 30, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 9, "row": 30, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
+    {
+      "col": 6,
+      "row": 30,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 30,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 30,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 30,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 30,
@@ -3897,10 +5288,34 @@
       "environmentEffects": [],
       "id": "draft-oasis-2"
     },
-    { "col": 6, "row": 31, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 7, "row": 31, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 8, "row": 31, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 9, "row": 31, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
+    {
+      "col": 6,
+      "row": 31,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 31,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 31,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 31,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 31,
@@ -4041,10 +5456,34 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 6, "row": 32, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 7, "row": 32, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
-    { "col": 8, "row": 32, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 9, "row": 32, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
+    {
+      "col": 6,
+      "row": 32,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 32,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 32,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 32,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 32,
@@ -4052,11 +5491,41 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 11, "row": 32, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 12, "row": 32, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 13, "row": 32, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 14, "row": 32, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 15, "row": 32, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 11,
+      "row": 32,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 32,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 32,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 32,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 32,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 32,
@@ -4162,17 +5631,83 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 7, "row": 33, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 8, "row": 33, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
-    { "col": 9, "row": 33, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 10, "row": 33, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 11, "row": 33, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 12, "row": 33, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 13, "row": 33, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 14, "row": 33, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 15, "row": 33, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 16, "row": 33, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 17, "row": 33, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 7,
+      "row": 33,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 33,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 33,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 33,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 33,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 33,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 33,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 33,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 33,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 33,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 33,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 18,
       "row": 33,
@@ -4320,9 +5855,27 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 15, "row": 34, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 16, "row": 34, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 17, "row": 34, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 34,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 34,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 34,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 18,
       "row": 34,
@@ -4477,10 +6030,34 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 16, "row": 35, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 17, "row": 35, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 18, "row": 35, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 19, "row": 35, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 35,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 35,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 35,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 35,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 20,
       "row": 35,
@@ -4621,10 +6198,34 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 16, "row": 36, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 17, "row": 36, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 18, "row": 36, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 19, "row": 36, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 36,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 36,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 36,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 36,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 20,
       "row": 36,
@@ -4653,9 +6254,27 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 37, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 1, "row": 37, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 37, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 37,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 37,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 37,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 3,
       "row": 37,
@@ -4677,7 +6296,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 6, "row": 37, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 6,
+      "row": 37,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 7,
       "row": 37,
@@ -4734,8 +6359,20 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 15, "row": 37, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 16, "row": 37, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 37,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 37,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 17,
       "row": 37,
@@ -4786,9 +6423,27 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 38, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 1, "row": 38, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 38, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 38,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 38,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 38,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 3,
       "row": 38,
@@ -4803,8 +6458,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 5, "row": 38, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 6, "row": 38, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 5,
+      "row": 38,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 38,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 7,
       "row": 38,
@@ -4819,8 +6486,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 9, "row": 38, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 10, "row": 38, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 9,
+      "row": 38,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 38,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 11,
       "row": 38,
@@ -4849,7 +6528,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 15, "row": 38, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 38,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 38,
@@ -4906,7 +6591,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 39, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 39,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 1,
       "row": 39,
@@ -4914,7 +6605,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 2, "row": 39, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 2,
+      "row": 39,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 3,
       "row": 39,
@@ -4929,8 +6626,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 5, "row": 39, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 6, "row": 39, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 5,
+      "row": 39,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 39,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 7,
       "row": 39,
@@ -4945,8 +6654,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 9, "row": 39, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 10, "row": 39, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 9,
+      "row": 39,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 39,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 11,
       "row": 39,
@@ -4975,7 +6696,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 15, "row": 39, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 39,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 39,
@@ -5074,7 +6801,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 6, "row": 40, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 6,
+      "row": 40,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 7,
       "row": 40,
@@ -5089,9 +6822,27 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 9, "row": 40, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 10, "row": 40, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 11, "row": 40, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 9,
+      "row": 40,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 40,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 40,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 40,
@@ -5099,9 +6850,27 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 13, "row": 40, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 14, "row": 40, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 15, "row": 40, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 13,
+      "row": 40,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 40,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 40,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 40,
@@ -5179,7 +6948,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 3, "row": 41, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 3,
+      "row": 41,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 4,
       "row": 41,
@@ -5222,11 +6997,41 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 10, "row": 41, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 11, "row": 41, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 12, "row": 41, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 13, "row": 41, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 14, "row": 41, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 10,
+      "row": 41,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 41,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 41,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 41,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 41,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 15,
       "row": 41,
@@ -5626,7 +7431,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 44, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 44,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 1,
       "row": 44,
@@ -5662,7 +7473,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 6, "row": 44, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 6,
+      "row": 44,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 7,
       "row": 44,
@@ -5719,7 +7536,13 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 15, "row": 44, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 44,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 44,
@@ -5776,7 +7599,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 45, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 45,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 1,
       "row": 45,
@@ -5805,8 +7634,20 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 5, "row": 45, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 6, "row": 45, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 5,
+      "row": 45,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 45,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 7,
       "row": 45,
@@ -5856,7 +7697,13 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 14, "row": 45, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
+    {
+      "col": 14,
+      "row": 45,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
     {
       "col": 15,
       "row": 45,
@@ -5864,7 +7711,13 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 16, "row": 45, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 45,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
     {
       "col": 17,
       "row": 45,
@@ -5879,9 +7732,27 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 19, "row": 45, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 20, "row": 45, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 21, "row": 45, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 19,
+      "row": 45,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 45,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 45,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 22,
       "row": 45,
@@ -5896,14 +7767,62 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 46, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 1, "row": 46, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 46, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 46, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 4, "row": 46, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 5, "row": 46, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 6, "row": 46, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 7, "row": 46, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 46,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 46,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 46,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 46,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 46,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 46,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 46,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 46,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 8,
       "row": 46,
@@ -5976,12 +7895,48 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 18, "row": 46, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 19, "row": 46, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 20, "row": 46, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 21, "row": 46, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 22, "row": 46, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 23, "row": 46, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 18,
+      "row": 46,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 46,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 46,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 46,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 46,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 46,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 0,
       "row": 47,
@@ -5989,9 +7944,27 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 1, "row": 47, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 47, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 47, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 1,
+      "row": 47,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 47,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 47,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 4,
       "row": 47,
@@ -6062,7 +8035,13 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 14, "row": 47, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
+    {
+      "col": 14,
+      "row": 47,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
     {
       "col": 15,
       "row": 47,
@@ -6070,7 +8049,13 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 16, "row": 47, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 47,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
     {
       "col": 17,
       "row": 47,
@@ -6113,7 +8098,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 23, "row": 47, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 23,
+      "row": 47,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 0,
       "row": 48,
@@ -6191,8 +8182,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 11, "row": 48, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 12, "row": 48, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 11,
+      "row": 48,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 48,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 13,
       "row": 48,
@@ -6207,7 +8210,13 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 15, "row": 48, "terrain": "marsh", "floor": "marsh", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 48,
+      "terrain": "marsh",
+      "floor": "marsh",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 48,
@@ -6483,11 +8492,41 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 7, "row": 50, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 8, "row": 50, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 9, "row": 50, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 10, "row": 50, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 11, "row": 50, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 7,
+      "row": 50,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 50,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 50,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 50,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 50,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 50,
@@ -6509,7 +8548,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 15, "row": 50, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 50,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 50,
@@ -6608,10 +8653,34 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 6, "row": 51, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 7, "row": 51, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 8, "row": 51, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 9, "row": 51, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 6,
+      "row": 51,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 51,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 51,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 51,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 51,
@@ -6619,8 +8688,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 11, "row": 51, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 12, "row": 51, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 11,
+      "row": 51,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 51,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 13,
       "row": 51,
@@ -6637,9 +8718,27 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 15, "row": 51, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 16, "row": 51, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 17, "row": 51, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 51,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 51,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 51,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 18,
       "row": 51,
@@ -6668,8 +8767,20 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 22, "row": 51, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 23, "row": 51, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 22,
+      "row": 51,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 51,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 0,
       "row": 52,
@@ -6698,8 +8809,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 4, "row": 52, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 5, "row": 52, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 4,
+      "row": 52,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 52,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 6,
       "row": 52,
@@ -6784,10 +8907,34 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 18, "row": 52, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 19, "row": 52, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 20, "row": 52, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 21, "row": 52, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 18,
+      "row": 52,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 52,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 52,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 52,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 22,
       "row": 52,
@@ -6823,7 +8970,13 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 3, "row": 53, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 3,
+      "row": 53,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 4,
       "row": 53,
@@ -6929,8 +9082,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 19, "row": 53, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 20, "row": 53, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 19,
+      "row": 53,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 53,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 21,
       "row": 53,
@@ -6966,8 +9131,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 2, "row": 54, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 54, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 2,
+      "row": 54,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 54,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 4,
       "row": 54,
@@ -7003,7 +9180,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 9, "row": 54, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 9,
+      "row": 54,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 54,
@@ -7110,9 +9293,27 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 1, "row": 55, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 55, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 55, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 1,
+      "row": 55,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 55,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 55,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 4,
       "row": 55,
@@ -7155,7 +9356,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 10, "row": 55, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 10,
+      "row": 55,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 11,
       "row": 55,
@@ -7191,8 +9398,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 16, "row": 55, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 17, "row": 55, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 55,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 55,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 18,
       "row": 55,
@@ -7242,9 +9461,27 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 1, "row": 56, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 56, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 56, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 1,
+      "row": 56,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 56,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 56,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 4,
       "row": 56,
@@ -7287,7 +9524,13 @@
       "floor": "mountain-rock",
       "environmentEffects": []
     },
-    { "col": 10, "row": 56, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 10,
+      "row": 56,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 11,
       "row": 56,
@@ -7386,16 +9629,76 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 1, "row": 57, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 2, "row": 57, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 57, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 4, "row": 57, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 5, "row": 57, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 6, "row": 57, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 7, "row": 57, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 8, "row": 57, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 9, "row": 57, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 10, "row": 57, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 1,
+      "row": 57,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 57,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 57,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 57,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 57,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 57,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 57,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 57,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 57,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 57,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 11,
       "row": 57,
@@ -7501,15 +9804,69 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 2, "row": 58, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 3, "row": 58, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 4, "row": 58, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 5, "row": 58, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 6, "row": 58, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 7, "row": 58, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 8, "row": 58, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 9, "row": 58, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
-    { "col": 10, "row": 58, "terrain": "hill", "floor": "autumn-forest", "environmentEffects": [] },
+    {
+      "col": 2,
+      "row": 58,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 58,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 58,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 58,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 58,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 58,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 58,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 58,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 58,
+      "terrain": "hill",
+      "floor": "autumn-forest",
+      "environmentEffects": []
+    },
     {
       "col": 11,
       "row": 58,

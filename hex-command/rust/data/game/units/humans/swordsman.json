@@ -31,9 +31,11 @@
   "level": 1,
   "family": "swordsman",
   "experienceNeeded": 10,
-  "advancesTo": ["soldier", "hammerman"],
+  "advancesTo": [
+    "soldier",
+    "hammerman"
+  ],
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

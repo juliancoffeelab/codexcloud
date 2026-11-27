@@ -10,7 +10,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,
@@ -484,7 +483,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 6,
@@ -493,7 +495,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 7,
@@ -502,7 +507,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -511,7 +519,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -528,7 +539,10 @@
       "owner": null,
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 11,
@@ -897,7 +911,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 6,
@@ -906,7 +923,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 7,
@@ -915,7 +935,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -924,7 +947,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -949,7 +975,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 12,
@@ -958,7 +987,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 13,
@@ -1047,7 +1079,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 7,
@@ -1056,7 +1091,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -1065,7 +1103,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -1074,7 +1115,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 10,
@@ -1083,7 +1127,10 @@
       "owner": null,
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 11,
@@ -1092,7 +1139,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 12,
@@ -1101,7 +1151,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 13,
@@ -1110,7 +1163,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 14,
@@ -1128,7 +1184,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 16,
@@ -1137,7 +1196,10 @@
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 0,

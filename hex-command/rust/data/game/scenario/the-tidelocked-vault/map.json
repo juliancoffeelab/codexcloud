@@ -10,7 +10,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,
@@ -27,16 +26,76 @@
     "terrainModifiers": {}
   },
   "tiles": [
-    { "col": 0, "row": 0, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 1, "row": 0, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 2, "row": 0, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 3, "row": 0, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 4, "row": 0, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 5, "row": 0, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 6, "row": 0, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 7, "row": 0, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 8, "row": 0, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 9, "row": 0, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 0,
@@ -50,7 +109,10 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se"]
+      "connections": [
+        "e",
+        "se"
+      ]
     },
     {
       "col": 12,
@@ -58,7 +120,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 13,
@@ -66,7 +133,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 14,
@@ -74,7 +146,11 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["se", "sw", "w"]
+      "connections": [
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 15,
@@ -139,16 +215,76 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 0, "row": 1, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 1, "row": 1, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 2, "row": 1, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 3, "row": 1, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 4, "row": 1, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 5, "row": 1, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 6, "row": 1, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 7, "row": 1, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 8, "row": 1, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 9, "row": 1, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 1,
@@ -162,7 +298,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 12,
@@ -170,7 +312,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 13,
@@ -178,7 +327,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 14,
@@ -186,7 +342,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 15,
@@ -194,7 +356,11 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["se", "sw", "w"]
+      "connections": [
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 16,
@@ -252,23 +418,86 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 0, "row": 2, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 1, "row": 2, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 2, "row": 2, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 3, "row": 2, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 4, "row": 2, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 5, "row": 2, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 6, "row": 2, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 7, "row": 2, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 8, "row": 2, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 9, "row": 2, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 2,
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se"]
+      "connections": [
+        "e",
+        "se"
+      ]
     },
     {
       "col": 11,
@@ -276,7 +505,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 12,
@@ -284,7 +519,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 13,
@@ -292,7 +534,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 14,
@@ -300,7 +549,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 15,
@@ -308,7 +564,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 16,
@@ -316,7 +579,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["se", "sw", "w", "nw"]
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 17,
@@ -367,23 +635,89 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 0, "row": 3, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 1, "row": 3, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 2, "row": 3, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 3, "row": 3, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 4, "row": 3, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 5, "row": 3, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 6, "row": 3, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 7, "row": 3, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 8, "row": 3, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 9, "row": 3, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 3,
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 11,
@@ -391,7 +725,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 12,
@@ -399,7 +740,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 13,
@@ -407,7 +755,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ],
       "id": "draft-objective"
     },
     {
@@ -416,7 +771,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 15,
@@ -424,7 +786,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 16,
@@ -432,7 +801,11 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["sw", "w", "nw"]
+      "connections": [
+        "sw",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 17,
@@ -483,23 +856,87 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 0, "row": 4, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 1, "row": 4, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 2, "row": 4, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 3, "row": 4, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 4, "row": 4, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 5, "row": 4, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 6, "row": 4, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 7, "row": 4, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 8, "row": 4, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 9, "row": 4, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 4,
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "ne"
+      ]
     },
     {
       "col": 11,
@@ -507,7 +944,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 12,
@@ -515,7 +959,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 13,
@@ -523,7 +974,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 14,
@@ -531,7 +989,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 15,
@@ -539,7 +1004,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 16,
@@ -547,7 +1019,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 17,
@@ -598,23 +1076,89 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 0, "row": 5, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 1, "row": 5, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 2, "row": 5, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 3, "row": 5, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 4, "row": 5, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 5, "row": 5, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 6, "row": 5, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 7, "row": 5, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 8, "row": 5, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 9, "row": 5, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 5,
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 11,
@@ -622,7 +1166,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 12,
@@ -630,7 +1181,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 13,
@@ -638,7 +1196,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 14,
@@ -654,7 +1219,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 16,
@@ -662,7 +1234,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["se", "sw", "w", "nw"]
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 17,
@@ -713,23 +1290,86 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 0, "row": 6, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 1, "row": 6, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 2, "row": 6, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 3, "row": 6, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 4, "row": 6, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 5, "row": 6, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 6, "row": 6, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 7, "row": 6, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 8, "row": 6, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 9, "row": 6, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 6,
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "ne"]
+      "connections": [
+        "e",
+        "ne"
+      ]
     },
     {
       "col": 11,
@@ -737,7 +1377,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 12,
@@ -745,7 +1391,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 13,
@@ -753,7 +1406,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 14,
@@ -761,7 +1421,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 15,
@@ -769,7 +1436,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 16,
@@ -777,7 +1451,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 17,
@@ -785,7 +1466,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 18,
@@ -793,7 +1480,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 19,
@@ -801,7 +1493,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 20,
@@ -809,7 +1506,11 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["se", "sw", "w"]
+      "connections": [
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 21,
@@ -832,16 +1533,76 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 0, "row": 7, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 1, "row": 7, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 2, "row": 7, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 3, "row": 7, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 4, "row": 7, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 5, "row": 7, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 6, "row": 7, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 7, "row": 7, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 8, "row": 7, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 9, "row": 7, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 7,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 7,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 7,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 7,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 7,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 7,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 7,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 7,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 7,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 7,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 7,
@@ -855,7 +1616,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 12,
@@ -863,7 +1629,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 13,
@@ -871,7 +1644,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 14,
@@ -879,7 +1659,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 15,
@@ -887,7 +1674,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 16,
@@ -895,7 +1689,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 17,
@@ -903,7 +1704,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 18,
@@ -911,7 +1719,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 19,
@@ -919,7 +1734,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ],
       "id": "draft-side-vault"
     },
     {
@@ -928,7 +1750,11 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["sw", "w", "nw"]
+      "connections": [
+        "sw",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 21,
@@ -951,16 +1777,76 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 0, "row": 8, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 1, "row": 8, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 2, "row": 8, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 3, "row": 8, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 4, "row": 8, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 5, "row": 8, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 6, "row": 8, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 7, "row": 8, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 8, "row": 8, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 9, "row": 8, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 8,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 8,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 8,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 8,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 8,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 8,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 8,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 8,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 8,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 8,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 8,
@@ -981,7 +1867,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 13,
@@ -989,7 +1880,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 14,
@@ -997,7 +1895,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 15,
@@ -1005,7 +1910,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 16,
@@ -1013,7 +1925,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 17,
@@ -1021,7 +1940,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 18,
@@ -1029,7 +1954,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 19,
@@ -1037,7 +1967,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 20,
@@ -1069,16 +2004,76 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 0, "row": 9, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 1, "row": 9, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 2, "row": 9, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 3, "row": 9, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 4, "row": 9, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 5, "row": 9, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 6, "row": 9, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 7, "row": 9, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 8, "row": 9, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
-    { "col": 9, "row": 9, "terrain": "cave-wall", "floor": "cave-stone", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 9,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 9,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 9,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 9,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 9,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 9,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 9,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 9,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 9,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 9,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 9,
@@ -1099,7 +2094,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 13,
@@ -1107,7 +2107,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 14,
@@ -1115,7 +2122,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 15,
@@ -1123,7 +2137,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 16,
@@ -1131,12 +2151,40 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["w", "nw", "ne"]
+      "connections": [
+        "w",
+        "nw",
+        "ne"
+      ]
     },
-    { "col": 17, "row": 9, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 18, "row": 9, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 19, "row": 9, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 20, "row": 9, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
+    {
+      "col": 17,
+      "row": 9,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 9,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 9,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 9,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
     {
       "col": 21,
       "row": 9,
@@ -1255,7 +2303,11 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "nw", "ne"]
+      "connections": [
+        "e",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 14,
@@ -1272,7 +2324,10 @@
       "terrain": "ford",
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 16,
@@ -1288,10 +2343,34 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 18, "row": 10, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 19, "row": 10, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 20, "row": 10, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 21, "row": 10, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 18,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 22,
       "row": 10,
@@ -1410,17 +2489,74 @@
       "terrain": "ford",
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
-    { "col": 15, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 16, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 17, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 18, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 19, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 20, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 21, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 22, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 23, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 0,
       "row": 12,
@@ -1491,29 +2627,122 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 10, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 12, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 13, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 10,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 14,
       "row": 12,
       "terrain": "ford",
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
-    { "col": 15, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 16, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 17, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 18, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 19, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 20, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 21, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 22, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 23, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 0, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 2,
       "row": 13,
@@ -1556,150 +2785,783 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 8, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 12, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 8,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 13,
       "row": 13,
       "terrain": "ford",
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
-    { "col": 14, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 15, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 16, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 17, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 18, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 19, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 20, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 21, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 22, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 23, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 0, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 12, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 14,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 13,
       "row": 14,
       "terrain": "ford",
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
-    { "col": 14, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 15, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 16, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 17, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 18, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 19, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 20, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 21, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 22, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 23, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 0, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 14,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 15,
       "terrain": "ford",
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["sw", "ne"],
+      "connections": [
+        "sw",
+        "ne"
+      ],
       "id": "draft-crossing-1"
     },
-    { "col": 13, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 14, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 15, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 16, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 17, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 18, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 19, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 20, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 21, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 22, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 23, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 0, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 13,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 16,
       "terrain": "ford",
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
-    { "col": 13, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 14, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 15, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 16, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 17, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 18, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 19, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 20, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 21, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 22, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 23, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 0, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 13,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 11,
       "row": 17,
       "terrain": "ford",
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
-    { "col": 12, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 13, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 14, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 15, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 16, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 17, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 18, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 19, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 12,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 20,
       "row": 17,
@@ -1714,32 +3576,143 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 22, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 23, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 0, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 22,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 11,
       "row": 18,
       "terrain": "ford",
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
-    { "col": 12, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 13, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 14, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 15, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 16, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 12,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 17,
       "row": 18,
@@ -1796,27 +3769,108 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 1, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 1,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 19,
       "terrain": "ford",
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
-    { "col": 11, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 12, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 13, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 14, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 11,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 15,
       "row": 19,
@@ -1901,20 +3955,65 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 3, "row": 20, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 20, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 20, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 20, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 20, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 20, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 20, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 3,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 20,
       "terrain": "ford",
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 11,
@@ -2035,18 +4134,51 @@
       "floor": "cave-stone",
       "environmentEffects": []
     },
-    { "col": 4, "row": 21, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 5, "row": 21, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 6, "row": 21, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 7, "row": 21, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 8, "row": 21, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
+    {
+      "col": 4,
+      "row": 21,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 21,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 21,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 21,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 21,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
     {
       "col": 9,
       "row": 21,
       "terrain": "ford",
       "floor": "shallow-water",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 10,
@@ -2054,7 +4186,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 11,
@@ -2062,7 +4200,10 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["sw", "w"]
+      "connections": [
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 12,
@@ -2189,7 +4330,10 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se"]
+      "connections": [
+        "e",
+        "se"
+      ]
     },
     {
       "col": 6,
@@ -2197,7 +4341,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 7,
@@ -2205,7 +4354,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -2213,7 +4367,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -2221,7 +4380,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 10,
@@ -2238,7 +4403,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 12,
@@ -2365,7 +4536,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 6,
@@ -2373,7 +4550,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 7,
@@ -2381,7 +4565,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 8,
@@ -2389,7 +4580,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 9,
@@ -2397,7 +4595,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 10,
@@ -2405,7 +4610,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 11,
@@ -2413,7 +4625,11 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["sw", "w", "nw"]
+      "connections": [
+        "sw",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 12,
@@ -2533,7 +4749,10 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se"]
+      "connections": [
+        "e",
+        "se"
+      ]
     },
     {
       "col": 5,
@@ -2541,7 +4760,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 6,
@@ -2557,7 +4782,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 8,
@@ -2565,7 +4797,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 9,
@@ -2573,7 +4812,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 10,
@@ -2581,7 +4827,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 11,
@@ -2589,7 +4841,11 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["w", "nw", "ne"]
+      "connections": [
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 12,
@@ -2709,7 +4965,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 5,
@@ -2717,7 +4978,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 6,
@@ -2725,7 +4993,14 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ],
       "id": "draft-entry"
     },
     {
@@ -2734,7 +5009,13 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 8,
@@ -2742,7 +5023,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 9,
@@ -2892,7 +5178,11 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "nw", "ne"]
+      "connections": [
+        "e",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 6,
@@ -2900,7 +5190,12 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 7,
@@ -2908,7 +5203,11 @@
       "terrain": "cave-passage",
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["w", "nw", "ne"]
+      "connections": [
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 8,

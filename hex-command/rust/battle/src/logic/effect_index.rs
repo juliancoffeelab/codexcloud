@@ -119,8 +119,7 @@ impl BattlePosition<'_> {
                 flags(effect.value(), &mut index);
                 if let EffectValue::StatModifiers { modifiers } = effect.value() {
                     let sight = &modifiers.sight;
-                    present[EffectKind::Sight as usize] |= sight.range != 0
-                        || sight.unlimited
+                    present[EffectKind::Sight as usize] |= sight.unlimited
                         || sight.sight_modifiers.lit != 0
                         || sight.sight_modifiers.unlit != 0
                         || sight.sight_modifiers.darkness != 0
@@ -157,8 +156,7 @@ impl BattlePosition<'_> {
                 flags(effect.value(), &mut index);
                 if let EffectValue::StatModifiers { modifiers } = effect.value() {
                     let sight = &modifiers.sight;
-                    present[EffectKind::Sight as usize] |= sight.range != 0
-                        || sight.unlimited
+                    present[EffectKind::Sight as usize] |= sight.unlimited
                         || sight.sight_modifiers.lit != 0
                         || sight.sight_modifiers.unlit != 0
                         || sight.sight_modifiers.darkness != 0

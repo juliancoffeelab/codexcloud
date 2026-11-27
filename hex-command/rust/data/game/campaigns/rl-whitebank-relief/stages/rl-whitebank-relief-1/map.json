@@ -10,7 +10,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,
@@ -4055,7 +4054,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 5,
@@ -4063,7 +4065,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 6,
@@ -4071,7 +4076,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 7,
@@ -4079,7 +4087,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -4087,7 +4098,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -4095,7 +4109,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 10,
@@ -4275,7 +4292,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 5,
@@ -4320,7 +4340,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 11,
@@ -4484,7 +4507,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 4,
@@ -4534,7 +4560,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 11,
@@ -4542,7 +4571,10 @@
       "terrain": "bridge",
       "floor": "dark-water",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 12,
@@ -4550,7 +4582,10 @@
       "terrain": "bridge",
       "floor": "dark-water",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 13,
@@ -4559,7 +4594,10 @@
       "floor": "dark-water",
       "environmentEffects": [],
       "id": "draft-crossing-1",
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 14,
@@ -4567,7 +4605,10 @@
       "terrain": "bridge",
       "floor": "dark-water",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 15,
@@ -4575,7 +4616,10 @@
       "terrain": "bridge",
       "floor": "dark-water",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 16,
@@ -4583,7 +4627,10 @@
       "terrain": "road",
       "floor": "snow-forest",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 17,
@@ -4591,7 +4638,10 @@
       "terrain": "road",
       "floor": "snow-forest",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 18,
@@ -4599,7 +4649,10 @@
       "terrain": "road",
       "floor": "snow-forest",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 19,
@@ -4607,7 +4660,10 @@
       "terrain": "road",
       "floor": "snow-forest",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 20,
@@ -4615,7 +4671,10 @@
       "terrain": "road",
       "floor": "snow-forest",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 21,
@@ -4623,7 +4682,10 @@
       "terrain": "road",
       "floor": "snow-forest",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 22,
@@ -4631,7 +4693,10 @@
       "terrain": "road",
       "floor": "snow-forest",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 23,
@@ -4639,7 +4704,10 @@
       "terrain": "road",
       "floor": "snow-forest",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 24,
@@ -4647,7 +4715,10 @@
       "terrain": "road",
       "floor": "snow-forest",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 25,
@@ -4712,7 +4783,9 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "id": "draft-entry",
-      "connections": ["ne"]
+      "connections": [
+        "ne"
+      ]
     },
     {
       "col": 4,
@@ -4867,7 +4940,10 @@
       "terrain": "road",
       "floor": "snow-forest",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 26,
@@ -5078,7 +5154,10 @@
       "terrain": "road",
       "floor": "snow-forest",
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 26,
@@ -5086,7 +5165,10 @@
       "terrain": "road",
       "floor": "snow-forest",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 27,
@@ -5094,7 +5176,10 @@
       "terrain": "road",
       "floor": "snow-forest",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 28,
@@ -5102,7 +5187,10 @@
       "terrain": "road",
       "floor": "snow-forest",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 29,
@@ -5321,7 +5409,9 @@
       "floor": "snow-forest",
       "environmentEffects": [],
       "id": "draft-exit",
-      "connections": ["nw"]
+      "connections": [
+        "nw"
+      ]
     },
     {
       "col": 0,

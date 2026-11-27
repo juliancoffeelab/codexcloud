@@ -10,7 +10,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,
@@ -27,20 +26,104 @@
     "terrainModifiers": {}
   },
   "tiles": [
-    { "col": 0, "row": 0, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 0, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 0, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 0, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 0, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 0, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 0, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 0, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 0, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 0, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 0, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 0, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 12, "row": 0, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 13, "row": 0, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 0,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 0,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 0,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 0,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
     {
       "col": 14,
       "row": 0,
@@ -55,28 +138,160 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 16, "row": 0, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 17, "row": 0, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 18, "row": 0, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 19, "row": 0, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 20, "row": 0, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 21, "row": 0, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 22, "row": 0, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 23, "row": 0, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 0, "row": 1, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 1, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 1, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 1, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 1, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 1, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 1, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 1, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 1, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 1, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 10, "row": 1, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 11, "row": 1, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 12, "row": 1, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 13, "row": 1, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 0,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 0,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 0,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 0,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 0,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 0,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 0,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 0,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 1,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 1,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 1,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 1,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 14,
       "row": 1,
@@ -91,27 +306,153 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 16, "row": 1, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 17, "row": 1, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 18, "row": 1, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 19, "row": 1, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 20, "row": 1, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 21, "row": 1, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 22, "row": 1, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 23, "row": 1, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 0, "row": 2, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 2, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 2, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 2, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 2, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 2, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 2, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 2, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 2, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 2, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 10, "row": 2, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 11, "row": 2, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 12, "row": 2, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 1,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 1,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 1,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 1,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 1,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 1,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 1,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 2,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 2,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 13,
       "row": 2,
@@ -126,29 +467,167 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 15, "row": 2, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 16, "row": 2, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 17, "row": 2, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 18, "row": 2, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 19, "row": 2, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 20, "row": 2, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 2, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 22, "row": 2, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 23, "row": 2, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 0, "row": 3, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 3, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 3, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 3, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 3, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 3, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 3, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 3, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 3, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 9, "row": 3, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 10, "row": 3, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 11, "row": 3, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 12, "row": 3, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 13, "row": 3, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 15,
+      "row": 2,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 2,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 2,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 2,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 3,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 3,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 3,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 3,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 3,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 14,
       "row": 3,
@@ -163,28 +642,160 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 16, "row": 3, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 17, "row": 3, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 18, "row": 3, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 19, "row": 3, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 20, "row": 3, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 3, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 22, "row": 3, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 23, "row": 3, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 0, "row": 4, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 4, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 4, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 4, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 4, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 4, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 4, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 4, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 4, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 4, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 10, "row": 4, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 11, "row": 4, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 12, "row": 4, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 13, "row": 4, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 3,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 3,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 4,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 4,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 4,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 4,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 4,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 4,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 4,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 4,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 4,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 4,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
     {
       "col": 14,
       "row": 4,
@@ -199,10 +810,34 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 16, "row": 4, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 17, "row": 4, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 18, "row": 4, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 19, "row": 4, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 4,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 4,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 4,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 4,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 20,
       "row": 4,
@@ -211,24 +846,132 @@
       "environmentEffects": [],
       "owner": "player"
     },
-    { "col": 21, "row": 4, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 22, "row": 4, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 23, "row": 4, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 0, "row": 5, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 5, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 5, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 5, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 5, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 5, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 5, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 5, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 5, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 9, "row": 5, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 10, "row": 5, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 11, "row": 5, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 12, "row": 5, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 13, "row": 5, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 14, "row": 5, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
+    {
+      "col": 21,
+      "row": 4,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 4,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 4,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 5,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 5,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 5,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 5,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 5,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 5,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 5,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 5,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 5,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 5,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 5,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 5,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 5,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 5,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
     {
       "col": 15,
       "row": 5,
@@ -243,29 +986,167 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 17, "row": 5, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 18, "row": 5, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 19, "row": 5, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 20, "row": 5, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 5, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 22, "row": 5, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 23, "row": 5, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 0, "row": 6, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 6, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 6, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 6, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 6, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 6, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 6, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 6, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 8, "row": 6, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 9, "row": 6, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 10, "row": 6, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 11, "row": 6, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 12, "row": 6, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 13, "row": 6, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 14, "row": 6, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 15, "row": 6, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
+    {
+      "col": 17,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 5,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 5,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 5,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 6,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 6,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 6,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 6,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 6,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 6,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 6,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 6,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 6,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 6,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 6,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 6,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 6,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 6,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 6,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 6,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 6,
@@ -280,21 +1161,111 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 18, "row": 6, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 19, "row": 6, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 20, "row": 6, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 6, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 22, "row": 6, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 23, "row": 6, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 0, "row": 7, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 7, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 7, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 7, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 7, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 7, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 7, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 7, "row": 7, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 8, "row": 7, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 18,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 6,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 7,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 7,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 7,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 7,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 7,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 7,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 7,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 7,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 7,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 9,
       "row": 7,
@@ -303,12 +1274,48 @@
       "environmentEffects": [],
       "id": "draft-offshore-1"
     },
-    { "col": 10, "row": 7, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 11, "row": 7, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 12, "row": 7, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 13, "row": 7, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 14, "row": 7, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 15, "row": 7, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
+    {
+      "col": 10,
+      "row": 7,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 7,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 7,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 7,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 7,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 7,
@@ -323,28 +1330,160 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 18, "row": 7, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 19, "row": 7, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 20, "row": 7, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 7, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 22, "row": 7, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 23, "row": 7, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 0, "row": 8, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 8, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 8, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 8, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 8, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 8, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 8, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 8, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 8, "row": 8, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 9, "row": 8, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 10, "row": 8, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 11, "row": 8, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 12, "row": 8, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 13, "row": 8, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 14, "row": 8, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 15, "row": 8, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 18,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 7,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 7,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 8,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 8,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 8,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 8,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 8,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 8,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 8,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 8,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 8,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 8,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 8,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 8,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 8,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 8,
@@ -359,29 +1498,167 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 18, "row": 8, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 19, "row": 8, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 20, "row": 8, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 8, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 22, "row": 8, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 23, "row": 8, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 0, "row": 9, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 9, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 9, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 9, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 9, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 9, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 9, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 7, "row": 9, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 8, "row": 9, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 9, "row": 9, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 10, "row": 9, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 11, "row": 9, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 12, "row": 9, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 13, "row": 9, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 14, "row": 9, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 15, "row": 9, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 16, "row": 9, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 18,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 8,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 8,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 9,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 9,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 9,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 9,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 9,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 9,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 9,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 9,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 9,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 9,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 9,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 9,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 16,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 17,
       "row": 9,
@@ -398,21 +1675,111 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 19, "row": 9, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 20, "row": 9, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 9, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 22, "row": 9, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 23, "row": 9, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 0, "row": 10, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 10, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 10, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 10, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 10, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 10, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 10, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 10, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 8, "row": 10, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 9, "row": 10, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
+    {
+      "col": 19,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 9,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 9,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 9,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 10,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 10,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 10,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 10,
@@ -441,8 +1808,20 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 14, "row": 10, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 15, "row": 10, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 14,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 10,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 10,
@@ -464,10 +1843,34 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 19, "row": 10, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 20, "row": 10, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 10, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 22, "row": 10, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 19,
+      "row": 10,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 10,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 10,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 10,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 23,
       "row": 10,
@@ -475,21 +1878,111 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 12, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 13, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 14, "row": 11, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 11,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 15,
       "row": 11,
@@ -503,7 +1996,9 @@
       "terrain": "ferry",
       "floor": "dark-water",
       "environmentEffects": [],
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 17,
@@ -512,7 +2007,9 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "id": "draft-harbor-1",
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 18,
@@ -520,7 +2017,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 19,
@@ -528,10 +2028,25 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
-    { "col": 20, "row": 11, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 11, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 20,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 11,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 22,
       "row": 11,
@@ -546,22 +2061,118 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 12, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 13, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 14, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 15, "row": 12, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 12,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 12,
@@ -598,9 +2209,18 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
-    { "col": 21, "row": 12, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 21,
+      "row": 12,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 22,
       "row": 12,
@@ -615,22 +2235,118 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 13, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 5, "row": 13, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 6, "row": 13, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 7, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 12, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 13, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 14, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 15, "row": 13, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 13,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 13,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 13,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 13,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 13,
@@ -665,9 +2381,18 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
-    { "col": 21, "row": 13, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 21,
+      "row": 13,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 22,
       "row": 13,
@@ -682,22 +2407,118 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 14, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 4, "row": 14, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 5, "row": 14, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 6, "row": 14, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 7, "row": 14, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 8, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 12, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 13, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 14, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 15, "row": 14, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 14,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 14,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 14,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 14,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 14,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 14,
@@ -739,9 +2560,18 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
-    { "col": 22, "row": 14, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 22,
+      "row": 14,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 23,
       "row": 14,
@@ -749,18 +2579,90 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 15, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 2, "row": 15, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 3, "row": 15, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 4, "row": 15, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 5, "row": 15, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 6, "row": 15, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 7, "row": 15, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 8, "row": 15, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 9, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 15, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 15,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 15,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 15,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 15,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 15,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 15,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 15,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 15,
@@ -789,8 +2691,20 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 16, "row": 15, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 17, "row": 15, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 15,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 18,
       "row": 15,
@@ -811,7 +2725,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 21,
@@ -820,7 +2737,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "id": "draft-entry",
-      "connections": ["w", "nw"]
+      "connections": [
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 22,
@@ -836,18 +2756,90 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 16, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 2, "row": 16, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 3, "row": 16, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 4, "row": 16, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 5, "row": 16, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 6, "row": 16, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 7, "row": 16, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 8, "row": 16, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 9, "row": 16, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 10, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 16, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 16,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 16,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 16,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 16,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 16,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 16,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 16,
@@ -855,8 +2847,20 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 13, "row": 16, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 14, "row": 16, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 13,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 15,
       "row": 16,
@@ -864,8 +2868,20 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 16, "row": 16, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 17, "row": 16, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 16,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 18,
       "row": 16,
@@ -879,7 +2895,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 20,
@@ -887,7 +2906,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 21,
@@ -910,10 +2932,34 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 17, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 1, "row": 17, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 2, "row": 17, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 3, "row": 17, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 17,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 4,
       "row": 17,
@@ -922,13 +2968,55 @@
       "environmentEffects": [],
       "id": "draft-offshore-2"
     },
-    { "col": 5, "row": 17, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 6, "row": 17, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 7, "row": 17, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 8, "row": 17, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 9, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 17, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 5,
+      "row": 17,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 17,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 17,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 17,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 17,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 17,
@@ -943,7 +3031,13 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 14, "row": 17, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 14,
+      "row": 17,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 15,
       "row": 17,
@@ -973,9 +3067,18 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
-    { "col": 19, "row": 17, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 19,
+      "row": 17,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 20,
       "row": 17,
@@ -1004,20 +3107,104 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 18, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 2, "row": 18, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 3, "row": 18, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 4, "row": 18, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 5, "row": 18, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 6, "row": 18, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 7, "row": 18, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 8, "row": 18, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 9, "row": 18, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 10, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 12, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 13, "row": 18, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 18,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 18,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 18,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 18,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 18,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 18,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 18,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 18,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 18,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 18,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 14,
       "row": 18,
@@ -1045,7 +3232,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 18,
@@ -1053,9 +3243,18 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
-    { "col": 19, "row": 18, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 19,
+      "row": 18,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 20,
       "row": 18,
@@ -1084,19 +3283,97 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 19, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 2, "row": 19, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 3, "row": 19, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 4, "row": 19, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 5, "row": 19, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 6, "row": 19, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 7, "row": 19, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 8, "row": 19, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 9, "row": 19, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 10, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 12, "row": 19, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 19,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 19,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 19,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 19,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 19,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 19,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 19,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 19,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 19,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 19,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 13,
       "row": 19,
@@ -1124,9 +3401,18 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
-    { "col": 17, "row": 19, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 17,
+      "row": 19,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 18,
       "row": 19,
@@ -1171,16 +3457,76 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 20, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 20, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 20, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 3, "row": 20, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 4, "row": 20, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 5, "row": 20, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 6, "row": 20, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 7, "row": 20, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 8, "row": 20, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 9, "row": 20, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 20,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 20,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 20,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 20,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 20,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 20,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 20,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 20,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 20,
@@ -1188,7 +3534,13 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 11, "row": 20, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 11,
+      "row": 20,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 20,
@@ -1223,7 +3575,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 17,
@@ -1239,7 +3594,13 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 19, "row": 20, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 19,
+      "row": 20,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 20,
       "row": 20,
@@ -1254,7 +3615,13 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 22, "row": 20, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 22,
+      "row": 20,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 23,
       "row": 20,
@@ -1262,16 +3629,76 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 21, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 21, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 2, "row": 21, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 3, "row": 21, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 4, "row": 21, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 5, "row": 21, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 6, "row": 21, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 7, "row": 21, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 8, "row": 21, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 9, "row": 21, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 21,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 21,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 21,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 21,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 21,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 21,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 21,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 21,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 21,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 21,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 21,
@@ -1286,8 +3713,20 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 12, "row": 21, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 13, "row": 21, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 12,
+      "row": 21,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 21,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 14,
       "row": 21,
@@ -1301,10 +3740,25 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
-    { "col": 16, "row": 21, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 17, "row": 21, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 21,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 21,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 18,
       "row": 21,
@@ -1319,20 +3773,104 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 20, "row": 21, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 21, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 22, "row": 21, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 23, "row": 21, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 0, "row": 22, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 22, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 22, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 3, "row": 22, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 4, "row": 22, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 5, "row": 22, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 6, "row": 22, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 7, "row": 22, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 8, "row": 22, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 9, "row": 22, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 20,
+      "row": 21,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 21,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 21,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 21,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 22,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 22,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 22,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 22,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 22,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 22,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 22,
@@ -1340,7 +3878,13 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 11, "row": 22, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 11,
+      "row": 22,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 22,
@@ -1368,26 +3912,137 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
-    { "col": 16, "row": 22, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 17, "row": 22, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 18, "row": 22, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 19, "row": 22, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 20, "row": 22, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 22, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 22, "row": 22, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 23, "row": 22, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 0, "row": 23, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 23, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 23, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 3, "row": 23, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 4, "row": 23, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 5, "row": 23, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 6, "row": 23, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 7, "row": 23, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 8, "row": 23, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 9, "row": 23, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 22,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 22,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 23,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 23,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 23,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 23,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 23,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 23,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 23,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 23,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 23,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 23,
@@ -1415,7 +4070,9 @@
       "terrain": "ferry",
       "floor": "dark-water",
       "environmentEffects": [],
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 14,
@@ -1424,7 +4081,9 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "id": "draft-harbor-2",
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 15,
@@ -1433,27 +4092,153 @@
       "floor": "autumn-forest",
       "environmentEffects": []
     },
-    { "col": 16, "row": 23, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 17, "row": 23, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 18, "row": 23, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 19, "row": 23, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 20, "row": 23, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 23, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 22, "row": 23, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 23, "row": 23, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 0, "row": 24, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 24, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 24, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 3, "row": 24, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 4, "row": 24, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 5, "row": 24, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 6, "row": 24, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 7, "row": 24, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 8, "row": 24, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 9, "row": 24, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 10, "row": 24, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 11, "row": 24, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 12, "row": 24, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 16,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 17,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 18,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 19,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 23,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 24,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 24,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 24,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 24,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 24,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 24,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 24,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 24,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 24,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 24,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 24,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 24,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 24,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 13,
       "row": 24,
@@ -1496,21 +4281,111 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 19, "row": 24, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 20, "row": 24, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 24, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 22, "row": 24, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 23, "row": 24, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 0, "row": 25, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 1, "row": 25, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 2, "row": 25, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 3, "row": 25, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 4, "row": 25, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 5, "row": 25, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 6, "row": 25, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 7, "row": 25, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 8, "row": 25, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 9, "row": 25, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 19,
+      "row": 24,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 20,
+      "row": 24,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 24,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 24,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 23,
+      "row": 24,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 25,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 25,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 25,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 25,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 25,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 25,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 25,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 25,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 25,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 25,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 25,
@@ -1532,7 +4407,13 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 13, "row": 25, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 13,
+      "row": 25,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 14,
       "row": 25,
@@ -1575,8 +4456,20 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 20, "row": 25, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 25, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 20,
+      "row": 25,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 25,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 22,
       "row": 25,
@@ -1591,15 +4484,69 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 26, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 1, "row": 26, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 2, "row": 26, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 3, "row": 26, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 4, "row": 26, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 5, "row": 26, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 6, "row": 26, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 7, "row": 26, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 8, "row": 26, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 26,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 26,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 26,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 26,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 26,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 26,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 26,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 26,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 26,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
     {
       "col": 9,
       "row": 26,
@@ -1608,8 +4555,20 @@
       "environmentEffects": [],
       "id": "draft-offshore-3"
     },
-    { "col": 10, "row": 26, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 11, "row": 26, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 10,
+      "row": 26,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 26,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 26,
@@ -1617,7 +4576,13 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 13, "row": 26, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 13,
+      "row": 26,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 14,
       "row": 26,
@@ -1669,7 +4634,13 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 21, "row": 26, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 21,
+      "row": 26,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 22,
       "row": 26,
@@ -1684,16 +4655,76 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 27, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 1, "row": 27, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 2, "row": 27, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 3, "row": 27, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 4, "row": 27, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 5, "row": 27, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 6, "row": 27, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 27, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 8, "row": 27, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 9, "row": 27, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 27,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 27,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 27,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 27,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 27,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 27,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 27,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 27,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 27,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 27,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 27,
@@ -1708,8 +4739,20 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 12, "row": 27, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 13, "row": 27, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 12,
+      "row": 27,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 27,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 14,
       "row": 27,
@@ -1752,8 +4795,20 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 20, "row": 27, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 21, "row": 27, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 20,
+      "row": 27,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 21,
+      "row": 27,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 22,
       "row": 27,
@@ -1768,8 +4823,20 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 28, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 1, "row": 28, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 28,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 28,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 2,
       "row": 28,
@@ -1778,13 +4845,55 @@
       "environmentEffects": [],
       "id": "draft-offshore-4"
     },
-    { "col": 3, "row": 28, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 4, "row": 28, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 5, "row": 28, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 6, "row": 28, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 28, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 28, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 9, "row": 28, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
+    {
+      "col": 3,
+      "row": 28,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 28,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 28,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 28,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 28,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 28,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 28,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
     {
       "col": 10,
       "row": 28,
@@ -1792,10 +4901,34 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 11, "row": 28, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 12, "row": 28, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 13, "row": 28, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 14, "row": 28, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 11,
+      "row": 28,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 28,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 28,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 28,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 15,
       "row": 28,
@@ -1838,8 +4971,20 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 21, "row": 28, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 22, "row": 28, "terrain": "hill", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 21,
+      "row": 28,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 22,
+      "row": 28,
+      "terrain": "hill",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 23,
       "row": 28,
@@ -1847,21 +4992,111 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 29, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 1, "row": 29, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] },
-    { "col": 2, "row": 29, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
-    { "col": 3, "row": 29, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 4, "row": 29, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 29, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 29, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 29, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 29, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 29, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 29, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 29, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 12, "row": 29, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 13, "row": 29, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 14, "row": 29, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 29,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 29,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 29,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 29,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 29,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 29,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 29,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 29,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 29,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 29,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 29,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 29,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 29,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 29,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 29,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 15,
       "row": 29,
@@ -1927,22 +5162,118 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 30, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 30, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 2, "row": 30, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 3, "row": 30, "terrain": "water", "floor": "shallow-water", "environmentEffects": [] },
-    { "col": 4, "row": 30, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 30, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 30, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 30, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 30, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 30, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 30, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 30, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 12, "row": 30, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 13, "row": 30, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 14, "row": 30, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 15, "row": 30, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 30,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 30,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 30,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 30,
+      "terrain": "water",
+      "floor": "shallow-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 30,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 30,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 30,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 30,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 30,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 30,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 30,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 30,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 12,
+      "row": 30,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 13,
+      "row": 30,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 14,
+      "row": 30,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 15,
+      "row": 30,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 16,
       "row": 30,
@@ -2000,18 +5331,90 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 31, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 31, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 31, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 31, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 31, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 31, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 31, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 31, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 31, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 31, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 31, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 31, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 31,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 31,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 31,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 31,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 31,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 31,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 31,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 31,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 31,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 31,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 31,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 31,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 31,
@@ -2026,7 +5429,13 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 14, "row": 31, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 14,
+      "row": 31,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 15,
       "row": 31,
@@ -2090,18 +5499,90 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 32, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 32, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 32, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 32, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 32, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 32, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 32, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 32, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 32, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 32, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 32, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 32, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 32,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 32,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 32,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 32,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 32,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 32,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 32,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 32,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 32,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 32,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 32,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 32,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 32,
@@ -2109,7 +5590,13 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 13, "row": 32, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 13,
+      "row": 32,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 14,
       "row": 32,
@@ -2180,17 +5667,83 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 33, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 33, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 33, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 33, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 33, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 33, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 33, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 33, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 33, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 33, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 33, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 33,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 33,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 33,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 33,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 33,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 33,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 33,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 33,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 33,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 33,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 33,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 11,
       "row": 33,
@@ -2198,7 +5751,13 @@
       "floor": "shallow-water",
       "environmentEffects": []
     },
-    { "col": 12, "row": 33, "terrain": "plains", "floor": "green-plain", "environmentEffects": [] },
+    {
+      "col": 12,
+      "row": 33,
+      "terrain": "plains",
+      "floor": "green-plain",
+      "environmentEffects": []
+    },
     {
       "col": 13,
       "row": 33,
@@ -2276,18 +5835,90 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 0, "row": 34, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 1, "row": 34, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 2, "row": 34, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 3, "row": 34, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 4, "row": 34, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 5, "row": 34, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 6, "row": 34, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 7, "row": 34, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 8, "row": 34, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 9, "row": 34, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 10, "row": 34, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
-    { "col": 11, "row": 34, "terrain": "water", "floor": "dark-water", "environmentEffects": [] },
+    {
+      "col": 0,
+      "row": 34,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 34,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 34,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 34,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 34,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 34,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 34,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 34,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 34,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 34,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 34,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
+    {
+      "col": 11,
+      "row": 34,
+      "terrain": "water",
+      "floor": "dark-water",
+      "environmentEffects": []
+    },
     {
       "col": 12,
       "row": 34,
@@ -2365,6 +5996,12 @@
       "floor": "green-forest",
       "environmentEffects": []
     },
-    { "col": 23, "row": 34, "terrain": "forest", "floor": "green-forest", "environmentEffects": [] }
+    {
+      "col": 23,
+      "row": 34,
+      "terrain": "forest",
+      "floor": "green-forest",
+      "environmentEffects": []
+    }
   ]
 }

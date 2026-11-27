@@ -42,11 +42,14 @@
   "level": 2,
   "family": "wavemender",
   "experienceNeeded": 18,
-  "advancesTo": ["merfolk-tide-oracle"],
-  "abilities": ["mending-4"],
+  "advancesTo": [
+    "merfolk-tide-oracle"
+  ],
+  "abilities": [
+    "mending-4"
+  ],
   "terrainModifiers": {},
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

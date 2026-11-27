@@ -574,3 +574,12 @@ including HP, XP, identities, treasury, campaign progress and RNG, are unchanged
 Undo patches are rebuilt by converting every reconstructed full state through
 the frozen v51/v52 codecs. The v52 native contract freezes only the complete
 persisted checkpoint graph, independently of browser display DTOs.
+
+## Version 53: per-illumination sight ranges
+
+Removes the redundant scalar `sight.range` field from `SightContribution` and
+`EffectValue::Sight`. For finite contributions (`unlimited: false`), `range` is
+folded additively into `sightModifiers.{lit, unlit, darkness}`; unlimited
+contributions retain their existing `sightModifiers` and drop `range`. All
+unrelated resolved facts remain unchanged. Undo patches are rebuilt by
+converting every reconstructed full state through the frozen v52/v53 codecs.

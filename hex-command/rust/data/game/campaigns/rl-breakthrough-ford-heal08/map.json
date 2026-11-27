@@ -270,7 +270,9 @@
       "floor": "green-plain",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 3,
@@ -288,7 +290,10 @@
       "floor": "shallow-water",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 5,
@@ -297,7 +302,10 @@
       "floor": "shallow-water",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 6,
@@ -306,7 +314,10 @@
       "floor": "green-plain",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 7,
@@ -526,7 +537,10 @@
       "floor": "green-plain",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 4,
@@ -535,7 +549,10 @@
       "floor": "shallow-water",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 5,
@@ -544,7 +561,10 @@
       "floor": "shallow-water",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 6,
@@ -561,7 +581,9 @@
       "floor": "green-plain",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -826,7 +848,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,

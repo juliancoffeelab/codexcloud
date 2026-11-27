@@ -10,7 +10,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,
@@ -3762,7 +3761,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 4,
@@ -3770,7 +3772,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 5,
@@ -3778,7 +3783,9 @@
       "terrain": "landing",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e"],
+      "connections": [
+        "e"
+      ],
       "id": "draft-harbor-1"
     },
     {
@@ -3787,7 +3794,9 @@
       "terrain": "ferry",
       "floor": "dark-water",
       "environmentEffects": [],
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 7,
@@ -4068,7 +4077,9 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["ne"],
+      "connections": [
+        "ne"
+      ],
       "id": "draft-entry"
     },
     {

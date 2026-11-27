@@ -44,9 +44,10 @@
   "family": "adept",
   "advancesTo": [],
   "experienceNeeded": 0,
-  "abilities": ["mending-6"],
+  "abilities": [
+    "mending-6"
+  ],
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

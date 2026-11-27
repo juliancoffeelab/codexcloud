@@ -10,7 +10,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,
@@ -2097,7 +2096,9 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "id": "draft-harbor-1",
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 8,
@@ -2105,7 +2106,9 @@
       "terrain": "ferry",
       "floor": "dark-water",
       "environmentEffects": [],
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -2281,7 +2284,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 8,
@@ -2457,7 +2463,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "ne"]
+      "connections": [
+        "se",
+        "ne"
+      ]
     },
     {
       "col": 7,
@@ -2647,7 +2656,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "nw"]
+      "connections": [
+        "sw",
+        "nw"
+      ]
     },
     {
       "col": 8,
@@ -2823,7 +2835,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 7,
@@ -3006,7 +3021,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 7,
@@ -3182,7 +3200,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 6,
@@ -3358,7 +3379,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 5,
@@ -3366,7 +3390,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 6,
@@ -3535,7 +3562,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 4,
@@ -3720,7 +3750,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 4,
@@ -3899,7 +3932,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 3,
@@ -4083,7 +4119,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "id": "draft-entry",
-      "connections": ["e", "ne"]
+      "connections": [
+        "e",
+        "ne"
+      ]
     },
     {
       "col": 3,
@@ -4091,7 +4130,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 4,
@@ -4274,7 +4316,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 4,
@@ -4464,7 +4509,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 5,
@@ -4647,7 +4695,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 5,
@@ -4655,7 +4706,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 6,
@@ -4845,7 +4899,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 7,
@@ -5028,7 +5085,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 7,
@@ -5036,7 +5096,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -5044,7 +5107,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -5053,7 +5119,9 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "id": "draft-harbor-2",
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 10,
@@ -5061,7 +5129,9 @@
       "terrain": "ferry",
       "floor": "dark-water",
       "environmentEffects": [],
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 11,

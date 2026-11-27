@@ -30,10 +30,11 @@
   "description": "A fragile skeletal skirmisher whose paired knives deliver repeated blade attacks.",
   "level": 2,
   "family": "skeleton",
-  "advancesTo": ["skeleton-flanker-l3"],
+  "advancesTo": [
+    "skeleton-flanker-l3"
+  ],
   "experienceNeeded": 18,
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

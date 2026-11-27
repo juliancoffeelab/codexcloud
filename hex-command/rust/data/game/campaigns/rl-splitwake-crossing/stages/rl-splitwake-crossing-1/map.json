@@ -10,7 +10,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,
@@ -1998,7 +1997,9 @@
       "terrain": "ferry",
       "floor": "dark-water",
       "environmentEffects": [],
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 17,
@@ -2007,7 +2008,9 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "id": "draft-harbor-1",
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 18,
@@ -2015,7 +2018,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 19,
@@ -2023,7 +2029,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 20,
@@ -2201,7 +2210,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 21,
@@ -2370,7 +2382,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 21,
@@ -2546,7 +2561,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 22,
@@ -2708,7 +2726,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 21,
@@ -2717,7 +2738,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "id": "draft-entry",
-      "connections": ["w", "nw"]
+      "connections": [
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 22,
@@ -2872,7 +2896,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 20,
@@ -2880,7 +2907,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 21,
@@ -3037,7 +3067,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 19,
@@ -3199,7 +3232,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 18,
@@ -3207,7 +3243,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 19,
@@ -3362,7 +3401,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 17,
@@ -3533,7 +3575,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 17,
@@ -3695,7 +3740,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 16,
@@ -3864,7 +3912,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 16,
@@ -4019,7 +4070,9 @@
       "terrain": "ferry",
       "floor": "dark-water",
       "environmentEffects": [],
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 14,
@@ -4028,7 +4081,9 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "id": "draft-harbor-2",
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 15,

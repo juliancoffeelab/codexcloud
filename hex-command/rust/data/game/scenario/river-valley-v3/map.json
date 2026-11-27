@@ -186,7 +186,9 @@
       "col": 4,
       "row": 1,
       "terrain": "village",
-      "connections": ["se"],
+      "connections": [
+        "se"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -339,7 +341,10 @@
       "col": 5,
       "row": 2,
       "terrain": "road",
-      "connections": ["se", "nw"],
+      "connections": [
+        "se",
+        "nw"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -396,7 +401,10 @@
       "col": 12,
       "row": 2,
       "terrain": "road",
-      "connections": ["sw", "e"],
+      "connections": [
+        "sw",
+        "e"
+      ],
       "owner": null,
       "floor": "green-forest",
       "environmentEffects": []
@@ -405,7 +413,9 @@
       "col": 13,
       "row": 2,
       "terrain": "village",
-      "connections": ["w"],
+      "connections": [
+        "w"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -486,7 +496,11 @@
       "col": 5,
       "row": 3,
       "terrain": "village",
-      "connections": ["sw", "e", "nw"],
+      "connections": [
+        "sw",
+        "e",
+        "nw"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -495,7 +509,10 @@
       "col": 6,
       "row": 3,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -504,7 +521,10 @@
       "col": 7,
       "row": 3,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -513,7 +533,10 @@
       "col": 8,
       "row": 3,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -522,7 +545,10 @@
       "col": 9,
       "row": 3,
       "terrain": "ford",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "shallow-water",
       "environmentEffects": []
@@ -531,7 +557,10 @@
       "col": 10,
       "row": 3,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -540,7 +569,11 @@
       "col": 11,
       "row": 3,
       "terrain": "village",
-      "connections": ["w", "se", "ne"],
+      "connections": [
+        "w",
+        "se",
+        "ne"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -637,7 +670,10 @@
       "col": 5,
       "row": 4,
       "terrain": "road",
-      "connections": ["sw", "ne"],
+      "connections": [
+        "sw",
+        "ne"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -694,7 +730,10 @@
       "col": 12,
       "row": 4,
       "terrain": "road",
-      "connections": ["nw", "se"],
+      "connections": [
+        "nw",
+        "se"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -775,7 +814,10 @@
       "col": 4,
       "row": 5,
       "terrain": "road",
-      "connections": ["sw", "ne"],
+      "connections": [
+        "sw",
+        "ne"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -840,7 +882,10 @@
       "col": 12,
       "row": 5,
       "terrain": "road",
-      "connections": ["nw", "se"],
+      "connections": [
+        "nw",
+        "se"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -921,7 +966,10 @@
       "col": 4,
       "row": 6,
       "terrain": "road",
-      "connections": ["sw", "ne"],
+      "connections": [
+        "sw",
+        "ne"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -994,7 +1042,10 @@
       "col": 13,
       "row": 6,
       "terrain": "road",
-      "connections": ["nw", "se"],
+      "connections": [
+        "nw",
+        "se"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1059,7 +1110,10 @@
       "col": 3,
       "row": 7,
       "terrain": "road",
-      "connections": ["sw", "ne"],
+      "connections": [
+        "sw",
+        "ne"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1140,7 +1194,11 @@
       "col": 13,
       "row": 7,
       "terrain": "road",
-      "connections": ["sw", "e", "nw"],
+      "connections": [
+        "sw",
+        "e",
+        "nw"
+      ],
       "owner": null,
       "floor": "green-forest",
       "environmentEffects": []
@@ -1149,7 +1207,9 @@
       "col": 14,
       "row": 7,
       "terrain": "road",
-      "connections": ["w"],
+      "connections": [
+        "w"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1206,7 +1266,11 @@
       "col": 3,
       "row": 8,
       "terrain": "road",
-      "connections": ["e", "ne", "se"],
+      "connections": [
+        "e",
+        "ne",
+        "se"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1215,7 +1279,10 @@
       "col": 4,
       "row": 8,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1224,7 +1291,10 @@
       "col": 5,
       "row": 8,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-forest",
       "environmentEffects": []
@@ -1233,7 +1303,10 @@
       "col": 6,
       "row": 8,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1242,7 +1315,10 @@
       "col": 7,
       "row": 8,
       "terrain": "bridge",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "dark-water",
       "environmentEffects": []
@@ -1251,7 +1327,10 @@
       "col": 8,
       "row": 8,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1260,7 +1339,10 @@
       "col": 9,
       "row": 8,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1269,7 +1351,10 @@
       "col": 10,
       "row": 8,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1278,7 +1363,10 @@
       "col": 11,
       "row": 8,
       "terrain": "bridge",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "dark-water",
       "environmentEffects": []
@@ -1287,7 +1375,10 @@
       "col": 12,
       "row": 8,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1296,7 +1387,11 @@
       "col": 13,
       "row": 8,
       "terrain": "road",
-      "connections": ["w", "ne", "se"],
+      "connections": [
+        "w",
+        "ne",
+        "se"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1361,7 +1456,10 @@
       "col": 3,
       "row": 9,
       "terrain": "road",
-      "connections": ["nw", "se"],
+      "connections": [
+        "nw",
+        "se"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1442,7 +1540,10 @@
       "col": 13,
       "row": 9,
       "terrain": "road",
-      "connections": ["sw", "nw"],
+      "connections": [
+        "sw",
+        "nw"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1515,7 +1616,10 @@
       "col": 4,
       "row": 10,
       "terrain": "road",
-      "connections": ["nw", "se"],
+      "connections": [
+        "nw",
+        "se"
+      ],
       "owner": null,
       "floor": "green-forest",
       "environmentEffects": []
@@ -1588,7 +1692,11 @@
       "col": 13,
       "row": 10,
       "terrain": "road",
-      "connections": ["sw", "ne", "se"],
+      "connections": [
+        "sw",
+        "ne",
+        "se"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1661,7 +1769,10 @@
       "col": 4,
       "row": 11,
       "terrain": "road",
-      "connections": ["nw", "se"],
+      "connections": [
+        "nw",
+        "se"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1726,7 +1837,10 @@
       "col": 12,
       "row": 11,
       "terrain": "village",
-      "connections": ["sw", "ne"],
+      "connections": [
+        "sw",
+        "ne"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1735,7 +1849,10 @@
       "col": 13,
       "row": 11,
       "terrain": "road",
-      "connections": ["nw", "se"],
+      "connections": [
+        "nw",
+        "se"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1816,7 +1933,11 @@
       "col": 5,
       "row": 12,
       "terrain": "village",
-      "connections": ["nw", "e", "sw"],
+      "connections": [
+        "nw",
+        "e",
+        "sw"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1825,7 +1946,10 @@
       "col": 6,
       "row": 12,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1834,7 +1958,10 @@
       "col": 7,
       "row": 12,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1843,7 +1970,10 @@
       "col": 8,
       "row": 12,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1852,7 +1982,10 @@
       "col": 9,
       "row": 12,
       "terrain": "ford",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "shallow-water",
       "environmentEffects": []
@@ -1861,7 +1994,10 @@
       "col": 10,
       "row": 12,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1870,7 +2006,10 @@
       "col": 11,
       "row": 12,
       "terrain": "road",
-      "connections": ["w", "e"],
+      "connections": [
+        "w",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1879,7 +2018,10 @@
       "col": 12,
       "row": 12,
       "terrain": "road",
-      "connections": ["w", "ne"],
+      "connections": [
+        "w",
+        "ne"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1896,7 +2038,10 @@
       "col": 14,
       "row": 12,
       "terrain": "road",
-      "connections": ["nw", "e"],
+      "connections": [
+        "nw",
+        "e"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1905,7 +2050,9 @@
       "col": 15,
       "row": 12,
       "terrain": "village",
-      "connections": ["w"],
+      "connections": [
+        "w"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -1962,7 +2109,10 @@
       "col": 4,
       "row": 13,
       "terrain": "road",
-      "connections": ["ne", "sw"],
+      "connections": [
+        "ne",
+        "sw"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -2107,7 +2257,9 @@
       "col": 4,
       "row": 14,
       "terrain": "village",
-      "connections": ["ne"],
+      "connections": [
+        "ne"
+      ],
       "owner": null,
       "floor": "green-plain",
       "environmentEffects": []
@@ -2366,7 +2518,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,

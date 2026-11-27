@@ -30,10 +30,11 @@
   "description": "A merfolk infantry fighter who sacrifices a shield for heavier two-handed piercing attacks.",
   "level": 2,
   "family": "reefguard",
-  "advancesTo": ["merfolk-trident-l3"],
+  "advancesTo": [
+    "merfolk-trident-l3"
+  ],
   "experienceNeeded": 18,
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

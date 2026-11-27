@@ -5,7 +5,6 @@ use std::collections::BTreeMap;
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct SightContribution {
-    pub range: i32,
     pub unlimited: bool,
     pub sight_modifiers: SightModifiers,
     pub penetrates: Vec<ConcealmentKind>,
@@ -20,10 +19,6 @@ pub struct StatModifiers {
 }
 impl SightContribution {
     pub(crate) fn stack(&mut self, other: &Self) -> Result<(), Text> {
-        self.range = self
-            .range
-            .checked_add(other.range)
-            .ok_or("sight contribution sum overflow")?;
         self.unlimited |= other.unlimited;
         self.sight_modifiers.lit = self
             .sight_modifiers

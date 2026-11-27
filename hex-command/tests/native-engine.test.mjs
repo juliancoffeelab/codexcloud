@@ -51,7 +51,6 @@ async function fixture() {
     lighting: { time: "day" },
     mapModifiers: {
       sight: {
-        range: 0,
         unlimited: false,
         sightModifiers: { lit: 0, unlit: 0, darkness: 0 },
         penetrates: [],

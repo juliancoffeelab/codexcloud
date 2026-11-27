@@ -42,7 +42,10 @@
       "terrain": "bridge",
       "owner": null,
       "floor": "dark-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -51,7 +54,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -84,7 +90,9 @@
       "terrain": "landing",
       "owner": null,
       "floor": "dark-water",
-      "connections": ["w"],
+      "connections": [
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -101,7 +109,9 @@
       "terrain": "landing",
       "owner": null,
       "floor": "dark-water",
-      "connections": ["e"],
+      "connections": [
+        "e"
+      ],
       "environmentEffects": []
     },
     {
@@ -134,7 +144,9 @@
       "terrain": "ferry",
       "owner": null,
       "floor": "dark-water",
-      "connections": ["w"],
+      "connections": [
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -151,7 +163,9 @@
       "terrain": "ferry",
       "owner": null,
       "floor": "dark-water",
-      "connections": ["e"],
+      "connections": [
+        "e"
+      ],
       "environmentEffects": []
     },
     {
@@ -208,7 +222,10 @@
       "terrain": "signpost",
       "owner": null,
       "floor": "green-plain",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -217,7 +234,14 @@
       "terrain": "castle-wall",
       "owner": null,
       "floor": "green-plain",
-      "walls": ["e", "se", "sw", "w", "nw", "ne"],
+      "walls": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ],
       "environmentEffects": []
     },
     {
@@ -226,7 +250,10 @@
       "terrain": "castle-wall",
       "owner": null,
       "floor": "green-plain",
-      "walls": ["sw", "nw"],
+      "walls": [
+        "sw",
+        "nw"
+      ],
       "environmentEffects": []
     },
     {
@@ -235,7 +262,14 @@
       "terrain": "castle-bell",
       "owner": null,
       "floor": "green-plain",
-      "walls": ["e", "se", "sw", "w", "nw", "ne"],
+      "walls": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ],
       "environmentEffects": []
     },
     {
@@ -532,7 +566,9 @@
       "row": 2,
       "terrain": "road",
       "owner": null,
-      "connections": ["e"],
+      "connections": [
+        "e"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -541,7 +577,10 @@
       "row": 2,
       "terrain": "road",
       "owner": null,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -550,7 +589,11 @@
       "row": 2,
       "terrain": "road",
       "owner": null,
-      "connections": ["e", "se", "w"],
+      "connections": [
+        "e",
+        "se",
+        "w"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -559,7 +602,10 @@
       "row": 2,
       "terrain": "road",
       "owner": null,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -568,7 +614,10 @@
       "row": 2,
       "terrain": "road",
       "owner": null,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -577,7 +626,9 @@
       "row": 2,
       "terrain": "road",
       "owner": null,
-      "connections": ["w"],
+      "connections": [
+        "w"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -602,7 +653,10 @@
       "row": 2,
       "terrain": "road",
       "owner": null,
-      "connections": ["e", "sw"],
+      "connections": [
+        "e",
+        "sw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -611,7 +665,10 @@
       "row": 2,
       "terrain": "road",
       "owner": null,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -620,7 +677,10 @@
       "row": 2,
       "terrain": "road",
       "owner": null,
-      "connections": ["se", "w"],
+      "connections": [
+        "se",
+        "w"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -813,7 +873,10 @@
       "row": 3,
       "terrain": "road",
       "owner": null,
-      "connections": ["sw", "nw"],
+      "connections": [
+        "sw",
+        "nw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -854,7 +917,10 @@
       "row": 3,
       "terrain": "road",
       "owner": null,
-      "connections": ["sw", "ne"],
+      "connections": [
+        "sw",
+        "ne"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -879,7 +945,10 @@
       "row": 3,
       "terrain": "road",
       "owner": null,
-      "connections": ["se", "nw"],
+      "connections": [
+        "se",
+        "nw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -1072,7 +1141,10 @@
       "row": 4,
       "terrain": "road",
       "owner": null,
-      "connections": ["se", "ne"],
+      "connections": [
+        "se",
+        "ne"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -1113,7 +1185,10 @@
       "row": 4,
       "terrain": "road",
       "owner": null,
-      "connections": ["se", "ne"],
+      "connections": [
+        "se",
+        "ne"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -1146,7 +1221,10 @@
       "row": 4,
       "terrain": "road",
       "owner": null,
-      "connections": ["sw", "nw"],
+      "connections": [
+        "sw",
+        "nw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -1331,7 +1409,10 @@
       "row": 5,
       "terrain": "road",
       "owner": null,
-      "connections": ["se", "nw"],
+      "connections": [
+        "se",
+        "nw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -1372,7 +1453,10 @@
       "row": 5,
       "terrain": "road",
       "owner": null,
-      "connections": ["se", "nw"],
+      "connections": [
+        "se",
+        "nw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -1397,7 +1481,10 @@
       "row": 5,
       "terrain": "road",
       "owner": null,
-      "connections": ["sw", "ne"],
+      "connections": [
+        "sw",
+        "ne"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -1598,7 +1685,9 @@
       "row": 6,
       "terrain": "road",
       "owner": null,
-      "connections": ["nw"],
+      "connections": [
+        "nw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -1639,7 +1728,10 @@
       "row": 6,
       "terrain": "road",
       "owner": null,
-      "connections": ["e", "nw"],
+      "connections": [
+        "e",
+        "nw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -1648,7 +1740,10 @@
       "row": 6,
       "terrain": "road",
       "owner": null,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -1657,7 +1752,10 @@
       "row": 6,
       "terrain": "road",
       "owner": null,
-      "connections": ["w", "ne"],
+      "connections": [
+        "w",
+        "ne"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -2098,7 +2196,9 @@
       "row": 8,
       "terrain": "road",
       "owner": null,
-      "connections": ["e"],
+      "connections": [
+        "e"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -2107,7 +2207,10 @@
       "row": 8,
       "terrain": "bridge",
       "owner": null,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "floor": "dark-water",
       "environmentEffects": []
     },
@@ -2116,7 +2219,10 @@
       "row": 8,
       "terrain": "road",
       "owner": null,
-      "connections": ["sw", "w"],
+      "connections": [
+        "sw",
+        "w"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -2125,7 +2231,9 @@
       "row": 8,
       "terrain": "road",
       "owner": null,
-      "connections": ["e"],
+      "connections": [
+        "e"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -2134,7 +2242,10 @@
       "row": 8,
       "terrain": "ford",
       "owner": null,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "floor": "shallow-water",
       "environmentEffects": []
     },
@@ -2359,7 +2470,9 @@
       "row": 9,
       "terrain": "road",
       "owner": null,
-      "connections": ["e"],
+      "connections": [
+        "e"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -2368,7 +2481,12 @@
       "row": 9,
       "terrain": "road",
       "owner": null,
-      "connections": ["e", "sw", "w", "ne"],
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "ne"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -2377,7 +2495,9 @@
       "row": 9,
       "terrain": "road",
       "owner": null,
-      "connections": ["w"],
+      "connections": [
+        "w"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -2394,7 +2514,9 @@
       "row": 9,
       "terrain": "road",
       "owner": null,
-      "connections": ["sw"],
+      "connections": [
+        "sw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -2419,7 +2541,10 @@
       "row": 9,
       "terrain": "road",
       "owner": null,
-      "connections": ["e", "sw"],
+      "connections": [
+        "e",
+        "sw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -2428,7 +2553,10 @@
       "row": 9,
       "terrain": "bridge",
       "owner": null,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "floor": "dark-water",
       "environmentEffects": []
     },
@@ -2437,7 +2565,10 @@
       "row": 9,
       "terrain": "road",
       "owner": null,
-      "connections": ["se", "w"],
+      "connections": [
+        "se",
+        "w"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -2630,7 +2761,10 @@
       "row": 10,
       "terrain": "bridge",
       "owner": null,
-      "connections": ["sw", "ne"],
+      "connections": [
+        "sw",
+        "ne"
+      ],
       "floor": "dark-water",
       "environmentEffects": []
     },
@@ -2655,7 +2789,10 @@
       "row": 10,
       "terrain": "ford",
       "owner": null,
-      "connections": ["sw", "ne"],
+      "connections": [
+        "sw",
+        "ne"
+      ],
       "floor": "shallow-water",
       "environmentEffects": []
     },
@@ -2680,7 +2817,10 @@
       "row": 10,
       "terrain": "bridge",
       "owner": null,
-      "connections": ["sw", "ne"],
+      "connections": [
+        "sw",
+        "ne"
+      ],
       "floor": "dark-water",
       "environmentEffects": []
     },
@@ -2705,7 +2845,10 @@
       "row": 10,
       "terrain": "bridge",
       "owner": null,
-      "connections": ["se", "nw"],
+      "connections": [
+        "se",
+        "nw"
+      ],
       "floor": "dark-water",
       "environmentEffects": []
     },
@@ -2882,7 +3025,10 @@
       "row": 11,
       "terrain": "road",
       "owner": null,
-      "connections": ["se", "ne"],
+      "connections": [
+        "se",
+        "ne"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -2907,7 +3053,10 @@
       "row": 11,
       "terrain": "road",
       "owner": null,
-      "connections": ["se", "ne"],
+      "connections": [
+        "se",
+        "ne"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -2932,7 +3081,10 @@
       "row": 11,
       "terrain": "road",
       "owner": null,
-      "connections": ["se", "ne"],
+      "connections": [
+        "se",
+        "ne"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -2965,7 +3117,10 @@
       "row": 11,
       "terrain": "road",
       "owner": null,
-      "connections": ["sw", "nw"],
+      "connections": [
+        "sw",
+        "nw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -3150,7 +3305,10 @@
       "row": 12,
       "terrain": "bridge",
       "owner": null,
-      "connections": ["se", "nw"],
+      "connections": [
+        "se",
+        "nw"
+      ],
       "floor": "dark-water",
       "environmentEffects": []
     },
@@ -3175,7 +3333,10 @@
       "row": 12,
       "terrain": "ford",
       "owner": null,
-      "connections": ["se", "nw"],
+      "connections": [
+        "se",
+        "nw"
+      ],
       "floor": "shallow-water",
       "environmentEffects": []
     },
@@ -3200,7 +3361,10 @@
       "row": 12,
       "terrain": "bridge",
       "owner": null,
-      "connections": ["se", "nw"],
+      "connections": [
+        "se",
+        "nw"
+      ],
       "floor": "dark-water",
       "environmentEffects": []
     },
@@ -3225,7 +3389,10 @@
       "row": 12,
       "terrain": "bridge",
       "owner": null,
-      "connections": ["sw", "ne"],
+      "connections": [
+        "sw",
+        "ne"
+      ],
       "floor": "dark-water",
       "environmentEffects": []
     },
@@ -3410,7 +3577,9 @@
       "row": 13,
       "terrain": "road",
       "owner": null,
-      "connections": ["nw"],
+      "connections": [
+        "nw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -3435,7 +3604,9 @@
       "row": 13,
       "terrain": "road",
       "owner": null,
-      "connections": ["nw"],
+      "connections": [
+        "nw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -3460,7 +3631,10 @@
       "row": 13,
       "terrain": "road",
       "owner": null,
-      "connections": ["e", "nw"],
+      "connections": [
+        "e",
+        "nw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -3469,7 +3643,10 @@
       "row": 13,
       "terrain": "bridge",
       "owner": null,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "floor": "dark-water",
       "environmentEffects": []
     },
@@ -3478,7 +3655,10 @@
       "row": 13,
       "terrain": "road",
       "owner": null,
-      "connections": ["w", "ne"],
+      "connections": [
+        "w",
+        "ne"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -3671,7 +3851,9 @@
       "row": 14,
       "terrain": "road",
       "owner": null,
-      "connections": ["se"],
+      "connections": [
+        "se"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -3680,7 +3862,9 @@
       "row": 14,
       "terrain": "road",
       "owner": null,
-      "connections": ["sw"],
+      "connections": [
+        "sw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -3921,7 +4105,9 @@
       "row": 15,
       "terrain": "road",
       "owner": null,
-      "connections": ["e"],
+      "connections": [
+        "e"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -3930,7 +4116,14 @@
       "row": 15,
       "terrain": "road",
       "owner": null,
-      "connections": ["e", "se", "sw", "w", "nw", "ne"],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -3939,7 +4132,9 @@
       "row": 15,
       "terrain": "road",
       "owner": null,
-      "connections": ["w"],
+      "connections": [
+        "w"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -4188,7 +4383,9 @@
       "row": 16,
       "terrain": "road",
       "owner": null,
-      "connections": ["ne"],
+      "connections": [
+        "ne"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -4197,7 +4394,9 @@
       "row": 16,
       "terrain": "road",
       "owner": null,
-      "connections": ["nw"],
+      "connections": [
+        "nw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -4238,7 +4437,10 @@
       "row": 16,
       "terrain": "road",
       "owner": null,
-      "connections": ["e", "sw"],
+      "connections": [
+        "e",
+        "sw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -4247,7 +4449,10 @@
       "row": 16,
       "terrain": "ford",
       "owner": null,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "floor": "shallow-water",
       "environmentEffects": []
     },
@@ -4256,7 +4461,10 @@
       "row": 16,
       "terrain": "road",
       "owner": null,
-      "connections": ["se", "w"],
+      "connections": [
+        "se",
+        "w"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -4489,7 +4697,10 @@
       "row": 17,
       "terrain": "ford",
       "owner": null,
-      "connections": ["sw", "ne"],
+      "connections": [
+        "sw",
+        "ne"
+      ],
       "floor": "shallow-water",
       "environmentEffects": []
     },
@@ -4514,7 +4725,10 @@
       "row": 17,
       "terrain": "ford",
       "owner": null,
-      "connections": ["se", "nw"],
+      "connections": [
+        "se",
+        "nw"
+      ],
       "floor": "shallow-water",
       "environmentEffects": []
     },
@@ -4747,7 +4961,10 @@
       "row": 18,
       "terrain": "road",
       "owner": null,
-      "connections": ["se", "ne"],
+      "connections": [
+        "se",
+        "ne"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -4780,7 +4997,10 @@
       "row": 18,
       "terrain": "road",
       "owner": null,
-      "connections": ["sw", "nw"],
+      "connections": [
+        "sw",
+        "nw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -5005,7 +5225,10 @@
       "row": 19,
       "terrain": "ford",
       "owner": null,
-      "connections": ["se", "nw"],
+      "connections": [
+        "se",
+        "nw"
+      ],
       "floor": "shallow-water",
       "environmentEffects": []
     },
@@ -5030,7 +5253,10 @@
       "row": 19,
       "terrain": "ford",
       "owner": null,
-      "connections": ["sw", "ne"],
+      "connections": [
+        "sw",
+        "ne"
+      ],
       "floor": "shallow-water",
       "environmentEffects": []
     },
@@ -5271,7 +5497,10 @@
       "row": 20,
       "terrain": "road",
       "owner": null,
-      "connections": ["e", "nw"],
+      "connections": [
+        "e",
+        "nw"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -5280,7 +5509,10 @@
       "row": 20,
       "terrain": "ford",
       "owner": null,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "floor": "shallow-water",
       "environmentEffects": []
     },
@@ -5289,7 +5521,10 @@
       "row": 20,
       "terrain": "road",
       "owner": null,
-      "connections": ["w", "ne"],
+      "connections": [
+        "w",
+        "ne"
+      ],
       "floor": "green-plain",
       "environmentEffects": []
     },
@@ -6155,7 +6390,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 23,
@@ -6163,7 +6400,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 24,
@@ -6171,7 +6410,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 25,
@@ -6179,7 +6420,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 26,
@@ -6187,7 +6430,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 27,
@@ -6419,8 +6664,14 @@
       "terrain": "cave-passage",
       "owner": null,
       "floor": "cave-stone",
-      "connections": ["e", "se", "w"],
-      "environmentEffects": ["unlit-ambient"]
+      "connections": [
+        "e",
+        "se",
+        "w"
+      ],
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 24,
@@ -6428,17 +6679,31 @@
       "terrain": "cave-passage",
       "owner": null,
       "floor": "cave-stone",
-      "connections": ["e", "se", "sw", "w"],
-      "environmentEffects": ["unlit-ambient"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ],
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 25,
       "row": 24,
       "terrain": "cave-passage",
       "owner": null,
-      "connections": ["e", "se", "sw", "w"],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ],
       "floor": "cave-stone",
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 26,
@@ -6446,8 +6711,14 @@
       "terrain": "cave-passage",
       "owner": null,
       "floor": "cave-stone",
-      "connections": ["se", "sw", "w"],
-      "environmentEffects": ["unlit-ambient"]
+      "connections": [
+        "se",
+        "sw",
+        "w"
+      ],
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 27,
@@ -6455,7 +6726,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 28,
@@ -6463,7 +6736,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 29,
@@ -6471,7 +6746,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 30,
@@ -6671,7 +6948,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 23,
@@ -6679,8 +6958,16 @@
       "terrain": "cave-passage",
       "owner": null,
       "floor": "cave-stone",
-      "connections": ["e", "se", "sw", "nw", "ne"],
-      "environmentEffects": ["unlit-ambient"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ],
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 24,
@@ -6688,17 +6975,35 @@
       "terrain": "cave-passage",
       "owner": null,
       "floor": "cave-stone",
-      "connections": ["e", "se", "sw", "w", "nw", "ne"],
-      "environmentEffects": ["unlit-ambient"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ],
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 25,
       "row": 25,
       "terrain": "cave-passage",
       "owner": null,
-      "connections": ["e", "se", "sw", "w", "nw", "ne"],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ],
       "floor": "cave-stone",
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 26,
@@ -6706,8 +7011,15 @@
       "terrain": "cave-passage",
       "owner": null,
       "floor": "cave-stone",
-      "connections": ["e", "sw", "w", "nw"],
-      "environmentEffects": ["unlit-ambient"]
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "nw"
+      ],
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 27,
@@ -6715,17 +7027,28 @@
       "terrain": "cave-passage",
       "owner": null,
       "floor": "cave-stone",
-      "connections": ["e", "se", "w"],
-      "environmentEffects": ["unlit-ambient"]
+      "connections": [
+        "e",
+        "se",
+        "w"
+      ],
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 28,
       "row": 25,
       "terrain": "cave-passage",
       "owner": null,
-      "connections": ["sw", "w"],
+      "connections": [
+        "sw",
+        "w"
+      ],
       "floor": "cave-stone",
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 29,
@@ -6733,7 +7056,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 30,
@@ -6933,16 +7258,23 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 23,
       "row": 26,
       "terrain": "cave-passage",
       "owner": null,
-      "connections": ["e", "ne"],
+      "connections": [
+        "e",
+        "ne"
+      ],
       "floor": "cave-stone",
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 24,
@@ -6950,8 +7282,15 @@
       "terrain": "cave-passage",
       "owner": null,
       "floor": "cave-stone",
-      "connections": ["e", "w", "nw", "ne"],
-      "environmentEffects": ["unlit-ambient"]
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ],
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 25,
@@ -6959,8 +7298,16 @@
       "terrain": "cave-passage",
       "owner": null,
       "floor": "cave-stone",
-      "connections": ["e", "w", "nw", "ne"],
-      "environmentEffects": ["unlit-ambient", "glow-75-70"]
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ],
+      "environmentEffects": [
+        "unlit-ambient",
+        "glow-75-70"
+      ]
     },
     {
       "col": 26,
@@ -6968,8 +7315,14 @@
       "terrain": "cave-passage",
       "owner": null,
       "floor": "cave-stone",
-      "connections": ["w", "nw", "ne"],
-      "environmentEffects": ["unlit-ambient"]
+      "connections": [
+        "w",
+        "nw",
+        "ne"
+      ],
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 27,
@@ -6977,7 +7330,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 28,
@@ -6985,8 +7340,14 @@
       "terrain": "cave-passage",
       "owner": null,
       "floor": "cave-stone",
-      "connections": ["se", "nw", "ne"],
-      "environmentEffects": ["unlit-ambient"]
+      "connections": [
+        "se",
+        "nw",
+        "ne"
+      ],
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 29,
@@ -6994,7 +7355,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 30,
@@ -7194,7 +7557,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 23,
@@ -7202,7 +7567,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 24,
@@ -7210,7 +7577,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 25,
@@ -7218,7 +7587,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 26,
@@ -7226,7 +7597,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 27,
@@ -7234,7 +7607,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 28,
@@ -7242,8 +7617,12 @@
       "terrain": "cave-passage",
       "owner": null,
       "floor": "cave-stone",
-      "connections": ["nw"],
-      "environmentEffects": ["unlit-ambient"]
+      "connections": [
+        "nw"
+      ],
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 29,
@@ -7251,7 +7630,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 30,
@@ -7499,7 +7880,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 29,
@@ -7507,7 +7890,9 @@
       "terrain": "cave-wall",
       "floor": "mountain-rock",
       "owner": null,
-      "environmentEffects": ["unlit-ambient"]
+      "environmentEffects": [
+        "unlit-ambient"
+      ]
     },
     {
       "col": 30,
@@ -8301,7 +8686,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,

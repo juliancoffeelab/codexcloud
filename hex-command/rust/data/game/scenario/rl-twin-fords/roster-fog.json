@@ -3,8 +3,7 @@
     {
       "id": "player",
       "sight": {
-        "range": 5,
-        "unlimited": false,
+        "unlimited": true,
         "sightModifiers": {
           "lit": 0,
           "unlit": 0,
@@ -17,8 +16,7 @@
     {
       "id": "enemy",
       "sight": {
-        "range": 5,
-        "unlimited": false,
+        "unlimited": true,
         "sightModifiers": {
           "lit": 0,
           "unlit": 0,
@@ -169,6 +167,8 @@
   "arrivals": [],
   "round": 1,
   "turn": "player",
-  "log": ["Capture villages for gold. Defeat the enemy commander."],
+  "log": [
+    "Capture villages for gold. Defeat the enemy commander."
+  ],
   "combatRng": 1831565813
 }

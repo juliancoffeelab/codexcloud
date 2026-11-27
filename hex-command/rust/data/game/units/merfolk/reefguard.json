@@ -42,10 +42,12 @@
   "level": 1,
   "family": "reefguard",
   "experienceNeeded": 10,
-  "advancesTo": ["tridentguard", "merfolk-trident-l2"],
+  "advancesTo": [
+    "tridentguard",
+    "merfolk-trident-l2"
+  ],
   "terrainModifiers": {},
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

@@ -64,7 +64,10 @@
     },
     {
       "col": 4,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "owner": null,
       "row": 1,
       "terrain": "ford",
@@ -214,7 +217,10 @@
     },
     {
       "col": 3,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "owner": null,
       "row": 4,
       "terrain": "bridge",
@@ -229,7 +235,10 @@
     },
     {
       "col": 5,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "owner": null,
       "row": 4,
       "terrain": "bridge",
@@ -379,7 +388,10 @@
     },
     {
       "col": 3,
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "owner": null,
       "row": 7,
       "terrain": "ford",
@@ -447,7 +459,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,

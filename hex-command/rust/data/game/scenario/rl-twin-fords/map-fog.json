@@ -12,7 +12,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -20,7 +22,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
@@ -28,7 +32,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
@@ -36,7 +42,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
@@ -44,7 +52,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
@@ -52,7 +62,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
@@ -60,7 +72,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
@@ -68,7 +82,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
@@ -76,7 +92,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
@@ -84,7 +102,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
@@ -92,7 +112,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
@@ -100,7 +122,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
@@ -108,7 +132,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 13,
@@ -116,7 +142,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 14,
@@ -124,7 +152,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 15,
@@ -132,7 +162,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 16,
@@ -140,7 +172,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 17,
@@ -148,7 +182,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
@@ -156,7 +192,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -164,7 +202,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
@@ -172,7 +212,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
@@ -180,7 +222,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
@@ -188,7 +232,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
@@ -196,7 +242,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
@@ -204,7 +252,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
@@ -212,7 +262,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
@@ -220,7 +272,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
@@ -228,7 +282,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
@@ -236,7 +292,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
@@ -244,7 +302,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
@@ -252,7 +312,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 13,
@@ -260,7 +322,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 14,
@@ -268,7 +332,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 15,
@@ -276,7 +342,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 16,
@@ -284,7 +352,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 17,
@@ -292,7 +362,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
@@ -300,7 +372,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -308,7 +382,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
@@ -316,7 +392,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
@@ -324,7 +402,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
@@ -332,7 +412,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
@@ -340,7 +422,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
@@ -348,7 +432,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
@@ -356,7 +442,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
@@ -364,7 +452,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
@@ -372,7 +462,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
@@ -380,7 +472,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
@@ -388,7 +482,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
@@ -396,7 +492,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 13,
@@ -404,7 +502,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 14,
@@ -412,7 +512,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 15,
@@ -420,7 +522,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 16,
@@ -428,7 +532,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 17,
@@ -436,7 +542,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
@@ -444,7 +552,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -452,7 +562,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
@@ -460,7 +572,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
@@ -468,7 +582,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
@@ -476,7 +592,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
@@ -484,8 +602,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "sw"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 6,
@@ -493,8 +616,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 7,
@@ -502,8 +630,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -511,8 +644,13 @@
       "terrain": "ford",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -520,8 +658,13 @@
       "terrain": "ford",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 10,
@@ -529,8 +672,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 11,
@@ -538,8 +686,13 @@
       "terrain": "village",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 12,
@@ -547,8 +700,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 13,
@@ -556,8 +714,12 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 14,
@@ -565,7 +727,9 @@
       "terrain": "village",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
       "connections": []
     },
     {
@@ -574,7 +738,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 16,
@@ -582,7 +748,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 17,
@@ -590,7 +758,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
@@ -598,7 +768,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -606,7 +778,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
@@ -614,7 +788,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
@@ -622,7 +798,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
@@ -630,7 +808,9 @@
       "terrain": "village",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
       "connections": []
     },
     {
@@ -639,8 +819,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["sw", "ne"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 6,
@@ -648,7 +833,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
@@ -656,7 +843,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
@@ -664,7 +853,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
@@ -672,7 +863,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
@@ -680,7 +873,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
@@ -688,7 +883,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
@@ -696,7 +893,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 13,
@@ -704,7 +903,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 14,
@@ -712,7 +913,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 15,
@@ -720,7 +923,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 16,
@@ -728,7 +933,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 17,
@@ -736,7 +943,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
@@ -744,7 +953,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -752,7 +963,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
@@ -760,7 +973,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
@@ -768,7 +983,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
@@ -776,8 +993,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["sw", "ne"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 5,
@@ -785,7 +1007,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
@@ -793,7 +1017,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
@@ -801,7 +1027,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
@@ -809,7 +1037,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
@@ -817,7 +1047,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
@@ -825,7 +1057,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
@@ -833,7 +1067,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
@@ -841,7 +1077,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 13,
@@ -849,7 +1087,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 14,
@@ -857,7 +1097,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 15,
@@ -865,7 +1107,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 16,
@@ -873,7 +1117,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 17,
@@ -881,7 +1127,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
@@ -889,7 +1137,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -897,7 +1147,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
@@ -905,7 +1157,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
@@ -913,7 +1167,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
@@ -921,8 +1177,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["sw", "ne"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 5,
@@ -930,7 +1191,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
@@ -938,7 +1201,9 @@
       "terrain": "fort",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
@@ -946,7 +1211,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
@@ -954,7 +1221,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
@@ -962,7 +1231,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
@@ -970,7 +1241,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
@@ -978,7 +1251,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
@@ -986,7 +1261,9 @@
       "terrain": "village",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
       "connections": []
     },
     {
@@ -995,7 +1272,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 14,
@@ -1003,8 +1282,12 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["sw"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "sw"
+      ]
     },
     {
       "col": 15,
@@ -1012,7 +1295,9 @@
       "terrain": "keep",
       "floor": "green-plain",
       "owner": "enemy",
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 16,
@@ -1020,7 +1305,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 17,
@@ -1028,7 +1315,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
@@ -1036,7 +1325,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -1044,7 +1335,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
@@ -1052,7 +1345,9 @@
       "terrain": "keep",
       "floor": "green-plain",
       "owner": "player",
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
@@ -1060,8 +1355,12 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["ne"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "ne"
+      ]
     },
     {
       "col": 4,
@@ -1069,7 +1368,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
@@ -1077,7 +1378,9 @@
       "terrain": "village",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
       "connections": []
     },
     {
@@ -1086,7 +1389,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
@@ -1094,7 +1399,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
@@ -1102,7 +1409,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
@@ -1110,7 +1419,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
@@ -1118,7 +1429,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
@@ -1126,7 +1439,9 @@
       "terrain": "fort",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
@@ -1134,7 +1449,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 13,
@@ -1142,8 +1459,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["sw", "ne"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 14,
@@ -1151,7 +1473,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 15,
@@ -1159,7 +1483,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 16,
@@ -1167,7 +1493,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 17,
@@ -1175,7 +1503,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
@@ -1183,7 +1513,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -1191,7 +1523,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
@@ -1199,7 +1533,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
@@ -1207,7 +1543,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
@@ -1215,7 +1553,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
@@ -1223,7 +1563,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
@@ -1231,7 +1573,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
@@ -1239,7 +1583,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
@@ -1247,7 +1593,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
@@ -1255,7 +1603,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
@@ -1263,7 +1613,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
@@ -1271,7 +1623,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
@@ -1279,7 +1633,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 13,
@@ -1287,8 +1643,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["sw", "ne"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 14,
@@ -1296,7 +1657,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 15,
@@ -1304,7 +1667,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 16,
@@ -1312,7 +1677,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 17,
@@ -1320,7 +1687,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
@@ -1328,7 +1697,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -1336,7 +1707,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
@@ -1344,7 +1717,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
@@ -1352,7 +1727,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
@@ -1360,7 +1737,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
@@ -1368,7 +1747,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
@@ -1376,7 +1757,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
@@ -1384,7 +1767,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
@@ -1392,7 +1777,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
@@ -1400,7 +1787,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
@@ -1408,7 +1797,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
@@ -1416,7 +1807,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
@@ -1424,8 +1817,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["sw", "ne"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 13,
@@ -1433,7 +1831,9 @@
       "terrain": "village",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
       "connections": []
     },
     {
@@ -1442,7 +1842,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 15,
@@ -1450,7 +1852,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 16,
@@ -1458,7 +1862,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 17,
@@ -1466,7 +1872,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
@@ -1474,7 +1882,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -1482,7 +1892,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
@@ -1490,7 +1902,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
@@ -1498,7 +1912,9 @@
       "terrain": "village",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
       "connections": []
     },
     {
@@ -1507,8 +1923,12 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 5,
@@ -1516,8 +1936,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 6,
@@ -1525,8 +1950,13 @@
       "terrain": "village",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 7,
@@ -1534,8 +1964,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -1543,8 +1978,13 @@
       "terrain": "ford",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -1552,8 +1992,13 @@
       "terrain": "ford",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 10,
@@ -1561,8 +2006,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 11,
@@ -1570,8 +2020,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["e", "w"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 12,
@@ -1579,8 +2034,13 @@
       "terrain": "road",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"],
-      "connections": ["w", "ne"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ],
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 13,
@@ -1588,7 +2048,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 14,
@@ -1596,7 +2058,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 15,
@@ -1604,7 +2068,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 16,
@@ -1612,7 +2078,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 17,
@@ -1620,7 +2088,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
@@ -1628,7 +2098,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -1636,7 +2108,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
@@ -1644,7 +2118,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
@@ -1652,7 +2128,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
@@ -1660,7 +2138,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
@@ -1668,7 +2148,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
@@ -1676,7 +2158,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
@@ -1684,7 +2168,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
@@ -1692,7 +2178,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
@@ -1700,7 +2188,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
@@ -1708,7 +2198,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
@@ -1716,7 +2208,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
@@ -1724,7 +2218,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 13,
@@ -1732,7 +2228,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 14,
@@ -1740,7 +2238,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 15,
@@ -1748,7 +2248,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 16,
@@ -1756,7 +2258,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 17,
@@ -1764,7 +2268,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
@@ -1772,7 +2278,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -1780,7 +2288,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
@@ -1788,7 +2298,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
@@ -1796,7 +2308,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
@@ -1804,7 +2318,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
@@ -1812,7 +2328,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
@@ -1820,7 +2338,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
@@ -1828,7 +2348,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
@@ -1836,7 +2358,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
@@ -1844,7 +2368,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
@@ -1852,7 +2378,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
@@ -1860,7 +2388,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
@@ -1868,7 +2398,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 13,
@@ -1876,7 +2408,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 14,
@@ -1884,7 +2418,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 15,
@@ -1892,7 +2428,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 16,
@@ -1900,7 +2438,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 17,
@@ -1908,7 +2448,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
@@ -1916,7 +2458,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -1924,7 +2468,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
@@ -1932,7 +2478,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
@@ -1940,7 +2488,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
@@ -1948,7 +2498,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
@@ -1956,7 +2508,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
@@ -1964,7 +2518,9 @@
       "terrain": "forest",
       "floor": "green-forest",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
@@ -1972,7 +2528,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
@@ -1980,7 +2538,9 @@
       "terrain": "water",
       "floor": "shallow-water",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
@@ -1988,7 +2548,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
@@ -1996,7 +2558,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
@@ -2004,7 +2568,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
@@ -2012,7 +2578,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 13,
@@ -2020,7 +2588,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 14,
@@ -2028,7 +2598,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 15,
@@ -2036,7 +2608,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 16,
@@ -2044,7 +2618,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 17,
@@ -2052,7 +2628,9 @@
       "terrain": "plains",
       "floor": "green-plain",
       "owner": null,
-      "environmentEffects": ["fog-reveal-3"]
+      "environmentEffects": [
+        "fog-reveal-3"
+      ]
     }
   ],
   "lighting": {
@@ -2060,7 +2638,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,

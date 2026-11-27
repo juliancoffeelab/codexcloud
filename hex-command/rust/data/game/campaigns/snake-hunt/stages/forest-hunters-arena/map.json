@@ -14,210 +14,330 @@
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
       "row": 0,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
       "row": 1,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
       "row": 1,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
       "row": 1,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
       "row": 1,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
       "row": 1,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
       "row": 1,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
       "row": 1,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
       "row": 1,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
       "row": 1,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
       "row": 1,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
       "row": 1,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
       "row": 1,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
       "row": 1,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
       "row": 2,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
@@ -226,161 +346,253 @@
       "owner": null,
       "connections": [],
       "id": "pine-hamlet",
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
       "row": 2,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
       "row": 2,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
       "row": 3,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
       "row": 3,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
       "row": 3,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
       "row": 4,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
@@ -388,35 +600,55 @@
       "terrain": "keep",
       "owner": "forest-hunters",
       "id": "burrow",
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
       "row": 4,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
       "row": 4,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
       "row": 4,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
       "row": 4,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
@@ -425,35 +657,55 @@
       "owner": null,
       "connections": [],
       "id": "moss-hamlet",
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
       "row": 4,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
       "row": 4,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
       "row": 4,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
       "row": 4,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
@@ -461,161 +713,253 @@
       "terrain": "keep",
       "owner": "player",
       "id": "watch-post",
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
       "row": 4,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
       "row": 5,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
       "row": 5,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
       "row": 5,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
       "row": 5,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
       "row": 5,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
       "row": 5,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
       "row": 5,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
       "row": 5,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
       "row": 5,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
       "row": 5,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
       "row": 5,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
       "row": 5,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
       "row": 5,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
       "row": 6,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
@@ -624,222 +968,345 @@
       "owner": null,
       "connections": [],
       "id": "fern-hamlet",
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
       "row": 6,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
       "row": 6,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
       "row": 7,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
       "row": 7,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
       "row": 7,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
       "row": 7,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
       "row": 7,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
       "row": 7,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
       "row": 7,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
       "row": 7,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
       "row": 7,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
       "row": 7,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
       "row": 7,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
       "row": 7,
       "terrain": "forest",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
       "row": 7,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 0,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 1,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 2,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 3,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 4,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 5,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 6,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 7,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 8,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 9,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 10,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 11,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     },
     {
       "col": 12,
       "row": 8,
       "terrain": "plains",
       "owner": null,
-      "environmentEffects": ["lit-ambient", "remember-terrain", "fog-reveal-3"]
+      "environmentEffects": [
+        "lit-ambient",
+        "remember-terrain",
+        "fog-reveal-3"
+      ]
     }
   ],
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,

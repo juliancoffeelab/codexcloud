@@ -42,11 +42,15 @@
   "level": 1,
   "family": "wavemender",
   "experienceNeeded": 10,
-  "advancesTo": ["tidesage", "merfolk-tidecrusher-l2"],
-  "abilities": ["mending-3"],
+  "advancesTo": [
+    "tidesage",
+    "merfolk-tidecrusher-l2"
+  ],
+  "abilities": [
+    "mending-3"
+  ],
   "terrainModifiers": {},
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

@@ -107,7 +107,11 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw"]
+      "connections": [
+        "e",
+        "se",
+        "sw"
+      ]
     },
     {
       "col": 2,
@@ -116,7 +120,11 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["se", "sw", "w"]
+      "connections": [
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 3,
@@ -157,7 +165,11 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw"]
+      "connections": [
+        "e",
+        "se",
+        "sw"
+      ]
     },
     {
       "col": 8,
@@ -166,7 +178,11 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["se", "sw", "w"]
+      "connections": [
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -199,7 +215,11 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "ne"
+      ]
     },
     {
       "col": 2,
@@ -208,7 +228,13 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 3,
@@ -217,7 +243,12 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "w", "nw"]
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 4,
@@ -226,7 +257,12 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 5,
@@ -235,7 +271,11 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "sw", "w"]
+      "connections": [
+        "e",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 6,
@@ -244,7 +284,10 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 7,
@@ -253,7 +296,12 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "w", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 8,
@@ -262,7 +310,14 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 9,
@@ -271,7 +326,12 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["se", "sw", "w", "nw"]
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 10,
@@ -296,7 +356,13 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 2,
@@ -305,7 +371,10 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 3,
@@ -314,7 +383,14 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 4,
@@ -323,7 +399,13 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 5,
@@ -348,7 +430,12 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 8,
@@ -357,7 +444,14 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 9,
@@ -366,7 +460,11 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["sw", "w", "nw"]
+      "connections": [
+        "sw",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 10,
@@ -391,7 +489,11 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "ne"
+      ]
     },
     {
       "col": 2,
@@ -400,7 +502,13 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "w", "nw"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 3,
@@ -409,7 +517,12 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "sw", "w", "ne"]
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 4,
@@ -418,7 +531,12 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "w", "nw", "ne"]
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 5,
@@ -427,7 +545,11 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "w", "nw"]
+      "connections": [
+        "e",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 6,
@@ -436,7 +558,9 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 7,
@@ -453,7 +577,13 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "se", "sw", "nw", "ne"]
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 9,
@@ -462,7 +592,12 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["sw", "w", "nw", "ne"]
+      "connections": [
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 10,
@@ -487,7 +622,11 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "nw", "ne"]
+      "connections": [
+        "e",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 2,
@@ -496,7 +635,11 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["w", "nw", "ne"]
+      "connections": [
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 3,
@@ -537,7 +680,10 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["e", "ne"]
+      "connections": [
+        "e",
+        "ne"
+      ]
     },
     {
       "col": 8,
@@ -546,7 +692,11 @@
       "owner": null,
       "floor": "cave-stone",
       "environmentEffects": [],
-      "connections": ["w", "nw", "ne"]
+      "connections": [
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 9,
@@ -660,7 +810,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,

@@ -77,9 +77,11 @@
   "level": 1,
   "family": "scout",
   "experienceNeeded": 10,
-  "advancesTo": ["ranger", "slinger"],
+  "advancesTo": [
+    "ranger",
+    "slinger"
+  ],
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

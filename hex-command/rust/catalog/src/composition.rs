@@ -440,7 +440,6 @@ impl<'a> UnitCapabilities<'a> {
         }
         for effect in self.inputs.selected_effects {
             if let EffectValue::Sight {
-                range,
                 unlimited,
                 sight_modifiers,
                 penetrates,
@@ -448,7 +447,6 @@ impl<'a> UnitCapabilities<'a> {
             {
                 sight
                     .stack(&SightContribution {
-                        range: *range,
                         unlimited: *unlimited,
                         sight_modifiers: *sight_modifiers,
                         penetrates: penetrates.clone(),
@@ -472,7 +470,7 @@ impl<'a> UnitCapabilities<'a> {
             None
         } else {
             Some(
-                u16::try_from((sight.range + i32::from(adjustment)).max(0))
+                u16::try_from(i32::from(adjustment).max(0))
                     .expect("composed sight fits u16"),
             )
         };

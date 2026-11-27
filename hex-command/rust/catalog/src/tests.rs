@@ -283,7 +283,6 @@ fn authored_catalogue_parses_and_resolves_all_definitions() {
 fn neutral_modifiers() -> StatModifiers {
     StatModifiers {
         sight: SightContribution {
-            range: 0,
             unlimited: false,
             sight_modifiers: SightModifiers {
                 lit: 0,
@@ -494,7 +493,11 @@ fn gained_abilities_and_runtime_contributions_use_target_lighting() {
     );
     assert!(upgraded.sight(Illumination::Unlit).range > upgraded.sight(Illumination::Lit).range);
     let mut weather = neutral_modifiers();
-    weather.sight.range = -1;
+    weather.sight.sight_modifiers = SightModifiers {
+        lit: -1,
+        unlit: -1,
+        darkness: -1,
+    };
     let changed = unit.compose(UnitInputs {
         vision_group_sight: &group,
         equipment: &[],

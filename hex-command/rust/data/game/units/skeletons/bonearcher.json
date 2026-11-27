@@ -42,10 +42,11 @@
   "level": 1,
   "family": "bonearcher",
   "experienceNeeded": 10,
-  "advancesTo": ["deatharcher"],
+  "advancesTo": [
+    "deatharcher"
+  ],
   "terrainModifiers": {},
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

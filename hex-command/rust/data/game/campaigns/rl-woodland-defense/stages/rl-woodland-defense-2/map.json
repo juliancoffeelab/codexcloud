@@ -10,7 +10,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,
@@ -2142,7 +2141,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 22,
@@ -2150,7 +2152,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 23,
@@ -2158,7 +2163,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 24,
@@ -2166,7 +2174,9 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 25,
@@ -2426,7 +2436,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 22,
@@ -2700,7 +2713,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 21,
@@ -2981,7 +2997,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 21,
@@ -3255,7 +3274,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 20,
@@ -3536,7 +3558,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 20,
@@ -3810,7 +3835,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 19,
@@ -4091,7 +4119,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 19,
@@ -4365,7 +4396,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 18,
@@ -4646,7 +4680,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 18,
@@ -4892,7 +4929,11 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["w", "nw", "ne"]
+      "walls": [
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 13,
@@ -4900,7 +4941,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["nw", "ne"]
+      "walls": [
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 14,
@@ -4908,7 +4952,11 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["e", "nw", "ne"]
+      "walls": [
+        "e",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 15,
@@ -4923,7 +4971,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 17,
@@ -5176,7 +5227,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["w", "nw"]
+      "walls": [
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 13,
@@ -5200,7 +5254,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["e", "ne"]
+      "walls": [
+        "e",
+        "ne"
+      ]
     },
     {
       "col": 16,
@@ -5208,7 +5265,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "ne"]
+      "connections": [
+        "se",
+        "ne"
+      ]
     },
     {
       "col": 17,
@@ -5447,7 +5507,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 11,
@@ -5455,7 +5518,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["sw", "nw"]
+      "walls": [
+        "sw",
+        "nw"
+      ]
     },
     {
       "col": 12,
@@ -5472,7 +5538,14 @@
       "floor": "castle-paving",
       "environmentEffects": [],
       "id": "draft-fortress",
-      "walls": ["e", "se", "sw", "w", "nw", "ne"],
+      "walls": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ],
       "owner": "player"
     },
     {
@@ -5489,7 +5562,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["se", "ne"]
+      "walls": [
+        "se",
+        "ne"
+      ]
     },
     {
       "col": 16,
@@ -5497,7 +5573,12 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "se", "w", "nw"]
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 17,
@@ -5505,7 +5586,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 18,
@@ -5513,7 +5597,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 19,
@@ -5521,7 +5608,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 20,
@@ -5529,7 +5619,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 21,
@@ -5537,7 +5630,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 22,
@@ -5545,7 +5641,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 23,
@@ -5553,7 +5652,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 24,
@@ -5744,7 +5846,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 11,
@@ -5759,7 +5864,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["sw", "w"]
+      "walls": [
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 13,
@@ -5783,7 +5891,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["e", "se"]
+      "walls": [
+        "e",
+        "se"
+      ]
     },
     {
       "col": 16,
@@ -5798,7 +5909,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 18,
@@ -5848,7 +5962,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 25,
@@ -5856,7 +5973,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 26,
@@ -6025,7 +6145,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 10,
@@ -6047,7 +6170,11 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["se", "sw", "w"]
+      "walls": [
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 13,
@@ -6055,7 +6182,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["se", "sw"]
+      "walls": [
+        "se",
+        "sw"
+      ]
     },
     {
       "col": 14,
@@ -6063,7 +6193,11 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["e", "se", "sw"]
+      "walls": [
+        "e",
+        "se",
+        "sw"
+      ]
     },
     {
       "col": 15,
@@ -6085,7 +6219,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 18,
@@ -6142,7 +6279,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 26,
@@ -6150,7 +6290,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 27,
@@ -6158,7 +6301,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 28,
@@ -6313,7 +6459,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 10,
@@ -6377,7 +6526,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 19,
@@ -6448,7 +6600,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 29,
@@ -6456,7 +6611,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 30,
@@ -6464,7 +6622,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 31,
@@ -6472,7 +6633,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 32,
@@ -6480,7 +6644,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 33,
@@ -6488,7 +6655,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 34,
@@ -6596,7 +6766,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 9,
@@ -6667,7 +6840,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 19,
@@ -6773,7 +6949,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 34,
@@ -6781,7 +6960,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 35,
@@ -6789,7 +6971,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 36,
@@ -6881,7 +7066,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 9,
@@ -6959,7 +7147,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 20,
@@ -7083,7 +7274,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 37,
@@ -7154,7 +7348,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 7,
@@ -7162,7 +7359,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 8,
@@ -7247,7 +7447,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 20,
@@ -7367,7 +7570,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 37,
@@ -7439,7 +7645,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 7,
@@ -7540,7 +7749,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 21,
@@ -7661,7 +7873,9 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "id": "draft-entry",
-      "connections": ["nw"]
+      "connections": [
+        "nw"
+      ]
     },
     {
       "col": 38,
@@ -7705,7 +7919,9 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "id": "draft-objective",
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 4,
@@ -7713,7 +7929,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 5,
@@ -7721,7 +7940,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 6,
@@ -7827,7 +8049,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 21,
@@ -7835,7 +8060,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 22,
@@ -7843,7 +8071,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 23,
@@ -8131,7 +8362,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 24,
@@ -8412,7 +8646,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 24,
@@ -8700,7 +8937,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 25,
@@ -8981,7 +9221,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 25,
@@ -9269,7 +9512,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "nw"]
+      "connections": [
+        "sw",
+        "nw"
+      ]
     },
     {
       "col": 26,
@@ -9543,7 +9789,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "ne"]
+      "connections": [
+        "se",
+        "ne"
+      ]
     },
     {
       "col": 25,
@@ -9831,7 +10080,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 26,
@@ -10112,7 +10364,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "nw"]
+      "connections": [
+        "sw",
+        "nw"
+      ]
     },
     {
       "col": 26,
@@ -10393,7 +10648,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 26,
@@ -10667,7 +10925,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "ne"]
+      "connections": [
+        "se",
+        "ne"
+      ]
     },
     {
       "col": 25,
@@ -10957,7 +11218,9 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["nw"]
+      "connections": [
+        "nw"
+      ]
     },
     {
       "col": 26,

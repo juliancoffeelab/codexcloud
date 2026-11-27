@@ -42,10 +42,12 @@
   "level": 1,
   "family": "thorncaller",
   "experienceNeeded": 10,
-  "advancesTo": ["briarweaver", "woodland-bramble-warden"],
+  "advancesTo": [
+    "briarweaver",
+    "woodland-bramble-warden"
+  ],
   "terrainModifiers": {},
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

@@ -10,7 +10,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,
@@ -4141,7 +4140,11 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["w", "nw", "ne"]
+      "walls": [
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 27,
@@ -4149,7 +4152,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["nw", "ne"]
+      "walls": [
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 28,
@@ -4157,7 +4163,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["nw", "ne"]
+      "walls": [
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 29,
@@ -4165,7 +4174,11 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["e", "nw", "ne"]
+      "walls": [
+        "e",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 30,
@@ -4223,7 +4236,9 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "id": "draft-entry",
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 3,
@@ -4231,7 +4246,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 4,
@@ -4386,7 +4404,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["w", "nw"]
+      "walls": [
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 26,
@@ -4418,7 +4439,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["e", "ne"]
+      "walls": [
+        "e",
+        "ne"
+      ]
     },
     {
       "col": 30,
@@ -4489,7 +4513,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 5,
@@ -4497,7 +4524,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 6,
@@ -4638,7 +4668,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["w", "nw"]
+      "walls": [
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 26,
@@ -4678,7 +4711,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["e", "ne"]
+      "walls": [
+        "e",
+        "ne"
+      ]
     },
     {
       "col": 31,
@@ -4749,7 +4785,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 6,
@@ -4757,7 +4796,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 7,
@@ -4765,7 +4807,10 @@
       "terrain": "road",
       "floor": "green-plain",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -4782,7 +4827,9 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "id": "draft-harbor-1",
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 10,
@@ -4790,7 +4837,9 @@
       "terrain": "ferry",
       "floor": "dark-water",
       "environmentEffects": [],
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 11,
@@ -4889,7 +4938,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["sw", "nw"]
+      "walls": [
+        "sw",
+        "nw"
+      ]
     },
     {
       "col": 25,
@@ -4938,7 +4990,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["se", "ne"]
+      "walls": [
+        "se",
+        "ne"
+      ]
     },
     {
       "col": 31,
@@ -5151,7 +5206,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["sw", "w"]
+      "walls": [
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 26,
@@ -5191,7 +5249,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["e", "se"]
+      "walls": [
+        "e",
+        "se"
+      ]
     },
     {
       "col": 31,
@@ -5402,7 +5463,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["sw", "w"]
+      "walls": [
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 26,
@@ -5434,7 +5498,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["e", "se"]
+      "walls": [
+        "e",
+        "se"
+      ]
     },
     {
       "col": 30,
@@ -5663,7 +5730,11 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["se", "sw", "w"]
+      "walls": [
+        "se",
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 27,
@@ -5671,7 +5742,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["se", "sw"]
+      "walls": [
+        "se",
+        "sw"
+      ]
     },
     {
       "col": 28,
@@ -5679,7 +5753,10 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["se", "sw"]
+      "walls": [
+        "se",
+        "sw"
+      ]
     },
     {
       "col": 29,
@@ -5687,7 +5764,11 @@
       "terrain": "castle-wall",
       "floor": "castle-paving",
       "environmentEffects": [],
-      "walls": ["e", "se", "sw"]
+      "walls": [
+        "e",
+        "se",
+        "sw"
+      ]
     },
     {
       "col": 30,

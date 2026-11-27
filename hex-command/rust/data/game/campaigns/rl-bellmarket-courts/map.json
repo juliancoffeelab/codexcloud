@@ -59,7 +59,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["ne", "sw"]
+      "connections": [
+        "ne",
+        "sw"
+      ]
     },
     {
       "col": 7,
@@ -148,7 +151,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["ne", "sw"]
+      "connections": [
+        "ne",
+        "sw"
+      ]
     },
     {
       "col": 7,
@@ -189,7 +195,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 1,
@@ -198,7 +207,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 2,
@@ -207,7 +219,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 3,
@@ -216,7 +231,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 4,
@@ -225,7 +243,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 5,
@@ -234,7 +255,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 6,
@@ -243,7 +267,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 7,
@@ -252,7 +279,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -261,7 +291,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -279,7 +312,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 0,
@@ -336,7 +372,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["ne", "sw"]
+      "connections": [
+        "ne",
+        "sw"
+      ]
     },
     {
       "col": 7,
@@ -425,7 +464,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["ne", "sw"]
+      "connections": [
+        "ne",
+        "sw"
+      ]
     },
     {
       "col": 7,
@@ -466,7 +508,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 1,
@@ -475,7 +520,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 2,
@@ -493,7 +541,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 4,
@@ -502,7 +553,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 5,
@@ -511,7 +565,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 6,
@@ -520,7 +577,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 7,
@@ -529,7 +589,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -546,7 +609,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 10,
@@ -555,7 +621,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 0,
@@ -612,7 +681,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["ne", "sw"]
+      "connections": [
+        "ne",
+        "sw"
+      ]
     },
     {
       "col": 7,
@@ -701,7 +773,10 @@
       "owner": null,
       "floor": "mountain-rock",
       "environmentEffects": [],
-      "connections": ["ne", "sw"]
+      "connections": [
+        "ne",
+        "sw"
+      ]
     },
     {
       "col": 7,
@@ -743,7 +818,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,

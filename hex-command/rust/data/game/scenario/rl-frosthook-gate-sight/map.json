@@ -2798,7 +2798,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 29,
@@ -3103,7 +3106,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 27,
@@ -3112,7 +3118,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 28,
@@ -3274,7 +3283,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -3283,7 +3295,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -3292,7 +3307,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 10,
@@ -3301,7 +3319,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 11,
@@ -3310,7 +3331,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 12,
@@ -3431,7 +3455,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 27,
@@ -3577,7 +3604,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 5,
@@ -3586,7 +3616,11 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "w", "ne"]
+      "connections": [
+        "se",
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 6,
@@ -3635,7 +3669,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 12,
@@ -3748,7 +3785,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "ne"]
+      "connections": [
+        "se",
+        "ne"
+      ]
     },
     {
       "col": 26,
@@ -3917,7 +3957,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 7,
@@ -3966,7 +4009,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 13,
@@ -4079,7 +4125,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "nw"],
+      "connections": [
+        "sw",
+        "nw"
+      ],
       "id": "high-market"
     },
     {
@@ -4241,7 +4290,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 7,
@@ -4290,7 +4342,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 13,
@@ -4396,7 +4451,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 26,
@@ -4573,7 +4631,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 8,
@@ -4622,7 +4683,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 14,
@@ -4711,7 +4775,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 25,
@@ -4896,7 +4963,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 8,
@@ -4905,7 +4975,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -4914,7 +4987,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 10,
@@ -4923,7 +4999,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 11,
@@ -4932,7 +5011,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 12,
@@ -4949,7 +5031,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 14,
@@ -5030,7 +5115,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 24,
@@ -5264,7 +5352,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 13,
@@ -5281,7 +5372,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 15,
@@ -5314,7 +5408,12 @@
       "floor": "castle-paving",
       "owner": null,
       "environmentEffects": [],
-      "walls": ["sw", "w", "nw", "ne"]
+      "walls": [
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 19,
@@ -5323,7 +5422,11 @@
       "floor": "castle-paving",
       "owner": null,
       "environmentEffects": [],
-      "walls": ["e", "nw", "ne"]
+      "walls": [
+        "e",
+        "nw",
+        "ne"
+      ]
     },
     {
       "col": 20,
@@ -5356,7 +5459,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "ne"]
+      "connections": [
+        "se",
+        "ne"
+      ]
     },
     {
       "col": 24,
@@ -5373,7 +5479,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 26,
@@ -5391,7 +5500,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 28,
@@ -5400,7 +5512,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 29,
@@ -5409,7 +5524,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 30,
@@ -5594,7 +5712,11 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "sw", "nw"]
+      "connections": [
+        "e",
+        "sw",
+        "nw"
+      ]
     },
     {
       "col": 13,
@@ -5603,7 +5725,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 14,
@@ -5612,7 +5737,11 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w", "nw"]
+      "connections": [
+        "e",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 15,
@@ -5621,7 +5750,10 @@
       "floor": "dark-water",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 16,
@@ -5630,7 +5762,10 @@
       "floor": "dark-water",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 17,
@@ -5639,7 +5774,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 18,
@@ -5657,7 +5795,10 @@
       "floor": "castle-paving",
       "owner": null,
       "environmentEffects": [],
-      "walls": ["se", "ne"]
+      "walls": [
+        "se",
+        "ne"
+      ]
     },
     {
       "col": 20,
@@ -5666,7 +5807,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 21,
@@ -5675,7 +5819,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 22,
@@ -5684,7 +5831,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 23,
@@ -5693,7 +5843,12 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "se", "w", "nw"]
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 24,
@@ -5702,7 +5857,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 25,
@@ -5743,7 +5901,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 30,
@@ -5928,7 +6089,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 13,
@@ -5977,7 +6141,12 @@
       "floor": "castle-paving",
       "owner": null,
       "environmentEffects": [],
-      "walls": ["se", "sw", "w", "nw"]
+      "walls": [
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 19,
@@ -5986,7 +6155,11 @@
       "floor": "castle-paving",
       "owner": null,
       "environmentEffects": [],
-      "walls": ["e", "se", "sw"]
+      "walls": [
+        "e",
+        "se",
+        "sw"
+      ]
     },
     {
       "col": 20,
@@ -6036,7 +6209,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 26,
@@ -6069,7 +6245,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 30,
@@ -6078,7 +6257,11 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w", "nw"]
+      "connections": [
+        "e",
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 31,
@@ -6087,7 +6270,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 32,
@@ -6096,7 +6282,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 33,
@@ -6105,7 +6294,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 34,
@@ -6114,7 +6306,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 35,
@@ -6235,7 +6430,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 10,
@@ -6244,7 +6442,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 11,
@@ -6253,7 +6454,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 12,
@@ -6366,7 +6570,11 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "sw", "nw"]
+      "connections": [
+        "se",
+        "sw",
+        "nw"
+      ]
     },
     {
       "col": 26,
@@ -6441,7 +6649,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 35,
@@ -6546,7 +6757,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 8,
@@ -6555,7 +6769,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -6564,7 +6781,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 10,
@@ -6669,7 +6889,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "se"],
+      "connections": [
+        "e",
+        "se"
+      ],
       "id": "fish-market"
     },
     {
@@ -6679,7 +6902,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 24,
@@ -6688,7 +6914,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 25,
@@ -6697,7 +6926,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 26,
@@ -6706,7 +6938,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 27,
@@ -6715,7 +6950,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 28,
@@ -6724,7 +6962,11 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "w", "ne"]
+      "connections": [
+        "se",
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 29,
@@ -6781,7 +7023,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 36,
@@ -6790,7 +7035,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 37,
@@ -6799,7 +7047,9 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w"],
+      "connections": [
+        "w"
+      ],
       "id": "east-gate-market"
     },
     {
@@ -6865,7 +7115,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 6,
@@ -6874,7 +7127,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 7,
@@ -6995,7 +7251,9 @@
       "floor": "dark-water",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 22,
@@ -7004,7 +7262,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "nw"]
+      "connections": [
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 23,
@@ -7053,7 +7314,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 29,
@@ -7190,7 +7454,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 6,
@@ -7383,7 +7650,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 30,
@@ -7392,7 +7662,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 31,
@@ -7505,7 +7778,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 5,
@@ -7714,7 +7990,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 31,
@@ -7819,7 +8098,9 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e"],
+      "connections": [
+        "e"
+      ],
       "id": "charcoal-market"
     },
     {
@@ -7829,7 +8110,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 5,
@@ -8046,7 +8330,11 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "sw", "nw"]
+      "connections": [
+        "e",
+        "sw",
+        "nw"
+      ]
     },
     {
       "col": 32,
@@ -8055,7 +8343,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 33,
@@ -8360,7 +8651,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 31,
@@ -8378,7 +8672,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 33,
@@ -8387,7 +8684,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 34,
@@ -8396,7 +8696,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 35,
@@ -8405,7 +8708,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "w"]
+      "connections": [
+        "sw",
+        "w"
+      ]
     },
     {
       "col": 36,
@@ -8686,7 +8992,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 31,
@@ -8727,7 +9036,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "ne"]
+      "connections": [
+        "se",
+        "ne"
+      ]
     },
     {
       "col": 36,
@@ -8992,7 +9304,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "sw"],
+      "connections": [
+        "e",
+        "sw"
+      ],
       "id": "hook-wharf"
     },
     {
@@ -9002,7 +9317,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w", "ne"]
+      "connections": [
+        "w",
+        "ne"
+      ]
     },
     {
       "col": 30,
@@ -9051,7 +9369,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 36,
@@ -9316,7 +9637,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["e", "ne"]
+      "connections": [
+        "e",
+        "ne"
+      ]
     },
     {
       "col": 29,
@@ -9325,7 +9649,9 @@
       "floor": "dark-water",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 30,
@@ -9382,7 +9708,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "nw"]
+      "connections": [
+        "sw",
+        "nw"
+      ]
     },
     {
       "col": 37,
@@ -9695,7 +10024,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 36,
@@ -10016,7 +10348,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["se", "ne"]
+      "connections": [
+        "se",
+        "ne"
+      ]
     },
     {
       "col": 36,
@@ -10337,7 +10672,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "nw"]
+      "connections": [
+        "sw",
+        "nw"
+      ]
     },
     {
       "col": 36,
@@ -10658,7 +10996,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 36,
@@ -10971,7 +11312,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 35,
@@ -11292,7 +11636,10 @@
       "floor": "snow-forest",
       "owner": null,
       "environmentEffects": [],
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 35,
@@ -12941,7 +13288,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,

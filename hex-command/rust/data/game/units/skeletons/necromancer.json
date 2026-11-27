@@ -42,10 +42,11 @@
   "level": 1,
   "family": "necromancer",
   "experienceNeeded": 10,
-  "advancesTo": ["lich"],
+  "advancesTo": [
+    "lich"
+  ],
   "terrainModifiers": {},
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

@@ -45,7 +45,6 @@ pub enum EffectValue {
         incoming_category: Category,
     },
     Sight {
-        range: i32,
         unlimited: bool,
         #[serde(rename = "sightModifiers")]
         sight_modifiers: SightModifiers,
