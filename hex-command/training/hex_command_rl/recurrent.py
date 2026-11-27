@@ -113,8 +113,8 @@ def prepare_replay_batch(sequences, device, fp16=False):
     pack_obs = [s['observation'] for s in flat_samples]
     padded_n = real_n
     if device.type == "mps":
-        # Fixed replay batch size (64 for wb=8, or next power of 2) so MPSGraphCache never grows.
-        padded_n = 64
+        # Fixed replay batch size (32 for wb=4, or next power of 2) so MPSGraphCache stays small.
+        padded_n = 32
         while padded_n < real_n:
             padded_n *= 2
         if padded_n > real_n:

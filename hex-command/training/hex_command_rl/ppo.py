@@ -95,7 +95,7 @@ def pack(samples, device=None, bucket_shapes=None):
         count = _bucket_from(count, (256, 512), 256)
         height = _bucket_from(height, (36, 48), 16)
         width = _bucket_from(width, (56, 64), 16)
-        ctx_buckets = (32, 64, 128) if len(samples) <= 8 else (384, 512, 768)
+        ctx_buckets = (32, 64, 128) if len(samples) <= 8 else (192, 384, 512)
         total_contexts = _bucket_from(total_contexts, ctx_buckets, 256)
     x = np.zeros((len(samples), count, len(native.FEATURE_NAMES)), np.float32)
     board = np.zeros(

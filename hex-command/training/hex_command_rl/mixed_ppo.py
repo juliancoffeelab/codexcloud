@@ -89,7 +89,7 @@ def main():
         device = resolve_device(a.device)
     except ValueError as err:
         p.error(str(err))
-    window_batch = a.window_batch or (1 if device.type == "cpu" else 8)
+    window_batch = a.window_batch or (1 if device.type == "cpu" else 4)
     actor_lr = (
         a.actor_lr
         if a.actor_lr is not None
@@ -503,6 +503,9 @@ def main():
                         )
                     if time.monotonic() >= deadline:
                         break
+                prepared_batches = None
+                if device.type == "mps" and torch.mps.driver_allocated_memory() > 1_500_000_000:
+                    torch.mps.empty_cache()
                 if stats:
                     m = np.mean(stats, 0)
                     target_np = returns.flatten()
