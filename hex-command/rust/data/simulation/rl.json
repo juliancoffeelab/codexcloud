@@ -2169,6 +2169,34 @@
         "conditionWeight": 1.0,
         "pretrain_enabled": false
       }
+    ],
+    "rl-threeway-clash": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-threeway-clash",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "rl-allied-crossing": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-allied-crossing",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
     ]
   },
   "opponents": [
@@ -2251,7 +2279,9 @@
     "draft-hunt": 1.0,
     "draft-quarry": 1.0,
     "three-gates": 1.0,
-    "rl-bone-march": 1.0
+    "rl-bone-march": 1.0,
+    "rl-threeway-clash": 1.0,
+    "rl-allied-crossing": 1.0
   },
   "rewardProfiles": {
     "arena": {
