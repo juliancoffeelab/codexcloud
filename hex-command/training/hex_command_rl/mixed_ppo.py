@@ -36,7 +36,7 @@ def terminal_reward(config, reward, truncated, result=None, campaign_cap=-2.0):
     if truncated:
         return campaign_cap
     if reward < 0 and result:
-        return {"escort_loss": -2.0, "protected_loss": -1.5, "leader_loss": -1.0}.get(
+        return {"escort_loss": -2.0, "protected_loss": -1.5, "leader_loss": -1.5}.get(
             result.get("failure"), -1.0
         )
     return float(reward)
@@ -254,7 +254,7 @@ def main():
                 campaign_cap=a.campaign_cap,
                 escort_loss=-2,
                 protected_loss=-1.5,
-                leader_loss=-1,
+                leader_loss=-1.5,
                 arena_win=profiles["arena"]["win"],
                 arena_defeat=-1,
                 arena_cap=-1,

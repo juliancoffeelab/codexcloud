@@ -127,7 +127,7 @@ class RecoveryContracts(unittest.TestCase):
         for reason, value in (
             ("escort_loss", -2.0),
             ("protected_loss", -1.5),
-            ("leader_loss", -1.0),
+            ("leader_loss", -1.5),
             ("defeat", -1.0),
         ):
             self.assertEqual(
