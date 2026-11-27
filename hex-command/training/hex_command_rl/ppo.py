@@ -74,22 +74,39 @@ def resolve_device(name="cpu"):
     raise ValueError(f"unsupported device: {name}")
 
 
-def pack(samples, device=None):
+def _bucket_from(value, choices, step):
+    for choice in choices:
+        if value <= choice:
+            return choice
+    return ((value + step - 1) // step) * step
+
+
+def pack(samples, device=None, bucket_shapes=None):
+    dev = torch.device(device) if device is not None else None
+    if bucket_shapes is None:
+        bucket_shapes = dev is not None and dev.type == "mps"
     count = max(len(s[0]) for s in samples)
     height = max(s[1].shape[1] for s in samples)
     width = max(s[1].shape[2] for s in samples)
+    total_contexts = sum(1 + (len(s[3]) if len(s) > 3 else 0) for s in samples)
+    if bucket_shapes:
+        # Fixed shape buckets prevent unbounded MPSGraphCache growth on macOS
+        # while staying tight around real arena (9-16) and campaign (24-36 x 38-54) boards.
+        count = _bucket_from(count, (64, 128, 256, 512), 256)
+        height = _bucket_from(height, (16, 24, 36, 48), 16)
+        width = _bucket_from(width, (16, 32, 44, 56, 64), 16)
+        total_contexts = _bucket_from(total_contexts, (16, 32, 64, 128, 256, 384, 512), 128)
     x = np.zeros((len(samples), count, len(native.FEATURE_NAMES)), np.float32)
     board = np.zeros(
         (len(samples), len(native.SPATIAL_CHANNEL_NAMES), height, width), np.float32
     )
     positions = np.full((len(samples), count, 3), -1, np.int64)
     mask = np.zeros((len(samples), count), bool)
-    total_contexts = sum(1 + (len(s[3]) if len(s) > 3 else 0) for s in samples)
     context_values = np.zeros(
         (total_contexts, len(native.ACTOR_SPATIAL_CHANNELS), height, width), np.float32
     )
-    owners = np.empty(total_contexts, np.int64)
-    sites = np.empty(total_contexts, np.int64)
+    owners = np.zeros(total_contexts, np.int64)
+    sites = np.full(total_contexts, -2, np.int64)
     ctx_idx = 0
     for row, sample in enumerate(samples):
         features, b, ix = sample[:3]
@@ -112,7 +129,7 @@ def pack(samples, device=None):
             ctx_idx += 1
     def as_tensor(v):
         t = torch.from_numpy(v)
-        return t.to(device) if device is not None else t
+        return t.to(dev) if dev is not None else t
 
     bundle = tuple(as_tensor(v) for v in (board, context_values, owners, sites))
     return (

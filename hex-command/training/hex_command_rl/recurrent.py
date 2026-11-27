@@ -109,7 +109,16 @@ def prepare_replay_batch(sequences, device, fp16=False):
         for i in active:
             flat_samples.append(sequences[i][t])
         step_slices.append((active, start, len(flat_samples)))
-    tensors = pack([s['observation'] for s in flat_samples], device=device)
+    real_n = len(flat_samples)
+    pack_obs = [s['observation'] for s in flat_samples]
+    if device.type == "mps":
+        # Pad batch dim to power-of-2 (min 32) so uneven episode-boundary batches reuse MPSGraph.
+        padded_n = 32
+        while padded_n < real_n:
+            padded_n *= 2
+        if padded_n > real_n:
+            pack_obs = pack_obs + [pack_obs[0]] * (padded_n - real_n)
+    tensors = pack(pack_obs, device=device)
     if fp16:
         x, (board, contexts, owners, sites), pos, mask = tensors
         tensors = (x.half(), (board.half(), contexts.half(), owners, sites), pos, mask)
@@ -119,7 +128,7 @@ def prepare_replay_batch(sequences, device, fp16=False):
     target = torch.tensor([s['target'] for s in flat_samples], dtype=torch.float32, device=device)
     width = tensors[0].shape[1]
     pad_logit = float(np.finfo(np.float32).min)
-    ref_logits = np.full((len(flat_samples), width), pad_logit, dtype=np.float32)
+    ref_logits = np.full((real_n, width), pad_logit, dtype=np.float32)
     for j, s in enumerate(flat_samples):
         rl = np.asarray(s['reference_logits'], dtype=np.float32)
         ref_logits[j, : len(rl)] = rl
@@ -128,6 +137,7 @@ def prepare_replay_batch(sequences, device, fp16=False):
         device.type,
         fp16,
         batch_size,
+        real_n,
         init_memory,
         step_slices,
         tensors,
@@ -147,6 +157,7 @@ def replay_prepared_batch(ac, prepared, temperature):
         device_type,
         fp16,
         batch_size,
+        real_n,
         memory,
         step_slices,
         tensors,
@@ -159,7 +170,7 @@ def replay_prepared_batch(ac, prepared, temperature):
     x, boards, positions, mask = tensors
     with torch.amp.autocast(device_type, dtype=torch.float16, enabled=fp16):
         features, parts, pooled = ac.policy.encode_spatial(x, boards, positions)
-    pooled_f32 = pooled.float()
+    pooled_f32 = pooled[:real_n].float()
     mem_steps = []
     for active, start, end in step_slices:
         mem_in = memory[active] if len(active) < batch_size else memory
@@ -172,14 +183,20 @@ def replay_prepared_batch(ac, prepared, temperature):
         else:
             memory = mem_out
     all_mem = torch.cat(mem_steps, dim=0)
+    if len(features) > real_n:
+        pad_mem = all_mem.new_zeros((len(features) - real_n, all_mem.shape[1]))
+        head_mem = torch.cat([all_mem, pad_mem], dim=0)
+    else:
+        head_mem = all_mem
     with torch.amp.autocast(device_type, dtype=torch.float16, enabled=fp16):
-        mem_exp = all_mem.to(features.dtype)[:, None, :].expand(-1, features.shape[1], -1)
+        mem_exp = head_mem.to(features.dtype)[:, None, :].expand(-1, features.shape[1], -1)
         scores = ac.policy.head(torch.cat([features, *parts, mem_exp], dim=-1)).squeeze(-1)
-    scores = scores.float()
-    dist = categorical(scores, mask, temperature)
+    scores = scores[:real_n].float()
+    real_mask = mask[:real_n]
+    dist = categorical(scores, real_mask, temperature)
     with torch.no_grad():
-        x_f32 = x.float()
-        mean = (x_f32 * mask[:, :, None]).sum(1) / mask.sum(1, keepdim=True)
+        x_f32 = x[:real_n].float()
+        mean = (x_f32 * real_mask[:, :, None]).sum(1) / real_mask.sum(1, keepdim=True)
     value = ac.critic(torch.cat([pooled_f32.detach(), all_mem.detach(), mean], -1)).squeeze(-1)
     ratio = (dist.log_prob(actions) - old_lp).clamp(-20, 20).exp()
     pg = -torch.minimum(ratio * adv, ratio.clamp(0.8, 1.2) * adv).mean()
