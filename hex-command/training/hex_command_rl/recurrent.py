@@ -131,7 +131,6 @@ def prepare_replay_batch(sequences, device, fp16=False):
     width = tensors[0].shape[1]
     pad_logit = float(np.finfo(np.float32).min)
     ref_logits = np.full((padded_n, width), pad_logit, dtype=np.float32)
-    ref_logits[real_n:, 0] = 0.0
     for j, s in enumerate(flat_samples):
         actions_np[j] = s['action']
         old_lp_np[j] = s['old_log_prob']
@@ -140,6 +139,9 @@ def prepare_replay_batch(sequences, device, fp16=False):
         valid_np[j] = 1.0
         rl = np.asarray(s['reference_logits'], dtype=np.float32)
         ref_logits[j, : len(rl)] = rl
+    if padded_n > real_n:
+        # Padded rows duplicate flat_samples[0], so match its finite support to avoid 0 * -inf = NaN.
+        ref_logits[real_n:] = ref_logits[0]
     return (
         device.type,
         fp16,
