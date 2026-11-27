@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import random
 import resource
+import signal
 import time
 import numpy as np
 import torch
@@ -166,6 +167,13 @@ def main():
     elapsed = old["elapsed"] if old else 0.0
     start = time.monotonic()
     deadline = start + max(0, a.seconds - elapsed)
+    stop_requested = False
+
+    def _handle_term(_signum, _frame):
+        nonlocal stop_requested
+        stop_requested = True
+
+    signal.signal(signal.SIGTERM, _handle_term)
     read_jsonl(run / "metrics.jsonl", repair=True)
     log = (run / "metrics.jsonl").open("a")
     action_counts = defaultdict(int, old.get("action_counts", {}) if old else {})
@@ -284,7 +292,7 @@ def main():
             }
             observations = {i: f.result() for i, f in initial.items()}
             last_save = time.monotonic()
-            while time.monotonic() < deadline:
+            while time.monotonic() < deadline and not stop_requested:
                 samples = []
                 rew = []
                 vals = []
@@ -549,15 +557,16 @@ def main():
             env.close()
         record("finished", updates=update, episodes=episodes, decisions=decisions)
         log.close()
-    atomic_json(
-        run / "complete.json",
-        dict(
-            elapsed=elapsed + time.monotonic() - start,
-            updates=update,
-            episodes=episodes,
-            decisions=decisions,
-        ),
-    )
+    if not stop_requested:
+        atomic_json(
+            run / "complete.json",
+            dict(
+                elapsed=elapsed + time.monotonic() - start,
+                updates=update,
+                episodes=episodes,
+                decisions=decisions,
+            ),
+        )
 
 
 if __name__ == "__main__":
