@@ -7,8 +7,8 @@
   "tagline": "The Occupied Village Chain",
   "description": "Three occupied villages sit on branching woodland roads. Capturing each releases survivors and alerts its local patrol. Bring all three groups back to the western camp, then withdraw the commander.",
   "shortDescription": "Three occupied villages sit on branching woodland roads. Capturing each releases survivors and alerts its local patrol. Bring all three groups back to the western camp, then withdraw the commander.",
-  "race": "human",
-  "leader": "commander",
+  "race": "skeletons",
+  "leader": "necromancer",
   "characters": [
     {
       "id": "player-leader",

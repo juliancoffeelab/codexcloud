@@ -7,8 +7,8 @@
   "tagline": "The Flooded Prison",
   "description": "Free the two island prison groups. Open the sluice to drain a direct crossing, then escort both groups to the eastern shore and bring the commander out. Opening the lock also admits merfolk.",
   "shortDescription": "A single-map encounter prototype.",
-  "race": "human",
-  "leader": "commander",
+  "race": "merfolk",
+  "leader": "tidekeeper",
   "characters": [
     {
       "id": "captain",

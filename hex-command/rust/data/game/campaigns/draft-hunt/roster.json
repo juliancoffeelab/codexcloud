@@ -40,29 +40,29 @@
       "gold": 24,
       "recruits": [
         {
-          "unit": "swordsman",
+          "unit": "wolf",
           "cost": null
         },
         {
-          "unit": "spearman",
+          "unit": "boar",
           "cost": null
         },
         {
-          "unit": "scout",
+          "unit": "thorncaller",
           "cost": null
         },
         {
-          "unit": "archer",
+          "unit": "fox-spearguard",
           "cost": null
         },
         {
-          "unit": "adept",
+          "unit": "treant",
           "cost": null
         }
       ],
       "units": [
         {
-          "type": "commander",
+          "type": "wildkeeper",
           "role": "leader",
           "tile": {
             "col": 3,
@@ -81,7 +81,7 @@
           "rebuilding": null
         },
         {
-          "type": "hammerman",
+          "type": "boar",
           "role": null,
           "tile": {
             "col": 4,
@@ -100,7 +100,7 @@
           "rebuilding": null
         },
         {
-          "type": "spearman",
+          "type": "fox-spearguard",
           "role": null,
           "tile": {
             "col": 3,
@@ -119,7 +119,7 @@
           "rebuilding": null
         },
         {
-          "type": "swordsman",
+          "type": "boar",
           "role": null,
           "tile": {
             "col": 3,
@@ -138,7 +138,7 @@
           "rebuilding": null
         },
         {
-          "type": "healer",
+          "type": "thorncaller",
           "role": null,
           "tile": {
             "col": 2,
@@ -157,7 +157,7 @@
           "rebuilding": null
         },
         {
-          "type": "archer",
+          "type": "thorncaller",
           "role": null,
           "tile": {
             "col": 4,
@@ -196,7 +196,7 @@
       "recruits": [],
       "units": [
         {
-          "type": "lich",
+          "type": "commander",
           "role": "leader",
           "tile": {
             "col": 14,
@@ -215,7 +215,7 @@
           "rebuilding": null
         },
         {
-          "type": "skeleton",
+          "type": "swordsman",
           "role": null,
           "tile": {
             "col": 12,
@@ -234,7 +234,7 @@
           "rebuilding": null
         },
         {
-          "type": "bonearcher",
+          "type": "archer",
           "role": null,
           "tile": {
             "col": 14,
@@ -253,7 +253,7 @@
           "rebuilding": null
         },
         {
-          "type": "skeleton",
+          "type": "swordsman",
           "role": null,
           "tile": {
             "col": 15,

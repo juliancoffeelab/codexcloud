@@ -7,8 +7,8 @@
   "tagline": "The Underground Hunt",
   "description": "A lich hunts from the inner chambers. Take the company through the branching passages, defeat it, then lead the survivors out through the eastern exit. Side chambers offer room to surround it and a village to recover.",
   "shortDescription": "The Underground Hunt",
-  "race": "human",
-  "leader": "commander",
+  "race": "beast",
+  "leader": "wildkeeper",
   "characters": [
     {
       "id": "player-leader",

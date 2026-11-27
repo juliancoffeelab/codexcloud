@@ -7,8 +7,8 @@
   "tagline": "The Last Ferry",
   "description": "Two convoy groups are approaching the river from the northwest. Hold the landing for ten consecutive turns, get both convoys to the far shore, then bring the commander across. The southern ford can be flanked.",
   "shortDescription": "A single-map encounter prototype.",
-  "race": "human",
-  "leader": "commander",
+  "race": "merfolk",
+  "leader": "tidekeeper",
   "characters": [
     {
       "id": "blockader",

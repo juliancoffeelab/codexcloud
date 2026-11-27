@@ -92,13 +92,13 @@
             "aiGroup": null,
             "units": [
               {
-                "type": "revenant",
+                "type": "wolf",
                 "character": "awakened",
                 "role": "leader",
                 "items": []
               },
-              "skeleton",
-              "bonearcher"
+              "wolf",
+              "thorncaller"
             ]
           }
         },

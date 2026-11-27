@@ -136,8 +136,8 @@
             "radius": 3,
             "aiGroup": null,
             "units": [
-              "skeleton",
-              "bonearcher"
+              "merfolk-maceguard",
+              "harpooner"
             ]
           }
         }
@@ -166,8 +166,8 @@
             "radius": 3,
             "aiGroup": null,
             "units": [
-              "skeleton-axeman",
-              "skeleton-impact-caster"
+              "merfolk-maceguard",
+              "wavemender"
             ]
           }
         }

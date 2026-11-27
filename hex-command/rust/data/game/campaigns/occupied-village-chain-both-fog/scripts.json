@@ -55,7 +55,7 @@
             "radius": 3,
             "aiGroup": null,
             "units": [
-              "skeleton"
+              "reefguard"
             ]
           }
         },
@@ -267,7 +267,7 @@
             "radius": 3,
             "aiGroup": null,
             "units": [
-              "skeleton"
+              "reefguard"
             ]
           }
         },
@@ -479,7 +479,7 @@
             "radius": 3,
             "aiGroup": null,
             "units": [
-              "skeleton"
+              "reefguard"
             ]
           }
         },

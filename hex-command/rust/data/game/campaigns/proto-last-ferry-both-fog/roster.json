@@ -38,29 +38,25 @@
       "gold": 34,
       "recruits": [
         {
-          "unit": "swordsman",
+          "unit": "harpooner",
           "cost": null
         },
         {
-          "unit": "spearman",
+          "unit": "reefguard",
           "cost": null
         },
         {
-          "unit": "archer",
+          "unit": "wavemender",
           "cost": null
         },
         {
-          "unit": "scout",
-          "cost": null
-        },
-        {
-          "unit": "adept",
+          "unit": "merfolk-maceguard",
           "cost": null
         }
       ],
       "units": [
         {
-          "type": "commander",
+          "type": "tidekeeper",
           "role": "leader",
           "tile": {
             "col": 10,
@@ -79,7 +75,7 @@
           "rebuilding": null
         },
         {
-          "type": "swordsman",
+          "type": "merfolk-maceguard",
           "role": null,
           "tile": {
             "col": 12,
@@ -98,7 +94,7 @@
           "rebuilding": null
         },
         {
-          "type": "spearman",
+          "type": "reefguard",
           "role": null,
           "tile": {
             "col": 11,
@@ -117,7 +113,7 @@
           "rebuilding": null
         },
         {
-          "type": "archer",
+          "type": "harpooner",
           "role": null,
           "tile": {
             "col": 11,
@@ -136,7 +132,7 @@
           "rebuilding": null
         },
         {
-          "type": "adept",
+          "type": "wavemender",
           "role": null,
           "tile": {
             "col": 10,
@@ -155,7 +151,7 @@
           "rebuilding": null
         },
         {
-          "type": "spearman",
+          "type": "reefguard",
           "role": null,
           "tile": {
             "col": 5,
@@ -174,7 +170,7 @@
           "rebuilding": null
         },
         {
-          "type": "scout",
+          "type": "harpooner",
           "role": null,
           "tile": {
             "col": 5,
@@ -193,7 +189,7 @@
           "rebuilding": null
         },
         {
-          "type": "swordsman",
+          "type": "merfolk-maceguard",
           "role": null,
           "tile": {
             "col": 4,
@@ -212,7 +208,7 @@
           "rebuilding": null
         },
         {
-          "type": "spearman",
+          "type": "reefguard",
           "role": null,
           "tile": {
             "col": 3,
@@ -231,7 +227,7 @@
           "rebuilding": null
         },
         {
-          "type": "archer",
+          "type": "harpooner",
           "role": null,
           "tile": {
             "col": 3,
@@ -308,7 +304,7 @@
       "recruits": [],
       "units": [
         {
-          "type": "commander",
+          "type": "wildkeeper",
           "role": "leader",
           "tile": {
             "col": 25,
@@ -327,7 +323,7 @@
           "rebuilding": null
         },
         {
-          "type": "archer",
+          "type": "thorncaller",
           "role": null,
           "tile": {
             "col": 22,
@@ -346,7 +342,7 @@
           "rebuilding": null
         },
         {
-          "type": "spearman",
+          "type": "fox-spearguard",
           "role": null,
           "tile": {
             "col": 23,
@@ -365,7 +361,7 @@
           "rebuilding": null
         },
         {
-          "type": "swordsman",
+          "type": "boar",
           "role": null,
           "tile": {
             "col": 23,
@@ -384,7 +380,7 @@
           "rebuilding": null
         },
         {
-          "type": "scout",
+          "type": "wolf",
           "role": null,
           "tile": {
             "col": 0,

@@ -38,37 +38,29 @@
       "gold": 25,
       "recruits": [
         {
-          "unit": "swordsman",
+          "unit": "wolf",
           "cost": null
         },
         {
-          "unit": "spearman",
+          "unit": "boar",
           "cost": null
         },
         {
-          "unit": "scout",
+          "unit": "thorncaller",
           "cost": null
         },
         {
-          "unit": "archer",
+          "unit": "fox-spearguard",
           "cost": null
         },
         {
-          "unit": "adept",
-          "cost": null
-        },
-        {
-          "unit": "rider",
-          "cost": null
-        },
-        {
-          "unit": "horse-archer",
+          "unit": "treant",
           "cost": null
         }
       ],
       "units": [
         {
-          "type": "commander",
+          "type": "wildkeeper",
           "tile": {
             "col": 6,
             "row": 12
@@ -87,7 +79,7 @@
           "rebuilding": null
         },
         {
-          "type": "soldier",
+          "type": "boar",
           "tile": {
             "col": 12,
             "row": 6
@@ -106,7 +98,7 @@
           "rebuilding": null
         },
         {
-          "type": "spearman",
+          "type": "fox-spearguard",
           "tile": {
             "col": 6,
             "row": 11
@@ -125,7 +117,7 @@
           "rebuilding": null
         },
         {
-          "type": "swordsman",
+          "type": "boar",
           "tile": {
             "col": 7,
             "row": 12
@@ -144,7 +136,7 @@
           "rebuilding": null
         },
         {
-          "type": "archer",
+          "type": "thorncaller",
           "tile": {
             "col": 7,
             "row": 13
@@ -163,7 +155,7 @@
           "rebuilding": null
         },
         {
-          "type": "healer",
+          "type": "thorncaller",
           "tile": {
             "col": 12,
             "row": 7
@@ -182,7 +174,7 @@
           "rebuilding": null
         },
         {
-          "type": "scout",
+          "type": "wolf",
           "tile": {
             "col": 6,
             "row": 13
@@ -201,7 +193,7 @@
           "rebuilding": null
         },
         {
-          "type": "adept",
+          "type": "thorncaller",
           "tile": {
             "col": 7,
             "row": 11
@@ -239,33 +231,25 @@
       "gold": 18,
       "recruits": [
         {
-          "unit": "skeleton",
+          "unit": "harpooner",
           "cost": null
         },
         {
-          "unit": "skeleton-impact-caster",
+          "unit": "reefguard",
           "cost": null
         },
         {
-          "unit": "skeleton-rider",
+          "unit": "wavemender",
           "cost": null
         },
         {
-          "unit": "bonearcher",
-          "cost": null
-        },
-        {
-          "unit": "skeleton-axeman",
-          "cost": null
-        },
-        {
-          "unit": "ghost",
+          "unit": "merfolk-maceguard",
           "cost": null
         }
       ],
       "units": [
         {
-          "type": "necromancer",
+          "type": "tidekeeper",
           "tile": {
             "col": 27,
             "row": 12
@@ -284,7 +268,7 @@
           "rebuilding": null
         },
         {
-          "type": "skeleton",
+          "type": "merfolk-maceguard",
           "tile": {
             "col": 19,
             "row": 17
@@ -303,7 +287,7 @@
           "rebuilding": null
         },
         {
-          "type": "bonearcher",
+          "type": "harpooner",
           "tile": {
             "col": 20,
             "row": 16
@@ -322,7 +306,7 @@
           "rebuilding": null
         },
         {
-          "type": "skeleton-axeman",
+          "type": "merfolk-maceguard",
           "tile": {
             "col": 21,
             "row": 8
@@ -341,7 +325,7 @@
           "rebuilding": null
         },
         {
-          "type": "skeleton-impact-caster",
+          "type": "wavemender",
           "tile": {
             "col": 22,
             "row": 9

@@ -39,40 +39,32 @@
         "kind": "human"
       },
       "palette": "player",
-      "gold": 25,
+      "gold": 37,
       "recruits": [
         {
-          "unit": "swordsman",
+          "unit": "skeleton",
           "cost": null
         },
         {
-          "unit": "spearman",
+          "unit": "skeleton-axeman",
           "cost": null
         },
         {
-          "unit": "scout",
+          "unit": "bonearcher",
           "cost": null
         },
         {
-          "unit": "archer",
+          "unit": "skeleton-impact-caster",
           "cost": null
         },
         {
-          "unit": "adept",
-          "cost": null
-        },
-        {
-          "unit": "rider",
-          "cost": null
-        },
-        {
-          "unit": "horse-archer",
+          "unit": "skeleton-rider",
           "cost": null
         }
       ],
       "units": [
         {
-          "type": "commander",
+          "type": "necromancer",
           "tile": {
             "col": 4,
             "row": 12
@@ -91,7 +83,7 @@
           "rebuilding": null
         },
         {
-          "type": "soldier",
+          "type": "skeleton",
           "tile": {
             "col": 5,
             "row": 12
@@ -110,7 +102,7 @@
           "rebuilding": null
         },
         {
-          "type": "sentinel",
+          "type": "revenant",
           "tile": {
             "col": 4,
             "row": 11
@@ -129,7 +121,7 @@
           "rebuilding": null
         },
         {
-          "type": "swordsman",
+          "type": "skeleton",
           "tile": {
             "col": 5,
             "row": 11
@@ -148,7 +140,7 @@
           "rebuilding": null
         },
         {
-          "type": "ranger",
+          "type": "bonearcher",
           "tile": {
             "col": 5,
             "row": 13
@@ -167,7 +159,7 @@
           "rebuilding": null
         },
         {
-          "type": "healer",
+          "type": "skeleton-impact-caster",
           "tile": {
             "col": 3,
             "row": 12
@@ -186,7 +178,7 @@
           "rebuilding": null
         },
         {
-          "type": "scout",
+          "type": "skeleton-rider",
           "tile": {
             "col": 4,
             "row": 13
@@ -205,7 +197,7 @@
           "rebuilding": null
         },
         {
-          "type": "mage",
+          "type": "skeleton-impact-caster",
           "tile": {
             "col": 3,
             "row": 11
@@ -243,33 +235,21 @@
       "gold": 18,
       "recruits": [
         {
-          "unit": "skeleton",
+          "unit": "harpooner",
           "cost": null
         },
         {
-          "unit": "skeleton-impact-caster",
+          "unit": "reefguard",
           "cost": null
         },
         {
-          "unit": "skeleton-rider",
-          "cost": null
-        },
-        {
-          "unit": "bonearcher",
-          "cost": null
-        },
-        {
-          "unit": "skeleton-axeman",
-          "cost": null
-        },
-        {
-          "unit": "ghost",
+          "unit": "wavemender",
           "cost": null
         }
       ],
       "units": [
         {
-          "type": "necromancer",
+          "type": "tidekeeper",
           "tile": {
             "col": 28,
             "row": 12
@@ -288,7 +268,7 @@
           "rebuilding": null
         },
         {
-          "type": "skeleton",
+          "type": "reefguard",
           "tile": {
             "col": 15,
             "row": 12
@@ -307,7 +287,7 @@
           "rebuilding": null
         },
         {
-          "type": "bonearcher",
+          "type": "harpooner",
           "tile": {
             "col": 16,
             "row": 11
@@ -326,7 +306,7 @@
           "rebuilding": null
         },
         {
-          "type": "skeleton-axeman",
+          "type": "reefguard",
           "tile": {
             "col": 22,
             "row": 13
