@@ -1,0 +1,17 @@
+# Commander Left Behind validation
+
+The 17×12 encounter starts Nera and three fragile allies west of an occupied ford. An active revenant approaches from behind and two active infantry defend the far bank. A long southern dry crossing is available. Victory requires Nera alive at the exit and current ownership of the eastern village. Both accepted variants lose at the start of turn 22 and begin with the same roster apart from Nera's health. Both sides have clear vision and zero recruitment. The encounter is newly authored from the hour-9 Lantern crossing's force split and subsequent pursuit. [Archived source](../../../../training/experiments/2026-11-23-ppo-5m-9h/companion-regression/README.md) · [Exact catalog and results](final-summary.json)
+
+| Variant | Hour 8 | Hour 10 | Full | Classic |
+| --- | ---: | ---: | ---: | ---: |
+| Healthy, 25 HP | 0/20 | 2/20 | 20/20 | 18/20 |
+| Wounded, 7 HP | 0/20 | 0/20 | 1/20 | 13/20 |
+| Wounded with healer, turn-13 deadline | 0/20 | 6/20 | 13/20 | 18/20 |
+
+All confirmation rows use seeds 491231001–20 and a fixed Classic enemy. No runs capped. The 18 hour-10 healthy defeats and 20 wounded defeats are commander losses. The first discovery panels used eight different seeds and established that extending the healthy dreadguard version's clock from turn 13 to 22 preserved the gap. The easier healthy version with only ordinary skeletons was solved 8/8 by hour 10 with the longer clock, and is excluded. Full and Classic are ordinary native rule-based planners. [Discovery](discovery-followup-summary.json) · [Raw confirmation](confirmation.jsonl)
+
+- **Healthy, seed 491231001.** Hour 10 sends the 25 HP commander to the refuge on turn 1 and down the southern bypass while the allies fight on the forward approach. By turn 5 all three allies are dead. Nera reaches the exit on turn 7 with the post still hostile, then dies. Full starts closer to the forward group, reverses off the ford after turn 3, takes the southern crossing with two allies and wins on turn 10 at 25 HP. This demonstrates active separation and loss of mutual support, with a viable version of the same southern route.
+- **Wounded, seed 491231003.** Classic's Nera backs off from (7,11) to (5,10) on turn 4, then uses the central ford with the promoted scout surviving beside the advance. She reaches the owned post on turn 10 and the exit at 11 HP on turn 11. Hour 10's Nera takes one village healing tick from 7 to 11 HP, then follows the southern route and loses all three allies before she dies. The matched witness supports withdrawal and regrouping as viable. The different planners and later combat prevent assigning the outcome to one action or establishing that waiting to heal is required.
+- **Wounded with healer, seed 491231001.** Classic reverses at the southern approach on turn 4 and keeps its four other units alive during the eventual crossing. Nera recovers from 7 to 19 HP and wins on turn 9. The healer and shorter clock are additional authored changes, so this variant is separate from the HP-only comparison.
+
+All 36 selected action replays match the frozen Python binding's terminal winner and round. The replay probe loads the exact fixture catalog. The selected variants' rosters match exactly after normalizing Nera's HP. Existing tracked catalog, training and sampling were untouched. [Phase evidence](action-evidence.json) · [Raw reference traces](trace-rules.jsonl.gz) · [Raw hour-10 traces](trace-hour10.jsonl.gz) · [Renderer inputs](render-manifest.json)

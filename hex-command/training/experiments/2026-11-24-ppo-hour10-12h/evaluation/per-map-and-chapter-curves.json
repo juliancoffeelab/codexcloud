@@ -1,0 +1,3809 @@
+{
+  "maps": [
+    {
+      "group": "arena",
+      "map": "rl-crown-gap",
+      "hours": {
+        "0": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 1,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "arena",
+      "map": "rl-jawbone-crossing",
+      "hours": {
+        "0": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 1,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "arena",
+      "map": "rl-sump-teeth",
+      "hours": {
+        "0": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 0,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "arena",
+      "map": "rl-last-lantern",
+      "hours": {
+        "0": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "arena",
+      "map": "rl-twin-fords",
+      "hours": {
+        "0": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 0,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "arena",
+      "map": "rl-splitpine-clearing",
+      "hours": {
+        "0": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "arena",
+      "map": "rl-switchback-saltworks",
+      "hours": {
+        "0": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 0,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "arena",
+      "map": "rl-cinderfault",
+      "hours": {
+        "0": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 1,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "arena",
+      "map": "rl-frosthook-gate",
+      "hours": {
+        "0": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 0,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "arena",
+      "map": "rl-birch-pocket",
+      "hours": {
+        "0": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "arena",
+      "map": "rl-quarry-ring",
+      "hours": {
+        "0": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "arena",
+      "map": "rl-fordstep",
+      "hours": {
+        "0": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-marlow-cut-pass-finish",
+      "hours": {
+        "0": {
+          "wins": 2,
+          "attempts": 4
+        },
+        "1": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "2": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "3": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 4
+        },
+        "5": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "6": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "7": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "8": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "9": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "10": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "11": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "12": {
+          "wins": 4,
+          "attempts": 4
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-ashbank-relay-fork-vigil",
+      "hours": {
+        "0": {
+          "wins": 3,
+          "attempts": 10
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 10
+        },
+        "2": {
+          "wins": 2,
+          "attempts": 10
+        },
+        "3": {
+          "wins": 3,
+          "attempts": 10
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 10
+        },
+        "5": {
+          "wins": 1,
+          "attempts": 10
+        },
+        "6": {
+          "wins": 4,
+          "attempts": 10
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 10
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 10
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 10
+        },
+        "10": {
+          "wins": 3,
+          "attempts": 10
+        },
+        "11": {
+          "wins": 3,
+          "attempts": 10
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 10
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-bellmarket-courts",
+      "hours": {
+        "0": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "1": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "2": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "3": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "4": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "5": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "6": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "7": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "8": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "9": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "10": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "11": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "12": {
+          "wins": 8,
+          "attempts": 8
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-breakthrough-cave5",
+      "hours": {
+        "0": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-breakthrough-ford-heal08",
+      "hours": {
+        "0": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-briar-saddle",
+      "hours": {
+        "0": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-deadline-pines-relief8",
+      "hours": {
+        "0": {
+          "wins": 0,
+          "attempts": 6
+        },
+        "1": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "2": {
+          "wins": 1,
+          "attempts": 6
+        },
+        "3": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "4": {
+          "wins": 0,
+          "attempts": 6
+        },
+        "5": {
+          "wins": 0,
+          "attempts": 6
+        },
+        "6": {
+          "wins": 0,
+          "attempts": 6
+        },
+        "7": {
+          "wins": 0,
+          "attempts": 6
+        },
+        "8": {
+          "wins": 0,
+          "attempts": 6
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 6
+        },
+        "10": {
+          "wins": 0,
+          "attempts": 6
+        },
+        "11": {
+          "wins": 0,
+          "attempts": 6
+        },
+        "12": {
+          "wins": 0,
+          "attempts": 6
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-deadline-wait7",
+      "hours": {
+        "0": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "arena",
+      "map": "rl-sable-sound",
+      "hours": {
+        "0": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "arena",
+      "map": "rl-three-wells-trail",
+      "hours": {
+        "0": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 1,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-defend-bracken-stand-010",
+      "hours": {
+        "0": {
+          "wins": 10,
+          "attempts": 10
+        },
+        "1": {
+          "wins": 9,
+          "attempts": 10
+        },
+        "2": {
+          "wins": 10,
+          "attempts": 10
+        },
+        "3": {
+          "wins": 10,
+          "attempts": 10
+        },
+        "4": {
+          "wins": 10,
+          "attempts": 10
+        },
+        "5": {
+          "wins": 8,
+          "attempts": 10
+        },
+        "6": {
+          "wins": 8,
+          "attempts": 10
+        },
+        "7": {
+          "wins": 10,
+          "attempts": 10
+        },
+        "8": {
+          "wins": 10,
+          "attempts": 10
+        },
+        "9": {
+          "wins": 10,
+          "attempts": 10
+        },
+        "10": {
+          "wins": 10,
+          "attempts": 10
+        },
+        "11": {
+          "wins": 10,
+          "attempts": 10
+        },
+        "12": {
+          "wins": 10,
+          "attempts": 10
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-defend-tidegate-stand-110",
+      "hours": {
+        "0": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "1": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "2": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "3": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "4": {
+          "wins": 7,
+          "attempts": 8
+        },
+        "5": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "6": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "7": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "8": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "9": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "10": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "11": {
+          "wins": 8,
+          "attempts": 8
+        },
+        "12": {
+          "wins": 8,
+          "attempts": 8
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-defend-lower-gallery-0",
+      "hours": {
+        "0": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 0,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-escort-lantern-maze",
+      "hours": {
+        "0": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "1": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "2": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "3": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "4": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "5": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "6": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "7": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "8": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "9": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "10": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "11": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "12": {
+          "wins": 6,
+          "attempts": 6
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-escort-mistfen-patrol",
+      "hours": {
+        "0": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "1": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "2": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "3": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "4": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "5": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "6": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "7": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "8": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "9": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "10": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "11": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "12": {
+          "wins": 5,
+          "attempts": 6
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-escort-splitwake-patrol",
+      "hours": {
+        "0": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "1": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "2": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "3": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "4": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "5": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "6": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "7": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "8": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "9": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "10": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "11": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "12": {
+          "wins": 6,
+          "attempts": 6
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-hollowbank-extraction-crossfire-late-guard",
+      "hours": {
+        "0": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-interrupt-siltbar-approach",
+      "hours": {
+        "0": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-interrupt-south-ford-west-post",
+      "hours": {
+        "0": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-lair-outworks",
+      "hours": {
+        "0": {
+          "wins": 3,
+          "attempts": 18
+        },
+        "1": {
+          "wins": 0,
+          "attempts": 18
+        },
+        "2": {
+          "wins": 6,
+          "attempts": 18
+        },
+        "3": {
+          "wins": 9,
+          "attempts": 18
+        },
+        "4": {
+          "wins": 7,
+          "attempts": 18
+        },
+        "5": {
+          "wins": 9,
+          "attempts": 18
+        },
+        "6": {
+          "wins": 11,
+          "attempts": 18
+        },
+        "7": {
+          "wins": 9,
+          "attempts": 18
+        },
+        "8": {
+          "wins": 7,
+          "attempts": 18
+        },
+        "9": {
+          "wins": 9,
+          "attempts": 18
+        },
+        "10": {
+          "wins": 9,
+          "attempts": 18
+        },
+        "11": {
+          "wins": 9,
+          "attempts": 18
+        },
+        "12": {
+          "wins": 9,
+          "attempts": 18
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-hollowbank-extraction-crossfire-nearside",
+      "hours": {
+        "0": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-interrupt-herring-tide-road-three",
+      "hours": {
+        "0": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-route-ambush",
+      "hours": {
+        "0": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 0,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-slate-gallery",
+      "hours": {
+        "0": {
+          "wins": 5,
+          "attempts": 12
+        },
+        "1": {
+          "wins": 6,
+          "attempts": 12
+        },
+        "2": {
+          "wins": 7,
+          "attempts": 12
+        },
+        "3": {
+          "wins": 9,
+          "attempts": 12
+        },
+        "4": {
+          "wins": 9,
+          "attempts": 12
+        },
+        "5": {
+          "wins": 7,
+          "attempts": 12
+        },
+        "6": {
+          "wins": 11,
+          "attempts": 12
+        },
+        "7": {
+          "wins": 11,
+          "attempts": 12
+        },
+        "8": {
+          "wins": 11,
+          "attempts": 12
+        },
+        "9": {
+          "wins": 7,
+          "attempts": 12
+        },
+        "10": {
+          "wins": 10,
+          "attempts": 12
+        },
+        "11": {
+          "wins": 9,
+          "attempts": 12
+        },
+        "12": {
+          "wins": 8,
+          "attempts": 12
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-route-pass-road",
+      "hours": {
+        "0": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 2,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-route-pocket-leader",
+      "hours": {
+        "0": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 0,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 0,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "campaign",
+      "map": "rl-splitwake-crossing",
+      "hours": {
+        "0": {
+          "wins": 3,
+          "attempts": 12
+        },
+        "1": {
+          "wins": 0,
+          "attempts": 12
+        },
+        "2": {
+          "wins": 1,
+          "attempts": 12
+        },
+        "3": {
+          "wins": 3,
+          "attempts": 12
+        },
+        "4": {
+          "wins": 1,
+          "attempts": 12
+        },
+        "5": {
+          "wins": 0,
+          "attempts": 12
+        },
+        "6": {
+          "wins": 2,
+          "attempts": 12
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 12
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 12
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 12
+        },
+        "10": {
+          "wins": 0,
+          "attempts": 12
+        },
+        "11": {
+          "wins": 2,
+          "attempts": 12
+        },
+        "12": {
+          "wins": 4,
+          "attempts": 12
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-thorn-verge",
+      "hours": {
+        "0": {
+          "wins": 18,
+          "attempts": 18
+        },
+        "1": {
+          "wins": 18,
+          "attempts": 18
+        },
+        "2": {
+          "wins": 18,
+          "attempts": 18
+        },
+        "3": {
+          "wins": 18,
+          "attempts": 18
+        },
+        "4": {
+          "wins": 18,
+          "attempts": 18
+        },
+        "5": {
+          "wins": 18,
+          "attempts": 18
+        },
+        "6": {
+          "wins": 18,
+          "attempts": 18
+        },
+        "7": {
+          "wins": 18,
+          "attempts": 18
+        },
+        "8": {
+          "wins": 18,
+          "attempts": 18
+        },
+        "9": {
+          "wins": 18,
+          "attempts": 18
+        },
+        "10": {
+          "wins": 18,
+          "attempts": 18
+        },
+        "11": {
+          "wins": 18,
+          "attempts": 18
+        },
+        "12": {
+          "wins": 18,
+          "attempts": 18
+        }
+      }
+    },
+    {
+      "group": "campaign",
+      "map": "rl-underground-escape",
+      "hours": {
+        "0": {
+          "wins": 0,
+          "attempts": 12
+        },
+        "1": {
+          "wins": 1,
+          "attempts": 12
+        },
+        "2": {
+          "wins": 3,
+          "attempts": 12
+        },
+        "3": {
+          "wins": 1,
+          "attempts": 12
+        },
+        "4": {
+          "wins": 0,
+          "attempts": 12
+        },
+        "5": {
+          "wins": 0,
+          "attempts": 12
+        },
+        "6": {
+          "wins": 0,
+          "attempts": 12
+        },
+        "7": {
+          "wins": 2,
+          "attempts": 12
+        },
+        "8": {
+          "wins": 0,
+          "attempts": 12
+        },
+        "9": {
+          "wins": 1,
+          "attempts": 12
+        },
+        "10": {
+          "wins": 0,
+          "attempts": 12
+        },
+        "11": {
+          "wins": 0,
+          "attempts": 12
+        },
+        "12": {
+          "wins": 0,
+          "attempts": 12
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-urgent-crossing",
+      "hours": {
+        "0": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "1": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "2": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "3": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "4": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "5": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "6": {
+          "wins": 3,
+          "attempts": 4
+        },
+        "7": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "8": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "9": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "10": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "11": {
+          "wins": 4,
+          "attempts": 4
+        },
+        "12": {
+          "wins": 4,
+          "attempts": 4
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-vault-rally",
+      "hours": {
+        "0": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "1": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "2": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "3": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "4": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "5": {
+          "wins": 2,
+          "attempts": 2
+        },
+        "6": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "7": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "8": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "9": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "10": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "11": {
+          "wins": 1,
+          "attempts": 2
+        },
+        "12": {
+          "wins": 1,
+          "attempts": 2
+        }
+      }
+    },
+    {
+      "group": "targeted",
+      "map": "rl-whitecap-ford",
+      "hours": {
+        "0": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "1": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "2": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "3": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "4": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "5": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "6": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "7": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "8": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "9": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "10": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "11": {
+          "wins": 6,
+          "attempts": 6
+        },
+        "12": {
+          "wins": 6,
+          "attempts": 6
+        }
+      }
+    },
+    {
+      "group": "campaign",
+      "map": "rl-woodland-defense",
+      "hours": {
+        "0": {
+          "wins": 2,
+          "attempts": 12
+        },
+        "1": {
+          "wins": 4,
+          "attempts": 12
+        },
+        "2": {
+          "wins": 5,
+          "attempts": 12
+        },
+        "3": {
+          "wins": 4,
+          "attempts": 12
+        },
+        "4": {
+          "wins": 4,
+          "attempts": 12
+        },
+        "5": {
+          "wins": 3,
+          "attempts": 12
+        },
+        "6": {
+          "wins": 3,
+          "attempts": 12
+        },
+        "7": {
+          "wins": 1,
+          "attempts": 12
+        },
+        "8": {
+          "wins": 2,
+          "attempts": 12
+        },
+        "9": {
+          "wins": 5,
+          "attempts": 12
+        },
+        "10": {
+          "wins": 4,
+          "attempts": 12
+        },
+        "11": {
+          "wins": 5,
+          "attempts": 12
+        },
+        "12": {
+          "wins": 7,
+          "attempts": 12
+        }
+      }
+    },
+    {
+      "group": "showcase",
+      "map": "lantern-road",
+      "hours": {
+        "0": {
+          "wins": 4,
+          "attempts": 24
+        },
+        "1": {
+          "wins": 2,
+          "attempts": 24
+        },
+        "2": {
+          "wins": 3,
+          "attempts": 24
+        },
+        "3": {
+          "wins": 1,
+          "attempts": 24
+        },
+        "4": {
+          "wins": 3,
+          "attempts": 24
+        },
+        "5": {
+          "wins": 2,
+          "attempts": 24
+        },
+        "6": {
+          "wins": 0,
+          "attempts": 24
+        },
+        "7": {
+          "wins": 1,
+          "attempts": 24
+        },
+        "8": {
+          "wins": 0,
+          "attempts": 24
+        },
+        "9": {
+          "wins": 2,
+          "attempts": 24
+        },
+        "10": {
+          "wins": 1,
+          "attempts": 24
+        },
+        "11": {
+          "wins": 4,
+          "attempts": 24
+        },
+        "12": {
+          "wins": 1,
+          "attempts": 24
+        }
+      }
+    }
+  ],
+  "chapters": [
+    {
+      "campaign": "rl-splitwake-crossing",
+      "visibility": "authored",
+      "chapter": "rl-splitwake-crossing-1",
+      "hours": {
+        "0": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "1": {
+          "clears": 5,
+          "entrants": 6
+        },
+        "2": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "3": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "4": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "5": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "6": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "7": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "8": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "9": {
+          "clears": 5,
+          "entrants": 6
+        },
+        "10": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "11": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "12": {
+          "clears": 6,
+          "entrants": 6
+        }
+      }
+    },
+    {
+      "campaign": "rl-splitwake-crossing",
+      "visibility": "authored",
+      "chapter": "rl-splitwake-crossing-2",
+      "hours": {
+        "0": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "1": {
+          "clears": 1,
+          "entrants": 5
+        },
+        "2": {
+          "clears": 3,
+          "entrants": 4
+        },
+        "3": {
+          "clears": 5,
+          "entrants": 6
+        },
+        "4": {
+          "clears": 2,
+          "entrants": 6
+        },
+        "5": {
+          "clears": 5,
+          "entrants": 6
+        },
+        "6": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "7": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "8": {
+          "clears": 3,
+          "entrants": 4
+        },
+        "9": {
+          "clears": 2,
+          "entrants": 5
+        },
+        "10": {
+          "clears": 2,
+          "entrants": 6
+        },
+        "11": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "12": {
+          "clears": 4,
+          "entrants": 6
+        }
+      }
+    },
+    {
+      "campaign": "rl-splitwake-crossing",
+      "visibility": "authored",
+      "chapter": "rl-splitwake-crossing-3",
+      "hours": {
+        "0": {
+          "clears": 1,
+          "entrants": 3
+        },
+        "1": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "2": {
+          "clears": 1,
+          "entrants": 3
+        },
+        "3": {
+          "clears": 2,
+          "entrants": 5
+        },
+        "4": {
+          "clears": 1,
+          "entrants": 2
+        },
+        "5": {
+          "clears": 0,
+          "entrants": 5
+        },
+        "6": {
+          "clears": 2,
+          "entrants": 4
+        },
+        "7": {
+          "clears": 2,
+          "entrants": 4
+        },
+        "8": {
+          "clears": 2,
+          "entrants": 3
+        },
+        "9": {
+          "clears": 1,
+          "entrants": 2
+        },
+        "10": {
+          "clears": 0,
+          "entrants": 2
+        },
+        "11": {
+          "clears": 1,
+          "entrants": 3
+        },
+        "12": {
+          "clears": 4,
+          "entrants": 4
+        }
+      }
+    },
+    {
+      "campaign": "rl-splitwake-crossing",
+      "visibility": "fog",
+      "chapter": "rl-splitwake-crossing-1",
+      "hours": {
+        "0": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "1": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "2": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "3": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "4": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "5": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "6": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "7": {
+          "clears": 5,
+          "entrants": 6
+        },
+        "8": {
+          "clears": 5,
+          "entrants": 6
+        },
+        "9": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "10": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "11": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "12": {
+          "clears": 5,
+          "entrants": 6
+        }
+      }
+    },
+    {
+      "campaign": "rl-splitwake-crossing",
+      "visibility": "fog",
+      "chapter": "rl-splitwake-crossing-2",
+      "hours": {
+        "0": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "1": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "2": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "3": {
+          "clears": 2,
+          "entrants": 6
+        },
+        "4": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "5": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "6": {
+          "clears": 2,
+          "entrants": 6
+        },
+        "7": {
+          "clears": 1,
+          "entrants": 5
+        },
+        "8": {
+          "clears": 1,
+          "entrants": 5
+        },
+        "9": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "10": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "11": {
+          "clears": 2,
+          "entrants": 6
+        },
+        "12": {
+          "clears": 2,
+          "entrants": 5
+        }
+      }
+    },
+    {
+      "campaign": "rl-splitwake-crossing",
+      "visibility": "fog",
+      "chapter": "rl-splitwake-crossing-3",
+      "hours": {
+        "0": {
+          "clears": 2,
+          "entrants": 4
+        },
+        "1": {
+          "clears": 0,
+          "entrants": 3
+        },
+        "2": {
+          "clears": 0,
+          "entrants": 3
+        },
+        "3": {
+          "clears": 1,
+          "entrants": 2
+        },
+        "4": {
+          "clears": 0,
+          "entrants": 3
+        },
+        "5": {
+          "clears": 0,
+          "entrants": 3
+        },
+        "6": {
+          "clears": 0,
+          "entrants": 2
+        },
+        "7": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "8": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "9": {
+          "clears": 1,
+          "entrants": 3
+        },
+        "10": {
+          "clears": 0,
+          "entrants": 3
+        },
+        "11": {
+          "clears": 1,
+          "entrants": 2
+        },
+        "12": {
+          "clears": 0,
+          "entrants": 2
+        }
+      }
+    },
+    {
+      "campaign": "rl-underground-escape",
+      "visibility": "authored",
+      "chapter": "rl-underground-escape-1",
+      "hours": {
+        "0": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "1": {
+          "clears": 5,
+          "entrants": 6
+        },
+        "2": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "3": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "4": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "5": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "6": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "7": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "8": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "9": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "10": {
+          "clears": 5,
+          "entrants": 6
+        },
+        "11": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "12": {
+          "clears": 5,
+          "entrants": 6
+        }
+      }
+    },
+    {
+      "campaign": "rl-underground-escape",
+      "visibility": "authored",
+      "chapter": "rl-underground-escape-2",
+      "hours": {
+        "0": {
+          "clears": 0,
+          "entrants": 3
+        },
+        "1": {
+          "clears": 2,
+          "entrants": 5
+        },
+        "2": {
+          "clears": 3,
+          "entrants": 4
+        },
+        "3": {
+          "clears": 1,
+          "entrants": 3
+        },
+        "4": {
+          "clears": 0,
+          "entrants": 3
+        },
+        "5": {
+          "clears": 1,
+          "entrants": 4
+        },
+        "6": {
+          "clears": 0,
+          "entrants": 4
+        },
+        "7": {
+          "clears": 2,
+          "entrants": 4
+        },
+        "8": {
+          "clears": 0,
+          "entrants": 3
+        },
+        "9": {
+          "clears": 1,
+          "entrants": 6
+        },
+        "10": {
+          "clears": 0,
+          "entrants": 5
+        },
+        "11": {
+          "clears": 1,
+          "entrants": 6
+        },
+        "12": {
+          "clears": 0,
+          "entrants": 5
+        }
+      }
+    },
+    {
+      "campaign": "rl-underground-escape",
+      "visibility": "fog",
+      "chapter": "rl-underground-escape-1",
+      "hours": {
+        "0": {
+          "clears": 1,
+          "entrants": 6
+        },
+        "1": {
+          "clears": 0,
+          "entrants": 6
+        },
+        "2": {
+          "clears": 1,
+          "entrants": 6
+        },
+        "3": {
+          "clears": 1,
+          "entrants": 6
+        },
+        "4": {
+          "clears": 0,
+          "entrants": 6
+        },
+        "5": {
+          "clears": 0,
+          "entrants": 6
+        },
+        "6": {
+          "clears": 2,
+          "entrants": 6
+        },
+        "7": {
+          "clears": 1,
+          "entrants": 6
+        },
+        "8": {
+          "clears": 1,
+          "entrants": 6
+        },
+        "9": {
+          "clears": 2,
+          "entrants": 6
+        },
+        "10": {
+          "clears": 1,
+          "entrants": 6
+        },
+        "11": {
+          "clears": 1,
+          "entrants": 6
+        },
+        "12": {
+          "clears": 1,
+          "entrants": 6
+        }
+      }
+    },
+    {
+      "campaign": "rl-underground-escape",
+      "visibility": "fog",
+      "chapter": "rl-underground-escape-2",
+      "hours": {
+        "0": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "2": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "3": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "6": {
+          "clears": 1,
+          "entrants": 2
+        },
+        "7": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "8": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "9": {
+          "clears": 1,
+          "entrants": 2
+        },
+        "10": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "11": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "12": {
+          "clears": 0,
+          "entrants": 1
+        }
+      }
+    },
+    {
+      "campaign": "rl-woodland-defense",
+      "visibility": "authored",
+      "chapter": "rl-woodland-defense-1",
+      "hours": {
+        "0": {
+          "clears": 2,
+          "entrants": 6
+        },
+        "1": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "2": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "3": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "4": {
+          "clears": 5,
+          "entrants": 6
+        },
+        "5": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "6": {
+          "clears": 5,
+          "entrants": 6
+        },
+        "7": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "8": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "9": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "10": {
+          "clears": 5,
+          "entrants": 6
+        },
+        "11": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "12": {
+          "clears": 6,
+          "entrants": 6
+        }
+      }
+    },
+    {
+      "campaign": "rl-woodland-defense",
+      "visibility": "authored",
+      "chapter": "rl-woodland-defense-2",
+      "hours": {
+        "0": {
+          "clears": 2,
+          "entrants": 2
+        },
+        "1": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "2": {
+          "clears": 5,
+          "entrants": 6
+        },
+        "3": {
+          "clears": 4,
+          "entrants": 4
+        },
+        "4": {
+          "clears": 5,
+          "entrants": 5
+        },
+        "5": {
+          "clears": 4,
+          "entrants": 4
+        },
+        "6": {
+          "clears": 5,
+          "entrants": 5
+        },
+        "7": {
+          "clears": 2,
+          "entrants": 4
+        },
+        "8": {
+          "clears": 4,
+          "entrants": 4
+        },
+        "9": {
+          "clears": 4,
+          "entrants": 4
+        },
+        "10": {
+          "clears": 5,
+          "entrants": 5
+        },
+        "11": {
+          "clears": 6,
+          "entrants": 6
+        },
+        "12": {
+          "clears": 6,
+          "entrants": 6
+        }
+      }
+    },
+    {
+      "campaign": "rl-woodland-defense",
+      "visibility": "authored",
+      "chapter": "rl-woodland-defense-3",
+      "hours": {
+        "0": {
+          "clears": 1,
+          "entrants": 2
+        },
+        "1": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "2": {
+          "clears": 5,
+          "entrants": 5
+        },
+        "3": {
+          "clears": 4,
+          "entrants": 4
+        },
+        "4": {
+          "clears": 3,
+          "entrants": 5
+        },
+        "5": {
+          "clears": 3,
+          "entrants": 4
+        },
+        "6": {
+          "clears": 3,
+          "entrants": 5
+        },
+        "7": {
+          "clears": 1,
+          "entrants": 2
+        },
+        "8": {
+          "clears": 2,
+          "entrants": 4
+        },
+        "9": {
+          "clears": 3,
+          "entrants": 4
+        },
+        "10": {
+          "clears": 3,
+          "entrants": 5
+        },
+        "11": {
+          "clears": 5,
+          "entrants": 6
+        },
+        "12": {
+          "clears": 6,
+          "entrants": 6
+        }
+      }
+    },
+    {
+      "campaign": "rl-woodland-defense",
+      "visibility": "fog",
+      "chapter": "rl-woodland-defense-1",
+      "hours": {
+        "0": {
+          "clears": 2,
+          "entrants": 6
+        },
+        "1": {
+          "clears": 2,
+          "entrants": 6
+        },
+        "2": {
+          "clears": 2,
+          "entrants": 6
+        },
+        "3": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "4": {
+          "clears": 2,
+          "entrants": 6
+        },
+        "5": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "6": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "7": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "8": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "9": {
+          "clears": 3,
+          "entrants": 6
+        },
+        "10": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "11": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "12": {
+          "clears": 2,
+          "entrants": 6
+        }
+      }
+    },
+    {
+      "campaign": "rl-woodland-defense",
+      "visibility": "fog",
+      "chapter": "rl-woodland-defense-2",
+      "hours": {
+        "0": {
+          "clears": 1,
+          "entrants": 2
+        },
+        "1": {
+          "clears": 0,
+          "entrants": 2
+        },
+        "2": {
+          "clears": 0,
+          "entrants": 2
+        },
+        "3": {
+          "clears": 0,
+          "entrants": 3
+        },
+        "4": {
+          "clears": 1,
+          "entrants": 2
+        },
+        "5": {
+          "clears": 0,
+          "entrants": 3
+        },
+        "6": {
+          "clears": 1,
+          "entrants": 3
+        },
+        "7": {
+          "clears": 1,
+          "entrants": 4
+        },
+        "8": {
+          "clears": 0,
+          "entrants": 4
+        },
+        "9": {
+          "clears": 2,
+          "entrants": 3
+        },
+        "10": {
+          "clears": 2,
+          "entrants": 4
+        },
+        "11": {
+          "clears": 0,
+          "entrants": 4
+        },
+        "12": {
+          "clears": 1,
+          "entrants": 2
+        }
+      }
+    },
+    {
+      "campaign": "rl-woodland-defense",
+      "visibility": "fog",
+      "chapter": "rl-woodland-defense-3",
+      "hours": {
+        "0": {
+          "clears": 1,
+          "entrants": 1
+        },
+        "4": {
+          "clears": 1,
+          "entrants": 1
+        },
+        "6": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "7": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "9": {
+          "clears": 2,
+          "entrants": 2
+        },
+        "10": {
+          "clears": 1,
+          "entrants": 2
+        },
+        "12": {
+          "clears": 1,
+          "entrants": 1
+        }
+      }
+    },
+    {
+      "campaign": "lantern-road",
+      "visibility": "authored",
+      "chapter": "lantern-ferry",
+      "hours": {
+        "0": {
+          "clears": 10,
+          "entrants": 24
+        },
+        "1": {
+          "clears": 9,
+          "entrants": 24
+        },
+        "2": {
+          "clears": 12,
+          "entrants": 24
+        },
+        "3": {
+          "clears": 8,
+          "entrants": 24
+        },
+        "4": {
+          "clears": 7,
+          "entrants": 24
+        },
+        "5": {
+          "clears": 7,
+          "entrants": 24
+        },
+        "6": {
+          "clears": 9,
+          "entrants": 24
+        },
+        "7": {
+          "clears": 9,
+          "entrants": 24
+        },
+        "8": {
+          "clears": 8,
+          "entrants": 24
+        },
+        "9": {
+          "clears": 9,
+          "entrants": 24
+        },
+        "10": {
+          "clears": 5,
+          "entrants": 24
+        },
+        "11": {
+          "clears": 13,
+          "entrants": 24
+        },
+        "12": {
+          "clears": 15,
+          "entrants": 24
+        }
+      }
+    },
+    {
+      "campaign": "lantern-road",
+      "visibility": "authored",
+      "chapter": "lantern-villages",
+      "hours": {
+        "0": {
+          "clears": 9,
+          "entrants": 10
+        },
+        "1": {
+          "clears": 3,
+          "entrants": 9
+        },
+        "2": {
+          "clears": 5,
+          "entrants": 12
+        },
+        "3": {
+          "clears": 4,
+          "entrants": 8
+        },
+        "4": {
+          "clears": 5,
+          "entrants": 7
+        },
+        "5": {
+          "clears": 5,
+          "entrants": 7
+        },
+        "6": {
+          "clears": 1,
+          "entrants": 9
+        },
+        "7": {
+          "clears": 5,
+          "entrants": 9
+        },
+        "8": {
+          "clears": 1,
+          "entrants": 8
+        },
+        "9": {
+          "clears": 5,
+          "entrants": 9
+        },
+        "10": {
+          "clears": 4,
+          "entrants": 5
+        },
+        "11": {
+          "clears": 6,
+          "entrants": 13
+        },
+        "12": {
+          "clears": 4,
+          "entrants": 15
+        }
+      }
+    },
+    {
+      "campaign": "lantern-road",
+      "visibility": "authored",
+      "chapter": "lantern-bell",
+      "hours": {
+        "0": {
+          "clears": 4,
+          "entrants": 9
+        },
+        "1": {
+          "clears": 2,
+          "entrants": 3
+        },
+        "2": {
+          "clears": 3,
+          "entrants": 5
+        },
+        "3": {
+          "clears": 1,
+          "entrants": 4
+        },
+        "4": {
+          "clears": 3,
+          "entrants": 5
+        },
+        "5": {
+          "clears": 2,
+          "entrants": 5
+        },
+        "6": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "7": {
+          "clears": 1,
+          "entrants": 5
+        },
+        "8": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "9": {
+          "clears": 2,
+          "entrants": 5
+        },
+        "10": {
+          "clears": 1,
+          "entrants": 4
+        },
+        "11": {
+          "clears": 4,
+          "entrants": 6
+        },
+        "12": {
+          "clears": 1,
+          "entrants": 4
+        }
+      }
+    },
+    {
+      "campaign": "rl-underground-escape",
+      "visibility": "authored",
+      "chapter": "rl-underground-escape-3",
+      "hours": {
+        "1": {
+          "clears": 1,
+          "entrants": 2
+        },
+        "2": {
+          "clears": 3,
+          "entrants": 3
+        },
+        "3": {
+          "clears": 1,
+          "entrants": 1
+        },
+        "5": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "7": {
+          "clears": 2,
+          "entrants": 2
+        },
+        "9": {
+          "clears": 1,
+          "entrants": 1
+        },
+        "11": {
+          "clears": 0,
+          "entrants": 1
+        }
+      }
+    },
+    {
+      "campaign": "rl-underground-escape",
+      "visibility": "fog",
+      "chapter": "rl-underground-escape-3",
+      "hours": {
+        "6": {
+          "clears": 0,
+          "entrants": 1
+        },
+        "9": {
+          "clears": 0,
+          "entrants": 1
+        }
+      }
+    }
+  ]
+}

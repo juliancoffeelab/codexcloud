@@ -1,0 +1,109 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "mission-complete",
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 10,
+              "row": 2
+            }
+          },
+          "through": true,
+          "character": null,
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "victory": "Task completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "label": "Reach the far shore with any unit",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 10,
+                "row": 2
+              }
+            },
+            "through": true,
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "id": null,
+        "optional": false,
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "commander-lost",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turn": 25
+      },
+      "actions": [
+        {
+          "defeat": "The far shore was not reached within twenty-four turns."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

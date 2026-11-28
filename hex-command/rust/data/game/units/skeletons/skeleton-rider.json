@@ -86,10 +86,11 @@
   "description": "Expensive cavalry that crosses open ground quickly; dense woods and rough ground slow its mount.",
   "level": 1,
   "family": "skeleton-rider",
-  "advancesTo": ["skeleton-rider-l2"],
+  "advancesTo": [
+    "skeleton-rider-l2"
+  ],
   "experienceNeeded": 10,
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

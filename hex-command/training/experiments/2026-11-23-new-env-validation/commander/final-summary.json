@@ -1,0 +1,362 @@
+{
+  "accepted": [
+    {
+      "variant": "dread-long",
+      "enemy": "classic",
+      "visibility": "clear both sides",
+      "deadline": "lose at start of turn 22",
+      "recruits": 0,
+      "teacher": "full",
+      "teacherType": "ordinary native rule-based planner",
+      "comparisons": [
+        {
+          "variant": "dread-long",
+          "enemy": "classic",
+          "policy": "classic",
+          "successes": 18,
+          "defeats": 2,
+          "caps": 0,
+          "medianWinRound": 13.0,
+          "outcomes": {
+            "Commander evacuated.": 18,
+            "The company lost its commander.": 2
+          }
+        },
+        {
+          "variant": "dread-long",
+          "enemy": "classic",
+          "policy": "full",
+          "successes": 20,
+          "defeats": 0,
+          "caps": 0,
+          "medianWinRound": 11.0,
+          "outcomes": {
+            "Commander evacuated.": 20
+          }
+        },
+        {
+          "variant": "dread-long",
+          "enemy": "classic",
+          "policy": "hour10",
+          "successes": 2,
+          "defeats": 18,
+          "caps": 0,
+          "medianWinRound": 9.5,
+          "outcomes": {
+            "Commander evacuated.": 2,
+            "The company lost its commander.": 18
+          }
+        },
+        {
+          "variant": "dread-long",
+          "enemy": "classic",
+          "policy": "hour8",
+          "successes": 0,
+          "defeats": 20,
+          "caps": 0,
+          "medianWinRound": null,
+          "outcomes": {
+            "The deadline expired.": 6,
+            "The company lost its commander.": 14
+          }
+        }
+      ],
+      "seeds": [
+        491231001,
+        491231002,
+        491231003,
+        491231004,
+        491231005,
+        491231006,
+        491231007,
+        491231008,
+        491231009,
+        491231010,
+        491231011,
+        491231012,
+        491231013,
+        491231014,
+        491231015,
+        491231016,
+        491231017,
+        491231018,
+        491231019,
+        491231020
+      ],
+      "files": {
+        "map": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/catalog/game/campaigns/rl-commander-left-behind-dread-long/map.json",
+          "sha256": "578d2ff549b0492ea34a9a1afad7de730aa44eb101214fbe4b07156d0080d36f"
+        },
+        "roster": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/catalog/game/campaigns/rl-commander-left-behind-dread-long/roster.json",
+          "sha256": "52b2467006abfe8f011420560d685dba1a2861899cc0d68a53ba82f38ebf108d"
+        },
+        "scripts": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/catalog/game/campaigns/rl-commander-left-behind-dread-long/scripts.json",
+          "sha256": "e4217e70c76f2508fa96cf567a7c9705eb8ea2ba048bca3c39768fd077336b9c"
+        },
+        "campaign": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/catalog/game/campaigns/rl-commander-left-behind-dread-long/campaign.json",
+          "sha256": "5ea48f527af2915ad50bfb68e1ce595dad85a6f3c7e4afb0ad6fb0307e38cc6e"
+        },
+        "stage": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/catalog/game/campaigns/rl-commander-left-behind-dread-long/stage.json",
+          "sha256": "b370be6a446430bfd432f58dbb38d4571cc1a118cde599ca9e3132cdc5172480"
+        },
+        "story": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/catalog/game/campaigns/rl-commander-left-behind-dread-long/story.json",
+          "sha256": "4536a6cb45f764384a5e8d98e1aa603a4b732a972de75f12a9acdcaf1ba4b05f"
+        }
+      },
+      "render": {
+        "id": "commander-dread-long",
+        "map": "tmp/rl/new-env-validation/commander/render/dread-long/map.json",
+        "roster": "tmp/rl/new-env-validation/commander/render/dread-long/roster.json",
+        "scenario": "tmp/rl/new-env-validation/commander/render/dread-long/scenario.json",
+        "overlay": "tmp/rl/new-env-validation/commander/render/dread-long/overlay.json",
+        "output": "tmp/rl/new-env-validation/commander/render/dread-long/preview.png"
+      }
+    },
+    {
+      "variant": "dread-wounded-long",
+      "enemy": "classic",
+      "visibility": "clear both sides",
+      "deadline": "lose at start of turn 22",
+      "recruits": 0,
+      "teacher": "classic",
+      "teacherType": "ordinary native rule-based planner",
+      "comparisons": [
+        {
+          "variant": "dread-wounded-long",
+          "enemy": "classic",
+          "policy": "classic",
+          "successes": 13,
+          "defeats": 7,
+          "caps": 0,
+          "medianWinRound": 11,
+          "outcomes": {
+            "Commander evacuated.": 13,
+            "The company lost its commander.": 7
+          }
+        },
+        {
+          "variant": "dread-wounded-long",
+          "enemy": "classic",
+          "policy": "full",
+          "successes": 1,
+          "defeats": 19,
+          "caps": 0,
+          "medianWinRound": 15,
+          "outcomes": {
+            "Commander evacuated.": 1,
+            "The company lost its commander.": 19
+          }
+        },
+        {
+          "variant": "dread-wounded-long",
+          "enemy": "classic",
+          "policy": "hour10",
+          "successes": 0,
+          "defeats": 20,
+          "caps": 0,
+          "medianWinRound": null,
+          "outcomes": {
+            "The company lost its commander.": 20
+          }
+        },
+        {
+          "variant": "dread-wounded-long",
+          "enemy": "classic",
+          "policy": "hour8",
+          "successes": 0,
+          "defeats": 20,
+          "caps": 0,
+          "medianWinRound": null,
+          "outcomes": {
+            "The company lost its commander.": 20
+          }
+        }
+      ],
+      "seeds": [
+        491231001,
+        491231002,
+        491231003,
+        491231004,
+        491231005,
+        491231006,
+        491231007,
+        491231008,
+        491231009,
+        491231010,
+        491231011,
+        491231012,
+        491231013,
+        491231014,
+        491231015,
+        491231016,
+        491231017,
+        491231018,
+        491231019,
+        491231020
+      ],
+      "files": {
+        "map": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/catalog/game/campaigns/rl-commander-left-behind-dread-wounded-long/map.json",
+          "sha256": "523d64c5cbc719d1e6a1b1a66703ad8a2c75bc5e118f4ab738ed11097c60009e"
+        },
+        "roster": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/catalog/game/campaigns/rl-commander-left-behind-dread-wounded-long/roster.json",
+          "sha256": "08b14053629f71d0c94c9abb1b9d3ba4730e8df24dedf12021882371eba3a427"
+        },
+        "scripts": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/catalog/game/campaigns/rl-commander-left-behind-dread-wounded-long/scripts.json",
+          "sha256": "e4217e70c76f2508fa96cf567a7c9705eb8ea2ba048bca3c39768fd077336b9c"
+        },
+        "campaign": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/catalog/game/campaigns/rl-commander-left-behind-dread-wounded-long/campaign.json",
+          "sha256": "9722a1a9b445a895562c0bad442e2272be5c76d202ee7a86085493f2aba9fbe2"
+        },
+        "stage": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/catalog/game/campaigns/rl-commander-left-behind-dread-wounded-long/stage.json",
+          "sha256": "1ca13aa0f708b750a1629582bda2072abf0b15c4b6fda49d735411496ed67461"
+        },
+        "story": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/catalog/game/campaigns/rl-commander-left-behind-dread-wounded-long/story.json",
+          "sha256": "52769515d9ede3d823bf2ea63cf88c6807a160372d5e423e81b99ea078d9ee49"
+        }
+      },
+      "render": {
+        "id": "commander-dread-wounded-long",
+        "map": "tmp/rl/new-env-validation/commander/render/dread-wounded-long/map.json",
+        "roster": "tmp/rl/new-env-validation/commander/render/dread-wounded-long/roster.json",
+        "scenario": "tmp/rl/new-env-validation/commander/render/dread-wounded-long/scenario.json",
+        "overlay": "tmp/rl/new-env-validation/commander/render/dread-wounded-long/overlay.json",
+        "output": "tmp/rl/new-env-validation/commander/render/dread-wounded-long/preview.png"
+      }
+    }
+  ],
+  "alternate": {
+    "variant": "dread-wounded-healer",
+    "enemy": "classic",
+    "visibility": "clear both sides",
+    "deadline": "lose at start of turn 13",
+    "recruits": 0,
+    "changesComparedWithHealthy": "7 HP Nera, one additional 15 HP allied healer, turn 13 deadline",
+    "teacher": "classic",
+    "teacherType": "ordinary native rule-based planner",
+    "comparisons": [
+      {
+        "variant": "dread-wounded-healer",
+        "enemy": "classic",
+        "policy": "classic",
+        "successes": 18,
+        "defeats": 2,
+        "caps": 0,
+        "medianWinRound": 9.0,
+        "outcomes": {
+          "Commander evacuated.": 18,
+          "The deadline expired.": 1,
+          "The company lost its commander.": 1
+        }
+      },
+      {
+        "variant": "dread-wounded-healer",
+        "enemy": "classic",
+        "policy": "full",
+        "successes": 13,
+        "defeats": 7,
+        "caps": 0,
+        "medianWinRound": 8,
+        "outcomes": {
+          "Commander evacuated.": 13,
+          "The deadline expired.": 1,
+          "The company lost its commander.": 6
+        }
+      },
+      {
+        "variant": "dread-wounded-healer",
+        "enemy": "classic",
+        "policy": "hour10",
+        "successes": 6,
+        "defeats": 14,
+        "caps": 0,
+        "medianWinRound": 11.0,
+        "outcomes": {
+          "Commander evacuated.": 6,
+          "The deadline expired.": 7,
+          "The company lost its commander.": 7
+        }
+      },
+      {
+        "variant": "dread-wounded-healer",
+        "enemy": "classic",
+        "policy": "hour8",
+        "successes": 0,
+        "defeats": 20,
+        "caps": 0,
+        "medianWinRound": null,
+        "outcomes": {
+          "The deadline expired.": 18,
+          "The company lost its commander.": 2
+        }
+      }
+    ],
+    "seeds": [
+      491231001,
+      491231002,
+      491231003,
+      491231004,
+      491231005,
+      491231006,
+      491231007,
+      491231008,
+      491231009,
+      491231010,
+      491231011,
+      491231012,
+      491231013,
+      491231014,
+      491231015,
+      491231016,
+      491231017,
+      491231018,
+      491231019,
+      491231020
+    ],
+    "campaignDirectory": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/catalog/game/campaigns/rl-commander-left-behind-dread-wounded-healer"
+  },
+  "sources": {
+    "learningModels": {
+      "hour8": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/update-00002205-1795440240315037513/planner.json",
+        "sha256": "e7ef684d9e135e7817e390c533ec8b903d08db2d6ac0253c1aa340616b47a619"
+      },
+      "hour10": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/last-1795458575107520190/planner.json",
+        "sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee"
+      }
+    },
+    "nativeBinding": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/native/hex_command_training.so",
+      "sha256": "7d7ab7ede88526b76ceb1c91de5fc9df2187c79c1ce0b7ba3b8b9b1f0cf322f2"
+    },
+    "sourceCheckpointCatalog": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/catalog",
+    "exactFixtureCatalog": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/catalog",
+    "builder": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/build.py",
+    "runner": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/run.py",
+    "confirmationRaw": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/confirmation.jsonl",
+    "discovery": [
+      "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/discovery-summary.json",
+      "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/discovery-followup-summary.json",
+      "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/discovery-counterpart-summary.json"
+    ],
+    "actionEvidence": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/action-evidence.json",
+    "traceSource": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/probe/src/main.rs",
+    "rawTraces": [
+      "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/trace-hour10.jsonl.gz",
+      "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/trace-hour8.jsonl.gz",
+      "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/commander/trace-rules.jsonl.gz"
+    ]
+  }
+}

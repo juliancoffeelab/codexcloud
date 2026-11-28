@@ -15,7 +15,6 @@ fn corridor(radius: u16, remember: bool) -> State {
         state.vision_groups.push(VisionGroupState {
             id: id.into(),
             sight: SightContribution {
-                range: 0,
                 unlimited: true,
                 sight_modifiers: SightModifiers {
                     lit: 0,
@@ -184,16 +183,13 @@ fn concealment_and_attack_availability_do_not_replace_combat_reveals() {
 fn sight_modifiers_follow_target_light_for_sight_and_threats() {
     let mut bundle = fixture::deterministic();
     fixture::unit(&mut bundle, "archer", |unit| {
-        unit["sight"]["range"] = json!(7)
-    });
-    fixture::unit(&mut bundle, "archer", |unit| {
         unit["sight"]["unlimited"] = json!(false)
     });
     fixture::unit(&mut bundle, "archer", |unit| {
         unit["sight"]["sightModifiers"] = serde_json::to_value(SightModifiers {
-            lit: 0,
-            unlit: -3,
-            darkness: -3,
+            lit: 7,
+            unlit: 4,
+            darkness: 4,
         })
         .unwrap()
     });
@@ -202,7 +198,6 @@ fn sight_modifiers_follow_target_light_for_sight_and_threats() {
     });
     let mut state = corridor(0, false);
     for group in &mut state.vision_groups {
-        group.sight.range = 0;
         group.sight.unlimited = false;
     }
     state.lighting.time = TimeOfDay::Night;
@@ -246,13 +241,10 @@ fn sight_modifiers_follow_target_light_for_sight_and_threats() {
 
     // A positive modifier can extend sight beyond the base cap.
     fixture::unit(&mut bundle, "archer", |unit| {
-        unit["sight"]["range"] = json!(3)
-    });
-    fixture::unit(&mut bundle, "archer", |unit| {
         unit["sight"]["sightModifiers"] = serde_json::to_value(SightModifiers {
-            lit: 3,
-            unlit: 0,
-            darkness: 0,
+            lit: 6,
+            unlit: 3,
+            darkness: 3,
         })
         .unwrap()
     });
@@ -288,16 +280,13 @@ fn sight_modifiers_follow_target_light_for_sight_and_threats() {
 
     // Daylight illuminates outdoor targets, while underground cells are unlit.
     fixture::unit(&mut bundle, "archer", |unit| {
-        unit["sight"]["range"] = json!(7)
-    });
-    fixture::unit(&mut bundle, "archer", |unit| {
         unit["sight"]["unlimited"] = json!(false)
     });
     fixture::unit(&mut bundle, "archer", |unit| {
         unit["sight"]["sightModifiers"] = serde_json::to_value(SightModifiers {
-            lit: 0,
-            unlit: -3,
-            darkness: 0,
+            lit: 7,
+            unlit: 4,
+            darkness: 7,
         })
         .unwrap()
     });
@@ -319,22 +308,18 @@ fn sight_modifiers_follow_target_light_for_sight_and_threats() {
 fn authored_darkness_is_distinct_from_night_and_darkcloaks_hide_only_in_darkness() {
     let mut bundle = fixture::deterministic();
     fixture::unit(&mut bundle, "archer", |unit| {
-        unit["sight"]["range"] = json!(7)
-    });
-    fixture::unit(&mut bundle, "archer", |unit| {
         unit["sight"]["unlimited"] = json!(false)
     });
     fixture::unit(&mut bundle, "archer", |unit| {
         unit["sight"]["sightModifiers"] = serde_json::to_value(SightModifiers {
-            lit: 0,
-            unlit: 0,
-            darkness: -3,
+            lit: 7,
+            unlit: 7,
+            darkness: 4,
         })
         .unwrap()
     });
     let mut state = corridor(0, false);
     for group in &mut state.vision_groups {
-        group.sight.range = 0;
         group.sight.unlimited = false;
     }
     state.lighting.time = TimeOfDay::Night;
@@ -357,7 +342,7 @@ fn authored_darkness_is_distinct_from_night_and_darkcloaks_hide_only_in_darkness
     assert!(game.tile_in_sight_to("alpha", 6));
     assert!(!game.tile_in_sight_to("alpha", 5));
     fixture::unit(&mut bundle, "archer", |unit| {
-        unit["sight"]["sightModifiers"] = json!({"lit":0,"unlit":0,"darkness":0})
+        unit["sight"]["sightModifiers"] = json!({"lit":7,"unlit":7,"darkness":7})
     });
     state.units[1].perception_effects.push(
         serde_json::from_value(serde_json::json!({
@@ -450,7 +435,7 @@ fn enemy_sight_estimates_do_not_read_private_exploration() {
 fn sight_contributions_stack_from_weather_equipment_and_scoped_sources() {
     let mut bundle = fixture::deterministic();
     fixture::unit(&mut bundle, "archer", |unit| {
-        unit["sight"]["range"] = json!(2);
+        unit["sight"]["sightModifiers"] = json!({"lit":2,"unlit":2,"darkness":2});
         unit["sight"]["unlimited"] = json!(false);
     });
     fixture::effects(&mut bundle, "archer", |effects| {
@@ -458,8 +443,8 @@ fn sight_contributions_stack_from_weather_equipment_and_scoped_sources() {
             serde_json::from_value(json!({
                 "scope":{"radius":1,"includeSelf":false,"targets":"allies"},
                 "stacking":{"group":"sight","combine":"add"},
-                "effect":{"kind":"sight","range":1,"unlimited":false,
-                    "sightModifiers":{"lit":0,"unlit":3,"darkness":3},"penetrates":["darkness"]}
+                "effect":{"kind":"sight","unlimited":false,
+                    "sightModifiers":{"lit":1,"unlit":4,"darkness":4},"penetrates":["darkness"]}
             }))
             .unwrap(),
         ]
@@ -469,16 +454,19 @@ fn sight_contributions_stack_from_weather_equipment_and_scoped_sources() {
         "test-sight",
         json!({
             "id":"test-sight","name":"Sight","description":"Numeric sight contribution",
-            "sight":{"range":2,"unlimited":false,"sightModifiers":{"lit":0,"unlit":1,"darkness":1},"penetrates":[]},
+            "sight":{"unlimited":false,"sightModifiers":{"lit":2,"unlit":3,"darkness":3},"penetrates":[]},
             "abilities":[],"attacks":[],"armor":null
         }),
     );
     let mut state = corridor(0, false);
     for group in &mut state.vision_groups {
-        group.sight.range = 0;
         group.sight.unlimited = false;
     }
-    state.map_modifiers.sight.range = 1;
+    state.map_modifiers.sight.sight_modifiers = SightModifiers {
+        lit: 1,
+        unlit: 1,
+        darkness: 1,
+    };
     let mut ally = state.units[0].clone();
     ally.id = "u3".into();
     ally.tile = Hex::new(1, 0);

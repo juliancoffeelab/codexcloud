@@ -4,8 +4,8 @@ import argparse, json, shutil
 from pathlib import Path
 from .workloads import FACTIONS
 
-MAPS = ("open", "river-valley", "villages", "sluice")
-AUTHORED = {"villages", "sluice"}
+MAPS = ("open", "river-valley", "toll-road", "a-tide-for-both")
+AUTHORED = {"toll-road", "a-tide-for-both"}
 
 
 def prepare_catalog(source, destination):
@@ -22,9 +22,9 @@ def workload(start, seeds, all_pairs=False, rounds=30, opponent="classic"):
             for recruiter in ("situational", "predictor"):
                 pairs = (
                     [("human", "skeletons")]
-                    if name == "villages"
+                    if name == "toll-road"
                     else [("coastal", "human")]
-                    if name == "sluice"
+                    if name == "a-tide-for-both"
                     else [
                         (f, e)
                         for i, f in enumerate(FACTIONS)

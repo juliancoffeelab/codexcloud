@@ -1,0 +1,230 @@
+{
+  "binary": "/workspace/codexcloud/hex-command/rust/target/simulation/commander-trace-probe",
+  "binarySha256": "a577c0eeb127d6803157eda970b014e4e0218c66324452fbfeea7b2810c19a9a",
+  "inputs": {
+    "references": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/confirmation-trace-references-jobs.json",
+    "hour8": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/confirmation-trace-hour8-jobs.json",
+    "hour10": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/confirmation-trace-hour10-jobs.json"
+  },
+  "raw": {
+    "references": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/confirmation-trace-references.jsonl.gz",
+      "sha256": "6ddee42c5401219dcbb24b3ee629b125ca812898c38d62c9333831276f440d02"
+    },
+    "hour8": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/confirmation-trace-hour8.jsonl.gz",
+      "sha256": "2c9c99e299ca63ac4ee84e85cd78c9409d2f707477459ce82e924aad6f80ef2f"
+    },
+    "hour10": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/confirmation-trace-hour10.jsonl.gz",
+      "sha256": "8088935d954d93931573279c0cd74617fc572473c34ff37dfe68823ee57042e1"
+    }
+  },
+  "exactTerminalReplayCount": 200,
+  "catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/frozen-catalog",
+  "catalogSha256": "4c68377befe17f35985dde95c114f691d24b1f6fc550a5cf55be4c7315607552",
+  "objectiveTrajectories": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/confirmation-objective-trajectories.jsonl",
+  "objectiveTrajectoriesSha256": "bf03f6af09a521c21b372282268197ab283d2213e38bf8e643d7ed91aab8001a",
+  "aggregate": [
+    {
+      "variant": "breach-two-fronts",
+      "enemy": "classic",
+      "policy": "classic",
+      "replays": 20,
+      "terminalGoals": {
+        "7/10 + 0/1": 10,
+        "10/10 + 1/1": 10
+      },
+      "villageLostMatches": 0,
+      "matchesWithVillageDamage": 10,
+      "matchesWithLiveAttacksAtBothFronts": 0,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 10,
+      "successfulFirstCaptureRounds": {
+        "4": 4,
+        "5": 6
+      },
+      "lossesWithoutFort": 10
+    },
+    {
+      "variant": "breach-two-fronts",
+      "enemy": "classic",
+      "policy": "full",
+      "replays": 20,
+      "terminalGoals": {
+        "7/10 + 0/1": 8,
+        "10/10 + 1/1": 12
+      },
+      "villageLostMatches": 0,
+      "matchesWithVillageDamage": 15,
+      "matchesWithLiveAttacksAtBothFronts": 0,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 12,
+      "successfulFirstCaptureRounds": {
+        "4": 6,
+        "5": 5,
+        "7": 1
+      },
+      "lossesWithoutFort": 8
+    },
+    {
+      "variant": "breach-two-fronts",
+      "enemy": "classic",
+      "policy": "hour10",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 17,
+        "7/10 + 0/1": 3
+      },
+      "villageLostMatches": 0,
+      "matchesWithVillageDamage": 16,
+      "matchesWithLiveAttacksAtBothFronts": 0,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 17,
+      "successfulFirstCaptureRounds": {
+        "6": 6,
+        "5": 3,
+        "4": 6,
+        "7": 2
+      },
+      "lossesWithoutFort": 3
+    },
+    {
+      "variant": "breach-two-fronts",
+      "enemy": "classic",
+      "policy": "hour8",
+      "replays": 20,
+      "terminalGoals": {
+        "10/10 + 1/1": 14,
+        "7/10 + 0/1": 6
+      },
+      "villageLostMatches": 0,
+      "matchesWithVillageDamage": 20,
+      "matchesWithLiveAttacksAtBothFronts": 0,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 14,
+      "successfulFirstCaptureRounds": {
+        "7": 10,
+        "6": 4
+      },
+      "lossesWithoutFort": 6
+    },
+    {
+      "variant": "breach-two-fronts",
+      "enemy": "classic",
+      "policy": "queued",
+      "replays": 20,
+      "terminalGoals": {
+        "7/10 + 0/1": 8,
+        "10/10 + 1/1": 12
+      },
+      "villageLostMatches": 0,
+      "matchesWithVillageDamage": 6,
+      "matchesWithLiveAttacksAtBothFronts": 0,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 12,
+      "successfulFirstCaptureRounds": {
+        "5": 8,
+        "7": 2,
+        "4": 2
+      },
+      "lossesWithoutFort": 8
+    },
+    {
+      "variant": "breach-west-swift",
+      "enemy": "classic",
+      "policy": "classic",
+      "replays": 20,
+      "terminalGoals": {
+        "5/10 + 0/1": 10,
+        "10/10 + 1/1": 10
+      },
+      "villageLostMatches": 0,
+      "matchesWithVillageDamage": 10,
+      "matchesWithLiveAttacksAtBothFronts": 0,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 10,
+      "successfulFirstCaptureRounds": {
+        "4": 4,
+        "5": 6
+      },
+      "lossesWithoutFort": 10
+    },
+    {
+      "variant": "breach-west-swift",
+      "enemy": "classic",
+      "policy": "full",
+      "replays": 20,
+      "terminalGoals": {
+        "5/10 + 0/1": 9,
+        "10/10 + 1/1": 11
+      },
+      "villageLostMatches": 0,
+      "matchesWithVillageDamage": 14,
+      "matchesWithLiveAttacksAtBothFronts": 0,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 11,
+      "successfulFirstCaptureRounds": {
+        "4": 6,
+        "5": 5
+      },
+      "lossesWithoutFort": 9
+    },
+    {
+      "variant": "breach-west-swift",
+      "enemy": "classic",
+      "policy": "hour10",
+      "replays": 20,
+      "terminalGoals": {
+        "5/10 + 0/1": 11,
+        "10/10 + 1/1": 9
+      },
+      "villageLostMatches": 0,
+      "matchesWithVillageDamage": 13,
+      "matchesWithLiveAttacksAtBothFronts": 0,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 9,
+      "successfulFirstCaptureRounds": {
+        "5": 3,
+        "4": 6
+      },
+      "lossesWithoutFort": 11
+    },
+    {
+      "variant": "breach-west-swift",
+      "enemy": "classic",
+      "policy": "hour8",
+      "replays": 20,
+      "terminalGoals": {
+        "5/10 + 0/1": 20
+      },
+      "villageLostMatches": 0,
+      "matchesWithVillageDamage": 18,
+      "matchesWithLiveAttacksAtBothFronts": 0,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 0,
+      "successfulFirstCaptureRounds": {},
+      "lossesWithoutFort": 20
+    },
+    {
+      "variant": "breach-west-swift",
+      "enemy": "classic",
+      "policy": "queued",
+      "replays": 20,
+      "terminalGoals": {
+        "5/10 + 0/1": 10,
+        "10/10 + 1/1": 10
+      },
+      "villageLostMatches": 0,
+      "matchesWithVillageDamage": 8,
+      "matchesWithLiveAttacksAtBothFronts": 0,
+      "winsWithVillageRotation": 0,
+      "winsWithSplitAtCapture": 10,
+      "successfulFirstCaptureRounds": {
+        "5": 8,
+        "4": 2
+      },
+      "lossesWithoutFort": 10
+    }
+  ]
+}

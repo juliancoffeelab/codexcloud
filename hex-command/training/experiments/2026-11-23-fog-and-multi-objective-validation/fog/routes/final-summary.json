@@ -1,0 +1,1209 @@
+{
+  "opponent": "Classic",
+  "recruitsPerPhase": 0,
+  "roundCap": 100,
+  "goal": "Bring named captain to (16,4) alive by the end of turn 7. Authored defeat on turn 8.",
+  "scope": {
+    "clear": {
+      "catalog": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog",
+      "compiledFingerprints": {
+        "content": "498080d951d65ae6f9f0c3ffe2ae299ca33510e1fc4321bcf069e6cd404f2928",
+        "engine": "8cf0581157741df24b8e5e5c57ab6b8d0b1caae00e3def9b5d4866ee71eb1859"
+      },
+      "exactFileDigests": {
+        "manifest.json": "c28f137595dd7e2461df4ed2885c796d60285916e9d54e36864568838f712085",
+        "simulation/campaign.json": "613ef949997b6c34a1c700d7a08d3259a1c1fc80788ad1db2fe9b7208f80eb67",
+        "game/campaigns/rl-scree-relay-v8-switch/map.json": "57ab538173d28db13269086b20caab634ea3f48f0dddfefe200b1d211d28fd50",
+        "game/campaigns/rl-scree-relay-v8-switch/roster.json": "e0c03b5516ce0155c5cbbc415ba1d9e265fd35c2f5feb7039054ef2726df29ba",
+        "game/campaigns/rl-scree-relay-v8-switch/scripts.json": "0c40b4a19377ad8cfff91f5ef05af939f052c22d8f5e7c210405584f1c38abeb",
+        "game/campaigns/rl-scree-relay-v8-switch/stage.json": "3bfbf11e17317c2183eda14712d3b324a1ad346e1ed8290706a6ff9356943c3f",
+        "game/campaigns/rl-scree-relay-v8-switch/story.json": "05e35c25132f16306367eebc511a8cea5ce2cb38c8d96416f489eeb9ebbf58af",
+        "game/campaigns/rl-scree-relay-v8-switch/campaign.json": "e4f6f430b016c2b28cfc187bc09a1856330d086980c7e03833ef0dd6f89546b1",
+        "game/campaigns/rl-scree-relay-v8-stay/map.json": "5eaed4190c9212aab8ccf9fad959df943ed2040a086904136d92d774d019e8e6",
+        "game/campaigns/rl-scree-relay-v8-stay/roster.json": "9920b86e5982c433f16fda98e351761bdb89eea00eb537a63f9068a51b9edc46",
+        "game/campaigns/rl-scree-relay-v8-stay/scripts.json": "0c40b4a19377ad8cfff91f5ef05af939f052c22d8f5e7c210405584f1c38abeb",
+        "game/campaigns/rl-scree-relay-v8-stay/stage.json": "4a01f8f5a7b0b927f0cb6cef736855b989abe24a7be6b39f15406dcd3cec6e2a",
+        "game/campaigns/rl-scree-relay-v8-stay/story.json": "ed7f259329dc04abb4afc0ce2969315bc5dcb62d7d033575459145fcd4f79320",
+        "game/campaigns/rl-scree-relay-v8-stay/campaign.json": "b6d6d95108a39b356f1f24da861f1bd327f1caca75634ac5ecc8d0bbdd394a9f"
+      },
+      "objectiveRoute": "authored",
+      "fixtures": {
+        "rl-scree-relay-v8-switch": {
+          "qualification": "validated training candidate",
+          "routeEvent": null,
+          "firstAppliedPlayerPhase": {
+            "factionVisionGroup": {
+              "player": "player",
+              "enemy": "enemy"
+            },
+            "sight": {
+              "player": {
+                "penetrates": [
+                  "fog"
+                ],
+                "range": 0,
+                "sightModifiers": {
+                  "darkness": 0,
+                  "lit": 0,
+                  "unlit": 0
+                },
+                "unlimited": true
+              },
+              "enemy": {
+                "penetrates": [
+                  "fog"
+                ],
+                "range": 0,
+                "sightModifiers": {
+                  "darkness": 0,
+                  "lit": 0,
+                  "unlit": 0
+                },
+                "unlimited": true
+              }
+            },
+            "totalTiles": 198,
+            "fogTileCount": 0,
+            "overlay": null,
+            "stateTurn": "player",
+            "stateRound": 1
+          },
+          "verifiedReplays": 12,
+          "captainRouteSamples": {
+            "hour8": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "hour10": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "full": {
+              "sampled": 3,
+              "captainBypass": 3
+            },
+            "classic": {
+              "sampled": 3,
+              "captainBypass": 3
+            }
+          },
+          "initialReferenceObservations": {
+            "player": {
+              "visibleTiles": 198,
+              "visibleHostile": [
+                [
+                  10,
+                  4
+                ]
+              ]
+            },
+            "enemy": {
+              "visibleTiles": 198,
+              "visibleHostile": [
+                [
+                  6,
+                  6
+                ],
+                [
+                  9,
+                  4
+                ]
+              ]
+            }
+          },
+          "returnedFogSeenBy": {
+            "player": false,
+            "enemy": false
+          },
+          "files": {
+            "map": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-switch/map.json",
+            "roster": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-switch/roster.json",
+            "scripts": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-switch/scripts.json",
+            "campaign": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-switch/campaign.json",
+            "stage": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-switch/stage.json",
+            "story": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-switch/story.json"
+          }
+        },
+        "rl-scree-relay-v8-stay": {
+          "qualification": "evaluation control",
+          "routeEvent": null,
+          "firstAppliedPlayerPhase": {
+            "factionVisionGroup": {
+              "player": "player",
+              "enemy": "enemy"
+            },
+            "sight": {
+              "player": {
+                "penetrates": [
+                  "fog"
+                ],
+                "range": 0,
+                "sightModifiers": {
+                  "darkness": 0,
+                  "lit": 0,
+                  "unlit": 0
+                },
+                "unlimited": true
+              },
+              "enemy": {
+                "penetrates": [
+                  "fog"
+                ],
+                "range": 0,
+                "sightModifiers": {
+                  "darkness": 0,
+                  "lit": 0,
+                  "unlit": 0
+                },
+                "unlimited": true
+              }
+            },
+            "totalTiles": 198,
+            "fogTileCount": 0,
+            "overlay": null,
+            "stateTurn": "player",
+            "stateRound": 1
+          },
+          "verifiedReplays": 12,
+          "captainRouteSamples": {
+            "hour8": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "hour10": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "full": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "classic": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            }
+          },
+          "initialReferenceObservations": {
+            "player": {
+              "visibleTiles": 198,
+              "visibleHostile": [
+                [
+                  10,
+                  7
+                ]
+              ]
+            },
+            "enemy": {
+              "visibleTiles": 198,
+              "visibleHostile": [
+                [
+                  7,
+                  4
+                ],
+                [
+                  8,
+                  3
+                ]
+              ]
+            }
+          },
+          "returnedFogSeenBy": {
+            "player": false,
+            "enemy": false
+          },
+          "files": {
+            "map": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-stay/map.json",
+            "roster": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-stay/roster.json",
+            "scripts": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-stay/scripts.json",
+            "campaign": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-stay/campaign.json",
+            "stage": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-stay/stage.json",
+            "story": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog/game/campaigns/rl-scree-relay-v8-stay/story.json"
+          }
+        }
+      },
+      "discovery": null,
+      "confirmation": {
+        "protocol": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/clear/confirmation/protocol.json",
+        "seeds": [
+          56181201,
+          56181220
+        ],
+        "raw": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/clear/confirmation/results.jsonl",
+        "count": 160,
+        "byFixture": {
+          "rl-scree-relay-v8-switch": {
+            "hour8": {
+              "successes": 0,
+              "defeats": 20,
+              "caps": 0,
+              "outcomes": {
+                "Deadline expired.": 20
+              }
+            },
+            "hour10": {
+              "successes": 0,
+              "defeats": 20,
+              "caps": 0,
+              "outcomes": {
+                "Deadline expired.": 20
+              }
+            },
+            "full": {
+              "successes": 20,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 20
+              }
+            },
+            "classic": {
+              "successes": 20,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 20
+              }
+            }
+          },
+          "rl-scree-relay-v8-stay": {
+            "hour8": {
+              "successes": 0,
+              "defeats": 20,
+              "caps": 0,
+              "outcomes": {
+                "Deadline expired.": 20
+              }
+            },
+            "hour10": {
+              "successes": 20,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 20
+              }
+            },
+            "full": {
+              "successes": 20,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 20
+              }
+            },
+            "classic": {
+              "successes": 20,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 20
+              }
+            }
+          }
+        }
+      },
+      "scopeEvidence": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/clear/confirmation/evidence/fog-scope-audit.json",
+      "observedByFaction": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/clear/confirmation/evidence/native-visible-information.json",
+      "rawTraceDirectory": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/clear/confirmation/evidence"
+    },
+    "player-fog": {
+      "catalog": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/catalog",
+      "compiledFingerprints": {
+        "content": "fd8f181d857b1cc13ef76bb6013eb8dd877c48d2967b4f698b98d90f65d302a7",
+        "engine": "8cf0581157741df24b8e5e5c57ab6b8d0b1caae00e3def9b5d4866ee71eb1859"
+      },
+      "exactFileDigests": {
+        "manifest.json": "c28f137595dd7e2461df4ed2885c796d60285916e9d54e36864568838f712085",
+        "simulation/campaign.json": "04a0433333de6fafc51e1e7ad373023279f22ceff00973ae9d79234abbe19297",
+        "game/campaigns/rl-scree-relay-v8-switch/map.json": "57ab538173d28db13269086b20caab634ea3f48f0dddfefe200b1d211d28fd50",
+        "game/campaigns/rl-scree-relay-v8-switch/roster.json": "7eaf9ceb97c2c9bf404d23001661ec33c5ef4b8220a45ddf77ebfe5205d02dca",
+        "game/campaigns/rl-scree-relay-v8-switch/scripts.json": "0c40b4a19377ad8cfff91f5ef05af939f052c22d8f5e7c210405584f1c38abeb",
+        "game/campaigns/rl-scree-relay-v8-switch/stage.json": "3bfbf11e17317c2183eda14712d3b324a1ad346e1ed8290706a6ff9356943c3f",
+        "game/campaigns/rl-scree-relay-v8-switch/story.json": "05e35c25132f16306367eebc511a8cea5ce2cb38c8d96416f489eeb9ebbf58af",
+        "game/campaigns/rl-scree-relay-v8-switch/campaign.json": "e4f6f430b016c2b28cfc187bc09a1856330d086980c7e03833ef0dd6f89546b1",
+        "game/campaigns/rl-scree-relay-v8-stay/map.json": "5eaed4190c9212aab8ccf9fad959df943ed2040a086904136d92d774d019e8e6",
+        "game/campaigns/rl-scree-relay-v8-stay/roster.json": "7eea89c07e84372b1fe8a2c88e0485908a1736470b276d6c628d13814422b372",
+        "game/campaigns/rl-scree-relay-v8-stay/scripts.json": "0c40b4a19377ad8cfff91f5ef05af939f052c22d8f5e7c210405584f1c38abeb",
+        "game/campaigns/rl-scree-relay-v8-stay/stage.json": "4a01f8f5a7b0b927f0cb6cef736855b989abe24a7be6b39f15406dcd3cec6e2a",
+        "game/campaigns/rl-scree-relay-v8-stay/story.json": "ed7f259329dc04abb4afc0ce2969315bc5dcb62d7d033575459145fcd4f79320",
+        "game/campaigns/rl-scree-relay-v8-stay/campaign.json": "b6d6d95108a39b356f1f24da861f1bd327f1caca75634ac5ecc8d0bbdd394a9f"
+      },
+      "objectiveRoute": "player-fog",
+      "fixtures": {
+        "rl-scree-relay-v8-switch": {
+          "qualification": "validated training candidate",
+          "routeEvent": {
+            "id": "battlefield-fog",
+            "when": {
+              "chapterStarted": true
+            },
+            "actions": [
+              {
+                "addConcealment": {
+                  "area": "map",
+                  "kind": "fog",
+                  "revealWithin": 3,
+                  "requires": {
+                    "terrains": null,
+                    "illumination": null
+                  }
+                }
+              }
+            ],
+            "observer": null,
+            "remembers": true,
+            "priority": 100,
+            "objective": null
+          },
+          "firstAppliedPlayerPhase": {
+            "factionVisionGroup": {
+              "player": "player",
+              "enemy": "enemy"
+            },
+            "sight": {
+              "player": {
+                "penetrates": [],
+                "range": 0,
+                "sightModifiers": {
+                  "darkness": 0,
+                  "lit": 0,
+                  "unlit": 0
+                },
+                "unlimited": true
+              },
+              "enemy": {
+                "penetrates": [
+                  "fog"
+                ],
+                "range": 0,
+                "sightModifiers": {
+                  "darkness": 0,
+                  "lit": 0,
+                  "unlit": 0
+                },
+                "unlimited": true
+              }
+            },
+            "totalTiles": 198,
+            "fogTileCount": 198,
+            "overlay": {
+              "kind": "fog",
+              "requires": {
+                "illumination": null,
+                "terrains": null
+              },
+              "revealWithin": 3
+            },
+            "stateTurn": "player",
+            "stateRound": 1
+          },
+          "verifiedReplays": 12,
+          "captainRouteSamples": {
+            "hour8": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "hour10": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "full": {
+              "sampled": 3,
+              "captainBypass": 3
+            },
+            "classic": {
+              "sampled": 3,
+              "captainBypass": 3
+            }
+          },
+          "initialReferenceObservations": {
+            "player": {
+              "visibleTiles": 65,
+              "visibleHostile": [
+                [
+                  10,
+                  4
+                ]
+              ]
+            },
+            "enemy": {
+              "visibleTiles": 198,
+              "visibleHostile": [
+                [
+                  6,
+                  6
+                ],
+                [
+                  9,
+                  4
+                ]
+              ]
+            }
+          },
+          "returnedFogSeenBy": {
+            "player": true,
+            "enemy": false
+          },
+          "files": {
+            "map": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/catalog/game/campaigns/rl-scree-relay-v8-switch/map.json",
+            "roster": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/catalog/game/campaigns/rl-scree-relay-v8-switch/roster.json",
+            "scripts": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/catalog/game/campaigns/rl-scree-relay-v8-switch/scripts.json",
+            "campaign": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/catalog/game/campaigns/rl-scree-relay-v8-switch/campaign.json",
+            "stage": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/catalog/game/campaigns/rl-scree-relay-v8-switch/stage.json",
+            "story": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/catalog/game/campaigns/rl-scree-relay-v8-switch/story.json"
+          }
+        },
+        "rl-scree-relay-v8-stay": {
+          "qualification": "evaluation control",
+          "routeEvent": {
+            "id": "battlefield-fog",
+            "when": {
+              "chapterStarted": true
+            },
+            "actions": [
+              {
+                "addConcealment": {
+                  "area": "map",
+                  "kind": "fog",
+                  "revealWithin": 3,
+                  "requires": {
+                    "terrains": null,
+                    "illumination": null
+                  }
+                }
+              }
+            ],
+            "observer": null,
+            "remembers": true,
+            "priority": 100,
+            "objective": null
+          },
+          "firstAppliedPlayerPhase": {
+            "factionVisionGroup": {
+              "player": "player",
+              "enemy": "enemy"
+            },
+            "sight": {
+              "player": {
+                "penetrates": [],
+                "range": 0,
+                "sightModifiers": {
+                  "darkness": 0,
+                  "lit": 0,
+                  "unlit": 0
+                },
+                "unlimited": true
+              },
+              "enemy": {
+                "penetrates": [
+                  "fog"
+                ],
+                "range": 0,
+                "sightModifiers": {
+                  "darkness": 0,
+                  "lit": 0,
+                  "unlit": 0
+                },
+                "unlimited": true
+              }
+            },
+            "totalTiles": 198,
+            "fogTileCount": 198,
+            "overlay": {
+              "kind": "fog",
+              "requires": {
+                "illumination": null,
+                "terrains": null
+              },
+              "revealWithin": 3
+            },
+            "stateTurn": "player",
+            "stateRound": 1
+          },
+          "verifiedReplays": 12,
+          "captainRouteSamples": {
+            "hour8": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "hour10": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "full": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "classic": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            }
+          },
+          "initialReferenceObservations": {
+            "player": {
+              "visibleTiles": 65,
+              "visibleHostile": []
+            },
+            "enemy": {
+              "visibleTiles": 198,
+              "visibleHostile": [
+                [
+                  7,
+                  4
+                ],
+                [
+                  8,
+                  3
+                ]
+              ]
+            }
+          },
+          "returnedFogSeenBy": {
+            "player": true,
+            "enemy": false
+          },
+          "files": {
+            "map": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/catalog/game/campaigns/rl-scree-relay-v8-stay/map.json",
+            "roster": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/catalog/game/campaigns/rl-scree-relay-v8-stay/roster.json",
+            "scripts": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/catalog/game/campaigns/rl-scree-relay-v8-stay/scripts.json",
+            "campaign": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/catalog/game/campaigns/rl-scree-relay-v8-stay/campaign.json",
+            "stage": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/catalog/game/campaigns/rl-scree-relay-v8-stay/stage.json",
+            "story": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/catalog/game/campaigns/rl-scree-relay-v8-stay/story.json"
+          }
+        }
+      },
+      "discovery": {
+        "protocol": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/discovery/protocol.json",
+        "seeds": [
+          56181101,
+          56181108
+        ],
+        "raw": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/discovery/results.jsonl",
+        "count": 80,
+        "byFixture": {
+          "rl-scree-relay-v8-switch": {
+            "hour8": {
+              "successes": 0,
+              "defeats": 8,
+              "caps": 0,
+              "outcomes": {
+                "Deadline expired.": 8
+              }
+            },
+            "hour10": {
+              "successes": 0,
+              "defeats": 8,
+              "caps": 0,
+              "outcomes": {
+                "Deadline expired.": 8
+              }
+            },
+            "full": {
+              "successes": 8,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 8
+              }
+            },
+            "queued": {
+              "successes": 1,
+              "defeats": 7,
+              "caps": 0,
+              "outcomes": {
+                "Deadline expired.": 7,
+                "The route is open.": 1
+              }
+            },
+            "classic": {
+              "successes": 8,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 8
+              }
+            }
+          },
+          "rl-scree-relay-v8-stay": {
+            "hour8": {
+              "successes": 8,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 8
+              }
+            },
+            "hour10": {
+              "successes": 8,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 8
+              }
+            },
+            "full": {
+              "successes": 8,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 8
+              }
+            },
+            "queued": {
+              "successes": 8,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 8
+              }
+            },
+            "classic": {
+              "successes": 8,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 8
+              }
+            }
+          }
+        }
+      },
+      "confirmation": {
+        "protocol": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/confirmation/protocol.json",
+        "seeds": [
+          56181201,
+          56181220
+        ],
+        "raw": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/confirmation/results.jsonl",
+        "count": 160,
+        "byFixture": {
+          "rl-scree-relay-v8-switch": {
+            "hour8": {
+              "successes": 0,
+              "defeats": 20,
+              "caps": 0,
+              "outcomes": {
+                "Deadline expired.": 20
+              }
+            },
+            "hour10": {
+              "successes": 0,
+              "defeats": 20,
+              "caps": 0,
+              "outcomes": {
+                "Deadline expired.": 19,
+                "Commander lost.": 1
+              }
+            },
+            "full": {
+              "successes": 20,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 20
+              }
+            },
+            "classic": {
+              "successes": 20,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 20
+              }
+            }
+          },
+          "rl-scree-relay-v8-stay": {
+            "hour8": {
+              "successes": 20,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 20
+              }
+            },
+            "hour10": {
+              "successes": 20,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 20
+              }
+            },
+            "full": {
+              "successes": 20,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 20
+              }
+            },
+            "classic": {
+              "successes": 20,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 20
+              }
+            }
+          }
+        }
+      },
+      "scopeEvidence": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/confirmation/evidence/fog-scope-audit.json",
+      "observedByFaction": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/confirmation/evidence/native-visible-information.json",
+      "rawTraceDirectory": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/player-fog/confirmation/evidence"
+    },
+    "both-fog": {
+      "catalog": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/catalog",
+      "compiledFingerprints": {
+        "content": "ea8ddb3db80f97450c25bfd8efa0e060c3a15c3ae751ac4bbd8f717f3e922874",
+        "engine": "8cf0581157741df24b8e5e5c57ab6b8d0b1caae00e3def9b5d4866ee71eb1859"
+      },
+      "exactFileDigests": {
+        "manifest.json": "c28f137595dd7e2461df4ed2885c796d60285916e9d54e36864568838f712085",
+        "simulation/campaign.json": "b4684a6ef027fafa6a563b79d65e44623632127cb9f6a3a3ba17d1f32e5773b6",
+        "game/campaigns/rl-scree-relay-v8-switch/map.json": "57ab538173d28db13269086b20caab634ea3f48f0dddfefe200b1d211d28fd50",
+        "game/campaigns/rl-scree-relay-v8-switch/roster.json": "35050f8d5ee6af70b3d1273adf66b4fb948ce4e711c6d2f6aa4e09903f5f5d56",
+        "game/campaigns/rl-scree-relay-v8-switch/scripts.json": "0c40b4a19377ad8cfff91f5ef05af939f052c22d8f5e7c210405584f1c38abeb",
+        "game/campaigns/rl-scree-relay-v8-switch/stage.json": "3bfbf11e17317c2183eda14712d3b324a1ad346e1ed8290706a6ff9356943c3f",
+        "game/campaigns/rl-scree-relay-v8-switch/story.json": "05e35c25132f16306367eebc511a8cea5ce2cb38c8d96416f489eeb9ebbf58af",
+        "game/campaigns/rl-scree-relay-v8-switch/campaign.json": "e4f6f430b016c2b28cfc187bc09a1856330d086980c7e03833ef0dd6f89546b1",
+        "game/campaigns/rl-scree-relay-v8-stay/map.json": "5eaed4190c9212aab8ccf9fad959df943ed2040a086904136d92d774d019e8e6",
+        "game/campaigns/rl-scree-relay-v8-stay/roster.json": "bd564dc7f1f69ecc2f2b30997efe41f19bc734050446702141b7f11fcffbaa22",
+        "game/campaigns/rl-scree-relay-v8-stay/scripts.json": "0c40b4a19377ad8cfff91f5ef05af939f052c22d8f5e7c210405584f1c38abeb",
+        "game/campaigns/rl-scree-relay-v8-stay/stage.json": "4a01f8f5a7b0b927f0cb6cef736855b989abe24a7be6b39f15406dcd3cec6e2a",
+        "game/campaigns/rl-scree-relay-v8-stay/story.json": "ed7f259329dc04abb4afc0ce2969315bc5dcb62d7d033575459145fcd4f79320",
+        "game/campaigns/rl-scree-relay-v8-stay/campaign.json": "b6d6d95108a39b356f1f24da861f1bd327f1caca75634ac5ecc8d0bbdd394a9f"
+      },
+      "objectiveRoute": "both-fog",
+      "fixtures": {
+        "rl-scree-relay-v8-switch": {
+          "qualification": "validated training candidate",
+          "routeEvent": {
+            "id": "battlefield-fog",
+            "when": {
+              "chapterStarted": true
+            },
+            "actions": [
+              {
+                "addConcealment": {
+                  "area": "map",
+                  "kind": "fog",
+                  "revealWithin": 3,
+                  "requires": {
+                    "terrains": null,
+                    "illumination": null
+                  }
+                }
+              }
+            ],
+            "observer": null,
+            "remembers": true,
+            "priority": 100,
+            "objective": null
+          },
+          "firstAppliedPlayerPhase": {
+            "factionVisionGroup": {
+              "player": "player",
+              "enemy": "enemy"
+            },
+            "sight": {
+              "player": {
+                "penetrates": [],
+                "range": 0,
+                "sightModifiers": {
+                  "darkness": 0,
+                  "lit": 0,
+                  "unlit": 0
+                },
+                "unlimited": true
+              },
+              "enemy": {
+                "penetrates": [],
+                "range": 0,
+                "sightModifiers": {
+                  "darkness": 0,
+                  "lit": 0,
+                  "unlit": 0
+                },
+                "unlimited": true
+              }
+            },
+            "totalTiles": 198,
+            "fogTileCount": 198,
+            "overlay": {
+              "kind": "fog",
+              "requires": {
+                "illumination": null,
+                "terrains": null
+              },
+              "revealWithin": 3
+            },
+            "stateTurn": "player",
+            "stateRound": 1
+          },
+          "verifiedReplays": 12,
+          "captainRouteSamples": {
+            "hour8": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "hour10": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "full": {
+              "sampled": 3,
+              "captainBypass": 3
+            },
+            "classic": {
+              "sampled": 3,
+              "captainBypass": 3
+            }
+          },
+          "initialReferenceObservations": {
+            "player": {
+              "visibleTiles": 65,
+              "visibleHostile": [
+                [
+                  10,
+                  4
+                ]
+              ]
+            },
+            "enemy": {
+              "visibleTiles": 37,
+              "visibleHostile": [
+                [
+                  9,
+                  4
+                ]
+              ]
+            }
+          },
+          "returnedFogSeenBy": {
+            "player": true,
+            "enemy": true
+          },
+          "files": {
+            "map": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/catalog/game/campaigns/rl-scree-relay-v8-switch/map.json",
+            "roster": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/catalog/game/campaigns/rl-scree-relay-v8-switch/roster.json",
+            "scripts": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/catalog/game/campaigns/rl-scree-relay-v8-switch/scripts.json",
+            "campaign": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/catalog/game/campaigns/rl-scree-relay-v8-switch/campaign.json",
+            "stage": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/catalog/game/campaigns/rl-scree-relay-v8-switch/stage.json",
+            "story": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/catalog/game/campaigns/rl-scree-relay-v8-switch/story.json"
+          }
+        },
+        "rl-scree-relay-v8-stay": {
+          "qualification": "evaluation control",
+          "routeEvent": {
+            "id": "battlefield-fog",
+            "when": {
+              "chapterStarted": true
+            },
+            "actions": [
+              {
+                "addConcealment": {
+                  "area": "map",
+                  "kind": "fog",
+                  "revealWithin": 3,
+                  "requires": {
+                    "terrains": null,
+                    "illumination": null
+                  }
+                }
+              }
+            ],
+            "observer": null,
+            "remembers": true,
+            "priority": 100,
+            "objective": null
+          },
+          "firstAppliedPlayerPhase": {
+            "factionVisionGroup": {
+              "player": "player",
+              "enemy": "enemy"
+            },
+            "sight": {
+              "player": {
+                "penetrates": [],
+                "range": 0,
+                "sightModifiers": {
+                  "darkness": 0,
+                  "lit": 0,
+                  "unlit": 0
+                },
+                "unlimited": true
+              },
+              "enemy": {
+                "penetrates": [],
+                "range": 0,
+                "sightModifiers": {
+                  "darkness": 0,
+                  "lit": 0,
+                  "unlit": 0
+                },
+                "unlimited": true
+              }
+            },
+            "totalTiles": 198,
+            "fogTileCount": 198,
+            "overlay": {
+              "kind": "fog",
+              "requires": {
+                "illumination": null,
+                "terrains": null
+              },
+              "revealWithin": 3
+            },
+            "stateTurn": "player",
+            "stateRound": 1
+          },
+          "verifiedReplays": 12,
+          "captainRouteSamples": {
+            "hour8": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "hour10": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "full": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            },
+            "classic": {
+              "sampled": 3,
+              "captainOffBypass": 3
+            }
+          },
+          "initialReferenceObservations": {
+            "player": {
+              "visibleTiles": 65,
+              "visibleHostile": []
+            },
+            "enemy": {
+              "visibleTiles": 37,
+              "visibleHostile": []
+            }
+          },
+          "returnedFogSeenBy": {
+            "player": true,
+            "enemy": true
+          },
+          "files": {
+            "map": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/catalog/game/campaigns/rl-scree-relay-v8-stay/map.json",
+            "roster": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/catalog/game/campaigns/rl-scree-relay-v8-stay/roster.json",
+            "scripts": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/catalog/game/campaigns/rl-scree-relay-v8-stay/scripts.json",
+            "campaign": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/catalog/game/campaigns/rl-scree-relay-v8-stay/campaign.json",
+            "stage": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/catalog/game/campaigns/rl-scree-relay-v8-stay/stage.json",
+            "story": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/catalog/game/campaigns/rl-scree-relay-v8-stay/story.json"
+          }
+        }
+      },
+      "discovery": {
+        "protocol": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/discovery/protocol.json",
+        "seeds": [
+          56181101,
+          56181108
+        ],
+        "raw": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/discovery/results.jsonl",
+        "count": 80,
+        "byFixture": {
+          "rl-scree-relay-v8-switch": {
+            "hour8": {
+              "successes": 0,
+              "defeats": 8,
+              "caps": 0,
+              "outcomes": {
+                "Deadline expired.": 8
+              }
+            },
+            "hour10": {
+              "successes": 0,
+              "defeats": 8,
+              "caps": 0,
+              "outcomes": {
+                "Deadline expired.": 8
+              }
+            },
+            "full": {
+              "successes": 8,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 8
+              }
+            },
+            "queued": {
+              "successes": 1,
+              "defeats": 7,
+              "caps": 0,
+              "outcomes": {
+                "Deadline expired.": 7,
+                "The route is open.": 1
+              }
+            },
+            "classic": {
+              "successes": 8,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 8
+              }
+            }
+          },
+          "rl-scree-relay-v8-stay": {
+            "hour8": {
+              "successes": 5,
+              "defeats": 3,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 5,
+                "Deadline expired.": 3
+              }
+            },
+            "hour10": {
+              "successes": 5,
+              "defeats": 3,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 5,
+                "Deadline expired.": 3
+              }
+            },
+            "full": {
+              "successes": 7,
+              "defeats": 1,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 7,
+                "Deadline expired.": 1
+              }
+            },
+            "queued": {
+              "successes": 8,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 8
+              }
+            },
+            "classic": {
+              "successes": 6,
+              "defeats": 2,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 6,
+                "Deadline expired.": 2
+              }
+            }
+          }
+        }
+      },
+      "confirmation": {
+        "protocol": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/confirmation/protocol.json",
+        "seeds": [
+          56181201,
+          56181220
+        ],
+        "raw": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/confirmation/results.jsonl",
+        "count": 160,
+        "byFixture": {
+          "rl-scree-relay-v8-switch": {
+            "hour8": {
+              "successes": 0,
+              "defeats": 20,
+              "caps": 0,
+              "outcomes": {
+                "Deadline expired.": 19,
+                "Commander lost.": 1
+              }
+            },
+            "hour10": {
+              "successes": 0,
+              "defeats": 20,
+              "caps": 0,
+              "outcomes": {
+                "Deadline expired.": 19,
+                "Commander lost.": 1
+              }
+            },
+            "full": {
+              "successes": 20,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 20
+              }
+            },
+            "classic": {
+              "successes": 20,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 20
+              }
+            }
+          },
+          "rl-scree-relay-v8-stay": {
+            "hour8": {
+              "successes": 14,
+              "defeats": 6,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 14,
+                "Deadline expired.": 6
+              }
+            },
+            "hour10": {
+              "successes": 14,
+              "defeats": 6,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 14,
+                "Deadline expired.": 6
+              }
+            },
+            "full": {
+              "successes": 20,
+              "defeats": 0,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 20
+              }
+            },
+            "classic": {
+              "successes": 19,
+              "defeats": 1,
+              "caps": 0,
+              "outcomes": {
+                "The route is open.": 19,
+                "Deadline expired.": 1
+              }
+            }
+          }
+        }
+      },
+      "scopeEvidence": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/confirmation/evidence/fog-scope-audit.json",
+      "observedByFaction": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/confirmation/evidence/native-visible-information.json",
+      "rawTraceDirectory": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/routes/both-fog/confirmation/evidence"
+    }
+  },
+  "counts": {
+    "clear": {
+      "discovery": 0,
+      "confirmation": 160
+    },
+    "player-fog": {
+      "discovery": 80,
+      "confirmation": 160
+    },
+    "both-fog": {
+      "discovery": 80,
+      "confirmation": 160
+    }
+  },
+  "builtFromClearCatalog": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/catalog",
+  "renderedMap": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/scree-relay.png",
+  "sourceComparison": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/routes/v8/confirmation/results.jsonl"
+}

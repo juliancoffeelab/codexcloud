@@ -1,0 +1,10 @@
+{
+  "fullVerifyExitCode": 0,
+  "trainingTests": 41,
+  "optionalDependencySkips": 1,
+  "failedTests": 0,
+  "requiredBooleanValidated": true,
+  "allPpoCasesAndWeightsPreserved": true,
+  "enabledCollectorDecisions": 19,
+  "noOptimizerLaunched": true
+}

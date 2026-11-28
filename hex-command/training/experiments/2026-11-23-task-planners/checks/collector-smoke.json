@@ -1,0 +1,97 @@
+{
+  "cases": [
+    {
+      "campaign": "rl-deadline-wait7",
+      "labels": 29,
+      "candidates": 3800,
+      "missing": 0,
+      "contexts": 29,
+      "teacher": {
+        "tactical": {
+          "goal": {
+            "col": 16,
+            "row": 4
+          },
+          "home": {
+            "col": 2,
+            "row": 7
+          },
+          "leader": 1,
+          "plan": {
+            "kind": "relief",
+            "staging": {
+              "col": 4,
+              "row": 7
+            },
+            "advanceRound": 4,
+            "riskCost": 0.15
+          }
+        }
+      }
+    },
+    {
+      "campaign": "rl-briar-saddle",
+      "labels": 14,
+      "candidates": 781,
+      "missing": 0,
+      "contexts": 14,
+      "teacher": {
+        "tactical": {
+          "goal": {
+            "col": 6,
+            "row": 3
+          },
+          "home": {
+            "col": 1,
+            "row": 2
+          },
+          "leader": 1,
+          "plan": {
+            "kind": "recovery",
+            "protected": 2,
+            "healer": 4,
+            "retreat": {
+              "col": 2,
+              "row": 4
+            },
+            "healerStaging": {
+              "col": 2,
+              "row": 3
+            },
+            "recoveryFraction": 0.85
+          }
+        }
+      }
+    },
+    {
+      "campaign": "rl-defend-lower-gallery-0",
+      "labels": 32,
+      "candidates": 2653,
+      "missing": 0,
+      "contexts": 32,
+      "teacher": {
+        "tactical": {
+          "goal": {
+            "col": 15,
+            "row": 25
+          },
+          "home": {
+            "col": 9,
+            "row": 5
+          },
+          "leader": 1,
+          "plan": {
+            "kind": "refuge",
+            "holder": 5,
+            "staging": {
+              "col": 7,
+              "row": 28
+            }
+          }
+        }
+      }
+    }
+  ],
+  "invalidParameterRejected": true,
+  "configurationPreserved": true
+}

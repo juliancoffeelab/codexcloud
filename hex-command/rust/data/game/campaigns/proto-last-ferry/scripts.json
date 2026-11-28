@@ -1,0 +1,497 @@
+{
+  "events": [
+    {
+      "id": "landing-held",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 12,
+              "row": 12
+            }
+          },
+          "faction": "player",
+          "turns": 10,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "landing-held"
+        },
+        {
+          "log": "The crossing is ready. Bring the company through."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Hold the landing for ten consecutive turns",
+        "optional": false,
+        "intent": {
+          "own": {
+            "tile": {
+              "hex": {
+                "col": 12,
+                "row": 12
+              }
+            },
+            "faction": "player",
+            "turns": 10,
+            "when": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "flag": "landing-held"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "north-convoy-safe",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 27,
+                  "row": 12
+                }
+              },
+              "through": false,
+              "character": "north-convoy",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "north-convoy-safe"
+        },
+        {
+          "deleteUnit": {
+            "character": "north-convoy",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        {
+          "log": "north-convoy reached the safe shore."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Escort north-convoy to the safe shore",
+        "optional": false,
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 27,
+                "row": 12
+              }
+            },
+            "through": false,
+            "character": "north-convoy",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "north-convoy-safe"
+        },
+        "preserveLives": {
+          "character": "north-convoy",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      },
+      "priority": 5,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "north-convoy-lost",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": "north-convoy",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          },
+          {
+            "not": {
+              "flag": "north-convoy-safe"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "A required evacuee was killed."
+        }
+      ],
+      "objective": null,
+      "priority": 100,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "rear-convoy-safe",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 27,
+                  "row": 12
+                }
+              },
+              "through": false,
+              "character": "rear-convoy",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rear-convoy-safe"
+        },
+        {
+          "deleteUnit": {
+            "character": "rear-convoy",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        {
+          "log": "rear-convoy reached the safe shore."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Escort rear-convoy to the safe shore",
+        "optional": false,
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 27,
+                "row": 12
+              }
+            },
+            "through": false,
+            "character": "rear-convoy",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rear-convoy-safe"
+        },
+        "preserveLives": {
+          "character": "rear-convoy",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      },
+      "priority": 5,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "rear-convoy-lost",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": "rear-convoy",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          },
+          {
+            "not": {
+              "flag": "rear-convoy-safe"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "A required evacuee was killed."
+        }
+      ],
+      "objective": null,
+      "priority": 100,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "escape",
+      "when": {
+        "all": [
+          {
+            "flag": "landing-held"
+          },
+          {
+            "flag": "north-convoy-safe"
+          },
+          {
+            "flag": "rear-convoy-safe"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 27,
+                  "row": 12
+                }
+              },
+              "through": false,
+              "character": "captain",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Both convoy groups and the commander reached the far shore."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Bring the commander across after the convoys",
+        "optional": false,
+        "intent": {
+          "escape": {
+            "tile": {
+              "hex": {
+                "col": 27,
+                "row": 12
+              }
+            },
+            "through": false,
+            "character": "captain",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "all": [
+            {
+              "flag": "landing-held"
+            },
+            {
+              "flag": "north-convoy-safe"
+            },
+            {
+              "flag": "rear-convoy-safe"
+            }
+          ]
+        },
+        "availableWhen": {
+          "all": [
+            {
+              "flag": "landing-held"
+            },
+            {
+              "flag": "north-convoy-safe"
+            },
+            {
+              "flag": "rear-convoy-safe"
+            }
+          ]
+        },
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "southern-patrol",
+      "when": {
+        "turn": 8
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 24,
+                "row": 19
+              }
+            },
+            "area": [],
+            "radius": 2,
+            "aiGroup": null,
+            "units": [
+              "fox-spearguard"
+            ]
+          }
+        },
+        {
+          "log": "A patrol is approaching the southern ford."
+        }
+      ],
+      "objective": null,
+      "priority": 0,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "commander-lost",
+      "when": {
+        "noUnits": {
+          "character": "captain",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The commander was lost."
+        }
+      ],
+      "objective": null,
+      "priority": 100,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turnAtLeast": 66
+      },
+      "actions": [
+        {
+          "defeat": "The evacuation window closed."
+        }
+      ],
+      "objective": null,
+      "priority": -100,
+      "observer": null,
+      "remembers": true
+    }
+  ],
+  "requiredCompanions": [],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

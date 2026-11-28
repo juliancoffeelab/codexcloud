@@ -1,0 +1,5684 @@
+{
+  "classic": {
+    "source": {
+      "variant": "fork-vigil",
+      "policy": "classic",
+      "enemy": "classic",
+      "config": {
+        "campaign": "rl-ashbank-relay-fork-vigil",
+        "objective": "authored",
+        "seed": 571239002,
+        "diplomacy": "unrestricted",
+        "player": "balanced",
+        "enemy": "classic",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "result": {
+        "failure": null,
+        "missions": [
+          {
+            "id": "rl-ashbank-relay-fork-vigil",
+            "round": 11,
+            "winner": "playerVictory"
+          }
+        ],
+        "outcome": "Ashbank held and the eastern crossing secured.",
+        "success": true,
+        "truncated": false
+      }
+    },
+    "observations": {
+      "firstFortCapture": {
+        "round": 7,
+        "side": "player",
+        "owner": "player",
+        "holdTurns": 6,
+        "fortOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 22,
+          "id": "u7",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 14,
+            "row": 7
+          },
+          "type": "warhammer"
+        }
+      },
+      "fortChanges": [
+        {
+          "round": 7,
+          "side": "player",
+          "owner": "player",
+          "holdTurns": 6,
+          "fortOccupant": {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 0,
+            "faction": "player",
+            "hp": 22,
+            "id": "u7",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [],
+            "role": null,
+            "tile": {
+              "col": 14,
+              "row": 7
+            },
+            "type": "warhammer"
+          }
+        }
+      ],
+      "terminalHold": 10,
+      "terminalCapture": 1,
+      "terminalVillageOwner": "player",
+      "terminalFortOwner": "player",
+      "lostVillage": false,
+      "enemyAttacks": 14,
+      "enemyDamageOnVillage": 40,
+      "enemyDamageNearVillage": 40,
+      "enemyDamageNearFort": 7,
+      "simultaneousFronts": [
+        3,
+        5,
+        6,
+        7
+      ],
+      "activeThreatBothFronts": [
+        5
+      ],
+      "playerVillageOccupants": [
+        "u2"
+      ],
+      "captureProgress": [
+        "enemy",
+        "enemy",
+        "enemy",
+        "enemy",
+        "enemy",
+        "enemy",
+        "player",
+        "player",
+        "player",
+        "player"
+      ]
+    },
+    "phases": [
+      {
+        "round": 1,
+        "side": "player",
+        "living": {
+          "enemy": 4,
+          "player": 7
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 20,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "enemy",
+          "hp": 22,
+          "id": "u25",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 14,
+            "row": 7
+          },
+          "type": "deatharcher"
+        },
+        "playersNearVillage": [
+          "u1",
+          "u2",
+          "u3",
+          "u5"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [
+          "u24",
+          "u25"
+        ],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u3",
+          "u5"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 1,
+            "faction": "enemy",
+            "hp": 1,
+            "id": "u22",
+            "items": [],
+            "moved": false,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 7,
+              "row": 3
+            },
+            "type": "skeleton"
+          }
+        ]
+      },
+      {
+        "round": 1,
+        "side": "ai",
+        "living": {
+          "enemy": 4,
+          "player": 7
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 20,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u1",
+          "u2",
+          "u3",
+          "u5"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [
+          "u25"
+        ],
+        "attacks": 3,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 2,
+        "side": "player",
+        "living": {
+          "enemy": 2,
+          "player": 7
+        },
+        "hold": {
+          "current": 1,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 24,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [
+          "u25"
+        ],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u3",
+          "u7"
+        ],
+        "healing": [
+          {
+            "amount": 4,
+            "providers": [
+              "u5"
+            ],
+            "target": "u3"
+          }
+        ],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 1,
+            "faction": "enemy",
+            "hp": 6,
+            "id": "u21",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 9,
+              "row": 5
+            },
+            "type": "skeleton-axeman"
+          },
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 1,
+            "faction": "enemy",
+            "hp": 14,
+            "id": "u24",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 12,
+              "row": 8
+            },
+            "type": "skeleton-impact-caster"
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "side": "ai",
+        "living": {
+          "enemy": 2,
+          "player": 7
+        },
+        "hold": {
+          "current": 1,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 24,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [
+          "u23"
+        ],
+        "attacks": 1,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 3,
+        "side": "player",
+        "living": {
+          "enemy": 1,
+          "player": 7
+        },
+        "hold": {
+          "current": 2,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 28,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [
+          "u7"
+        ],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 3,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 16,
+        "playerAttackActors": [
+          "u4",
+          "u7",
+          "u6"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 0,
+            "faction": "enemy",
+            "hp": 16,
+            "id": "u23",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [],
+            "role": null,
+            "tile": {
+              "col": 13,
+              "row": 8
+            },
+            "type": "skeleton"
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "side": "ai",
+        "living": {
+          "enemy": 1,
+          "player": 6
+        },
+        "hold": {
+          "current": 2,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 28,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [
+          "u7"
+        ],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 1,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 2,
+            "faction": "player",
+            "hp": 6,
+            "id": "u4",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "enemy"
+            ],
+            "role": null,
+            "tile": {
+              "col": 12,
+              "row": 6
+            },
+            "type": "rider"
+          }
+        ]
+      },
+      {
+        "round": 4,
+        "side": "player",
+        "living": {
+          "enemy": 2,
+          "player": 6
+        },
+        "hold": {
+          "current": 3,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 32,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 3,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u5",
+          "u6",
+          "u7"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 11,
+            "faction": "enemy",
+            "hp": 8,
+            "id": "u25",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 11,
+              "row": 7
+            },
+            "type": "deatharcher"
+          }
+        ]
+      },
+      {
+        "round": 4,
+        "side": "ai",
+        "living": {
+          "enemy": 2,
+          "player": 6
+        },
+        "hold": {
+          "current": 3,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 26,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [
+          "u27"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 6,
+        "damageNearVillage": 6,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 5,
+        "side": "player",
+        "living": {
+          "enemy": 3,
+          "player": 6
+        },
+        "hold": {
+          "current": 4,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 30,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [
+          "u6",
+          "u7"
+        ],
+        "enemiesNearVillage": [
+          "u27"
+        ],
+        "enemiesNearFort": [
+          "u28"
+        ],
+        "attacks": 3,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 17,
+        "playerAttackActors": [
+          "u5",
+          "u6",
+          "u7"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 0,
+            "faction": "enemy",
+            "hp": 9,
+            "id": "u29",
+            "items": [],
+            "moved": false,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [],
+            "role": null,
+            "tile": {
+              "col": 14,
+              "row": 7
+            },
+            "type": "skeletal-hound"
+          }
+        ]
+      },
+      {
+        "round": 5,
+        "side": "ai",
+        "living": {
+          "enemy": 3,
+          "player": 4
+        },
+        "hold": {
+          "current": 4,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 24,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [
+          "u7"
+        ],
+        "enemiesNearVillage": [
+          "u27"
+        ],
+        "enemiesNearFort": [
+          "u28"
+        ],
+        "attacks": 3,
+        "damageOnVillage": 6,
+        "damageNearVillage": 6,
+        "damageNearFort": 7,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 9,
+            "faction": "player",
+            "hp": 8,
+            "id": "u5",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "enemy"
+            ],
+            "role": null,
+            "tile": {
+              "col": 8,
+              "row": 2
+            },
+            "type": "healer"
+          },
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 3,
+            "faction": "player",
+            "hp": 7,
+            "id": "u6",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "enemy"
+            ],
+            "role": null,
+            "tile": {
+              "col": 13,
+              "row": 8
+            },
+            "type": "adept"
+          }
+        ]
+      },
+      {
+        "round": 6,
+        "side": "player",
+        "living": {
+          "enemy": 1,
+          "player": 4
+        },
+        "hold": {
+          "current": 5,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 28,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [
+          "u7"
+        ],
+        "enemiesNearVillage": [
+          "u27"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 14,
+        "playerAttackActors": [
+          "u3",
+          "u7"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 13,
+            "faction": "enemy",
+            "hp": 14,
+            "id": "u26",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 7,
+              "row": 2
+            },
+            "type": "skeleton-axeman-l2"
+          },
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 6,
+            "faction": "enemy",
+            "hp": 14,
+            "id": "u28",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 13,
+              "row": 9
+            },
+            "type": "skeleton"
+          }
+        ]
+      },
+      {
+        "round": 6,
+        "side": "ai",
+        "living": {
+          "enemy": 1,
+          "player": 4
+        },
+        "hold": {
+          "current": 5,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 21,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [
+          "u7"
+        ],
+        "enemiesNearVillage": [
+          "u27"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 1,
+        "damageOnVillage": 7,
+        "damageNearVillage": 7,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 7,
+        "side": "player",
+        "living": {
+          "enemy": 1,
+          "player": 4
+        },
+        "hold": {
+          "current": 6,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 25,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 22,
+          "id": "u7",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 14,
+            "row": 7
+          },
+          "type": "warhammer"
+        },
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [
+          "u7"
+        ],
+        "enemiesNearVillage": [
+          "u27"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 0,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 7,
+        "side": "ai",
+        "living": {
+          "enemy": 1,
+          "player": 4
+        },
+        "hold": {
+          "current": 6,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 17,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 22,
+          "id": "u7",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 14,
+            "row": 7
+          },
+          "type": "warhammer"
+        },
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [
+          "u7"
+        ],
+        "enemiesNearVillage": [
+          "u27"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 1,
+        "damageOnVillage": 8,
+        "damageNearVillage": 8,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 8,
+        "side": "player",
+        "living": {
+          "enemy": 2,
+          "player": 4
+        },
+        "hold": {
+          "current": 7,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 21,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2",
+          "u3"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 1,
+        "damageOnVillage": 0,
+        "damageNearVillage": 14,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u3"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 4,
+            "faction": "enemy",
+            "hp": 14,
+            "id": "u27",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 5,
+              "row": 1
+            },
+            "type": "skeleton-impact-caster"
+          }
+        ]
+      },
+      {
+        "round": 8,
+        "side": "ai",
+        "living": {
+          "enemy": 2,
+          "player": 4
+        },
+        "hold": {
+          "current": 7,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 2,
+          "faction": "player",
+          "hp": 8,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [
+            "enemy"
+          ],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2",
+          "u3"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [
+          "u30",
+          "u31"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 13,
+        "damageNearVillage": 13,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 9,
+        "side": "player",
+        "living": {
+          "enemy": 1,
+          "player": 4
+        },
+        "hold": {
+          "current": 8,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": true,
+          "character": null,
+          "experience": 3,
+          "faction": "player",
+          "hp": 8,
+          "id": "u2",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [
+            "enemy"
+          ],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2",
+          "u3"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [
+          "u31"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 24,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u3",
+          "u2"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 1,
+            "faction": "enemy",
+            "hp": 17,
+            "id": "u30",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 4,
+              "row": 2
+            },
+            "type": "skeleton-axeman-l2"
+          }
+        ]
+      },
+      {
+        "round": 9,
+        "side": "ai",
+        "living": {
+          "enemy": 1,
+          "player": 4
+        },
+        "hold": {
+          "current": 8,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": true,
+          "character": null,
+          "experience": 3,
+          "faction": "player",
+          "hp": 8,
+          "id": "u2",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [
+            "enemy"
+          ],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2",
+          "u3"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 0,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 10,
+        "side": "player",
+        "living": {
+          "enemy": 1,
+          "player": 4
+        },
+        "hold": {
+          "current": 9,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 3,
+          "faction": "player",
+          "hp": 12,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2",
+          "u3"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 0,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 10,
+        "side": "ai",
+        "living": {
+          "enemy": 1,
+          "player": 4
+        },
+        "hold": {
+          "current": 9,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 3,
+          "faction": "player",
+          "hp": 12,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2",
+          "u3"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [
+          "u31"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 0,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      }
+    ]
+  },
+  "hour8": {
+    "source": {
+      "variant": "fork-vigil",
+      "policy": "hour8",
+      "enemy": "classic",
+      "config": {
+        "campaign": "rl-ashbank-relay-fork-vigil",
+        "objective": "authored",
+        "seed": 571239002,
+        "diplomacy": "unrestricted",
+        "player": "balanced",
+        "enemy": "classic",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "result": {
+        "failure": "defeat",
+        "missions": [
+          {
+            "id": "rl-ashbank-relay-fork-vigil",
+            "round": 8,
+            "winner": "playerDefeat"
+          }
+        ],
+        "outcome": "The eastern crossing was still enemy-held at the deadline.",
+        "success": false,
+        "truncated": false
+      }
+    },
+    "observations": {
+      "firstFortCapture": null,
+      "fortChanges": [],
+      "terminalHold": 7,
+      "terminalCapture": 0,
+      "terminalVillageOwner": "player",
+      "terminalFortOwner": "enemy",
+      "lostVillage": false,
+      "enemyAttacks": 9,
+      "enemyDamageOnVillage": 22,
+      "enemyDamageNearVillage": 22,
+      "enemyDamageNearFort": 0,
+      "simultaneousFronts": [
+        7
+      ],
+      "activeThreatBothFronts": [],
+      "playerVillageOccupants": [
+        "u2"
+      ],
+      "captureProgress": [
+        "enemy",
+        "enemy",
+        "enemy",
+        "enemy",
+        "enemy",
+        "enemy",
+        "enemy"
+      ]
+    },
+    "phases": [
+      {
+        "round": 1,
+        "side": "player",
+        "living": {
+          "enemy": 4,
+          "player": 7
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 20,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "enemy",
+          "hp": 22,
+          "id": "u25",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 14,
+            "row": 7
+          },
+          "type": "deatharcher"
+        },
+        "playersNearVillage": [
+          "u1",
+          "u2",
+          "u4",
+          "u6"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [
+          "u24",
+          "u25"
+        ],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u3",
+          "u4"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 1,
+            "faction": "enemy",
+            "hp": 1,
+            "id": "u22",
+            "items": [],
+            "moved": false,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 7,
+              "row": 3
+            },
+            "type": "skeleton"
+          }
+        ]
+      },
+      {
+        "round": 1,
+        "side": "ai",
+        "living": {
+          "enemy": 4,
+          "player": 7
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 20,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u1",
+          "u2",
+          "u4",
+          "u6"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 0,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 2,
+        "side": "player",
+        "living": {
+          "enemy": 3,
+          "player": 7
+        },
+        "hold": {
+          "current": 1,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 24,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u4",
+          "u3"
+        ],
+        "healing": [
+          {
+            "amount": 4,
+            "providers": [
+              "u5"
+            ],
+            "target": "u3"
+          }
+        ],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 1,
+            "faction": "enemy",
+            "hp": 5,
+            "id": "u21",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 8,
+              "row": 3
+            },
+            "type": "skeleton-axeman"
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "side": "ai",
+        "living": {
+          "enemy": 3,
+          "player": 7
+        },
+        "hold": {
+          "current": 1,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 24,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 3,
+        "side": "player",
+        "living": {
+          "enemy": 2,
+          "player": 7
+        },
+        "hold": {
+          "current": 2,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 28,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u3",
+          "u6"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 0,
+            "faction": "enemy",
+            "hp": 16,
+            "id": "u23",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [],
+            "role": null,
+            "tile": {
+              "col": 10,
+              "row": 3
+            },
+            "type": "skeleton"
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "side": "ai",
+        "living": {
+          "enemy": 2,
+          "player": 6
+        },
+        "hold": {
+          "current": 2,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 28,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 2,
+            "faction": "player",
+            "hp": 7,
+            "id": "u5",
+            "items": [],
+            "moved": false,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [],
+            "role": null,
+            "tile": {
+              "col": 9,
+              "row": 6
+            },
+            "type": "healer"
+          }
+        ]
+      },
+      {
+        "round": 4,
+        "side": "player",
+        "living": {
+          "enemy": 3,
+          "player": 6
+        },
+        "hold": {
+          "current": 3,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 32,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u4",
+          "u6"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 4,
+            "faction": "enemy",
+            "hp": 4,
+            "id": "u25",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 10,
+              "row": 7
+            },
+            "type": "deatharcher"
+          }
+        ]
+      },
+      {
+        "round": 4,
+        "side": "ai",
+        "living": {
+          "enemy": 3,
+          "player": 6
+        },
+        "hold": {
+          "current": 3,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 1,
+          "faction": "player",
+          "hp": 18,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [
+            "enemy"
+          ],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [
+          "u26",
+          "u27"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 14,
+        "damageNearVillage": 14,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 5,
+        "side": "player",
+        "living": {
+          "enemy": 3,
+          "player": 6
+        },
+        "hold": {
+          "current": 4,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 1,
+          "faction": "player",
+          "hp": 22,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "enemy",
+          "hp": 17,
+          "id": "u29",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 14,
+            "row": 7
+          },
+          "type": "skeletal-hound"
+        },
+        "playersNearVillage": [
+          "u2",
+          "u7"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [
+          "u27"
+        ],
+        "enemiesNearFort": [
+          "u28",
+          "u29"
+        ],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 15,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u7",
+          "u3"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 1,
+            "faction": "enemy",
+            "hp": 15,
+            "id": "u26",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 5,
+              "row": 3
+            },
+            "type": "skeleton-axeman-l2"
+          },
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 0,
+            "faction": "enemy",
+            "hp": 14,
+            "id": "u24",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [],
+            "role": null,
+            "tile": {
+              "col": 11,
+              "row": 6
+            },
+            "type": "skeleton-impact-caster-l2"
+          }
+        ]
+      },
+      {
+        "round": 5,
+        "side": "ai",
+        "living": {
+          "enemy": 3,
+          "player": 5
+        },
+        "hold": {
+          "current": 4,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 1,
+          "faction": "player",
+          "hp": 14,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2",
+          "u7"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [
+          "u27"
+        ],
+        "enemiesNearFort": [
+          "u28"
+        ],
+        "attacks": 2,
+        "damageOnVillage": 8,
+        "damageNearVillage": 8,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 8,
+            "faction": "player",
+            "hp": 1,
+            "id": "u4",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [],
+            "role": null,
+            "tile": {
+              "col": 11,
+              "row": 7
+            },
+            "type": "rider"
+          }
+        ]
+      },
+      {
+        "round": 6,
+        "side": "player",
+        "living": {
+          "enemy": 2,
+          "player": 5
+        },
+        "hold": {
+          "current": 5,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 1,
+          "faction": "player",
+          "hp": 18,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2",
+          "u7"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [
+          "u28"
+        ],
+        "attacks": 3,
+        "damageOnVillage": 0,
+        "damageNearVillage": 14,
+        "damageNearFort": 15,
+        "playerAttackActors": [
+          "u7",
+          "u3",
+          "u6"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 2,
+            "faction": "enemy",
+            "hp": 14,
+            "id": "u27",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 5,
+              "row": 1
+            },
+            "type": "skeleton-impact-caster"
+          }
+        ]
+      },
+      {
+        "round": 6,
+        "side": "ai",
+        "living": {
+          "enemy": 2,
+          "player": 5
+        },
+        "hold": {
+          "current": 5,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 1,
+          "faction": "player",
+          "hp": 18,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2",
+          "u7"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 1,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 7,
+        "side": "player",
+        "living": {
+          "enemy": 0,
+          "player": 5
+        },
+        "hold": {
+          "current": 6,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 1,
+          "faction": "player",
+          "hp": 22,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2",
+          "u7"
+        ],
+        "playersNearFort": [
+          "u6"
+        ],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u3",
+          "u6"
+        ],
+        "healing": [
+          {
+            "amount": 4,
+            "providers": [
+              "u6"
+            ],
+            "target": "u3"
+          }
+        ],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 0,
+            "faction": "enemy",
+            "hp": 1,
+            "id": "u29",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 12,
+              "row": 8
+            },
+            "type": "skeletal-hound"
+          },
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 1,
+            "faction": "enemy",
+            "hp": 1,
+            "id": "u28",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": true,
+            "revealedTo": [],
+            "role": null,
+            "tile": {
+              "col": 14,
+              "row": 4
+            },
+            "type": "skeleton"
+          }
+        ]
+      },
+      {
+        "round": 7,
+        "side": "ai",
+        "living": {
+          "enemy": 0,
+          "player": 5
+        },
+        "hold": {
+          "current": 6,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 1,
+          "faction": "player",
+          "hp": 22,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2",
+          "u7"
+        ],
+        "playersNearFort": [
+          "u6"
+        ],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 0,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      }
+    ]
+  },
+  "hour10": {
+    "source": {
+      "variant": "fork-vigil",
+      "policy": "hour10",
+      "enemy": "classic",
+      "config": {
+        "campaign": "rl-ashbank-relay-fork-vigil",
+        "objective": "authored",
+        "seed": 571239002,
+        "diplomacy": "unrestricted",
+        "player": "balanced",
+        "enemy": "classic",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "result": {
+        "failure": "defeat",
+        "missions": [
+          {
+            "id": "rl-ashbank-relay-fork-vigil",
+            "round": 13,
+            "winner": "playerDefeat"
+          }
+        ],
+        "outcome": "The relief force arrived before both positions were secured.",
+        "success": false,
+        "truncated": false
+      }
+    },
+    "observations": {
+      "firstFortCapture": {
+        "round": 4,
+        "side": "player",
+        "owner": "player",
+        "holdTurns": 3,
+        "fortOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 7,
+          "faction": "player",
+          "hp": 21,
+          "id": "u4",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 14,
+            "row": 7
+          },
+          "type": "rider"
+        }
+      },
+      "fortChanges": [
+        {
+          "round": 4,
+          "side": "player",
+          "owner": "player",
+          "holdTurns": 3,
+          "fortOccupant": {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 7,
+            "faction": "player",
+            "hp": 21,
+            "id": "u4",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [],
+            "role": null,
+            "tile": {
+              "col": 14,
+              "row": 7
+            },
+            "type": "rider"
+          }
+        }
+      ],
+      "terminalHold": 4,
+      "terminalCapture": 1,
+      "terminalVillageOwner": "player",
+      "terminalFortOwner": "player",
+      "lostVillage": true,
+      "enemyAttacks": 14,
+      "enemyDamageOnVillage": 69,
+      "enemyDamageNearVillage": 92,
+      "enemyDamageNearFort": 0,
+      "simultaneousFronts": [
+        4,
+        5,
+        12
+      ],
+      "activeThreatBothFronts": [],
+      "playerVillageOccupants": [
+        "u2",
+        "u3",
+        "u5"
+      ],
+      "captureProgress": [
+        "enemy",
+        "enemy",
+        "enemy",
+        "player",
+        "player",
+        "player",
+        "player",
+        "player",
+        "player",
+        "player",
+        "player",
+        "player"
+      ]
+    },
+    "phases": [
+      {
+        "round": 1,
+        "side": "player",
+        "living": {
+          "enemy": 4,
+          "player": 7
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 20,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "enemy",
+          "hp": 22,
+          "id": "u25",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 14,
+            "row": 7
+          },
+          "type": "deatharcher"
+        },
+        "playersNearVillage": [
+          "u1",
+          "u2",
+          "u4"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [
+          "u24",
+          "u25"
+        ],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u3",
+          "u4"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 1,
+            "faction": "enemy",
+            "hp": 1,
+            "id": "u22",
+            "items": [],
+            "moved": false,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 7,
+              "row": 3
+            },
+            "type": "skeleton"
+          }
+        ]
+      },
+      {
+        "round": 1,
+        "side": "ai",
+        "living": {
+          "enemy": 4,
+          "player": 7
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 20,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u1",
+          "u2",
+          "u4"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [
+          "u25"
+        ],
+        "attacks": 3,
+        "damageOnVillage": 0,
+        "damageNearVillage": 13,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 2,
+        "side": "player",
+        "living": {
+          "enemy": 3,
+          "player": 7
+        },
+        "hold": {
+          "current": 1,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 24,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [
+          "u25"
+        ],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 18,
+        "playerAttackActors": [
+          "u7",
+          "u3"
+        ],
+        "healing": [
+          {
+            "amount": 4,
+            "providers": [
+              "u5"
+            ],
+            "target": "u3"
+          }
+        ],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 1,
+            "faction": "enemy",
+            "hp": 9,
+            "id": "u21",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 7,
+              "row": 2
+            },
+            "type": "skeleton-axeman"
+          }
+        ]
+      },
+      {
+        "round": 2,
+        "side": "ai",
+        "living": {
+          "enemy": 3,
+          "player": 7
+        },
+        "hold": {
+          "current": 1,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 24,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [
+          "u25"
+        ],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 3,
+        "side": "player",
+        "living": {
+          "enemy": 1,
+          "player": 7
+        },
+        "hold": {
+          "current": 2,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 28,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 4,
+        "playerAttackActors": [
+          "u7",
+          "u6"
+        ],
+        "healing": [
+          {
+            "amount": 4,
+            "providers": [
+              "u5"
+            ],
+            "target": "u4"
+          }
+        ],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 2,
+            "faction": "enemy",
+            "hp": 14,
+            "id": "u24",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 12,
+              "row": 8
+            },
+            "type": "skeleton-impact-caster"
+          },
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 3,
+            "faction": "enemy",
+            "hp": 4,
+            "id": "u25",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 12,
+              "row": 7
+            },
+            "type": "deatharcher"
+          }
+        ]
+      },
+      {
+        "round": 3,
+        "side": "ai",
+        "living": {
+          "enemy": 1,
+          "player": 7
+        },
+        "hold": {
+          "current": 2,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 0,
+          "done": false,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "enemy",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 28,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 0,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 4,
+        "side": "player",
+        "living": {
+          "enemy": 2,
+          "player": 7
+        },
+        "hold": {
+          "current": 3,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 32,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 7,
+          "faction": "player",
+          "hp": 21,
+          "id": "u4",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 14,
+            "row": 7
+          },
+          "type": "rider"
+        },
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [
+          "u4"
+        ],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 1,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u7"
+        ],
+        "healing": [
+          {
+            "amount": 1,
+            "providers": [
+              "u5"
+            ],
+            "target": "u3"
+          }
+        ],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 0,
+            "faction": "enemy",
+            "hp": 16,
+            "id": "u23",
+            "items": [],
+            "moved": false,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [],
+            "role": null,
+            "tile": {
+              "col": 11,
+              "row": 5
+            },
+            "type": "skeleton"
+          }
+        ]
+      },
+      {
+        "round": 4,
+        "side": "ai",
+        "living": {
+          "enemy": 2,
+          "player": 7
+        },
+        "hold": {
+          "current": 3,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 1,
+          "faction": "player",
+          "hp": 8,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [
+            "enemy"
+          ],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 7,
+          "faction": "player",
+          "hp": 21,
+          "id": "u4",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 14,
+            "row": 7
+          },
+          "type": "rider"
+        },
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [
+          "u4"
+        ],
+        "enemiesNearVillage": [
+          "u26",
+          "u27"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 24,
+        "damageNearVillage": 24,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 5,
+        "side": "player",
+        "living": {
+          "enemy": 2,
+          "player": 7
+        },
+        "hold": {
+          "current": 4,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 1,
+          "faction": "player",
+          "hp": 12,
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "soldier"
+        },
+        "fortOccupant": {
+          "aiGroup": null,
+          "attackSpent": true,
+          "character": null,
+          "experience": 8,
+          "faction": "player",
+          "hp": 16,
+          "id": "u4",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [
+            "enemy"
+          ],
+          "role": null,
+          "tile": {
+            "col": 14,
+            "row": 7
+          },
+          "type": "rider"
+        },
+        "playersNearVillage": [
+          "u2"
+        ],
+        "playersNearFort": [
+          "u4",
+          "u6",
+          "u7"
+        ],
+        "enemiesNearVillage": [
+          "u26",
+          "u27"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 3,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 33,
+        "playerAttackActors": [
+          "u7",
+          "u4",
+          "u6"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 0,
+            "faction": "enemy",
+            "hp": 16,
+            "id": "u28",
+            "items": [],
+            "moved": false,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [],
+            "role": null,
+            "tile": {
+              "col": 15,
+              "row": 8
+            },
+            "type": "skeleton"
+          },
+          {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 0,
+            "faction": "enemy",
+            "hp": 8,
+            "id": "u29",
+            "items": [],
+            "moved": false,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 15,
+              "row": 7
+            },
+            "type": "skeletal-hound"
+          }
+        ]
+      },
+      {
+        "round": 5,
+        "side": "ai",
+        "living": {
+          "enemy": 2,
+          "player": 6
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": null,
+        "fortOccupant": {
+          "aiGroup": null,
+          "attackSpent": true,
+          "character": null,
+          "experience": 8,
+          "faction": "player",
+          "hp": 16,
+          "id": "u4",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [
+            "enemy"
+          ],
+          "role": null,
+          "tile": {
+            "col": 14,
+            "row": 7
+          },
+          "type": "rider"
+        },
+        "playersNearVillage": [],
+        "playersNearFort": [
+          "u4",
+          "u6",
+          "u7"
+        ],
+        "enemiesNearVillage": [
+          "u26",
+          "u27"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 12,
+        "damageNearVillage": 12,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 1,
+            "faction": "player",
+            "hp": 5,
+            "id": "u2",
+            "items": [],
+            "moved": false,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [],
+            "role": null,
+            "tile": {
+              "col": 4,
+              "row": 3
+            },
+            "type": "soldier"
+          }
+        ]
+      },
+      {
+        "round": 6,
+        "side": "player",
+        "living": {
+          "enemy": 2,
+          "player": 6
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": null,
+        "fortOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 8,
+          "faction": "player",
+          "hp": 16,
+          "id": "u4",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 14,
+            "row": 7
+          },
+          "type": "rider"
+        },
+        "playersNearVillage": [],
+        "playersNearFort": [
+          "u4",
+          "u6",
+          "u7"
+        ],
+        "enemiesNearVillage": [
+          "u26",
+          "u27"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 0,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 6,
+        "side": "ai",
+        "living": {
+          "enemy": 2,
+          "player": 6
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "enemy",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 13,
+          "faction": "enemy",
+          "hp": 17,
+          "id": "u26",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "skeleton-axeman-l2"
+        },
+        "fortOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 8,
+          "faction": "player",
+          "hp": 16,
+          "id": "u4",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 14,
+            "row": 7
+          },
+          "type": "rider"
+        },
+        "playersNearVillage": [],
+        "playersNearFort": [
+          "u4",
+          "u6",
+          "u7"
+        ],
+        "enemiesNearVillage": [
+          "u26",
+          "u27"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 1,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 7,
+        "side": "player",
+        "living": {
+          "enemy": 1,
+          "player": 6
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "enemy",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 13,
+          "faction": "enemy",
+          "hp": 17,
+          "id": "u26",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "skeleton-axeman-l2"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u3",
+          "u5"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [
+          "u26"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 0,
+        "damageNearVillage": 14,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u3",
+          "u5"
+        ],
+        "healing": [
+          {
+            "amount": 4,
+            "providers": [
+              "u5"
+            ],
+            "target": "u3"
+          }
+        ],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 4,
+            "faction": "enemy",
+            "hp": 3,
+            "id": "u27",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 6,
+              "row": 2
+            },
+            "type": "skeleton-impact-caster"
+          }
+        ]
+      },
+      {
+        "round": 7,
+        "side": "ai",
+        "living": {
+          "enemy": 1,
+          "player": 6
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "enemy",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": true,
+          "character": null,
+          "experience": 14,
+          "faction": "enemy",
+          "hp": 7,
+          "id": "u26",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [
+            "player"
+          ],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "skeleton-axeman-l2"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u3",
+          "u5"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [
+          "u26"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 1,
+        "damageOnVillage": 0,
+        "damageNearVillage": 10,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 8,
+        "side": "player",
+        "living": {
+          "enemy": 2,
+          "player": 6
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 6,
+          "faction": "player",
+          "hp": 23,
+          "id": "u5",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "healer"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u3",
+          "u5"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 1,
+        "damageOnVillage": 7,
+        "damageNearVillage": 7,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u3"
+        ],
+        "healing": [
+          {
+            "amount": 4,
+            "providers": [
+              "u5"
+            ],
+            "target": "u3"
+          }
+        ],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 14,
+            "faction": "enemy",
+            "hp": 7,
+            "id": "u26",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 4,
+              "row": 3
+            },
+            "type": "skeleton-axeman-l2"
+          }
+        ]
+      },
+      {
+        "round": 8,
+        "side": "ai",
+        "living": {
+          "enemy": 2,
+          "player": 5
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": null,
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u3"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [
+          "u30",
+          "u31"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 2,
+        "damageOnVillage": 23,
+        "damageNearVillage": 23,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": false,
+            "character": null,
+            "experience": 7,
+            "faction": "player",
+            "hp": 13,
+            "id": "u5",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "enemy"
+            ],
+            "role": null,
+            "tile": {
+              "col": 4,
+              "row": 3
+            },
+            "type": "healer"
+          }
+        ]
+      },
+      {
+        "round": 9,
+        "side": "player",
+        "living": {
+          "enemy": 1,
+          "player": 5
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": true,
+          "character": null,
+          "experience": 18,
+          "faction": "player",
+          "hp": 21,
+          "id": "u3",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [
+            "enemy"
+          ],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "hammerman"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u3"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [
+          "u30"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 1,
+        "damageOnVillage": 0,
+        "damageNearVillage": 12,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u3"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 0,
+            "faction": "enemy",
+            "hp": 12,
+            "id": "u31",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 4,
+              "row": 4
+            },
+            "type": "skeletal-hound"
+          }
+        ]
+      },
+      {
+        "round": 9,
+        "side": "ai",
+        "living": {
+          "enemy": 1,
+          "player": 5
+        },
+        "hold": {
+          "current": 0,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": true,
+          "character": null,
+          "experience": 18,
+          "faction": "player",
+          "hp": 11,
+          "id": "u3",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [
+            "enemy"
+          ],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "hammerman"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u3"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [
+          "u30"
+        ],
+        "enemiesNearFort": [],
+        "attacks": 1,
+        "damageOnVillage": 10,
+        "damageNearVillage": 10,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 10,
+        "side": "player",
+        "living": {
+          "enemy": 0,
+          "player": 5
+        },
+        "hold": {
+          "current": 1,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": true,
+          "character": null,
+          "experience": 18,
+          "faction": "player",
+          "hp": 15,
+          "id": "u3",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [
+            "enemy"
+          ],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "hammerman"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u3"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 1,
+        "damageOnVillage": 0,
+        "damageNearVillage": 8,
+        "damageNearFort": 0,
+        "playerAttackActors": [
+          "u3"
+        ],
+        "healing": [],
+        "losses": [
+          {
+            "aiGroup": null,
+            "attackSpent": true,
+            "character": null,
+            "experience": 13,
+            "faction": "enemy",
+            "hp": 8,
+            "id": "u30",
+            "items": [],
+            "moved": true,
+            "perceptionEffects": [],
+            "rebuilding": null,
+            "retreating": null,
+            "revealedTo": [
+              "player"
+            ],
+            "role": null,
+            "tile": {
+              "col": 4,
+              "row": 2
+            },
+            "type": "skeleton-axeman-l2"
+          }
+        ]
+      },
+      {
+        "round": 10,
+        "side": "ai",
+        "living": {
+          "enemy": 0,
+          "player": 5
+        },
+        "hold": {
+          "current": 1,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": true,
+          "character": null,
+          "experience": 18,
+          "faction": "player",
+          "hp": 15,
+          "id": "u3",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [
+            "enemy"
+          ],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "hammerman"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u3"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 0,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 11,
+        "side": "player",
+        "living": {
+          "enemy": 0,
+          "player": 5
+        },
+        "hold": {
+          "current": 2,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": true,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 29,
+          "id": "u3",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "warhammer"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u3"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 0,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 11,
+        "side": "ai",
+        "living": {
+          "enemy": 0,
+          "player": 5
+        },
+        "hold": {
+          "current": 2,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": true,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 29,
+          "id": "u3",
+          "items": [],
+          "moved": true,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "warhammer"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u3"
+        ],
+        "playersNearFort": [],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 0,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 12,
+        "side": "player",
+        "living": {
+          "enemy": 0,
+          "player": 5
+        },
+        "hold": {
+          "current": 3,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 33,
+          "id": "u3",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "warhammer"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u3"
+        ],
+        "playersNearFort": [
+          "u4"
+        ],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 0,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      },
+      {
+        "round": 12,
+        "side": "ai",
+        "living": {
+          "enemy": 0,
+          "player": 5
+        },
+        "hold": {
+          "current": 3,
+          "done": false,
+          "label": "Hold Ashbank village for 10 consecutive turns",
+          "tiles": [
+            {
+              "col": 4,
+              "row": 3
+            }
+          ],
+          "total": 10
+        },
+        "capture": {
+          "current": 1,
+          "done": true,
+          "label": "Capture and control the enemy fort",
+          "tiles": [
+            {
+              "col": 14,
+              "row": 7
+            }
+          ],
+          "total": 1
+        },
+        "villageOwner": "player",
+        "fortOwner": "player",
+        "villageOccupant": {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "faction": "player",
+          "hp": 33,
+          "id": "u3",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "revealedTo": [],
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 3
+          },
+          "type": "warhammer"
+        },
+        "fortOccupant": null,
+        "playersNearVillage": [
+          "u3"
+        ],
+        "playersNearFort": [
+          "u4"
+        ],
+        "enemiesNearVillage": [],
+        "enemiesNearFort": [],
+        "attacks": 0,
+        "damageOnVillage": 0,
+        "damageNearVillage": 0,
+        "damageNearFort": 0,
+        "playerAttackActors": [],
+        "healing": [],
+        "losses": []
+      }
+    ]
+  }
+}

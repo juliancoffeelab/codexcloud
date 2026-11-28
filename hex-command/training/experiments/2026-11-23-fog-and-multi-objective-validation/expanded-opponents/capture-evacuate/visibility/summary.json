@@ -1,0 +1,794 @@
+{
+  "requests": [
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+        "objective": "authored",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "classic",
+        "enemyBlocks": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "side": "player"
+    },
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+        "objective": "authored",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "classic",
+        "enemyBlocks": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "side": "ai"
+    },
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+        "objective": "player-fog",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "classic",
+        "enemyBlocks": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "side": "player"
+    },
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+        "objective": "player-fog",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "classic",
+        "enemyBlocks": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "side": "ai"
+    },
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+        "objective": "both-fog",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "classic",
+        "enemyBlocks": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "side": "player"
+    },
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+        "objective": "both-fog",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "classic",
+        "enemyBlocks": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "side": "ai"
+    },
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+        "objective": "authored",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "classic",
+        "enemyBlocks": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "side": "player"
+    },
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+        "objective": "authored",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "classic",
+        "enemyBlocks": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "side": "ai"
+    },
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+        "objective": "player-fog",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "classic",
+        "enemyBlocks": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "side": "player"
+    },
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+        "objective": "player-fog",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "classic",
+        "enemyBlocks": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "side": "ai"
+    },
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+        "objective": "both-fog",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "classic",
+        "enemyBlocks": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "side": "player"
+    },
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+        "objective": "both-fog",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "classic",
+        "enemyBlocks": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "side": "ai"
+    },
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+        "objective": "both-fog",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "balanced",
+        "enemyBlocks": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1
+      ],
+      "side": "ai"
+    },
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+        "objective": "both-fog",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "predictor",
+        "enemyBlocks": {
+          "recruiter": "predictor",
+          "campaign": "mission",
+          "planner": "full"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1
+      ],
+      "side": "ai"
+    },
+    {
+      "config": {
+        "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+        "objective": "both-fog",
+        "seed": 493022001,
+        "diplomacy": "unrestricted",
+        "enemy": "predictor",
+        "enemyBlocks": {
+          "recruiter": "predictor",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "player": "balanced",
+        "playerBlocks": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "maxRounds": 100,
+        "recruitLimit": 0
+      },
+      "rounds": [
+        1
+      ],
+      "side": "ai"
+    }
+  ],
+  "results": [
+    {
+      "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+      "mode": "clear",
+      "faction": "player",
+      "sampled_positions": 9,
+      "initial_fog_tiles": 0,
+      "initial_hidden_hostiles": [],
+      "open_tile_returned_to_fog": null,
+      "living_contact_left_native_view": null
+    },
+    {
+      "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+      "mode": "clear",
+      "faction": "enemy",
+      "sampled_positions": 9,
+      "initial_fog_tiles": 0,
+      "initial_hidden_hostiles": [],
+      "open_tile_returned_to_fog": null,
+      "living_contact_left_native_view": null
+    },
+    {
+      "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+      "mode": "player-fog",
+      "faction": "player",
+      "sampled_positions": 9,
+      "initial_fog_tiles": 153,
+      "initial_hidden_hostiles": [
+        "u22",
+        "u23",
+        "u24"
+      ],
+      "open_tile_returned_to_fog": {
+        "tile": [
+          0,
+          1
+        ],
+        "from_round": 1,
+        "from_side": "player",
+        "to_round": 1,
+        "to_side": "ai"
+      },
+      "living_contact_left_native_view": null
+    },
+    {
+      "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+      "mode": "player-fog",
+      "faction": "enemy",
+      "sampled_positions": 9,
+      "initial_fog_tiles": 0,
+      "initial_hidden_hostiles": [],
+      "open_tile_returned_to_fog": null,
+      "living_contact_left_native_view": null
+    },
+    {
+      "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+      "mode": "both-fog",
+      "faction": "player",
+      "sampled_positions": 9,
+      "initial_fog_tiles": 153,
+      "initial_hidden_hostiles": [
+        "u22",
+        "u23",
+        "u24"
+      ],
+      "open_tile_returned_to_fog": {
+        "tile": [
+          0,
+          1
+        ],
+        "from_round": 1,
+        "from_side": "player",
+        "to_round": 1,
+        "to_side": "ai"
+      },
+      "living_contact_left_native_view": null
+    },
+    {
+      "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+      "mode": "both-fog",
+      "faction": "enemy",
+      "sampled_positions": 9,
+      "initial_fog_tiles": 113,
+      "initial_hidden_hostiles": [
+        "u1",
+        "u5"
+      ],
+      "open_tile_returned_to_fog": {
+        "tile": [
+          4,
+          4
+        ],
+        "from_round": 1,
+        "from_side": "player",
+        "to_round": 1,
+        "to_side": "ai"
+      },
+      "living_contact_left_native_view": {
+        "unit": "u1",
+        "from_round": 2,
+        "from_side": "player",
+        "to_round": 2,
+        "to_side": "ai"
+      }
+    },
+    {
+      "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+      "mode": "clear",
+      "faction": "player",
+      "sampled_positions": 11,
+      "initial_fog_tiles": 0,
+      "initial_hidden_hostiles": [],
+      "open_tile_returned_to_fog": null,
+      "living_contact_left_native_view": null
+    },
+    {
+      "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+      "mode": "clear",
+      "faction": "enemy",
+      "sampled_positions": 11,
+      "initial_fog_tiles": 0,
+      "initial_hidden_hostiles": [],
+      "open_tile_returned_to_fog": null,
+      "living_contact_left_native_view": null
+    },
+    {
+      "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+      "mode": "player-fog",
+      "faction": "player",
+      "sampled_positions": 11,
+      "initial_fog_tiles": 153,
+      "initial_hidden_hostiles": [
+        "u22",
+        "u23",
+        "u24"
+      ],
+      "open_tile_returned_to_fog": {
+        "tile": [
+          0,
+          1
+        ],
+        "from_round": 1,
+        "from_side": "player",
+        "to_round": 1,
+        "to_side": "ai"
+      },
+      "living_contact_left_native_view": null
+    },
+    {
+      "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+      "mode": "player-fog",
+      "faction": "enemy",
+      "sampled_positions": 11,
+      "initial_fog_tiles": 0,
+      "initial_hidden_hostiles": [],
+      "open_tile_returned_to_fog": null,
+      "living_contact_left_native_view": null
+    },
+    {
+      "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+      "mode": "both-fog",
+      "faction": "player",
+      "sampled_positions": 11,
+      "initial_fog_tiles": 153,
+      "initial_hidden_hostiles": [
+        "u22",
+        "u23",
+        "u24"
+      ],
+      "open_tile_returned_to_fog": {
+        "tile": [
+          0,
+          1
+        ],
+        "from_round": 1,
+        "from_side": "player",
+        "to_round": 1,
+        "to_side": "ai"
+      },
+      "living_contact_left_native_view": null
+    },
+    {
+      "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+      "mode": "both-fog",
+      "faction": "enemy",
+      "sampled_positions": 11,
+      "initial_fog_tiles": 125,
+      "initial_hidden_hostiles": [
+        "u1",
+        "u5"
+      ],
+      "open_tile_returned_to_fog": {
+        "tile": [
+          4,
+          4
+        ],
+        "from_round": 1,
+        "from_side": "player",
+        "to_round": 1,
+        "to_side": "ai"
+      },
+      "living_contact_left_native_view": {
+        "unit": "u1",
+        "from_round": 2,
+        "from_side": "player",
+        "to_round": 2,
+        "to_side": "ai"
+      }
+    }
+  ],
+  "verified_enemy_blocks": {
+    "classic": [
+      "classic",
+      {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      }
+    ],
+    "queued": [
+      "balanced",
+      {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    ],
+    "full": [
+      "predictor",
+      {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      }
+    ],
+    "predictor": [
+      "predictor",
+      {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    ]
+  },
+  "capture_fingerprints": {
+    "content": "4cde0de88dd7063b4f60aa7c78ff2218c53059cc700fb39a1c5c2fc85fa0e11c",
+    "engine": "8cf0581157741df24b8e5e5c57ab6b8d0b1caae00e3def9b5d4866ee71eb1859"
+  },
+  "cli": {
+    "path": "/workspace/codexcloud/hex-command/rust/target/debug/hex-command-sim",
+    "sha256": "395b17641084059f00840db33f620b079512e6d9851502644d892fc6e1361bcd"
+  },
+  "view_probe": {
+    "path": "/workspace/codexcloud/hex-command/rust/target/release/hollowbank_fog_view",
+    "sha256": "1e977326f8f1731ca7ae263e7f2e81b94fe72c89c37ee4a83fb8b23a68f8aada"
+  }
+}

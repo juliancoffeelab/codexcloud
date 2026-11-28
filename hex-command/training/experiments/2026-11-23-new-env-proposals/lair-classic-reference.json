@@ -1,0 +1,1034 @@
+[
+  {
+    "config": {
+      "seed": 490000425,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000426,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000427,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000428,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000429,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000430,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000431,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000432,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000449,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "player-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000450,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "player-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000451,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "player-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000452,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "player-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000453,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "player-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000454,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "player-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000455,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "player-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000456,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "player-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000505,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "both-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000506,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "both-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000507,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "both-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000508,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "both-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000509,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "both-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000510,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "both-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000511,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "both-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 490000512,
+      "campaign": "rl-lair-outworks",
+      "diplomacy": "unrestricted",
+      "objective": "both-fog",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": null
+    },
+    "hour10": {
+      "failure": "defeat",
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 5,
+          "winner": "playerDefeat"
+        }
+      ],
+      "outcome": "The ranged detachment held the position.",
+      "success": false,
+      "truncated": false
+    },
+    "reference": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-lair-outworks",
+          "round": 4,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "The ranged detachment was stopped.",
+      "success": true,
+      "truncated": false
+    }
+  }
+]

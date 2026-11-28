@@ -1,0 +1,720 @@
+{
+  "events": [
+    {
+      "id": "hold-fortress",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 19,
+              "row": 15
+            }
+          },
+          "faction": "player",
+          "turns": 30,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "victory": "The fortress has held for thirty turns. The besiegers withdraw."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Hold the fortress core for thirty consecutive turns",
+        "optional": false,
+        "intent": {
+          "own": {
+            "tile": {
+              "hex": {
+                "col": 19,
+                "row": 15
+              }
+            },
+            "faction": "player",
+            "turns": 30,
+            "when": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "break-both-hosts",
+      "when": {
+        "all": [
+          {
+            "noUnits": {
+              "character": "west-captain",
+              "role": null,
+              "side": null,
+              "faction": "west-siege",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          },
+          {
+            "noUnits": {
+              "character": "east-captain",
+              "role": null,
+              "side": null,
+              "faction": "east-siege",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Both enemy commanders are defeated. The siege is broken."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Alternatively, defeat both enemy commanders",
+        "optional": true,
+        "intent": {
+          "defeat": {
+            "character": null,
+            "role": "leader",
+            "side": "enemy",
+            "faction": null,
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "west-siege-takes-core",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 19,
+              "row": 15
+            }
+          },
+          "faction": "west-siege",
+          "turns": 3,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The enemy held the fortress core for three turns."
+        }
+      ],
+      "objective": {
+        "faction": "west-siege",
+        "id": null,
+        "label": "Take and hold the fortress core for three turns",
+        "optional": false,
+        "intent": {
+          "own": {
+            "tile": {
+              "hex": {
+                "col": 19,
+                "row": 15
+              }
+            },
+            "faction": "west-siege",
+            "turns": 3,
+            "when": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 100,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "east-siege-takes-core",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 19,
+              "row": 15
+            }
+          },
+          "faction": "east-siege",
+          "turns": 3,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The enemy held the fortress core for three turns."
+        }
+      ],
+      "objective": {
+        "faction": "east-siege",
+        "id": null,
+        "label": "Take and hold the fortress core for three turns",
+        "optional": false,
+        "intent": {
+          "own": {
+            "tile": {
+              "hex": {
+                "col": 19,
+                "row": 15
+              }
+            },
+            "faction": "east-siege",
+            "turns": 3,
+            "when": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 100,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "captain-lost",
+      "when": {
+        "noUnits": {
+          "character": "captain",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The fortress commander has fallen."
+        }
+      ],
+      "objective": null,
+      "priority": 100,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "siege-deadline",
+      "when": {
+        "turnAtLeast": 81
+      },
+      "actions": [
+        {
+          "defeat": "The fortress could not secure a lasting defense."
+        }
+      ],
+      "objective": null,
+      "priority": -100,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "control-western-supply",
+      "when": {
+        "owner": {
+          "tile": {
+            "hex": {
+              "col": 9,
+              "row": 7
+            }
+          },
+          "faction": "player"
+        }
+      },
+      "actions": [],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Control western supply for supplies",
+        "optional": true,
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 9,
+                "row": 7
+              }
+            }
+          ]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "owner": {
+            "tile": {
+              "hex": {
+                "col": 9,
+                "row": 7
+              }
+            },
+            "faction": "player"
+          }
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    },
+    {
+      "id": "control-west-ridge",
+      "when": {
+        "owner": {
+          "tile": {
+            "hex": {
+              "col": 7,
+              "row": 17
+            }
+          },
+          "faction": "player"
+        }
+      },
+      "actions": [],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Control west ridge for supplies",
+        "optional": true,
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 7,
+                "row": 17
+              }
+            }
+          ]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "owner": {
+            "tile": {
+              "hex": {
+                "col": 7,
+                "row": 17
+              }
+            },
+            "faction": "player"
+          }
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    },
+    {
+      "id": "control-west-bridgehead",
+      "when": {
+        "owner": {
+          "tile": {
+            "hex": {
+              "col": 12,
+              "row": 12
+            }
+          },
+          "faction": "player"
+        }
+      },
+      "actions": [],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Control west bridgehead for supplies",
+        "optional": true,
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 12,
+                "row": 12
+              }
+            }
+          ]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "owner": {
+            "tile": {
+              "hex": {
+                "col": 12,
+                "row": 12
+              }
+            },
+            "faction": "player"
+          }
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    },
+    {
+      "id": "control-eastern-supply",
+      "when": {
+        "owner": {
+          "tile": {
+            "hex": {
+              "col": 31,
+              "row": 13
+            }
+          },
+          "faction": "player"
+        }
+      },
+      "actions": [],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Control eastern supply for supplies",
+        "optional": true,
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 31,
+                "row": 13
+              }
+            }
+          ]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "owner": {
+            "tile": {
+              "hex": {
+                "col": 31,
+                "row": 13
+              }
+            },
+            "faction": "player"
+          }
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    },
+    {
+      "id": "control-ruined-watchpost",
+      "when": {
+        "owner": {
+          "tile": {
+            "hex": {
+              "col": 29,
+              "row": 23
+            }
+          },
+          "faction": "player"
+        }
+      },
+      "actions": [],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Control ruined watchpost for supplies",
+        "optional": true,
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 29,
+                "row": 23
+              }
+            }
+          ]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "owner": {
+            "tile": {
+              "hex": {
+                "col": 29,
+                "row": 23
+              }
+            },
+            "faction": "player"
+          }
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    },
+    {
+      "id": "control-east-bridgehead",
+      "when": {
+        "owner": {
+          "tile": {
+            "hex": {
+              "col": 24,
+              "row": 17
+            }
+          },
+          "faction": "player"
+        }
+      },
+      "actions": [],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Control east bridgehead for supplies",
+        "optional": true,
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 24,
+                "row": 17
+              }
+            }
+          ]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "owner": {
+            "tile": {
+              "hex": {
+                "col": 24,
+                "row": 17
+              }
+            },
+            "faction": "player"
+          }
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    },
+    {
+      "id": "control-south-bridgehead",
+      "when": {
+        "owner": {
+          "tile": {
+            "hex": {
+              "col": 18,
+              "row": 21
+            }
+          },
+          "faction": "player"
+        }
+      },
+      "actions": [],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Control south bridgehead for supplies",
+        "optional": true,
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 18,
+                "row": 21
+              }
+            }
+          ]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "owner": {
+            "tile": {
+              "hex": {
+                "col": 18,
+                "row": 21
+              }
+            },
+            "faction": "player"
+          }
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    },
+    {
+      "id": "control-wooded-ridge",
+      "when": {
+        "owner": {
+          "tile": {
+            "hex": {
+              "col": 17,
+              "row": 8
+            }
+          },
+          "faction": "player"
+        }
+      },
+      "actions": [],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Control wooded ridge for supplies",
+        "optional": true,
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 17,
+                "row": 8
+              }
+            }
+          ]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "owner": {
+            "tile": {
+              "hex": {
+                "col": 17,
+                "row": 8
+              }
+            },
+            "faction": "player"
+          }
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    },
+    {
+      "id": "control-western-flank",
+      "when": {
+        "owner": {
+          "tile": {
+            "hex": {
+              "col": 12,
+              "row": 22
+            }
+          },
+          "faction": "player"
+        }
+      },
+      "actions": [],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Control western flank for supplies",
+        "optional": true,
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 12,
+                "row": 22
+              }
+            }
+          ]
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "owner": {
+            "tile": {
+              "hex": {
+                "col": 12,
+                "row": 22
+              }
+            },
+            "faction": "player"
+          }
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    }
+  ],
+  "requiredCompanions": [],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

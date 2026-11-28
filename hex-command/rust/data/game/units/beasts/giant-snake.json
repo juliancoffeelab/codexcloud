@@ -44,9 +44,10 @@
   "experienceNeeded": 0,
   "advancesTo": [],
   "terrainModifiers": {},
-  "abilities": ["forestcloak"],
+  "abilities": [
+    "forestcloak"
+  ],
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

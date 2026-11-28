@@ -1,0 +1,278 @@
+{
+  "events": [
+    {
+      "id": "leader-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "objective": null,
+      "priority": 100,
+      "remembers": true,
+      "observer": null
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turnAtLeast": 61
+      },
+      "actions": [
+        {
+          "defeat": "The underground passages have become untenable."
+        }
+      ],
+      "objective": null,
+      "priority": -100,
+      "remembers": true,
+      "observer": null
+    },
+    {
+      "id": "claim-quarry",
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 15,
+              "row": 10
+            }
+          },
+          "through": false,
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "quarry-awake"
+        },
+        {
+          "give": {
+            "item": "rl-lantern",
+            "tile": null,
+            "character": "player-leader",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 17,
+                "row": 10
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              {
+                "type": "wolf",
+                "character": "awakened",
+                "role": "leader",
+                "items": []
+              },
+              "wolf",
+              "thorncaller"
+            ]
+          }
+        },
+        {
+          "log": "The tool cache is yours. Something answers from the rock. Return to the entry or destroy the awakened guardian."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Recover the tool cache from the inner quarry",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 15,
+                "row": 10
+              }
+            },
+            "through": false,
+            "character": "player-leader",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "remembers": true,
+      "observer": null
+    },
+    {
+      "id": "escape-quarry",
+      "when": {
+        "all": [
+          {
+            "flag": "quarry-awake"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 3,
+                  "row": 10
+                }
+              },
+              "through": false,
+              "character": "player-leader",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "The company escaped with the quarry cache."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Return the commander and cache to the entry",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 3,
+                "row": 10
+              }
+            },
+            "through": false,
+            "character": "player-leader",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "flag": "quarry-awake"
+        },
+        "availableWhen": {
+          "flag": "quarry-awake"
+        },
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "remembers": true,
+      "observer": null
+    },
+    {
+      "id": "break-guardian",
+      "when": {
+        "all": [
+          {
+            "flag": "quarry-awake"
+          },
+          {
+            "noUnits": {
+              "character": "awakened",
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "The awakened guardian is destroyed; the quarry is secured."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "label": "Alternatively, destroy the awakened guardian",
+        "intent": {
+          "defeat": {
+            "character": "awakened",
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "id": null,
+        "optional": true,
+        "visibleWhen": {
+          "flag": "quarry-awake"
+        },
+        "availableWhen": {
+          "flag": "quarry-awake"
+        },
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "remembers": true,
+      "observer": null
+    }
+  ],
+  "requiredCompanions": [],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

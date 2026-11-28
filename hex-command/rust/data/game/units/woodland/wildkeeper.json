@@ -42,10 +42,11 @@
   "level": 1,
   "family": "wildkeeper",
   "experienceNeeded": 10,
-  "advancesTo": ["grovewarden"],
+  "advancesTo": [
+    "grovewarden"
+  ],
   "terrainModifiers": {},
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

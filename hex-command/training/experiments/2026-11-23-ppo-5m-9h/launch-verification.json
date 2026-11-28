@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "map_weights_verified": true,
+  "warm_policy_identical": true,
+  "reward_shaping": false,
+  "checkpoint_hashes_verified": true,
+  "sampling_pools": {
+    "arena": 0.5000000000000056,
+    "campaign": 0.5000000000000001
+  }
+}

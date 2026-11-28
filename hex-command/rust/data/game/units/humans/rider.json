@@ -87,9 +87,10 @@
   "level": 1,
   "family": "rider",
   "experienceNeeded": 10,
-  "advancesTo": ["lancer"],
+  "advancesTo": [
+    "lancer"
+  ],
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

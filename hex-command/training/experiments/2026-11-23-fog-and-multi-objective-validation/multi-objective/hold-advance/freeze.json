@@ -1,0 +1,33 @@
+{
+  "primary": "breach-west-swift",
+  "secondary": "breach-two-fronts",
+  "catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/frozen-catalog",
+  "catalogSha256": "4c68377befe17f35985dde95c114f691d24b1f6fc550a5cf55be4c7315607552",
+  "confirmationSeeds": [
+    571238001,
+    571238002,
+    571238003,
+    571238004,
+    571238005,
+    571238006,
+    571238007,
+    571238008,
+    571238009,
+    571238010,
+    571238011,
+    571238012,
+    571238013,
+    571238014,
+    571238015,
+    571238016,
+    571238017,
+    571238018,
+    571238019,
+    571238020
+  ],
+  "discovery": [
+    "discovery-summary.json",
+    "discovery-long-summary.json",
+    "discovery-breach-summary.json"
+  ]
+}

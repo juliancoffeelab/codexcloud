@@ -3,26 +3,26 @@
     {
       "id": "hidden",
       "sight": {
-        "range": 6,
         "unlimited": false,
         "sightModifiers": {
-          "lit": 0,
-          "unlit": 0,
-          "darkness": 0
+          "lit": 6,
+          "unlit": 6,
+          "darkness": 6
         },
-        "penetrates": ["darkness"]
+        "penetrates": [
+          "darkness"
+        ]
       },
       "explored": []
     },
     {
       "id": "watch",
       "sight": {
-        "range": 6,
         "unlimited": false,
         "sightModifiers": {
-          "lit": 0,
-          "unlit": 0,
-          "darkness": 0
+          "lit": 6,
+          "unlit": 6,
+          "darkness": 6
         },
         "penetrates": []
       },
@@ -61,13 +61,18 @@
           "perceptionEffects": [
             {
               "id": "crypt-shroud",
-              "penetrates": ["darkness"],
+              "penetrates": [
+                "darkness"
+              ],
               "concealment": [
                 {
                   "kind": "darkness",
                   "revealWithin": 1,
                   "requires": {
-                    "illumination": ["unlit", "darkness"],
+                    "illumination": [
+                      "unlit",
+                      "darkness"
+                    ],
                     "terrains": null
                   }
                 }
@@ -95,13 +100,18 @@
           "perceptionEffects": [
             {
               "id": "crypt-shroud",
-              "penetrates": ["darkness"],
+              "penetrates": [
+                "darkness"
+              ],
               "concealment": [
                 {
                   "kind": "darkness",
                   "revealWithin": 1,
                   "requires": {
-                    "illumination": ["unlit", "darkness"],
+                    "illumination": [
+                      "unlit",
+                      "darkness"
+                    ],
                     "terrains": null
                   }
                 }
@@ -130,13 +140,18 @@
           "perceptionEffects": [
             {
               "id": "crypt-shroud",
-              "penetrates": ["darkness"],
+              "penetrates": [
+                "darkness"
+              ],
               "concealment": [
                 {
                   "kind": "darkness",
                   "revealWithin": 1,
                   "requires": {
-                    "illumination": ["unlit", "darkness"],
+                    "illumination": [
+                      "unlit",
+                      "darkness"
+                    ],
                     "terrains": null
                   }
                 }
@@ -165,13 +180,18 @@
           "perceptionEffects": [
             {
               "id": "crypt-shroud",
-              "penetrates": ["darkness"],
+              "penetrates": [
+                "darkness"
+              ],
               "concealment": [
                 {
                   "kind": "darkness",
                   "revealWithin": 1,
                   "requires": {
-                    "illumination": ["unlit", "darkness"],
+                    "illumination": [
+                      "unlit",
+                      "darkness"
+                    ],
                     "terrains": null
                   }
                 }
@@ -347,6 +367,8 @@
   "arrivals": [],
   "round": 1,
   "turn": "player",
-  "log": ["Capture villages for gold. Defeat the enemy commander."],
+  "log": [
+    "Capture villages for gold. Defeat the enemy commander."
+  ],
   "combatRng": 1831565813
 }

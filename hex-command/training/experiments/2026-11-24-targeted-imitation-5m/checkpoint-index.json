@@ -1,0 +1,30 @@
+[
+  {
+    "minute": 0,
+    "actual_active_seconds": 0.0,
+    "model_sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee",
+    "original_path": "/workspace/codexcloud/hex-command/tmp/rl/pretrain-hour10-targeted-5m-20261124/hour10-planner.json",
+    "archive_path": "recovery/minute-00"
+  },
+  {
+    "minute": 1,
+    "actual_active_seconds": 60.02411109500099,
+    "model_sha256": "3a407586356f314996766ab5b1fb3450606b61ce45dd833868706c273efbbd07",
+    "original_path": "/workspace/codexcloud/hex-command/tmp/rl/pretrain-hour10-targeted-5m-20261124/posttune/checkpoints/minute-0001-1795479410522625320/planner.json",
+    "archive_path": "recovery/minute-01"
+  },
+  {
+    "minute": 3,
+    "actual_active_seconds": 180.0031111939752,
+    "model_sha256": "459314bd06cee1a88bbe836bea37db17f7edb28a3e6366fb94a0ec97fd0ab4de",
+    "original_path": "/workspace/codexcloud/hex-command/tmp/rl/pretrain-hour10-targeted-5m-20261124/posttune/checkpoints/minute-0003-1795479531020456957/planner.json",
+    "archive_path": "recovery/minute-03"
+  },
+  {
+    "minute": 5,
+    "actual_active_seconds": 300.0110019699787,
+    "model_sha256": "06c2b40d0edf11e6d589514bd3fc7890667c914af3ce08886c2a538cd9e9871a",
+    "original_path": "/workspace/codexcloud/hex-command/tmp/rl/pretrain-hour10-targeted-5m-20261124/posttune/checkpoints/minute-0005-1795479651279313147/planner.json",
+    "archive_path": "recovery/minute-05"
+  }
+]

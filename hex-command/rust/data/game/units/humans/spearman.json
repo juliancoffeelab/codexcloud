@@ -31,9 +31,11 @@
   "level": 1,
   "family": "spearman",
   "experienceNeeded": 10,
-  "advancesTo": ["warden", "halberdier"],
+  "advancesTo": [
+    "warden",
+    "halberdier"
+  ],
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

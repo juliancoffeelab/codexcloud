@@ -125,75 +125,1345 @@
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-escort": {
+    "rl-woodland-defense": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "fog": {
+          "stages": {
+            "rl-woodland-defense-1": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            },
+            "rl-woodland-defense-2": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            },
+            "rl-woodland-defense-3": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        }
+      }
+    },
+    "rl-underground-escape": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "fog": {
+          "stages": {
+            "rl-underground-escape-1": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            },
+            "rl-underground-escape-2": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            },
+            "rl-underground-escape-3": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        }
+      }
+    },
+    "rl-splitwake-crossing": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "fog": {
+          "stages": {
+            "rl-splitwake-crossing-1": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            },
+            "rl-splitwake-crossing-2": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            },
+            "rl-splitwake-crossing-3": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        }
+      }
+    },
+    "rl-coastal-assault": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "fog": {
+          "stages": {
+            "rl-coastal-assault-1": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            },
+            "rl-coastal-assault-2": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            },
+            "rl-coastal-assault-3": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        }
+      }
+    },
+    "rl-whitebank-relief": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "fog": {
+          "stages": {
+            "rl-whitebank-relief-1": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            },
+            "rl-whitebank-relief-2": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            },
+            "rl-whitebank-relief-3": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        }
+      }
+    },
+    "rl-vault-aftermath": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-courier": {
+    "rl-vault-breakthrough": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-protect": {
+    "rl-vault-rally": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-reach": {
+    "rl-urgent-crossing": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-hold": {
+    "rl-refuge-counterattack": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-capture": {
+    "rl-deadline-wait7": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-survive": {
+    "rl-deadline-pines-relief8": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-reinforcements": {
+    "rl-route-ambush": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-fog": {
+    "rl-route-pocket-leader": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-relay": {
+    "rl-route-pass-road": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "player-fog": {
+          "stages": {
+            "rl-route-pass-road": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "setVisionGroup": {
+                        "faction": "player",
+                        "group": "player-fog-player"
+                      }
+                    },
+                    {
+                      "setVisionGroup": {
+                        "faction": "enemy",
+                        "group": "player-fog-enemy"
+                      }
+                    },
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        }
+      }
+    },
+    "rl-escort-lantern-maze": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-company-human": {
+    "rl-escort-mistfen-patrol": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-company-skeletons": {
+    "rl-escort-splitwake-patrol": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-company-woodland": {
+    "rl-defend-lower-gallery-0": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-company-coastal": {
+    "rl-defend-tidegate-stand-110": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "both-fog": {
+          "stages": {
+            "rl-defend-tidegate-stand-110": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "returning-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "setVisionGroup": {
+                        "faction": "player",
+                        "group": "both-fog-player"
+                      }
+                    },
+                    {
+                      "setVisionGroup": {
+                        "faction": "enemy",
+                        "group": "both-fog-enemy"
+                      }
+                    },
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        }
+      }
+    },
+    "rl-defend-bracken-stand-010": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "player-fog": {
+          "stages": {
+            "rl-defend-bracken-stand-010": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "returning-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "setVisionGroup": {
+                        "faction": "player",
+                        "group": "player-fog-player"
+                      }
+                    },
+                    {
+                      "setVisionGroup": {
+                        "faction": "enemy",
+                        "group": "player-fog-enemy"
+                      }
+                    },
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        },
+        "both-fog": {
+          "stages": {
+            "rl-defend-bracken-stand-010": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "returning-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "setVisionGroup": {
+                        "faction": "player",
+                        "group": "both-fog-player"
+                      }
+                    },
+                    {
+                      "setVisionGroup": {
+                        "faction": "enemy",
+                        "group": "both-fog-enemy"
+                      }
+                    },
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        }
+      }
+    },
+    "rl-interrupt-siltbar-approach": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-dark-escort": {
+    "rl-interrupt-herring-tide-road-three": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-forest-evacuation": {
+    "rl-interrupt-south-ford-west-post": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-twilight-hold": {
+    "rl-briar-saddle": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     },
-    "rl-mist-reach": {
+    "rl-whitecap-ford": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "player-fog": {
+          "stages": {
+            "rl-whitecap-ford": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "setVisionGroup": {
+                        "faction": "player",
+                        "group": "player-fog-player"
+                      }
+                    },
+                    {
+                      "setVisionGroup": {
+                        "faction": "enemy",
+                        "group": "player-fog-enemy"
+                      }
+                    },
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        },
+        "both-fog": {
+          "stages": {
+            "rl-whitecap-ford": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "setVisionGroup": {
+                        "faction": "player",
+                        "group": "both-fog-player"
+                      }
+                    },
+                    {
+                      "setVisionGroup": {
+                        "faction": "enemy",
+                        "group": "both-fog-enemy"
+                      }
+                    },
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        }
+      }
+    },
+    "rl-slate-gallery": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "player-fog": {
+          "stages": {
+            "rl-slate-gallery": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "setVisionGroup": {
+                        "faction": "player",
+                        "group": "player-fog-player"
+                      }
+                    },
+                    {
+                      "setVisionGroup": {
+                        "faction": "enemy",
+                        "group": "player-fog-enemy"
+                      }
+                    },
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        },
+        "both-fog": {
+          "stages": {
+            "rl-slate-gallery": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "setVisionGroup": {
+                        "faction": "player",
+                        "group": "both-fog-player"
+                      }
+                    },
+                    {
+                      "setVisionGroup": {
+                        "faction": "enemy",
+                        "group": "both-fog-enemy"
+                      }
+                    },
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        }
+      }
+    },
+    "rl-breakthrough-cave5": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-breakthrough-ford-heal08": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-bellmarket-courts": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "player-fog": {
+          "stages": {
+            "rl-bellmarket-courts": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "setVisionGroup": {
+                        "faction": "player",
+                        "group": "player-fog-player"
+                      }
+                    },
+                    {
+                      "setVisionGroup": {
+                        "faction": "enemy",
+                        "group": "player-fog-enemy"
+                      }
+                    },
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        },
+        "both-fog": {
+          "stages": {
+            "rl-bellmarket-courts": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "setVisionGroup": {
+                        "faction": "player",
+                        "group": "both-fog-player"
+                      }
+                    },
+                    {
+                      "setVisionGroup": {
+                        "faction": "enemy",
+                        "group": "both-fog-enemy"
+                      }
+                    },
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        }
+      }
+    },
+    "rl-thorn-verge": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "player-fog": {
+          "stages": {
+            "rl-thorn-verge": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "setVisionGroup": {
+                        "faction": "player",
+                        "group": "player-fog-player"
+                      }
+                    },
+                    {
+                      "setVisionGroup": {
+                        "faction": "enemy",
+                        "group": "player-fog-enemy"
+                      }
+                    },
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        },
+        "both-fog": {
+          "stages": {
+            "rl-thorn-verge": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "setVisionGroup": {
+                        "faction": "player",
+                        "group": "both-fog-player"
+                      }
+                    },
+                    {
+                      "setVisionGroup": {
+                        "faction": "enemy",
+                        "group": "both-fog-enemy"
+                      }
+                    },
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        }
+      }
+    },
+    "rl-lair-outworks": {
+      "diplomacy": ["unrestricted"],
+      "routes": {
+        "player-fog": {
+          "stages": {
+            "rl-lair-outworks": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "setVisionGroup": {
+                        "faction": "player",
+                        "group": "player-fog-player"
+                      }
+                    },
+                    {
+                      "setVisionGroup": {
+                        "faction": "enemy",
+                        "group": "player-fog-enemy"
+                      }
+                    },
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        },
+        "both-fog": {
+          "stages": {
+            "rl-lair-outworks": {
+              "scriptConditions": {},
+              "scriptEvents": [
+                {
+                  "id": "battlefield-fog",
+                  "when": {
+                    "chapterStarted": true
+                  },
+                  "actions": [
+                    {
+                      "setVisionGroup": {
+                        "faction": "player",
+                        "group": "both-fog-player"
+                      }
+                    },
+                    {
+                      "setVisionGroup": {
+                        "faction": "enemy",
+                        "group": "both-fog-enemy"
+                      }
+                    },
+                    {
+                      "addConcealment": {
+                        "area": "map",
+                        "kind": "fog",
+                        "revealWithin": 3,
+                        "requires": {
+                          "terrains": null,
+                          "illumination": null
+                        }
+                      }
+                    }
+                  ],
+                  "observer": null,
+                  "remembers": true,
+                  "priority": 100,
+                  "objective": null
+                }
+              ],
+              "ignoreOptionalWhen": null
+            }
+          }
+        }
+      }
+    },
+    "rl-hollowbank-extraction-crossfire-late-guard": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-hollowbank-extraction-crossfire-nearside": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-ashbank-relay-fork-vigil": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-ashbank-relay-fork-vigil-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "rl-ashbank-relay-fork-vigil-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "broken-siege": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "broken-siege-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "broken-siege-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "contested-refuge": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "contested-refuge-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "contested-refuge-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "occupied-village-chain": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "occupied-village-chain-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "occupied-village-chain-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "proto-flooded-prison": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "proto-flooded-prison-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "proto-flooded-prison-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "proto-last-ferry": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "proto-last-ferry-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "proto-last-ferry-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "draft-hunt": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "draft-hunt-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "draft-hunt-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "draft-quarry": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "draft-quarry-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "draft-quarry-both-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "three-gates": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "three-gates-player-fog": {
+      "diplomacy": ["unrestricted"],
+      "routes": {}
+    },
+    "three-gates-both-fog": {
       "diplomacy": ["unrestricted"],
       "routes": {}
     }

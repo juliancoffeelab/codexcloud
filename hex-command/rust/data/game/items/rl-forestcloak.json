@@ -5,7 +5,6 @@
   "attacks": [],
   "armor": null,
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,
@@ -14,5 +13,7 @@
     },
     "penetrates": []
   },
-  "abilities": ["forestcloak"]
+  "abilities": [
+    "forestcloak"
+  ]
 }

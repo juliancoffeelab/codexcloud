@@ -1,0 +1,398 @@
+{
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": []
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": [
+          "fog"
+        ]
+      },
+      "explored": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "gold": 25,
+      "recruits": [
+        {
+          "unit": "swordsman",
+          "cost": null
+        },
+        {
+          "unit": "spearman",
+          "cost": null
+        },
+        {
+          "unit": "scout",
+          "cost": null
+        },
+        {
+          "unit": "archer",
+          "cost": null
+        },
+        {
+          "unit": "adept",
+          "cost": null
+        },
+        {
+          "unit": "rider",
+          "cost": null
+        },
+        {
+          "unit": "horse-archer",
+          "cost": null
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "tile": {
+            "col": 10,
+            "row": 12
+          },
+          "id": "u1",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": "player-leader",
+          "role": "leader",
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "soldier",
+          "tile": {
+            "col": 10,
+            "row": 13
+          },
+          "id": "u2",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "archer",
+          "tile": {
+            "col": 11,
+            "row": 12
+          },
+          "id": "u3",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "healer",
+          "tile": {
+            "col": 9,
+            "row": 12
+          },
+          "id": "u4",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "swordsman",
+          "tile": {
+            "col": 3,
+            "row": 18
+          },
+          "id": "u5",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "rider",
+          "tile": {
+            "col": 4,
+            "row": 18
+          },
+          "id": "u6",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": "relief-captain",
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "scout",
+          "tile": {
+            "col": 3,
+            "row": 17
+          },
+          "id": "u7",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "adept",
+          "tile": {
+            "col": 4,
+            "row": 17
+          },
+          "id": "u8",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        }
+      ],
+      "relations": {
+        "enemy": "hostile",
+        "player": "allied"
+      },
+      "visionGroup": "player",
+      "name": null,
+      "transfer": null
+    },
+    {
+      "id": "enemy",
+      "phase": "ai",
+      "controller": {
+        "kind": "ai",
+        "policy": null
+      },
+      "palette": "enemy",
+      "gold": 18,
+      "recruits": [
+        {
+          "unit": "skeleton",
+          "cost": null
+        },
+        {
+          "unit": "skeleton-impact-caster",
+          "cost": null
+        },
+        {
+          "unit": "skeleton-rider",
+          "cost": null
+        },
+        {
+          "unit": "bonearcher",
+          "cost": null
+        },
+        {
+          "unit": "skeleton-axeman",
+          "cost": null
+        },
+        {
+          "unit": "ghost",
+          "cost": null
+        }
+      ],
+      "units": [
+        {
+          "type": "necromancer",
+          "tile": {
+            "col": 25,
+            "row": 11
+          },
+          "id": "u9",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": "enemy-leader",
+          "role": "leader",
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 16,
+            "row": 12
+          },
+          "id": "u10",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "skeleton-axeman",
+          "tile": {
+            "col": 16,
+            "row": 13
+          },
+          "id": "u11",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "bonearcher",
+          "tile": {
+            "col": 17,
+            "row": 11
+          },
+          "id": "u12",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "skeleton-impact-caster",
+          "tile": {
+            "col": 18,
+            "row": 12
+          },
+          "id": "u13",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "skeleton",
+          "tile": {
+            "col": 22,
+            "row": 11
+          },
+          "id": "u14",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "role": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        }
+      ],
+      "relations": {
+        "player": "hostile",
+        "enemy": "allied"
+      },
+      "visionGroup": "enemy",
+      "name": null,
+      "transfer": null
+    }
+  ],
+  "arrivals": [],
+  "round": 1,
+  "turn": "player",
+  "log": [],
+  "combatRng": 1831565813
+}

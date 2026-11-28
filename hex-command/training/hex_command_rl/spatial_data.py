@@ -36,10 +36,30 @@ class SpatialData:
             and self.manifest.get("channel_names")
             == native.CAMPAIGN_SPATIAL_CHANNEL_NAMES
         )
-        if not current and not legacy and not duties and not diplomacy and not campaign:
+        visibility = (
+            self.manifest.get("spatial_schema") == 11
+            and self.manifest.get("channel_names") == native.VISIBILITY_SPATIAL_CHANNEL_NAMES
+        )
+        history = (
+            self.manifest.get("spatial_schema") == 13
+            and self.manifest.get("channel_names") == native.VISIBILITY_SPATIAL_CHANNEL_NAMES
+        )
+        holds = (
+            self.manifest.get("spatial_schema") == 14
+            and self.manifest.get("channel_names") == native.HOLD_SPATIAL_CHANNEL_NAMES
+        )
+        opponent_holds = (
+            self.manifest.get("spatial_schema") == 15
+            and self.manifest.get("channel_names") == native.SPATIAL_CHANNEL_NAMES
+        )
+        unit_history = (
+            self.manifest.get("spatial_schema") in (17, 18)
+            and self.manifest.get("channel_names") == native.SPATIAL_CHANNEL_NAMES
+        )
+        if not any((current, legacy, duties, diplomacy, campaign, visibility, history, holds, opponent_holds, unit_history)):
             raise ValueError("spatial dataset schema mismatch")
         if (
-            current
+            (current or visibility or history or holds or opponent_holds or unit_history)
             and self.manifest.get("actor_channels") != native.ACTOR_SPATIAL_CHANNELS
         ):
             raise ValueError(
@@ -54,12 +74,12 @@ class SpatialData:
         self.channels = channels
         self.context_values = (
             np.load(directory / "context_values.npy", mmap_mode="r")
-            if current
+            if current or visibility or history or holds or opponent_holds or unit_history
             else np.zeros(0, np.float32)
         )
         self.contexts = (
             np.load(directory / "contexts.npy")
-            if current
+            if current or visibility or history or holds or opponent_holds or unit_history
             else np.empty((0, 3), np.int64)
         )
         if self.contexts.ndim != 2 or self.contexts.shape[1] != 3:
@@ -92,6 +112,10 @@ class SpatialData:
             if diplomacy
             else len(native.CAMPAIGN_FEATURE_NAMES)
             if campaign
+            else len(native.VISIBILITY_FEATURE_NAMES)
+            if visibility
+            else len(native.IDLE_FEATURE_NAMES)
+            if history or holds or opponent_holds
             else len(native.FEATURE_NAMES)
         )
         if self.dense[0].shape[1] != expected_width:

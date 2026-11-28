@@ -1,0 +1,426 @@
+{
+  "family": "interrupt-or-finish",
+  "stage": "Marlow Cut",
+  "status": "validated",
+  "placement": "ignored experimental arena catalog",
+  "catalog": "validated/catalog",
+  "victory": {
+    "territory": {
+      "col": 4,
+      "row": 2
+    },
+    "holdRounds": 6,
+    "startingOwner": "enemy",
+    "startingHoldProgress": 0,
+    "alternative": "Defeat the opposing commander. Both sides have that alternative."
+  },
+  "opponent": "Classic",
+  "recruitLimit": 0,
+  "maxRounds": 30,
+  "fog": "Full visibility for both sides",
+  "pair": "Same terrain, factions, unit stats, and objective rule. Only enemy commander placement differs.",
+  "conditions": {
+    "interrupt": {
+      "landscape": "rl-marlow-cut-pass-interrupt",
+      "commanderTile": {
+        "col": 1,
+        "row": 17
+      },
+      "commanderHp": 18,
+      "map": "validated/catalog/game/scenario/rl-marlow-cut-pass-interrupt/map.json",
+      "roster": "validated/catalog/game/scenario/rl-marlow-cut-pass-interrupt/roster.json",
+      "scenario": "validated/catalog/game/scenario/rl-marlow-cut-pass-interrupt/scenario.json",
+      "objectiveRule": "validated/catalog/game/scenario/rl-marlow-cut-pass-interrupt/simulation-rule.json",
+      "preview": "renders/interrupt/preview.png",
+      "renderInputs": "renders/interrupt"
+    },
+    "finish": {
+      "landscape": "rl-marlow-cut-pass-finish",
+      "commanderTile": {
+        "col": 16,
+        "row": 8
+      },
+      "commanderHp": 18,
+      "map": "validated/catalog/game/scenario/rl-marlow-cut-pass-finish/map.json",
+      "roster": "validated/catalog/game/scenario/rl-marlow-cut-pass-finish/roster.json",
+      "scenario": "validated/catalog/game/scenario/rl-marlow-cut-pass-finish/scenario.json",
+      "objectiveRule": "validated/catalog/game/scenario/rl-marlow-cut-pass-finish/simulation-rule.json",
+      "preview": "renders/finish/preview.png",
+      "renderInputs": "renders/finish"
+    }
+  },
+  "discovery": {
+    "seeds": [
+      661135101,
+      661135102,
+      661135103,
+      661135104,
+      661135105,
+      661135106,
+      661135107,
+      661135108
+    ],
+    "summary": "discovery-2/summary.json",
+    "games": "discovery-2/games.jsonl",
+    "protocol": "discovery-2/protocol.json"
+  },
+  "confirmation": {
+    "seeds": [
+      661135201,
+      661135202,
+      661135203,
+      661135204,
+      661135205,
+      661135206,
+      661135207,
+      661135208,
+      661135209,
+      661135210,
+      661135211,
+      661135212,
+      661135213,
+      661135214,
+      661135215,
+      661135216,
+      661135217,
+      661135218,
+      661135219,
+      661135220
+    ],
+    "games": "confirmation/games.jsonl",
+    "total": 200,
+    "reference": "Queued",
+    "protocol": "confirmation/protocol.json",
+    "results": {
+      "interrupt": {
+        "full": {
+          "games": 20,
+          "wins": 19,
+          "losses": 1,
+          "caps": 0,
+          "playerLeaderWins": 0,
+          "playerTerritoryWins": 19,
+          "enemyTerritoryWins": 1,
+          "firstKnightTurnOne": {
+            "(7, 4)": 12,
+            "(7, 3)": 8
+          },
+          "firstCommanderAttackRound": {
+            "none": 20
+          },
+          "firstPlayerCaptureRound": {
+            "3": 19,
+            "4": 1
+          },
+          "enemyHeldBeforeFirstCapture": {
+            "2": 19,
+            "3": 1
+          },
+          "terminalRound": {
+            "8": 18,
+            "9": 1,
+            "12": 1
+          }
+        },
+        "queued": {
+          "games": 20,
+          "wins": 20,
+          "losses": 0,
+          "caps": 0,
+          "playerLeaderWins": 0,
+          "playerTerritoryWins": 20,
+          "enemyTerritoryWins": 0,
+          "firstKnightTurnOne": {
+            "(7, 4)": 12,
+            "(7, 3)": 8
+          },
+          "firstCommanderAttackRound": {
+            "none": 20
+          },
+          "firstPlayerCaptureRound": {
+            "3": 19,
+            "4": 1
+          },
+          "enemyHeldBeforeFirstCapture": {
+            "2": 19,
+            "3": 1
+          },
+          "terminalRound": {
+            "8": 19,
+            "9": 1
+          }
+        },
+        "classic": {
+          "games": 20,
+          "wins": 20,
+          "losses": 0,
+          "caps": 0,
+          "playerLeaderWins": 0,
+          "playerTerritoryWins": 20,
+          "enemyTerritoryWins": 0,
+          "firstKnightTurnOne": {
+            "(8, 10)": 20
+          },
+          "firstCommanderAttackRound": {
+            "none": 20
+          },
+          "firstPlayerCaptureRound": {
+            "4": 15,
+            "5": 5
+          },
+          "enemyHeldBeforeFirstCapture": {
+            "3": 15,
+            "4": 5
+          },
+          "terminalRound": {
+            "9": 15,
+            "10": 5
+          }
+        },
+        "hour8": {
+          "games": 20,
+          "wins": 20,
+          "losses": 0,
+          "caps": 0,
+          "playerLeaderWins": 0,
+          "playerTerritoryWins": 20,
+          "enemyTerritoryWins": 0,
+          "firstKnightTurnOne": {
+            "(7, 4)": 20
+          },
+          "firstCommanderAttackRound": {
+            "none": 20
+          },
+          "firstPlayerCaptureRound": {
+            "4": 10,
+            "5": 3,
+            "2": 7
+          },
+          "enemyHeldBeforeFirstCapture": {
+            "3": 10,
+            "4": 3,
+            "1": 7
+          },
+          "terminalRound": {
+            "9": 10,
+            "10": 3,
+            "7": 7
+          }
+        },
+        "hour10": {
+          "games": 20,
+          "wins": 20,
+          "losses": 0,
+          "caps": 0,
+          "playerLeaderWins": 9,
+          "playerTerritoryWins": 11,
+          "enemyTerritoryWins": 0,
+          "firstKnightTurnOne": {
+            "(7, 4)": 20
+          },
+          "firstCommanderAttackRound": {
+            "6": 9,
+            "none": 11
+          },
+          "firstPlayerCaptureRound": {
+            "3": 13,
+            "2": 7
+          },
+          "enemyHeldBeforeFirstCapture": {
+            "2": 13,
+            "1": 7
+          },
+          "terminalRound": {
+            "6": 4,
+            "7": 12,
+            "8": 4
+          }
+        }
+      },
+      "finish": {
+        "full": {
+          "games": 20,
+          "wins": 20,
+          "losses": 0,
+          "caps": 0,
+          "playerLeaderWins": 20,
+          "playerTerritoryWins": 0,
+          "enemyTerritoryWins": 0,
+          "firstKnightTurnOne": {
+            "(14, 9)": 7,
+            "(14, 8)": 13
+          },
+          "firstCommanderAttackRound": {
+            "2": 20
+          },
+          "firstPlayerCaptureRound": {
+            "none": 20
+          },
+          "enemyHeldBeforeFirstCapture": {
+            "none": 20
+          },
+          "terminalRound": {
+            "2": 19,
+            "3": 1
+          }
+        },
+        "queued": {
+          "games": 20,
+          "wins": 20,
+          "losses": 0,
+          "caps": 0,
+          "playerLeaderWins": 20,
+          "playerTerritoryWins": 0,
+          "enemyTerritoryWins": 0,
+          "firstKnightTurnOne": {
+            "(14, 9)": 7,
+            "(14, 8)": 13
+          },
+          "firstCommanderAttackRound": {
+            "2": 20
+          },
+          "firstPlayerCaptureRound": {
+            "none": 20
+          },
+          "enemyHeldBeforeFirstCapture": {
+            "none": 20
+          },
+          "terminalRound": {
+            "2": 19,
+            "3": 1
+          }
+        },
+        "classic": {
+          "games": 20,
+          "wins": 20,
+          "losses": 0,
+          "caps": 0,
+          "playerLeaderWins": 20,
+          "playerTerritoryWins": 0,
+          "enemyTerritoryWins": 0,
+          "firstKnightTurnOne": {
+            "(13, 7)": 20
+          },
+          "firstCommanderAttackRound": {
+            "2": 20
+          },
+          "firstPlayerCaptureRound": {
+            "none": 20
+          },
+          "enemyHeldBeforeFirstCapture": {
+            "none": 20
+          },
+          "terminalRound": {
+            "2": 17,
+            "3": 3
+          }
+        },
+        "hour8": {
+          "games": 20,
+          "wins": 13,
+          "losses": 7,
+          "caps": 0,
+          "playerLeaderWins": 0,
+          "playerTerritoryWins": 13,
+          "enemyTerritoryWins": 7,
+          "firstKnightTurnOne": {
+            "(7, 4)": 20
+          },
+          "firstCommanderAttackRound": {
+            "none": 8,
+            "7": 7,
+            "6": 3,
+            "5": 2
+          },
+          "firstPlayerCaptureRound": {
+            "2": 20
+          },
+          "enemyHeldBeforeFirstCapture": {
+            "1": 20
+          },
+          "terminalRound": {
+            "7": 13,
+            "13": 7
+          }
+        },
+        "hour10": {
+          "games": 20,
+          "wins": 12,
+          "losses": 8,
+          "caps": 0,
+          "playerLeaderWins": 0,
+          "playerTerritoryWins": 12,
+          "enemyTerritoryWins": 8,
+          "firstKnightTurnOne": {
+            "(7, 4)": 20
+          },
+          "firstCommanderAttackRound": {
+            "none": 12,
+            "8": 1,
+            "6": 7
+          },
+          "firstPlayerCaptureRound": {
+            "2": 20
+          },
+          "enemyHeldBeforeFirstCapture": {
+            "1": 20
+          },
+          "terminalRound": {
+            "7": 12,
+            "13": 8
+          }
+        }
+      }
+    },
+    "rawPhases": "confirmation/traces/raw-phases.jsonl.gz",
+    "objectiveTraces": "confirmation/traces/objective-traces.json",
+    "representativeActions": "confirmation/representative-actions.json",
+    "observationEvidence": "confirmation/observation-evidence.json"
+  },
+  "provenance": {
+    "nativeSourceCommit": "bfa39dacfe6ce4bcbdb6eedafc92250deb15b4e4",
+    "native": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/native/hex_command_training.so",
+      "sha256": "7d7ab7ede88526b76ceb1c91de5fc9df2187c79c1ce0b7ba3b8b9b1f0cf322f2"
+    },
+    "modelDigests": {
+      "hour8": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/update-00002205-1795440240315037513/planner.json",
+        "sha256": "e7ef684d9e135e7817e390c533ec8b903d08db2d6ac0253c1aa340616b47a619"
+      },
+      "hour10": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/last-1795458575107520190/planner.json",
+        "sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee"
+      }
+    },
+    "nativeFingerprints": {
+      "content": "ae1067bac03318366d0622a56596b3af0feee6a09a9c29d760098b26b2bfb56a",
+      "engine": "8cf0581157741df24b8e5e5c57ab6b8d0b1caae00e3def9b5d4866ee71eb1859"
+    },
+    "assetDigests": {
+      "manifest.json": "eff279e0904260b5eec48fe3beb8139df4fa3d0f97492dde8b6a9a6da359ad57",
+      "simulation/arena.json": "f308737f3007c079edd34cc343b7cbf5b55261badfe71f49ab5ad076b0e477c4",
+      "game/scenario/rl-marlow-cut-pass-finish/map.json": "ead839554186f787d83b7f8de396181e816f430a31923dab7c73f3f9025334cc",
+      "game/scenario/rl-marlow-cut-pass-finish/roster.json": "6975324ffe9627e3d384aa3762babea61ac300801376ed0fc9628800b8f2cb23",
+      "game/scenario/rl-marlow-cut-pass-finish/scenario.json": "cdf906f7ac929cd92e3e073db75cddcb6dd73162359b1ccc6216ca0755baf98c",
+      "game/scenario/rl-marlow-cut-pass-finish/simulation-rule.json": "592f989078f040ea4d4666720dad35d542684d5ebedc6b8a0d033904c6b3984d",
+      "game/scenario/rl-marlow-cut-pass-interrupt/map.json": "55b161785bdcb0afda3daad85e413f0efae63d74e1ee801fe4e8e83641d0615f",
+      "game/scenario/rl-marlow-cut-pass-interrupt/roster.json": "839cd253f4d0c9fd3272f07448f3ae5eb9f885b38ede0091da5ea0b5df1ad316",
+      "game/scenario/rl-marlow-cut-pass-interrupt/scenario.json": "cdf906f7ac929cd92e3e073db75cddcb6dd73162359b1ccc6216ca0755baf98c",
+      "game/scenario/rl-marlow-cut-pass-interrupt/simulation-rule.json": "7e40e3eac35b2734488fb35390ff5e33df82e9df121634ebb868458588dc602e"
+    },
+    "methods": {
+      "build.py": "670e59a84721723412d0352c0af146d9d626b651906791008161ad4fddce25dd",
+      "evaluate.py": "308b7ba918c5524ac48497426838ad0bfa304f26148fe4ebd89dc3935bdc9b95",
+      "observe.py": "a4f1b90a5f7c6690e7fe15c72bdc44e374fb91e27937d6e7f0c75c1eab3a211f",
+      "trace.py": "a6ae1a2dbe4ed174b92f20d11e31167629de2b7b6b0f2737a74aaf9366dd4051",
+      "probe/src/main.rs": "00deab1f02e78af0eba26c4599a6ad17310524ab62103a8172d299eb61aaec30",
+      "render.py": "ccc5dda450e39e72bc721da122e8da711b54af0fb3d3954c029bf1cd291476da"
+    }
+  },
+  "limits": [
+    "Changing commander placement also changes its ability to pressure the post after the first action.",
+    "The finish condition rewards recognizing the earlier, safer finish. A post-first plan can still win.",
+    "The pair holds the clock length fixed. It does not isolate sensitivity to clock length or measure training transfer."
+  ]
+}

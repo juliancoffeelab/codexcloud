@@ -1,0 +1,9 @@
+{
+  "before": {
+    "trainer": 82957,
+    "evaluator": 82958,
+    "supervisor": 82956
+  },
+  "newSupervisor": 83099,
+  "method": "Replace supervisor only; attach to live children via PID/root validation; no training process stopped"
+}

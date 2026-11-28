@@ -16,9 +16,9 @@ macro_rules! planner_kind {
         }
     };
 }
-#[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+#[cfg(feature = "training")]
 planner_kind!(Learned,);
-#[cfg(not(all(feature = "training", not(target_arch = "wasm32"))))]
+#[cfg(not(feature = "training"))]
 planner_kind!();
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(super) enum QueueMode {
@@ -45,7 +45,7 @@ impl Planner for PlannerKind {
         orders: &crate::ai::orders::TacticalOrders,
     ) -> Result<crate::ai::orders::PlanningReport, CommandError> {
         match self {
-            #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+            #[cfg(feature = "training")]
             Self::Learned => learned::Learned.plan(context, orders),
             Self::Classic => classic::Classic.plan(context, orders),
             Self::Full => full::Full.plan(context, orders),
@@ -188,7 +188,7 @@ impl PlannerKind {
     pub const fn queued(self) -> bool {
         match self {
             Self::Queued => true,
-            #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+            #[cfg(feature = "training")]
             Self::Learned => false,
             Self::Classic | Self::Full => false,
         }
@@ -205,5 +205,5 @@ mod recruitment;
 
 mod proposal;
 
-#[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+#[cfg(feature = "training")]
 pub(crate) mod learned;

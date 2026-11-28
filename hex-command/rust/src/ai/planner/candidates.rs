@@ -1001,6 +1001,8 @@ mod tests {
                     authored_orders = crate::ai::CampaignerKind::Mission.campaign_orders(
                         &mission,
                         crate::ai::campaigner::mission::CampaignInput {
+                            objective_progress: &[],
+                            opponent_progress: &[],
                             seed: 0,
                             goals: None,
                             diplomacy: crate::ai::Diplomacy::Unrestricted,

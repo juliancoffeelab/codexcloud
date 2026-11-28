@@ -1,0 +1,31 @@
+{
+  "authorized_date": "2026-11-26",
+  "requested_additional_seconds": 43200,
+  "start_saved_seconds": 43200.194862209,
+  "total_target_seconds": 86400.194862209,
+  "start_model_sha256": "da26cde88dde2918a2f39eab5b8144ea4cfb98c8bdda7f6f61e2f7983c976bf2",
+  "start_checkpoint": "checkpoints/last-1795524095845528690",
+  "preserve": [
+    "policy",
+    "critic",
+    "reference",
+    "actor_optimizer",
+    "critic_optimizer",
+    "torch_rng",
+    "numpy_rng",
+    "python_rng",
+    "sampler",
+    "update",
+    "episodes",
+    "decisions",
+    "action_counts"
+  ],
+  "reference": "unchanged original hour10 actor",
+  "workload": "unchanged frozen 14 ordinary25% /28 targeted25% /3 broad campaigns50%, adaptive inside groups",
+  "rewards": "unchanged arena+1/chapter+1/finale+2; no objective-progress or kill bonuses",
+  "evaluation": "Reuse immutable completed hour0\u201312 panels; evaluate hour13\u201324 at first checkpoints >= start_saved_seconds + additional_hour*3600. Same heldout312, diagnostic214, Lantern24. Selection among all0\u201324 uses heldout only, previous selected hour11 eligible.",
+  "patch_scope": "Only increase frozen CLI absolute-time validation ceiling and supervisor target; evaluator adds twelve hourly panels. No model/training equations/workload changes.",
+  "original_archive": "training/experiments/2026-11-24-ppo-hour10-12h",
+  "archive_extension": "training/experiments/2026-11-24-ppo-hour10-12h/extension-twelve-hours-20261126",
+  "created": 1795651667.6211865
+}

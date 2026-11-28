@@ -1,0 +1,2282 @@
+[
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "full",
+    "imitator": "full",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "queued",
+    "imitator": "queued",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-west-swift",
+      "objective": "authored",
+      "seed": 571238020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238001,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238002,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238003,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238004,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238005,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238006,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238007,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238008,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238009,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238010,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238011,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238012,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238013,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238014,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238015,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238016,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238017,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238018,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238019,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  },
+  {
+    "player": "classic",
+    "imitator": "classic",
+    "config": {
+      "campaign": "rl-ashbank-relay-breach-two-fronts",
+      "objective": "authored",
+      "seed": 571238020,
+      "diplomacy": "unrestricted",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    }
+  }
+]

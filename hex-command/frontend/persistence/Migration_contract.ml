@@ -6,17 +6,17 @@
 [@@@warnerror "+8+9"]
 
 module Live_native = Domain
-module Native_checked : module type of Native_v52 = Live_native
+module Native_checked : module type of Native_v53 = Live_native
 module Native_bridge = Migration_native_contract.Make (Live_native)
 module H = Historical_types
 module V = Current_save
 module A = Save_format
 
-let side_from : H.V52.current_first -> Domain.Turn_phase.t = function
+let side_from : H.V53.current_first -> Domain.Turn_phase.t = function
   | `Player -> Player
   | `Ai -> Ai
 
-let side_to : Domain.Turn_phase.t -> H.V52.current_first = function Player -> `Player | Ai -> `Ai
+let side_to : Domain.Turn_phase.t -> H.V53.current_first = function Player -> `Player | Ai -> `Ai
 
 let policy_from : V.policy -> A.policy = function
   | `Classic -> `Classic
@@ -42,6 +42,7 @@ let planner_from : H.save35_setup_enemy_blocks_member1_planner -> Domain.Planner
   | `Queued -> Queued
 
 let planner_to : Domain.Planner_kind.t -> H.save35_setup_enemy_blocks_member1_planner = function
+  | Learned -> invalid_arg "Learned AI-play selection is transient"
   | Classic -> `Classic
   | Full -> `Full
   | Queued -> `Queued

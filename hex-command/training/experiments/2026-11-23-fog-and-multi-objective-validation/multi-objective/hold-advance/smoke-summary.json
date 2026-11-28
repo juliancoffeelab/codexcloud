@@ -1,0 +1,28 @@
+{
+  "label": "smoke",
+  "raw": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/smoke.jsonl",
+  "catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog",
+  "catalogSha256": "8147add32180c6162cee465773f9c0e33a4f71628a2e43e1f1b371a2b0145798",
+  "seeds": [
+    571230001
+  ],
+  "native": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/native/hex_command_training.so",
+  "nativeSha256": "7d7ab7ede88526b76ceb1c91de5fc9df2187c79c1ce0b7ba3b8b9b1f0cf322f2",
+  "models": {},
+  "outcomes": [
+    {
+      "variant": "base",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 1,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 1
+      }
+    }
+  ]
+}

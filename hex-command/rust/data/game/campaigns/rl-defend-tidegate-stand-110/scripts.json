@@ -1,0 +1,356 @@
+{
+  "requiredCompanions": ["warden"],
+  "events": [
+    {
+      "id": "capture",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 6,
+              "row": 5
+            }
+          },
+          "faction": "player",
+          "turns": null,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "captured"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Capture the neutral watch post",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 6,
+                "row": 5
+              }
+            }
+          ]
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "captured"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "counterattack",
+      "when": {
+        "flag": "captured"
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 9,
+                "row": 5
+              }
+            },
+            "area": [],
+            "radius": 2,
+            "aiGroup": null,
+            "units": ["merfolk-maceguard-l2", "tidehunter"]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "hold",
+      "when": {
+        "all": [
+          {
+            "flag": "captured"
+          },
+          {
+            "held": {
+              "tile": {
+                "hex": {
+                  "col": 6,
+                  "row": 5
+                }
+              },
+              "turns": 6,
+              "when": {
+                "own": {
+                  "tile": {
+                    "hex": {
+                      "col": 6,
+                      "row": 5
+                    }
+                  },
+                  "faction": "player",
+                  "turns": null,
+                  "when": null
+                }
+              },
+              "character": "warden",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 6,
+                  "row": 5
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "held"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Staff the post for 6 consecutive turns",
+        "intent": {
+          "hold": {
+            "tile": {
+              "hex": {
+                "col": 6,
+                "row": 5
+              }
+            },
+            "turns": 6,
+            "when": {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 6,
+                    "row": 5
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            },
+            "character": "warden",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "flag": "captured"
+        },
+        "satisfiedWhen": {
+          "flag": "held"
+        },
+        "preserveLives": {
+          "character": "warden",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "supplies",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 9,
+              "row": 1
+            }
+          },
+          "faction": "player",
+          "turns": null,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "supplied"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Secure the detached supply site",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 9,
+                "row": 1
+              }
+            }
+          ]
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "flag": "captured"
+        },
+        "satisfiedWhen": {
+          "flag": "supplied"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "warden-lost",
+      "when": {
+        "noUnits": {
+          "character": "warden",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The warden fell."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "fall",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The commander fell."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "win",
+      "when": {
+        "all": [
+          {
+            "flag": "held"
+          },
+          {
+            "flag": "supplied"
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 6,
+                  "row": 5
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "The post is held and the supply site secured."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turn": 21
+      },
+      "actions": [
+        {
+          "defeat": "The hold deadline expired."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

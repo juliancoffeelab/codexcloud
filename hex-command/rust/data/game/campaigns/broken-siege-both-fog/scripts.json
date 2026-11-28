@@ -1,0 +1,424 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "hold-camp",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 25,
+              "row": 11
+            }
+          },
+          "faction": "player",
+          "turns": 10,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "siege-broken"
+        },
+        {
+          "setFlag": "camp-held"
+        },
+        {
+          "log": "The enemy camp has been held for ten turns. Rendezvous at the garrison."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Hold the siege camp for ten consecutive turns",
+        "intent": {
+          "own": {
+            "tile": {
+              "hex": {
+                "col": 25,
+                "row": 11
+              }
+            },
+            "faction": "player",
+            "turns": 10,
+            "when": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "not": {
+            "flag": "siege-broken"
+          }
+        },
+        "availableWhen": {
+          "not": {
+            "flag": "siege-broken"
+          }
+        },
+        "satisfiedWhen": {
+          "flag": "siege-broken"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "eliminate-enemy",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": null,
+          "side": null,
+          "faction": "enemy",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "siege-broken"
+        },
+        {
+          "setFlag": "enemy-eliminated"
+        },
+        {
+          "log": "The enemy force has been eliminated. Rendezvous at the garrison."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Alternatively, eliminate the enemy force",
+        "intent": {
+          "defeat": {
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "not": {
+            "flag": "siege-broken"
+          }
+        },
+        "availableWhen": {
+          "not": {
+            "flag": "siege-broken"
+          }
+        },
+        "satisfiedWhen": {
+          "flag": "siege-broken"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "commander-home",
+      "when": {
+        "all": [
+          {
+            "flag": "siege-broken"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 10,
+                  "row": 12
+                }
+              },
+              "through": false,
+              "character": "player-leader",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Rendezvous at the garrison: commander",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 10,
+                "row": 12
+              }
+            },
+            "through": false,
+            "character": "player-leader",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "flag": "siege-broken"
+        },
+        "availableWhen": {
+          "flag": "siege-broken"
+        },
+        "satisfiedWhen": {
+          "stand": {
+            "tile": {
+              "hex": {
+                "col": 10,
+                "row": 12
+              }
+            },
+            "through": false,
+            "character": "player-leader",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    },
+    {
+      "id": "relief-home",
+      "when": {
+        "all": [
+          {
+            "flag": "siege-broken"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 9,
+                  "row": 13
+                }
+              },
+              "through": false,
+              "character": "relief-captain",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Rendezvous at the garrison: relief captain",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 9,
+                "row": 13
+              }
+            },
+            "through": false,
+            "character": "relief-captain",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "flag": "siege-broken"
+        },
+        "availableWhen": {
+          "flag": "siege-broken"
+        },
+        "satisfiedWhen": {
+          "stand": {
+            "tile": {
+              "hex": {
+                "col": 9,
+                "row": 13
+              }
+            },
+            "through": false,
+            "character": "relief-captain",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    },
+    {
+      "id": "rendezvous",
+      "when": {
+        "all": [
+          {
+            "flag": "siege-broken"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 10,
+                  "row": 12
+                }
+              },
+              "through": false,
+              "character": "player-leader",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 9,
+                  "row": 13
+                }
+              },
+              "through": false,
+              "character": "relief-captain",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "The siege is broken and both captains have reunited at the garrison."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "leader-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The commander has fallen."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 100
+    },
+    {
+      "id": "relief-captain-lost",
+      "when": {
+        "noUnits": {
+          "character": "relief-captain",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The relief captain has fallen."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 100
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turnAtLeast": 71
+      },
+      "actions": [
+        {
+          "defeat": "The surrounding enemy closes the valley."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": -100
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

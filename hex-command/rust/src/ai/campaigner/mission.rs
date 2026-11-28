@@ -18,6 +18,8 @@ use rustc_hash::FxHashSet;
 pub(crate) struct CampaignInput<'a> {
     pub seed: u32,
     pub goals: Option<&'a [Objective]>,
+    pub objective_progress: &'a [ObjectiveProgress],
+    pub opponent_progress: &'a [ObjectiveProgress],
     pub diplomacy: Diplomacy,
 }
 
@@ -205,7 +207,9 @@ impl CampaignerKind {
                     satisfied: o.satisfied,
                     hold_turns_remaining: o.hold_turns_remaining,
                 })
+                .chain(input.objective_progress.iter().cloned())
                 .collect(),
+            opponent_progress: input.opponent_progress.to_vec(),
             scoped,
             inactive,
             targets: authored_targets.iter().cloned().map(Target::from).collect(),
@@ -947,7 +951,7 @@ fn actor_route(goal: &Objective) -> bool {
     fn required_arrival(goal: &Objective) -> bool {
         match goal.kind {
             ObjectiveKind::Escort | ObjectiveKind::Escape | ObjectiveKind::Vigil => true,
-            ObjectiveKind::Capture => goal.actor.is_some(),
+            ObjectiveKind::Capture => goal.actor.is_some() || goal.hold == Some(true),
             ObjectiveKind::Visit => goal.actor.is_some(),
             ObjectiveKind::Defeat => false,
         }

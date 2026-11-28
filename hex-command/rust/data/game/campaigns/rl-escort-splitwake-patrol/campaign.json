@@ -1,0 +1,38 @@
+{
+  "tags": ["simulation"],
+  "id": "rl-escort-splitwake-patrol",
+  "name": "Splitwake Patrol",
+  "tagline": "Splitwake Patrol",
+  "description": "Escort the protected unit to the signal post, then take the commander to the outer landing.",
+  "shortDescription": "A two-objective simulation fixture.",
+  "race": "merfolk",
+  "leader": "tidekeeper",
+  "characters": [
+    {
+      "id": "player-leader",
+      "name": "player-leader"
+    },
+    {
+      "id": "enemy-leader",
+      "name": "enemy-leader"
+    },
+    {
+      "id": "courier",
+      "name": "Splitwake courier"
+    }
+  ],
+  "ending": [],
+  "stages": ["stage.json"],
+  "carryover": {
+    "goldLimit": 8,
+    "veteranLimit": 4,
+    "deploymentRadius": 3,
+    "weights": {
+      "hp": 1,
+      "damage": 2,
+      "healing": 5,
+      "level": 3,
+      "experience": 0.3333333333333333
+    }
+  }
+}

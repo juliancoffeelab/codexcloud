@@ -1,0 +1,7 @@
+{
+  "map": "map-fog.json",
+  "roster": "roster-fog.json",
+  "fixedArmies": false,
+  "characters": [],
+  "tags": ["simulation"]
+}

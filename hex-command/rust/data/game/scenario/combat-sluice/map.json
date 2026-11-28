@@ -42,7 +42,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -51,7 +54,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -116,7 +122,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -125,7 +134,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -134,7 +146,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -224,7 +239,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -233,7 +251,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -242,7 +263,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -316,7 +340,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -325,7 +352,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -334,7 +364,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -343,7 +376,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -352,7 +388,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -369,7 +408,10 @@
       "terrain": "bridge",
       "owner": null,
       "floor": "dark-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -442,7 +484,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -476,7 +521,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -534,7 +582,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -543,7 +594,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -568,7 +622,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -642,7 +699,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -651,7 +711,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -734,7 +797,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -743,7 +809,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -752,7 +821,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -761,7 +833,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -874,7 +949,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -883,7 +961,10 @@
       "terrain": "ford",
       "owner": null,
       "floor": "shallow-water",
-      "connections": ["e", "w"],
+      "connections": [
+        "e",
+        "w"
+      ],
       "environmentEffects": []
     },
     {
@@ -910,7 +991,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,

@@ -233,6 +233,8 @@ pub enum Terrain {
     Forest,
     Hill,
     Water,
+    #[serde(rename = "shallow-water")]
+    ShallowWater,
     Village,
     Keep,
     Grove,
@@ -267,6 +269,7 @@ impl Terrain {
             Self::Forest => "forest",
             Self::Hill => "hill",
             Self::Water => "water",
+            Self::ShallowWater => "shallow-water",
             Self::Village => "village",
             Self::Keep => "keep",
             Self::Grove => "grove",

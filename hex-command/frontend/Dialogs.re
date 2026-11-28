@@ -337,11 +337,15 @@ module Settings = {
               <select
                 ariaLabel={js|Player control|js}
                 disabled={state.turn != Domain.Turn_phase.Player}
-                value={Option.fold(
-                  ~none={js|human|js},
-                  ~some=p => Setup.preset(p).id,
-                  view.player_ai,
-                )}
+                value={
+                  view.learned_player
+                    ? {js|learned|js}
+                    : Option.fold(
+                        ~none={js|human|js},
+                        ~some=p => Setup.preset(p).id,
+                        view.player_ai,
+                      )
+                }
                 onChange={event => {
                   let selected = selectValue(selectTarget(event));
                   let policy =
@@ -349,12 +353,17 @@ module Settings = {
                       (preset: Setup.difficulty) => preset.id == selected,
                       Setup.difficulties,
                     );
-                  Session.set_player_ai(
-                    session,
-                    Option.map((preset: Setup.difficulty) => preset.policy, policy),
-                  );
+                  if (selected == {js|learned|js}) {
+                    Session.set_learned_player(session);
+                  } else {
+                    Session.set_player_ai(
+                      session,
+                      Option.map((preset: Setup.difficulty) => preset.policy, policy),
+                    );
+                  };
                 }}>
                 <option value={js|human|js}> {text({js|You|js})} </option>
+                <option value={js|learned|js}> {text({js|Learned AI · hour 13|js})} </option>
                 {eachList(Setup.difficulties, preset =>
                    <option key={preset.Setup.id} value={preset.id}>
                      {text(
@@ -367,6 +376,13 @@ module Settings = {
                  )}
               </select>
             </label>
+            {view.learned_player
+               ? <p className={js|help|js}>
+                   {text(
+                      {js|Learned planner with Predictor recruitment. Learned control lasts for this session.|js},
+                    )}
+                 </p>
+               : React.null}
             {playtestPreferenceError != {js||js}
                ? <p role={js|alert|js}> {text(playtestPreferenceError)} </p> : React.null}
             <label className={js|setting-row sound-row|js}>

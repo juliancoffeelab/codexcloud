@@ -1,0 +1,365 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "hold-village",
+      "when": {
+        "held": {
+          "tile": {
+            "hex": {
+              "col": 4,
+              "row": 3
+            }
+          },
+          "turns": 10,
+          "faction": "player",
+          "unitTypes": [],
+          "when": {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 4,
+                  "row": 3
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          }
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "ten-turn-hold"
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Hold Ashbank village for 10 consecutive turns",
+        "intent": {
+          "hold": {
+            "tile": {
+              "hex": {
+                "col": 4,
+                "row": 3
+              }
+            },
+            "turns": 10,
+            "faction": "player",
+            "unitTypes": [],
+            "when": {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 4,
+                    "row": 3
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            }
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    },
+    {
+      "id": "capture-fort",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 14,
+              "row": 7
+            }
+          },
+          "faction": "player",
+          "turns": null,
+          "when": null
+        }
+      },
+      "actions": [],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Capture and control the enemy fort",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 14,
+                "row": 7
+              }
+            }
+          ]
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "own": {
+            "tile": {
+              "hex": {
+                "col": 14,
+                "row": 7
+              }
+            },
+            "faction": "player",
+            "turns": null,
+            "when": null
+          }
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": false,
+      "priority": 0
+    },
+    {
+      "id": "enemy-reserve-1",
+      "when": {
+        "turn": 4
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 6,
+                "row": 1
+              }
+            },
+            "area": [],
+            "radius": 1,
+            "aiGroup": null,
+            "units": ["skeleton-axeman-l2", "skeleton-impact-caster"]
+          }
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "enemy-reserve-2",
+      "when": {
+        "turn": 5
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 15,
+                "row": 8
+              }
+            },
+            "area": [],
+            "radius": 1,
+            "aiGroup": null,
+            "units": ["skeleton", "skeletal-hound"]
+          }
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "enemy-reserve-3",
+      "when": {
+        "turn": 8
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 5,
+                "row": 0
+              }
+            },
+            "area": [],
+            "radius": 1,
+            "aiGroup": null,
+            "units": ["skeleton-axeman-l2", "skeletal-hound"]
+          }
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "crossing-deadline",
+      "when": {
+        "all": [
+          {
+            "turn": 8
+          },
+          {
+            "not": {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 14,
+                    "row": 7
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The eastern crossing was still enemy-held at the deadline."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": -90
+    },
+    {
+      "id": "fall",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The commander fell."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "win",
+      "when": {
+        "all": [
+          {
+            "held": {
+              "tile": {
+                "hex": {
+                  "col": 4,
+                  "row": 3
+                }
+              },
+              "turns": 10,
+              "faction": "player",
+              "unitTypes": [],
+              "when": {
+                "own": {
+                  "tile": {
+                    "hex": {
+                      "col": 4,
+                      "row": 3
+                    }
+                  },
+                  "faction": "player",
+                  "turns": null,
+                  "when": null
+                }
+              }
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 4,
+                  "row": 3
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 14,
+                  "row": 7
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Ashbank held and the eastern crossing secured."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turn": 13
+      },
+      "actions": [
+        {
+          "defeat": "The relief force arrived before both positions were secured."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": -100
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false
+}

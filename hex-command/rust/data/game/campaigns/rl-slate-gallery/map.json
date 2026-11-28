@@ -1,0 +1,828 @@
+{
+  "mapRevision": 1,
+  "mapId": "rl-slate-gallery",
+  "cols": 11,
+  "rows": 7,
+  "tiles": [
+    {
+      "col": 0,
+      "row": 0,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 0,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 0,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 0,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 0,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 0,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "se",
+        "sw"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "se",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 1,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 1,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "se",
+        "sw"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 1,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "se",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 1,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 1,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "se",
+        "ne"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 2,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 2,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 2,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 2,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 2,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "terrain": "village",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "w"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 3,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 3,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 3,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 3,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "se",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 3,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 3,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "sw",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 3,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 4,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "se",
+        "ne"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 4,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 4,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 4,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "w"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 4,
+      "terrain": "fort",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 4,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 4,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 4,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 5,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 5,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 5,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 5,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 5,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 5,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 5,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 5,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "e",
+        "ne"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 5,
+      "terrain": "cave-passage",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": [],
+      "connections": [
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 5,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 5,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 0,
+      "row": 6,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 1,
+      "row": 6,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 2,
+      "row": 6,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 3,
+      "row": 6,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 4,
+      "row": 6,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 5,
+      "row": 6,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 6,
+      "row": 6,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 7,
+      "row": 6,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 8,
+      "row": 6,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 9,
+      "row": 6,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    },
+    {
+      "col": 10,
+      "row": 6,
+      "terrain": "cave-wall",
+      "owner": null,
+      "floor": "cave-stone",
+      "environmentEffects": []
+    }
+  ],
+  "name": "Slate Gallery",
+  "description": "Two narrow galleries open on a central pocket. Each approach can support the other at the far end.",
+  "lighting": {
+    "time": "day"
+  },
+  "modifiers": {
+    "sight": {
+      "unlimited": false,
+      "sightModifiers": {
+        "lit": 0,
+        "unlit": 0,
+        "darkness": 0
+      },
+      "penetrates": []
+    },
+    "damageModifiers": {
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "terrainModifiers": {}
+  }
+}

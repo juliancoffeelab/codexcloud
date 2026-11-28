@@ -1,0 +1,13 @@
+{
+  "label": "update-00000290",
+  "files": {
+    "planner.json": {
+      "bytes": 2188928,
+      "sha256": "0f02469fae7390e35c421767d7a7ac805024795df9ee4f747ef3542eb27baa33"
+    },
+    "resume.pt": {
+      "bytes": 2076617,
+      "sha256": "724fd11274163a0d0eeaa9be81fd6777cc8c1bac68f6d96a64e71dda3efaf2dc"
+    }
+  }
+}

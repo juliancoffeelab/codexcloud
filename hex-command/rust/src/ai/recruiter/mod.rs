@@ -719,6 +719,8 @@ mod tests {
         let orders = crate::ai::CampaignerKind::Arena.campaign_orders(
             &mission,
             CampaignInput {
+                objective_progress: &[],
+                opponent_progress: &[],
                 seed: 0,
                 goals: None,
                 diplomacy: crate::ai::Diplomacy::Unrestricted,

@@ -23,11 +23,37 @@ spec.loader.exec_module(workspace)
 sync_files = workspace.sync_files
 
 
-def command(args, cwd=ROOT, env=None):
-    result = subprocess.run(args, cwd=cwd, env=env, capture_output=True, text=True)
+def command(args, cwd=ROOT, env=None, input=None):
+    result = subprocess.run(args, cwd=cwd, env=env, input=input, capture_output=True, text=True)
     if result.returncode:
         raise RuntimeError(f"{' '.join(args)} failed:\n{result.stdout}{result.stderr}")
     return result.stdout.strip()
+
+
+def push_source_batches(checkout, branch, message, environment, chunk_bytes=24 * 1024 * 1024):
+    """Publish only complete bounded commits; release selection follows all pushes."""
+    paths = [p for p in command(["git", "diff", "--cached", "--name-only", "-z"], cwd=checkout).split("\0") if p]
+    batches, current, size = [], [], 0
+    for name in paths:
+        path = checkout / name
+        weight = path.lstat().st_size if path.exists() or path.is_symlink() else 0
+        if weight > 48 * 1024 * 1024:
+            raise ValueError(f"Site source file exceeds the safe per-push budget: {name}")
+        if current and size + weight > chunk_bytes:
+            batches.append(current)
+            current, size = [], 0
+        current.append(name)
+        size += weight
+    if current:
+        batches.append(current)
+    has_head = subprocess.run(["git", "rev-parse", "--verify", "HEAD"], cwd=checkout, capture_output=True).returncode == 0
+    command(["git", "reset", "--mixed", "HEAD"] if has_head else ["git", "read-tree", "--empty"], cwd=checkout)
+    for index, batch in enumerate(batches or [[]], 1):
+        if batch:
+            command(["git", "add", "-A", "--pathspec-from-file=-", "--pathspec-file-nul"], cwd=checkout, input="\0".join(batch) + "\0")
+        command(["git", "-c", "core.hooksPath=/dev/null", "commit", "--allow-empty", "-m", f"{message} [source part {index}/{max(1, len(batches))}]"], cwd=checkout)
+        step(f"Upload Site source batch {index}/{max(1, len(batches))}")
+        command(["git", "-c", "core.hooksPath=/dev/null", "push", "origin", branch], cwd=checkout, env=environment)
 
 
 def step(label):
@@ -144,7 +170,11 @@ def prepare_locked(cache, message, source_commit, preview, preview_project_id):
         if checkout.exists():
             command(["git", "remote", "set-url", "origin", credential["remote_url"]], cwd=checkout)
             if empty_remote:
+                # A rejected initial upload may have left an oversized local root
+                # commit. It must not become an ancestor of the bounded pushes.
+                command(["git", "update-ref", "-d", "refs/heads/" + credential["branch"]], cwd=checkout)
                 command(["git", "symbolic-ref", "HEAD", "refs/heads/" + credential["branch"]], cwd=checkout)
+                command(["git", "read-tree", "--empty"], cwd=checkout)
             else:
                 command(["git", "fetch", "origin", credential["branch"]], cwd=checkout, env=environment)
                 command(["git", "-c", "core.hooksPath=/dev/null", "checkout", "--force", "-B",
@@ -173,9 +203,7 @@ def prepare_locked(cache, message, source_commit, preview, preview_project_id):
         command(["git", "config", "user.email", "codex@openai.com"], cwd=checkout)
         # Generated source is part of the built Site snapshot, not a clean-tree gate.
         command(["git", "add", "-A"], cwd=checkout)
-        command(["git", "-c", "core.hooksPath=/dev/null", "commit", "--allow-empty",
-                 "-m", f"{message} ({source_commit[:7]})"], cwd=checkout)
-        command(["git", "-c", "core.hooksPath=/dev/null", "push", "origin", credential["branch"]], cwd=checkout, env=environment)
+        push_source_batches(checkout, credential["branch"], f"{message} ({source_commit[:7]})", environment)
 
     # An authorization retry only synchronizes this exact completed build.
     # Compilation and artifact selection never restart or fall back to another pin.

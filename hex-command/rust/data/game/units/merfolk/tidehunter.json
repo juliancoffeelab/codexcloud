@@ -42,10 +42,11 @@
   "level": 2,
   "family": "harpooner",
   "experienceNeeded": 18,
-  "advancesTo": ["merfolk-harpoon-master"],
+  "advancesTo": [
+    "merfolk-harpoon-master"
+  ],
   "terrainModifiers": {},
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

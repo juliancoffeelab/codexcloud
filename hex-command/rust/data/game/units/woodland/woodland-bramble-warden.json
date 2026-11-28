@@ -42,10 +42,11 @@
   "description": "A forest support caster whose adjacent allies reflect damage per incoming melee strike, stacking with their own Thornshield.",
   "level": 2,
   "family": "thorncaller",
-  "advancesTo": ["woodland-thornbinder"],
+  "advancesTo": [
+    "woodland-thornbinder"
+  ],
   "experienceNeeded": 18,
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,
@@ -54,5 +55,7 @@
     },
     "penetrates": []
   },
-  "abilities": ["external-thorns-6"]
+  "abilities": [
+    "external-thorns-6"
+  ]
 }

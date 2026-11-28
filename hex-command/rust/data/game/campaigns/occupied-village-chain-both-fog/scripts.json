@@ -1,0 +1,780 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "freed-1",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 12,
+              "row": 5
+            }
+          },
+          "faction": "player",
+          "turns": null,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "freed-1"
+        },
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "hex": {
+                "col": 12,
+                "row": 5
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              {
+                "type": "captives",
+                "character": "villagers-1",
+                "role": "captive",
+                "items": []
+              }
+            ]
+          }
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 17,
+                "row": 5
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "reefguard"
+            ]
+          }
+        },
+        {
+          "log": "Survivors emerge from the village. Escort them to the western camp; the nearby patrol has seen you."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Liberate village 1",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 12,
+                "row": 5
+              }
+            }
+          ]
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "safe-1",
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 4,
+              "row": 12
+            }
+          },
+          "through": false,
+          "character": "villagers-1",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "safe-1"
+        },
+        {
+          "deleteUnit": {
+            "character": "villagers-1",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Escort village 1 survivors to the western camp",
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 4,
+                "row": 12
+              }
+            },
+            "through": false,
+            "character": "villagers-1",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "flag": "freed-1"
+        },
+        "availableWhen": {
+          "flag": "freed-1"
+        },
+        "satisfiedWhen": {
+          "flag": "safe-1"
+        },
+        "preserveLives": {
+          "character": "villagers-1",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "lost-1",
+      "when": {
+        "all": [
+          {
+            "flag": "freed-1"
+          },
+          {
+            "not": {
+              "flag": "safe-1"
+            }
+          },
+          {
+            "noUnits": {
+              "character": "villagers-1",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The released villagers were killed."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 100
+    },
+    {
+      "id": "freed-2",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 21,
+              "row": 12
+            }
+          },
+          "faction": "player",
+          "turns": null,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "freed-2"
+        },
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "hex": {
+                "col": 21,
+                "row": 12
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              {
+                "type": "captives",
+                "character": "villagers-2",
+                "role": "captive",
+                "items": []
+              }
+            ]
+          }
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 26,
+                "row": 12
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "reefguard"
+            ]
+          }
+        },
+        {
+          "log": "Survivors emerge from the village. Escort them to the western camp; the nearby patrol has seen you."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Liberate village 2",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 21,
+                "row": 12
+              }
+            }
+          ]
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "safe-2",
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 4,
+              "row": 12
+            }
+          },
+          "through": false,
+          "character": "villagers-2",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "safe-2"
+        },
+        {
+          "deleteUnit": {
+            "character": "villagers-2",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Escort village 2 survivors to the western camp",
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 4,
+                "row": 12
+              }
+            },
+            "through": false,
+            "character": "villagers-2",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "flag": "freed-2"
+        },
+        "availableWhen": {
+          "flag": "freed-2"
+        },
+        "satisfiedWhen": {
+          "flag": "safe-2"
+        },
+        "preserveLives": {
+          "character": "villagers-2",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "lost-2",
+      "when": {
+        "all": [
+          {
+            "flag": "freed-2"
+          },
+          {
+            "not": {
+              "flag": "safe-2"
+            }
+          },
+          {
+            "noUnits": {
+              "character": "villagers-2",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The released villagers were killed."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 100
+    },
+    {
+      "id": "freed-3",
+      "when": {
+        "own": {
+          "tile": {
+            "hex": {
+              "col": 13,
+              "row": 19
+            }
+          },
+          "faction": "player",
+          "turns": null,
+          "when": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "freed-3"
+        },
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "hex": {
+                "col": 13,
+                "row": 19
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              {
+                "type": "captives",
+                "character": "villagers-3",
+                "role": "captive",
+                "items": []
+              }
+            ]
+          }
+        },
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 18,
+                "row": 19
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "reefguard"
+            ]
+          }
+        },
+        {
+          "log": "Survivors emerge from the village. Escort them to the western camp; the nearby patrol has seen you."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Liberate village 3",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 13,
+                "row": 19
+              }
+            }
+          ]
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "safe-3",
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 4,
+              "row": 12
+            }
+          },
+          "through": false,
+          "character": "villagers-3",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "safe-3"
+        },
+        {
+          "deleteUnit": {
+            "character": "villagers-3",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Escort village 3 survivors to the western camp",
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 4,
+                "row": 12
+              }
+            },
+            "through": false,
+            "character": "villagers-3",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "flag": "freed-3"
+        },
+        "availableWhen": {
+          "flag": "freed-3"
+        },
+        "satisfiedWhen": {
+          "flag": "safe-3"
+        },
+        "preserveLives": {
+          "character": "villagers-3",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "lost-3",
+      "when": {
+        "all": [
+          {
+            "flag": "freed-3"
+          },
+          {
+            "not": {
+              "flag": "safe-3"
+            }
+          },
+          {
+            "noUnits": {
+              "character": "villagers-3",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The released villagers were killed."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 100
+    },
+    {
+      "id": "evacuate",
+      "when": {
+        "all": [
+          {
+            "flag": "safe-1"
+          },
+          {
+            "flag": "safe-2"
+          },
+          {
+            "flag": "safe-3"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 4,
+                  "row": 12
+                }
+              },
+              "through": false,
+              "character": "player-leader",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "The villagers and their escort leave the occupied valley."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Bring the commander back after all three groups are safe",
+        "intent": {
+          "escape": {
+            "tile": {
+              "hex": {
+                "col": 4,
+                "row": 12
+              }
+            },
+            "through": false,
+            "character": "player-leader",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "all": [
+            {
+              "flag": "safe-1"
+            },
+            {
+              "flag": "safe-2"
+            },
+            {
+              "flag": "safe-3"
+            }
+          ]
+        },
+        "availableWhen": {
+          "all": [
+            {
+              "flag": "safe-1"
+            },
+            {
+              "flag": "safe-2"
+            },
+            {
+              "flag": "safe-3"
+            }
+          ]
+        },
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "leader-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The commander has fallen."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 100
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turnAtLeast": 71
+      },
+      "actions": [
+        {
+          "defeat": "The surrounding enemy closes the valley."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": -100
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

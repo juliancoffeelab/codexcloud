@@ -14,14 +14,15 @@
         "combine": "add"
       },
       "effect": {
-        "range": 0,
         "unlimited": false,
         "sightModifiers": {
           "lit": 0,
           "unlit": 3,
           "darkness": 3
         },
-        "penetrates": ["darkness"],
+        "penetrates": [
+          "darkness"
+        ],
         "kind": "sight"
       }
     }

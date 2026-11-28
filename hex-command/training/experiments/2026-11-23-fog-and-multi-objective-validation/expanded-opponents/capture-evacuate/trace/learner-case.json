@@ -1,0 +1,22 @@
+[
+  {
+    "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+    "objective": "authored",
+    "seed": 493023001,
+    "diplomacy": "unrestricted",
+    "enemy": "balanced",
+    "enemyBlocks": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "player": "balanced",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "maxRounds": 100,
+    "recruitLimit": 0
+  }
+]

@@ -87,9 +87,10 @@
   "level": 2,
   "family": "rider",
   "experienceNeeded": 18,
-  "advancesTo": ["knight"],
+  "advancesTo": [
+    "knight"
+  ],
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

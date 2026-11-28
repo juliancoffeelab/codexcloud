@@ -1,0 +1,534 @@
+{
+  "stages": {
+    "lantern-ferry": "The Silent Crossing",
+    "lantern-villages": "The Toll Road",
+    "lantern-bell": "The Bell in the Reeds"
+  },
+  "series": [
+    {
+      "hour": 0,
+      "hours": 0.0,
+      "wins": 4,
+      "runs": 24,
+      "caps": 7,
+      "chapters": {
+        "lantern-ferry": [
+          10,
+          24
+        ],
+        "lantern-villages": [
+          9,
+          10
+        ],
+        "lantern-bell": [
+          4,
+          9
+        ]
+      }
+    },
+    {
+      "hour": 1,
+      "hours": 1.0252103224930518,
+      "wins": 2,
+      "runs": 24,
+      "caps": 8,
+      "chapters": {
+        "lantern-ferry": [
+          9,
+          24
+        ],
+        "lantern-villages": [
+          3,
+          9
+        ],
+        "lantern-bell": [
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "hour": 2,
+      "hours": 2.001009613517777,
+      "wins": 3,
+      "runs": 24,
+      "caps": 4,
+      "chapters": {
+        "lantern-ferry": [
+          12,
+          24
+        ],
+        "lantern-villages": [
+          5,
+          12
+        ],
+        "lantern-bell": [
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "hour": 3,
+      "hours": 3.0273692022166667,
+      "wins": 1,
+      "runs": 24,
+      "caps": 12,
+      "chapters": {
+        "lantern-ferry": [
+          8,
+          24
+        ],
+        "lantern-villages": [
+          4,
+          8
+        ],
+        "lantern-bell": [
+          1,
+          4
+        ]
+      }
+    },
+    {
+      "hour": 4,
+      "hours": 4.008466089445558,
+      "wins": 3,
+      "runs": 24,
+      "caps": 15,
+      "chapters": {
+        "lantern-ferry": [
+          7,
+          24
+        ],
+        "lantern-villages": [
+          5,
+          7
+        ],
+        "lantern-bell": [
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "hour": 5,
+      "hours": 5.000683214483886,
+      "wins": 2,
+      "runs": 24,
+      "caps": 13,
+      "chapters": {
+        "lantern-ferry": [
+          7,
+          24
+        ],
+        "lantern-villages": [
+          5,
+          7
+        ],
+        "lantern-bell": [
+          2,
+          5
+        ]
+      }
+    },
+    {
+      "hour": 6,
+      "hours": 6.019189873287218,
+      "wins": 0,
+      "runs": 24,
+      "caps": 10,
+      "chapters": {
+        "lantern-ferry": [
+          9,
+          24
+        ],
+        "lantern-villages": [
+          1,
+          9
+        ],
+        "lantern-bell": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "hour": 7,
+      "hours": 7.010159375439163,
+      "wins": 1,
+      "runs": 24,
+      "caps": 9,
+      "chapters": {
+        "lantern-ferry": [
+          9,
+          24
+        ],
+        "lantern-villages": [
+          5,
+          9
+        ],
+        "lantern-bell": [
+          1,
+          5
+        ]
+      }
+    },
+    {
+      "hour": 8,
+      "hours": 8.000918848790834,
+      "wins": 0,
+      "runs": 24,
+      "caps": 13,
+      "chapters": {
+        "lantern-ferry": [
+          8,
+          24
+        ],
+        "lantern-villages": [
+          1,
+          8
+        ],
+        "lantern-bell": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "hour": 9,
+      "hours": 9.025185572658891,
+      "wins": 2,
+      "runs": 24,
+      "caps": 11,
+      "chapters": {
+        "lantern-ferry": [
+          9,
+          24
+        ],
+        "lantern-villages": [
+          5,
+          9
+        ],
+        "lantern-bell": [
+          2,
+          5
+        ]
+      }
+    },
+    {
+      "hour": 10,
+      "hours": 10.014808368271948,
+      "wins": 1,
+      "runs": 24,
+      "caps": 16,
+      "chapters": {
+        "lantern-ferry": [
+          5,
+          24
+        ],
+        "lantern-villages": [
+          4,
+          5
+        ],
+        "lantern-bell": [
+          1,
+          4
+        ]
+      }
+    },
+    {
+      "hour": 11,
+      "hours": 11.005437672740559,
+      "wins": 4,
+      "runs": 24,
+      "caps": 6,
+      "chapters": {
+        "lantern-ferry": [
+          13,
+          24
+        ],
+        "lantern-villages": [
+          6,
+          13
+        ],
+        "lantern-bell": [
+          4,
+          6
+        ]
+      }
+    },
+    {
+      "hour": 12,
+      "hours": 12.000054128391389,
+      "wins": 1,
+      "runs": 24,
+      "caps": 6,
+      "chapters": {
+        "lantern-ferry": [
+          15,
+          24
+        ],
+        "lantern-villages": [
+          4,
+          15
+        ],
+        "lantern-bell": [
+          1,
+          4
+        ]
+      }
+    },
+    {
+      "hour": 13,
+      "hours": 13.032399806695555,
+      "wins": 3,
+      "runs": 24,
+      "caps": 12,
+      "chapters": {
+        "lantern-ferry": [
+          9,
+          24
+        ],
+        "lantern-villages": [
+          5,
+          9
+        ],
+        "lantern-bell": [
+          3,
+          5
+        ]
+      }
+    },
+    {
+      "hour": 14,
+      "hours": 14.029920048763055,
+      "wins": 1,
+      "runs": 24,
+      "caps": 11,
+      "chapters": {
+        "lantern-ferry": [
+          11,
+          24
+        ],
+        "lantern-villages": [
+          3,
+          11
+        ],
+        "lantern-bell": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "hour": 15,
+      "hours": 15.03340157454361,
+      "wins": 1,
+      "runs": 24,
+      "caps": 15,
+      "chapters": {
+        "lantern-ferry": [
+          5,
+          24
+        ],
+        "lantern-villages": [
+          2,
+          5
+        ],
+        "lantern-bell": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "hour": 16,
+      "hours": 16.023733786013334,
+      "wins": 2,
+      "runs": 24,
+      "caps": 13,
+      "chapters": {
+        "lantern-ferry": [
+          6,
+          24
+        ],
+        "lantern-villages": [
+          6,
+          6
+        ],
+        "lantern-bell": [
+          2,
+          6
+        ]
+      }
+    },
+    {
+      "hour": 17,
+      "hours": 17.014005851959723,
+      "wins": 1,
+      "runs": 24,
+      "caps": 14,
+      "chapters": {
+        "lantern-ferry": [
+          4,
+          24
+        ],
+        "lantern-villages": [
+          3,
+          4
+        ],
+        "lantern-bell": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "hour": 18,
+      "hours": 18.0281056341925,
+      "wins": 1,
+      "runs": 24,
+      "caps": 12,
+      "chapters": {
+        "lantern-ferry": [
+          8,
+          24
+        ],
+        "lantern-villages": [
+          3,
+          8
+        ],
+        "lantern-bell": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "hour": 19,
+      "hours": 19.029551071008335,
+      "wins": 1,
+      "runs": 24,
+      "caps": 16,
+      "chapters": {
+        "lantern-ferry": [
+          4,
+          24
+        ],
+        "lantern-villages": [
+          2,
+          4
+        ],
+        "lantern-bell": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "hour": 20,
+      "hours": 20.008925771796946,
+      "wins": 1,
+      "runs": 24,
+      "caps": 12,
+      "chapters": {
+        "lantern-ferry": [
+          8,
+          24
+        ],
+        "lantern-villages": [
+          3,
+          8
+        ],
+        "lantern-bell": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "hour": 21,
+      "hours": 21.02217481630333,
+      "wins": 1,
+      "runs": 24,
+      "caps": 16,
+      "chapters": {
+        "lantern-ferry": [
+          3,
+          24
+        ],
+        "lantern-villages": [
+          3,
+          3
+        ],
+        "lantern-bell": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "hour": 22,
+      "hours": 22.034670815595277,
+      "wins": 2,
+      "runs": 24,
+      "caps": 11,
+      "chapters": {
+        "lantern-ferry": [
+          10,
+          24
+        ],
+        "lantern-villages": [
+          3,
+          10
+        ],
+        "lantern-bell": [
+          2,
+          3
+        ]
+      }
+    },
+    {
+      "hour": 23,
+      "hours": 23.003801339534167,
+      "wins": 1,
+      "runs": 24,
+      "caps": 14,
+      "chapters": {
+        "lantern-ferry": [
+          5,
+          24
+        ],
+        "lantern-villages": [
+          4,
+          5
+        ],
+        "lantern-bell": [
+          1,
+          4
+        ]
+      }
+    },
+    {
+      "hour": 24,
+      "hours": 24.00008257852416,
+      "wins": 0,
+      "runs": 24,
+      "caps": 17,
+      "chapters": {
+        "lantern-ferry": [
+          3,
+          24
+        ],
+        "lantern-villages": [
+          2,
+          3
+        ],
+        "lantern-bell": [
+          0,
+          2
+        ]
+      }
+    }
+  ]
+}

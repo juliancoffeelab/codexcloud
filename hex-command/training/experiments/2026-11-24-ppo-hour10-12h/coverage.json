@@ -1,0 +1,40 @@
+{
+  "heldout": {
+    "cases": 312,
+    "seed_min": 460000001,
+    "seed_max": 460000312,
+    "unique_seeds": 312,
+    "max_rounds": [
+      100
+    ],
+    "recruit_limits": [
+      null
+    ]
+  },
+  "training_diagnostic": {
+    "cases": 214,
+    "seed_min": 520000001,
+    "seed_max": 520000002,
+    "unique_seeds": 2,
+    "max_rounds": [
+      30,
+      100
+    ],
+    "recruit_limits": [
+      null,
+      0
+    ]
+  },
+  "lantern_showcase": {
+    "cases": 24,
+    "seed_min": 480000001,
+    "seed_max": 480000024,
+    "unique_seeds": 24,
+    "max_rounds": [
+      100
+    ],
+    "recruit_limits": [
+      null
+    ]
+  }
+}

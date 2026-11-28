@@ -42,10 +42,11 @@
   "description": "A merfolk damage caster whose concentrated waves deal ranged impact damage instead of healing allies.",
   "level": 2,
   "family": "wavemender",
-  "advancesTo": ["merfolk-tidecrusher-l3"],
+  "advancesTo": [
+    "merfolk-tidecrusher-l3"
+  ],
   "experienceNeeded": 18,
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

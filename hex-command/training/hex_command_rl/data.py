@@ -94,9 +94,19 @@ def load_dataset(directory):
         manifest["schema"] == 8
         and manifest["feature_names"] == native.CAMPAIGN_FEATURE_NAMES
     )
-    if not current and not legacy and not duties and not diplomacy and not campaign:
+    visibility = (
+        manifest["schema"] == 10
+        and manifest["feature_names"] == native.VISIBILITY_FEATURE_NAMES
+    )
+    idle = (
+        manifest["schema"] == 12
+        and manifest["feature_names"] == native.IDLE_FEATURE_NAMES
+    )
+    if not any((current, legacy, duties, diplomacy, campaign, visibility, idle)):
         raise ValueError("dataset feature schema mismatch")
-    if not current and any("campaign" in c for c in manifest["configs"]):
+    if not (current or visibility or idle) and any(
+        "campaign" in c for c in manifest["configs"]
+    ):
         raise ValueError(
             "legacy campaign observations need recollection with current policy and annotations"
         )

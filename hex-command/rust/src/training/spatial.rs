@@ -7,12 +7,15 @@ use crate::{
 use hex_command_battle::RuntimeCommand;
 use serde::{Deserialize, Serialize};
 
-pub const SPATIAL_SCHEMA: u32 = 11;
+pub const SPATIAL_SCHEMA: u32 = 19;
+pub const ENCODED_FEATURES: usize = 8 * EMBEDDING;
 pub const DUTY_CHANNELS: usize = 62;
 pub const EMBEDDING: usize = 16;
 pub const LEGACY_CHANNELS: usize = 53;
 pub const CAMPAIGN_CHANNELS: usize = LEGACY_CHANNELS + super::duties::CHANNEL_NAMES.len();
-pub const CHANNELS: usize = CAMPAIGN_CHANNELS + super::visibility::CHANNEL_NAMES.len();
+pub const VISIBILITY_CHANNELS: usize = CAMPAIGN_CHANNELS + super::visibility::CHANNEL_NAMES.len();
+pub const HOLD_CHANNELS: usize = VISIBILITY_CHANNELS + super::duties::HOLD_CHANNEL_NAMES.len();
+pub const CHANNELS: usize = HOLD_CHANNELS + super::duties::OPPONENT_HOLD_CHANNEL_NAMES.len();
 pub const ACTOR_CHANNELS: [usize; 14] = [68, 69, 70, 76, 78, 38, 39, 40, 44, 45, 46, 47, 48, 49];
 // (row, column) in axial coordinates q = col - floor(row/2), r = row.
 pub const KERNEL: [(i32, i32); 7] = [(0, 0), (0, 1), (1, 0), (1, -1), (0, -1), (-1, 0), (-1, 1)];
@@ -50,6 +53,16 @@ pub fn channel_names() -> Vec<String> {
     names.extend(super::duties::CHANNEL_NAMES.into_iter().map(String::from));
     names.extend(
         super::visibility::CHANNEL_NAMES
+            .into_iter()
+            .map(String::from),
+    );
+    names.extend(
+        super::duties::HOLD_CHANNEL_NAMES
+            .into_iter()
+            .map(String::from),
+    );
+    names.extend(
+        super::duties::OPPONENT_HOLD_CHANNEL_NAMES
             .into_iter()
             .map(String::from),
     );
@@ -340,11 +353,11 @@ pub struct SpatialEncoder {
 }
 impl SpatialEncoder {
     pub fn validate(&self) -> Result<(), String> {
-        if self.channel_names != channel_names() || self.convolutions.len() != 2 {
+        if self.channel_names != channel_names() || self.convolutions.len() != 4 {
             return Err("spatial encoder schema mismatch".into());
         }
-        let mut input = CHANNELS;
-        for c in &self.convolutions {
+        for (i, c) in self.convolutions.iter().enumerate() {
+            let input = if i % 2 == 0 { CHANNELS } else { EMBEDDING };
             if c.input_channels != input
                 || c.output_channels != EMBEDDING
                 || c.weights.len() != input * EMBEDDING * 7
@@ -353,7 +366,6 @@ impl SpatialEncoder {
             {
                 return Err("invalid spatial convolution".into());
             }
-            input = EMBEDDING;
         }
         Ok(())
     }
@@ -375,7 +387,7 @@ impl SpatialEncoder {
             })
             .collect();
         let mut input = board.values.clone();
-        for conv in &self.convolutions {
+        for conv in &self.convolutions[..2] {
             let mut output = vec![0.; EMBEDDING * cells];
             for out in 0..EMBEDDING {
                 for (&site, neighbors) in sites.iter().zip(&neighbors) {
@@ -394,6 +406,56 @@ impl SpatialEncoder {
             input = output;
         }
         input
+    }
+    fn coarse(&self, board: &SpatialBoard) -> (Vec<f32>, Vec<f32>, usize) {
+        let height = board.height.div_ceil(2);
+        let width = board.width.div_ceil(2);
+        let cells = height * width;
+        let original = board.height * board.width;
+        let mask: Vec<f32> = (0..cells)
+            .map(|site| {
+                let row = (site / width) * 2;
+                let col = (site % width) * 2;
+                (0..2).any(|dr| {
+                    (0..2).any(|dq| {
+                        row + dr < board.height
+                            && col + dq < board.width
+                            && board.values[(row + dr) * board.width + col + dq] == 1.
+                    })
+                }) as u8 as f32
+            })
+            .collect();
+        let mut input = board.values.clone();
+        for (i, conv) in self.convolutions[2..].iter().enumerate() {
+            let stride = if i == 0 { 2 } else { 1 };
+            let (ih, iw, ic) = if i == 0 {
+                (board.height, board.width, original)
+            } else {
+                (height, width, cells)
+            };
+            let mut output = vec![0.; EMBEDDING * cells];
+            for out in 0..EMBEDDING {
+                for site in 0..cells {
+                    if mask[site] == 0. {
+                        continue;
+                    }
+                    let mut sum = 0.;
+                    for channel in 0..conv.input_channels {
+                        for (k, (dr, dq)) in KERNEL.iter().enumerate() {
+                            let row = (site / width * stride + usize::from(i == 0)) as i32 + dr;
+                            let col = (site % width * stride) as i32 + dq;
+                            if row >= 0 && col >= 0 && row < ih as i32 && col < iw as i32 {
+                                sum += input[channel * ic + row as usize * iw + col as usize]
+                                    * conv.weights[(out * conv.input_channels + channel) * 7 + k];
+                            }
+                        }
+                    }
+                    output[out * cells + site] = (sum + conv.bias[out]).max(0.);
+                }
+            }
+            input = output;
+        }
+        (input, mask, width)
     }
     pub fn inputs(
         &self,
@@ -432,6 +494,13 @@ impl SpatialEncoder {
             return inputs;
         }
         let embedding = self.encode(board);
+        let (coarse, coarse_mask, coarse_width) = self.coarse(board);
+        let coarse_cells = coarse_mask.len();
+        let coarse_count: f32 = coarse_mask.iter().sum();
+        let coarse_pool: Vec<_> = coarse
+            .chunks_exact(coarse_cells)
+            .map(|p| p.iter().sum::<f32>() / coarse_count)
+            .collect();
         let cells = board.height * board.width;
         let count = board.values[..cells].iter().sum::<f32>();
         let pooled: Vec<_> = embedding
@@ -453,6 +522,22 @@ impl SpatialEncoder {
                     }
                 }
                 x.extend_from_slice(&pooled);
+                for &tile in tiles {
+                    let site = if tile < 0 {
+                        0
+                    } else {
+                        (tile as usize / board.width / 2) * coarse_width
+                            + tile as usize % board.width / 2
+                    };
+                    for c in 0..EMBEDDING {
+                        x.push(if tile < 0 {
+                            0.
+                        } else {
+                            coarse[c * coarse_cells + site]
+                        });
+                    }
+                }
+                x.extend_from_slice(&coarse_pool);
                 x
             })
             .collect()

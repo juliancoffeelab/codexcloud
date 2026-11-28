@@ -42,10 +42,12 @@
   "level": 1,
   "family": "adept",
   "experienceNeeded": 10,
-  "advancesTo": ["mage", "healer"],
+  "advancesTo": [
+    "mage",
+    "healer"
+  ],
   "terrainModifiers": {},
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

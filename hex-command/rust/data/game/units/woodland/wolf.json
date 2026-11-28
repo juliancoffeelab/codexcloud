@@ -30,10 +30,11 @@
   "level": 1,
   "family": "wolf",
   "experienceNeeded": 10,
-  "advancesTo": ["direwolf"],
+  "advancesTo": [
+    "direwolf"
+  ],
   "terrainModifiers": {},
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

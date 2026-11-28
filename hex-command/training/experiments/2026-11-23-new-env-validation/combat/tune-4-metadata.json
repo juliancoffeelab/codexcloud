@@ -1,0 +1,18 @@
+{
+  "label": "tune-4",
+  "variants": "screen,screen-open,screen-soft,screen-deeper,screen-rank,screen-close-fog,screen-wide-fog,screen-shelter,screen-approach,screen-overlap,open-close-fog,open-wide-fog",
+  "routes": "both-fog,player-fog,authored",
+  "policies": "full,queued,hour10",
+  "opponents": "classic",
+  "seed_start": 591030001,
+  "seeds": 8,
+  "models": {
+    "hour10": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/last-1795458575107520190/planner.json",
+      "sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee"
+    }
+  },
+  "catalog": "/workspace/codexcloud/hex-command/tmp/rl/new-env-validation/combat/catalog",
+  "native": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/native/hex_command_training.so",
+  "native_sha256": "7d7ab7ede88526b76ceb1c91de5fc9df2187c79c1ce0b7ba3b8b9b1f0cf322f2"
+}

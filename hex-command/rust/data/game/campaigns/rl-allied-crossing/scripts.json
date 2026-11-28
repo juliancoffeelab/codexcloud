@@ -1,0 +1,187 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "rl-allied-crossing-humans-slain",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": "humans-leader",
+              "role": null,
+              "side": null,
+              "faction": "humans",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-allied-crossing-humans-slain"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the human commander",
+        "intent": {
+          "defeat": {
+            "character": "humans-leader",
+            "role": null,
+            "side": null,
+            "faction": "humans",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-allied-crossing-humans-slain"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-allied-crossing-undead-slain",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": "undead-leader",
+              "role": null,
+              "side": null,
+              "faction": "undead",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-allied-crossing-undead-slain"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the skeleton necromancer",
+        "intent": {
+          "defeat": {
+            "character": "undead-leader",
+            "role": null,
+            "side": null,
+            "faction": "undead",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-allied-crossing-undead-slain"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-allied-crossing-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "rl-allied-crossing-humans-slain"
+          },
+          {
+            "flag": "rl-allied-crossing-undead-slain"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Victory across the river."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-allied-crossing-commander-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Your tidekeeper fell."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "rl-allied-crossing-deadline",
+      "when": {
+        "turn": 56
+      },
+      "actions": [
+        {
+          "defeat": "The battle exceeded its 55-turn deadline."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

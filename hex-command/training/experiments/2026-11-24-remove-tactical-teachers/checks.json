@@ -1,0 +1,31 @@
+{
+  "train": {
+    "ppoCases": 36648,
+    "unchanged": true,
+    "eligibleImitationCases": 552
+  },
+  "validation": {
+    "ppoCases": 4756,
+    "unchanged": true,
+    "eligibleImitationCases": 92
+  },
+  "test": {
+    "ppoCases": 16543,
+    "unchanged": true,
+    "eligibleImitationCases": 575
+  },
+  "disabledFullMaps": [
+    "rl-deadline-wait7",
+    "rl-briar-saddle",
+    "rl-defend-lower-gallery-0"
+  ],
+  "removedPythonAndNativeSelectorsRejected": true,
+  "otherSettingsUnchanged": true,
+  "selectedBaseline": "final hour-10 PPO checkpoint",
+  "selectedModelSha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee",
+  "noTrainingStarted": true,
+  "fullVerifyExitCode": 0,
+  "trainingTests": 41,
+  "optionalDependencySkipped": 1,
+  "failedTests": 0
+}

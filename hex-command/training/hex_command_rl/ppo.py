@@ -15,6 +15,7 @@ from torch.nn import functional as F
 import hex_command_training as native
 from .spatial import SpatialPlanner
 from .checkpoint import warm_start
+from .recurrent import MemoryBank, windows, replay
 from .recovery import atomic_torch_save, read_jsonl
 
 
@@ -53,17 +54,61 @@ def unpack(obs, spatial):
     }
 
 
-def pack(samples):
+def resolve_device(name="cpu"):
+    if name == "auto":
+        if torch.backends.mps.is_available():
+            return torch.device("mps")
+        if torch.cuda.is_available():
+            return torch.device("cuda")
+        return torch.device("cpu")
+    if name == "cpu":
+        return torch.device("cpu")
+    if name == "mps":
+        if not torch.backends.mps.is_available():
+            raise ValueError("MPS device requested but torch.backends.mps.is_available() is False")
+        return torch.device("mps")
+    if name == "cuda":
+        if not torch.cuda.is_available():
+            raise ValueError("CUDA device requested but torch.cuda.is_available() is False")
+        return torch.device("cuda")
+    raise ValueError(f"unsupported device: {name}")
+
+
+def _bucket_from(value, choices, step):
+    for choice in choices:
+        if value <= choice:
+            return choice
+    return ((value + step - 1) // step) * step
+
+
+def pack(samples, device=None, bucket_shapes=None):
+    dev = torch.device(device) if device is not None else None
+    if bucket_shapes is None:
+        bucket_shapes = dev is not None and dev.type == "mps"
     count = max(len(s[0]) for s in samples)
     height = max(s[1].shape[1] for s in samples)
     width = max(s[1].shape[2] for s in samples)
+    total_contexts = sum(1 + (len(s[3]) if len(s) > 3 else 0) for s in samples)
+    if bucket_shapes:
+        # Collapse dynamic shapes to a tiny fixed set (1 rollout shape, 1 replay shape)
+        # so Apple's unbounded MPSGraphCache cannot grow over long runs.
+        count = _bucket_from(count, (256, 512), 256)
+        height = _bucket_from(height, (36, 48), 16)
+        width = _bucket_from(width, (56, 64), 16)
+        ctx_buckets = (32, 64, 128) if len(samples) <= 8 else (192, 384, 512)
+        total_contexts = _bucket_from(total_contexts, ctx_buckets, 256)
     x = np.zeros((len(samples), count, len(native.FEATURE_NAMES)), np.float32)
     board = np.zeros(
         (len(samples), len(native.SPATIAL_CHANNEL_NAMES), height, width), np.float32
     )
     positions = np.full((len(samples), count, 3), -1, np.int64)
     mask = np.zeros((len(samples), count), bool)
-    context_values, owners, sites = [], [], []
+    context_values = np.zeros(
+        (total_contexts, len(native.ACTOR_SPATIAL_CHANNELS), height, width), np.float32
+    )
+    owners = np.zeros(total_contexts, np.int64)
+    sites = np.full(total_contexts, -2, np.int64)
+    ctx_idx = 0
     for row, sample in enumerate(samples):
         features, b, ix = sample[:3]
         contexts = sample[3] if len(sample) > 3 else []
@@ -74,34 +119,31 @@ def pack(samples):
         positions[row, :n] = np.where(ix < 0, -1, (ix // w) * width + ix % w)
         mask[row, :n] = True
         # Context zero is the actor-free board for EndTurn and critic pooling.
-        for site, planes in [(-1, None), *contexts]:
-            padded = np.zeros(
-                (len(native.ACTOR_SPATIAL_CHANNELS), height, width), np.float32
-            )
+        owners[ctx_idx] = row
+        sites[ctx_idx] = -1
+        ctx_idx += 1
+        for site, planes in contexts:
             if planes is not None:
-                padded[:, :h, :w] = planes
-            context_values.append(padded)
-            owners.append(row)
-            sites.append(-1 if site < 0 else (site // w) * width + site % w)
-    bundle = tuple(
-        torch.from_numpy(v)
-        for v in (
-            board,
-            np.stack(context_values),
-            np.asarray(owners, np.int64),
-            np.asarray(sites, np.int64),
-        )
-    )
+                context_values[ctx_idx, :, :h, :w] = planes
+            owners[ctx_idx] = row
+            sites[ctx_idx] = -1 if site < 0 else (site // w) * width + site % w
+            ctx_idx += 1
+    def as_tensor(v):
+        t = torch.from_numpy(v)
+        return t.to(dev) if dev is not None else t
+
+    bundle = tuple(as_tensor(v) for v in (board, context_values, owners, sites))
     return (
-        torch.from_numpy(x),
+        as_tensor(x),
         bundle,
-        torch.from_numpy(positions),
-        torch.from_numpy(mask),
+        as_tensor(positions),
+        as_tensor(mask),
     )
 
 
 def categorical(scores, mask, temperature):
     # Finite padding avoids NaN gradients in KL's 0 * (-inf - -inf).
+    scores = scores.float()
     logits = (scores / temperature).masked_fill(~mask, torch.finfo(scores.dtype).min)
     return torch.distributions.Categorical(logits=logits)
 
@@ -118,19 +160,27 @@ class ActorCritic(nn.Module):
         super().__init__()
         self.policy = policy
         self.critic = nn.Sequential(
-            nn.Linear(16 + len(native.FEATURE_NAMES), 64), nn.Tanh(), nn.Linear(64, 1)
+            nn.Linear(16 + 64 + len(native.FEATURE_NAMES), 64), nn.Tanh(), nn.Linear(64, 1)
         )
         nn.init.zeros_(self.critic[-1].weight)
         nn.init.zeros_(self.critic[-1].bias)
 
     def forward(self, x, board, positions, mask, temperature):
-        scores, pooled = self.policy.forward_with_pool(x, board, positions)
+        dist, value, _ = self.forward_recurrent(x, board, positions, mask, temperature)
+        return dist, value
+
+    def forward_recurrent(self, x, board, positions, mask, temperature, memory=None):
+        scores, pooled, memory = self.policy.forward_recurrent(x, board, positions, memory)
         dist = categorical(scores, mask, temperature)
         # Critic training initially leaves the pretrained policy encoder untouched.
         with torch.no_grad():
-            mean = (x * mask[:, :, None]).sum(1) / mask.sum(1, keepdim=True)
-        value = self.critic(torch.cat([pooled.detach(), mean], -1)).squeeze(-1)
-        return dist, value
+            xf = x.float()
+            mean = (xf * mask[:, :, None]).sum(1) / mask.sum(1, keepdim=True)
+        with torch.amp.autocast(x.device.type, enabled=False):
+            value = self.critic(
+                torch.cat([pooled.detach().float(), memory.detach().float(), mean], -1)
+            ).squeeze(-1)
+        return dist, value, memory
 
 
 def advantages(rewards, values, dones, bootstrap, gamma, lam):
@@ -399,12 +449,15 @@ def main():
         )
         plot_metrics(args.out)
 
+    memory_bank, reference_bank = MemoryBank(), MemoryBank()
     env = native.BatchEnv(spatial=True)
     try:
         evaluate("baseline")
 
         def reset():
             nonlocal next_seed
+            memory_bank.states.clear()
+            reference_bank.states.clear()
             configs = [
                 configuration(next_seed + i, ["situational", "predictor"][i % 2], args)
                 for i in range(args.envs)
@@ -428,15 +481,25 @@ def main():
                     break
                 ids = list(observations)
                 tensors = pack(list(observations.values()))
+                contexts = [env.decision_contexts()[slot] for slot in ids]
+                memory, memory_resets = memory_bank.inputs(ids, contexts)
+                ref_memory, _ = reference_bank.inputs(ids, contexts)
                 with torch.no_grad():
-                    dist, v = ac(*tensors, temperature)
+                    dist, v, next_memory = ac.forward_recurrent(*tensors, temperature, memory)
+                    ref_scores, _, next_ref = reference.forward_recurrent(*tensors[:3], ref_memory)
+                    ref_dist = categorical(ref_scores, tensors[3], temperature)
                     acts = dist.sample()
                     lp = dist.log_prob(acts)
+                memory_bank.commit(ids, contexts, memory, next_memory)
+                reference_bank.commit(ids, contexts, ref_memory, next_ref)
                 actions = [0] * args.envs
                 step_samples = {}
                 for j, slot in enumerate(ids):
                     actions[slot] = int(acts[j])
                     step_samples[slot] = dict(
+                        slot=slot, context=contexts[j], memory=memory[j].numpy().copy(),
+                        memory_reset=memory_resets[j],
+                        reference_logits=ref_dist.logits[j, :len(observations[slot][0])].numpy().copy(),
                         observation=observations[slot],
                         action=int(acts[j]),
                         old_log_prob=float(lp[j]),
@@ -474,7 +537,10 @@ def main():
             live = unpack(obs, env.spatial_observation())
             if live:
                 with torch.no_grad():
-                    _, next_v = ac(*pack(list(live.values())), temperature)
+                    ids = list(live)
+                    contexts = [env.decision_contexts()[slot] for slot in ids]
+                    memory, _ = memory_bank.inputs(ids, contexts)
+                    _, next_v, _ = ac.forward_recurrent(*pack(list(live.values())), temperature, memory)
                 for j, slot in enumerate(live):
                     bootstrap[slot] = float(next_v[j])
             adv, returns = advantages(
@@ -497,31 +563,10 @@ def main():
             update += 1
             stats = []
             for epoch in range(3):
-                for first in range(0, len(flat), 64):
+                for batch in windows(flat, rng):
                     if time.monotonic() >= deadline:
                         break
-                    # Shuffle once per PPO pass, retaining each sample exactly once.
-                    if first == 0:
-                        order = rng.permutation(len(flat))
-                    batch = [flat[i] for i in order[first : first + 64]]
-                    tensors = pack([s["observation"] for s in batch])
-                    dist, value = ac(*tensors, temperature)
-                    acts = torch.tensor([s["action"] for s in batch])
-                    old = torch.tensor([s["old_log_prob"] for s in batch])
-                    advantage = torch.tensor([s["advantage"] for s in batch])
-                    target = torch.tensor([s["target"] for s in batch])
-                    logp = dist.log_prob(acts)
-                    ratio = (logp - old).exp()
-                    policy_loss = -torch.minimum(
-                        ratio * advantage, ratio.clamp(0.8, 1.2) * advantage
-                    ).mean()
-                    value_loss = F.mse_loss(value, target)
-                    with torch.no_grad():
-                        ref_dist = categorical(
-                            reference(*tensors[:3]), tensors[3], temperature
-                        )
-                    kl = categorical_kl(dist, ref_dist).mean()
-                    entropy = dist.entropy().mean()
+                    policy_loss, value_loss, entropy, kl, clip_fraction = replay(ac, batch, temperature)
                     loss = value_loss + (
                         policy_loss + 0.02 * kl - 0.005 * entropy if update > 2 else 0
                     )
@@ -544,7 +589,7 @@ def main():
                                 value_loss,
                                 entropy,
                                 kl,
-                                ((ratio - 1).abs() > 0.2).float().mean(),
+                                clip_fraction,
                             ]
                         ]
                     )

@@ -1789,7 +1789,10 @@
       "floor": "shallow-water",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 23,
@@ -1847,7 +1850,9 @@
       "environmentEffects": [],
       "owner": null,
       "id": "copper-village",
-      "connections": ["se"]
+      "connections": [
+        "se"
+      ]
     },
     {
       "col": 30,
@@ -2113,7 +2118,10 @@
       "floor": "shallow-water",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 23,
@@ -2178,7 +2186,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 31,
@@ -2317,7 +2328,9 @@
       "environmentEffects": [],
       "owner": null,
       "id": "pitch-village",
-      "connections": ["se"]
+      "connections": [
+        "se"
+      ]
     },
     {
       "col": 8,
@@ -2430,7 +2443,10 @@
       "floor": "shallow-water",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 22,
@@ -2503,7 +2519,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 31,
@@ -2648,7 +2667,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 9,
@@ -2713,7 +2735,10 @@
       "floor": "dark-water",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 17,
@@ -2754,7 +2779,10 @@
       "floor": "shallow-water",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 22,
@@ -2835,7 +2863,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 32,
@@ -2972,7 +3003,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 9,
@@ -2981,7 +3015,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 10,
@@ -2991,7 +3028,9 @@
       "environmentEffects": [],
       "owner": null,
       "id": "pitch-quay",
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 11,
@@ -3040,7 +3079,10 @@
       "floor": "dark-water",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 17,
@@ -3154,7 +3196,9 @@
       "environmentEffects": [],
       "owner": null,
       "id": "copper-quay",
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 31,
@@ -3163,7 +3207,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["w", "nw"]
+      "connections": [
+        "w",
+        "nw"
+      ]
     },
     {
       "col": 32,
@@ -4996,7 +5043,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["e", "sw"]
+      "connections": [
+        "e",
+        "sw"
+      ]
     },
     {
       "col": 21,
@@ -5006,7 +5056,9 @@
       "environmentEffects": [],
       "owner": null,
       "id": "bell-quay",
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 22,
@@ -5319,7 +5371,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 21,
@@ -5512,7 +5567,10 @@
       "floor": "shallow-water",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 5,
@@ -5633,7 +5691,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 20,
@@ -5834,7 +5895,10 @@
       "floor": "shallow-water",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 5,
@@ -5956,7 +6020,9 @@
       "environmentEffects": [],
       "owner": null,
       "id": "bell-village",
-      "connections": ["ne"]
+      "connections": [
+        "ne"
+      ]
     },
     {
       "col": 20,
@@ -6149,7 +6215,10 @@
       "floor": "shallow-water",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["sw", "ne"]
+      "connections": [
+        "sw",
+        "ne"
+      ]
     },
     {
       "col": 4,
@@ -8408,7 +8477,9 @@
       "environmentEffects": [],
       "owner": null,
       "id": "rush-village",
-      "connections": ["se"]
+      "connections": [
+        "se"
+      ]
     },
     {
       "col": 6,
@@ -8729,7 +8800,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 6,
@@ -8866,7 +8940,10 @@
       "floor": "shallow-water",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 23,
@@ -9059,7 +9136,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["e", "nw"]
+      "connections": [
+        "e",
+        "nw"
+      ]
     },
     {
       "col": 7,
@@ -9068,7 +9148,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["e", "w"]
+      "connections": [
+        "e",
+        "w"
+      ]
     },
     {
       "col": 8,
@@ -9078,7 +9161,9 @@
       "environmentEffects": [],
       "owner": null,
       "id": "rush-quay",
-      "connections": ["w"]
+      "connections": [
+        "w"
+      ]
     },
     {
       "col": 9,
@@ -9199,7 +9284,10 @@
       "floor": "shallow-water",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 24,
@@ -9520,7 +9608,10 @@
       "floor": "shallow-water",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 24,
@@ -9578,7 +9669,9 @@
       "environmentEffects": [],
       "owner": null,
       "id": "salt-quay",
-      "connections": ["e"]
+      "connections": [
+        "e"
+      ]
     },
     {
       "col": 31,
@@ -9587,7 +9680,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["se", "w"]
+      "connections": [
+        "se",
+        "w"
+      ]
     },
     {
       "col": 32,
@@ -9852,7 +9948,10 @@
       "floor": "shallow-water",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 25,
@@ -9917,7 +10016,10 @@
       "floor": "green-plain",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 33,
@@ -10175,7 +10277,10 @@
       "floor": "shallow-water",
       "environmentEffects": [],
       "owner": null,
-      "connections": ["se", "nw"]
+      "connections": [
+        "se",
+        "nw"
+      ]
     },
     {
       "col": 25,
@@ -10241,7 +10346,9 @@
       "environmentEffects": [],
       "owner": null,
       "id": "salt-village",
-      "connections": ["nw"]
+      "connections": [
+        "nw"
+      ]
     },
     {
       "col": 33,
@@ -12867,7 +12974,6 @@
   },
   "modifiers": {
     "sight": {
-      "range": 0,
       "unlimited": false,
       "sightModifiers": {
         "lit": 0,

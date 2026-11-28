@@ -4,7 +4,7 @@ from pathlib import Path
 import torch
 from hex_command_rl.recovery import save_bundle, resolve, load_resume
 from hex_command_rl.spatial import SpatialPlanner
-from hex_command_rl.mixed_workload import configs, group, mass
+from hex_command_rl.mixed_workload import configs, group, mass, weights, sampling_group, definition
 
 
 class RecoveryContracts(unittest.TestCase):
@@ -32,9 +32,73 @@ class RecoveryContracts(unittest.TestCase):
                 self.assertFalse(seeds[i] & seeds[j])
         unique = {group(c): c for c in partitions[0]}
         self.assertAlmostEqual(sum(mass(c) for c in unique.values()), 1.0)
-        self.assertAlmostEqual(
-            sum(mass(c) for c in unique.values() if "campaign" in c), 0.5
+        for bucket, budget in definition()["samplingWeights"].items():
+            self.assertAlmostEqual(sum(mass(c) for c in unique.values() if sampling_group(c) == bucket), budget)
+        self.assertEqual(set(unique), set(weights(partitions[0])))
+
+    def test_pretrain_selector_does_not_change_rl_matches(self):
+        from copy import deepcopy
+        from hex_command_rl.mixed_workload import pretrain_imitator, pretrain_enabled, imitation_configs
+
+        spec = deepcopy(definition())
+        before = configs("validation", spec)
+        sample = next(c for c in before if "campaign" not in c)
+        arena = next(a for a in spec["arenas"] if a["id"] == sample["landscape"])
+        previous = pretrain_imitator(sample, spec)
+        arena["pretrain_imitator"] = "full" if previous != "full" else "classic"
+        self.assertNotEqual(pretrain_imitator(sample, spec), previous)
+        self.assertEqual(configs("validation", spec), before)
+        old_enabled = pretrain_enabled(sample, spec)
+        arena["pretrain_enabled"] = not old_enabled
+        self.assertEqual(pretrain_enabled(sample, spec), not old_enabled)
+        self.assertEqual(bool(imitation_configs([sample], spec)), not old_enabled)
+        self.assertEqual(configs("validation", spec), before)
+        arena["pretrain_enabled"] = "false"
+        with self.assertRaises(ValueError):
+            imitation_configs([sample], spec)
+
+    def test_gameplay_holdouts_have_weights_but_no_imitation_teacher(self):
+        from hex_command_rl.mixed_workload import pretrain_imitator
+        arena = next(c for c in configs("validation") if "campaign" not in c)
+        heldout = dict(campaign="__held_out_campaign__", objective="authored",
+                       diplomacy="unrestricted", player="balanced", enemy="classic")
+        result = weights([arena, heldout], evaluation=True)
+        self.assertAlmostEqual(result[group(arena)], 0.5)
+        self.assertAlmostEqual(result[group(heldout)], 0.5)
+        with self.assertRaises(KeyError):
+            pretrain_imitator(heldout)
+
+    def test_campaign_opponent_override_preserves_task_budget(self):
+        from copy import deepcopy
+        from unittest.mock import patch
+        from hex_command_rl.mixed_workload import definition, variant_opponents
+
+        spec = deepcopy(definition())
+        campaign = next(c for c, variants in spec["campaigns"].items() if len(variants) == 1)
+        before = configs("train", spec)
+        before_weights = weights(before, spec)
+        for variant in spec["campaigns"][campaign]:
+            variant["opponents"] = ["classic"]
+        for split in ("train", "validation", "test"):
+            selected = configs(split, spec)
+            target = [c for c in selected if c.get("campaign") == campaign]
+            self.assertTrue(target)
+            self.assertTrue(all(c["enemy"] == "classic" and "enemyBlocks" not in c for c in target))
+        after = configs("train", spec)
+        self.assertEqual(
+            [c for c in before if c.get("campaign") != campaign],
+            [c for c in after if c.get("campaign") != campaign],
         )
+        unique = {group(c): c for c in after}
+        with patch("hex_command_rl.mixed_workload.definition", return_value=spec):
+            self.assertAlmostEqual(sum(mass(c) for c in unique.values()), 1.0)
+            self.assertAlmostEqual(
+                sum(mass(c) for c in unique.values() if c.get("campaign") == campaign),
+                sum(before_weights[group(c)] for c in {group(c): c for c in before if c.get("campaign") == campaign}.values()),
+            )
+        for invalid in ([], ["unknown"], ["classic", "classic"]):
+            with self.assertRaises(ValueError):
+                variant_opponents(spec, {"opponents": invalid})
 
     def test_sampler_budgets_follow_decisions_and_reserves_validation_seeds(self):
         import numpy as np
@@ -49,14 +113,12 @@ class RecoveryContracts(unittest.TestCase):
                 sampler.step(0)
             sampler.finish(0, n)
         totals = {
-            f: sum(
-                n
-                for k, n in sampler.counts.items()
-                if __import__("json").loads(k)[0] == f
-            )
-            for f in ["arena", "campaign"]
+            pool: sum(n for key, n in sampler.case_counts.items()
+                      if sampler.buckets[key] == pool)
+            for pool in sampler.bucket_weights
         }
-        self.assertLess(abs(totals["campaign"] / sum(totals.values()) - 0.5), 0.08)
+        for pool, budget in sampler.bucket_weights.items():
+            self.assertLess(abs(totals[pool] / sum(totals.values()) - budget), 0.08)
 
     def test_caps_are_failures_with_family_specific_penalties(self):
         from hex_command_rl.mixed_ppo import terminal_reward
@@ -65,7 +127,7 @@ class RecoveryContracts(unittest.TestCase):
         for reason, value in (
             ("escort_loss", -2.0),
             ("protected_loss", -1.5),
-            ("leader_loss", -1.0),
+            ("leader_loss", -1.5),
             ("defeat", -1.0),
         ):
             self.assertEqual(

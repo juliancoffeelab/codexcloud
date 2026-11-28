@@ -43,6 +43,7 @@ type model = {
   status : string;
   sound : bool;
   player_ai : Setup.policy option;
+  learned_player : bool;
   follow_ai : bool;
   ai_focus : string array;
   can_undo : bool;
@@ -362,7 +363,8 @@ let rec publish ?(render = true) ?(winner = true) ?(effects = fun () -> ()) ?(ne
         settling = Option.is_some t.enemy;
         status;
         sound = Phaser_sound.enabled t.audio;
-        player_ai = Setup.player_ai t.latest.setup;
+        player_ai =
+          (if t.latest.learned_player then Some Setup.Veteran else Setup.player_ai t.latest.setup);
         can_undo = t.latest.failure = None && can_undo t;
         completed_turns = Setup.completed_turns t.latest.setup s;
         revision;
@@ -861,14 +863,31 @@ let ensure_enemy t origin =
         t.enemy <- Some task;
         let phase = (state t).turn in
         let player_control = t.latest.player_ai in
+        let learned_control = t.latest.learned_player in
         let planning_setup =
           if phase = Domain.Turn_phase.Player then Setup.campaign (Option.get t.latest.player_ai)
           else t.latest.setup
         in
         let options = Setup.ai_options planning_setup in
+        let use_learned = phase = Domain.Turn_phase.Player && learned_control in
+        let options =
+          if use_learned then
+            {
+              options with
+              Domain.blocks =
+                Some
+                  {
+                    Domain.planner = Domain.Planner_kind.Learned;
+                    recruiter = (Setup.preset (Option.get player_control)).recruiter;
+                    campaign = Domain.Campaigner_kind.Mission;
+                  };
+            }
+          else options
+        in
         let phase_finished () =
           (state t).turn <> phase || (state t).winner <> None
-          || (phase = Domain.Turn_phase.Player && t.latest.player_ai <> player_control)
+          || phase = Domain.Turn_phase.Player
+             && (t.latest.player_ai <> player_control || t.latest.learned_player <> learned_control)
           || Story.dialogue_pending (state t).campaign
         in
         let current () =
@@ -981,13 +1000,18 @@ let ensure_enemy t origin =
                         if current () then (
                           recording :=
                             Some
-                              (Debug_report.begin_turn t.recordings (Engine.save_json t.battle)
-                                 planning_setup);
+                              (Debug_report.begin_turn
+                                 ?learned_model:
+                                   (if use_learned then Some "ppo-hour13-d40eaa679134" else None)
+                                 t.recordings (Engine.save_json t.battle) planning_setup);
                           step ())
                         else Js.Promise.resolve ())
                       (prepare_during_pause 0.)
                   else Js.Promise.resolve ())
-                (Save.saved t.saves))
+                (Js.Promise.then_
+                   (fun () ->
+                     if use_learned then Native.ensure_learned t.battle else Js.Promise.resolve ())
+                   (Save.saved t.saves)))
         in
         let _ =
           Js.Promise.catch
@@ -1011,8 +1035,19 @@ let set_player_ai t policy =
   alive t;
   if (state t).turn = Domain.Turn_phase.Player then (
     t.latest <-
-      { t.latest with player_ai = policy; setup = Setup.with_player_ai t.latest.setup policy };
+      {
+        t.latest with
+        player_ai = policy;
+        learned_player = false;
+        setup = Setup.with_player_ai t.latest.setup policy;
+      };
     if t.initialized && not (Save.awaiting t.saves) then persist t false;
+    publish t)
+
+let set_learned_player t =
+  alive t;
+  if (state t).turn = Domain.Turn_phase.Player then (
+    t.latest <- { t.latest with player_ai = Some Setup.Veteran; learned_player = true };
     publish t)
 
 let set_follow_ai t enabled =
@@ -1090,6 +1125,7 @@ let replace ?setup ?(new_run = true) ?(persist = true) t replacement game =
     {
       t.latest with
       setup = Option.value ~default:t.latest.setup setup;
+      learned_player = (if Option.is_some setup then false else t.latest.learned_player);
       player_ai = Setup.player_ai (Option.value ~default:t.latest.setup setup);
       ai_focus = [||];
       details = Battle_details.None_;
@@ -1247,6 +1283,7 @@ let from_loaded ?(clock = pause) ~audio factory (loaded : Native.battle Save.loa
             loaded.notice;
         sound = Phaser_sound.enabled audio;
         player_ai = Setup.player_ai loaded.setup;
+        learned_player = false;
         follow_ai = true;
         ai_focus = [||];
         can_undo = false;

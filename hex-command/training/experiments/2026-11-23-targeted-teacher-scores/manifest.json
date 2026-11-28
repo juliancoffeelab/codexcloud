@@ -1,0 +1,26 @@
+{
+  "teacher_scores.rs": {
+    "bytes": 2537,
+    "sha256": "9d708703b1d2832784fd1acc3a06ded5b0f227d4a0b07c51295b3ff4f90938fa"
+  },
+  "README.md": {
+    "bytes": 2732,
+    "sha256": "967eb02ef1976455fda93bdc8c7a42329b9eeb477ad26876ebc769f1b98043d3"
+  },
+  "teachers.jsonl.gz": {
+    "bytes": 3846,
+    "sha256": "d316f52a4d4396354f649c4e158f175fe974778b348333687e03ad32c96e57d2"
+  },
+  "protocol.json": {
+    "bytes": 891,
+    "sha256": "7f1ec5ca155aa1bf86a50bcc3efed3c9b1a1da7b4005fbe4ec3407d13caba65c"
+  },
+  "summary.json": {
+    "bytes": 3543,
+    "sha256": "c4726b13a5b93692cada23dbac9145a45223d8580c9a89f4e43703b9cf3a18e9"
+  },
+  "jobs.json.gz": {
+    "bytes": 3435,
+    "sha256": "4dd2e5dd93ce0c413e8b4f8230fb31167ed54d45712ac09a97813d561dda6cd9"
+  }
+}

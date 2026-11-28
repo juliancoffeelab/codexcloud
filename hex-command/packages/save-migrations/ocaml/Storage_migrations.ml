@@ -6,7 +6,7 @@ module T = Historical_types
 module Identity = Migration_identity
 
 type local_source = (string * string option) list
-type entry = Identity.entry = Flash_entry of T.V52.current_entry | Turn_entry of T.V52.turn_entry
+type entry = Identity.entry = Flash_entry of T.V53.current_entry | Turn_entry of T.V53.turn_entry
 type claim = Identity.claim
 type ownership = Unknown | Known of entry | Conflicting of claim list
 type record_kind = Flash | Turn | Index | Other
@@ -31,7 +31,7 @@ type source_record = {
   mutable issue : repair_issue option;
   mutable error : string option;
   mutable unlisted_count : int option;
-  save : T.V52.t option;
+  save : T.V53.t option;
 }
 
 type problem_source = Local_storage | Indexed_db
@@ -48,8 +48,8 @@ type repair_inventory = {
 type repair_target = Record of string | Campaign of string | All
 
 type imported_storage = {
-  current : T.save52_member0 option;
-  turns : T.save52_member1 array;
+  current : T.save53_member0 option;
+  turns : T.save53_member1 array;
   choose_new_game : bool;
 }
 
@@ -93,7 +93,7 @@ let imported_value_typed value =
       (get value "progress");
   Current_save.widen (fst (Save_migrations.migrate_typed value))
 
-let imported_value value = Historical_codec.V52.to_json (imported_value_typed value)
+let imported_value value = Historical_codec.V53.to_json (imported_value_typed value)
 let imported raw = imported_value_typed (parse raw)
 let entry_of_save = Identity.entry_of_save
 let entry_id = Identity.entry_id
@@ -106,7 +106,7 @@ let is_turn = Identity.is_turn
 (* IndexedDB v2 -> v3 retires these authored campaigns without a replacement.
    Use the frozen converted checkpoint, never the live campaign catalog or an
    untrusted history label, to decide which records are owned by a retired run. *)
-let retired_save (save : T.V52.t) =
+let retired_save (save : T.V53.t) =
   let state =
     match save with
     | `Current value -> value.checkpoint.state
@@ -168,7 +168,7 @@ let migrate_source (source : local_source) : imported_storage =
     Option.fold ~none:[||] ~some:(fun ((index : T.History5.t), _, _) -> index.entries) history
   in
   let indexed =
-    Array.to_list (Array.map (fun (entry : T.V52.turn_entry) -> payload_key entry.id) rows)
+    Array.to_list (Array.map (fun (entry : T.V53.turn_entry) -> payload_key entry.id) rows)
   and retired =
     Option.fold ~none:[]
       ~some:(fun (_, _, ids) -> Array.to_list (Array.map payload_key ids))
@@ -185,7 +185,7 @@ let migrate_source (source : local_source) : imported_storage =
     (source_keys source);
   let turns =
     Array.map
-      (fun (entry : T.V52.turn_entry) ->
+      (fun (entry : T.V53.turn_entry) ->
         let payload =
           match raw source (payload_key entry.id) with
           | None -> invalid ("Missing saved turn " ^ entry.id ^ ".")
@@ -222,11 +222,11 @@ let migrate source =
     ([
        ( "turns",
          Js.Json.array
-           (Array.map (fun value -> Historical_codec.V52.to_json (`Turn value)) value.turns) );
+           (Array.map (fun value -> Historical_codec.V53.to_json (`Turn value)) value.turns) );
        ("chooseNewGame", b value.choose_new_game);
      ]
     @ Option.fold ~none:[]
-        ~some:(fun value -> [ ("current", Historical_codec.V52.to_json (`Current value)) ])
+        ~some:(fun value -> [ ("current", Historical_codec.V53.to_json (`Current value)) ])
         value.current)
 
 let error_text error =
@@ -428,7 +428,7 @@ let record_to_json (record : source_record) =
         ~some:(fun count -> [ ("unlistedCount", n (float_of_int count)) ])
         record.unlisted_count
     @ Option.fold ~none:[]
-        ~some:(fun save -> [ ("save", Historical_codec.V52.to_json save) ])
+        ~some:(fun save -> [ ("save", Historical_codec.V53.to_json save) ])
         record.save)
 
 let inspect source =

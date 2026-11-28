@@ -111,6 +111,8 @@ mod tests {
             let orders = CampaignerKind::Mission.campaign_orders(
                 &mission,
                 CampaignInput {
+                    objective_progress: &[],
+                    opponent_progress: &[],
                     seed: 0,
                     goals: None,
                     diplomacy: Diplomacy::Diplomatic,

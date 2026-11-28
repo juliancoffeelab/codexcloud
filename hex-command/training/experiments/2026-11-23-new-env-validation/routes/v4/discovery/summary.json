@@ -1,0 +1,108 @@
+[
+  {
+    "player": "hour8",
+    "mode": "switch",
+    "wins": 0,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 8
+    }
+  },
+  {
+    "player": "hour8",
+    "mode": "stay",
+    "wins": 0,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 8
+    }
+  },
+  {
+    "player": "hour10",
+    "mode": "switch",
+    "wins": 1,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 7,
+      "The route is open.": 1
+    }
+  },
+  {
+    "player": "hour10",
+    "mode": "stay",
+    "wins": 0,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 8
+    }
+  },
+  {
+    "player": "full",
+    "mode": "switch",
+    "wins": 0,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 8
+    }
+  },
+  {
+    "player": "full",
+    "mode": "stay",
+    "wins": 0,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 8
+    }
+  },
+  {
+    "player": "queued",
+    "mode": "switch",
+    "wins": 2,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 2,
+      "Deadline expired.": 5,
+      "Commander lost.": 1
+    }
+  },
+  {
+    "player": "queued",
+    "mode": "stay",
+    "wins": 0,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 7,
+      "Commander lost.": 1
+    }
+  },
+  {
+    "player": "classic",
+    "mode": "switch",
+    "wins": 0,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 5,
+      "Commander lost.": 3
+    }
+  },
+  {
+    "player": "classic",
+    "mode": "stay",
+    "wins": 0,
+    "games": 8,
+    "caps": 0,
+    "outcomes": {
+      "Commander lost.": 2,
+      "Deadline expired.": 6
+    }
+  }
+]

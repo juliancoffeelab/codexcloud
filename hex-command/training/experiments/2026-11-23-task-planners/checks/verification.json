@@ -1,0 +1,15 @@
+{
+  "productionParityGames": 60,
+  "matchingSuccessAndTerminalRounds": 60,
+  "changedTeacherMaps": [
+    "rl-deadline-wait7",
+    "rl-defend-lower-gallery-0",
+    "rl-briar-saddle"
+  ],
+  "nonTeacherWorkloadFieldsUnchanged": true,
+  "fullVerifyExitCode": 0,
+  "trainingTests": 41,
+  "trainingTestsSkipped": 1,
+  "trainingTestsFailed": 0,
+  "noTrainingStarted": true
+}

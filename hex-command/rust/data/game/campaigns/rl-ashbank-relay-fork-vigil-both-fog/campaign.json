@@ -1,0 +1,25 @@
+{
+  "tags": ["simulation"],
+  "id": "rl-ashbank-relay-fork-vigil-both-fog",
+  "name": "Ashbank Relay",
+  "tagline": "Ashbank Relay",
+  "description": "Hold Ashbank village for 10 consecutive turns and secure the enemy fort at the eastern crossing. The fort must be ours by the end of round 7.",
+  "shortDescription": "Hold Ashbank village for 10 consecutive turns and secure the enemy fort at the eastern crossing. The fort must be ours by the end of round 7.",
+  "race": "human",
+  "leader": "warden",
+  "characters": [],
+  "ending": [],
+  "stages": ["stage.json"],
+  "carryover": {
+    "goldLimit": 20,
+    "veteranLimit": 6,
+    "deploymentRadius": 3,
+    "weights": {
+      "hp": 1,
+      "damage": 2,
+      "healing": 5,
+      "level": 3,
+      "experience": 0.3333333333333333
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "python-tests.log.gz": {
+    "bytes": 339,
+    "sha256": "023ea6faea4491e894f76fad6d053a81b2c94f7cfd7193c4df75dcd95f7e5dbd"
+  },
+  "README.md": {
+    "bytes": 3910,
+    "sha256": "7b4eaa243b7aaf10633c67db58f0758b3a610c3b3f54a83bb9c265e0b7ba115e"
+  },
+  "fixture-parity.json": {
+    "bytes": 7801,
+    "sha256": "1d5c6a60f3681139ed3abbeadbb458fa3d063bb6ad1340875880e7711d52b7e7"
+  },
+  "full-verify.log.gz": {
+    "bytes": 10102,
+    "sha256": "b9a8ad72749b47f995946b66748afa994c8e0f38fac62336b208fc1175157f50"
+  },
+  "verification.json": {
+    "bytes": 11441,
+    "sha256": "6d111664c155a06f1e1961b735c7322189ad1661a73186eb3f75f28aa34f604c"
+  },
+  "native-games.json": {
+    "bytes": 15429,
+    "sha256": "2c9541ddfb56f413d33754a46f90b18559a2fc5bb4a2283e0edac566790edba8"
+  },
+  "teacher-collection-parity.json": {
+    "bytes": 1965,
+    "sha256": "80bab749d6ab91daab6b7dad74439d5a8eba2590d8f266103a9bed8e65eff084"
+  },
+  "checks.json": {
+    "bytes": 464,
+    "sha256": "d923d226f6b0eed83c11d138689356b74e1e83fe208fb3faf1102b6a99bf4fde"
+  }
+}

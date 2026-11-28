@@ -1,0 +1,14 @@
+{
+  "status": "ready",
+  "discoveryGames": 960,
+  "confirmationGames": 60,
+  "matchedReplays": 54,
+  "sha256": {
+    "final-summary.json": "563123aa7004675c600655220d452db61756c5ce39997feafcc18d04870752a1",
+    "REPORT.md": "fa9df8f42686ceb2580e601ab70cce6521f012c6c16f8a17562526f6466f6dc8",
+    "discovery/games.jsonl": "3c72a4b909e9fcd899ccf8a9c2f15083eb5b642a717e10a01cc8a7da29fded82",
+    "confirmation/games.jsonl": "799b71027910dc32dfbeb11342dd2066ca147cd6b4ed99d97f181362e9fd1b83",
+    "observation-evidence.json": "d503cdcf21fc8346942cd92915cf8a3200c29e6d1c6368438273c1f039c95a64",
+    "traces/raw.jsonl.gz": "49d50b58d75972b3ee68a7f8c1e12f59a1ce73889ccdfefe4f22af693ef53643"
+  }
+}

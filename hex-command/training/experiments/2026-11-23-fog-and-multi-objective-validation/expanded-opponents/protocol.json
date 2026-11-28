@@ -1,0 +1,50 @@
+{
+  "purpose": "Qualify the existing multi-objective encounter conditions across opponent and returning-fog scopes; no new maps, mechanics, training or integration.",
+  "scopes": [
+    "clear",
+    "player-fog",
+    "both-fog"
+  ],
+  "enemies": {
+    "classic": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    },
+    "queued": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "predictor": {
+      "recruiter": "predictor",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "full": {
+      "recruiter": "predictor",
+      "campaign": "mission",
+      "planner": "full"
+    }
+  },
+  "players": [
+    "hour8",
+    "hour10",
+    "full",
+    "queued",
+    "classic"
+  ],
+  "discovery": {
+    "seedsPerCell": 8,
+    "referenceMinimumWins": 6,
+    "gapMinimumVsHour10": 3
+  },
+  "confirmation": {
+    "seedsPerCell": 20,
+    "separateSeeds": true,
+    "referenceSelectedOnDiscovery": true,
+    "referenceMinimumWins": 15,
+    "gapMinimumVsHour10": 6
+  },
+  "limits": "Fixed layouts/forces, recruits=0, original objective rules/deadlines unchanged; recruitment policies can affect earned promotions. Caps unresolved, not defeats."
+}

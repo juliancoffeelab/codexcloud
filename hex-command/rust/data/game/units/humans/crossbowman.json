@@ -42,10 +42,11 @@
   "description": "A sturdy human crossbow fighter who concentrates piercing damage into a single heavy bolt.",
   "level": 2,
   "family": "archer",
-  "advancesTo": ["arbalester"],
+  "advancesTo": [
+    "arbalester"
+  ],
   "experienceNeeded": 18,
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

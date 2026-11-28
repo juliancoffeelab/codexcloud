@@ -1,0 +1,877 @@
+{
+  "label": "discovery-pressure",
+  "raw": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/discovery-pressure.jsonl",
+  "catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog",
+  "catalogSha256": "532bb2d5fbf08fc052e1fc3036cfe08b408c585a162ad84d13a01cd1daad1175",
+  "seeds": [
+    571230001,
+    571230002,
+    571230003,
+    571230004,
+    571230005,
+    571230006,
+    571230007,
+    571230008
+  ],
+  "native": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/native/hex_command_training.so",
+  "nativeSha256": "7d7ab7ede88526b76ceb1c91de5fc9df2187c79c1ce0b7ba3b8b9b1f0cf322f2",
+  "models": {
+    "hour8": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/update-00002205-1795440240315037513/planner.json",
+      "sha256": "e7ef684d9e135e7817e390c533ec8b903d08db2d6ac0253c1aa340616b47a619"
+    },
+    "hour10": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/last-1795458575107520190/planner.json",
+      "sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee"
+    }
+  },
+  "outcomes": [
+    {
+      "variant": "fork-base",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 3,
+      "losses": 5,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 4,
+        "Ashbank held and the eastern crossing secured.": 3,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "fork-swift",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 1,
+      "losses": 7,
+      "caps": 0,
+      "winRounds": [
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 7,
+        "Ashbank held and the eastern crossing secured.": 1
+      }
+    },
+    {
+      "variant": "fork-wounded",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 4,
+      "losses": 4,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 4,
+        "Ashbank held and the eastern crossing secured.": 4
+      }
+    },
+    {
+      "variant": "fork-reinforce",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 4,
+      "losses": 4,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 4,
+        "Ashbank held and the eastern crossing secured.": 4
+      }
+    },
+    {
+      "variant": "fork-veteran",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 5,
+      "losses": 3,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 3,
+        "Ashbank held and the eastern crossing secured.": 5
+      }
+    },
+    {
+      "variant": "fork-closer",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 4,
+      "losses": 4,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 3,
+        "Ashbank held and the eastern crossing secured.": 4,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "fork-flanked",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 4,
+      "losses": 4,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 2,
+        "The relief force arrived before both positions were secured.": 2,
+        "Ashbank held and the eastern crossing secured.": 4
+      }
+    },
+    {
+      "variant": "fork-trident",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 3,
+      "losses": 5,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 3,
+        "The relief force arrived before both positions were secured.": 2,
+        "Ashbank held and the eastern crossing secured.": 3
+      }
+    },
+    {
+      "variant": "fork-eastern",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 4,
+      "losses": 4,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 3,
+        "Ashbank held and the eastern crossing secured.": 4,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "fork-vigil",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 5,
+      "losses": 3,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 3,
+        "Ashbank held and the eastern crossing secured.": 5
+      }
+    },
+    {
+      "variant": "fork-base",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 6,
+        "Ashbank held and the eastern crossing secured.": 2
+      }
+    },
+    {
+      "variant": "fork-swift",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 6,
+        "Ashbank held and the eastern crossing secured.": 2
+      }
+    },
+    {
+      "variant": "fork-wounded",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 6,
+        "Ashbank held and the eastern crossing secured.": 2
+      }
+    },
+    {
+      "variant": "fork-reinforce",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 1,
+      "losses": 7,
+      "caps": 0,
+      "winRounds": [
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 7,
+        "Ashbank held and the eastern crossing secured.": 1
+      }
+    },
+    {
+      "variant": "fork-veteran",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 6,
+        "Ashbank held and the eastern crossing secured.": 2
+      }
+    },
+    {
+      "variant": "fork-closer",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 6,
+        "Ashbank held and the eastern crossing secured.": 2
+      }
+    },
+    {
+      "variant": "fork-flanked",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 6,
+        "Ashbank held and the eastern crossing secured.": 2
+      }
+    },
+    {
+      "variant": "fork-trident",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 1,
+      "losses": 7,
+      "caps": 0,
+      "winRounds": [
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 6,
+        "The relief force arrived before both positions were secured.": 1,
+        "Ashbank held and the eastern crossing secured.": 1
+      }
+    },
+    {
+      "variant": "fork-eastern",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 4,
+      "losses": 4,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 3,
+        "Ashbank held and the eastern crossing secured.": 4,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "fork-vigil",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 5,
+      "losses": 3,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 3,
+        "Ashbank held and the eastern crossing secured.": 5
+      }
+    },
+    {
+      "variant": "fork-base",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 2,
+        "Ashbank held and the eastern crossing secured.": 2,
+        "The relief force arrived before both positions were secured.": 4
+      }
+    },
+    {
+      "variant": "fork-swift",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 1,
+      "losses": 7,
+      "caps": 0,
+      "winRounds": [
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 4,
+        "The relief force arrived before both positions were secured.": 3,
+        "Ashbank held and the eastern crossing secured.": 1
+      }
+    },
+    {
+      "variant": "fork-wounded",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 2,
+        "Ashbank held and the eastern crossing secured.": 2,
+        "The relief force arrived before both positions were secured.": 4
+      }
+    },
+    {
+      "variant": "fork-reinforce",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 0,
+      "losses": 8,
+      "caps": 0,
+      "winRounds": [],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 8
+      }
+    },
+    {
+      "variant": "fork-veteran",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 2,
+        "The eastern crossing was still enemy-held at the deadline.": 6
+      }
+    },
+    {
+      "variant": "fork-closer",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 1,
+      "losses": 7,
+      "caps": 0,
+      "winRounds": [
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 2,
+        "The relief force arrived before both positions were secured.": 5,
+        "Ashbank held and the eastern crossing secured.": 1
+      }
+    },
+    {
+      "variant": "fork-flanked",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 2,
+        "Ashbank held and the eastern crossing secured.": 2,
+        "The relief force arrived before both positions were secured.": 4
+      }
+    },
+    {
+      "variant": "fork-trident",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 0,
+      "losses": 8,
+      "caps": 0,
+      "winRounds": [],
+      "reasons": {
+        "The relief force arrived before both positions were secured.": 6,
+        "The eastern crossing was still enemy-held at the deadline.": 1,
+        "The commander fell.": 1
+      }
+    },
+    {
+      "variant": "fork-eastern",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "fork-vigil",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 4,
+      "losses": 4,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 4,
+        "The relief force arrived before both positions were secured.": 4
+      }
+    },
+    {
+      "variant": "fork-base",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 0,
+      "losses": 8,
+      "caps": 0,
+      "winRounds": [],
+      "reasons": {
+        "The commander fell.": 3,
+        "The eastern crossing was still enemy-held at the deadline.": 5
+      }
+    },
+    {
+      "variant": "fork-swift",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 0,
+      "losses": 8,
+      "caps": 0,
+      "winRounds": [],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 8
+      }
+    },
+    {
+      "variant": "fork-wounded",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 0,
+      "losses": 8,
+      "caps": 0,
+      "winRounds": [],
+      "reasons": {
+        "The commander fell.": 2,
+        "The eastern crossing was still enemy-held at the deadline.": 4,
+        "The relief force arrived before both positions were secured.": 2
+      }
+    },
+    {
+      "variant": "fork-reinforce",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 1,
+      "losses": 7,
+      "caps": 0,
+      "winRounds": [
+        11
+      ],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 3,
+        "The relief force arrived before both positions were secured.": 3,
+        "Ashbank held and the eastern crossing secured.": 1,
+        "The commander fell.": 1
+      }
+    },
+    {
+      "variant": "fork-veteran",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 0,
+      "losses": 8,
+      "caps": 0,
+      "winRounds": [],
+      "reasons": {
+        "The eastern crossing was still enemy-held at the deadline.": 5,
+        "The relief force arrived before both positions were secured.": 3
+      }
+    },
+    {
+      "variant": "fork-closer",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 0,
+      "losses": 8,
+      "caps": 0,
+      "winRounds": [],
+      "reasons": {
+        "The commander fell.": 3,
+        "The eastern crossing was still enemy-held at the deadline.": 5
+      }
+    },
+    {
+      "variant": "fork-flanked",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 0,
+      "losses": 8,
+      "caps": 0,
+      "winRounds": [],
+      "reasons": {
+        "The relief force arrived before both positions were secured.": 1,
+        "The eastern crossing was still enemy-held at the deadline.": 5,
+        "The commander fell.": 2
+      }
+    },
+    {
+      "variant": "fork-trident",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 1,
+      "losses": 7,
+      "caps": 0,
+      "winRounds": [
+        11
+      ],
+      "reasons": {
+        "The commander fell.": 1,
+        "The eastern crossing was still enemy-held at the deadline.": 4,
+        "The relief force arrived before both positions were secured.": 2,
+        "Ashbank held and the eastern crossing secured.": 1
+      }
+    },
+    {
+      "variant": "fork-eastern",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "The relief force arrived before both positions were secured.": 2,
+        "The commander fell.": 3,
+        "The eastern crossing was still enemy-held at the deadline.": 1,
+        "Ashbank held and the eastern crossing secured.": 2
+      }
+    },
+    {
+      "variant": "fork-vigil",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 1,
+      "losses": 7,
+      "caps": 0,
+      "winRounds": [
+        11
+      ],
+      "reasons": {
+        "The commander fell.": 3,
+        "The relief force arrived before both positions were secured.": 2,
+        "The eastern crossing was still enemy-held at the deadline.": 2,
+        "Ashbank held and the eastern crossing secured.": 1
+      }
+    },
+    {
+      "variant": "fork-base",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 6,
+        "The relief force arrived before both positions were secured.": 1,
+        "The eastern crossing was still enemy-held at the deadline.": 1
+      }
+    },
+    {
+      "variant": "fork-swift",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 3,
+      "losses": 5,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 3,
+        "The relief force arrived before both positions were secured.": 1,
+        "The eastern crossing was still enemy-held at the deadline.": 4
+      }
+    },
+    {
+      "variant": "fork-wounded",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 6,
+        "The relief force arrived before both positions were secured.": 1,
+        "The eastern crossing was still enemy-held at the deadline.": 1
+      }
+    },
+    {
+      "variant": "fork-reinforce",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 4,
+      "losses": 4,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 4,
+        "The relief force arrived before both positions were secured.": 2,
+        "The commander fell.": 1,
+        "The eastern crossing was still enemy-held at the deadline.": 1
+      }
+    },
+    {
+      "variant": "fork-veteran",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 0,
+      "losses": 8,
+      "caps": 0,
+      "winRounds": [],
+      "reasons": {
+        "The relief force arrived before both positions were secured.": 3,
+        "The eastern crossing was still enemy-held at the deadline.": 5
+      }
+    },
+    {
+      "variant": "fork-closer",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 4,
+      "losses": 4,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The relief force arrived before both positions were secured.": 1,
+        "The commander fell.": 2,
+        "Ashbank held and the eastern crossing secured.": 4,
+        "The eastern crossing was still enemy-held at the deadline.": 1
+      }
+    },
+    {
+      "variant": "fork-flanked",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 6,
+        "The commander fell.": 1,
+        "The eastern crossing was still enemy-held at the deadline.": 1
+      }
+    },
+    {
+      "variant": "fork-trident",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 1,
+      "losses": 7,
+      "caps": 0,
+      "winRounds": [
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 1,
+        "The relief force arrived before both positions were secured.": 6,
+        "The eastern crossing was still enemy-held at the deadline.": 1
+      }
+    },
+    {
+      "variant": "fork-eastern",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 3,
+      "losses": 5,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The commander fell.": 2,
+        "The relief force arrived before both positions were secured.": 2,
+        "Ashbank held and the eastern crossing secured.": 3,
+        "The eastern crossing was still enemy-held at the deadline.": 1
+      }
+    },
+    {
+      "variant": "fork-vigil",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 5,
+      "losses": 3,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The relief force arrived before both positions were secured.": 3,
+        "Ashbank held and the eastern crossing secured.": 5
+      }
+    }
+  ]
+}

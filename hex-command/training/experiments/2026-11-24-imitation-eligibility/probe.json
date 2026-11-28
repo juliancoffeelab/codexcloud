@@ -1,0 +1,113 @@
+{
+  "train": {
+    "ppoCases": 36648,
+    "imitationCases": 600,
+    "ppoCasesAndWeightsUnchanged": true
+  },
+  "validation": {
+    "ppoCases": 4756,
+    "imitationCases": 100,
+    "ppoCasesAndWeightsUnchanged": true
+  },
+  "test": {
+    "ppoCases": 16543,
+    "imitationCases": 625,
+    "ppoCasesAndWeightsUnchanged": true
+  },
+  "enabledConditions": [
+    {
+      "campaign": "rl-deadline-pines-relief8",
+      "objective": "authored",
+      "enemy": "classic"
+    },
+    {
+      "campaign": "rl-route-ambush",
+      "objective": "authored",
+      "enemy": "classic"
+    },
+    {
+      "campaign": "rl-route-pass-road",
+      "objective": "player-fog",
+      "enemy": "classic"
+    },
+    {
+      "campaign": "rl-defend-lower-gallery-0",
+      "objective": "authored",
+      "enemy": "classic"
+    },
+    {
+      "campaign": "rl-interrupt-herring-tide-road-three",
+      "objective": "authored",
+      "enemy": "classic"
+    },
+    {
+      "campaign": "rl-lair-outworks",
+      "objective": "player-fog",
+      "enemy": "classic"
+    },
+    {
+      "campaign": "rl-lair-outworks",
+      "objective": "player-fog",
+      "enemy": "predictor"
+    },
+    {
+      "campaign": "rl-lair-outworks",
+      "objective": "both-fog",
+      "enemy": "classic"
+    },
+    {
+      "campaign": "rl-lair-outworks",
+      "objective": "both-fog",
+      "enemy": "full"
+    },
+    {
+      "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+      "objective": "authored",
+      "enemy": "classic"
+    },
+    {
+      "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+      "objective": "authored",
+      "enemy": "classic"
+    },
+    {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "enemy": "predictor"
+    },
+    {
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "objective": "authored",
+      "enemy": "full"
+    },
+    {
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "objective": "authored",
+      "enemy": "full"
+    },
+    {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "enemy": "predictor"
+    },
+    {
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "objective": "authored",
+      "enemy": "full"
+    }
+  ],
+  "enabledLogicalMaps": 9,
+  "enabledEnemyVisibilityConditions": 16,
+  "disabledAndEmptyCollectionRejectedBeforeWriting": true,
+  "missingNativeFlagRejected": true,
+  "mixedPrepared": {
+    "ppoTrain": 36648,
+    "imitationTrain": 600,
+    "imitationValidation": 100
+  },
+  "diversePrepared": {
+    "ppoTrain": 36648,
+    "imitationTrain": 600,
+    "imitationValidation": 100
+  }
+}

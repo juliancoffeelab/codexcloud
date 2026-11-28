@@ -1,0 +1,7 @@
+{
+  "id": "rl-threeway-clash",
+  "map": "map.json",
+  "roster": "roster.json",
+  "scripts": "scripts.json",
+  "story": "story.json"
+}

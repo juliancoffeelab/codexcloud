@@ -1,0 +1,21 @@
+[
+  {
+    "objective": "territory",
+    "seed": 661135201,
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "armies": {
+      "player": "human",
+      "enemy": "skeletons"
+    },
+    "first": "player",
+    "recruitLimit": 0,
+    "player": "balanced",
+    "enemy": "classic",
+    "maxRounds": 30,
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "arena",
+      "planner": "queued"
+    }
+  }
+]

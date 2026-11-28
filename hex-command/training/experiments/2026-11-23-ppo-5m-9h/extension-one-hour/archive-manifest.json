@@ -1,0 +1,106 @@
+{
+  "lantern_showcase.json.gz": {
+    "bytes": 1320,
+    "sha256": "0657bef81159b528963578aa8c4d1c4d689ae58276ceb01c55090cc5493d5601"
+  },
+  "finished.json": {
+    "bytes": 21642,
+    "sha256": "70ed75d7cf5b2c089451166fbaaffc036e21244cf62acc733066e9d7a7c5d7ad"
+  },
+  "heldout.json.gz": {
+    "bytes": 5558,
+    "sha256": "77b326cccb829416a0cc23152d6f186500b19ff9e47cb00f2b7613f37958f21c"
+  },
+  "metrics.jsonl.gz": {
+    "bytes": 204677,
+    "sha256": "6db73edcecf75f75298fadc1e9f97d497d93d24739b4326592caa4d9faa59e86"
+  },
+  "extension-one-hour.json": {
+    "bytes": 748,
+    "sha256": "0fa8d4f55006a751f709ca28fdadab9398a9489bac7641df337bd0bcf277c614"
+  },
+  "README.md": {
+    "bytes": 3097,
+    "sha256": "5a5f262be192db4972b295fe24bdaeb296d34277c7eb3c4e1adce92b61d11341"
+  },
+  "sampler-status.json.gz": {
+    "bytes": 207509,
+    "sha256": "d74c383825a61115c68564f3ab91a05b65a784711f04baa89b4f96e0029322dc"
+  },
+  "chapter-results.json": {
+    "bytes": 32791,
+    "sha256": "517c6df54f846ecd37ecc6513b7f37c7901124189f2823ba69eb96f6dec751f9"
+  },
+  "comparison.json": {
+    "bytes": 6206,
+    "sha256": "94a7f5c0fbe3615582fb6421bc0e99123135ea991b0fc9c44ff8d46f95c57e26"
+  },
+  "extension-checkpoint-index.json": {
+    "bytes": 5764,
+    "sha256": "5a36a72a424b5f66c501985e7e3a983dac1874bee3745f3ae52d3ca51a39c5d0"
+  },
+  "eval_runner.py": {
+    "bytes": 6651,
+    "sha256": "adced741b3fd5c52e058cf8c67c4d0d51db5dd2b66948381cfcbdf9e4ece2b36"
+  },
+  "supervisor.py": {
+    "bytes": 5510,
+    "sha256": "5be57aff835cd7ae16f14be367fd035c92b3f5c0a3c6c7c6b83cf2b1725c4d9c"
+  },
+  "summary.json": {
+    "bytes": 2959,
+    "sha256": "a44598ea6f19939b517d3c103c08634009d41b151dbe8889f313e68780b3dd05"
+  },
+  "training_diagnostic.json.gz": {
+    "bytes": 5559,
+    "sha256": "e39ecc633f8cbd2d601ea0effe11cabedc7e5349d118693567748623617005b0"
+  },
+  "rl/complete.json": {
+    "bytes": 98,
+    "sha256": "d054334d82c2480ae29b12ff244fed72f4cd3d01d19b28c34e98a16dfe3ab4fe"
+  },
+  "rl/parameters.json": {
+    "bytes": 721,
+    "sha256": "d8bd72660b2c55c3133803e98896dec42c70b08c99389069ca8c8a29230e48c1"
+  },
+  "evaluation/hourly-summary.json": {
+    "bytes": 16550,
+    "sha256": "a825f46ca2e7a5a40146ab39c96b7b0dd2dc1cfe01847e609569cd91b4e4f0e1"
+  },
+  "evaluation/selection.json": {
+    "bytes": 19804,
+    "sha256": "044d0a22131e5f56d38c0ce95ec1e01d56107a869a68fad556d67e2cab685bb4"
+  },
+  "plots/gameplay-through-hour10.png": {
+    "bytes": 201872,
+    "sha256": "a86c9a9450131173092d402254a6b2613345f8d0040158ab1ef9b12a915e307e"
+  },
+  "plots/chapters-through-hour10.png": {
+    "bytes": 391580,
+    "sha256": "9091c7554fd59129e1b6eb64a0cdc66f484aa13a0386d7dd53597b5a61863139"
+  },
+  "plots/targeted-through-hour10.png": {
+    "bytes": 205114,
+    "sha256": "0f9c3398d67751080f16160f2dca868114554929be6dd4c52394cce406a6779c"
+  },
+  "plots/extension-training.png": {
+    "bytes": 324661,
+    "sha256": "74db278f75a67b8252c26085b553ed36ad0fcb5330f20c5b9f5f6a80328022ab"
+  },
+  "monitor/extension-final-training-verification.json": {
+    "bytes": 1656,
+    "sha256": "ba275cd98dd8643d68fd0af182ccf4d76c1643a8fc6a703aea4c409edca6a483"
+  },
+  "recovery/hour-10/resume.pt.gz": {
+    "bytes": 1660422,
+    "sha256": "70126d68f6fa6fed890c89839af1362270ed4150b2dc3ab5b09f8e2aba35e430"
+  },
+  "recovery/hour-10/manifest.json": {
+    "bytes": 308,
+    "sha256": "5bcb6c334c6c9d75d60406b3871f6ac3b283f0171fab00935968a2b45847b86e"
+  },
+  "recovery/hour-10/planner.json.gz": {
+    "bytes": 677507,
+    "sha256": "ca362757f853f6b03a704a4646a903d8a259439b3942d6431766a3b6d9db901b"
+  }
+}

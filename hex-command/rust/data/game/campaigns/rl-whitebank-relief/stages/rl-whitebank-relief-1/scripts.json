@@ -1,0 +1,346 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "rl-whitebank-relief-1-courier-met",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "proximity": {
+              "tile": null,
+              "target": {
+                "character": "courier",
+                "role": null,
+                "side": null,
+                "faction": null,
+                "unitType": null,
+                "unitTypes": [],
+                "aiGroup": null,
+                "retreating": null
+              },
+              "radius": 1,
+              "through": true,
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-whitebank-relief-1-courier-met"
+        },
+        {
+          "changeAllegiance": {
+            "units": {
+              "character": "courier",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            },
+            "faction": "player"
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Meet the courier at the eastern settlement",
+        "intent": {
+          "approach": {
+            "tile": null,
+            "target": {
+              "character": "courier",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            },
+            "radius": 1,
+            "through": true,
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-whitebank-relief-1-courier-met"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-whitebank-relief-1-courier-safe",
+      "when": {
+        "all": [
+          {
+            "flag": "rl-whitebank-relief-1-courier-met"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 16,
+                  "row": 20
+                }
+              },
+              "through": true,
+              "character": "courier",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-whitebank-relief-1-courier-safe"
+        },
+        {
+          "setFlag": "whitebank-courier-recruited"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Escort the courier across the river",
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 16,
+                "row": 20
+              }
+            },
+            "through": true,
+            "character": "courier",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "flag": "rl-whitebank-relief-1-courier-met"
+        },
+        "availableWhen": {
+          "flag": "rl-whitebank-relief-1-courier-met"
+        },
+        "satisfiedWhen": {
+          "flag": "rl-whitebank-relief-1-courier-safe"
+        },
+        "preserveLives": {
+          "character": "courier",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-whitebank-relief-1-road-cleared",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-whitebank-relief-1-road-cleared"
+        },
+        {
+          "setFlag": "whitebank-road-cleared"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the occupying army",
+        "intent": {
+          "defeat": {
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-whitebank-relief-1-road-cleared"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-whitebank-relief-1-courier-lost",
+      "when": {
+        "noUnits": {
+          "character": "courier",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "failObjective": "rl-whitebank-relief-1-courier-met"
+        },
+        {
+          "failObjective": "rl-whitebank-relief-1-courier-safe"
+        },
+        {
+          "log": "The courier was lost; the military route remains open."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 50,
+      "objective": null
+    },
+    {
+      "id": "rl-whitebank-relief-1-victory",
+      "when": {
+        "any": [
+          {
+            "flag": "rl-whitebank-relief-1-courier-safe"
+          },
+          {
+            "flag": "rl-whitebank-relief-1-road-cleared"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-whitebank-relief-1-commander-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "rl-whitebank-relief-1-deadline",
+      "when": {
+        "turn": 52
+      },
+      "actions": [
+        {
+          "defeat": "The operation exceeded its 51-turn deadline."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

@@ -365,6 +365,154 @@ pub(crate) fn parse(bundle: &JsonBundle) -> Result<Catalogue, ContentError> {
         campaign: document(bundle, &manifest.simulation.campaign)?,
         training: document(bundle, &manifest.simulation.rl)?,
     };
+    let training = &simulation.training;
+    let valid_allocation = |group: &Text, map: &Text, reward: &Text| {
+        training.sampling_weights.contains_key(group)
+            && training
+                .map_weights
+                .get(map)
+                .is_some_and(|w| w.is_finite() && *w > 0.)
+            && training.reward_profiles.contains_key(reward)
+    };
+    if training.reward_profiles.is_empty()
+        || training
+            .reward_profiles
+            .values()
+            .any(|r| !r.win.is_finite() || r.win <= 0. || !r.chapter.is_finite() || r.chapter < 0.)
+        || training
+            .map_weights
+            .values()
+            .any(|w| !w.is_finite() || *w <= 0.)
+    {
+        return Err(ContentError::new(
+            &manifest.simulation.rl,
+            "invalid reward profiles or map weights",
+        ));
+    }
+    if !training.adaptive_sampling.valid() {
+        return Err(ContentError::new(
+            &manifest.simulation.rl,
+            "invalid adaptiveSampling settings",
+        ));
+    }
+    if training.sampling_weights.is_empty()
+        || training
+            .sampling_weights
+            .values()
+            .any(|w| !w.is_finite() || *w <= 0.)
+        || !training.sampling_weights.contains_key("arena")
+        || training.arenas.iter().any(|a| {
+            !a.pretrain_imitator.valid()
+                || !a.condition_weight.is_finite()
+                || a.condition_weight <= 0.
+                || matches!(a.pretrain_imitator, crate::PretrainImitator::Path { .. })
+                || !valid_allocation(&a.sampling_group, &a.sampling_map, &a.reward_profile)
+                || !simulation.arena.scenarios.iter().any(|s| s.id == a.id)
+                || a.conditions.as_ref().is_some_and(|c| {
+                    c.max_rounds == 0
+                        || c.first.is_empty()
+                        || c.first
+                            .iter()
+                            .any(|p| !matches!(p.as_str(), "player" | "ai"))
+                        || c.objectives.is_empty()
+                        || c.objectives
+                            .iter()
+                            .any(|o| !training.objectives.contains(o))
+                        || c.opponents.is_empty()
+                        || c.opponents.iter().any(|o| !training.opponents.contains(o))
+                        || c.recruiters.is_empty()
+                        || c.recruiters
+                            .iter()
+                            .any(|r| !training.recruiters.contains(r))
+                })
+        })
+    {
+        return Err(ContentError::new(
+            &manifest.simulation.rl,
+            "invalid sampling weights or arena pretrain_imitator",
+        ));
+    }
+    for (campaign_id, variants) in &training.campaigns {
+        for variant in variants {
+            if !variant.pretrain_imitator.valid()
+                || !variant.condition_weight.is_finite()
+                || variant.condition_weight <= 0.
+                || !valid_allocation(
+                    &variant.sampling_group,
+                    &variant.sampling_map,
+                    &variant.reward_profile,
+                )
+                || variant.recruiters.as_ref().is_some_and(|rs| {
+                    rs.is_empty() || rs.iter().any(|r| !training.recruiters.contains(r))
+                })
+                || !campaigns.iter().any(|c| c.id() == campaign_id)
+            {
+                return Err(ContentError::new(
+                    &manifest.simulation.rl,
+                    "unknown pretrain_imitator or samplingGroup",
+                ));
+            }
+            let overlapping = variants
+                .iter()
+                .filter(|v| v.objective == variant.objective && v.diplomacy == variant.diplomacy)
+                .filter(|v| {
+                    v.opponents
+                        .as_ref()
+                        .unwrap_or(&training.opponents)
+                        .iter()
+                        .any(|o| {
+                            variant
+                                .opponents
+                                .as_ref()
+                                .unwrap_or(&training.opponents)
+                                .contains(o)
+                        })
+                })
+                .count();
+            if overlapping != 1 {
+                return Err(ContentError::new(
+                    &manifest.simulation.rl,
+                    "overlapping campaign training conditions",
+                ));
+            }
+            if let crate::PretrainImitator::Path { path_to } = &variant.pretrain_imitator {
+                let campaign = campaigns.iter().find(|c| c.id() == campaign_id);
+                let valid_target = campaign.is_some_and(|c| {
+                    c.chapters().len() == 1 && {
+                        let chapter = &c.chapters()[0];
+                        maps.iter()
+                            .find(|m| {
+                                m.id() == chapter.map_id() && m.revision() == chapter.map_revision()
+                            })
+                            .is_some_and(|m| {
+                                m.tiles()
+                                    .iter()
+                                    .any(|t| t.col == path_to.col && t.row == path_to.row)
+                            })
+                    }
+                });
+                if !valid_target {
+                    return Err(ContentError::new(
+                        &manifest.simulation.rl,
+                        "path_to requires an authored tile in a single-chapter campaign",
+                    ));
+                }
+            }
+            if let Some(opponents) = &variant.opponents {
+                if opponents.is_empty()
+                    || opponents.iter().enumerate().any(|(i, name)| {
+                        !simulation.training.opponents.contains(name)
+                            || opponents[..i].contains(name)
+                    })
+                {
+                    return Err(ContentError::new(
+                        &manifest.simulation.rl,
+                        "campaign opponents must be a nonempty, unique subset of global opponents",
+                    ));
+                }
+            }
+        }
+    }
     let recruiter_weights = document(bundle, &manifest.recruitment)?;
     let _ = manifest.concealment_kinds;
     Ok(Catalogue {

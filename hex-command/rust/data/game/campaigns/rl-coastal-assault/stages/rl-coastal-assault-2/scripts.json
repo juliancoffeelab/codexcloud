@@ -1,0 +1,237 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "rl-coastal-assault-2-pilot-landed",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 5,
+                  "row": 12
+                }
+              },
+              "through": true,
+              "character": "harbor-pilot",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-coastal-assault-2-pilot-landed"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Escort the harbor pilot to the landing",
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 5,
+                "row": 12
+              }
+            },
+            "through": true,
+            "character": "harbor-pilot",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-coastal-assault-2-pilot-landed"
+        },
+        "preserveLives": {
+          "character": "harbor-pilot",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-coastal-assault-2-harbor-army-defeated",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-coastal-assault-2-harbor-army-defeated"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the harbor army",
+        "intent": {
+          "defeat": {
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-coastal-assault-2-harbor-army-defeated"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-coastal-assault-2-pilot-lost",
+      "when": {
+        "noUnits": {
+          "character": "harbor-pilot",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "failObjective": "rl-coastal-assault-2-pilot-landed"
+        },
+        {
+          "log": "The pilot was lost; defeat the harbor army to continue."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 50,
+      "objective": null
+    },
+    {
+      "id": "rl-coastal-assault-2-victory",
+      "when": {
+        "any": [
+          {
+            "flag": "rl-coastal-assault-2-pilot-landed"
+          },
+          {
+            "flag": "rl-coastal-assault-2-harbor-army-defeated"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-coastal-assault-2-commander-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "rl-coastal-assault-2-deadline",
+      "when": {
+        "turn": 58
+      },
+      "actions": [
+        {
+          "defeat": "The operation exceeded its 57-turn deadline."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

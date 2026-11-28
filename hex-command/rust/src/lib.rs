@@ -19,7 +19,7 @@ mod tests;
 
 mod sort;
 
-#[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+#[cfg(feature = "training")]
 pub mod training;
 
 #[cfg(test)]

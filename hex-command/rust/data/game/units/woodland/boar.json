@@ -66,9 +66,10 @@
   "level": 1,
   "family": "boar",
   "experienceNeeded": 10,
-  "advancesTo": ["greatboar"],
+  "advancesTo": [
+    "greatboar"
+  ],
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

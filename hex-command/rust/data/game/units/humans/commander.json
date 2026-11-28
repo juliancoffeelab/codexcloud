@@ -66,9 +66,10 @@
   "level": 1,
   "family": "commander",
   "experienceNeeded": 10,
-  "advancesTo": ["marshal"],
+  "advancesTo": [
+    "marshal"
+  ],
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

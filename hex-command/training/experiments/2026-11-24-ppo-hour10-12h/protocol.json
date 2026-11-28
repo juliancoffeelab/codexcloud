@@ -1,0 +1,70 @@
+{
+  "source_commit": "60537725f26b968b5d8eb3597e931a06b3efb0d2",
+  "budget_seconds": 43200,
+  "start_model": "Unmodified final hour-10 PPO actor",
+  "start_model_sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee",
+  "warm_start_semantics": "Existing mixed_ppo warm start: preserve actor only; fresh actor/critic optimizers, critic, schema3 sampler and RNG; KL reference is starting hour10 actor. Subsequent recovery preserves complete state.",
+  "imitation": false,
+  "architecture_changed": false,
+  "seed_start": 510000001,
+  "temperature": 0.35,
+  "envs": 4,
+  "horizon": 64,
+  "critic_warmup_episodes": 24,
+  "sampling_weights": {
+    "arena": 0.25,
+    "campaign": 0.5,
+    "targeted": 0.25
+  },
+  "logical_maps": {
+    "arena": 14,
+    "targeted": 28,
+    "campaign": 3
+  },
+  "adaptive": {
+    "enabled": true,
+    "completionThreshold": 0.8,
+    "minimumMultiplier": 0.1,
+    "emaRate": 0.1,
+    "initialCompletionRate": 0.5,
+    "warmupEpisodes": 10,
+    "updateEveryEpisodes": 20
+  },
+  "reward_profiles": {
+    "arena": {
+      "win": 1.0,
+      "chapter": 0.0
+    },
+    "campaign": {
+      "win": 2.0,
+      "chapter": 1.0
+    }
+  },
+  "kill_rewards": false,
+  "objective_progress_rewards": false,
+  "panels": {
+    "heldout": 312,
+    "training_diagnostic": 214,
+    "lantern_showcase": 24
+  },
+  "hourly_checkpoints": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "selection": "Held-out312 only; baseline eligible; same reliable_choice criterion as prior PPO. Diagnostics and Lantern excluded. No automatic deployment/promotion.",
+  "timing": "43200 saved trainer-wall seconds, excluding recovery downtime; rollout and optimization time included. Evaluation runs separately. Actual checkpoint times retained.",
+  "visibility": "Authored arena/target clear/player-fog/both-fog/sight conditions. Broad campaign fog is player-only. Preserve faction visibility settings.",
+  "workload_sha256": "d2865dbd18ae32161f363a26d0cb114921db324ea387c0a7000607dcce60710b",
+  "native_sha256": "cb439b1a8cacba30fb5d04b3cacae681e34a1d95967aeda83dbe1a50e014e663"
+}

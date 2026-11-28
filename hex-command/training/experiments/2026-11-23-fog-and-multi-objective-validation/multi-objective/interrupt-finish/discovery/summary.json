@@ -1,0 +1,502 @@
+[
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-ledge-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-ledge-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-causeway-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-causeway-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-ridge-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-ridge-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-scar-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-scar-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-ledge-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-ledge-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-causeway-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-causeway-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-ridge-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-ridge-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-scar-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-scar-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-ledge-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-ledge-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-causeway-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-causeway-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-ridge-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-ridge-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-scar-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-scar-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-ledge-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 6
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 2
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-ledge-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-causeway-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 1
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-causeway-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-ridge-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 7
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-ridge-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-scar-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-scar-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-ledge-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-ledge-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-causeway-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-causeway-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-ridge-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 7
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-ridge-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-scar-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-scar-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "time": 1795524533.4840918,
+  "supervisor": 83099,
+  "trainer": 82957,
+  "evaluator": 82958,
+  "training": {
+    "event": "finished",
+    "seconds": 43200.357744726,
+    "updates": 3301,
+    "episodes": 11370,
+    "decisions": 845056,
+    "rss_mib": 1721.3984375
+  },
+  "launches": {
+    "trainer": 0,
+    "evaluator": 0
+  }
+}

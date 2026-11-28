@@ -1,0 +1,278 @@
+{
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": []
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": [
+          "fog"
+        ]
+      },
+      "explored": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "gold": 38,
+      "recruits": [
+        {
+          "unit": "harpooner",
+          "cost": null
+        },
+        {
+          "unit": "reefguard",
+          "cost": null
+        },
+        {
+          "unit": "wavemender",
+          "cost": null
+        },
+        {
+          "unit": "merfolk-maceguard",
+          "cost": null
+        }
+      ],
+      "units": [
+        {
+          "type": "tidekeeper",
+          "role": "leader",
+          "tile": {
+            "col": 9,
+            "row": 7
+          },
+          "id": "u1",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": "player-leader",
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "harpooner",
+          "role": null,
+          "tile": {
+            "col": 11,
+            "row": 8
+          },
+          "id": "u2",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "reefguard",
+          "role": null,
+          "tile": {
+            "col": 10,
+            "row": 7
+          },
+          "id": "u3",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "wavemender",
+          "role": null,
+          "tile": {
+            "col": 9,
+            "row": 8
+          },
+          "id": "u4",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        }
+      ],
+      "relations": {
+        "enemy": "hostile",
+        "player": "allied"
+      },
+      "visionGroup": "player",
+      "name": null,
+      "transfer": null
+    },
+    {
+      "id": "enemy",
+      "phase": "ai",
+      "controller": {
+        "kind": "ai",
+        "policy": null
+      },
+      "palette": "enemy",
+      "gold": 20,
+      "recruits": [
+        {
+          "unit": "swordsman",
+          "cost": null
+        },
+        {
+          "unit": "spearman",
+          "cost": null
+        },
+        {
+          "unit": "scout",
+          "cost": null
+        },
+        {
+          "unit": "archer",
+          "cost": null
+        },
+        {
+          "unit": "adept",
+          "cost": null
+        },
+        {
+          "unit": "rider",
+          "cost": null
+        },
+        {
+          "unit": "horse-archer",
+          "cost": null
+        }
+      ],
+      "units": [
+        {
+          "type": "commander",
+          "role": "leader",
+          "tile": {
+            "col": 20,
+            "row": 4
+          },
+          "id": "u5",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": "enemy-leader",
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "spearman",
+          "role": null,
+          "tile": {
+            "col": 17,
+            "row": 10
+          },
+          "id": "u6",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "archer",
+          "role": null,
+          "tile": {
+            "col": 19,
+            "row": 11
+          },
+          "id": "u7",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        },
+        {
+          "type": "swordsman",
+          "role": null,
+          "tile": {
+            "col": 18,
+            "row": 11
+          },
+          "id": "u8",
+          "hp": "full",
+          "items": [],
+          "perceptionEffects": [],
+          "aiGroup": null,
+          "character": null,
+          "moved": false,
+          "attackSpent": false,
+          "experience": 0,
+          "retreating": null,
+          "rebuilding": null
+        }
+      ],
+      "relations": {
+        "player": "hostile",
+        "enemy": "allied"
+      },
+      "visionGroup": "enemy",
+      "name": null,
+      "transfer": null
+    }
+  ],
+  "arrivals": [],
+  "round": 1,
+  "turn": "player",
+  "log": [
+    "Cross the bay from the island keep. Capture the village beside the landing and hold it for ten consecutive turns."
+  ],
+  "combatRng": 1831565813
+}

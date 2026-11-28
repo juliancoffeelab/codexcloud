@@ -42,10 +42,11 @@
   "description": "A merfolk ranged fighter who throws weighted nets for impact damage rather than piercing shots.",
   "level": 2,
   "family": "harpooner",
-  "advancesTo": ["merfolk-netter-l3"],
+  "advancesTo": [
+    "merfolk-netter-l3"
+  ],
   "experienceNeeded": 18,
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

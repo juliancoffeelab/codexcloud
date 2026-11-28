@@ -1,0 +1,8687 @@
+[
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 4,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 4,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-late-guard",
+      "both-fog",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 4,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 4,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 4,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 4,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "player-fog",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "discovery",
+    "cell": [
+      "crossfire-nearside",
+      "both-fog",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      493022001,
+      493022002,
+      493022003,
+      493022004,
+      493022005,
+      493022006,
+      493022007,
+      493022008
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "classic",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 10,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "classic",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 11,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-late-guard",
+      "clear",
+      "classic",
+      "classic"
+    ],
+    "played": 20,
+    "wins": 20,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "classic",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "classic",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-late-guard",
+      "player-fog",
+      "classic",
+      "classic"
+    ],
+    "played": 20,
+    "wins": 9,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "classic",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 14,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "classic",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "classic",
+      "classic"
+    ],
+    "played": 20,
+    "wins": 17,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "queued",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "queued",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "queued",
+      "queued"
+    ],
+    "played": 20,
+    "wins": 12,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "full",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 9,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "full",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "full",
+      "classic"
+    ],
+    "played": 20,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "predictor",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "predictor",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "capture-evacuate",
+    "phase": "confirmation",
+    "cell": [
+      "crossfire-nearside",
+      "clear",
+      "predictor",
+      "queued"
+    ],
+    "played": 20,
+    "wins": 12,
+    "caps": 0,
+    "seeds": [
+      493023001,
+      493023002,
+      493023003,
+      493023004,
+      493023005,
+      493023006,
+      493023007,
+      493023008,
+      493023009,
+      493023010,
+      493023011,
+      493023012,
+      493023013,
+      493023014,
+      493023015,
+      493023016,
+      493023017,
+      493023018,
+      493023019,
+      493023020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 4,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 2,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 4,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "discovery",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "classic",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 3,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "classic",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "classic",
+      "classic"
+    ],
+    "played": 20,
+    "wins": 14,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "queued",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "queued",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 4,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "queued",
+      "classic"
+    ],
+    "played": 20,
+    "wins": 16,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "full",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "full",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 10,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "full",
+      "queued"
+    ],
+    "played": 20,
+    "wins": 19,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "predictor",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "predictor",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 4,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "clear",
+      "predictor",
+      "classic"
+    ],
+    "played": 20,
+    "wins": 16,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "queued",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "queued",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "queued",
+      "full"
+    ],
+    "played": 20,
+    "wins": 12,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "full",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 6,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "full",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 9,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "full",
+      "queued"
+    ],
+    "played": 20,
+    "wins": 15,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "predictor",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "predictor",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "player-fog",
+      "predictor",
+      "full"
+    ],
+    "played": 20,
+    "wins": 12,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "queued",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "queued",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "queued",
+      "queued"
+    ],
+    "played": 20,
+    "wins": 20,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "full",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "full",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 1,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "full",
+      "full"
+    ],
+    "played": 20,
+    "wins": 18,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "predictor",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "predictor",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "hold-advance",
+    "phase": "confirmation",
+    "cell": [
+      "fork-vigil",
+      "both-fog",
+      "predictor",
+      "queued"
+    ],
+    "played": 20,
+    "wins": 20,
+    "caps": 0,
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "clear",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 0,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "player-fog",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "interrupt",
+      "both-fog",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 5,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "clear",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "player-fog",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "classic",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "classic",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "classic",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "classic",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "classic",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "queued",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "queued",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "queued",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "queued",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "queued",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "full",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "full",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "full",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "full",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "full",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "predictor",
+      "hour8"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "predictor",
+      "hour10"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "predictor",
+      "queued"
+    ],
+    "played": 8,
+    "wins": 7,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "predictor",
+      "full"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "discovery",
+    "cell": [
+      "finish",
+      "both-fog",
+      "predictor",
+      "classic"
+    ],
+    "played": 8,
+    "wins": 8,
+    "caps": 0,
+    "seeds": [
+      661136001,
+      661136002,
+      661136003,
+      661136004,
+      661136005,
+      661136006,
+      661136007,
+      661136008
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "confirmation",
+    "cell": [
+      "finish",
+      "clear",
+      "classic",
+      "hour8"
+    ],
+    "played": 20,
+    "wins": 15,
+    "caps": 0,
+    "seeds": [
+      661136101,
+      661136102,
+      661136103,
+      661136104,
+      661136105,
+      661136106,
+      661136107,
+      661136108,
+      661136109,
+      661136110,
+      661136111,
+      661136112,
+      661136113,
+      661136114,
+      661136115,
+      661136116,
+      661136117,
+      661136118,
+      661136119,
+      661136120
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "confirmation",
+    "cell": [
+      "finish",
+      "clear",
+      "classic",
+      "hour10"
+    ],
+    "played": 20,
+    "wins": 14,
+    "caps": 0,
+    "seeds": [
+      661136101,
+      661136102,
+      661136103,
+      661136104,
+      661136105,
+      661136106,
+      661136107,
+      661136108,
+      661136109,
+      661136110,
+      661136111,
+      661136112,
+      661136113,
+      661136114,
+      661136115,
+      661136116,
+      661136117,
+      661136118,
+      661136119,
+      661136120
+    ]
+  },
+  {
+    "family": "interrupt-finish",
+    "phase": "confirmation",
+    "cell": [
+      "finish",
+      "clear",
+      "classic",
+      "queued"
+    ],
+    "played": 20,
+    "wins": 20,
+    "caps": 0,
+    "seeds": [
+      661136101,
+      661136102,
+      661136103,
+      661136104,
+      661136105,
+      661136106,
+      661136107,
+      661136108,
+      661136109,
+      661136110,
+      661136111,
+      661136112,
+      661136113,
+      661136114,
+      661136115,
+      661136116,
+      661136117,
+      661136118,
+      661136119,
+      661136120
+    ]
+  }
+]

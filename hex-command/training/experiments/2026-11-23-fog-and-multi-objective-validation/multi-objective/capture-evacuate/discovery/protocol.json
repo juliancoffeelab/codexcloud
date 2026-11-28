@@ -1,0 +1,53 @@
+{
+  "catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/capture-evacuate/catalog-discovery",
+  "seeds": [
+    493020001,
+    493020002,
+    493020003,
+    493020004,
+    493020005,
+    493020006,
+    493020007,
+    493020008
+  ],
+  "players": [
+    "full",
+    "hour10",
+    "queued",
+    "classic",
+    "hour8"
+  ],
+  "variants": [
+    "switchback",
+    "crossfire",
+    "pressure",
+    "cross-pressure",
+    "switchback-healer",
+    "crossfire-healer"
+  ],
+  "models": {
+    "hour10": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/last-1795458575107520190/planner.json",
+      "sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee"
+    },
+    "hour8": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/update-00002205-1795440240315037513/planner.json",
+      "sha256": "e7ef684d9e135e7817e390c533ec8b903d08db2d6ac0253c1aa340616b47a619"
+    }
+  },
+  "native": {
+    "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/native/hex_command_training.so",
+    "sha256": "7d7ab7ede88526b76ceb1c91de5fc9df2187c79c1ce0b7ba3b8b9b1f0cf322f2"
+  },
+  "workers": 1,
+  "maxRounds": 100,
+  "recruitLimit": 0,
+  "diplomacy": "unrestricted",
+  "enemy": "classic",
+  "objective": "authored",
+  "playerBlocks": {
+    "recruiter": "situational",
+    "campaign": "mission"
+  },
+  "reward": "Standard authored objective reward in frozen engine"
+}

@@ -4299,6 +4299,84 @@ val encode_save52_member0_checkpoint_state_campaign_member1_veterans_member1_ite
 
 val read_save52_member1 : Js.Json.t -> save52_member1
 val encode_save52_member1 : save52_member1 -> Js.Json.t
+val read_save53 : Js.Json.t -> save53
+val encode_save53 : save53 -> Js.Json.t
+val read_save53_member0 : Js.Json.t -> save53_member0
+val encode_save53_member0 : save53_member0 -> Js.Json.t
+val read_literal_53 : Js.Json.t -> literal_53
+val encode_literal_53 : literal_53 -> Js.Json.t
+val read_save53_member0_checkpoint : Js.Json.t -> save53_member0_checkpoint
+val encode_save53_member0_checkpoint : save53_member0_checkpoint -> Js.Json.t
+val read_save53_member0_checkpoint_state : Js.Json.t -> save53_member0_checkpoint_state
+val encode_save53_member0_checkpoint_state : save53_member0_checkpoint_state -> Js.Json.t
+
+val read_save53_member0_checkpoint_state_map_modifiers :
+  Js.Json.t -> save53_member0_checkpoint_state_map_modifiers
+
+val encode_save53_member0_checkpoint_state_map_modifiers :
+  save53_member0_checkpoint_state_map_modifiers -> Js.Json.t
+
+val read_save53_member0_checkpoint_state_map_modifiers_sight :
+  Js.Json.t -> save53_member0_checkpoint_state_map_modifiers_sight
+
+val encode_save53_member0_checkpoint_state_map_modifiers_sight :
+  save53_member0_checkpoint_state_map_modifiers_sight -> Js.Json.t
+
+val read_save53_member0_checkpoint_state_vision_groups :
+  Js.Json.t -> save53_member0_checkpoint_state_vision_groups
+
+val encode_save53_member0_checkpoint_state_vision_groups :
+  save53_member0_checkpoint_state_vision_groups -> Js.Json.t
+
+val read_save53_member0_checkpoint_state_vision_groups_item :
+  Js.Json.t -> save53_member0_checkpoint_state_vision_groups_item
+
+val encode_save53_member0_checkpoint_state_vision_groups_item :
+  save53_member0_checkpoint_state_vision_groups_item -> Js.Json.t
+
+val read_save53_member0_checkpoint_state_tiles : Js.Json.t -> save53_member0_checkpoint_state_tiles
+
+val encode_save53_member0_checkpoint_state_tiles :
+  save53_member0_checkpoint_state_tiles -> Js.Json.t
+
+val read_save53_member0_checkpoint_state_tiles_item :
+  Js.Json.t -> save53_member0_checkpoint_state_tiles_item
+
+val encode_save53_member0_checkpoint_state_tiles_item :
+  save53_member0_checkpoint_state_tiles_item -> Js.Json.t
+
+val read_save53_member0_checkpoint_state_tiles_item_effects :
+  Js.Json.t -> save53_member0_checkpoint_state_tiles_item_effects
+
+val encode_save53_member0_checkpoint_state_tiles_item_effects :
+  save53_member0_checkpoint_state_tiles_item_effects -> Js.Json.t
+
+val read_save53_member0_checkpoint_state_tiles_item_effects_item :
+  Js.Json.t -> save53_member0_checkpoint_state_tiles_item_effects_item
+
+val encode_save53_member0_checkpoint_state_tiles_item_effects_item :
+  save53_member0_checkpoint_state_tiles_item_effects_item -> Js.Json.t
+
+val read_save53_member0_checkpoint_state_tiles_item_effects_item_effect_ :
+  Js.Json.t -> save53_member0_checkpoint_state_tiles_item_effects_item_effect_
+
+val encode_save53_member0_checkpoint_state_tiles_item_effects_item_effect_ :
+  save53_member0_checkpoint_state_tiles_item_effects_item_effect_ -> Js.Json.t
+
+val read_save53_member0_checkpoint_state_tiles_item_effects_item_effect__member2 :
+  Js.Json.t -> save53_member0_checkpoint_state_tiles_item_effects_item_effect__member2
+
+val encode_save53_member0_checkpoint_state_tiles_item_effects_item_effect__member2 :
+  save53_member0_checkpoint_state_tiles_item_effects_item_effect__member2 -> Js.Json.t
+
+val read_save53_member0_checkpoint_state_tiles_item_effects_item_effect__member5 :
+  Js.Json.t -> save53_member0_checkpoint_state_tiles_item_effects_item_effect__member5
+
+val encode_save53_member0_checkpoint_state_tiles_item_effects_item_effect__member5 :
+  save53_member0_checkpoint_state_tiles_item_effects_item_effect__member5 -> Js.Json.t
+
+val read_save53_member1 : Js.Json.t -> save53_member1
+val encode_save53_member1 : save53_member1 -> Js.Json.t
 
 module V2 : sig
   val of_json : Js.Json.t -> Historical_types.V2.t
@@ -4627,6 +4705,19 @@ module V52 : sig
   val current_state_of_json : Js.Json.t -> Historical_types.V52.current_state
   val current_changes_item_to_json : Historical_types.V52.current_changes_item -> Js.Json.t
   val current_changes_item_of_json : Js.Json.t -> Historical_types.V52.current_changes_item
+end
+
+module V53 : sig
+  val of_json : Js.Json.t -> Historical_types.V53.t
+  val to_json : Historical_types.V53.t -> Js.Json.t
+  val current_entry_to_json : Historical_types.V53.current_entry -> Js.Json.t
+  val current_entry_of_json : Js.Json.t -> Historical_types.V53.current_entry
+  val turn_entry_to_json : Historical_types.V53.turn_entry -> Js.Json.t
+  val turn_entry_of_json : Js.Json.t -> Historical_types.V53.turn_entry
+  val current_state_to_json : Historical_types.V53.current_state -> Js.Json.t
+  val current_state_of_json : Js.Json.t -> Historical_types.V53.current_state
+  val current_changes_item_to_json : Historical_types.V53.current_changes_item -> Js.Json.t
+  val current_changes_item_of_json : Js.Json.t -> Historical_types.V53.current_changes_item
 end
 
 module Fragment : sig

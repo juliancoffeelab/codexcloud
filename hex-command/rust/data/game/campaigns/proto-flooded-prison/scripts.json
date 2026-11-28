@@ -1,0 +1,1116 @@
+{
+  "events": [
+    {
+      "id": "north-prisoners-gaoler-defeated",
+      "when": {
+        "noUnits": {
+          "character": "north-gaoler",
+          "role": null,
+          "side": null,
+          "faction": "enemy",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "north-prisoners-gaoler-defeated"
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the north gaoler",
+        "optional": false,
+        "intent": {
+          "defeat": {
+            "character": "north-gaoler",
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "north-prisoners-released",
+      "when": {
+        "all": [
+          {
+            "noUnits": {
+              "character": "north-gaoler",
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          },
+          {
+            "proximity": {
+              "tile": {
+                "hex": {
+                  "col": 18,
+                  "row": 7
+                }
+              },
+              "target": null,
+              "radius": 1,
+              "through": false,
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "changeAllegiance": {
+            "units": {
+              "character": "north-prisoners",
+              "role": null,
+              "side": null,
+              "faction": "prisoners",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            },
+            "faction": "player"
+          }
+        },
+        {
+          "setFlag": "north-prisoners-released"
+        },
+        {
+          "log": "The cell is open. Bring the prisoners to the eastern shore."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Reach and free the north-prisoners",
+        "optional": false,
+        "intent": {
+          "approach": {
+            "tile": {
+              "hex": {
+                "col": 18,
+                "row": 7
+              }
+            },
+            "target": null,
+            "radius": 1,
+            "through": false,
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "noUnits": {
+            "character": "north-gaoler",
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "availableWhen": {
+          "noUnits": {
+            "character": "north-gaoler",
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "north-prisoners-safe",
+      "when": {
+        "all": [
+          {
+            "flag": "north-prisoners-released"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 28,
+                  "row": 12
+                }
+              },
+              "through": false,
+              "character": "north-prisoners",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "north-prisoners-safe"
+        },
+        {
+          "deleteUnit": {
+            "character": "north-prisoners",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        {
+          "log": "north-prisoners reached the safe shore."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Escort north-prisoners to the safe shore",
+        "optional": false,
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 28,
+                "row": 12
+              }
+            },
+            "through": false,
+            "character": "north-prisoners",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "flag": "north-prisoners-released"
+        },
+        "availableWhen": {
+          "flag": "north-prisoners-released"
+        },
+        "satisfiedWhen": null,
+        "preserveLives": {
+          "character": "north-prisoners",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      },
+      "priority": 5,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "north-prisoners-lost",
+      "when": {
+        "all": [
+          {
+            "flag": "north-prisoners-released"
+          },
+          {
+            "noUnits": {
+              "character": "north-prisoners",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          },
+          {
+            "not": {
+              "flag": "north-prisoners-safe"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "A required evacuee was killed."
+        }
+      ],
+      "objective": null,
+      "priority": 100,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "south-prisoners-gaoler-defeated",
+      "when": {
+        "noUnits": {
+          "character": "south-gaoler",
+          "role": null,
+          "side": null,
+          "faction": "enemy",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "south-prisoners-gaoler-defeated"
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the south gaoler",
+        "optional": false,
+        "intent": {
+          "defeat": {
+            "character": "south-gaoler",
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "south-prisoners-released",
+      "when": {
+        "all": [
+          {
+            "noUnits": {
+              "character": "south-gaoler",
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          },
+          {
+            "proximity": {
+              "tile": {
+                "hex": {
+                  "col": 20,
+                  "row": 17
+                }
+              },
+              "target": null,
+              "radius": 1,
+              "through": false,
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "changeAllegiance": {
+            "units": {
+              "character": "south-prisoners",
+              "role": null,
+              "side": null,
+              "faction": "prisoners",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            },
+            "faction": "player"
+          }
+        },
+        {
+          "setFlag": "south-prisoners-released"
+        },
+        {
+          "log": "The cell is open. Bring the prisoners to the eastern shore."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Reach and free the south-prisoners",
+        "optional": false,
+        "intent": {
+          "approach": {
+            "tile": {
+              "hex": {
+                "col": 20,
+                "row": 17
+              }
+            },
+            "target": null,
+            "radius": 1,
+            "through": false,
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "noUnits": {
+            "character": "south-gaoler",
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "availableWhen": {
+          "noUnits": {
+            "character": "south-gaoler",
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "south-prisoners-safe",
+      "when": {
+        "all": [
+          {
+            "flag": "south-prisoners-released"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 28,
+                  "row": 12
+                }
+              },
+              "through": false,
+              "character": "south-prisoners",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "south-prisoners-safe"
+        },
+        {
+          "deleteUnit": {
+            "character": "south-prisoners",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        {
+          "log": "south-prisoners reached the safe shore."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Escort south-prisoners to the safe shore",
+        "optional": false,
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 28,
+                "row": 12
+              }
+            },
+            "through": false,
+            "character": "south-prisoners",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "flag": "south-prisoners-released"
+        },
+        "availableWhen": {
+          "flag": "south-prisoners-released"
+        },
+        "satisfiedWhen": null,
+        "preserveLives": {
+          "character": "south-prisoners",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      },
+      "priority": 5,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "south-prisoners-lost",
+      "when": {
+        "all": [
+          {
+            "flag": "south-prisoners-released"
+          },
+          {
+            "noUnits": {
+              "character": "south-prisoners",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          },
+          {
+            "not": {
+              "flag": "south-prisoners-safe"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "A required evacuee was killed."
+        }
+      ],
+      "objective": null,
+      "priority": 100,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "sluice-open",
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 11,
+              "row": 12
+            }
+          },
+          "through": false,
+          "character": null,
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "sluice-open"
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 12,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 13,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 14,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 15,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 16,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 17,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 18,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 19,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 20,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 21,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 22,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 23,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 24,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 25,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 18,
+                "row": 9
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 18,
+                "row": 10
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 18,
+                "row": 11
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 18,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 20,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 20,
+                "row": 13
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 20,
+                "row": 14
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 20,
+                "row": 15
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 26,
+                "row": 10
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 26,
+                "row": 11
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 26,
+                "row": 12
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 26,
+                "row": 13
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "setTerrain": {
+            "tile": {
+              "hex": {
+                "col": 26,
+                "row": 14
+              }
+            },
+            "terrain": "shallow-water"
+          }
+        },
+        {
+          "spawn": {
+            "faction": "merfolk",
+            "tile": {
+              "hex": {
+                "col": 29,
+                "row": 14
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "reefguard",
+              "harpooner"
+            ]
+          }
+        },
+        {
+          "log": "The lock drains: the island shortcut opens, and merfolk enter through the eastern breach."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Open the sluice when the company is ready",
+        "optional": false,
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 11,
+                "row": 12
+              }
+            },
+            "through": false,
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "escape",
+      "when": {
+        "all": [
+          {
+            "flag": "sluice-open"
+          },
+          {
+            "flag": "north-prisoners-safe"
+          },
+          {
+            "flag": "south-prisoners-safe"
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 28,
+                  "row": 12
+                }
+              },
+              "through": false,
+              "character": "captain",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "The company and both prisoner groups escaped."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Evacuate the commander after both groups are safe",
+        "optional": false,
+        "intent": {
+          "escape": {
+            "tile": {
+              "hex": {
+                "col": 28,
+                "row": 12
+              }
+            },
+            "through": false,
+            "character": "captain",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "visibleWhen": {
+          "all": [
+            {
+              "flag": "north-prisoners-safe"
+            },
+            {
+              "flag": "south-prisoners-safe"
+            }
+          ]
+        },
+        "availableWhen": {
+          "all": [
+            {
+              "flag": "north-prisoners-safe"
+            },
+            {
+              "flag": "south-prisoners-safe"
+            }
+          ]
+        },
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "priority": 0,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "commander-lost",
+      "when": {
+        "noUnits": {
+          "character": "captain",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The commander was lost."
+        }
+      ],
+      "objective": null,
+      "priority": 100,
+      "observer": null,
+      "remembers": true
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turnAtLeast": 61
+      },
+      "actions": [
+        {
+          "defeat": "The evacuation window closed."
+        }
+      ],
+      "objective": null,
+      "priority": -100,
+      "observer": null,
+      "remembers": true
+    }
+  ],
+  "requiredCompanions": [],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

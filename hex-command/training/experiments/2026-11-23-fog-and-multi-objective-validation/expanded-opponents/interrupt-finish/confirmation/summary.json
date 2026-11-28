@@ -1,0 +1,66 @@
+[
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "classic"
+    ],
+    "player": "hour8",
+    "games": 20,
+    "wins": 15,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 5
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 15
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "classic"
+    ],
+    "player": "hour10",
+    "games": 20,
+    "wins": 14,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 6
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 14
+      }
+    ]
+  },
+  {
+    "cell": [
+      "finish",
+      "clear",
+      "classic"
+    ],
+    "player": "queued",
+    "games": 20,
+    "wins": 20,
+    "caps": 0,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 20
+      }
+    ]
+  }
+]

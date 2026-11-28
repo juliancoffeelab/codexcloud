@@ -30,10 +30,11 @@
   "description": "A skeletal axe veteran who trades durability for repeated heavy blade attacks.",
   "level": 2,
   "family": "skeleton-axeman",
-  "advancesTo": ["skeleton-axeman-l3"],
+  "advancesTo": [
+    "skeleton-axeman-l3"
+  ],
   "experienceNeeded": 18,
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

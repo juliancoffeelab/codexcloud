@@ -1,0 +1,2238 @@
+{
+  "name": "Ashbank Relay",
+  "cells": [
+    {
+      "scope": "clear",
+      "opponent": "classic",
+      "discovery": {
+        "hour8": {
+          "scope": "clear",
+          "opponent": "classic",
+          "policy": "hour8",
+          "wins": 0,
+          "losses": 8,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The eastern crossing was still enemy-held at the deadline.": 4,
+            "The relief force arrived before both positions were secured.": 3,
+            "The commander fell.": 1
+          },
+          "winRounds": {}
+        },
+        "hour10": {
+          "scope": "clear",
+          "opponent": "classic",
+          "policy": "hour10",
+          "wins": 3,
+          "losses": 5,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 3,
+            "The relief force arrived before both positions were secured.": 5
+          },
+          "winRounds": {
+            "11": 3
+          }
+        },
+        "classic": {
+          "scope": "clear",
+          "opponent": "classic",
+          "policy": "classic",
+          "wins": 6,
+          "losses": 2,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 6,
+            "The relief force arrived before both positions were secured.": 2
+          },
+          "winRounds": {
+            "11": 6
+          }
+        },
+        "queued": {
+          "scope": "clear",
+          "opponent": "classic",
+          "policy": "queued",
+          "wins": 2,
+          "losses": 6,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 2,
+            "The eastern crossing was still enemy-held at the deadline.": 4,
+            "The relief force arrived before both positions were secured.": 2
+          },
+          "winRounds": {
+            "11": 2
+          }
+        },
+        "full": {
+          "scope": "clear",
+          "opponent": "classic",
+          "policy": "full",
+          "wins": 3,
+          "losses": 5,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 3,
+            "The eastern crossing was still enemy-held at the deadline.": 3,
+            "The relief force arrived before both positions were secured.": 2
+          },
+          "winRounds": {
+            "11": 3
+          }
+        }
+      },
+      "reference": "classic",
+      "confirmation": {
+        "hour8": {
+          "scope": "clear",
+          "opponent": "classic",
+          "policy": "hour8",
+          "wins": 3,
+          "losses": 17,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 7,
+            "The commander fell.": 4,
+            "Ashbank held and the eastern crossing secured.": 3,
+            "The eastern crossing was still enemy-held at the deadline.": 6
+          },
+          "winRounds": {
+            "11": 3
+          }
+        },
+        "hour10": {
+          "scope": "clear",
+          "opponent": "classic",
+          "policy": "hour10",
+          "wins": 8,
+          "losses": 12,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 12,
+            "Ashbank held and the eastern crossing secured.": 8
+          },
+          "winRounds": {
+            "11": 8
+          }
+        },
+        "classic": {
+          "scope": "clear",
+          "opponent": "classic",
+          "policy": "classic",
+          "wins": 14,
+          "losses": 6,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 14,
+            "The relief force arrived before both positions were secured.": 6
+          },
+          "winRounds": {
+            "11": 14
+          }
+        }
+      },
+      "pairedGap": {
+        "hour8": 11,
+        "hour10": 6
+      },
+      "matchedOutcomes": {
+        "hour8": {
+          "refWinLearnerLoss": 12,
+          "refWinLearnerWin": 2,
+          "refLossLearnerLoss": 5,
+          "refLossLearnerWin": 1
+        },
+        "hour10": {
+          "refWinLearnerLoss": 11,
+          "refWinLearnerWin": 3,
+          "refLossLearnerWin": 5,
+          "refLossLearnerLoss": 1
+        }
+      },
+      "clearedGapFor": [],
+      "decision": "failed confirmation"
+    },
+    {
+      "scope": "clear",
+      "opponent": "queued",
+      "discovery": {
+        "hour8": {
+          "scope": "clear",
+          "opponent": "queued",
+          "policy": "hour8",
+          "wins": 0,
+          "losses": 8,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The commander fell.": 3,
+            "The relief force arrived before both positions were secured.": 4,
+            "The eastern crossing was still enemy-held at the deadline.": 1
+          },
+          "winRounds": {}
+        },
+        "hour10": {
+          "scope": "clear",
+          "opponent": "queued",
+          "policy": "hour10",
+          "wins": 3,
+          "losses": 5,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 5,
+            "Ashbank held and the eastern crossing secured.": 3
+          },
+          "winRounds": {
+            "11": 3
+          }
+        },
+        "classic": {
+          "scope": "clear",
+          "opponent": "queued",
+          "policy": "classic",
+          "wins": 8,
+          "losses": 0,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 8
+          },
+          "winRounds": {
+            "11": 8
+          }
+        },
+        "queued": {
+          "scope": "clear",
+          "opponent": "queued",
+          "policy": "queued",
+          "wins": 6,
+          "losses": 2,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 6,
+            "The relief force arrived before both positions were secured.": 1,
+            "The eastern crossing was still enemy-held at the deadline.": 1
+          },
+          "winRounds": {
+            "11": 6
+          }
+        },
+        "full": {
+          "scope": "clear",
+          "opponent": "queued",
+          "policy": "full",
+          "wins": 6,
+          "losses": 2,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 6,
+            "The relief force arrived before both positions were secured.": 2
+          },
+          "winRounds": {
+            "11": 6
+          }
+        }
+      },
+      "reference": "classic",
+      "confirmation": {
+        "hour8": {
+          "scope": "clear",
+          "opponent": "queued",
+          "policy": "hour8",
+          "wins": 1,
+          "losses": 19,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The eastern crossing was still enemy-held at the deadline.": 6,
+            "The relief force arrived before both positions were secured.": 7,
+            "Ashbank held and the eastern crossing secured.": 1,
+            "The commander fell.": 6
+          },
+          "winRounds": {
+            "11": 1
+          }
+        },
+        "hour10": {
+          "scope": "clear",
+          "opponent": "queued",
+          "policy": "hour10",
+          "wins": 4,
+          "losses": 16,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 14,
+            "The commander fell.": 2,
+            "Ashbank held and the eastern crossing secured.": 4
+          },
+          "winRounds": {
+            "11": 4
+          }
+        },
+        "classic": {
+          "scope": "clear",
+          "opponent": "queued",
+          "policy": "classic",
+          "wins": 16,
+          "losses": 4,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 16,
+            "The relief force arrived before both positions were secured.": 3,
+            "The commander fell.": 1
+          },
+          "winRounds": {
+            "11": 16
+          }
+        }
+      },
+      "pairedGap": {
+        "hour8": 15,
+        "hour10": 12
+      },
+      "matchedOutcomes": {
+        "hour8": {
+          "refWinLearnerLoss": 16,
+          "refLossLearnerLoss": 3,
+          "refLossLearnerWin": 1
+        },
+        "hour10": {
+          "refWinLearnerLoss": 12,
+          "refLossLearnerLoss": 4,
+          "refWinLearnerWin": 4
+        }
+      },
+      "clearedGapFor": [
+        "hour8",
+        "hour10"
+      ],
+      "decision": "confirmed"
+    },
+    {
+      "scope": "clear",
+      "opponent": "full",
+      "discovery": {
+        "hour8": {
+          "scope": "clear",
+          "opponent": "full",
+          "policy": "hour8",
+          "wins": 3,
+          "losses": 5,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The commander fell.": 3,
+            "Ashbank held and the eastern crossing secured.": 3,
+            "The relief force arrived before both positions were secured.": 2
+          },
+          "winRounds": {
+            "11": 3
+          }
+        },
+        "hour10": {
+          "scope": "clear",
+          "opponent": "full",
+          "policy": "hour10",
+          "wins": 3,
+          "losses": 5,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 3,
+            "Ashbank held and the eastern crossing secured.": 3,
+            "The commander fell.": 2
+          },
+          "winRounds": {
+            "11": 3
+          }
+        },
+        "classic": {
+          "scope": "clear",
+          "opponent": "full",
+          "policy": "classic",
+          "wins": 6,
+          "losses": 2,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 6,
+            "The relief force arrived before both positions were secured.": 2
+          },
+          "winRounds": {
+            "11": 6
+          }
+        },
+        "queued": {
+          "scope": "clear",
+          "opponent": "full",
+          "policy": "queued",
+          "wins": 8,
+          "losses": 0,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 8
+          },
+          "winRounds": {
+            "11": 8
+          }
+        },
+        "full": {
+          "scope": "clear",
+          "opponent": "full",
+          "policy": "full",
+          "wins": 8,
+          "losses": 0,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 8
+          },
+          "winRounds": {
+            "11": 8
+          }
+        }
+      },
+      "reference": "queued",
+      "confirmation": {
+        "hour8": {
+          "scope": "clear",
+          "opponent": "full",
+          "policy": "hour8",
+          "wins": 5,
+          "losses": 15,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 5,
+            "Ashbank held and the eastern crossing secured.": 5,
+            "The commander fell.": 10
+          },
+          "winRounds": {
+            "11": 5
+          }
+        },
+        "hour10": {
+          "scope": "clear",
+          "opponent": "full",
+          "policy": "hour10",
+          "wins": 10,
+          "losses": 10,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The commander fell.": 7,
+            "Ashbank held and the eastern crossing secured.": 10,
+            "The relief force arrived before both positions were secured.": 3
+          },
+          "winRounds": {
+            "11": 10
+          }
+        },
+        "queued": {
+          "scope": "clear",
+          "opponent": "full",
+          "policy": "queued",
+          "wins": 19,
+          "losses": 1,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 19,
+            "The commander fell.": 1
+          },
+          "winRounds": {
+            "11": 19
+          }
+        }
+      },
+      "pairedGap": {
+        "hour8": 14,
+        "hour10": 9
+      },
+      "matchedOutcomes": {
+        "hour8": {
+          "refWinLearnerLoss": 14,
+          "refWinLearnerWin": 5,
+          "refLossLearnerLoss": 1
+        },
+        "hour10": {
+          "refWinLearnerLoss": 9,
+          "refWinLearnerWin": 10,
+          "refLossLearnerLoss": 1
+        }
+      },
+      "clearedGapFor": [
+        "hour8",
+        "hour10"
+      ],
+      "decision": "confirmed"
+    },
+    {
+      "scope": "clear",
+      "opponent": "predictor",
+      "discovery": {
+        "hour8": {
+          "scope": "clear",
+          "opponent": "predictor",
+          "policy": "hour8",
+          "wins": 0,
+          "losses": 8,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The commander fell.": 3,
+            "The relief force arrived before both positions were secured.": 4,
+            "The eastern crossing was still enemy-held at the deadline.": 1
+          },
+          "winRounds": {}
+        },
+        "hour10": {
+          "scope": "clear",
+          "opponent": "predictor",
+          "policy": "hour10",
+          "wins": 3,
+          "losses": 5,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 5,
+            "Ashbank held and the eastern crossing secured.": 3
+          },
+          "winRounds": {
+            "11": 3
+          }
+        },
+        "classic": {
+          "scope": "clear",
+          "opponent": "predictor",
+          "policy": "classic",
+          "wins": 8,
+          "losses": 0,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 8
+          },
+          "winRounds": {
+            "11": 8
+          }
+        },
+        "queued": {
+          "scope": "clear",
+          "opponent": "predictor",
+          "policy": "queued",
+          "wins": 6,
+          "losses": 2,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 6,
+            "The relief force arrived before both positions were secured.": 1,
+            "The eastern crossing was still enemy-held at the deadline.": 1
+          },
+          "winRounds": {
+            "11": 6
+          }
+        },
+        "full": {
+          "scope": "clear",
+          "opponent": "predictor",
+          "policy": "full",
+          "wins": 6,
+          "losses": 2,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 6,
+            "The relief force arrived before both positions were secured.": 2
+          },
+          "winRounds": {
+            "11": 6
+          }
+        }
+      },
+      "reference": "classic",
+      "confirmation": {
+        "hour8": {
+          "scope": "clear",
+          "opponent": "predictor",
+          "policy": "hour8",
+          "wins": 1,
+          "losses": 19,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The eastern crossing was still enemy-held at the deadline.": 6,
+            "The relief force arrived before both positions were secured.": 8,
+            "Ashbank held and the eastern crossing secured.": 1,
+            "The commander fell.": 5
+          },
+          "winRounds": {
+            "11": 1
+          }
+        },
+        "hour10": {
+          "scope": "clear",
+          "opponent": "predictor",
+          "policy": "hour10",
+          "wins": 4,
+          "losses": 16,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 14,
+            "The commander fell.": 2,
+            "Ashbank held and the eastern crossing secured.": 4
+          },
+          "winRounds": {
+            "11": 4
+          }
+        },
+        "classic": {
+          "scope": "clear",
+          "opponent": "predictor",
+          "policy": "classic",
+          "wins": 16,
+          "losses": 4,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 16,
+            "The relief force arrived before both positions were secured.": 3,
+            "The commander fell.": 1
+          },
+          "winRounds": {
+            "11": 16
+          }
+        }
+      },
+      "pairedGap": {
+        "hour8": 15,
+        "hour10": 12
+      },
+      "matchedOutcomes": {
+        "hour8": {
+          "refWinLearnerLoss": 16,
+          "refLossLearnerLoss": 3,
+          "refLossLearnerWin": 1
+        },
+        "hour10": {
+          "refWinLearnerLoss": 12,
+          "refLossLearnerLoss": 4,
+          "refWinLearnerWin": 4
+        }
+      },
+      "clearedGapFor": [
+        "hour8",
+        "hour10"
+      ],
+      "decision": "confirmed"
+    },
+    {
+      "scope": "player-fog",
+      "opponent": "classic",
+      "discovery": {
+        "hour8": {
+          "scope": "player-fog",
+          "opponent": "classic",
+          "policy": "hour8",
+          "wins": 2,
+          "losses": 6,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The commander fell.": 1,
+            "The relief force arrived before both positions were secured.": 5,
+            "Ashbank held and the eastern crossing secured.": 2
+          },
+          "winRounds": {
+            "11": 2
+          }
+        },
+        "hour10": {
+          "scope": "player-fog",
+          "opponent": "classic",
+          "policy": "hour10",
+          "wins": 0,
+          "losses": 8,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 8
+          },
+          "winRounds": {}
+        },
+        "classic": {
+          "scope": "player-fog",
+          "opponent": "classic",
+          "policy": "classic",
+          "wins": 5,
+          "losses": 3,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 5,
+            "The eastern crossing was still enemy-held at the deadline.": 1,
+            "The relief force arrived before both positions were secured.": 2
+          },
+          "winRounds": {
+            "11": 5
+          }
+        },
+        "queued": {
+          "scope": "player-fog",
+          "opponent": "classic",
+          "policy": "queued",
+          "wins": 2,
+          "losses": 6,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 2,
+            "The eastern crossing was still enemy-held at the deadline.": 4,
+            "The commander fell.": 1,
+            "The relief force arrived before both positions were secured.": 1
+          },
+          "winRounds": {
+            "11": 2
+          }
+        },
+        "full": {
+          "scope": "player-fog",
+          "opponent": "classic",
+          "policy": "full",
+          "wins": 3,
+          "losses": 5,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 3,
+            "The eastern crossing was still enemy-held at the deadline.": 3,
+            "The relief force arrived before both positions were secured.": 1,
+            "The commander fell.": 1
+          },
+          "winRounds": {
+            "11": 3
+          }
+        }
+      },
+      "decision": "screened out",
+      "reason": "All references won fewer than six discovery matches."
+    },
+    {
+      "scope": "player-fog",
+      "opponent": "queued",
+      "discovery": {
+        "hour8": {
+          "scope": "player-fog",
+          "opponent": "queued",
+          "policy": "hour8",
+          "wins": 1,
+          "losses": 7,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 5,
+            "The commander fell.": 1,
+            "The eastern crossing was still enemy-held at the deadline.": 1,
+            "Ashbank held and the eastern crossing secured.": 1
+          },
+          "winRounds": {
+            "11": 1
+          }
+        },
+        "hour10": {
+          "scope": "player-fog",
+          "opponent": "queued",
+          "policy": "hour10",
+          "wins": 2,
+          "losses": 6,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 4,
+            "The commander fell.": 2,
+            "Ashbank held and the eastern crossing secured.": 2
+          },
+          "winRounds": {
+            "11": 2
+          }
+        },
+        "classic": {
+          "scope": "player-fog",
+          "opponent": "queued",
+          "policy": "classic",
+          "wins": 5,
+          "losses": 3,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 5,
+            "The relief force arrived before both positions were secured.": 1,
+            "The eastern crossing was still enemy-held at the deadline.": 2
+          },
+          "winRounds": {
+            "11": 5
+          }
+        },
+        "queued": {
+          "scope": "player-fog",
+          "opponent": "queued",
+          "policy": "queued",
+          "wins": 6,
+          "losses": 2,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 6,
+            "The eastern crossing was still enemy-held at the deadline.": 2
+          },
+          "winRounds": {
+            "11": 6
+          }
+        },
+        "full": {
+          "scope": "player-fog",
+          "opponent": "queued",
+          "policy": "full",
+          "wins": 7,
+          "losses": 1,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 7,
+            "The relief force arrived before both positions were secured.": 1
+          },
+          "winRounds": {
+            "11": 7
+          }
+        }
+      },
+      "reference": "full",
+      "confirmation": {
+        "hour8": {
+          "scope": "player-fog",
+          "opponent": "queued",
+          "policy": "hour8",
+          "wins": 7,
+          "losses": 13,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The commander fell.": 5,
+            "The relief force arrived before both positions were secured.": 7,
+            "Ashbank held and the eastern crossing secured.": 7,
+            "The eastern crossing was still enemy-held at the deadline.": 1
+          },
+          "winRounds": {
+            "11": 7
+          }
+        },
+        "hour10": {
+          "scope": "player-fog",
+          "opponent": "queued",
+          "policy": "hour10",
+          "wins": 1,
+          "losses": 19,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The commander fell.": 4,
+            "The relief force arrived before both positions were secured.": 14,
+            "Ashbank held and the eastern crossing secured.": 1,
+            "The eastern crossing was still enemy-held at the deadline.": 1
+          },
+          "winRounds": {
+            "11": 1
+          }
+        },
+        "full": {
+          "scope": "player-fog",
+          "opponent": "queued",
+          "policy": "full",
+          "wins": 12,
+          "losses": 8,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The commander fell.": 1,
+            "Ashbank held and the eastern crossing secured.": 12,
+            "The relief force arrived before both positions were secured.": 4,
+            "The eastern crossing was still enemy-held at the deadline.": 3
+          },
+          "winRounds": {
+            "11": 12
+          }
+        }
+      },
+      "pairedGap": {
+        "hour8": 5,
+        "hour10": 11
+      },
+      "matchedOutcomes": {
+        "hour8": {
+          "refLossLearnerLoss": 5,
+          "refWinLearnerLoss": 8,
+          "refWinLearnerWin": 4,
+          "refLossLearnerWin": 3
+        },
+        "hour10": {
+          "refLossLearnerLoss": 8,
+          "refWinLearnerLoss": 11,
+          "refWinLearnerWin": 1
+        }
+      },
+      "clearedGapFor": [],
+      "decision": "failed confirmation"
+    },
+    {
+      "scope": "player-fog",
+      "opponent": "full",
+      "discovery": {
+        "hour8": {
+          "scope": "player-fog",
+          "opponent": "full",
+          "policy": "hour8",
+          "wins": 3,
+          "losses": 5,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 3,
+            "The commander fell.": 2,
+            "The relief force arrived before both positions were secured.": 3
+          },
+          "winRounds": {
+            "11": 3
+          }
+        },
+        "hour10": {
+          "scope": "player-fog",
+          "opponent": "full",
+          "policy": "hour10",
+          "wins": 5,
+          "losses": 3,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 5,
+            "The commander fell.": 3
+          },
+          "winRounds": {
+            "11": 5
+          }
+        },
+        "classic": {
+          "scope": "player-fog",
+          "opponent": "full",
+          "policy": "classic",
+          "wins": 7,
+          "losses": 1,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 7,
+            "The relief force arrived before both positions were secured.": 1
+          },
+          "winRounds": {
+            "11": 7
+          }
+        },
+        "queued": {
+          "scope": "player-fog",
+          "opponent": "full",
+          "policy": "queued",
+          "wins": 8,
+          "losses": 0,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 8
+          },
+          "winRounds": {
+            "11": 8
+          }
+        },
+        "full": {
+          "scope": "player-fog",
+          "opponent": "full",
+          "policy": "full",
+          "wins": 6,
+          "losses": 2,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 1,
+            "The commander fell.": 1,
+            "Ashbank held and the eastern crossing secured.": 6
+          },
+          "winRounds": {
+            "11": 6
+          }
+        }
+      },
+      "reference": "queued",
+      "confirmation": {
+        "hour8": {
+          "scope": "player-fog",
+          "opponent": "full",
+          "policy": "hour8",
+          "wins": 6,
+          "losses": 14,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 7,
+            "The commander fell.": 7,
+            "Ashbank held and the eastern crossing secured.": 6
+          },
+          "winRounds": {
+            "11": 6
+          }
+        },
+        "hour10": {
+          "scope": "player-fog",
+          "opponent": "full",
+          "policy": "hour10",
+          "wins": 9,
+          "losses": 11,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 9,
+            "The commander fell.": 9,
+            "The relief force arrived before both positions were secured.": 2
+          },
+          "winRounds": {
+            "11": 9
+          }
+        },
+        "queued": {
+          "scope": "player-fog",
+          "opponent": "full",
+          "policy": "queued",
+          "wins": 15,
+          "losses": 5,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 15,
+            "The eastern crossing was still enemy-held at the deadline.": 1,
+            "The relief force arrived before both positions were secured.": 3,
+            "The commander fell.": 1
+          },
+          "winRounds": {
+            "11": 15
+          }
+        }
+      },
+      "pairedGap": {
+        "hour8": 9,
+        "hour10": 6
+      },
+      "matchedOutcomes": {
+        "hour8": {
+          "refWinLearnerLoss": 10,
+          "refLossLearnerLoss": 4,
+          "refWinLearnerWin": 5,
+          "refLossLearnerWin": 1
+        },
+        "hour10": {
+          "refWinLearnerWin": 8,
+          "refWinLearnerLoss": 7,
+          "refLossLearnerLoss": 4,
+          "refLossLearnerWin": 1
+        }
+      },
+      "clearedGapFor": [
+        "hour8",
+        "hour10"
+      ],
+      "decision": "confirmed"
+    },
+    {
+      "scope": "player-fog",
+      "opponent": "predictor",
+      "discovery": {
+        "hour8": {
+          "scope": "player-fog",
+          "opponent": "predictor",
+          "policy": "hour8",
+          "wins": 1,
+          "losses": 7,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 5,
+            "The commander fell.": 1,
+            "The eastern crossing was still enemy-held at the deadline.": 1,
+            "Ashbank held and the eastern crossing secured.": 1
+          },
+          "winRounds": {
+            "11": 1
+          }
+        },
+        "hour10": {
+          "scope": "player-fog",
+          "opponent": "predictor",
+          "policy": "hour10",
+          "wins": 2,
+          "losses": 6,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 4,
+            "The commander fell.": 2,
+            "Ashbank held and the eastern crossing secured.": 2
+          },
+          "winRounds": {
+            "11": 2
+          }
+        },
+        "classic": {
+          "scope": "player-fog",
+          "opponent": "predictor",
+          "policy": "classic",
+          "wins": 5,
+          "losses": 3,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 5,
+            "The relief force arrived before both positions were secured.": 1,
+            "The eastern crossing was still enemy-held at the deadline.": 2
+          },
+          "winRounds": {
+            "11": 5
+          }
+        },
+        "queued": {
+          "scope": "player-fog",
+          "opponent": "predictor",
+          "policy": "queued",
+          "wins": 6,
+          "losses": 2,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 6,
+            "The eastern crossing was still enemy-held at the deadline.": 2
+          },
+          "winRounds": {
+            "11": 6
+          }
+        },
+        "full": {
+          "scope": "player-fog",
+          "opponent": "predictor",
+          "policy": "full",
+          "wins": 7,
+          "losses": 1,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 7,
+            "The relief force arrived before both positions were secured.": 1
+          },
+          "winRounds": {
+            "11": 7
+          }
+        }
+      },
+      "reference": "full",
+      "confirmation": {
+        "hour8": {
+          "scope": "player-fog",
+          "opponent": "predictor",
+          "policy": "hour8",
+          "wins": 7,
+          "losses": 13,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The commander fell.": 5,
+            "The relief force arrived before both positions were secured.": 7,
+            "Ashbank held and the eastern crossing secured.": 7,
+            "The eastern crossing was still enemy-held at the deadline.": 1
+          },
+          "winRounds": {
+            "11": 7
+          }
+        },
+        "hour10": {
+          "scope": "player-fog",
+          "opponent": "predictor",
+          "policy": "hour10",
+          "wins": 1,
+          "losses": 19,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The commander fell.": 5,
+            "The relief force arrived before both positions were secured.": 13,
+            "Ashbank held and the eastern crossing secured.": 1,
+            "The eastern crossing was still enemy-held at the deadline.": 1
+          },
+          "winRounds": {
+            "11": 1
+          }
+        },
+        "full": {
+          "scope": "player-fog",
+          "opponent": "predictor",
+          "policy": "full",
+          "wins": 12,
+          "losses": 8,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The commander fell.": 1,
+            "Ashbank held and the eastern crossing secured.": 12,
+            "The relief force arrived before both positions were secured.": 4,
+            "The eastern crossing was still enemy-held at the deadline.": 3
+          },
+          "winRounds": {
+            "11": 12
+          }
+        }
+      },
+      "pairedGap": {
+        "hour8": 5,
+        "hour10": 11
+      },
+      "matchedOutcomes": {
+        "hour8": {
+          "refLossLearnerLoss": 5,
+          "refWinLearnerLoss": 8,
+          "refWinLearnerWin": 4,
+          "refLossLearnerWin": 3
+        },
+        "hour10": {
+          "refLossLearnerLoss": 8,
+          "refWinLearnerLoss": 11,
+          "refWinLearnerWin": 1
+        }
+      },
+      "clearedGapFor": [],
+      "decision": "failed confirmation"
+    },
+    {
+      "scope": "both-fog",
+      "opponent": "classic",
+      "discovery": {
+        "hour8": {
+          "scope": "both-fog",
+          "opponent": "classic",
+          "policy": "hour8",
+          "wins": 0,
+          "losses": 8,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 6,
+            "The commander fell.": 2
+          },
+          "winRounds": {}
+        },
+        "hour10": {
+          "scope": "both-fog",
+          "opponent": "classic",
+          "policy": "hour10",
+          "wins": 0,
+          "losses": 8,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 6,
+            "The commander fell.": 2
+          },
+          "winRounds": {}
+        },
+        "classic": {
+          "scope": "both-fog",
+          "opponent": "classic",
+          "policy": "classic",
+          "wins": 5,
+          "losses": 3,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 5,
+            "The eastern crossing was still enemy-held at the deadline.": 1,
+            "The relief force arrived before both positions were secured.": 2
+          },
+          "winRounds": {
+            "11": 5
+          }
+        },
+        "queued": {
+          "scope": "both-fog",
+          "opponent": "classic",
+          "policy": "queued",
+          "wins": 2,
+          "losses": 6,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 2,
+            "The eastern crossing was still enemy-held at the deadline.": 5,
+            "The relief force arrived before both positions were secured.": 1
+          },
+          "winRounds": {
+            "11": 2
+          }
+        },
+        "full": {
+          "scope": "both-fog",
+          "opponent": "classic",
+          "policy": "full",
+          "wins": 4,
+          "losses": 4,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 4,
+            "The eastern crossing was still enemy-held at the deadline.": 4
+          },
+          "winRounds": {
+            "11": 4
+          }
+        }
+      },
+      "decision": "screened out",
+      "reason": "All references won fewer than six discovery matches."
+    },
+    {
+      "scope": "both-fog",
+      "opponent": "queued",
+      "discovery": {
+        "hour8": {
+          "scope": "both-fog",
+          "opponent": "queued",
+          "policy": "hour8",
+          "wins": 0,
+          "losses": 8,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 4,
+            "The commander fell.": 4
+          },
+          "winRounds": {}
+        },
+        "hour10": {
+          "scope": "both-fog",
+          "opponent": "queued",
+          "policy": "hour10",
+          "wins": 0,
+          "losses": 8,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 3,
+            "The commander fell.": 5
+          },
+          "winRounds": {}
+        },
+        "classic": {
+          "scope": "both-fog",
+          "opponent": "queued",
+          "policy": "classic",
+          "wins": 5,
+          "losses": 3,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 5,
+            "The commander fell.": 1,
+            "The relief force arrived before both positions were secured.": 2
+          },
+          "winRounds": {
+            "11": 5
+          }
+        },
+        "queued": {
+          "scope": "both-fog",
+          "opponent": "queued",
+          "policy": "queued",
+          "wins": 7,
+          "losses": 1,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 7,
+            "The eastern crossing was still enemy-held at the deadline.": 1
+          },
+          "winRounds": {
+            "11": 7
+          }
+        },
+        "full": {
+          "scope": "both-fog",
+          "opponent": "queued",
+          "policy": "full",
+          "wins": 7,
+          "losses": 1,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 7,
+            "The relief force arrived before both positions were secured.": 1
+          },
+          "winRounds": {
+            "11": 7
+          }
+        }
+      },
+      "reference": "queued",
+      "confirmation": {
+        "hour8": {
+          "scope": "both-fog",
+          "opponent": "queued",
+          "policy": "hour8",
+          "wins": 0,
+          "losses": 20,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 13,
+            "The commander fell.": 7
+          },
+          "winRounds": {}
+        },
+        "hour10": {
+          "scope": "both-fog",
+          "opponent": "queued",
+          "policy": "hour10",
+          "wins": 0,
+          "losses": 20,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 12,
+            "The commander fell.": 8
+          },
+          "winRounds": {}
+        },
+        "queued": {
+          "scope": "both-fog",
+          "opponent": "queued",
+          "policy": "queued",
+          "wins": 20,
+          "losses": 0,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 20
+          },
+          "winRounds": {
+            "11": 20
+          }
+        }
+      },
+      "pairedGap": {
+        "hour8": 20,
+        "hour10": 20
+      },
+      "matchedOutcomes": {
+        "hour8": {
+          "refWinLearnerLoss": 20
+        },
+        "hour10": {
+          "refWinLearnerLoss": 20
+        }
+      },
+      "clearedGapFor": [
+        "hour8",
+        "hour10"
+      ],
+      "decision": "confirmed"
+    },
+    {
+      "scope": "both-fog",
+      "opponent": "full",
+      "discovery": {
+        "hour8": {
+          "scope": "both-fog",
+          "opponent": "full",
+          "policy": "hour8",
+          "wins": 4,
+          "losses": 4,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 4,
+            "The relief force arrived before both positions were secured.": 4
+          },
+          "winRounds": {
+            "11": 4
+          }
+        },
+        "hour10": {
+          "scope": "both-fog",
+          "opponent": "full",
+          "policy": "hour10",
+          "wins": 1,
+          "losses": 7,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 5,
+            "Ashbank held and the eastern crossing secured.": 1,
+            "The commander fell.": 2
+          },
+          "winRounds": {
+            "11": 1
+          }
+        },
+        "classic": {
+          "scope": "both-fog",
+          "opponent": "full",
+          "policy": "classic",
+          "wins": 6,
+          "losses": 2,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 6,
+            "The relief force arrived before both positions were secured.": 1,
+            "The commander fell.": 1
+          },
+          "winRounds": {
+            "11": 6
+          }
+        },
+        "queued": {
+          "scope": "both-fog",
+          "opponent": "full",
+          "policy": "queued",
+          "wins": 3,
+          "losses": 5,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 3,
+            "The commander fell.": 2,
+            "The relief force arrived before both positions were secured.": 3
+          },
+          "winRounds": {
+            "11": 3
+          }
+        },
+        "full": {
+          "scope": "both-fog",
+          "opponent": "full",
+          "policy": "full",
+          "wins": 8,
+          "losses": 0,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 8
+          },
+          "winRounds": {
+            "11": 8
+          }
+        }
+      },
+      "reference": "full",
+      "confirmation": {
+        "hour8": {
+          "scope": "both-fog",
+          "opponent": "full",
+          "policy": "hour8",
+          "wins": 8,
+          "losses": 12,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 9,
+            "The eastern crossing was still enemy-held at the deadline.": 1,
+            "Ashbank held and the eastern crossing secured.": 8,
+            "The commander fell.": 2
+          },
+          "winRounds": {
+            "11": 8
+          }
+        },
+        "hour10": {
+          "scope": "both-fog",
+          "opponent": "full",
+          "policy": "hour10",
+          "wins": 1,
+          "losses": 19,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 16,
+            "The commander fell.": 3,
+            "Ashbank held and the eastern crossing secured.": 1
+          },
+          "winRounds": {
+            "11": 1
+          }
+        },
+        "full": {
+          "scope": "both-fog",
+          "opponent": "full",
+          "policy": "full",
+          "wins": 18,
+          "losses": 2,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 18,
+            "The relief force arrived before both positions were secured.": 2
+          },
+          "winRounds": {
+            "11": 18
+          }
+        }
+      },
+      "pairedGap": {
+        "hour8": 10,
+        "hour10": 17
+      },
+      "matchedOutcomes": {
+        "hour8": {
+          "refWinLearnerLoss": 10,
+          "refLossLearnerLoss": 2,
+          "refWinLearnerWin": 8
+        },
+        "hour10": {
+          "refWinLearnerLoss": 17,
+          "refLossLearnerLoss": 2,
+          "refWinLearnerWin": 1
+        }
+      },
+      "clearedGapFor": [
+        "hour8",
+        "hour10"
+      ],
+      "decision": "confirmed"
+    },
+    {
+      "scope": "both-fog",
+      "opponent": "predictor",
+      "discovery": {
+        "hour8": {
+          "scope": "both-fog",
+          "opponent": "predictor",
+          "policy": "hour8",
+          "wins": 0,
+          "losses": 8,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 4,
+            "The commander fell.": 4
+          },
+          "winRounds": {}
+        },
+        "hour10": {
+          "scope": "both-fog",
+          "opponent": "predictor",
+          "policy": "hour10",
+          "wins": 0,
+          "losses": 8,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 3,
+            "The commander fell.": 5
+          },
+          "winRounds": {}
+        },
+        "classic": {
+          "scope": "both-fog",
+          "opponent": "predictor",
+          "policy": "classic",
+          "wins": 5,
+          "losses": 3,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 5,
+            "The eastern crossing was still enemy-held at the deadline.": 1,
+            "The relief force arrived before both positions were secured.": 2
+          },
+          "winRounds": {
+            "11": 5
+          }
+        },
+        "queued": {
+          "scope": "both-fog",
+          "opponent": "predictor",
+          "policy": "queued",
+          "wins": 7,
+          "losses": 1,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 7,
+            "The eastern crossing was still enemy-held at the deadline.": 1
+          },
+          "winRounds": {
+            "11": 7
+          }
+        },
+        "full": {
+          "scope": "both-fog",
+          "opponent": "predictor",
+          "policy": "full",
+          "wins": 7,
+          "losses": 1,
+          "caps": 0,
+          "count": 8,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 7,
+            "The relief force arrived before both positions were secured.": 1
+          },
+          "winRounds": {
+            "11": 7
+          }
+        }
+      },
+      "reference": "queued",
+      "confirmation": {
+        "hour8": {
+          "scope": "both-fog",
+          "opponent": "predictor",
+          "policy": "hour8",
+          "wins": 0,
+          "losses": 20,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 13,
+            "The commander fell.": 7
+          },
+          "winRounds": {}
+        },
+        "hour10": {
+          "scope": "both-fog",
+          "opponent": "predictor",
+          "policy": "hour10",
+          "wins": 0,
+          "losses": 20,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "The relief force arrived before both positions were secured.": 12,
+            "The commander fell.": 8
+          },
+          "winRounds": {}
+        },
+        "queued": {
+          "scope": "both-fog",
+          "opponent": "predictor",
+          "policy": "queued",
+          "wins": 20,
+          "losses": 0,
+          "caps": 0,
+          "count": 20,
+          "terminalReasons": {
+            "Ashbank held and the eastern crossing secured.": 20
+          },
+          "winRounds": {
+            "11": 20
+          }
+        }
+      },
+      "pairedGap": {
+        "hour8": 20,
+        "hour10": 20
+      },
+      "matchedOutcomes": {
+        "hour8": {
+          "refWinLearnerLoss": 20
+        },
+        "hour10": {
+          "refWinLearnerLoss": 20
+        }
+      },
+      "clearedGapFor": [
+        "hour8",
+        "hour10"
+      ],
+      "decision": "confirmed"
+    }
+  ],
+  "catalog": {
+    "catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog",
+    "catalogSha256": "7c0d2bb91548276bdf7a39befaddee63351cab940973be4cf2711c99882dfe5b",
+    "baseCatalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog",
+    "baseCatalogSha256": "d7424bbccc1a2481298bc56828e02189c9ec1467b44b3798a30d06ed840437d3",
+    "effectPath": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/environment-effects/fog-reveal-3.json",
+    "stages": {
+      "clear": {
+        "campaign.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil/campaign.json",
+          "sha256": "47e5a04aaf9a3398b03e33a6e95bca760df53a2b355b0a889394ef2606a34cdc"
+        },
+        "map.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil/map.json",
+          "sha256": "c85812c78dde523a8089d68e3dccf8ebe07d50271d4f7709113957322c9ea1a2"
+        },
+        "roster.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil/roster.json",
+          "sha256": "a1a2f698308207b8dbdba1b2e8f5177418fad7c207b555e4eff00739a188b407"
+        },
+        "scripts.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil/scripts.json",
+          "sha256": "148d8d4b407a4e2fea4f95b40912a70cf103b5ef001c41f43810f92ef12462ee"
+        },
+        "stage.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil/stage.json",
+          "sha256": "a52767cdd5fef0a8beb7a3ba76030a2ac5b9d51a778f8849164b0c5fabcaa530"
+        },
+        "story.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil/story.json",
+          "sha256": "b165c56b53482d0b905cad581b76c73c696e698cc5dbde22ebefaf1553fd7329"
+        }
+      },
+      "player-fog": {
+        "campaign.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/campaign.json",
+          "sha256": "7a50745d74ed54ec27660699a068a2d446beae878f97d3894620313a5028707e"
+        },
+        "map.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/map.json",
+          "sha256": "a2ccf418b423e0a4546ac1c21dd4b2fa5c0469396badb429637cf04c14999bc9"
+        },
+        "roster.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/roster.json",
+          "sha256": "a1a2f698308207b8dbdba1b2e8f5177418fad7c207b555e4eff00739a188b407"
+        },
+        "scripts.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/scripts.json",
+          "sha256": "148d8d4b407a4e2fea4f95b40912a70cf103b5ef001c41f43810f92ef12462ee"
+        },
+        "stage.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/stage.json",
+          "sha256": "54e3869aca01c68e2fde3ce561d9568ca2f37ea2180834bf87c9591fc5f3fa1d"
+        },
+        "story.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/story.json",
+          "sha256": "b165c56b53482d0b905cad581b76c73c696e698cc5dbde22ebefaf1553fd7329"
+        }
+      },
+      "both-fog": {
+        "campaign.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/campaign.json",
+          "sha256": "7fd658f60f6a1e8f285e5c0465dcd46fc5ae549ab1bf2af450cf1867e9c752f2"
+        },
+        "map.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/map.json",
+          "sha256": "01a25cef7381f3ca5e28ea3021a70beed36b53f05fe19bfb03d947eba9e4c8db"
+        },
+        "roster.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/roster.json",
+          "sha256": "b988d65839f87f278622067b44aa93cb5e63f78acfc3dd37bd8be1c337541566"
+        },
+        "scripts.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/scripts.json",
+          "sha256": "148d8d4b407a4e2fea4f95b40912a70cf103b5ef001c41f43810f92ef12462ee"
+        },
+        "stage.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/stage.json",
+          "sha256": "2d7590f03285e4651168c979f0cffb2dde522a74fa1257a4de3ad90c7391bda0"
+        },
+        "story.json": {
+          "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/story.json",
+          "sha256": "b165c56b53482d0b905cad581b76c73c696e698cc5dbde22ebefaf1553fd7329"
+        }
+      }
+    }
+  },
+  "policy": {
+    "discovery": "Reference at least 6/8. Advantage of at least 3 wins over Hour 10.",
+    "confirmation": "Selected reference at least 15/20. Advantage of at least 6 wins over Hour 10.",
+    "referenceTieBreak": [
+      "classic",
+      "queued",
+      "full"
+    ]
+  },
+  "native": {
+    "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/native/hex_command_training.so",
+    "sha256": "7d7ab7ede88526b76ceb1c91de5fc9df2187c79c1ce0b7ba3b8b9b1f0cf322f2"
+  },
+  "models": {
+    "hour8": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/update-00002205-1795440240315037513/planner.json",
+      "sha256": "e7ef684d9e135e7817e390c533ec8b903d08db2d6ac0253c1aa340616b47a619"
+    },
+    "hour10": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/last-1795458575107520190/planner.json",
+      "sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee"
+    }
+  },
+  "discovery": {
+    "summary": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/discovery-summary.json",
+    "seeds": [
+      571240001,
+      571240002,
+      571240003,
+      571240004,
+      571240005,
+      571240006,
+      571240007,
+      571240008
+    ],
+    "matches": 480,
+    "raw": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/discovery.jsonl",
+    "sha256": "471199ce3c8390783b0e60654e85ec6154c84c6ca0decef6d1a903efea178fd4",
+    "schedule": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/discovery-schedule.json",
+    "elapsedSeconds": 40.13976940700377
+  },
+  "confirmation": {
+    "summary": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/confirmation-summary.json",
+    "seeds": [
+      571241001,
+      571241002,
+      571241003,
+      571241004,
+      571241005,
+      571241006,
+      571241007,
+      571241008,
+      571241009,
+      571241010,
+      571241011,
+      571241012,
+      571241013,
+      571241014,
+      571241015,
+      571241016,
+      571241017,
+      571241018,
+      571241019,
+      571241020
+    ],
+    "matches": 600,
+    "raw": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/confirmation.jsonl",
+    "sha256": "1134881400244102f97386d030c0bcbe2a53dae03d4314de1c5acafcd2378908",
+    "schedule": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/confirmation-schedule.json",
+    "elapsedSeconds": 65.75511271999858
+  },
+  "nativeAudit": {
+    "probe": {
+      "path": "/workspace/codexcloud/hex-command/rust/target/simulation/commander-fog-probe",
+      "sha256": "d3fc523a10694c407b194f51e9ecf899c64e1882fddfceac2162ba29b923abb3",
+      "source": "/workspace/codexcloud/hex-command/tmp/rl/new-env-fog-validation/commander/probe/src/main.rs",
+      "sourceSha256": "be1f82eb4b2dab33160520d929487661dfe3a73b88d18db586ef5097b3afeb9f"
+    },
+    "raw": {
+      "references": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/trace-references.jsonl.gz",
+        "sha256": "d2c758593bf5c26ac13efc0168c037420e85fe2a3d7d8e95010ea1fe37560f51",
+        "jobs": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/trace-references-jobs.json"
+      },
+      "hour8": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/trace-hour8.jsonl.gz",
+        "sha256": "d530effa9b4a3835a837c5f9e22a870b3ae43e45197b2e8f1d16bf16175bcab9",
+        "jobs": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/trace-hour8-jobs.json"
+      },
+      "hour10": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/trace-hour10.jsonl.gz",
+        "sha256": "402b89e61a2427b968ab5ed1206ad673ffae7fa47ec7eb6b444e739c8a8596fa",
+        "jobs": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/trace-hour10-jobs.json"
+      }
+    },
+    "count": 72,
+    "catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog",
+    "catalogSha256": "7c0d2bb91548276bdf7a39befaddee63351cab940973be4cf2711c99882dfe5b",
+    "visibility": {
+      "clear": {
+        "observedGames": 28,
+        "initialHiddenTiles": {
+          "player": 0,
+          "enemy": 0
+        },
+        "initialHiddenEnemies": {
+          "player": 0,
+          "enemy": 0
+        },
+        "maxRefogged": {
+          "player": 0,
+          "enemy": 0
+        },
+        "enemyActionsByOpponent": {
+          "classic": [
+            {
+              "seed": 571240001,
+              "moves": 11,
+              "attacks": 13
+            }
+          ],
+          "queued": [
+            {
+              "seed": 571240001,
+              "moves": 23,
+              "attacks": 10
+            }
+          ],
+          "full": [
+            {
+              "seed": 571240001,
+              "moves": 32,
+              "attacks": 4
+            }
+          ],
+          "predictor": [
+            {
+              "seed": 571240001,
+              "moves": 23,
+              "attacks": 10
+            }
+          ]
+        }
+      },
+      "player-fog": {
+        "observedGames": 22,
+        "initialHiddenTiles": {
+          "player": 95,
+          "enemy": 0
+        },
+        "initialHiddenEnemies": {
+          "player": 4,
+          "enemy": 0
+        },
+        "maxRefogged": {
+          "player": 69,
+          "enemy": 0
+        },
+        "enemyActionsByOpponent": {
+          "classic": [
+            {
+              "seed": 571240001,
+              "moves": 11,
+              "attacks": 13
+            }
+          ],
+          "queued": [
+            {
+              "seed": 571240001,
+              "moves": 15,
+              "attacks": 9
+            }
+          ],
+          "full": [
+            {
+              "seed": 571240001,
+              "moves": 35,
+              "attacks": 8
+            }
+          ],
+          "predictor": [
+            {
+              "seed": 571240001,
+              "moves": 15,
+              "attacks": 9
+            }
+          ]
+        }
+      },
+      "both-fog": {
+        "observedGames": 22,
+        "initialHiddenTiles": {
+          "player": 95,
+          "enemy": 97
+        },
+        "initialHiddenEnemies": {
+          "player": 4,
+          "enemy": 5
+        },
+        "maxRefogged": {
+          "player": 48,
+          "enemy": 90
+        },
+        "enemyActionsByOpponent": {
+          "classic": [
+            {
+              "seed": 571240001,
+              "moves": 11,
+              "attacks": 13
+            }
+          ],
+          "queued": [
+            {
+              "seed": 571240001,
+              "moves": 11,
+              "attacks": 7
+            }
+          ],
+          "full": [
+            {
+              "seed": 571240001,
+              "moves": 23,
+              "attacks": 4
+            }
+          ],
+          "predictor": [
+            {
+              "seed": 571240001,
+              "moves": 11,
+              "attacks": 7
+            }
+          ]
+        }
+      }
+    },
+    "returnedFogMeasurement": "Initially visible tiles hidden at terminal state for a fog-limited faction with surviving units.",
+    "queuedVsPredictorDiscovery": {
+      "compared": 120,
+      "differences": [
+        {
+          "scope": "clear",
+          "seed": 571240001,
+          "policy": "hour8",
+          "queued": {
+            "failure": "leader_loss",
+            "missions": [
+              {
+                "id": "rl-ashbank-relay-fork-vigil",
+                "round": 10,
+                "winner": "playerDefeat"
+              }
+            ],
+            "outcome": "The commander fell.",
+            "success": false,
+            "truncated": false
+          },
+          "predictor": {
+            "failure": "leader_loss",
+            "missions": [
+              {
+                "id": "rl-ashbank-relay-fork-vigil",
+                "round": 12,
+                "winner": "playerDefeat"
+              }
+            ],
+            "outcome": "The commander fell.",
+            "success": false,
+            "truncated": false
+          }
+        },
+        {
+          "scope": "both-fog",
+          "seed": 571240002,
+          "policy": "classic",
+          "queued": {
+            "failure": "leader_loss",
+            "missions": [
+              {
+                "id": "rl-ashbank-relay-fork-vigil-both-fog",
+                "round": 7,
+                "winner": "playerDefeat"
+              }
+            ],
+            "outcome": "The commander fell.",
+            "success": false,
+            "truncated": false
+          },
+          "predictor": {
+            "failure": "defeat",
+            "missions": [
+              {
+                "id": "rl-ashbank-relay-fork-vigil-both-fog",
+                "round": 8,
+                "winner": "playerDefeat"
+              }
+            ],
+            "outcome": "The eastern crossing was still enemy-held at the deadline.",
+            "success": false,
+            "truncated": false
+          }
+        }
+      ]
+    },
+    "replayEvidence": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/replay-evidence.json",
+      "sha256": "5a5175c368907adea764d151dec7ab0f9b5c3dd2ad3b739509f9bb72db56c1b7"
+    },
+    "queuedVsPredictorConfirmation": {
+      "compared": 180,
+      "differences": [
+        {
+          "scope": "clear",
+          "seed": 571241014,
+          "policy": "hour8",
+          "queued": {
+            "failure": "leader_loss",
+            "missions": [
+              {
+                "id": "rl-ashbank-relay-fork-vigil",
+                "round": 12,
+                "winner": "playerDefeat"
+              }
+            ],
+            "outcome": "The commander fell.",
+            "success": false,
+            "truncated": false
+          },
+          "predictor": {
+            "failure": "defeat",
+            "missions": [
+              {
+                "id": "rl-ashbank-relay-fork-vigil",
+                "round": 13,
+                "winner": "playerDefeat"
+              }
+            ],
+            "outcome": "The relief force arrived before both positions were secured.",
+            "success": false,
+            "truncated": false
+          }
+        },
+        {
+          "scope": "player-fog",
+          "seed": 571241002,
+          "policy": "hour10",
+          "queued": {
+            "failure": "defeat",
+            "missions": [
+              {
+                "id": "rl-ashbank-relay-fork-vigil-player-fog",
+                "round": 13,
+                "winner": "playerDefeat"
+              }
+            ],
+            "outcome": "The relief force arrived before both positions were secured.",
+            "success": false,
+            "truncated": false
+          },
+          "predictor": {
+            "failure": "leader_loss",
+            "missions": [
+              {
+                "id": "rl-ashbank-relay-fork-vigil-player-fog",
+                "round": 12,
+                "winner": "playerDefeat"
+              }
+            ],
+            "outcome": "The commander fell.",
+            "success": false,
+            "truncated": false
+          }
+        }
+      ]
+    }
+  }
+}

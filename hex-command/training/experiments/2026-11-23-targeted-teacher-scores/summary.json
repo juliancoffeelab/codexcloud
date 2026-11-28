@@ -1,0 +1,199 @@
+[
+  {
+    "id": "rl-urgent-crossing",
+    "learnerWins": 12,
+    "teacherWins": 10,
+    "runs": 16,
+    "teacher": "objective_progress",
+    "caps": 0
+  },
+  {
+    "id": "rl-deadline-wait7",
+    "learnerWins": 8,
+    "teacherWins": 7,
+    "runs": 8,
+    "teacher": "objective_progress",
+    "caps": 0
+  },
+  {
+    "id": "rl-deadline-pines-relief8",
+    "learnerWins": 0,
+    "teacherWins": 16,
+    "runs": 24,
+    "teacher": "objective_progress",
+    "caps": 0
+  },
+  {
+    "id": "rl-route-ambush",
+    "learnerWins": 0,
+    "teacherWins": 8,
+    "runs": 8,
+    "teacher": "full",
+    "caps": 0
+  },
+  {
+    "id": "rl-route-pocket-leader",
+    "learnerWins": 7,
+    "teacherWins": 8,
+    "runs": 8,
+    "teacher": "queued",
+    "caps": 0
+  },
+  {
+    "id": "rl-route-pass-road",
+    "learnerWins": 0,
+    "teacherWins": 8,
+    "runs": 8,
+    "teacher": "queued",
+    "caps": 0
+  },
+  {
+    "id": "rl-escort-lantern-maze",
+    "learnerWins": 24,
+    "teacherWins": 24,
+    "runs": 24,
+    "teacher": "full",
+    "caps": 0
+  },
+  {
+    "id": "rl-escort-mistfen-patrol",
+    "learnerWins": 24,
+    "teacherWins": 24,
+    "runs": 24,
+    "teacher": "full",
+    "caps": 0
+  },
+  {
+    "id": "rl-escort-splitwake-patrol",
+    "learnerWins": 24,
+    "teacherWins": 24,
+    "runs": 24,
+    "teacher": "full",
+    "caps": 0
+  },
+  {
+    "id": "rl-defend-tidegate-stand-110",
+    "learnerWins": 31,
+    "teacherWins": 21,
+    "runs": 32,
+    "teacher": "full",
+    "caps": 0
+  },
+  {
+    "id": "rl-defend-bracken-stand-010",
+    "learnerWins": 26,
+    "teacherWins": 34,
+    "runs": 40,
+    "teacher": "full",
+    "caps": 0
+  },
+  {
+    "id": "rl-interrupt-siltbar-approach",
+    "learnerWins": 6,
+    "teacherWins": 8,
+    "runs": 8,
+    "teacher": {
+      "path_to": {
+        "col": 13,
+        "row": 5
+      }
+    },
+    "caps": 0
+  },
+  {
+    "id": "rl-interrupt-herring-tide-road-three",
+    "learnerWins": 4,
+    "teacherWins": 8,
+    "runs": 8,
+    "teacher": "full",
+    "caps": 0
+  },
+  {
+    "id": "rl-defend-lower-gallery-0",
+    "learnerWins": 0,
+    "teacherWins": 3,
+    "runs": 8,
+    "teacher": "full",
+    "caps": 0
+  },
+  {
+    "id": "rl-interrupt-south-ford-west-post",
+    "learnerWins": 8,
+    "teacherWins": 8,
+    "runs": 8,
+    "teacher": "full",
+    "caps": 0
+  },
+  {
+    "id": "rl-briar-saddle",
+    "learnerWins": 7,
+    "teacherWins": 6,
+    "runs": 8,
+    "teacher": "queued",
+    "caps": 0
+  },
+  {
+    "id": "rl-whitecap-ford",
+    "learnerWins": 22,
+    "teacherWins": 24,
+    "runs": 24,
+    "teacher": "queued",
+    "caps": 0
+  },
+  {
+    "id": "rl-slate-gallery",
+    "learnerWins": 37,
+    "teacherWins": 39,
+    "runs": 48,
+    "teacher": "queued",
+    "caps": 0
+  },
+  {
+    "id": "rl-breakthrough-cave5",
+    "learnerWins": 8,
+    "teacherWins": 8,
+    "runs": 8,
+    "teacher": "full",
+    "caps": 0
+  },
+  {
+    "id": "rl-breakthrough-ford-heal08",
+    "learnerWins": 8,
+    "teacherWins": 8,
+    "runs": 8,
+    "teacher": "full",
+    "caps": 0
+  },
+  {
+    "id": "rl-bellmarket-courts",
+    "learnerWins": 32,
+    "teacherWins": 28,
+    "runs": 32,
+    "teacher": "classic",
+    "caps": 0
+  },
+  {
+    "id": "rl-thorn-verge",
+    "learnerWins": 72,
+    "teacherWins": 68,
+    "runs": 72,
+    "teacher": "classic",
+    "caps": 0
+  },
+  {
+    "id": "rl-lair-outworks",
+    "learnerWins": 18,
+    "teacherWins": 51,
+    "runs": 72,
+    "teacher": "full",
+    "caps": 0
+  },
+  {
+    "id": "rl-vault-rally",
+    "learnerWins": 5,
+    "teacherWins": 4,
+    "runs": 8,
+    "teacher": "classic",
+    "caps": 0
+  }
+]

@@ -1,0 +1,2266 @@
+[
+  {
+    "config": {
+      "campaign": "rl-scree-relay-v8-switch",
+      "seed": 56181201,
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "pilot": "hour8",
+    "firstPhase": [
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 7,
+            "row": 4
+          },
+          {
+            "col": 6,
+            "row": 5
+          },
+          {
+            "col": 6,
+            "row": 6
+          },
+          {
+            "col": 6,
+            "row": 7
+          },
+          {
+            "col": 7,
+            "row": 7
+          },
+          {
+            "col": 8,
+            "row": 7
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 8,
+          "row": 7
+        },
+        "unit": "u2"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      }
+    ],
+    "captainMoves": [
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 2,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 3,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 2,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 4,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 4,
+          "row": 4
+        },
+        "unit": "u1"
+      }
+    ]
+  },
+  {
+    "config": {
+      "campaign": "rl-scree-relay-v8-switch",
+      "seed": 56181202,
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "pilot": "hour8",
+    "firstPhase": [
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 7,
+            "row": 4
+          },
+          {
+            "col": 6,
+            "row": 5
+          },
+          {
+            "col": 6,
+            "row": 6
+          },
+          {
+            "col": 6,
+            "row": 7
+          },
+          {
+            "col": 7,
+            "row": 7
+          },
+          {
+            "col": 8,
+            "row": 7
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 8,
+          "row": 7
+        },
+        "unit": "u2"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      }
+    ],
+    "captainMoves": [
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 2,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 3,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 2,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 4,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 4,
+          "row": 4
+        },
+        "unit": "u1"
+      }
+    ]
+  },
+  {
+    "config": {
+      "campaign": "rl-scree-relay-v8-switch",
+      "seed": 56181203,
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "pilot": "hour8",
+    "firstPhase": [
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 7,
+            "row": 4
+          },
+          {
+            "col": 6,
+            "row": 5
+          },
+          {
+            "col": 6,
+            "row": 6
+          },
+          {
+            "col": 6,
+            "row": 7
+          },
+          {
+            "col": 7,
+            "row": 7
+          },
+          {
+            "col": 8,
+            "row": 7
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 8,
+          "row": 7
+        },
+        "unit": "u2"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      }
+    ],
+    "captainMoves": [
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 2,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 3,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 2,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 4,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 4,
+          "row": 4
+        },
+        "unit": "u1"
+      }
+    ]
+  },
+  {
+    "config": {
+      "campaign": "rl-scree-relay-v8-stay",
+      "seed": 56181201,
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "pilot": "hour8",
+    "firstPhase": [
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 7,
+            "row": 4
+          },
+          {
+            "col": 6,
+            "row": 5
+          },
+          {
+            "col": 6,
+            "row": 6
+          },
+          {
+            "col": 6,
+            "row": 7
+          },
+          {
+            "col": 7,
+            "row": 7
+          },
+          {
+            "col": 8,
+            "row": 7
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 8,
+          "row": 7
+        },
+        "unit": "u2"
+      },
+      {
+        "kind": "attack",
+        "target": "u21",
+        "unit": "u2",
+        "weapon": "sling"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      }
+    ],
+    "captainMoves": [
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 2,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 3,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 2,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 3,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      }
+    ]
+  },
+  {
+    "config": {
+      "campaign": "rl-scree-relay-v8-stay",
+      "seed": 56181202,
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "pilot": "hour8",
+    "firstPhase": [
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 7,
+            "row": 4
+          },
+          {
+            "col": 6,
+            "row": 5
+          },
+          {
+            "col": 6,
+            "row": 6
+          },
+          {
+            "col": 6,
+            "row": 7
+          },
+          {
+            "col": 7,
+            "row": 7
+          },
+          {
+            "col": 8,
+            "row": 7
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 8,
+          "row": 7
+        },
+        "unit": "u2"
+      },
+      {
+        "kind": "attack",
+        "target": "u21",
+        "unit": "u2",
+        "weapon": "sling"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      }
+    ],
+    "captainMoves": [
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 2,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 3,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 2,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 3,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      }
+    ]
+  },
+  {
+    "config": {
+      "campaign": "rl-scree-relay-v8-stay",
+      "seed": 56181203,
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "queued"
+      }
+    },
+    "pilot": "hour8",
+    "firstPhase": [
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 7,
+            "row": 4
+          },
+          {
+            "col": 6,
+            "row": 5
+          },
+          {
+            "col": 6,
+            "row": 6
+          },
+          {
+            "col": 6,
+            "row": 7
+          },
+          {
+            "col": 7,
+            "row": 7
+          },
+          {
+            "col": 8,
+            "row": 7
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 8,
+          "row": 7
+        },
+        "unit": "u2"
+      },
+      {
+        "kind": "attack",
+        "target": "u21",
+        "unit": "u2",
+        "weapon": "sling"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      }
+    ],
+    "captainMoves": [
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 2,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 3,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 2,
+            "row": 4
+          },
+          {
+            "col": 3,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 3,
+          "row": 4
+        },
+        "unit": "u1"
+      },
+      {
+        "kind": "move",
+        "path": [
+          {
+            "col": 3,
+            "row": 4
+          },
+          {
+            "col": 2,
+            "row": 4
+          }
+        ],
+        "requested": null,
+        "tile": {
+          "col": 2,
+          "row": 4
+        },
+        "unit": "u1"
+      }
+    ]
+  },
+  {
+    "config": {
+      "campaign": "rl-scree-relay-v8-switch",
+      "seed": 56181201,
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      }
+    },
+    "pilot": "full",
+    "firstPhase": [
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u2",
+        "tile": {
+          "col": 9,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 9,
+            "row": 4
+          }
+        ]
+      },
+      {
+        "kind": "attack",
+        "unit": "u2",
+        "target": "u21",
+        "weapon": "sling"
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 6,
+          "row": 6
+        },
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 5
+          },
+          {
+            "col": 6,
+            "row": 6
+          }
+        ]
+      }
+    ],
+    "captainMoves": [
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 6,
+          "row": 6
+        },
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 5
+          },
+          {
+            "col": 6,
+            "row": 6
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 8,
+          "row": 7
+        },
+        "path": [
+          {
+            "col": 6,
+            "row": 6
+          },
+          {
+            "col": 6,
+            "row": 7
+          },
+          {
+            "col": 7,
+            "row": 7
+          },
+          {
+            "col": 8,
+            "row": 7
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 11,
+          "row": 7
+        },
+        "path": [
+          {
+            "col": 8,
+            "row": 7
+          },
+          {
+            "col": 9,
+            "row": 7
+          },
+          {
+            "col": 10,
+            "row": 7
+          },
+          {
+            "col": 11,
+            "row": 7
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 13,
+          "row": 5
+        },
+        "path": [
+          {
+            "col": 11,
+            "row": 7
+          },
+          {
+            "col": 12,
+            "row": 7
+          },
+          {
+            "col": 13,
+            "row": 6
+          },
+          {
+            "col": 13,
+            "row": 5
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 16,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 13,
+            "row": 5
+          },
+          {
+            "col": 14,
+            "row": 4
+          },
+          {
+            "col": 15,
+            "row": 4
+          },
+          {
+            "col": 16,
+            "row": 4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "config": {
+      "campaign": "rl-scree-relay-v8-switch",
+      "seed": 56181202,
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      }
+    },
+    "pilot": "full",
+    "firstPhase": [
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u2",
+        "tile": {
+          "col": 9,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 9,
+            "row": 4
+          }
+        ]
+      },
+      {
+        "kind": "attack",
+        "unit": "u2",
+        "target": "u21",
+        "weapon": "sling"
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 6,
+          "row": 6
+        },
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 5
+          },
+          {
+            "col": 6,
+            "row": 6
+          }
+        ]
+      }
+    ],
+    "captainMoves": [
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 6,
+          "row": 6
+        },
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 5
+          },
+          {
+            "col": 6,
+            "row": 6
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 8,
+          "row": 7
+        },
+        "path": [
+          {
+            "col": 6,
+            "row": 6
+          },
+          {
+            "col": 6,
+            "row": 7
+          },
+          {
+            "col": 7,
+            "row": 7
+          },
+          {
+            "col": 8,
+            "row": 7
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 11,
+          "row": 7
+        },
+        "path": [
+          {
+            "col": 8,
+            "row": 7
+          },
+          {
+            "col": 9,
+            "row": 7
+          },
+          {
+            "col": 10,
+            "row": 7
+          },
+          {
+            "col": 11,
+            "row": 7
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 13,
+          "row": 5
+        },
+        "path": [
+          {
+            "col": 11,
+            "row": 7
+          },
+          {
+            "col": 12,
+            "row": 7
+          },
+          {
+            "col": 13,
+            "row": 6
+          },
+          {
+            "col": 13,
+            "row": 5
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 16,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 13,
+            "row": 5
+          },
+          {
+            "col": 14,
+            "row": 4
+          },
+          {
+            "col": 15,
+            "row": 4
+          },
+          {
+            "col": 16,
+            "row": 4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "config": {
+      "campaign": "rl-scree-relay-v8-switch",
+      "seed": 56181203,
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      }
+    },
+    "pilot": "full",
+    "firstPhase": [
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u2",
+        "tile": {
+          "col": 9,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 9,
+            "row": 4
+          }
+        ]
+      },
+      {
+        "kind": "attack",
+        "unit": "u2",
+        "target": "u21",
+        "weapon": "sling"
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 6,
+          "row": 6
+        },
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 5
+          },
+          {
+            "col": 6,
+            "row": 6
+          }
+        ]
+      }
+    ],
+    "captainMoves": [
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 6,
+          "row": 6
+        },
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 5
+          },
+          {
+            "col": 6,
+            "row": 6
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 8,
+          "row": 7
+        },
+        "path": [
+          {
+            "col": 6,
+            "row": 6
+          },
+          {
+            "col": 6,
+            "row": 7
+          },
+          {
+            "col": 7,
+            "row": 7
+          },
+          {
+            "col": 8,
+            "row": 7
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 11,
+          "row": 7
+        },
+        "path": [
+          {
+            "col": 8,
+            "row": 7
+          },
+          {
+            "col": 9,
+            "row": 7
+          },
+          {
+            "col": 10,
+            "row": 7
+          },
+          {
+            "col": 11,
+            "row": 7
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 14,
+          "row": 6
+        },
+        "path": [
+          {
+            "col": 11,
+            "row": 7
+          },
+          {
+            "col": 12,
+            "row": 7
+          },
+          {
+            "col": 13,
+            "row": 6
+          },
+          {
+            "col": 14,
+            "row": 6
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 16,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 14,
+            "row": 6
+          },
+          {
+            "col": 14,
+            "row": 5
+          },
+          {
+            "col": 15,
+            "row": 4
+          },
+          {
+            "col": 16,
+            "row": 4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "config": {
+      "campaign": "rl-scree-relay-v8-stay",
+      "seed": 56181201,
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      }
+    },
+    "pilot": "full",
+    "firstPhase": [
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 7,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 4
+          },
+          {
+            "col": 6,
+            "row": 4
+          },
+          {
+            "col": 7,
+            "row": 4
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u2",
+        "tile": {
+          "col": 8,
+          "row": 3
+        },
+        "path": [
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 8,
+            "row": 3
+          }
+        ]
+      }
+    ],
+    "captainMoves": [
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 7,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 4
+          },
+          {
+            "col": 6,
+            "row": 4
+          },
+          {
+            "col": 7,
+            "row": 4
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 10,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 7,
+            "row": 4
+          },
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 9,
+            "row": 4
+          },
+          {
+            "col": 10,
+            "row": 4
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 13,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 10,
+            "row": 4
+          },
+          {
+            "col": 11,
+            "row": 4
+          },
+          {
+            "col": 12,
+            "row": 4
+          },
+          {
+            "col": 13,
+            "row": 4
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 16,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 13,
+            "row": 4
+          },
+          {
+            "col": 14,
+            "row": 4
+          },
+          {
+            "col": 15,
+            "row": 4
+          },
+          {
+            "col": 16,
+            "row": 4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "config": {
+      "campaign": "rl-scree-relay-v8-stay",
+      "seed": 56181202,
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      }
+    },
+    "pilot": "full",
+    "firstPhase": [
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 6,
+          "row": 3
+        },
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 3
+          },
+          {
+            "col": 6,
+            "row": 3
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u2",
+        "tile": {
+          "col": 7,
+          "row": 3
+        },
+        "path": [
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 7,
+            "row": 3
+          }
+        ]
+      }
+    ],
+    "captainMoves": [
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 6,
+          "row": 3
+        },
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 3
+          },
+          {
+            "col": 6,
+            "row": 3
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 9,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 6,
+            "row": 3
+          },
+          {
+            "col": 7,
+            "row": 4
+          },
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 9,
+            "row": 4
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 12,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 9,
+            "row": 4
+          },
+          {
+            "col": 10,
+            "row": 4
+          },
+          {
+            "col": 11,
+            "row": 4
+          },
+          {
+            "col": 12,
+            "row": 4
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 15,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 12,
+            "row": 4
+          },
+          {
+            "col": 13,
+            "row": 4
+          },
+          {
+            "col": 14,
+            "row": 4
+          },
+          {
+            "col": 15,
+            "row": 4
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 16,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 15,
+            "row": 4
+          },
+          {
+            "col": 16,
+            "row": 4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "config": {
+      "campaign": "rl-scree-relay-v8-stay",
+      "seed": 56181203,
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "maxRounds": 100,
+      "recruitLimit": 0,
+      "playerBlocks": {
+        "recruiter": "situational",
+        "campaign": "mission",
+        "planner": "full"
+      }
+    },
+    "pilot": "full",
+    "firstPhase": [
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 6,
+          "row": 3
+        },
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 3
+          },
+          {
+            "col": 6,
+            "row": 3
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u2",
+        "tile": {
+          "col": 7,
+          "row": 3
+        },
+        "path": [
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 7,
+            "row": 3
+          }
+        ]
+      }
+    ],
+    "captainMoves": [
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 6,
+          "row": 3
+        },
+        "path": [
+          {
+            "col": 4,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 4
+          },
+          {
+            "col": 5,
+            "row": 3
+          },
+          {
+            "col": 6,
+            "row": 3
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 9,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 6,
+            "row": 3
+          },
+          {
+            "col": 7,
+            "row": 4
+          },
+          {
+            "col": 8,
+            "row": 4
+          },
+          {
+            "col": 9,
+            "row": 4
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 12,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 9,
+            "row": 4
+          },
+          {
+            "col": 10,
+            "row": 4
+          },
+          {
+            "col": 11,
+            "row": 4
+          },
+          {
+            "col": 12,
+            "row": 4
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 15,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 12,
+            "row": 4
+          },
+          {
+            "col": 13,
+            "row": 4
+          },
+          {
+            "col": 14,
+            "row": 4
+          },
+          {
+            "col": 15,
+            "row": 4
+          }
+        ]
+      },
+      {
+        "kind": "move",
+        "requested": null,
+        "unit": "u1",
+        "tile": {
+          "col": 16,
+          "row": 4
+        },
+        "path": [
+          {
+            "col": 15,
+            "row": 4
+          },
+          {
+            "col": 16,
+            "row": 4
+          }
+        ]
+      }
+    ]
+  }
+]

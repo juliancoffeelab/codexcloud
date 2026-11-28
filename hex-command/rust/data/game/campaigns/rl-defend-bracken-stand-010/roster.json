@@ -1,0 +1,265 @@
+{
+  "visionGroups": [
+    {
+      "id": "player",
+      "sight": {
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": []
+      },
+      "explored": []
+    },
+    {
+      "id": "enemy",
+      "sight": {
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": [
+          "fog"
+        ]
+      },
+      "explored": []
+    },
+    {
+      "id": "player-fog-player",
+      "sight": {
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": []
+      },
+      "explored": []
+    },
+    {
+      "id": "player-fog-enemy",
+      "sight": {
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": [
+          "fog"
+        ]
+      },
+      "explored": []
+    },
+    {
+      "id": "both-fog-player",
+      "sight": {
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": []
+      },
+      "explored": []
+    },
+    {
+      "id": "both-fog-enemy",
+      "sight": {
+        "unlimited": true,
+        "sightModifiers": {
+          "lit": 0,
+          "unlit": 0,
+          "darkness": 0
+        },
+        "penetrates": []
+      },
+      "explored": []
+    }
+  ],
+  "factions": [
+    {
+      "id": "player",
+      "phase": "player",
+      "controller": {
+        "kind": "human"
+      },
+      "palette": "player",
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "hp": "full",
+          "id": "u1",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "role": "leader",
+          "tile": {
+            "col": 2,
+            "row": 4
+          },
+          "type": "grovewarden"
+        },
+        {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": "warden",
+          "experience": 0,
+          "hp": "full",
+          "id": "u2",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "role": null,
+          "tile": {
+            "col": 5,
+            "row": 4
+          },
+          "type": "briarweaver"
+        },
+        {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "hp": "full",
+          "id": "u3",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "role": null,
+          "tile": {
+            "col": 5,
+            "row": 5
+          },
+          "type": "treant"
+        },
+        {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "hp": "full",
+          "id": "u4",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "role": null,
+          "tile": {
+            "col": 3,
+            "row": 3
+          },
+          "type": "slinger"
+        },
+        {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "hp": "full",
+          "id": "u5",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "role": null,
+          "tile": {
+            "col": 4,
+            "row": 1
+          },
+          "type": "wolf"
+        }
+      ],
+      "relations": {
+        "enemy": "hostile",
+        "player": "allied"
+      },
+      "visionGroup": "player",
+      "name": null,
+      "transfer": null
+    },
+    {
+      "id": "enemy",
+      "phase": "ai",
+      "controller": {
+        "kind": "ai",
+        "policy": null
+      },
+      "palette": "enemy",
+      "gold": 0,
+      "recruits": [],
+      "units": [
+        {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "hp": "full",
+          "id": "u6",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "role": null,
+          "tile": {
+            "col": 8,
+            "row": 4
+          },
+          "type": "bonearcher"
+        },
+        {
+          "aiGroup": null,
+          "attackSpent": false,
+          "character": null,
+          "experience": 0,
+          "hp": "full",
+          "id": "u7",
+          "items": [],
+          "moved": false,
+          "perceptionEffects": [],
+          "rebuilding": null,
+          "retreating": null,
+          "role": null,
+          "tile": {
+            "col": 8,
+            "row": 1
+          },
+          "type": "skeletal-hound"
+        }
+      ],
+      "relations": {
+        "player": "hostile",
+        "enemy": "allied"
+      },
+      "visionGroup": "enemy",
+      "name": null,
+      "transfer": null
+    }
+  ],
+  "arrivals": [],
+  "round": 1,
+  "turn": "player",
+  "log": [],
+  "combatRng": 1
+}

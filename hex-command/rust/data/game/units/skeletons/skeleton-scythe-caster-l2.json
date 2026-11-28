@@ -42,10 +42,11 @@
   "description": "A fragile skeletal vampire that restores its own life by draining foes with soul magic and its scythe.",
   "level": 2,
   "family": "skeleton-impact-caster",
-  "advancesTo": ["skeleton-scythe-caster-l3"],
+  "advancesTo": [
+    "skeleton-scythe-caster-l3"
+  ],
   "experienceNeeded": 18,
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

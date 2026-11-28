@@ -86,10 +86,10 @@ def discover_aliases(start):
 aliases={}
 for key,i in entries.items():
  aliases[key]=discover_aliases(i)
- if key in ['Save39', 'Save40', 'Save41', 'Save42', 'Save43', 'Save44', 'Save45', 'Save46', 'Save47', 'Save48', 'Save49', 'Save50', 'Save51','Save52']:
+ if key in ['Save39', 'Save40', 'Save41', 'Save42', 'Save43', 'Save44', 'Save45', 'Save46', 'Save47', 'Save48', 'Save49', 'Save50', 'Save51','Save52','Save53']:
   for j,tag,_ in union_tags(i):
    for a,k in discover_aliases(j).items():aliases[key][tag.lower() if a=='t' else tag.lower()+'_'+a]=k
- if key in ['Save49','Save50','Save51','Save52']:
+ if key in ['Save49','Save50','Save51','Save52','Save53']:
   aliases[key]['current_changes_item']=aliases[key]['current_changes']
  if key=='Fragments':
   aliases[key].update({field(n):p['type'] for n,p in shapes[i]['properties'].items()})
@@ -180,7 +180,7 @@ for n,(c,i) in enumerate(sorted(reps.items())):C.append(('let rec 'if n==0 else 
 for c,i in sorted(reps.items()):
  C.extend(['let read_'+names[c]+' value : '+names[c]+' =','  require (Migration_reader.matches value '+str(i)+') '+json.dumps('Invalid frozen '+names[c])+';','  decode_'+names[c]+' value'])
 for key,i in entries.items():
- if key in ['Save49','Save50','Save51','Save52','History4','History5']:continue
+ if key in ['Save49','Save50','Save51','Save52','Save53','History4','History5']:continue
  mod=module_name(key) if key!='Fragments' else 'Fragments_document';C.extend(['\nmodule '+mod+' = struct','  let of_json value : Historical_types.'+module_name(key)+'.t =','    let _ = Migration_reader.read value '+json.dumps(key)+' in','    decode_'+name(i)+' value','  let to_json (value : Historical_types.'+module_name(key)+'.t) = encode_'+name(i)+' value','end'])
 # Direct fragment APIs so no JSON survives a validated fixture boundary.
 frag=shapes[entries['Fragments']]['properties']
@@ -221,6 +221,7 @@ text_visit(entries['History5'])
 text_visit(entries['Save50'])
 text_visit(entries['Save51'])
 text_visit(entries['Save52'])
+text_visit(entries['Save53'])
 js_text=set(seen_text)
 def text_call(i,v):return 'host_'+name(i)+' ('+v+')'
 def text_body(i):
@@ -271,12 +272,12 @@ for n,c in enumerate(sorted(js_text)):
  body=encode_body(i).replace('encode_', 'js_encode_').replace('map_to_json ', 'js_map_to_json ').replace('wire_to_json ', 'js_wire_to_json ')
  if shapes[i]['kind']=='string':body='Js.Json.string value'
  C.append(('let rec ' if n==0 else 'and ')+'js_encode_'+names[c]+' (value : '+names[c]+') : Js.Json.t = '+body)
-for key in ['Save49', 'Save50', 'Save51', 'Save52', 'History4', 'History5']:
+for key in ['Save49', 'Save50', 'Save51', 'Save52', 'Save53', 'History4', 'History5']:
  mod=module_name(key)
  prefix='' if key=='History4' else 'js_'
  C.extend(['module '+mod+' = struct', 'let of_json value : Historical_types.'+mod+'.t = let _ = Migration_reader.read value "'+key+'" in '+prefix+'decode_'+name(entries[key])+' value', 'let to_json = '+prefix+'encode_'+name(entries[key])])
  if key in ['Save49', 'History4']: C.append('let of_legacy = host_'+name(entries[key]))
- if key in ['Save49','Save50','Save51','Save52']:
+ if key in ['Save49','Save50','Save51','Save52','Save53']:
   for alias in ['current_entry','turn_entry','current_state','current_changes_item']:
    C.append('let '+alias+'_to_json = js_encode_'+name(aliases[key][alias]))
    C.append('let '+alias+'_of_json value = require (Migration_reader.matches value '+str(aliases[key][alias])+') "Invalid frozen state or change"; js_decode_'+name(aliases[key][alias])+' value')
@@ -290,7 +291,7 @@ for key,i in entries.items():
  mod=module_name(key) if key!='Fragments' else 'Fragments_document'
  extras=[]
  if key in ['Save49','History4']: extras.append('  val of_legacy : Historical_types.'+mod+'.t -> Historical_types.'+mod+'.t')
- if key in ['Save49','Save50','Save51','Save52']:
+ if key in ['Save49','Save50','Save51','Save52','Save53']:
   for alias in ['current_entry','turn_entry','current_state','current_changes_item']:
    extras.append('  val '+alias+'_to_json : Historical_types.'+mod+'.'+alias+' -> Js.Json.t')
    extras.append('  val '+alias+'_of_json : Js.Json.t -> Historical_types.'+mod+'.'+alias)

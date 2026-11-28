@@ -1240,6 +1240,45 @@ impl SearchGuidance {
     pub fn progress(&self, tile: usize) -> std::cmp::Ordering {
         self.routes[tile].cmp(&self.origin_cost)
     }
+    /// Distance-scaled patrol sampling weight: unbiased (`1:1:1`) when close
+    /// (`origin_cost <= 4`), ramping linearly to strongly directional (`10:2:1`)
+    /// at `origin_cost >= 10`.
+    #[inline]
+    pub fn weight(&self, tile: usize) -> f64 {
+        let t = (f64::from(self.origin_cost.saturating_sub(4)) / 6.0).clamp(0.0, 1.0);
+        match self.progress(tile) {
+            std::cmp::Ordering::Less => 1.0 + 9.0 * t,
+            std::cmp::Ordering::Equal => 1.0 + 1.0 * t,
+            std::cmp::Ordering::Greater => 1.0,
+        }
+    }
+}
+
+#[cfg(test)]
+mod search_guidance_tests {
+    use super::SearchGuidance;
+    use std::rc::Rc;
+
+    #[test]
+    fn weight_is_unbiased_when_close_and_directional_when_far() {
+        let close = SearchGuidance {
+            routes: Rc::new(vec![3, 4, 5]),
+            origin_cost: 4,
+        };
+        assert_eq!((close.weight(0), close.weight(1), close.weight(2)), (1.0, 1.0, 1.0));
+
+        let mid = SearchGuidance {
+            routes: Rc::new(vec![6, 7, 8]),
+            origin_cost: 7,
+        };
+        assert_eq!((mid.weight(0), mid.weight(1), mid.weight(2)), (5.5, 1.5, 1.0));
+
+        let far = SearchGuidance {
+            routes: Rc::new(vec![11, 12, 13]),
+            origin_cost: 12,
+        };
+        assert_eq!((far.weight(0), far.weight(1), far.weight(2)), (10.0, 2.0, 1.0));
+    }
 }
 
 /// Authored battle/campaign observations, without AI decisions or mutable state.

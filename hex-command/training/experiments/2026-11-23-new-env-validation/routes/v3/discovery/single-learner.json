@@ -1,0 +1,1 @@
+[{"campaign": "rl-scree-relay-v3-switch", "seed": 56180101, "diplomacy": "unrestricted", "objective": "authored", "player": "balanced", "enemy": "classic", "playerBlocks": {"recruiter": "situational", "campaign": "mission", "planner": "queued"}, "maxRounds": 100, "recruitLimit": 0}]

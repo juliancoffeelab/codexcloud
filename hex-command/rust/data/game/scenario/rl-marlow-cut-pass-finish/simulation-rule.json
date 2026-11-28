@@ -1,0 +1,19 @@
+{
+  "id": "rl-marlow-cut-pass-finish",
+  "variants": [
+    {
+      "map": "rl-marlow-cut-pass-finish",
+      "forces": {
+        "kind": "scenario"
+      },
+      "mapRevision": 1
+    }
+  ],
+  "territory": [
+    {
+      "col": 4,
+      "row": 2
+    }
+  ],
+  "holdTurns": 6
+}

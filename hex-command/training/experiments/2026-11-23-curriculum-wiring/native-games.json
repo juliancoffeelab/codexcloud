@@ -1,0 +1,654 @@
+[
+  {
+    "config": {
+      "seed": 493040001,
+      "armies": {
+        "player": "human",
+        "enemy": "skeletons"
+      },
+      "landscape": "rl-marlow-cut-pass-finish",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "first": "player",
+      "maxRounds": 30,
+      "recruitLimit": 0,
+      "objective": "territory"
+    },
+    "teacher": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "result": {
+      "reason": "leader",
+      "rounds": 3,
+      "success": true,
+      "truncated": false,
+      "winner": "playerVictory"
+    }
+  },
+  {
+    "config": {
+      "seed": 493040002,
+      "armies": {
+        "player": "human",
+        "enemy": "skeletons"
+      },
+      "landscape": "rl-marlow-cut-pass-finish",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "first": "player",
+      "maxRounds": 30,
+      "recruitLimit": 0,
+      "objective": "territory"
+    },
+    "teacher": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "result": {
+      "reason": "leader",
+      "rounds": 2,
+      "success": true,
+      "truncated": false,
+      "winner": "playerVictory"
+    }
+  },
+  {
+    "config": {
+      "seed": 493040001,
+      "armies": {
+        "player": "human",
+        "enemy": "skeletons"
+      },
+      "landscape": "rl-marlow-cut-pass-interrupt",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "first": "player",
+      "maxRounds": 30,
+      "recruitLimit": 0,
+      "objective": "territory"
+    },
+    "teacher": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "result": {
+      "reason": "territory",
+      "rounds": 8,
+      "success": true,
+      "truncated": false,
+      "winner": "playerVictory"
+    }
+  },
+  {
+    "config": {
+      "seed": 493040002,
+      "armies": {
+        "player": "human",
+        "enemy": "skeletons"
+      },
+      "landscape": "rl-marlow-cut-pass-interrupt",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "first": "player",
+      "maxRounds": 30,
+      "recruitLimit": 0,
+      "objective": "territory"
+    },
+    "teacher": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "result": {
+      "reason": "territory",
+      "rounds": 8,
+      "success": true,
+      "truncated": false,
+      "winner": "playerVictory"
+    }
+  },
+  {
+    "config": {
+      "seed": 493040001,
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "predictor",
+      "playerBlocks": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 493040002,
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "predictor",
+      "playerBlocks": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 493040001,
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "playerBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 493040002,
+      "campaign": "rl-ashbank-relay-fork-vigil",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "playerBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 493040001,
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "predictor",
+      "playerBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 493040002,
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "predictor",
+      "playerBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 493040001,
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "playerBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "predictor",
+      "campaign": "mission",
+      "planner": "full"
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 493040002,
+      "campaign": "rl-ashbank-relay-fork-vigil-both-fog",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "playerBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "predictor",
+      "campaign": "mission",
+      "planner": "full"
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-both-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 493040001,
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "playerBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 493040002,
+      "campaign": "rl-ashbank-relay-fork-vigil-player-fog",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "predictor",
+      "enemyBlocks": {
+        "recruiter": "predictor",
+        "campaign": "mission",
+        "planner": "full"
+      },
+      "playerBlocks": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "balanced",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-ashbank-relay-fork-vigil-player-fog",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Ashbank held and the eastern crossing secured.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 493040001,
+      "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-hollowbank-extraction-crossfire-late-guard",
+          "round": 13,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Mara and Tavin both reached safety.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 493040002,
+      "campaign": "rl-hollowbank-extraction-crossfire-late-guard",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-hollowbank-extraction-crossfire-late-guard",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Mara and Tavin both reached safety.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 493040001,
+      "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-hollowbank-extraction-crossfire-nearside",
+          "round": 11,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Mara and Tavin both reached safety.",
+      "success": true,
+      "truncated": false
+    }
+  },
+  {
+    "config": {
+      "seed": 493040002,
+      "campaign": "rl-hollowbank-extraction-crossfire-nearside",
+      "diplomacy": "unrestricted",
+      "objective": "authored",
+      "player": "balanced",
+      "enemy": "classic",
+      "playerBlocks": {
+        "recruiter": "classic",
+        "campaign": "mission",
+        "planner": "classic"
+      },
+      "maxRounds": 100,
+      "recruitLimit": 0
+    },
+    "teacher": {
+      "recruiter": "classic",
+      "campaign": "mission",
+      "planner": "classic"
+    },
+    "result": {
+      "failure": null,
+      "missions": [
+        {
+          "id": "rl-hollowbank-extraction-crossfire-nearside",
+          "round": 13,
+          "winner": "playerVictory"
+        }
+      ],
+      "outcome": "Mara and Tavin both reached safety.",
+      "success": true,
+      "truncated": false
+    }
+  }
+]

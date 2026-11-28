@@ -1,0 +1,111 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "reach",
+      "when": {
+        "stand": {
+          "tile": {
+            "hex": {
+              "col": 17,
+              "row": 0
+            }
+          },
+          "through": true,
+          "character": "garrison",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "victory": "The route is open."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Bring the captain to the marked exit",
+        "intent": {
+          "goTo": {
+            "tile": {
+              "hex": {
+                "col": 17,
+                "row": 0
+              }
+            },
+            "through": true,
+            "character": "garrison",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turn": 9
+      },
+      "actions": [
+        {
+          "defeat": "Deadline expired."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    },
+    {
+      "id": "lost",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Commander lost."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": false
+}

@@ -1,0 +1,12 @@
+{
+  "authorized": "User: another hour with the same environments, then compare before choosing checkpoint/environment changes",
+  "started": 1795454969.342442,
+  "resume_checkpoint": "rl/checkpoints/last-1795443784064085378",
+  "resume_elapsed": 32400.54316014299,
+  "additional_training_seconds": 3600,
+  "target_training_seconds": 36000.54316014299,
+  "same_workload_sha256": "82609de6c5353652c8bd9cb2a4c18ef9e37848b3ebefd34b09cb7b69e79f46bc",
+  "preserve": "policy, critic, optimizers, reference, sampler credits/mastery, RNG and next training seed",
+  "evaluation": "Same fixed 312 heldout +168 diagnostic +24 Lantern cases; add hour10 and compare with8/9; no model promotion",
+  "previous_finish": "phases/nine-hour-completed/finished.json"
+}

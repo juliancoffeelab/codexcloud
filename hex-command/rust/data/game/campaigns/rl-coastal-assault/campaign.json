@@ -1,0 +1,46 @@
+{
+  "tags": ["simulation"],
+  "id": "rl-coastal-assault",
+  "name": "Coastal Assault",
+  "tagline": "Coastal Assault",
+  "description": "Three broad battles with staged or alternative objectives, active opposition and veteran carryover.",
+  "shortDescription": "Training only.",
+  "race": "merfolk",
+  "leader": "tidekeeper",
+  "characters": [
+    {
+      "id": "player-leader",
+      "name": "player-leader"
+    },
+    {
+      "id": "enemy-leader",
+      "name": "enemy-leader"
+    },
+    {
+      "id": "harbor-pilot",
+      "name": "Harbor pilot"
+    },
+    {
+      "id": "south-captain",
+      "name": "South captain"
+    }
+  ],
+  "ending": [],
+  "stages": [
+    "stages/rl-coastal-assault-1/stage.json",
+    "stages/rl-coastal-assault-2/stage.json",
+    "stages/rl-coastal-assault-3/stage.json"
+  ],
+  "carryover": {
+    "goldLimit": 20,
+    "veteranLimit": 6,
+    "deploymentRadius": 3,
+    "weights": {
+      "hp": 1,
+      "damage": 2,
+      "healing": 5,
+      "level": 3,
+      "experience": 0.3333333333333333
+    }
+  }
+}

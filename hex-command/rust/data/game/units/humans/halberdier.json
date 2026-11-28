@@ -42,10 +42,11 @@
   "description": "A human polearm fighter who chooses piercing thrusts or chopping axe blows to suit the foe.",
   "level": 2,
   "family": "spearman",
-  "advancesTo": ["halberd-master"],
+  "advancesTo": [
+    "halberd-master"
+  ],
   "experienceNeeded": 18,
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

@@ -1,0 +1,184 @@
+[
+  {
+    "path": "rust/data/game/campaigns/rl-hollowbank-extraction-crossfire-late-guard/campaign.json",
+    "canonicalSha256": "d9f05c8d79ae560a5290eb2aefdc36a1a1be07a3c79839e4a7dfd44e1eb06bbc",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-hollowbank-extraction-crossfire-late-guard/story.json",
+    "canonicalSha256": "a0d721cf5c92aedefa47da69fb3989eb0d0f8769f0063d8bf2cb60fced25206e",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-hollowbank-extraction-crossfire-late-guard/roster.json",
+    "canonicalSha256": "ca9594d9a980efcc1b175a34bb36a140c65e1fbd25278101277bf88b16beae2d",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-hollowbank-extraction-crossfire-late-guard/scripts.json",
+    "canonicalSha256": "18ebeab32bbdb8d9fc9e2a13b2ffd78067e8b6966c6b9f5a054c9be13f28bf5a",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-hollowbank-extraction-crossfire-late-guard/stage.json",
+    "canonicalSha256": "8121fc0150b3ea97b625c15ea1277433649ae575ee929d0518a5024cabb3b398",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-hollowbank-extraction-crossfire-late-guard/map.json",
+    "canonicalSha256": "9f79626a997202dcb3d29fbbee484a878dce91e838b3ed331be3bedd3b9c5631",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-hollowbank-extraction-crossfire-nearside/campaign.json",
+    "canonicalSha256": "1a6733ce508e426f835ec203091611fab30f358c460544087fb85e6b435f8412",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-hollowbank-extraction-crossfire-nearside/story.json",
+    "canonicalSha256": "a0d721cf5c92aedefa47da69fb3989eb0d0f8769f0063d8bf2cb60fced25206e",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-hollowbank-extraction-crossfire-nearside/roster.json",
+    "canonicalSha256": "c54b2a7399882a51e4a1ca777e62463194b0abc866d9c29301324461a6694ff8",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-hollowbank-extraction-crossfire-nearside/scripts.json",
+    "canonicalSha256": "835d0e04ef55d684aa1d5b22405defb791ab64b1119b1fb1fc5931cae50effcb",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-hollowbank-extraction-crossfire-nearside/stage.json",
+    "canonicalSha256": "9c61054246aa61c8c85846819abeb4ca1b819c33e03de1cac4203951197407f3",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-hollowbank-extraction-crossfire-nearside/map.json",
+    "canonicalSha256": "49f6de6e05c27966cf1f45c7c32587a3828cddc488d40ebeed8c4a166edd1691",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil/campaign.json",
+    "canonicalSha256": "46392587ba95900d7bc4140b3c40de0dc1c671b53d602a40509f65d3c1b5aab0",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil/story.json",
+    "canonicalSha256": "3beef6ff2f4d9d9c370374507d9cd730b275c17ed38b2a1fe0f5280875ad04ea",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil/roster.json",
+    "canonicalSha256": "827255896038050ed16b61c72001a25023be81837fa8367010f8ea13ad6da440",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil/scripts.json",
+    "canonicalSha256": "dff210ae9a25ca21ba2e0f597a10ac733f195268cbe55164aec6f0a3e69160f1",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil/stage.json",
+    "canonicalSha256": "225dc5c64d7ec52327b7c54e78c959f992db98d6195555b885c93cf0bd31352d",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil/map.json",
+    "canonicalSha256": "fc2cc8b59750a200425e18c7c6db2105da8921eb9074f0c28c8228e6ab1d483d",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/campaign.json",
+    "canonicalSha256": "88651045696b1dc9beec1d0d6c90761793e6cfbe0e786ed8c1a68b1196b4d37b",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/story.json",
+    "canonicalSha256": "3beef6ff2f4d9d9c370374507d9cd730b275c17ed38b2a1fe0f5280875ad04ea",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/roster.json",
+    "canonicalSha256": "827255896038050ed16b61c72001a25023be81837fa8367010f8ea13ad6da440",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/scripts.json",
+    "canonicalSha256": "dff210ae9a25ca21ba2e0f597a10ac733f195268cbe55164aec6f0a3e69160f1",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/stage.json",
+    "canonicalSha256": "34103a2ca611f277e5d868fe6ad700187da02fcf6d99181ed1706574eaae913a",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/map.json",
+    "canonicalSha256": "cc442e34cc08b058ae8a4461bc3565ed687a9a03f46a61240d66fdbca9e6ce91",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/campaign.json",
+    "canonicalSha256": "591e02f217b9df834de364b23a724689beb16a50a5e1794e11e5fa40a43d793f",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/story.json",
+    "canonicalSha256": "3beef6ff2f4d9d9c370374507d9cd730b275c17ed38b2a1fe0f5280875ad04ea",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/roster.json",
+    "canonicalSha256": "4575e3e013c864f8bed97ed859cecdb4b9225a5e5c773eefcbeb627a80d3cfb5",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/scripts.json",
+    "canonicalSha256": "dff210ae9a25ca21ba2e0f597a10ac733f195268cbe55164aec6f0a3e69160f1",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/stage.json",
+    "canonicalSha256": "2042ef99a0f3b7907f9acdec61ac267a1b2eb6eca1ae801083209a78a318a4ee",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/map.json",
+    "canonicalSha256": "f9407d76b7ebbed599e0017287b0339ab49cd7621f8b9d8e789537b660e6ee12",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/scenario/rl-marlow-cut-pass-finish/roster.json",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/scenario/rl-marlow-cut-pass-finish/simulation-rule.json",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/scenario/rl-marlow-cut-pass-finish/scenario.json",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/scenario/rl-marlow-cut-pass-finish/map.json",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/scenario/rl-marlow-cut-pass-interrupt/roster.json",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/scenario/rl-marlow-cut-pass-interrupt/simulation-rule.json",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/scenario/rl-marlow-cut-pass-interrupt/scenario.json",
+    "matchesValidatedFixture": true
+  },
+  {
+    "path": "rust/data/game/scenario/rl-marlow-cut-pass-interrupt/map.json",
+    "matchesValidatedFixture": true
+  }
+]

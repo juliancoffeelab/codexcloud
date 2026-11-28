@@ -1,0 +1,461 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "rl-bone-march-1-all-villages",
+      "when": {
+        "all": [
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 6,
+                  "row": 3
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 4,
+                  "row": 6
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 19,
+                  "row": 6
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 4,
+                  "row": 11
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 19,
+                  "row": 11
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          },
+          {
+            "own": {
+              "tile": {
+                "hex": {
+                  "col": 7,
+                  "row": 15
+                }
+              },
+              "faction": "player",
+              "turns": null,
+              "when": null
+            }
+          }
+        ]
+      },
+      "actions": [],
+      "observer": null,
+      "remembers": false,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Hold all woodland villages",
+        "intent": {
+          "capture": [
+            {
+              "hex": {
+                "col": 6,
+                "row": 3
+              }
+            },
+            {
+              "hex": {
+                "col": 4,
+                "row": 6
+              }
+            },
+            {
+              "hex": {
+                "col": 19,
+                "row": 6
+              }
+            },
+            {
+              "hex": {
+                "col": 4,
+                "row": 11
+              }
+            },
+            {
+              "hex": {
+                "col": 19,
+                "row": 11
+              }
+            },
+            {
+              "hex": {
+                "col": 7,
+                "row": 15
+              }
+            }
+          ]
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "all": [
+            {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 6,
+                    "row": 3
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            },
+            {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 4,
+                    "row": 6
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            },
+            {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 19,
+                    "row": 6
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            },
+            {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 4,
+                    "row": 11
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            },
+            {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 19,
+                    "row": 11
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            },
+            {
+              "own": {
+                "tile": {
+                  "hex": {
+                    "col": 7,
+                    "row": 15
+                  }
+                },
+                "faction": "player",
+                "turns": null,
+                "when": null
+              }
+            }
+          ]
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-bone-march-1-commander-slain",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": "enemy-leader",
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-bone-march-1-commander-slain"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Slay the human garrison commander",
+        "intent": {
+          "defeat": {
+            "character": "enemy-leader",
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-bone-march-1-commander-slain"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-bone-march-1-fog-wave",
+      "when": {
+        "turn": 9
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 23,
+                "row": 12
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": [
+              "swordsman"
+            ]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-bone-march-1-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "rl-bone-march-1-commander-slain"
+          },
+          {
+            "all": [
+              {
+                "own": {
+                  "tile": {
+                    "hex": {
+                      "col": 6,
+                      "row": 3
+                    }
+                  },
+                  "faction": "player",
+                  "turns": null,
+                  "when": null
+                }
+              },
+              {
+                "own": {
+                  "tile": {
+                    "hex": {
+                      "col": 4,
+                      "row": 6
+                    }
+                  },
+                  "faction": "player",
+                  "turns": null,
+                  "when": null
+                }
+              },
+              {
+                "own": {
+                  "tile": {
+                    "hex": {
+                      "col": 19,
+                      "row": 6
+                    }
+                  },
+                  "faction": "player",
+                  "turns": null,
+                  "when": null
+                }
+              },
+              {
+                "own": {
+                  "tile": {
+                    "hex": {
+                      "col": 4,
+                      "row": 11
+                    }
+                  },
+                  "faction": "player",
+                  "turns": null,
+                  "when": null
+                }
+              },
+              {
+                "own": {
+                  "tile": {
+                    "hex": {
+                      "col": 19,
+                      "row": 11
+                    }
+                  },
+                  "faction": "player",
+                  "turns": null,
+                  "when": null
+                }
+              },
+              {
+                "own": {
+                  "tile": {
+                    "hex": {
+                      "col": 7,
+                      "row": 15
+                    }
+                  },
+                  "faction": "player",
+                  "turns": null,
+                  "when": null
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-bone-march-1-commander-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The necromancer fell."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "rl-bone-march-1-deadline",
+      "when": {
+        "turn": 56
+      },
+      "actions": [
+        {
+          "defeat": "The raid exceeded its 55-turn deadline."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

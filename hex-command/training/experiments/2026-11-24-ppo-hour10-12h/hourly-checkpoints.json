@@ -1,0 +1,93 @@
+[
+  {
+    "hour": 0,
+    "actual_seconds": 0,
+    "model_sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee",
+    "archive": "recovery/hour-00/planner.json.gz",
+    "source_folder": "warm-start"
+  },
+  {
+    "hour": 1,
+    "actual_seconds": 3690.7571609749866,
+    "model_sha256": "af7e53ecbdf9fae93b395aad5081a8b4f2c785d1fbee224ee2ec4f6e097ae9b5",
+    "archive": "recovery/hour-01/planner.json.gz",
+    "source_folder": "rl/checkpoints/update-00000288-1795484586406970077"
+  },
+  {
+    "hour": 2,
+    "actual_seconds": 7203.634608663997,
+    "model_sha256": "d46bf455dad12266fe2b51cc820b1ea7ce1280cadbac84928fd1ee9718912c6a",
+    "archive": "recovery/hour-02/planner.json.gz",
+    "source_folder": "rl/checkpoints/update-00000568-1795488099284737382"
+  },
+  {
+    "hour": 3,
+    "actual_seconds": 10898.52912798,
+    "model_sha256": "b0600b9b27f3b7e4463bccc35d223cd749e4445365b797ac0efadf3f79bef168",
+    "archive": "recovery/hour-03/planner.json.gz",
+    "source_folder": "rl/checkpoints/update-00000849-1795491794179678492"
+  },
+  {
+    "hour": 4,
+    "actual_seconds": 14430.477922004007,
+    "model_sha256": "dacb32162bd18bc165584e6c61fbb1701a421e06740d4ca635325a5e5defd3d8",
+    "archive": "recovery/hour-04/planner.json.gz",
+    "source_folder": "rl/checkpoints/update-00001128-1795495326129428692"
+  },
+  {
+    "hour": 5,
+    "actual_seconds": 18002.45957214199,
+    "model_sha256": "4124719052da829b579ea548aca72c839f859aa090721f9773aff2f3769a0337",
+    "archive": "recovery/hour-05/planner.json.gz",
+    "source_folder": "rl/checkpoints/update-00001397-1795498898109788426"
+  },
+  {
+    "hour": 6,
+    "actual_seconds": 21669.083543833985,
+    "model_sha256": "99e807b39dc6d8143f063aa2aaf5ab8bb6fdd6ab05b39a8e33653f1d23a6ea16",
+    "archive": "recovery/hour-06/planner.json.gz",
+    "source_folder": "rl/checkpoints/update-00001670-1795502564733756666"
+  },
+  {
+    "hour": 7,
+    "actual_seconds": 25236.57375158099,
+    "model_sha256": "06744c07b8384ca3c19906ac5b774bc951c1df76d3e56f477c60c5d4fd215e24",
+    "archive": "recovery/hour-07/planner.json.gz",
+    "source_folder": "rl/checkpoints/update-00001933-1795506132224455955"
+  },
+  {
+    "hour": 8,
+    "actual_seconds": 28803.307855647,
+    "model_sha256": "1ec4e7885479bf2a6f3011c113e79373e70959fd9c4845fdfd2a243b7d8de6e5",
+    "archive": "recovery/hour-08/planner.json.gz",
+    "source_folder": "rl/checkpoints/update-00002203-1795509698959911854"
+  },
+  {
+    "hour": 9,
+    "actual_seconds": 32490.66806157201,
+    "model_sha256": "8680c1dc57fadd35410a299fa73c5d09c8a6ee039d08579a25370ae33247e340",
+    "archive": "recovery/hour-09/planner.json.gz",
+    "source_folder": "rl/checkpoints/update-00002483-1795513386319391560"
+  },
+  {
+    "hour": 10,
+    "actual_seconds": 36053.31012577901,
+    "model_sha256": "f4e872cbe90bb7e0e4e430890689dd79c6e3a6caa51f42460281f1e00d683124",
+    "archive": "recovery/hour-10/planner.json.gz",
+    "source_folder": "rl/checkpoints/update-00002747-1795516948961844503"
+  },
+  {
+    "hour": 11,
+    "actual_seconds": 39619.57562186601,
+    "model_sha256": "b31ab6acb3457f1ab0dec56211752d37740c869a578265f0b31bea6a7f9c59bb",
+    "archive": "recovery/hour-11/planner.json.gz",
+    "source_folder": "rl/checkpoints/update-00003027-1795520515226074607"
+  },
+  {
+    "hour": 12,
+    "actual_seconds": 43200.194862209,
+    "model_sha256": "da26cde88dde2918a2f39eab5b8144ea4cfb98c8bdda7f6f61e2f7983c976bf2",
+    "archive": "recovery/hour-12/planner.json.gz",
+    "source_folder": "rl/checkpoints/last-1795524095845528690"
+  }
+]

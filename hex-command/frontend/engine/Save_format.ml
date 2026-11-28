@@ -1,6 +1,6 @@
 (* Current application wire types. These are maintained independently of the frozen
    migrations. JSON appears only at the persistence boundary and in opaque undo values. *)
-type version = [ `V52 ]
+type version = [ `V53 ]
 type history_version = [ `V5 ]
 
 (* Browser preferences deliberately describe saved UI choices, not every engine
@@ -79,9 +79,9 @@ type 'checkpoint save = Current of 'checkpoint current_save | Turn of 'checkpoin
 type t = Domain.saved_game save
 type history = { version : history_version; entries : turn_entry array }
 
-let version_tag : version = `V52
+let version_tag : version = `V53
 let history_version_tag : history_version = `V5
-let version = match version_tag with `V52 -> 52
+let version = match version_tag with `V53 -> 53
 let history_version = match history_version_tag with `V5 -> 5
 let invalid () = invalid_arg {js|Invalid current save envelope|js}
 let object_ value = match Js.Json.decodeObject value with Some x -> x | None -> invalid ()
@@ -140,7 +140,10 @@ let setup_of_json value : setup =
           || text (field value {js|campaign|js}) <> {js|mission|js}
         then invalid ();
         ({
-           planner = parse Enum.planner_kind_of_string (field value {js|planner|js});
+           planner =
+             (match parse Enum.planner_kind_of_string (field value {js|planner|js}) with
+             | Domain.Planner_kind.Learned -> invalid ()
+             | value -> value);
            recruiter = parse Enum.recruiter_kind_of_string (field value {js|recruiter|js});
            campaign = `Mission;
          }
@@ -191,6 +194,7 @@ let setup_to_json ({ first; enemy; player } : setup) =
            ]
           @ Option.fold ~none:[]
               ~some:(fun ({ planner; recruiter; campaign = `Mission } : blocks) ->
+                if planner = Domain.Planner_kind.Learned then invalid ();
                 [
                   ( {js|blocks|js},
                     json_object

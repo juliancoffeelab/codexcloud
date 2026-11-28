@@ -1,0 +1,1 @@
+[{"player": "full", "imitator": "full", "config": {"campaign": "rl-ashbank-relay-base", "objective": "authored", "seed": 571230001, "diplomacy": "unrestricted", "player": "balanced", "enemy": "classic", "playerBlocks": {"recruiter": "situational", "campaign": "mission", "planner": "full"}, "maxRounds": 100, "recruitLimit": 0}}]

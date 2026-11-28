@@ -107,19 +107,13 @@ pub(super) fn assign(
             let mut selected = None;
             let mut total_weight = 0.;
             // Short weighted random steps avoid a march to an exact hidden unit.
-            // The coarse Campaigner hint biases shorter/equal/longer routes 3:2:1.
+            // Distance-scaled Campaigner bias: unbiased when close, directional when far.
             // Weighted reservoir sampling allocates no destination list.
             for &(tile, cost) in reachable.iter() {
                 if tile == unit.tile || cost == 0 || cost > budget || destinations.contains(&tile) {
                     continue;
                 }
-                let weight = guidance
-                    .as_ref()
-                    .map_or(1., |hint| match hint.progress(tile) {
-                        std::cmp::Ordering::Less => 3.,
-                        std::cmp::Ordering::Equal => 2.,
-                        std::cmp::Ordering::Greater => 1.,
-                    });
+                let weight = guidance.as_ref().map_or(1., |hint| hint.weight(tile));
                 total_weight += weight;
                 if random.next() * total_weight < weight {
                     selected = Some(tile);

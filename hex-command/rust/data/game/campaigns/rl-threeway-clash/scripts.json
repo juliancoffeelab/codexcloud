@@ -1,0 +1,187 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "rl-threeway-clash-beasts-slain",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": "beasts-leader",
+              "role": null,
+              "side": null,
+              "faction": "beasts",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-threeway-clash-beasts-slain"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the beast wildkeeper",
+        "intent": {
+          "defeat": {
+            "character": "beasts-leader",
+            "role": null,
+            "side": null,
+            "faction": "beasts",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-threeway-clash-beasts-slain"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-threeway-clash-undead-slain",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": "undead-leader",
+              "role": null,
+              "side": null,
+              "faction": "undead",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-threeway-clash-undead-slain"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the skeleton necromancer",
+        "intent": {
+          "defeat": {
+            "character": "undead-leader",
+            "role": null,
+            "side": null,
+            "faction": "undead",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-threeway-clash-undead-slain"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-threeway-clash-victory",
+      "when": {
+        "all": [
+          {
+            "flag": "rl-threeway-clash-beasts-slain"
+          },
+          {
+            "flag": "rl-threeway-clash-undead-slain"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Victory in the three-way clash."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-threeway-clash-commander-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "Your commander fell."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "rl-threeway-clash-deadline",
+      "when": {
+        "turn": 56
+      },
+      "actions": [
+        {
+          "defeat": "The battle exceeded its 55-turn deadline."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

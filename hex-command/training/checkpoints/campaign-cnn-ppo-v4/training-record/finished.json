@@ -1,0 +1,196 @@
+{
+  "time": 1795255730.2309906,
+  "training": {
+    "elapsed": 32400.08203271901,
+    "updates": 5143,
+    "episodes": 10566,
+    "decisions": 1316608
+  },
+  "selection": {
+    "checkpoint": "checkpoints/last-1795252605675922037",
+    "reliability_key": [
+      0.19791666666666663,
+      0.4097222222222224,
+      -0.03361742424242422
+    ],
+    "strata": {
+      "arena/classic": {
+        "score": 0.6931818181818181,
+        "wins": 244,
+        "runs": 352,
+        "caps": 14
+      },
+      "arena/full": {
+        "score": 0.44034090909090906,
+        "wins": 155,
+        "runs": 352,
+        "caps": 29
+      },
+      "arena/predictor": {
+        "score": 0.4602272727272727,
+        "wins": 162,
+        "runs": 352,
+        "caps": 28
+      },
+      "campaign/classic": {
+        "score": 0.19791666666666663,
+        "wins": 19,
+        "runs": 96,
+        "caps": 0
+      },
+      "campaign/full": {
+        "score": 0.39583333333333337,
+        "wins": 38,
+        "runs": 96,
+        "caps": 0
+      },
+      "campaign/predictor": {
+        "score": 0.2708333333333333,
+        "wins": 26,
+        "runs": 96,
+        "caps": 0
+      }
+    },
+    "candidates": 6,
+    "validation_runs": 1344,
+    "test_seeds_used": false,
+    "criterion": "Worst stratum within 2.5 percentage points of best; then overall score and fewer caps; starting policy eligible"
+  },
+  "showcase": {
+    "pretrain_43m_start": {
+      "checkpoint": "initial-1795220205656123409",
+      "score": 0.3143749999999998,
+      "runs": 1314,
+      "wins": 477,
+      "caps": 179,
+      "strata": {
+        "arena/classic": {
+          "score": 0.638888888888889,
+          "wins": 184,
+          "runs": 288,
+          "caps": 17
+        },
+        "arena/full": {
+          "score": 0.3680555555555555,
+          "wins": 106,
+          "runs": 288,
+          "caps": 58
+        },
+        "arena/predictor": {
+          "score": 0.3993055555555555,
+          "wins": 115,
+          "runs": 288,
+          "caps": 58
+        },
+        "campaign/classic": {
+          "score": 0.24000000000000002,
+          "wins": 36,
+          "runs": 150,
+          "caps": 10
+        },
+        "campaign/full": {
+          "score": 0.16,
+          "wins": 24,
+          "runs": 150,
+          "caps": 18
+        },
+        "campaign/predictor": {
+          "score": 0.08,
+          "wins": 12,
+          "runs": 150,
+          "caps": 18
+        }
+      }
+    },
+    "selected": {
+      "checkpoint": "last-1795252605675922037",
+      "score": 0.2939120370370369,
+      "runs": 1314,
+      "wins": 449,
+      "caps": 240,
+      "strata": {
+        "arena/classic": {
+          "score": 0.6111111111111112,
+          "wins": 176,
+          "runs": 288,
+          "caps": 35
+        },
+        "arena/full": {
+          "score": 0.3576388888888889,
+          "wins": 103,
+          "runs": 288,
+          "caps": 66
+        },
+        "arena/predictor": {
+          "score": 0.3680555555555555,
+          "wins": 106,
+          "runs": 288,
+          "caps": 55
+        },
+        "campaign/classic": {
+          "score": 0.12666666666666668,
+          "wins": 19,
+          "runs": 150,
+          "caps": 36
+        },
+        "campaign/full": {
+          "score": 0.12000000000000001,
+          "wins": 18,
+          "runs": 150,
+          "caps": 36
+        },
+        "campaign/predictor": {
+          "score": 0.18,
+          "wins": 27,
+          "runs": 150,
+          "caps": 12
+        }
+      }
+    },
+    "last": {
+      "checkpoint": "last-1795252605675922037",
+      "score": 0.2939120370370369,
+      "runs": 1314,
+      "wins": 449,
+      "caps": 240,
+      "strata": {
+        "arena/classic": {
+          "score": 0.6111111111111112,
+          "wins": 176,
+          "runs": 288,
+          "caps": 35
+        },
+        "arena/full": {
+          "score": 0.3576388888888889,
+          "wins": 103,
+          "runs": 288,
+          "caps": 66
+        },
+        "arena/predictor": {
+          "score": 0.3680555555555555,
+          "wins": 106,
+          "runs": 288,
+          "caps": 55
+        },
+        "campaign/classic": {
+          "score": 0.12666666666666668,
+          "wins": 19,
+          "runs": 150,
+          "caps": 36
+        },
+        "campaign/full": {
+          "score": 0.12000000000000001,
+          "wins": 18,
+          "runs": 150,
+          "caps": 36
+        },
+        "campaign/predictor": {
+          "score": 0.18,
+          "wins": 27,
+          "runs": 150,
+          "caps": 12
+        }
+      }
+    }
+  }
+}

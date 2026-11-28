@@ -42,11 +42,14 @@
   "description": "A support mage who heals adjacent allies at turn start and fights with modest impact magic.",
   "level": 2,
   "family": "adept",
-  "advancesTo": ["high-healer"],
+  "advancesTo": [
+    "high-healer"
+  ],
   "experienceNeeded": 18,
-  "abilities": ["mending-4"],
+  "abilities": [
+    "mending-4"
+  ],
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

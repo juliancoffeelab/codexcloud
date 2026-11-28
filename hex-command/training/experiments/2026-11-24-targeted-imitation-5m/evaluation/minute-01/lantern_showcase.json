@@ -1,0 +1,139 @@
+{
+  "score": 0.0,
+  "weighted_caps": 0.5833333333333333,
+  "wins": 0,
+  "caps": 14,
+  "runs": 24,
+  "groups": [
+    {
+      "group": [
+        "campaign",
+        "lantern-road",
+        "authored",
+        "unrestricted",
+        "classic",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 0,
+      "defeats": 3,
+      "caps": 5,
+      "mass": 0.3333333333333333,
+      "stages": {
+        "lantern-ferry": {
+          "entered": 8,
+          "wins": 2,
+          "defeats": 1,
+          "caps": 5,
+          "rounds": [
+            19,
+            100,
+            100,
+            100,
+            100,
+            19,
+            100,
+            14
+          ]
+        },
+        "lantern-villages": {
+          "entered": 2,
+          "wins": 0,
+          "defeats": 2,
+          "caps": 0,
+          "rounds": [
+            11,
+            31
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "lantern-road",
+        "authored",
+        "unrestricted",
+        "predictor",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 0,
+      "defeats": 1,
+      "caps": 7,
+      "mass": 0.3333333333333333,
+      "stages": {
+        "lantern-ferry": {
+          "entered": 8,
+          "wins": 1,
+          "defeats": 0,
+          "caps": 7,
+          "rounds": [
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            100,
+            18
+          ]
+        },
+        "lantern-villages": {
+          "entered": 1,
+          "wins": 0,
+          "defeats": 1,
+          "caps": 0,
+          "rounds": [
+            31
+          ]
+        }
+      }
+    },
+    {
+      "group": [
+        "campaign",
+        "lantern-road",
+        "authored",
+        "unrestricted",
+        "full",
+        "situational"
+      ],
+      "runs": 8,
+      "wins": 0,
+      "defeats": 6,
+      "caps": 2,
+      "mass": 0.3333333333333333,
+      "stages": {
+        "lantern-ferry": {
+          "entered": 8,
+          "wins": 1,
+          "defeats": 5,
+          "caps": 2,
+          "rounds": [
+            13,
+            16,
+            100,
+            20,
+            100,
+            13,
+            94,
+            16
+          ]
+        },
+        "lantern-villages": {
+          "entered": 1,
+          "wins": 0,
+          "defeats": 1,
+          "caps": 0,
+          "rounds": [
+            31
+          ]
+        }
+      }
+    }
+  ],
+  "model_sha256": "3a407586356f314996766ab5b1fb3450606b61ce45dd833868706c273efbbd07",
+  "minute": 1,
+  "panel": "lantern_showcase"
+}

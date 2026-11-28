@@ -1,0 +1,13 @@
+{
+  "stage": "production-parity",
+  "explicitLimit": 1,
+  "games": 1,
+  "success": true,
+  "terminal": [
+    {
+      "id": "rl-deadline-wait7",
+      "round": 6,
+      "winner": "playerVictory"
+    }
+  ]
+}

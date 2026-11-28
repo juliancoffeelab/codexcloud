@@ -138,3 +138,4 @@ val promotion_details : view -> string -> Domain.unit_details array
 val recruit_details : view -> string -> string -> Domain.unit_details
 val preview_unit : battle -> string -> string -> Domain.hex -> (Domain.unit_details, error) result
 val tile_details : view -> string -> Domain.tile_details
+val ensure_learned : battle -> unit Js.Promise.t

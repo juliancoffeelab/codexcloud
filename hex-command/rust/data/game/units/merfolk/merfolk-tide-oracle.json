@@ -78,9 +78,10 @@
   "family": "wavemender",
   "advancesTo": [],
   "experienceNeeded": 0,
-  "abilities": ["mending-5"],
+  "abilities": [
+    "mending-5"
+  ],
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

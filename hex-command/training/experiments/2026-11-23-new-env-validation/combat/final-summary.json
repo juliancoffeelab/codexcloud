@@ -1,0 +1,470 @@
+{
+  "accepted": [],
+  "rejected": [
+    {
+      "id": "rl-kiln-crossing-screen-close-fog",
+      "name": "Kiln Crossing",
+      "reason": "The discovery separation did not independently reproduce. Queued led by 2/20 in player-only fog and trailed hour10 by 1/20 in both-sides fog. All hour10 losses were commander deaths.",
+      "conditions": [
+        {
+          "route": "player-fog",
+          "visibility": "Player-only radius 2",
+          "confirmation": {
+            "hour8": {
+              "wins": 14,
+              "losses": 6,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 6
+              },
+              "terminal_outcomes": {
+                "The commander fell.": 6,
+                "Both ranged crews were defeated.": 14
+              },
+              "median_win_round": 4.0
+            },
+            "hour10": {
+              "wins": 11,
+              "losses": 9,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 9
+              },
+              "terminal_outcomes": {
+                "The commander fell.": 9,
+                "Both ranged crews were defeated.": 11
+              },
+              "median_win_round": 4
+            },
+            "queued": {
+              "wins": 13,
+              "losses": 7,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 7
+              },
+              "terminal_outcomes": {
+                "Both ranged crews were defeated.": 13,
+                "The commander fell.": 7
+              },
+              "median_win_round": 5
+            },
+            "full": {
+              "wins": 9,
+              "losses": 11,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 11
+              },
+              "terminal_outcomes": {
+                "Both ranged crews were defeated.": 9,
+                "The commander fell.": 11
+              },
+              "median_win_round": 4
+            }
+          },
+          "tuning": {
+            "full": {
+              "wins": 5,
+              "losses": 3,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 3
+              },
+              "terminal_outcomes": {
+                "Both ranged crews were defeated.": 5,
+                "The commander fell.": 3
+              },
+              "median_win_round": 5
+            },
+            "queued": {
+              "wins": 8,
+              "losses": 0,
+              "caps": 0,
+              "failure_classification": {},
+              "terminal_outcomes": {
+                "Both ranged crews were defeated.": 8
+              },
+              "median_win_round": 4.0
+            },
+            "hour10": {
+              "wins": 5,
+              "losses": 3,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 3
+              },
+              "terminal_outcomes": {
+                "The commander fell.": 3,
+                "Both ranged crews were defeated.": 5
+              },
+              "median_win_round": 6
+            }
+          },
+          "queued_lead_wins": 2,
+          "queued_only_wins": 5,
+          "hour10_only_wins": 3,
+          "qualification": "rejected"
+        },
+        {
+          "route": "both-fog",
+          "visibility": "Both sides radius 2",
+          "confirmation": {
+            "hour8": {
+              "wins": 14,
+              "losses": 6,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 6
+              },
+              "terminal_outcomes": {
+                "Both ranged crews were defeated.": 14,
+                "The commander fell.": 6
+              },
+              "median_win_round": 5.0
+            },
+            "hour10": {
+              "wins": 16,
+              "losses": 4,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 4
+              },
+              "terminal_outcomes": {
+                "Both ranged crews were defeated.": 16,
+                "The commander fell.": 4
+              },
+              "median_win_round": 5.0
+            },
+            "queued": {
+              "wins": 15,
+              "losses": 5,
+              "caps": 0,
+              "failure_classification": {
+                "defeat": 2,
+                "leader_loss": 3
+              },
+              "terminal_outcomes": {
+                "Both ranged crews were defeated.": 15,
+                "The battery held through the deadline.": 2,
+                "The commander fell.": 3
+              },
+              "median_win_round": 5
+            },
+            "full": {
+              "wins": 8,
+              "losses": 12,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 11,
+                "defeat": 1
+              },
+              "terminal_outcomes": {
+                "Both ranged crews were defeated.": 8,
+                "The commander fell.": 11,
+                "The battery held through the deadline.": 1
+              },
+              "median_win_round": 8.0
+            }
+          },
+          "tuning": {
+            "full": {
+              "wins": 5,
+              "losses": 3,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 3
+              },
+              "terminal_outcomes": {
+                "The commander fell.": 3,
+                "Both ranged crews were defeated.": 5
+              },
+              "median_win_round": 6
+            },
+            "queued": {
+              "wins": 6,
+              "losses": 2,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 1,
+                "defeat": 1
+              },
+              "terminal_outcomes": {
+                "Both ranged crews were defeated.": 6,
+                "The commander fell.": 1,
+                "The battery held through the deadline.": 1
+              },
+              "median_win_round": 5.0
+            },
+            "hour10": {
+              "wins": 3,
+              "losses": 5,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 4,
+                "defeat": 1
+              },
+              "terminal_outcomes": {
+                "Both ranged crews were defeated.": 3,
+                "The commander fell.": 4,
+                "The battery held through the deadline.": 1
+              },
+              "median_win_round": 7
+            }
+          },
+          "queued_lead_wins": -1,
+          "queued_only_wins": 0,
+          "hour10_only_wins": 1,
+          "qualification": "rejected"
+        },
+        {
+          "route": "authored",
+          "visibility": "Full vision",
+          "confirmation": {
+            "hour8": {
+              "wins": 9,
+              "losses": 11,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 11
+              },
+              "terminal_outcomes": {
+                "The commander fell.": 11,
+                "Both ranged crews were defeated.": 9
+              },
+              "median_win_round": 6
+            },
+            "hour10": {
+              "wins": 9,
+              "losses": 11,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 11
+              },
+              "terminal_outcomes": {
+                "The commander fell.": 11,
+                "Both ranged crews were defeated.": 9
+              },
+              "median_win_round": 5
+            },
+            "queued": {
+              "wins": 9,
+              "losses": 11,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 11
+              },
+              "terminal_outcomes": {
+                "The commander fell.": 11,
+                "Both ranged crews were defeated.": 9
+              },
+              "median_win_round": 6
+            },
+            "full": {
+              "wins": 2,
+              "losses": 18,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 18
+              },
+              "terminal_outcomes": {
+                "Both ranged crews were defeated.": 2,
+                "The commander fell.": 18
+              },
+              "median_win_round": 6.0
+            }
+          },
+          "tuning": {
+            "full": {
+              "wins": 3,
+              "losses": 5,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 5
+              },
+              "terminal_outcomes": {
+                "The commander fell.": 5,
+                "Both ranged crews were defeated.": 3
+              },
+              "median_win_round": 6
+            },
+            "queued": {
+              "wins": 5,
+              "losses": 3,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 3
+              },
+              "terminal_outcomes": {
+                "Both ranged crews were defeated.": 5,
+                "The commander fell.": 3
+              },
+              "median_win_round": 7
+            },
+            "hour10": {
+              "wins": 1,
+              "losses": 7,
+              "caps": 0,
+              "failure_classification": {
+                "leader_loss": 7
+              },
+              "terminal_outcomes": {
+                "The commander fell.": 7,
+                "Both ranged crews were defeated.": 1
+              },
+              "median_win_round": 6
+            }
+          },
+          "queued_lead_wins": 0,
+          "queued_only_wins": 4,
+          "hour10_only_wins": 4,
+          "qualification": "rejected"
+        }
+      ],
+      "layout": {
+        "player": [
+          [
+            "warden",
+            2,
+            4,
+            "full"
+          ],
+          [
+            "soldier",
+            4,
+            3,
+            "full"
+          ],
+          [
+            "hammerman",
+            4,
+            2,
+            "full"
+          ],
+          [
+            "healer",
+            3,
+            4,
+            "full"
+          ],
+          [
+            "scout",
+            4,
+            1,
+            "full"
+          ]
+        ],
+        "enemy": [
+          [
+            "revenant",
+            6,
+            3,
+            "full"
+          ],
+          [
+            "skeleton-axeman-l2",
+            7,
+            3,
+            "full"
+          ],
+          [
+            "skeleton",
+            7,
+            4,
+            "full"
+          ],
+          [
+            "deatharcher",
+            7,
+            1,
+            17
+          ],
+          [
+            "skeleton-impact-caster",
+            8,
+            3,
+            "full"
+          ]
+        ],
+        "deadline": 11,
+        "cols": 11,
+        "rows": 8,
+        "fog_range": 2
+      },
+      "files": {
+        "catalog/game/campaigns/rl-kiln-crossing-screen-close-fog/campaign.json": "614488ac1f450ece87afb7953e51e03f6871ef16cd1dd01e514cf65315c1b551",
+        "catalog/game/campaigns/rl-kiln-crossing-screen-close-fog/map.json": "e9483428bd562f5913c828b346a9f2045dc4142e4d9f7206ca6ce9809fa10803",
+        "catalog/game/campaigns/rl-kiln-crossing-screen-close-fog/roster.json": "c1d23384cf4ba42e3e2271d69c6721a147bea43ee8ef6474f36d90f2e6112198",
+        "catalog/game/campaigns/rl-kiln-crossing-screen-close-fog/scripts.json": "f54ad23d0a525ea0038302eab1fa17b98562298d9ee2f04416afdce94caa5b75",
+        "catalog/game/campaigns/rl-kiln-crossing-screen-close-fog/stage.json": "707b5d7c5be93e696d8ea0749de342bf34490c17433c8f343d5c1ec4915ad7e4",
+        "catalog/game/campaigns/rl-kiln-crossing-screen-close-fog/story.json": "fd2ef3310356d34d344a7331edd9ec0ea7897b59c75d1973bc74413610f01723"
+      }
+    }
+  ],
+  "opponent": "Classic",
+  "confirmation_seed_list": [
+    593020001,
+    593020002,
+    593020003,
+    593020004,
+    593020005,
+    593020006,
+    593020007,
+    593020008,
+    593020009,
+    593020010,
+    593020011,
+    593020012,
+    593020013,
+    593020014,
+    593020015,
+    593020016,
+    593020017,
+    593020018,
+    593020019,
+    593020020
+  ],
+  "tuning_seeds": [
+    591030001,
+    591030002,
+    591030003,
+    591030004,
+    591030005,
+    591030006,
+    591030007,
+    591030008
+  ],
+  "native_binding": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/native/hex_command_training.so",
+  "native_sha256": "7d7ab7ede88526b76ceb1c91de5fc9df2187c79c1ce0b7ba3b8b9b1f0cf322f2",
+  "models": {
+    "hour8": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/update-00002205-1795440240315037513/planner.json",
+      "sha256": "e7ef684d9e135e7817e390c533ec8b903d08db2d6ac0253c1aa340616b47a619"
+    },
+    "hour10": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/last-1795458575107520190/planner.json",
+      "sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee"
+    }
+  },
+  "references": {
+    "queued": "Ordinary rule-based Queued planner",
+    "full": "Ordinary rule-based Full planner"
+  },
+  "episode_budget": "100 harness rounds with authored defeat at round 11",
+  "catalog_sha256": {
+    "catalog/manifest.json": "4e2b840edefd7d4b0f4a3dbaaff74e996af09b22152591f74b4be8206fca2dae",
+    "catalog/simulation/campaign.json": "54806d1477a390bed580a6da86e05a8945fde07077d9df32dc87cd3e9f8726bb"
+  },
+  "raw": {
+    "discovery": [
+      "tune-1.jsonl",
+      "tune-2.jsonl",
+      "tune-3.jsonl",
+      "tune-4.jsonl",
+      "tune-5.jsonl"
+    ],
+    "confirmation": "confirmation.jsonl"
+  },
+  "render": "render/preview.png",
+  "trace": "paired-mechanism-traces.jsonl.gz"
+}

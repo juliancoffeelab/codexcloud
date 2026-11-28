@@ -1,0 +1,403 @@
+{
+  "scope": "Final one-hour extension, completed training episodes only; live games at shutdown excluded. Training samples actions at temperature0.35. Episode duration is not time to first reward: broad campaigns pay intermediate chapter rewards.",
+  "groups": {
+    "targeted": {
+      "episodes": 929,
+      "decisions_in_completed_episodes": 19225,
+      "mean_episode_decisions": 20.694294940796556,
+      "median_episode_decisions": 18,
+      "wins": 593,
+      "chapter_clears": 593,
+      "episode_endings_per_1000_decisions": 48.32249674902471
+    },
+    "ordinary": {
+      "episodes": 194,
+      "decisions_in_completed_episodes": 15394,
+      "mean_episode_decisions": 79.35051546391753,
+      "median_episode_decisions": 57.0,
+      "wins": 116,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 12.602312589320514
+    },
+    "broad": {
+      "episodes": 94,
+      "decisions_in_completed_episodes": 34463,
+      "mean_episode_decisions": 366.6276595744681,
+      "median_episode_decisions": 280.0,
+      "wins": 15,
+      "chapter_clears": 94,
+      "episode_endings_per_1000_decisions": 2.727562893537997
+    }
+  },
+  "maps": {
+    "rl-urgent-crossing": {
+      "episodes": 21,
+      "decisions_in_completed_episodes": 458,
+      "mean_episode_decisions": 21.80952380952381,
+      "median_episode_decisions": 21,
+      "wins": 20,
+      "chapter_clears": 20,
+      "episode_endings_per_1000_decisions": 45.851528384279476
+    },
+    "rl-quarry-ring": {
+      "episodes": 30,
+      "decisions_in_completed_episodes": 1115,
+      "mean_episode_decisions": 37.166666666666664,
+      "median_episode_decisions": 27.5,
+      "wins": 17,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 26.905829596412556
+    },
+    "rl-whitecap-ford": {
+      "episodes": 80,
+      "decisions_in_completed_episodes": 511,
+      "mean_episode_decisions": 6.3875,
+      "median_episode_decisions": 6.0,
+      "wins": 64,
+      "chapter_clears": 64,
+      "episode_endings_per_1000_decisions": 156.55577299412917
+    },
+    "rl-interrupt-herring-tide-road-three": {
+      "episodes": 31,
+      "decisions_in_completed_episodes": 1126,
+      "mean_episode_decisions": 36.32258064516129,
+      "median_episode_decisions": 37,
+      "wins": 17,
+      "chapter_clears": 17,
+      "episode_endings_per_1000_decisions": 27.53108348134991
+    },
+    "rl-bellmarket-courts": {
+      "episodes": 81,
+      "decisions_in_completed_episodes": 432,
+      "mean_episode_decisions": 5.333333333333333,
+      "median_episode_decisions": 6,
+      "wins": 73,
+      "chapter_clears": 73,
+      "episode_endings_per_1000_decisions": 187.5
+    },
+    "rl-route-ambush": {
+      "episodes": 58,
+      "decisions_in_completed_episodes": 1108,
+      "mean_episode_decisions": 19.103448275862068,
+      "median_episode_decisions": 20.0,
+      "wins": 0,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 52.34657039711191
+    },
+    "rl-lair-outworks": {
+      "episodes": 58,
+      "decisions_in_completed_episodes": 1114,
+      "mean_episode_decisions": 19.20689655172414,
+      "median_episode_decisions": 19.0,
+      "wins": 12,
+      "chapter_clears": 12,
+      "episode_endings_per_1000_decisions": 52.06463195691203
+    },
+    "rl-route-pass-road": {
+      "episodes": 38,
+      "decisions_in_completed_episodes": 1113,
+      "mean_episode_decisions": 29.289473684210527,
+      "median_episode_decisions": 28.0,
+      "wins": 1,
+      "chapter_clears": 1,
+      "episode_endings_per_1000_decisions": 34.14195867026056
+    },
+    "rl-thorn-verge": {
+      "episodes": 161,
+      "decisions_in_completed_episodes": 257,
+      "mean_episode_decisions": 1.5962732919254659,
+      "median_episode_decisions": 1,
+      "wins": 156,
+      "chapter_clears": 156,
+      "episode_endings_per_1000_decisions": 626.4591439688716
+    },
+    "rl-defend-tidegate-stand-110": {
+      "episodes": 22,
+      "decisions_in_completed_episodes": 1071,
+      "mean_episode_decisions": 48.68181818181818,
+      "median_episode_decisions": 52.0,
+      "wins": 16,
+      "chapter_clears": 16,
+      "episode_endings_per_1000_decisions": 20.54154995331466
+    },
+    "rl-defend-bracken-stand-010": {
+      "episodes": 37,
+      "decisions_in_completed_episodes": 1109,
+      "mean_episode_decisions": 29.972972972972972,
+      "median_episode_decisions": 30,
+      "wins": 29,
+      "chapter_clears": 29,
+      "episode_endings_per_1000_decisions": 33.36339044183949
+    },
+    "rl-slate-gallery": {
+      "episodes": 60,
+      "decisions_in_completed_episodes": 1093,
+      "mean_episode_decisions": 18.216666666666665,
+      "median_episode_decisions": 18.0,
+      "wins": 32,
+      "chapter_clears": 32,
+      "episode_endings_per_1000_decisions": 54.89478499542543
+    },
+    "rl-defend-lower-gallery-0": {
+      "episodes": 29,
+      "decisions_in_completed_episodes": 1106,
+      "mean_episode_decisions": 38.13793103448276,
+      "median_episode_decisions": 36,
+      "wins": 0,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 26.220614828209765
+    },
+    "rl-interrupt-siltbar-approach": {
+      "episodes": 44,
+      "decisions_in_completed_episodes": 1085,
+      "mean_episode_decisions": 24.65909090909091,
+      "median_episode_decisions": 24.0,
+      "wins": 24,
+      "chapter_clears": 24,
+      "episode_endings_per_1000_decisions": 40.55299539170507
+    },
+    "rl-last-lantern": {
+      "episodes": 17,
+      "decisions_in_completed_episodes": 1111,
+      "mean_episode_decisions": 65.3529411764706,
+      "median_episode_decisions": 63,
+      "wins": 12,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 15.301530153015301
+    },
+    "rl-deadline-pines-relief8": {
+      "episodes": 30,
+      "decisions_in_completed_episodes": 1131,
+      "mean_episode_decisions": 37.7,
+      "median_episode_decisions": 40.0,
+      "wins": 15,
+      "chapter_clears": 15,
+      "episode_endings_per_1000_decisions": 26.52519893899204
+    },
+    "rl-birch-pocket": {
+      "episodes": 23,
+      "decisions_in_completed_episodes": 1123,
+      "mean_episode_decisions": 48.82608695652174,
+      "median_episode_decisions": 43,
+      "wins": 16,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 20.480854853072127
+    },
+    "rl-underground-escape": {
+      "episodes": 47,
+      "decisions_in_completed_episodes": 11512,
+      "mean_episode_decisions": 244.93617021276594,
+      "median_episode_decisions": 233,
+      "wins": 2,
+      "chapter_clears": 22,
+      "episode_endings_per_1000_decisions": 4.082696316886727
+    },
+    "rl-briar-saddle": {
+      "episodes": 30,
+      "decisions_in_completed_episodes": 377,
+      "mean_episode_decisions": 12.566666666666666,
+      "median_episode_decisions": 12.0,
+      "wins": 27,
+      "chapter_clears": 27,
+      "episode_endings_per_1000_decisions": 79.57559681697613
+    },
+    "rl-deadline-wait7": {
+      "episodes": 24,
+      "decisions_in_completed_episodes": 940,
+      "mean_episode_decisions": 39.166666666666664,
+      "median_episode_decisions": 38.0,
+      "wins": 15,
+      "chapter_clears": 15,
+      "episode_endings_per_1000_decisions": 25.53191489361702
+    },
+    "rl-breakthrough-ford-heal08": {
+      "episodes": 19,
+      "decisions_in_completed_episodes": 226,
+      "mean_episode_decisions": 11.894736842105264,
+      "median_episode_decisions": 12,
+      "wins": 18,
+      "chapter_clears": 18,
+      "episode_endings_per_1000_decisions": 84.070796460177
+    },
+    "rl-vault-rally": {
+      "episodes": 8,
+      "decisions_in_completed_episodes": 1157,
+      "mean_episode_decisions": 144.625,
+      "median_episode_decisions": 118.0,
+      "wins": 2,
+      "chapter_clears": 2,
+      "episode_endings_per_1000_decisions": 6.9144338807260155
+    },
+    "rl-splitpine-clearing": {
+      "episodes": 17,
+      "decisions_in_completed_episodes": 1213,
+      "mean_episode_decisions": 71.3529411764706,
+      "median_episode_decisions": 51,
+      "wins": 11,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 14.014839241549875
+    },
+    "rl-interrupt-south-ford-west-post": {
+      "episodes": 18,
+      "decisions_in_completed_episodes": 221,
+      "mean_episode_decisions": 12.277777777777779,
+      "median_episode_decisions": 11.5,
+      "wins": 17,
+      "chapter_clears": 17,
+      "episode_endings_per_1000_decisions": 81.44796380090497
+    },
+    "rl-route-pocket-leader": {
+      "episodes": 25,
+      "decisions_in_completed_episodes": 1067,
+      "mean_episode_decisions": 42.68,
+      "median_episode_decisions": 43,
+      "wins": 4,
+      "chapter_clears": 4,
+      "episode_endings_per_1000_decisions": 23.430178069353328
+    },
+    "rl-escort-mistfen-patrol": {
+      "episodes": 16,
+      "decisions_in_completed_episodes": 850,
+      "mean_episode_decisions": 53.125,
+      "median_episode_decisions": 53.5,
+      "wins": 16,
+      "chapter_clears": 16,
+      "episode_endings_per_1000_decisions": 18.823529411764707
+    },
+    "rl-woodland-defense": {
+      "episodes": 27,
+      "decisions_in_completed_episodes": 11982,
+      "mean_episode_decisions": 443.77777777777777,
+      "median_episode_decisions": 378,
+      "wins": 10,
+      "chapter_clears": 42,
+      "episode_endings_per_1000_decisions": 2.2533800701051576
+    },
+    "rl-fordstep": {
+      "episodes": 15,
+      "decisions_in_completed_episodes": 1075,
+      "mean_episode_decisions": 71.66666666666667,
+      "median_episode_decisions": 54,
+      "wins": 7,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 13.953488372093023
+    },
+    "rl-escort-splitwake-patrol": {
+      "episodes": 9,
+      "decisions_in_completed_episodes": 515,
+      "mean_episode_decisions": 57.22222222222222,
+      "median_episode_decisions": 57,
+      "wins": 9,
+      "chapter_clears": 9,
+      "episode_endings_per_1000_decisions": 17.475728155339805
+    },
+    "rl-breakthrough-cave5": {
+      "episodes": 21,
+      "decisions_in_completed_episodes": 667,
+      "mean_episode_decisions": 31.761904761904763,
+      "median_episode_decisions": 31,
+      "wins": 17,
+      "chapter_clears": 17,
+      "episode_endings_per_1000_decisions": 31.484257871064468
+    },
+    "rl-splitwake-crossing": {
+      "episodes": 20,
+      "decisions_in_completed_episodes": 10969,
+      "mean_episode_decisions": 548.45,
+      "median_episode_decisions": 592.0,
+      "wins": 3,
+      "chapter_clears": 30,
+      "episode_endings_per_1000_decisions": 1.823320266204759
+    },
+    "rl-escort-lantern-maze": {
+      "episodes": 9,
+      "decisions_in_completed_episodes": 491,
+      "mean_episode_decisions": 54.55555555555556,
+      "median_episode_decisions": 56,
+      "wins": 9,
+      "chapter_clears": 9,
+      "episode_endings_per_1000_decisions": 18.329938900203665
+    },
+    "rl-crown-gap": {
+      "episodes": 11,
+      "decisions_in_completed_episodes": 1306,
+      "mean_episode_decisions": 118.72727272727273,
+      "median_episode_decisions": 70,
+      "wins": 9,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 8.422664624808576
+    },
+    "rl-cinderfault": {
+      "episodes": 9,
+      "decisions_in_completed_episodes": 1132,
+      "mean_episode_decisions": 125.77777777777777,
+      "median_episode_decisions": 121,
+      "wins": 8,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 7.950530035335689
+    },
+    "rl-frosthook-gate": {
+      "episodes": 16,
+      "decisions_in_completed_episodes": 1164,
+      "mean_episode_decisions": 72.75,
+      "median_episode_decisions": 47.5,
+      "wins": 3,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 13.745704467353951
+    },
+    "rl-jawbone-crossing": {
+      "episodes": 12,
+      "decisions_in_completed_episodes": 1044,
+      "mean_episode_decisions": 87.0,
+      "median_episode_decisions": 83.5,
+      "wins": 8,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 11.494252873563218
+    },
+    "rl-twin-fords": {
+      "episodes": 10,
+      "decisions_in_completed_episodes": 1073,
+      "mean_episode_decisions": 107.3,
+      "median_episode_decisions": 74.0,
+      "wins": 6,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 9.319664492078285
+    },
+    "rl-switchback-saltworks": {
+      "episodes": 11,
+      "decisions_in_completed_episodes": 1079,
+      "mean_episode_decisions": 98.0909090909091,
+      "median_episode_decisions": 100,
+      "wins": 5,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 10.194624652455978
+    },
+    "rl-sable-sound": {
+      "episodes": 9,
+      "decisions_in_completed_episodes": 1069,
+      "mean_episode_decisions": 118.77777777777777,
+      "median_episode_decisions": 83,
+      "wins": 6,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 8.419083255378858
+    },
+    "rl-three-wells-trail": {
+      "episodes": 7,
+      "decisions_in_completed_episodes": 997,
+      "mean_episode_decisions": 142.42857142857142,
+      "median_episode_decisions": 76,
+      "wins": 4,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 7.021063189568706
+    },
+    "rl-sump-teeth": {
+      "episodes": 7,
+      "decisions_in_completed_episodes": 893,
+      "mean_episode_decisions": 127.57142857142857,
+      "median_episode_decisions": 108,
+      "wins": 4,
+      "chapter_clears": 0,
+      "episode_endings_per_1000_decisions": 7.838745800671893
+    }
+  }
+}

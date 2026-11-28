@@ -1,0 +1,1326 @@
+{
+  "label": "discovery",
+  "raw": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/discovery.jsonl",
+  "catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/catalog",
+  "catalogSha256": "e627a93259d0ea050077bd913a42d517fadbc60ffbfb6c6277c329488ce13cd6",
+  "seeds": [
+    571230001,
+    571230002,
+    571230003,
+    571230004,
+    571230005,
+    571230006,
+    571230007,
+    571230008
+  ],
+  "native": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/native/hex_command_training.so",
+  "nativeSha256": "7d7ab7ede88526b76ceb1c91de5fc9df2187c79c1ce0b7ba3b8b9b1f0cf322f2",
+  "models": {
+    "hour8": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/update-00002205-1795440240315037513/planner.json",
+      "sha256": "e7ef684d9e135e7817e390c533ec8b903d08db2d6ac0253c1aa340616b47a619"
+    },
+    "hour10": {
+      "path": "/workspace/codexcloud/hex-command/tmp/rl/ppo-from-pretrain-5m-9h-20261123/rl/checkpoints/last-1795458575107520190/planner.json",
+      "sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee"
+    }
+  },
+  "outcomes": [
+    {
+      "variant": "base",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 3,
+      "losses": 5,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 3,
+        "The relief force arrived before both positions were secured.": 2,
+        "The commander fell.": 3
+      }
+    },
+    {
+      "variant": "archer",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 1,
+      "losses": 7,
+      "caps": 0,
+      "winRounds": [
+        11
+      ],
+      "reasons": {
+        "The relief force arrived before both positions were secured.": 3,
+        "The commander fell.": 4,
+        "Ashbank held and the eastern crossing secured.": 1
+      }
+    },
+    {
+      "variant": "reserve",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 4,
+      "losses": 4,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 4,
+        "The relief force arrived before both positions were secured.": 2,
+        "The commander fell.": 2
+      }
+    },
+    {
+      "variant": "reinforced",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 3,
+      "losses": 5,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 3,
+        "The relief force arrived before both positions were secured.": 3,
+        "The commander fell.": 2
+      }
+    },
+    {
+      "variant": "lighter",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 2,
+        "The relief force arrived before both positions were secured.": 3,
+        "The commander fell.": 3
+      }
+    },
+    {
+      "variant": "veteran",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "thinner-post",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "crossroad",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 1,
+      "losses": 7,
+      "caps": 0,
+      "winRounds": [
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 1,
+        "The relief force arrived before both positions were secured.": 1,
+        "The commander fell.": 6
+      }
+    },
+    {
+      "variant": "defender",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 3,
+      "losses": 5,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 3,
+        "The relief force arrived before both positions were secured.": 2,
+        "The commander fell.": 3
+      }
+    },
+    {
+      "variant": "early-raid",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 1,
+      "losses": 7,
+      "caps": 0,
+      "winRounds": [
+        11
+      ],
+      "reasons": {
+        "The commander fell.": 5,
+        "The relief force arrived before both positions were secured.": 2,
+        "Ashbank held and the eastern crossing secured.": 1
+      }
+    },
+    {
+      "variant": "vigil",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 2,
+        "The relief force arrived before both positions were secured.": 3,
+        "The commander fell.": 3
+      }
+    },
+    {
+      "variant": "vigil-reserve",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 2,
+        "The relief force arrived before both positions were secured.": 4,
+        "The commander fell.": 2
+      }
+    },
+    {
+      "variant": "push-first",
+      "policy": "full",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 2,
+        "The commander fell.": 4,
+        "The relief force arrived before both positions were secured.": 2
+      }
+    },
+    {
+      "variant": "base",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 3,
+      "losses": 5,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 3,
+        "The relief force arrived before both positions were secured.": 3,
+        "The commander fell.": 2
+      }
+    },
+    {
+      "variant": "archer",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 3,
+      "losses": 5,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 3,
+        "The commander fell.": 5
+      }
+    },
+    {
+      "variant": "reserve",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 6,
+        "The commander fell.": 2
+      }
+    },
+    {
+      "variant": "reinforced",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 6,
+        "The relief force arrived before both positions were secured.": 1,
+        "The commander fell.": 1
+      }
+    },
+    {
+      "variant": "lighter",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 5,
+      "losses": 3,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 5,
+        "The commander fell.": 2,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "veteran",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "thinner-post",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "crossroad",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 6,
+        "The relief force arrived before both positions were secured.": 1,
+        "The commander fell.": 1
+      }
+    },
+    {
+      "variant": "defender",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 4,
+      "losses": 4,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 4,
+        "The relief force arrived before both positions were secured.": 3,
+        "The commander fell.": 1
+      }
+    },
+    {
+      "variant": "early-raid",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 3,
+      "losses": 5,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 3,
+        "The commander fell.": 4,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "vigil",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 2,
+      "losses": 6,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 2,
+        "The relief force arrived before both positions were secured.": 4,
+        "The commander fell.": 2
+      }
+    },
+    {
+      "variant": "vigil-reserve",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 6,
+        "The relief force arrived before both positions were secured.": 1,
+        "The commander fell.": 1
+      }
+    },
+    {
+      "variant": "push-first",
+      "policy": "queued",
+      "enemy": "classic",
+      "wins": 5,
+      "losses": 3,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 5,
+        "The relief force arrived before both positions were secured.": 3
+      }
+    },
+    {
+      "variant": "base",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The commander fell.": 2,
+        "Ashbank held and the eastern crossing secured.": 6
+      }
+    },
+    {
+      "variant": "archer",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 5,
+      "losses": 3,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 5,
+        "The commander fell.": 1,
+        "The relief force arrived before both positions were secured.": 2
+      }
+    },
+    {
+      "variant": "reserve",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "reinforced",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "lighter",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The relief force arrived before both positions were secured.": 1,
+        "The commander fell.": 1,
+        "Ashbank held and the eastern crossing secured.": 6
+      }
+    },
+    {
+      "variant": "veteran",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "thinner-post",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "crossroad",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        12,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The commander fell.": 1
+      }
+    },
+    {
+      "variant": "defender",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The commander fell.": 1,
+        "The relief force arrived before both positions were secured.": 1,
+        "Ashbank held and the eastern crossing secured.": 6
+      }
+    },
+    {
+      "variant": "early-raid",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The commander fell.": 2,
+        "Ashbank held and the eastern crossing secured.": 6
+      }
+    },
+    {
+      "variant": "vigil",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "The commander fell.": 2,
+        "Ashbank held and the eastern crossing secured.": 6
+      }
+    },
+    {
+      "variant": "vigil-reserve",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "push-first",
+      "policy": "classic",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The commander fell.": 1
+      }
+    },
+    {
+      "variant": "base",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The commander fell.": 1
+      }
+    },
+    {
+      "variant": "archer",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 6,
+        "The commander fell.": 2
+      }
+    },
+    {
+      "variant": "reserve",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "reinforced",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "lighter",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The commander fell.": 1
+      }
+    },
+    {
+      "variant": "veteran",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "thinner-post",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "crossroad",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The commander fell.": 1
+      }
+    },
+    {
+      "variant": "defender",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "early-raid",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "vigil",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "vigil-reserve",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "push-first",
+      "policy": "hour8",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "base",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 6,
+        "The relief force arrived before both positions were secured.": 1,
+        "The commander fell.": 1
+      }
+    },
+    {
+      "variant": "archer",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 6,
+        "The commander fell.": 2
+      }
+    },
+    {
+      "variant": "reserve",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    },
+    {
+      "variant": "reinforced",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "lighter",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 6,
+      "losses": 2,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 6,
+        "The commander fell.": 2
+      }
+    },
+    {
+      "variant": "veteran",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "thinner-post",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "crossroad",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The commander fell.": 1
+      }
+    },
+    {
+      "variant": "defender",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        12,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The commander fell.": 1
+      }
+    },
+    {
+      "variant": "early-raid",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "vigil",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "vigil-reserve",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 8,
+      "losses": 0,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 8
+      }
+    },
+    {
+      "variant": "push-first",
+      "policy": "hour10",
+      "enemy": "classic",
+      "wins": 7,
+      "losses": 1,
+      "caps": 0,
+      "winRounds": [
+        11,
+        11,
+        11,
+        11,
+        11,
+        11,
+        11
+      ],
+      "reasons": {
+        "Ashbank held and the eastern crossing secured.": 7,
+        "The relief force arrived before both positions were secured.": 1
+      }
+    }
+  ]
+}

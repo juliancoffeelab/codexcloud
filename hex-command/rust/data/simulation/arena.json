@@ -261,7 +261,7 @@
       "holdTurns": 4
     },
     {
-      "id": "villages",
+      "id": "toll-road",
       "variants": [
         {
           "map": "combat-villages",
@@ -280,7 +280,7 @@
       "holdTurns": 4
     },
     {
-      "id": "sluice",
+      "id": "a-tide-for-both",
       "variants": [
         {
           "map": "combat-sluice",
@@ -307,7 +307,7 @@
             "kind": "selected",
             "budget": 39
           },
-          "mapRevision": 2
+          "mapRevision": 3
         },
         {
           "map": "river-valley",
@@ -315,7 +315,7 @@
             "kind": "selected",
             "budget": 42
           },
-          "mapRevision": 2
+          "mapRevision": 3
         },
         {
           "map": "river-valley",
@@ -323,7 +323,7 @@
             "kind": "selected",
             "budget": 42
           },
-          "mapRevision": 2
+          "mapRevision": 3
         },
         {
           "map": "river-valley",
@@ -331,289 +331,13 @@
             "kind": "selected",
             "budget": 42
           },
-          "mapRevision": 2
-        }
-      ],
-      "territory": [
-        {
-          "col": 11,
-          "row": 1
-        }
-      ],
-      "holdTurns": 4
-    },
-    {
-      "id": "rl-meadow",
-      "variants": [
-        {
-          "map": "rl-meadow",
-          "forces": {
-            "kind": "selected",
-            "budget": 36
-          },
-          "mapRevision": 1
-        }
-      ],
-      "territory": [
-        {
-          "col": 4,
-          "row": 3
-        }
-      ],
-      "holdTurns": 3
-    },
-    {
-      "id": "rl-woodland",
-      "variants": [
-        {
-          "map": "rl-woodland",
-          "forces": {
-            "kind": "selected",
-            "budget": 39
-          },
-          "mapRevision": 1
-        }
-      ],
-      "territory": [
-        {
-          "col": 5,
-          "row": 4
-        }
-      ],
-      "holdTurns": 4
-    },
-    {
-      "id": "rl-ridge",
-      "variants": [
-        {
-          "map": "rl-ridge",
-          "forces": {
-            "kind": "selected",
-            "budget": 42
-          },
-          "mapRevision": 1
-        }
-      ],
-      "territory": [
-        {
-          "col": 6,
-          "row": 3
-        }
-      ],
-      "holdTurns": 5
-    },
-    {
-      "id": "rl-wetland",
-      "variants": [
-        {
-          "map": "rl-wetland",
-          "forces": {
-            "kind": "selected",
-            "budget": 36
-          },
-          "mapRevision": 1
-        }
-      ],
-      "territory": [
-        {
-          "col": 5,
-          "row": 4
-        }
-      ],
-      "holdTurns": 3
-    },
-    {
-      "id": "rl-river",
-      "variants": [
-        {
-          "map": "rl-river",
-          "forces": {
-            "kind": "selected",
-            "budget": 39
-          },
-          "mapRevision": 1
-        }
-      ],
-      "territory": [
-        {
-          "col": 6,
-          "row": 4
-        }
-      ],
-      "holdTurns": 4
-    },
-    {
-      "id": "rl-islands",
-      "variants": [
-        {
-          "map": "rl-islands",
-          "forces": {
-            "kind": "selected",
-            "budget": 42
-          },
-          "mapRevision": 1
-        }
-      ],
-      "territory": [
-        {
-          "col": 7,
-          "row": 5
-        }
-      ],
-      "holdTurns": 5
-    },
-    {
-      "id": "rl-cavern",
-      "variants": [
-        {
-          "map": "rl-cavern",
-          "forces": {
-            "kind": "selected",
-            "budget": 36
-          },
-          "mapRevision": 2
-        }
-      ],
-      "territory": [
-        {
-          "col": 5,
-          "row": 3
-        }
-      ],
-      "holdTurns": 3
-    },
-    {
-      "id": "rl-ruins",
-      "variants": [
-        {
-          "map": "rl-ruins",
-          "forces": {
-            "kind": "selected",
-            "budget": 39
-          },
-          "mapRevision": 1
-        }
-      ],
-      "territory": [
-        {
-          "col": 7,
-          "row": 4
-        }
-      ],
-      "holdTurns": 4
-    },
-    {
-      "id": "rl-broadfield",
-      "variants": [
-        {
-          "map": "rl-broadfield",
-          "forces": {
-            "kind": "selected",
-            "budget": 54
-          },
-          "mapRevision": 1
+          "mapRevision": 3
         }
       ],
       "territory": [
         {
           "col": 9,
-          "row": 5
-        }
-      ],
-      "holdTurns": 5
-    },
-    {
-      "id": "rl-floodplain",
-      "variants": [
-        {
-          "map": "rl-floodplain",
-          "forces": {
-            "kind": "selected",
-            "budget": 54
-          },
-          "mapRevision": 1
-        }
-      ],
-      "territory": [
-        {
-          "col": 10,
-          "row": 6
-        }
-      ],
-      "holdTurns": 3
-    },
-    {
-      "id": "rl-dark-rooms",
-      "variants": [
-        {
-          "map": "rl-dark-rooms",
-          "forces": {
-            "kind": "scenario"
-          },
-          "mapRevision": 1
-        }
-      ],
-      "territory": [
-        {
-          "col": 5,
-          "row": 3
-        }
-      ],
-      "holdTurns": 3
-    },
-    {
-      "id": "rl-twilight-ridge",
-      "variants": [
-        {
-          "map": "rl-twilight-ridge",
-          "forces": {
-            "kind": "scenario"
-          },
-          "mapRevision": 1
-        }
-      ],
-      "territory": [
-        {
-          "col": 6,
-          "row": 3
-        }
-      ],
-      "holdTurns": 5
-    },
-    {
-      "id": "rl-mist-wetland",
-      "variants": [
-        {
-          "map": "rl-mist-wetland",
-          "forces": {
-            "kind": "scenario"
-          },
-          "mapRevision": 1
-        }
-      ],
-      "territory": [
-        {
-          "col": 5,
-          "row": 4
-        }
-      ],
-      "holdTurns": 3
-    },
-    {
-      "id": "rl-lantern-forest",
-      "variants": [
-        {
-          "map": "rl-lantern-forest",
-          "forces": {
-            "kind": "scenario"
-          },
-          "mapRevision": 1
-        }
-      ],
-      "territory": [
-        {
-          "col": 5,
-          "row": 4
+          "row": 7
         }
       ],
       "holdTurns": 4
@@ -797,6 +521,472 @@
         }
       ],
       "holdTurns": 3
+    },
+    {
+      "id": "rl-twin-fords",
+      "variants": [
+        {
+          "map": "rl-twin-fords",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        },
+        {
+          "map": "rl-twin-fords-fog",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 6,
+          "row": 6
+        },
+        {
+          "col": 11,
+          "row": 7
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-splitpine-clearing",
+      "variants": [
+        {
+          "map": "rl-splitpine-clearing",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        },
+        {
+          "map": "rl-splitpine-clearing-fog",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 7,
+          "row": 6
+        },
+        {
+          "col": 10,
+          "row": 7
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-crown-gap",
+      "variants": [
+        {
+          "map": "rl-crown-gap",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        },
+        {
+          "map": "rl-crown-gap-fog",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 7,
+          "row": 4
+        },
+        {
+          "col": 12,
+          "row": 11
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-jawbone-crossing",
+      "variants": [
+        {
+          "map": "rl-jawbone-crossing",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        },
+        {
+          "map": "rl-jawbone-crossing-fog",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 8,
+          "row": 7
+        },
+        {
+          "col": 15,
+          "row": 8
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-sump-teeth",
+      "variants": [
+        {
+          "map": "rl-sump-teeth",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        },
+        {
+          "map": "rl-sump-teeth-fog",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 15,
+          "row": 8
+        },
+        {
+          "col": 8,
+          "row": 9
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-last-lantern",
+      "variants": [
+        {
+          "map": "rl-last-lantern",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        },
+        {
+          "map": "rl-last-lantern-sight",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 12
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 9,
+          "row": 7
+        },
+        {
+          "col": 14,
+          "row": 10
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-switchback-saltworks",
+      "variants": [
+        {
+          "map": "switchback-saltworks",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        },
+        {
+          "map": "rl-switchback-saltworks-fog",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 19,
+          "row": 19
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-cinderfault",
+      "variants": [
+        {
+          "map": "cinderfault",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          }
+        },
+        {
+          "map": "rl-cinderfault-fog",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 19,
+          "row": 21
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-sable-sound",
+      "variants": [
+        {
+          "map": "sable-sound",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        },
+        {
+          "map": "rl-sable-sound-sight",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 19,
+          "row": 18
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-three-wells-trail",
+      "variants": [
+        {
+          "map": "three-wells-trail",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          }
+        },
+        {
+          "map": "rl-three-wells-trail-sight",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 5,
+          "row": 31
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-frosthook-gate",
+      "variants": [
+        {
+          "map": "frosthook-gate",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        },
+        {
+          "map": "rl-frosthook-gate-sight",
+          "forces": {
+            "kind": "selected",
+            "budget": 54
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 22,
+          "row": 20
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-birch-pocket",
+      "variants": [
+        {
+          "map": "rl-birch-pocket",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 18
+          }
+        },
+        {
+          "map": "rl-birch-pocket-sight",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 18
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 4,
+          "row": 4
+        },
+        {
+          "col": 5,
+          "row": 5
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-quarry-ring",
+      "variants": [
+        {
+          "map": "rl-quarry-ring",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 18
+          }
+        },
+        {
+          "map": "rl-quarry-ring-sight",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 18
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 4,
+          "row": 3
+        },
+        {
+          "col": 6,
+          "row": 4
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-fordstep",
+      "variants": [
+        {
+          "map": "rl-fordstep",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 18
+          }
+        },
+        {
+          "map": "rl-fordstep-fog",
+          "mapRevision": 1,
+          "forces": {
+            "kind": "selected",
+            "budget": 18
+          }
+        }
+      ],
+      "territory": [
+        {
+          "col": 3,
+          "row": 3
+        },
+        {
+          "col": 6,
+          "row": 6
+        }
+      ],
+      "holdTurns": 3
+    },
+    {
+      "id": "rl-marlow-cut-pass-finish",
+      "variants": [
+        {
+          "map": "rl-marlow-cut-pass-finish",
+          "forces": {
+            "kind": "scenario"
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 4,
+          "row": 2
+        }
+      ],
+      "holdTurns": 6
+    },
+    {
+      "id": "rl-marlow-cut-pass-interrupt",
+      "variants": [
+        {
+          "map": "rl-marlow-cut-pass-interrupt",
+          "forces": {
+            "kind": "scenario"
+          },
+          "mapRevision": 1
+        }
+      ],
+      "territory": [
+        {
+          "col": 4,
+          "row": 2
+        }
+      ],
+      "holdTurns": 6
     }
   ],
   "defaultScenarios": ["open", "wooded", "crossings", "islands", "wood-edge"],

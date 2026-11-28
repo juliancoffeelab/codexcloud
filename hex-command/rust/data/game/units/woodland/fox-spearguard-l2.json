@@ -30,10 +30,11 @@
   "description": "A forest spear guardian whose thorn shield reflects damage per incoming melee strike.",
   "level": 2,
   "family": "fox-spearguard",
-  "advancesTo": ["fox-spearguard-l3"],
+  "advancesTo": [
+    "fox-spearguard-l3"
+  ],
   "experienceNeeded": 18,
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,
@@ -42,5 +43,7 @@
     },
     "penetrates": []
   },
-  "abilities": ["personal-thorns-6"]
+  "abilities": [
+    "personal-thorns-6"
+  ]
 }

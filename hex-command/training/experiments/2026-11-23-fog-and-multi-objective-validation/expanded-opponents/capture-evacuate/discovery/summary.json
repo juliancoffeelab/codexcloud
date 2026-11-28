@@ -1,0 +1,1784 @@
+[
+  {
+    "variant": "crossfire-late-guard",
+    "visibility": "clear",
+    "opponent": "classic",
+    "results": {
+      "hour8": {
+        "wins": 5,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 5,
+          "The evacuation window closed.": 3
+        },
+        "reasons": {
+          "null": 5,
+          "defeat": 3
+        }
+      },
+      "hour10": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 5,
+          "Mara and Tavin both reached safety.": 3
+        },
+        "reasons": {
+          "defeat": 5,
+          "null": 3
+        }
+      },
+      "full": {
+        "wins": 5,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 5,
+          "The evacuation window closed.": 3
+        },
+        "reasons": {
+          "null": 5,
+          "defeat": 3
+        }
+      },
+      "queued": {
+        "wins": 6,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 6,
+          "The evacuation window closed.": 2
+        },
+        "reasons": {
+          "null": 6,
+          "defeat": 2
+        }
+      },
+      "classic": {
+        "wins": 8,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 8
+        },
+        "reasons": {
+          "null": 8
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "visibility": "clear",
+    "opponent": "queued",
+    "results": {
+      "hour8": {
+        "wins": 7,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 7,
+          "The evacuation window closed.": 1
+        },
+        "reasons": {
+          "null": 7,
+          "defeat": 1
+        }
+      },
+      "hour10": {
+        "wins": 6,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 6,
+          "The evacuation window closed.": 2
+        },
+        "reasons": {
+          "null": 6,
+          "defeat": 2
+        }
+      },
+      "full": {
+        "wins": 7,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 7,
+          "The evacuation window closed.": 1
+        },
+        "reasons": {
+          "null": 7,
+          "defeat": 1
+        }
+      },
+      "queued": {
+        "wins": 8,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 8
+        },
+        "reasons": {
+          "null": 8
+        }
+      },
+      "classic": {
+        "wins": 5,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 5,
+          "The evacuation window closed.": 3
+        },
+        "reasons": {
+          "null": 5,
+          "defeat": 3
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "visibility": "clear",
+    "opponent": "full",
+    "results": {
+      "hour8": {
+        "wins": 7,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 7,
+          "The evacuation window closed.": 1
+        },
+        "reasons": {
+          "null": 7,
+          "defeat": 1
+        }
+      },
+      "hour10": {
+        "wins": 6,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 6,
+          "The evacuation window closed.": 2
+        },
+        "reasons": {
+          "null": 6,
+          "defeat": 2
+        }
+      },
+      "full": {
+        "wins": 6,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 6,
+          "The evacuation window closed.": 2
+        },
+        "reasons": {
+          "null": 6,
+          "defeat": 2
+        }
+      },
+      "queued": {
+        "wins": 4,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara did not survive.": 1,
+          "The evacuation window closed.": 3,
+          "Mara and Tavin both reached safety.": 4
+        },
+        "reasons": {
+          "defeat": 4,
+          "null": 4
+        }
+      },
+      "classic": {
+        "wins": 5,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 5,
+          "The evacuation window closed.": 3
+        },
+        "reasons": {
+          "null": 5,
+          "defeat": 3
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "visibility": "clear",
+    "opponent": "predictor",
+    "results": {
+      "hour8": {
+        "wins": 7,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 7,
+          "The evacuation window closed.": 1
+        },
+        "reasons": {
+          "null": 7,
+          "defeat": 1
+        }
+      },
+      "hour10": {
+        "wins": 6,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 6,
+          "The evacuation window closed.": 2
+        },
+        "reasons": {
+          "null": 6,
+          "defeat": 2
+        }
+      },
+      "full": {
+        "wins": 7,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 7,
+          "The evacuation window closed.": 1
+        },
+        "reasons": {
+          "null": 7,
+          "defeat": 1
+        }
+      },
+      "queued": {
+        "wins": 8,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 8
+        },
+        "reasons": {
+          "null": 8
+        }
+      },
+      "classic": {
+        "wins": 5,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 5,
+          "The evacuation window closed.": 3
+        },
+        "reasons": {
+          "null": 5,
+          "defeat": 3
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "visibility": "player-fog",
+    "opponent": "classic",
+    "results": {
+      "hour8": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "hour10": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 5,
+          "Mara and Tavin both reached safety.": 3
+        },
+        "reasons": {
+          "defeat": 5,
+          "null": 3
+        }
+      },
+      "full": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "queued": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 7,
+          "Mara and Tavin both reached safety.": 1
+        },
+        "reasons": {
+          "defeat": 7,
+          "null": 1
+        }
+      },
+      "classic": {
+        "wins": 6,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 6,
+          "The evacuation window closed.": 2
+        },
+        "reasons": {
+          "null": 6,
+          "defeat": 2
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "visibility": "player-fog",
+    "opponent": "queued",
+    "results": {
+      "hour8": {
+        "wins": 6,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 6,
+          "The evacuation window closed.": 2
+        },
+        "reasons": {
+          "null": 6,
+          "defeat": 2
+        }
+      },
+      "hour10": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 3,
+          "The evacuation window closed.": 5
+        },
+        "reasons": {
+          "null": 3,
+          "defeat": 5
+        }
+      },
+      "full": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "queued": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 1,
+          "The evacuation window closed.": 7
+        },
+        "reasons": {
+          "null": 1,
+          "defeat": 7
+        }
+      },
+      "classic": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 3,
+          "The evacuation window closed.": 5
+        },
+        "reasons": {
+          "null": 3,
+          "defeat": 5
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "visibility": "player-fog",
+    "opponent": "full",
+    "results": {
+      "hour8": {
+        "wins": 4,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 4,
+          "Mara and Tavin both reached safety.": 4
+        },
+        "reasons": {
+          "defeat": 4,
+          "null": 4
+        }
+      },
+      "hour10": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 5,
+          "Mara and Tavin both reached safety.": 3
+        },
+        "reasons": {
+          "defeat": 5,
+          "null": 3
+        }
+      },
+      "full": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "queued": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 1,
+          "The evacuation window closed.": 7
+        },
+        "reasons": {
+          "null": 1,
+          "defeat": 7
+        }
+      },
+      "classic": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 7,
+          "Mara and Tavin both reached safety.": 1
+        },
+        "reasons": {
+          "defeat": 7,
+          "null": 1
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "visibility": "player-fog",
+    "opponent": "predictor",
+    "results": {
+      "hour8": {
+        "wins": 6,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 6,
+          "The evacuation window closed.": 2
+        },
+        "reasons": {
+          "null": 6,
+          "defeat": 2
+        }
+      },
+      "hour10": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 3,
+          "The evacuation window closed.": 5
+        },
+        "reasons": {
+          "null": 3,
+          "defeat": 5
+        }
+      },
+      "full": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "queued": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 1,
+          "The evacuation window closed.": 7
+        },
+        "reasons": {
+          "null": 1,
+          "defeat": 7
+        }
+      },
+      "classic": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 3,
+          "The evacuation window closed.": 5
+        },
+        "reasons": {
+          "null": 3,
+          "defeat": 5
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "visibility": "both-fog",
+    "opponent": "classic",
+    "results": {
+      "hour8": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 6,
+          "Mara and Tavin both reached safety.": 2
+        },
+        "reasons": {
+          "defeat": 6,
+          "null": 2
+        }
+      },
+      "hour10": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 2,
+          "The evacuation window closed.": 6
+        },
+        "reasons": {
+          "null": 2,
+          "defeat": 6
+        }
+      },
+      "full": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "queued": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "classic": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 6,
+          "Mara and Tavin both reached safety.": 2
+        },
+        "reasons": {
+          "defeat": 6,
+          "null": 2
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "visibility": "both-fog",
+    "opponent": "queued",
+    "results": {
+      "hour8": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "hour10": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "full": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "queued": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "classic": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 6,
+          "Mara and Tavin both reached safety.": 2
+        },
+        "reasons": {
+          "defeat": 6,
+          "null": 2
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "visibility": "both-fog",
+    "opponent": "full",
+    "results": {
+      "hour8": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "hour10": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "full": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "queued": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "classic": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 5,
+          "Mara and Tavin both reached safety.": 3
+        },
+        "reasons": {
+          "defeat": 5,
+          "null": 3
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-late-guard",
+    "visibility": "both-fog",
+    "opponent": "predictor",
+    "results": {
+      "hour8": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "hour10": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "full": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "queued": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "classic": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 6,
+          "Mara and Tavin both reached safety.": 2
+        },
+        "reasons": {
+          "defeat": 6,
+          "null": 2
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-nearside",
+    "visibility": "clear",
+    "opponent": "classic",
+    "results": {
+      "hour8": {
+        "wins": 4,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 4,
+          "Mara and Tavin both reached safety.": 4
+        },
+        "reasons": {
+          "defeat": 4,
+          "null": 4
+        }
+      },
+      "hour10": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "full": {
+        "wins": 6,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 6,
+          "The evacuation window closed.": 2
+        },
+        "reasons": {
+          "null": 6,
+          "defeat": 2
+        }
+      },
+      "queued": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 3,
+          "The evacuation window closed.": 5
+        },
+        "reasons": {
+          "null": 3,
+          "defeat": 5
+        }
+      },
+      "classic": {
+        "wins": 7,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 7,
+          "The evacuation window closed.": 1
+        },
+        "reasons": {
+          "null": 7,
+          "defeat": 1
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-nearside",
+    "visibility": "clear",
+    "opponent": "queued",
+    "results": {
+      "hour8": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara did not survive.": 2,
+          "Mara and Tavin both reached safety.": 2,
+          "The evacuation window closed.": 4
+        },
+        "reasons": {
+          "defeat": 6,
+          "null": 2
+        }
+      },
+      "hour10": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 5,
+          "Mara did not survive.": 1,
+          "Mara and Tavin both reached safety.": 2
+        },
+        "reasons": {
+          "defeat": 6,
+          "null": 2
+        }
+      },
+      "full": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 5,
+          "Mara and Tavin both reached safety.": 3
+        },
+        "reasons": {
+          "defeat": 5,
+          "null": 3
+        }
+      },
+      "queued": {
+        "wins": 6,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 2,
+          "Mara and Tavin both reached safety.": 6
+        },
+        "reasons": {
+          "defeat": 2,
+          "null": 6
+        }
+      },
+      "classic": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 3,
+          "The evacuation window closed.": 5
+        },
+        "reasons": {
+          "null": 3,
+          "defeat": 5
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-nearside",
+    "visibility": "clear",
+    "opponent": "full",
+    "results": {
+      "hour8": {
+        "wins": 5,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 5,
+          "The evacuation window closed.": 3
+        },
+        "reasons": {
+          "null": 5,
+          "defeat": 3
+        }
+      },
+      "hour10": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 3,
+          "The evacuation window closed.": 4,
+          "Mara did not survive.": 1
+        },
+        "reasons": {
+          "null": 3,
+          "defeat": 5
+        }
+      },
+      "full": {
+        "wins": 5,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 3,
+          "Mara and Tavin both reached safety.": 5
+        },
+        "reasons": {
+          "defeat": 3,
+          "null": 5
+        }
+      },
+      "queued": {
+        "wins": 4,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 4,
+          "Mara and Tavin both reached safety.": 4
+        },
+        "reasons": {
+          "defeat": 4,
+          "null": 4
+        }
+      },
+      "classic": {
+        "wins": 6,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 6,
+          "The evacuation window closed.": 2
+        },
+        "reasons": {
+          "null": 6,
+          "defeat": 2
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-nearside",
+    "visibility": "clear",
+    "opponent": "predictor",
+    "results": {
+      "hour8": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara did not survive.": 2,
+          "Mara and Tavin both reached safety.": 2,
+          "The evacuation window closed.": 4
+        },
+        "reasons": {
+          "defeat": 6,
+          "null": 2
+        }
+      },
+      "hour10": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 5,
+          "Mara did not survive.": 1,
+          "Mara and Tavin both reached safety.": 2
+        },
+        "reasons": {
+          "defeat": 6,
+          "null": 2
+        }
+      },
+      "full": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 5,
+          "Mara and Tavin both reached safety.": 3
+        },
+        "reasons": {
+          "defeat": 5,
+          "null": 3
+        }
+      },
+      "queued": {
+        "wins": 6,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 2,
+          "Mara and Tavin both reached safety.": 6
+        },
+        "reasons": {
+          "defeat": 2,
+          "null": 6
+        }
+      },
+      "classic": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 3,
+          "The evacuation window closed.": 5
+        },
+        "reasons": {
+          "null": 3,
+          "defeat": 5
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-nearside",
+    "visibility": "player-fog",
+    "opponent": "classic",
+    "results": {
+      "hour8": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 7,
+          "Mara and Tavin both reached safety.": 1
+        },
+        "reasons": {
+          "defeat": 7,
+          "null": 1
+        }
+      },
+      "hour10": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 6,
+          "Mara and Tavin both reached safety.": 2
+        },
+        "reasons": {
+          "defeat": 6,
+          "null": 2
+        }
+      },
+      "full": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 1,
+          "The evacuation window closed.": 7
+        },
+        "reasons": {
+          "null": 1,
+          "defeat": 7
+        }
+      },
+      "queued": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 6,
+          "Mara and Tavin both reached safety.": 2
+        },
+        "reasons": {
+          "defeat": 6,
+          "null": 2
+        }
+      },
+      "classic": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 3,
+          "The evacuation window closed.": 5
+        },
+        "reasons": {
+          "null": 3,
+          "defeat": 5
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-nearside",
+    "visibility": "player-fog",
+    "opponent": "queued",
+    "results": {
+      "hour8": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 6,
+          "Mara and Tavin both reached safety.": 2
+        },
+        "reasons": {
+          "defeat": 6,
+          "null": 2
+        }
+      },
+      "hour10": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 1,
+          "The evacuation window closed.": 7
+        },
+        "reasons": {
+          "null": 1,
+          "defeat": 7
+        }
+      },
+      "full": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 6,
+          "Mara and Tavin both reached safety.": 2
+        },
+        "reasons": {
+          "defeat": 6,
+          "null": 2
+        }
+      },
+      "queued": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "classic": {
+        "wins": 5,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 5,
+          "The evacuation window closed.": 3
+        },
+        "reasons": {
+          "null": 5,
+          "defeat": 3
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-nearside",
+    "visibility": "player-fog",
+    "opponent": "full",
+    "results": {
+      "hour8": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 5,
+          "Mara and Tavin both reached safety.": 3
+        },
+        "reasons": {
+          "defeat": 5,
+          "null": 3
+        }
+      },
+      "hour10": {
+        "wins": 5,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 5,
+          "The evacuation window closed.": 3
+        },
+        "reasons": {
+          "null": 5,
+          "defeat": 3
+        }
+      },
+      "full": {
+        "wins": 4,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 4,
+          "The evacuation window closed.": 4
+        },
+        "reasons": {
+          "null": 4,
+          "defeat": 4
+        }
+      },
+      "queued": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "classic": {
+        "wins": 4,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 4,
+          "The evacuation window closed.": 4
+        },
+        "reasons": {
+          "null": 4,
+          "defeat": 4
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-nearside",
+    "visibility": "player-fog",
+    "opponent": "predictor",
+    "results": {
+      "hour8": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 6,
+          "Mara and Tavin both reached safety.": 2
+        },
+        "reasons": {
+          "defeat": 6,
+          "null": 2
+        }
+      },
+      "hour10": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 1,
+          "The evacuation window closed.": 7
+        },
+        "reasons": {
+          "null": 1,
+          "defeat": 7
+        }
+      },
+      "full": {
+        "wins": 2,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 6,
+          "Mara and Tavin both reached safety.": 2
+        },
+        "reasons": {
+          "defeat": 6,
+          "null": 2
+        }
+      },
+      "queued": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "classic": {
+        "wins": 5,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 5,
+          "The evacuation window closed.": 3
+        },
+        "reasons": {
+          "null": 5,
+          "defeat": 3
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-nearside",
+    "visibility": "both-fog",
+    "opponent": "classic",
+    "results": {
+      "hour8": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 7,
+          "Mara and Tavin both reached safety.": 1
+        },
+        "reasons": {
+          "defeat": 7,
+          "null": 1
+        }
+      },
+      "hour10": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "full": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 1,
+          "The evacuation window closed.": 7
+        },
+        "reasons": {
+          "null": 1,
+          "defeat": 7
+        }
+      },
+      "queued": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 7,
+          "Mara and Tavin both reached safety.": 1
+        },
+        "reasons": {
+          "defeat": 7,
+          "null": 1
+        }
+      },
+      "classic": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "Mara and Tavin both reached safety.": 3,
+          "The evacuation window closed.": 5
+        },
+        "reasons": {
+          "null": 3,
+          "defeat": 5
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-nearside",
+    "visibility": "both-fog",
+    "opponent": "queued",
+    "results": {
+      "hour8": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "hour10": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "full": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 7,
+          "Mara and Tavin both reached safety.": 1
+        },
+        "reasons": {
+          "defeat": 7,
+          "null": 1
+        }
+      },
+      "queued": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 7,
+          "Mara and Tavin both reached safety.": 1
+        },
+        "reasons": {
+          "defeat": 7,
+          "null": 1
+        }
+      },
+      "classic": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-nearside",
+    "visibility": "both-fog",
+    "opponent": "full",
+    "results": {
+      "hour8": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "hour10": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "full": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 7,
+          "Mara and Tavin both reached safety.": 1
+        },
+        "reasons": {
+          "defeat": 7,
+          "null": 1
+        }
+      },
+      "queued": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "classic": {
+        "wins": 3,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 5,
+          "Mara and Tavin both reached safety.": 3
+        },
+        "reasons": {
+          "defeat": 5,
+          "null": 3
+        }
+      }
+    }
+  },
+  {
+    "variant": "crossfire-nearside",
+    "visibility": "both-fog",
+    "opponent": "predictor",
+    "results": {
+      "hour8": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "hour10": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      },
+      "full": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 7,
+          "Mara and Tavin both reached safety.": 1
+        },
+        "reasons": {
+          "defeat": 7,
+          "null": 1
+        }
+      },
+      "queued": {
+        "wins": 1,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 7,
+          "Mara and Tavin both reached safety.": 1
+        },
+        "reasons": {
+          "defeat": 7,
+          "null": 1
+        }
+      },
+      "classic": {
+        "wins": 0,
+        "games": 8,
+        "caps": 0,
+        "errors": 0,
+        "outcomes": {
+          "The evacuation window closed.": 8
+        },
+        "reasons": {
+          "defeat": 8
+        }
+      }
+    }
+  }
+]

@@ -98,10 +98,11 @@
   "description": "Expensive cavalry that crosses open ground quickly; dense woods and rough ground slow its mount.",
   "level": 2,
   "family": "horse-archer",
-  "advancesTo": ["horse-marksman"],
+  "advancesTo": [
+    "horse-marksman"
+  ],
   "experienceNeeded": 18,
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

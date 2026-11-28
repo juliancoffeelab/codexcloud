@@ -6,7 +6,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { checkMigrationBoundary } from "./check-migrations.mjs";
 checkMigrationBoundary(resolve("packages/save-migrations"));
-const frozen = JSON.parse(readFileSync("packages/save-migrations/ocaml/native-v52.json", "utf8"));
+const frozen = JSON.parse(readFileSync("packages/save-migrations/ocaml/native-v53.json", "utf8"));
 const live = JSON.parse(readFileSync(wasmPath("schema.json"), "utf8"));
 for (const [alias, primitive] of [
   ["Text", "String"],
@@ -36,7 +36,7 @@ for (const [name, definition] of Object.entries(frozen)) {
   );
 }
 const bridgeInputs = [
-  "packages/save-migrations/ocaml/native-v52.json",
+  "packages/save-migrations/ocaml/native-v53.json",
   "packages/save-migrations/src/formats/readers.json",
   "scripts/generate-migration-native-contract.py",
   "scripts/historical_shapes.py",

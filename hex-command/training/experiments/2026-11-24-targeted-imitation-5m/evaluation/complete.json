@@ -1,0 +1,105 @@
+{
+  "time": 1795479705.6204531,
+  "records": [
+    {
+      "minute": 0,
+      "model": "/workspace/codexcloud/hex-command/tmp/rl/pretrain-hour10-targeted-5m-20261124/hour10-planner.json",
+      "model_sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee",
+      "panels": {
+        "targeted": {
+          "wins": 24,
+          "runs": 128,
+          "caps": 0,
+          "score": 0.24444444444444435
+        },
+        "ordinary_retention": {
+          "wins": 14,
+          "runs": 28,
+          "caps": 0,
+          "score": 0.5000000000000001
+        },
+        "lantern_showcase": {
+          "wins": 4,
+          "runs": 24,
+          "caps": 7,
+          "score": 0.16666666666666666
+        }
+      }
+    },
+    {
+      "minute": 1,
+      "model": "/workspace/codexcloud/hex-command/tmp/rl/pretrain-hour10-targeted-5m-20261124/posttune/checkpoints/minute-0001-1795479410522625320/planner.json",
+      "model_sha256": "3a407586356f314996766ab5b1fb3450606b61ce45dd833868706c273efbbd07",
+      "panels": {
+        "targeted": {
+          "wins": 33,
+          "runs": 128,
+          "caps": 0,
+          "score": 0.2805555555555555
+        },
+        "ordinary_retention": {
+          "wins": 15,
+          "runs": 28,
+          "caps": 2,
+          "score": 0.5357142857142858
+        },
+        "lantern_showcase": {
+          "wins": 0,
+          "runs": 24,
+          "caps": 14,
+          "score": 0.0
+        }
+      }
+    },
+    {
+      "minute": 3,
+      "model": "/workspace/codexcloud/hex-command/tmp/rl/pretrain-hour10-targeted-5m-20261124/posttune/checkpoints/minute-0003-1795479531020456957/planner.json",
+      "model_sha256": "459314bd06cee1a88bbe836bea37db17f7edb28a3e6366fb94a0ec97fd0ab4de",
+      "panels": {
+        "targeted": {
+          "wins": 43,
+          "runs": 128,
+          "caps": 0,
+          "score": 0.29722222222222217
+        },
+        "ordinary_retention": {
+          "wins": 4,
+          "runs": 28,
+          "caps": 4,
+          "score": 0.1428571428571429
+        },
+        "lantern_showcase": {
+          "wins": 0,
+          "runs": 24,
+          "caps": 22,
+          "score": 0.0
+        }
+      }
+    },
+    {
+      "minute": 5,
+      "model": "/workspace/codexcloud/hex-command/tmp/rl/pretrain-hour10-targeted-5m-20261124/posttune/checkpoints/minute-0005-1795479651279313147/planner.json",
+      "model_sha256": "06c2b40d0edf11e6d589514bd3fc7890667c914af3ce08886c2a538cd9e9871a",
+      "panels": {
+        "targeted": {
+          "wins": 78,
+          "runs": 128,
+          "caps": 0,
+          "score": 0.4770833333333332
+        },
+        "ordinary_retention": {
+          "wins": 5,
+          "runs": 28,
+          "caps": 2,
+          "score": 0.1785714285714286
+        },
+        "lantern_showcase": {
+          "wins": 0,
+          "runs": 24,
+          "caps": 22,
+          "score": 0.0
+        }
+      }
+    }
+  ]
+}

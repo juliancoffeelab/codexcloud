@@ -4,19 +4,30 @@ import argparse
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 import json
+import math
 import os
 from pathlib import Path
 import random
 import resource
+import signal
 import time
 import numpy as np
 import torch
 from torch.nn import functional as F
 import hex_command_training as native
-from .mixed_workload import group, weights
-from .ppo import ActorCritic, pack, unpack, advantages, categorical, categorical_kl
+from .sampling import Sampler
+from .ppo import ActorCritic, pack, unpack, advantages, categorical, resolve_device
 from .spatial import SpatialPlanner
+from .recurrent import (
+    MemoryBank,
+    windows,
+    replay,
+    group_windows,
+    prepare_replay_batch,
+    replay_prepared_batch,
+)
 from .recovery import save_bundle, atomic_json, load_resume, read_jsonl
+from .mixed_workload import reward_rules, sampling_group, task, definition
 
 
 def terminal_reward(config, reward, truncated, result=None, campaign_cap=-2.0):
@@ -25,88 +36,26 @@ def terminal_reward(config, reward, truncated, result=None, campaign_cap=-2.0):
     if truncated:
         return campaign_cap
     if reward < 0 and result:
-        return {"escort_loss": -2.0, "protected_loss": -1.5, "leader_loss": -1.0}.get(
+        return {"escort_loss": -2.0, "protected_loss": -1.5, "leader_loss": -1.5}.get(
             result.get("failure"), -1.0
         )
     return float(reward)
 
 
-class Sampler:
-    """Track decision budgets, including work reserved for live episodes."""
+def step_reward(config, reward, truncated, result, chapter_clears, campaign_cap):
+    reward = terminal_reward(config, reward, truncated, result, campaign_cap)
+    rules = reward_rules(config)
+    if result and result["success"] and not truncated:
+        reward = rules["win"]
+    reward += rules["chapter"] * chapter_clears
+    return reward
 
-    def __init__(self, configs, rng, state=None):
-        self.rng = rng
-        self.templates = defaultdict(list)
-        self.weights = {}
-        seen = set()
-        masses = weights(configs)
-        for c in configs:
-            k = json.dumps(group(c))
-            base = dict(c)
-            base.pop("seed")
-            base["maxRounds"] = 100
-            identity = json.dumps(base, sort_keys=True)
-            if identity not in seen:
-                self.templates[k].append(base)
-                seen.add(identity)
-            self.weights[k] = masses[group(c)]
-        self.counts = {k: 0 for k in self.templates}
-        self.average = {
-            k: 90.0 if json.loads(k)[0] == "arena" else 300.0 for k in self.templates
-        }
-        self.cursor = {k: 0 for k in self.templates}
-        self.next_seed = 7000001
-        self.pending = {}
-        if state:
-            self.counts = state["counts"]
-            self.average = state["average"]
-            self.cursor = state["cursor"]
-            self.next_seed = state["next_seed"]
 
-    def choose(self, slot):
-        loads = {k: float(v) for k, v in self.counts.items()}
-        for k, n in self.pending.values():
-            loads[k] += n
-        family = {
-            f: sum(v for k, v in loads.items() if json.loads(k)[0] == f)
-            for f in ["arena", "campaign"]
-        }
-        f = min(family, key=lambda x: family[x])
-        keys = [k for k in loads if json.loads(k)[0] == f]
-        # Within a family, retain equal task budgets and split variants inside them.
-        total = sum(loads[k] for k in keys)
-        k = max(
-            keys,
-            key=lambda k: (
-                self.weights[k] / 0.5 * (total + 200)
-                - loads[k]
-                + float(self.rng.uniform(0, 1e-5))
-            ),
-        )
-        templates = self.templates[k]
-        i = self.cursor[k] % len(templates)
-        self.cursor[k] += 1
-        c = dict(templates[i], seed=self.next_seed)
-        self.next_seed += 1
-        self.pending[slot] = (k, self.average[k])
-        return c, k
-
-    def step(self, slot):
-        k, n = self.pending[slot]
-        self.counts[k] += 1
-        self.pending[slot] = (k, max(0.0, n - 1))
-
-    def finish(self, slot, length):
-        k, _ = self.pending.pop(slot)
-        self.average[k] = 0.9 * self.average[k] + 0.1 * length
-
-    def state(self):
-        return dict(
-            counts=self.counts,
-            average=self.average,
-            cursor=self.cursor,
-            next_seed=self.next_seed,
-        )
+def cosine_lr(start_lr: float, min_lr: float | None, progress: float) -> float:
+    if min_lr is None:
+        return start_lr
+    p = min(max(progress, 0.0), 1.0)
+    return min_lr + 0.5 * (start_lr - min_lr) * (1.0 + math.cos(math.pi * p))
 
 
 def main():
@@ -121,6 +70,13 @@ def main():
         help="fresh rollout seeds for a warm start (at least 7000001)",
     )
     p.add_argument("--envs", type=int, default=4)
+    p.add_argument("--device", choices=["auto", "cpu", "mps", "cuda"], default="cpu")
+    p.add_argument("--precision", choices=["auto", "fp32", "fp16"], default="auto")
+    p.add_argument("--window-batch", type=int, default=None)
+    p.add_argument("--actor-lr", type=float, default=None)
+    p.add_argument("--min-actor-lr", type=float, default=None)
+    p.add_argument("--lr-horizon-seconds", type=float, default=None)
+    p.add_argument("--checkpoint-seconds", type=float, default=120.0)
     p.add_argument("--critic-warmup-episodes", type=int, default=24)
     p.add_argument("--horizon", type=int, default=64)
     p.add_argument("--temperature", type=float)
@@ -130,18 +86,47 @@ def main():
     a = p.parse_args()
     if (
         not 0 < a.seconds <= 43200
-        or not 1 <= a.envs <= 4
+        or not 1 <= a.envs <= 16
+        or a.window_batch is not None
+        and a.window_batch < 1
         or a.temperature is not None
         and not 0.05 <= a.temperature <= 2
         or a.horizon < 1
+        or a.checkpoint_seconds <= 0
     ):
         p.error("invalid PPO budget")
+    try:
+        device = resolve_device(a.device)
+    except ValueError as err:
+        p.error(str(err))
+    window_batch = a.window_batch or (1 if device.type == "cpu" else 4)
+    actor_lr = (
+        a.actor_lr
+        if a.actor_lr is not None
+        else 5e-6 * math.sqrt(window_batch)
+    )
+    if not actor_lr > 0:
+        p.error("--actor-lr must be positive")
+    if a.min_actor_lr is not None and not (0 < a.min_actor_lr <= actor_lr):
+        p.error("--min-actor-lr must be in (0, actor_lr]")
+    lr_horizon = a.lr_horizon_seconds if a.lr_horizon_seconds is not None else a.seconds
+    if not lr_horizon > 0:
+        p.error("--lr-horizon-seconds must be positive")
+    use_fp16 = (
+        device.type != "cpu"
+        if a.precision == "auto"
+        else a.precision == "fp16"
+    )
+    if use_fp16 and device.type == "cpu":
+        p.error("--precision fp16 requires --device mps or cuda")
     root = a.root
     run = root / "rl"
     run.mkdir(exist_ok=True)
     spec = json.loads((root / "workload.json").read_text())
     os.environ["HEX_COMMAND_DATA_ROOT"] = spec["catalog"]
     assert json.loads(native.fingerprints()) == spec["fingerprints"]
+    training_spec = definition()
+    profiles = training_spec["rewardProfiles"]
     torch.set_num_threads(1)
     torch.set_num_interop_threads(1)
     torch.manual_seed(271)
@@ -172,10 +157,12 @@ def main():
         from .checkpoint import expand_state
 
         expand_state(policy, warm["policy"])
-    ac = ActorCritic(policy).eval()
+    policy = policy.to(device)
+    ac = ActorCritic(policy).eval().to(device)
     reference = SpatialPlanner().eval().requires_grad_(False)
     reference.load_state_dict(old["reference"] if old else policy.state_dict())
-    actor_opt = torch.optim.Adam(policy.parameters(), lr=5e-6)
+    reference = reference.to(device)
+    actor_opt = torch.optim.Adam(policy.parameters(), lr=actor_lr)
     critic_opt = torch.optim.Adam(ac.critic.parameters(), lr=1e-3)
     if old:
         ac.critic.load_state_dict(old["critic"])
@@ -187,12 +174,20 @@ def main():
     sampler = Sampler(spec["train"], rng, old["sampler"] if old else None)
     if not old:
         sampler.next_seed = seed_start
+    atomic_json(run / "sampler-status.json", sampler.report())
     update = old["update"] if old else 0
     episodes = old["episodes"] if old else 0
     decisions = old["decisions"] if old else 0
     elapsed = old["elapsed"] if old else 0.0
     start = time.monotonic()
     deadline = start + max(0, a.seconds - elapsed)
+    stop_requested = False
+
+    def _handle_term(_signum, _frame):
+        nonlocal stop_requested
+        stop_requested = True
+
+    signal.signal(signal.SIGTERM, _handle_term)
     read_jsonl(run / "metrics.jsonl", repair=True)
     log = (run / "metrics.jsonl").open("a")
     action_counts = defaultdict(int, old.get("action_counts", {}) if old else {})
@@ -247,11 +242,17 @@ def main():
             seed_start=seed_start,
             temperature=a.temperature,
             envs=a.envs,
+            device=str(device),
+            precision="fp16" if use_fp16 else "fp32",
+            window_batch=window_batch,
             horizon=a.horizon,
             minibatch_size=8,
+            recurrent_window=8,
+            reference_outputs_cached=True,
             optimization_epochs=3,
             max_gradient_norm=0.5,
-            actor_lr=5e-6,
+            actor_lr=actor_lr,
+            checkpoint_seconds=a.checkpoint_seconds,
             critic_lr=1e-3,
             gamma=0.999,
             gae_lambda=0.95,
@@ -260,13 +261,15 @@ def main():
             reference_kl_coefficient=0.02,
             critic_warmup_episodes=a.critic_warmup_episodes,
             rewards=dict(
-                campaign_success=1,
+                profiles=profiles,
+                campaign_chapter=profiles["campaign"]["chapter"],
+                campaign_finale=profiles["campaign"]["win"],
                 campaign_defeat=-1,
                 campaign_cap=a.campaign_cap,
                 escort_loss=-2,
                 protected_loss=-1.5,
-                leader_loss=-1,
-                arena_win=1,
+                leader_loss=-1.5,
+                arena_win=profiles["arena"]["win"],
                 arena_defeat=-1,
                 arena_cap=-1,
             ),
@@ -278,13 +281,21 @@ def main():
     cases = {}
     keys = {}
     lengths = {i: 0 for i in range(a.envs)}
+    chapters_cleared = {}
+    episode_returns = {}
     observations = {}
 
+    memory_bank, reference_bank = MemoryBank(), MemoryBank()
+
     def reset(slot):
+        memory_bank.reset(slot)
+        reference_bank.reset(slot)
         c, k = sampler.choose(slot)
         cases[slot] = c
         keys[slot] = k
         lengths[slot] = 0
+        chapters_cleared[slot] = 0
+        episode_returns[slot] = 0.0
         return c
 
     try:
@@ -295,7 +306,7 @@ def main():
             }
             observations = {i: f.result() for i, f in initial.items()}
             last_save = time.monotonic()
-            while time.monotonic() < deadline:
+            while time.monotonic() < deadline and not stop_requested:
                 samples = []
                 rew = []
                 vals = []
@@ -312,15 +323,33 @@ def main():
                         for i, obs in observations.items()
                     }
                     ids = list(views)
-                    tensors = pack(list(views.values()))
-                    with torch.no_grad():
-                        dist, v = ac(*tensors, a.temperature)
+                    tensors = pack(list(views.values()), device=device)
+                    contexts = [envs[i].decision_contexts()[0] for i in ids]
+                    memory, memory_resets = memory_bank.inputs(ids, contexts, device=device)
+                    ref_memory, _ = reference_bank.inputs(ids, contexts, device=device)
+                    with torch.no_grad(), torch.amp.autocast(
+                        device.type, dtype=torch.float16, enabled=use_fp16
+                    ):
+                        dist, v, next_memory = ac.forward_recurrent(*tensors, a.temperature, memory)
                         acts = dist.sample()
                         old_lp = dist.log_prob(acts)
+                    acts_cpu = acts.cpu().tolist()
+                    # Submit Rust env steps before running reference so CPU stepping overlaps GPU inference.
                     futures = {
-                        i: pool.submit(envs[i].step, [int(acts[j])])
+                        i: pool.submit(envs[i].step, [int(acts_cpu[j])])
                         for j, i in enumerate(ids)
                     }
+                    with torch.no_grad(), torch.amp.autocast(
+                        device.type, dtype=torch.float16, enabled=use_fp16
+                    ):
+                        ref_scores, _, next_ref = reference.forward_recurrent(*tensors[:3], ref_memory)
+                        ref_dist = categorical(ref_scores, tensors[3], a.temperature)
+                    memory_bank.commit(ids, contexts, memory, next_memory)
+                    reference_bank.commit(ids, contexts, ref_memory, next_ref)
+                    vals_cpu = v.cpu().tolist()
+                    old_lp_cpu = old_lp.cpu().tolist()
+                    mem_cpu = memory.detach().cpu().numpy()
+                    ref_logits_cpu = ref_dist.logits.detach().cpu().numpy()
                     rewards = np.zeros(a.envs, np.float32)
                     values = np.zeros(a.envs, np.float32)
                     dones = np.zeros(a.envs, np.float32)
@@ -329,27 +358,39 @@ def main():
                     for j, i in enumerate(ids):
                         nxt = futures[i].result()
                         terminal = nxt[3][0] or nxt[4][0]
-                        r = float(nxt[2][0])
                         c = cases[i]
                         result = json.loads(envs[i].results()[0]) if terminal else None
-                        r = terminal_reward(c, r, nxt[4][0], result, a.campaign_cap)
+                        cleared = envs[i].chapters_cleared()[0]
+                        r = step_reward(
+                            c,
+                            nxt[2][0],
+                            nxt[4][0],
+                            result,
+                            cleared - chapters_cleared[i],
+                            a.campaign_cap,
+                        )
+                        chapters_cleared[i] = cleared
+                        episode_returns[i] += r
                         rewards[i] = r
-                        values[i] = float(v[j])
+                        values[i] = float(vals_cpu[j])
                         dones[i] = terminal
                         sampler.step(i)
                         lengths[i] += 1
                         decisions += 1
                         action_counts[
                             ["end_turn", "move", "attack", "advance"][
-                                int(views[i][0][int(acts[j]), :4].argmax())
+                                int(views[i][0][int(acts_cpu[j]), :4].argmax())
                             ]
                         ] += 1
                         step.append(
                             dict(
                                 slot=i,
+                                context=contexts[j], memory=mem_cpu[j].copy(),
+                                memory_reset=memory_resets[j],
+                                reference_logits=ref_logits_cpu[j, :len(views[i][0])].copy(),
                                 observation=views[i],
-                                action=int(acts[j]),
-                                old_log_prob=float(old_lp[j]),
+                                action=int(acts_cpu[j]),
+                                old_log_prob=float(old_lp_cpu[j]),
                             )
                         )
                         if terminal:
@@ -359,13 +400,23 @@ def main():
                                 episode=episodes,
                                 config=c,
                                 group=json.loads(keys[i]),
+                                sampling_group=sampling_group(c, training_spec),
+                                sampling_map=task(c, training_spec),
+                                reward_profile=reward_rules(c, training_spec),
                                 reward=r,
-                                success=r > 0,
+                                episode_return=episode_returns[i],
+                                success=result["success"],
                                 truncated=bool(nxt[4][0]),
                                 result=result,
                                 length=lengths[i],
                             )
-                            sampler.finish(i, lengths[i])
+                            sampling = sampler.finish(
+                                i, lengths[i], success=result["success"],
+                                truncated=bool(nxt[4][0]),
+                            )
+                            if sampling is not None:
+                                record("sampling", **sampling)
+                                atomic_json(run / "sampler-status.json", sampler.report())
                             resets[i] = pool.submit(
                                 envs[i].reset, [json.dumps(reset(i))]
                             )
@@ -384,10 +435,18 @@ def main():
                     for i, obs in observations.items()
                 }
                 bootstrap = np.zeros(a.envs, np.float32)
-                with torch.no_grad():
-                    _, next_v = ac(*pack(list(views.values())), a.temperature)
+                with torch.no_grad(), torch.amp.autocast(
+                    device.type, dtype=torch.float16, enabled=use_fp16
+                ):
+                    ids = list(views)
+                    contexts = [envs[i].decision_contexts()[0] for i in ids]
+                    memory, _ = memory_bank.inputs(ids, contexts, device=device)
+                    _, next_v, _ = ac.forward_recurrent(
+                        *pack(list(views.values()), device=device), a.temperature, memory
+                    )
+                next_v_cpu = next_v.cpu().tolist()
                 for j, i in enumerate(views):
-                    bootstrap[i] = float(next_v[j])
+                    bootstrap[i] = float(next_v_cpu[j])
                 advantage, returns = advantages(
                     np.asarray(rew),
                     np.asarray(vals),
@@ -411,31 +470,38 @@ def main():
                     s["advantage"] = float(value)
                 warmup = episodes < a.critic_warmup_episodes or update < 4
                 update += 1
+                total_elapsed = elapsed + time.monotonic() - start
+                current_actor_lr = cosine_lr(
+                    actor_lr, a.min_actor_lr, total_elapsed / lr_horizon
+                )
+                for group in actor_opt.param_groups:
+                    group["lr"] = current_actor_lr
                 stats = []
+                prepared_batches = (
+                    [
+                        prepare_replay_batch(batch, device, fp16=use_fp16)
+                        for batch in group_windows(windows(flat, rng), window_batch, rng)
+                    ]
+                    if window_batch > 1
+                    else None
+                )
                 for epoch in range(3):
-                    order = rng.permutation(len(flat))
-                    for first in range(0, len(flat), 8):
+                    batches = (
+                        windows(flat, rng)
+                        if window_batch == 1
+                        else [
+                            prepared_batches[i]
+                            for i in rng.permutation(len(prepared_batches))
+                        ]
+                    )
+                    for batch in batches:
                         if time.monotonic() >= deadline:
                             break
-                        batch = [flat[i] for i in order[first : first + 8]]
-                        tensors = pack([s["observation"] for s in batch])
-                        dist, value = ac(*tensors, a.temperature)
-                        acts = torch.tensor([s["action"] for s in batch])
-                        old_lp = torch.tensor([s["old_log_prob"] for s in batch])
-                        adv = torch.tensor([s["advantage"] for s in batch])
-                        target = torch.tensor([s["target"] for s in batch])
-                        logp = dist.log_prob(acts)
-                        ratio = (logp - old_lp).clamp(-20, 20).exp()
-                        policy_loss = -torch.minimum(
-                            ratio * adv, ratio.clamp(0.8, 1.2) * adv
-                        ).mean()
-                        value_loss = F.mse_loss(value, target)
-                        with torch.no_grad():
-                            ref = categorical(
-                                reference(*tensors[:3]), tensors[3], a.temperature
-                            )
-                        kl = categorical_kl(dist, ref).mean()
-                        entropy = dist.entropy().mean()
+                        policy_loss, value_loss, entropy, kl, clip_fraction = (
+                            replay(ac, batch, a.temperature, device=device)
+                            if window_batch == 1
+                            else replay_prepared_batch(ac, batch, a.temperature)
+                        )
                         loss = value_loss + (
                             0 if warmup else policy_loss + 0.02 * kl - 0.001 * entropy
                         )
@@ -458,13 +524,16 @@ def main():
                                     value_loss,
                                     entropy,
                                     kl,
-                                    ((ratio - 1).abs() > 0.2).float().mean(),
+                                    clip_fraction,
                                     norm,
                                 ]
                             ]
                         )
                     if time.monotonic() >= deadline:
                         break
+                prepared_batches = None
+                if device.type == "mps" and torch.mps.driver_allocated_memory() > 1_500_000_000:
+                    torch.mps.empty_cache()
                 if stats:
                     m = np.mean(stats, 0)
                     target_np = returns.flatten()
@@ -494,28 +563,31 @@ def main():
                         clip_fraction=m[4],
                         gradient_norm=m[5],
                         critic_explained_variance=ev,
+                        actor_lr=current_actor_lr,
                         warmup=warmup,
                         family_decisions=family,
                         action_counts=dict(action_counts),
                     )
-                if time.monotonic() - last_save >= 120:
+                if time.monotonic() - last_save >= a.checkpoint_seconds:
                     checkpoint(f"update-{update:08d}")
                     last_save = time.monotonic()
     finally:
+        atomic_json(run / "sampler-status.json", sampler.report())
         checkpoint("last")
         for env in envs:
             env.close()
         record("finished", updates=update, episodes=episodes, decisions=decisions)
         log.close()
-    atomic_json(
-        run / "complete.json",
-        dict(
-            elapsed=elapsed + time.monotonic() - start,
-            updates=update,
-            episodes=episodes,
-            decisions=decisions,
-        ),
-    )
+    if not stop_requested:
+        atomic_json(
+            run / "complete.json",
+            dict(
+                elapsed=elapsed + time.monotonic() - start,
+                updates=update,
+                episodes=episodes,
+                decisions=decisions,
+            ),
+        )
 
 
 if __name__ == "__main__":

@@ -1,0 +1,112 @@
+{
+  "time": 1795651823.3507955,
+  "processes": {
+    "trainer": [
+      981
+    ],
+    "evaluator": [
+      982
+    ],
+    "supervisor": [
+      1076
+    ]
+  },
+  "supervisor_reattachment": {
+    "old": 980,
+    "new": 1076,
+    "trainer_and_evaluator_unchanged": true,
+    "child_restarts": 0
+  },
+  "new_updates": 8,
+  "last_update": {
+    "event": "update",
+    "seconds": 43327.618779584,
+    "update": 3309,
+    "decisions": 847104,
+    "episodes": 11396,
+    "policy_loss": -0.0770114188392957,
+    "value_loss": 0.024134386943322688,
+    "entropy": 0.5684155937193334,
+    "reference_kl": 0.1194808570766033,
+    "clip_fraction": 0.0035714285714285713,
+    "gradient_norm": 26.9250370106172,
+    "critic_explained_variance": 0.897120312462101,
+    "warmup": false,
+    "family_decisions": {
+      "arena": 216258,
+      "campaign": 630846
+    },
+    "action_counts": {
+      "end_turn": 143104,
+      "move": 580824,
+      "attack": 116235,
+      "advance": 6941
+    }
+  },
+  "validated_pointers": {
+    "local": {
+      "path": "checkpoints/update-00003309-1795651815479067130",
+      "sha256": "96a2d897d8260a44cb9eda342ec727e1bf647e3317d73da39f1809571c7cc378"
+    },
+    "shared": {
+      "path": "checkpoints/update-00003309-1795651815479067130",
+      "sha256": "96a2d897d8260a44cb9eda342ec727e1bf647e3317d73da39f1809571c7cc378"
+    }
+  },
+  "complete_sentinels_absent": true,
+  "target": 86400.194862209,
+  "seconds": 43328.953223934,
+  "native_and_workload_unchanged": true,
+  "final_check_time": 1795651874.3756392,
+  "exposure_delta": {
+    "arena:rl-twin-fords": 0,
+    "arena:rl-splitpine-clearing": 0,
+    "arena:rl-crown-gap": 86,
+    "arena:rl-jawbone-crossing": 0,
+    "arena:rl-sump-teeth": 0,
+    "arena:rl-last-lantern": 92,
+    "arena:rl-switchback-saltworks": 0,
+    "arena:rl-cinderfault": 236,
+    "arena:rl-sable-sound": 152,
+    "arena:rl-three-wells-trail": 0,
+    "arena:rl-frosthook-gate": 0,
+    "arena:rl-birch-pocket": 67,
+    "arena:rl-quarry-ring": 17,
+    "arena:rl-fordstep": 0,
+    "targeted:rl-marlow-cut-pass-finish": 23,
+    "targeted:rl-ashbank-relay-fork-vigil": 62,
+    "targeted:rl-bellmarket-courts": 0,
+    "targeted:rl-breakthrough-cave5": 37,
+    "targeted:rl-breakthrough-ford-heal08": 12,
+    "targeted:rl-briar-saddle": 11,
+    "targeted:rl-deadline-pines-relief8": 27,
+    "targeted:rl-deadline-wait7": 0,
+    "targeted:rl-defend-bracken-stand-010": 17,
+    "targeted:rl-defend-lower-gallery-0": 52,
+    "targeted:rl-defend-tidegate-stand-110": 0,
+    "targeted:rl-escort-lantern-maze": 0,
+    "targeted:rl-escort-mistfen-patrol": 0,
+    "targeted:rl-escort-splitwake-patrol": 69,
+    "targeted:rl-hollowbank-extraction-crossfire-late-guard": 69,
+    "targeted:rl-hollowbank-extraction-crossfire-nearside": 0,
+    "targeted:rl-interrupt-herring-tide-road-three": 53,
+    "targeted:rl-interrupt-siltbar-approach": 50,
+    "targeted:rl-interrupt-south-ford-west-post": 0,
+    "targeted:rl-lair-outworks": 42,
+    "targeted:rl-route-ambush": 39,
+    "targeted:rl-route-pass-road": 0,
+    "targeted:rl-route-pocket-leader": 48,
+    "targeted:rl-slate-gallery": 20,
+    "campaign:rl-splitwake-crossing": 614,
+    "targeted:rl-thorn-verge": 0,
+    "campaign:rl-underground-escape": 156,
+    "targeted:rl-urgent-crossing": 0,
+    "targeted:rl-vault-rally": 0,
+    "targeted:rl-whitecap-ford": 18,
+    "campaign:rl-woodland-defense": 387
+  },
+  "ordinary_maps_with_work": 6,
+  "ordinary_map_count": 14,
+  "exposure_note": "Early launch sample only; hourly monitor must check all maps positive incremental exposure. Not claiming all maps received work in this short startup window.",
+  "training_math_unchanged_verified": true
+}

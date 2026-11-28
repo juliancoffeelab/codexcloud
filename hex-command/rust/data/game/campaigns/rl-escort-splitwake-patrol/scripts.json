@@ -1,0 +1,293 @@
+{
+  "requiredCompanions": ["courier"],
+  "events": [
+    {
+      "id": "courier-lost",
+      "when": {
+        "all": [
+          {
+            "noUnits": {
+              "character": "courier",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          },
+          {
+            "not": {
+              "flag": "escort-safe"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "defeat": "The courier was intercepted."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": {
+        "faction": "enemy",
+        "label": "Intercept the courier",
+        "intent": {
+          "defeat": {
+            "character": "courier",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": null,
+        "playerMarker": null,
+        "preserveLives": null
+      }
+    },
+    {
+      "id": "escort-safe",
+      "when": {
+        "stand": {
+          "character": "courier",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null,
+          "tile": {
+            "hex": {
+              "col": 10,
+              "row": 9
+            }
+          },
+          "through": false
+        }
+      },
+      "actions": [
+        {
+          "setFlag": "escort-safe"
+        },
+        {
+          "deleteUnit": {
+            "character": "courier",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        {
+          "log": "Signal post reached. The commander can leave through the outer landing."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "label": "Escort the companion to safety",
+        "intent": {
+          "escort": {
+            "character": "courier",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null,
+            "tile": {
+              "hex": {
+                "col": 10,
+                "row": 9
+              }
+            },
+            "through": false
+          }
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": null,
+        "satisfiedWhen": {
+          "flag": "escort-safe"
+        },
+        "playerMarker": null,
+        "preserveLives": {
+          "character": "courier",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      }
+    },
+    {
+      "id": "commander-lost",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turnAtLeast": 31
+      },
+      "actions": [
+        {
+          "defeat": "The deadline expired."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    },
+    {
+      "id": "leader-exit",
+      "when": {
+        "all": [
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 1,
+                  "row": 21
+                }
+              },
+              "through": false,
+              "character": "player-leader",
+              "role": "leader",
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          },
+          {
+            "flag": "escort-safe"
+          }
+        ]
+      },
+      "actions": [
+        {
+          "victory": "Commander evacuated."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 1,
+      "objective": {
+        "faction": "player",
+        "label": "Evacuate the commander",
+        "intent": {
+          "escape": {
+            "tile": {
+              "hex": {
+                "col": 1,
+                "row": 21
+              }
+            },
+            "through": false,
+            "character": "player-leader",
+            "role": "leader",
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "id": null,
+        "optional": false,
+        "visibleWhen": {
+          "flag": "escort-safe"
+        },
+        "availableWhen": {
+          "flag": "escort-safe"
+        },
+        "satisfiedWhen": null,
+        "playerMarker": null,
+        "preserveLives": null
+      }
+    },
+    {
+      "id": "outlying-patrol",
+      "when": {
+        "turnAtLeast": 8
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 10,
+      "objective": null,
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 3,
+                "row": 23
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": ["reefguard", "harpooner", "merfolk-maceguard"]
+          }
+        },
+        {
+          "log": "The hostile outlying patrol has arrived near the exit."
+        }
+      ]
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

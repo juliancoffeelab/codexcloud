@@ -9,7 +9,20 @@ pub const LEGACY_FEATURES: usize = 172;
 pub const DUTY_FEATURES: usize = 219;
 pub const DIPLOMACY_FEATURES: usize = 227;
 pub const CAMPAIGN_FEATURES: usize = LEGACY_FEATURES + super::duties::NAMES.len();
-pub const FEATURES: usize = CAMPAIGN_FEATURES + super::visibility::NAMES.len();
+pub const VISIBILITY_FEATURES: usize = CAMPAIGN_FEATURES + super::visibility::NAMES.len();
+pub const IDLE_FEATURES: usize = VISIBILITY_FEATURES + 2;
+pub const UNIT_HISTORY_NAMES: [&str; 9] = [
+    "unit_history_known",
+    "unit_previous_action_move",
+    "unit_previous_action_attack",
+    "unit_previous_action_advance",
+    "unit_move_history_known",
+    "unit_turns_since_move",
+    "unit_attack_history_known",
+    "unit_turns_since_attack",
+    "move_returns_to_previous_position",
+];
+pub const FEATURES: usize = IDLE_FEATURES + UNIT_HISTORY_NAMES.len();
 pub const LEGACY_FEATURE_NAMES: [&str; LEGACY_FEATURES] = [
     "end_turn",
     "move",
@@ -203,10 +216,18 @@ pub const FEATURE_NAMES: [&str; FEATURES] = {
         names[CAMPAIGN_FEATURES + k] = super::visibility::NAMES[k];
         k += 1;
     }
+    names[VISIBILITY_FEATURES] = "consecutive_idle_turns";
+    names[VISIBILITY_FEATURES + 1] = "acted_this_turn";
+    let mut h = 0;
+    while h < UNIT_HISTORY_NAMES.len() {
+        names[IDLE_FEATURES + h] = UNIT_HISTORY_NAMES[h];
+        h += 1;
+    }
     names
 };
 #[derive(Clone)]
 pub struct Choices {
+    pub context: super::DecisionContext,
     pub spatial: Option<super::spatial::Spatial>,
     pub commands: Vec<RuntimeCommand>,
     pub features: Vec<[f32; FEATURES]>,
@@ -265,14 +286,21 @@ pub fn candidates(game: &BattleView<'_, '_>, orders: &TacticalOrders) -> Choices
         }
     }
     let extra = Extra::new(game, orders);
+    let history = super::history_features(game);
     let features = commands
         .iter()
         .zip(move_costs)
-        .map(|(c, cost)| encode(game, orders, c, cost, &extra))
+        .map(|(c, cost)| {
+            let mut row = encode(game, orders, c, cost, &extra);
+            row[VISIBILITY_FEATURES..IDLE_FEATURES].copy_from_slice(&history);
+            row[IDLE_FEATURES..].copy_from_slice(&super::unit_history_features(game, c));
+            row
+        })
         .collect();
     let spatial = super::needs_spatial()
         .then(|| super::spatial::observe_with_duties(game, orders, &commands, &extra.duties));
     Choices {
+        context: super::decision_context(game),
         commands,
         features,
         spatial,
@@ -296,7 +324,7 @@ fn encode(
     extra
         .duties
         .encode(g, orders, c, &mut x[LEGACY_FEATURES..CAMPAIGN_FEATURES]);
-    x[CAMPAIGN_FEATURES..].copy_from_slice(&g.visibility_action_features(c));
+    x[CAMPAIGN_FEATURES..VISIBILITY_FEATURES].copy_from_slice(&g.visibility_action_features(c));
     let (id, tile, target, weapon) = match c {
         RuntimeCommand::EndTurn => {
             x[0] = 1.;

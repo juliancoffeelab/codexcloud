@@ -1,0 +1,36 @@
+{
+  "training_seconds": 300,
+  "requested_checkpoints_minutes": [
+    1,
+    3,
+    5
+  ],
+  "checkpoint_seconds": 60,
+  "training_games": 600,
+  "imitation_validation_games": 100,
+  "enabled_groups": 25,
+  "enabled_conditions": 16,
+  "enabled_maps": 9,
+  "threads": 2,
+  "sequence_length": 8,
+  "sequence_batch_size": 1,
+  "games_per_shard": 1,
+  "collection_workers": 2,
+  "learning_rate": 0.0001,
+  "optimizer": "fresh Adam",
+  "initial_model_sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee",
+  "initial_state_sha256": "10499efc6aea7f660c623a87c17f1df264e6bb8a1be73b12534463a92197988b",
+  "initial_export_matches_hour10": true,
+  "source_commit": "74497cc4a7eac3167bbb84e64393d05f0234c7f8",
+  "timing": "300 active training pipeline seconds excluding collection, validation, checkpoint writes and recovery downtime",
+  "selection": "No automatic promotion. Gameplay comparison against hour10; teacher loss is diagnostic only.",
+  "visibility": "Authored eligible variants only. player-fog restricts player only; both-fog restricts both.",
+  "workload_sha256": "356b77a72b8173a4475e1d0d6a36e0af63eadfa7a0c8a427fc943722b63cc78c",
+  "gameplay_panel": {
+    "targeted": 128,
+    "ordinary_retention": 28,
+    "lantern_showcase": 24
+  },
+  "gameplay_seeds": "Targeted496110001..008 (eight per eligible condition, one configured recruiter); ordinary496120001..002; Lantern unchanged24-case historical showcase",
+  "gameplay_limitations": "Focused pilot, not statistical confirmation or broad campaign selection. No automatic promotion."
+}

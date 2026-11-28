@@ -1,0 +1,87 @@
+{
+  "catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog",
+  "catalogSha256": "7c0d2bb91548276bdf7a39befaddee63351cab940973be4cf2711c99882dfe5b",
+  "baseCatalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/hold-advance/pressure-catalog",
+  "baseCatalogSha256": "d7424bbccc1a2481298bc56828e02189c9ec1467b44b3798a30d06ed840437d3",
+  "effectPath": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/environment-effects/fog-reveal-3.json",
+  "stages": {
+    "clear": {
+      "campaign.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil/campaign.json",
+        "sha256": "47e5a04aaf9a3398b03e33a6e95bca760df53a2b355b0a889394ef2606a34cdc"
+      },
+      "map.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil/map.json",
+        "sha256": "c85812c78dde523a8089d68e3dccf8ebe07d50271d4f7709113957322c9ea1a2"
+      },
+      "roster.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil/roster.json",
+        "sha256": "a1a2f698308207b8dbdba1b2e8f5177418fad7c207b555e4eff00739a188b407"
+      },
+      "scripts.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil/scripts.json",
+        "sha256": "148d8d4b407a4e2fea4f95b40912a70cf103b5ef001c41f43810f92ef12462ee"
+      },
+      "stage.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil/stage.json",
+        "sha256": "a52767cdd5fef0a8beb7a3ba76030a2ac5b9d51a778f8849164b0c5fabcaa530"
+      },
+      "story.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil/story.json",
+        "sha256": "b165c56b53482d0b905cad581b76c73c696e698cc5dbde22ebefaf1553fd7329"
+      }
+    },
+    "player-fog": {
+      "campaign.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/campaign.json",
+        "sha256": "7a50745d74ed54ec27660699a068a2d446beae878f97d3894620313a5028707e"
+      },
+      "map.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/map.json",
+        "sha256": "a2ccf418b423e0a4546ac1c21dd4b2fa5c0469396badb429637cf04c14999bc9"
+      },
+      "roster.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/roster.json",
+        "sha256": "a1a2f698308207b8dbdba1b2e8f5177418fad7c207b555e4eff00739a188b407"
+      },
+      "scripts.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/scripts.json",
+        "sha256": "148d8d4b407a4e2fea4f95b40912a70cf103b5ef001c41f43810f92ef12462ee"
+      },
+      "stage.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/stage.json",
+        "sha256": "54e3869aca01c68e2fde3ce561d9568ca2f37ea2180834bf87c9591fc5f3fa1d"
+      },
+      "story.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-player-fog/story.json",
+        "sha256": "b165c56b53482d0b905cad581b76c73c696e698cc5dbde22ebefaf1553fd7329"
+      }
+    },
+    "both-fog": {
+      "campaign.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/campaign.json",
+        "sha256": "7fd658f60f6a1e8f285e5c0465dcd46fc5ae549ab1bf2af450cf1867e9c752f2"
+      },
+      "map.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/map.json",
+        "sha256": "01a25cef7381f3ca5e28ea3021a70beed36b53f05fe19bfb03d947eba9e4c8db"
+      },
+      "roster.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/roster.json",
+        "sha256": "b988d65839f87f278622067b44aa93cb5e63f78acfc3dd37bd8be1c337541566"
+      },
+      "scripts.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/scripts.json",
+        "sha256": "148d8d4b407a4e2fea4f95b40912a70cf103b5ef001c41f43810f92ef12462ee"
+      },
+      "stage.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/stage.json",
+        "sha256": "2d7590f03285e4651168c979f0cffb2dde522a74fa1257a4de3ad90c7391bda0"
+      },
+      "story.json": {
+        "path": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/hold-advance/catalog/game/campaigns/rl-ashbank-relay-fork-vigil-both-fog/story.json",
+        "sha256": "b165c56b53482d0b905cad581b76c73c696e698cc5dbde22ebefaf1553fd7329"
+      }
+    }
+  }
+}

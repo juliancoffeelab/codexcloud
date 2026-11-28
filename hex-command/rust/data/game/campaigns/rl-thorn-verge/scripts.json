@@ -1,0 +1,93 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "clear",
+      "when": {
+        "noUnits": {
+          "character": "marksman",
+          "role": null,
+          "side": null,
+          "faction": "enemy",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "victory": "The ranged detachment was stopped."
+        }
+      ],
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the ranged captain",
+        "intent": {
+          "defeat": {
+            "character": "marksman",
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "availableWhen": null,
+        "visibleWhen": null,
+        "satisfiedWhen": null,
+        "preserveLives": null,
+        "playerMarker": null
+      },
+      "observer": null,
+      "remembers": true,
+      "priority": 0
+    },
+    {
+      "id": "lost",
+      "when": {
+        "noUnits": {
+          "character": null,
+          "role": "leader",
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The commander fell."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": 100
+    },
+    {
+      "id": "deadline",
+      "when": {
+        "turn": 2
+      },
+      "actions": [
+        {
+          "defeat": "The ranged detachment held the position."
+        }
+      ],
+      "objective": null,
+      "observer": null,
+      "remembers": true,
+      "priority": -100
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

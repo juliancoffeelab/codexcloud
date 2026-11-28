@@ -42,10 +42,11 @@
   "level": 2,
   "family": "skeleton-impact-caster",
   "experienceNeeded": 18,
-  "advancesTo": ["skeleton-impact-caster-l3"],
+  "advancesTo": [
+    "skeleton-impact-caster-l3"
+  ],
   "terrainModifiers": {},
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

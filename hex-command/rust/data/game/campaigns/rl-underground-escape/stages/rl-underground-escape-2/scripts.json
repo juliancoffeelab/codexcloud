@@ -1,0 +1,319 @@
+{
+  "requiredCompanions": ["charge"],
+  "events": [
+    {
+      "id": "rl-underground-escape-2-refuge-reached",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "stand": {
+              "tile": {
+                "hex": {
+                  "col": 15,
+                  "row": 25
+                }
+              },
+              "through": true,
+              "character": "charge",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-underground-escape-2-refuge-reached"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Escort the charge to the lower gallery",
+        "intent": {
+          "escort": {
+            "tile": {
+              "hex": {
+                "col": 15,
+                "row": 25
+              }
+            },
+            "through": true,
+            "character": "charge",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-underground-escape-2-refuge-reached"
+        },
+        "preserveLives": {
+          "character": "charge",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-underground-escape-2-refuge-held",
+      "when": {
+        "all": [
+          {
+            "flag": "rl-underground-escape-2-refuge-reached"
+          },
+          {
+            "held": {
+              "tile": {
+                "hex": {
+                  "col": 15,
+                  "row": 25
+                }
+              },
+              "turns": 6,
+              "when": {
+                "flag": "rl-underground-escape-2-refuge-reached"
+              },
+              "character": "charge",
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-underground-escape-2-refuge-held"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Protect the charge at the refuge for six turns",
+        "intent": {
+          "hold": {
+            "tile": {
+              "hex": {
+                "col": 15,
+                "row": 25
+              }
+            },
+            "turns": 6,
+            "when": {
+              "flag": "rl-underground-escape-2-refuge-reached"
+            },
+            "character": "charge",
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "flag": "rl-underground-escape-2-refuge-reached"
+        },
+        "availableWhen": {
+          "flag": "rl-underground-escape-2-refuge-reached"
+        },
+        "satisfiedWhen": {
+          "flag": "rl-underground-escape-2-refuge-held"
+        },
+        "preserveLives": {
+          "character": "charge",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        },
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-underground-escape-2-refuge-counterattack",
+      "when": {
+        "flag": "rl-underground-escape-2-refuge-reached"
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 19,
+                "row": 27
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": ["skeleton", "bonearcher", "skeleton"]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-underground-escape-2-vault-pursuit",
+      "when": {
+        "all": [
+          {
+            "turn": 6
+          },
+          {
+            "not": {
+              "flag": "vault-cleared"
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "spawn": {
+            "faction": "enemy",
+            "tile": {
+              "hex": {
+                "col": 13,
+                "row": 9
+              }
+            },
+            "area": [],
+            "radius": 3,
+            "aiGroup": null,
+            "units": ["skeleton", "bonearcher"]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-underground-escape-2-lost-charge",
+      "when": {
+        "noUnits": {
+          "character": "charge",
+          "role": null,
+          "side": null,
+          "faction": null,
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "charge was lost."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "rl-underground-escape-2-victory",
+      "when": {
+        "flag": "rl-underground-escape-2-refuge-held"
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-underground-escape-2-commander-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "rl-underground-escape-2-deadline",
+      "when": {
+        "turn": 64
+      },
+      "actions": [
+        {
+          "defeat": "The operation exceeded its 63-turn deadline."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

@@ -1,0 +1,1 @@
+{"map": "map.json", "roster": "roster.json", "fixedArmies": true, "characters": [{"id": "garrison", "name": "Garrison commander"}, {"id": "runner", "name": "Relay ranger"}], "tags": ["simulation"]}

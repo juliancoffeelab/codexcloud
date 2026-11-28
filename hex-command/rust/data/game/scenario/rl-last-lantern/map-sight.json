@@ -1,0 +1,5096 @@
+{
+  "mapRevision": 1,
+  "mapId": "rl-last-lantern-sight",
+  "name": "Last Lantern (sight)",
+  "description": "Stone partitions split lit chambers from dark side corridors that can conceal approaching units.",
+  "cols": 24,
+  "rows": 18,
+  "tiles": [
+    {
+      "col": 8,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 0,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 1,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 2,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "sw"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 2,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain",
+        "glow-105-75"
+      ],
+      "connections": [
+        "w"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 2,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 2,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 3,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 3,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 3,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "sw",
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 3,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "nw"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 3,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 3,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 3,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 3,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 3,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 4,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "sw"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 4,
+      "terrain": "village",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": []
+    },
+    {
+      "col": 6,
+      "row": 4,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 4,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 4,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 4,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 4,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 4,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 4,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 4,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 21,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 4,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 0,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 1,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 5,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "sw",
+        "ne"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 5,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 5,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 5,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "sw",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 5,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 5,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 5,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 5,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 5,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "sw",
+        "nw"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 21,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 23,
+      "row": 5,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 0,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 1,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 6,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 6,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 6,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 6,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "ne"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 6,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 6,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 6,
+      "terrain": "village",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": []
+    },
+    {
+      "col": 20,
+      "row": 6,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 21,
+      "row": 6,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 23,
+      "row": 6,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 0,
+      "row": 7,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 1,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "ne"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 7,
+      "terrain": "village",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain",
+        "glow-105-75"
+      ],
+      "connections": []
+    },
+    {
+      "col": 7,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 7,
+      "terrain": "fort",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain",
+        "glow-105-75"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "w"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 7,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 21,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 7,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 23,
+      "row": 7,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 0,
+      "row": 8,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 1,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "ne"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 8,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 8,
+      "terrain": "keep",
+      "floor": "cave-stone",
+      "owner": "enemy",
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain",
+        "glow-105-75"
+      ]
+    },
+    {
+      "col": 21,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 8,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 23,
+      "row": 8,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 0,
+      "row": 9,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 1,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 9,
+      "terrain": "keep",
+      "floor": "cave-stone",
+      "owner": "player",
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain",
+        "glow-105-75"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 9,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 21,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 9,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "sw",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 23,
+      "row": 9,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 0,
+      "row": 10,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 1,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "ne"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 10,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "nw"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 10,
+      "terrain": "fort",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain",
+        "glow-105-75"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 10,
+      "terrain": "village",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain",
+        "glow-105-75"
+      ],
+      "connections": []
+    },
+    {
+      "col": 18,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 21,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 10,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 23,
+      "row": 10,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 0,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 1,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 11,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 11,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 11,
+      "terrain": "village",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": []
+    },
+    {
+      "col": 5,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 11,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 11,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 11,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 11,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 11,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "sw",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 21,
+      "row": 11,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 23,
+      "row": 11,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 0,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 1,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 12,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 12,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 12,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 12,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 12,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 12,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "ne"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 12,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 12,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "sw",
+        "w"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 12,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "sw",
+        "ne"
+      ]
+    },
+    {
+      "col": 21,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 23,
+      "row": 12,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 1,
+      "row": 13,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 2,
+      "row": 13,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 13,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 13,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "nw"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 13,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 13,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 13,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 13,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 13,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 13,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "sw",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 13,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 13,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 13,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 13,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 13,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 13,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "se",
+        "sw",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 13,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "sw",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 13,
+      "terrain": "village",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": []
+    },
+    {
+      "col": 19,
+      "row": 13,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 13,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 21,
+      "row": 13,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 22,
+      "row": 13,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 14,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 14,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 5,
+      "row": 14,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 14,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 14,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "ne"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 14,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 14,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 14,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 14,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "se",
+        "w",
+        "nw"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 14,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 14,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 14,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 14,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "sw",
+        "ne"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 14,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "e",
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 14,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "w",
+        "nw",
+        "ne"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 14,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 14,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 14,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 21,
+      "row": 14,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 3,
+      "row": 15,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 4,
+      "row": 15,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 6,
+      "row": 15,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 7,
+      "row": 15,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 15,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 15,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 15,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 15,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "nw"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 15,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 15,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain",
+        "glow-105-75"
+      ],
+      "connections": [
+        "e"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 15,
+      "terrain": "cave-passage",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ],
+      "connections": [
+        "w",
+        "ne"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 15,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 15,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 15,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 15,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 19,
+      "row": 15,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 20,
+      "row": 15,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 8,
+      "row": 16,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 9,
+      "row": 16,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 16,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 16,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 12,
+      "row": 16,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 16,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 16,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 16,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 16,
+      "row": 16,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 17,
+      "row": 16,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 18,
+      "row": 16,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 10,
+      "row": 17,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 11,
+      "row": 17,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 13,
+      "row": 17,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 14,
+      "row": 17,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    },
+    {
+      "col": 15,
+      "row": 17,
+      "terrain": "cave-wall",
+      "floor": "cave-stone",
+      "owner": null,
+      "environmentEffects": [
+        "darkness-ambient",
+        "darkness-reveal-1",
+        "remember-terrain"
+      ]
+    }
+  ],
+  "lighting": {
+    "time": "night"
+  },
+  "modifiers": {
+    "sight": {
+      "unlimited": false,
+      "sightModifiers": {
+        "lit": 0,
+        "unlit": 0,
+        "darkness": 0
+      },
+      "penetrates": []
+    },
+    "damageModifiers": {
+      "blade": 0,
+      "pierce": 0,
+      "impact": 0
+    },
+    "terrainModifiers": {}
+  }
+}

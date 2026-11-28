@@ -6059,6 +6059,137 @@ and save52_member1 = {
   setup : save42_member0_setup;
 }
 
+and save53 = [ `Current of save53_member0 | `Turn of save53_member1 ]
+
+and save53_member0 = {
+  wire : wire;
+  pending_enemy : json_boolean;
+  undo : save34_undo_member1;
+  progress : save49_member0_progress;
+  version : literal_53;
+  checkpoint : save53_member0_checkpoint;
+  setup : save42_member0_setup;
+}
+
+and literal_53 = [ `V53 ]
+
+and save53_member0_checkpoint = {
+  wire : wire;
+  seed : json_number;
+  state : save53_member0_checkpoint_state;
+}
+
+and save53_member0_checkpoint_state = {
+  wire : wire;
+  map_modifiers : save53_member0_checkpoint_state_map_modifiers;
+  lighting : save51_member0_checkpoint_state_lighting;
+  vision_groups : save53_member0_checkpoint_state_vision_groups;
+  factions : save50_member0_checkpoint_state_factions;
+  ground_items : save52_member0_checkpoint_state_ground_items;
+  armies : save50_member0_checkpoint_state_armies;
+  condition_memory : fragments_native_state38_log;
+  map_id : json_string;
+  map_revision : json_number;
+  cols : json_number;
+  rows : json_number;
+  round : json_number;
+  turn : save41_member0_setup_first;
+  gold : fragments_native_state38_gold;
+  winner : save41_member0_checkpoint_state_winner;
+  next_id : json_number;
+  combat_rng : json_number;
+  log : fragments_native_state38_log;
+  tiles : save53_member0_checkpoint_state_tiles;
+  units : save52_member0_checkpoint_state_units;
+  campaign : save52_member0_checkpoint_state_campaign;
+  last_combat : shape_735;
+}
+
+and save53_member0_checkpoint_state_map_modifiers = {
+  wire : wire;
+  sight : save53_member0_checkpoint_state_map_modifiers_sight;
+  damage_modifiers : fragments_native_state38_ground_items_item_item_armor_member1;
+  terrain_modifiers : save51_member0_checkpoint_state_map_modifiers_terrain_modifiers;
+}
+
+and save53_member0_checkpoint_state_map_modifiers_sight = {
+  wire : wire;
+  unlimited : json_boolean;
+  sight_modifiers : save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers;
+  penetrates : save41_member0_checkpoint_state_vision_groups_item_sight_penetrates;
+}
+
+and save53_member0_checkpoint_state_vision_groups =
+  save53_member0_checkpoint_state_vision_groups_item array
+
+and save53_member0_checkpoint_state_vision_groups_item = {
+  wire : wire;
+  id : json_string;
+  sight : save53_member0_checkpoint_state_map_modifiers_sight;
+  explored : save39_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_area;
+}
+
+and save53_member0_checkpoint_state_tiles = save53_member0_checkpoint_state_tiles_item array
+
+and save53_member0_checkpoint_state_tiles_item = {
+  wire : wire;
+  effects : save53_member0_checkpoint_state_tiles_item_effects;
+  id : json_string;
+  location : fragments_tiles11_item_owner;
+  col : json_number;
+  row : json_number;
+  terrain : json_string;
+  owner : fragments_tiles11_item_owner;
+  connections : save50_member0_checkpoint_state_tiles_item_connections;
+  dead_ends : save50_member0_checkpoint_state_tiles_item_connections;
+  walls : save50_member0_checkpoint_state_tiles_item_connections;
+  floor : fragments_tiles11_item_owner;
+  perception : save52_member0_checkpoint_state_tiles_item_perception;
+  light : save50_member0_checkpoint_state_tiles_item_light;
+}
+
+and save53_member0_checkpoint_state_tiles_item_effects =
+  save53_member0_checkpoint_state_tiles_item_effects_item array
+
+and save53_member0_checkpoint_state_tiles_item_effects_item = {
+  wire : wire;
+  scope : save51_member0_checkpoint_state_tiles_item_effects_item_scope;
+  stacking : save51_member0_checkpoint_state_tiles_item_effects_item_stacking;
+  effect_ : save53_member0_checkpoint_state_tiles_item_effects_item_effect_;
+}
+
+and save53_member0_checkpoint_state_tiles_item_effects_item_effect_ =
+  [ `Healing of save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0
+  | `Thorns of save51_member0_checkpoint_state_tiles_item_effects_item_effect__member1
+  | `Sight of save53_member0_checkpoint_state_tiles_item_effects_item_effect__member2
+  | `Concealment of save51_member0_checkpoint_state_tiles_item_effects_item_effect__member3
+  | `Light of save51_member0_checkpoint_state_tiles_item_effects_item_effect__member4
+  | `Stat_modifiers of save53_member0_checkpoint_state_tiles_item_effects_item_effect__member5 ]
+
+and save53_member0_checkpoint_state_tiles_item_effects_item_effect__member2 = {
+  wire : wire;
+  kind : literal_sight;
+  unlimited : json_boolean;
+  sight_modifiers : save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers;
+  penetrates : save41_member0_checkpoint_state_vision_groups_item_sight_penetrates;
+}
+
+and save53_member0_checkpoint_state_tiles_item_effects_item_effect__member5 = {
+  wire : wire;
+  kind : literal_stat_modifiers;
+  modifiers : save53_member0_checkpoint_state_map_modifiers;
+}
+
+and save53_member1 = {
+  wire : wire;
+  pending_enemy : literal_false;
+  undo : json_undefined option;
+  progress : save49_member1_progress;
+  version : literal_53;
+  checkpoint : save53_member0_checkpoint;
+  setup : save42_member0_setup;
+}
+
 module V2 = struct
   type nonrec t = save2
   type nonrec version = literal_2
@@ -20735,6 +20866,715 @@ module V52 = struct
     fragments_native_state38_ground_items_item_item_attacks_item_category
 
   type nonrec turn_modifiers = save51_member0_checkpoint_state_map_modifiers
+
+  type nonrec turn_terrains =
+    save48_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_terrains_member1_item
+
+  type nonrec turn_unit_types = json_string
+  type nonrec turn_unit_type = json_string
+  type nonrec turn_choice = json_string
+  type nonrec turn_flag = json_string
+
+  type nonrec turn_conditions =
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+
+  type nonrec turn_tile_case =
+    save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member1
+
+  type nonrec turn_hex = save39_member0_checkpoint_state_ground_items_item_tile
+
+  type nonrec turn_binding =
+    save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member3_binding
+
+  type nonrec current_changes_item = save34_undo_member1_item_changes_item
+end
+
+module V53 = struct
+  type nonrec t = save53
+  type nonrec t_case = save53_member0
+  type nonrec pending_enemy = json_boolean
+  type nonrec undo = save34_undo_member1_item
+  type nonrec progress = save49_member0_progress
+  type nonrec version = literal_53
+  type nonrec checkpoint = save53_member0_checkpoint
+  type nonrec setup = save42_member0_setup
+  type nonrec round = json_number
+  type nonrec unit_id = json_string
+  type nonrec changes = save34_undo_member1_item_changes_item
+  type nonrec entry = save49_member0_progress_entry
+  type nonrec seed = json_number
+  type nonrec state = save53_member0_checkpoint_state
+  type nonrec first = save41_member0_setup_first
+  type nonrec enemy = save39_member0_setup_enemy
+  type nonrec player = save42_member0_setup_player
+  type nonrec changes_case = save34_undo_member1_item_changes_item_member0
+  type nonrec kind = literal_flash
+  type nonrec id = json_string
+  type nonrec saved_at = json_number
+  type nonrec run = json_string
+  type nonrec mission = json_number
+  type nonrec mission_start = json_boolean
+  type nonrec run_id = json_string
+  type nonrec branch_id = json_string
+  type nonrec checkpoint_id = json_string
+  type nonrec ordinal = json_number
+  type nonrec map_id = json_string
+  type nonrec map_modifiers = save53_member0_checkpoint_state_map_modifiers
+  type nonrec lighting = save51_member0_checkpoint_state_lighting
+  type nonrec vision_groups = save53_member0_checkpoint_state_vision_groups_item
+  type nonrec faction = save50_member0_checkpoint_state_factions_item
+  type nonrec ground_items = save52_member0_checkpoint_state_ground_items_item
+  type nonrec armies = fragments_native_state38_armies_member1
+  type nonrec condition_memory = json_string
+  type nonrec map_revision = json_number
+  type nonrec cols = json_number
+  type nonrec rows = json_number
+  type nonrec side = save41_member0_setup_first
+  type nonrec gold = fragments_native_state38_gold
+  type nonrec winner = save41_member0_checkpoint_state_winner
+  type nonrec next_id = json_number
+  type nonrec combat_rng = json_number
+  type nonrec log = json_string
+  type nonrec tile = save53_member0_checkpoint_state_tiles_item
+  type nonrec unit_ = save52_member0_checkpoint_state_units_item
+  type nonrec campaign = save52_member0_checkpoint_state_campaign_member1
+  type nonrec last_combat = fragments_native_state38_last_combat_member2
+  type nonrec blocks = save35_setup_enemy_blocks_member1
+  type nonrec policy = save35_setup_enemy_policy
+  type nonrec diplomacy = save35_setup_enemy_diplomacy
+  type nonrec recruitment_limit = json_number
+  type nonrec manual = json_boolean
+  type nonrec parent_id = json_string
+  type nonrec op = literal_set
+  type nonrec path = json_string
+  type nonrec value = json_unknown
+  type nonrec sight = save53_member0_checkpoint_state_map_modifiers_sight
+  type nonrec damage_modifiers = fragments_native_state38_ground_items_item_item_armor_member1
+  type nonrec terrain_modifiers = save51_member0_checkpoint_state_map_modifiers_terrain_modifiers
+  type nonrec time = save51_member0_checkpoint_state_lighting_time
+  type nonrec explored = save39_member0_checkpoint_state_ground_items_item_tile
+  type nonrec vision_group = json_string
+  type nonrec phase = save41_member0_setup_first
+  type nonrec controller = save50_member0_checkpoint_state_factions_item_controller
+  type nonrec palette = json_string
+  type nonrec name = json_string
+  type nonrec recruits = save50_member0_checkpoint_state_factions_item_recruits_member1_item
+  type nonrec relations = save41_member0_checkpoint_state_factions_item_relations_member1
+  type nonrec transfer = save50_member0_checkpoint_state_factions_item_transfer_member1
+  type nonrec item = json_string
+  type nonrec effects = save53_member0_checkpoint_state_tiles_item_effects_item
+  type nonrec location = json_string
+  type nonrec col = json_number
+  type nonrec row = json_number
+  type nonrec terrain = json_string
+  type nonrec owner = json_string
+  type nonrec connection = fragments_tiles11_item_connections_member1_item
+  type nonrec dead_ends = fragments_tiles11_item_connections_member1_item
+  type nonrec walls = fragments_tiles11_item_connections_member1_item
+  type nonrec floor = json_string
+  type nonrec perception = save52_member0_checkpoint_state_tiles_item_perception
+  type nonrec light = save50_member0_checkpoint_state_tiles_item_light_member1
+  type nonrec revealed_to = json_string
+
+  type nonrec perception_effects =
+    save51_member0_checkpoint_state_units_item_perception_effects_item
+
+  type nonrec items = json_string
+  type nonrec ai_group = json_string
+  type nonrec type_ = json_string
+  type nonrec hp = json_number
+  type nonrec moved = json_boolean
+  type nonrec attack_spent = json_boolean
+  type nonrec experience = json_number
+  type nonrec character = json_string
+
+  type nonrec role =
+    save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+
+  type nonrec retreating = json_boolean
+  type nonrec rebuilding = json_boolean
+  type nonrec scripts = save52_member0_checkpoint_state_campaign_member1_scripts_member1
+  type nonrec evacuated = save52_member0_checkpoint_state_campaign_member1_evacuated_item
+  type nonrec recall = json_string
+  type nonrec veteran = save52_member0_checkpoint_state_campaign_member1_veterans_member1_item
+  type nonrec story_veteran = save52_member0_checkpoint_state_campaign_member1_veterans_member1_item
+  type nonrec fallen_companions = json_string
+  type nonrec carry_gold = json_number
+  type nonrec mark = json_string
+  type nonrec dialogue = save50_member0_checkpoint_state_campaign_member1_dialogue_item
+  type nonrec dialogue_index = json_number
+  type nonrec outcome = json_string
+  type nonrec completed = json_boolean
+  type nonrec refuge = fragments_native_state38_campaign_member1_refuge_member1
+  type nonrec vigil = fragments_native_state38_campaign_member1_vigil_member1
+  type nonrec hold = fragments_native_state38_campaign_member1_holds_member1
+  type nonrec flags = fragments_native_state38_campaign_member1_flags
+  type nonrec attacker_id = json_string
+  type nonrec attack_id = json_string
+  type nonrec sound = json_string
+  type nonrec recruiter = save35_setup_enemy_blocks_member1_recruiter
+  type nonrec planner = save35_setup_enemy_blocks_member1_planner
+  type nonrec unlimited = json_boolean
+  type nonrec sight_modifiers = save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers
+  type nonrec penetrates = save41_member0_checkpoint_state_vision_groups_item_sight_penetrates_item
+  type nonrec blade = json_number
+  type nonrec pierce = json_number
+  type nonrec impact = json_number
+  type nonrec controller_case = fragments_factions7_item_controller_member0
+  type nonrec cost = json_number
+  type nonrec to_ = json_string
+  type nonrec rule = save50_member0_checkpoint_state_factions_item_transfer_member1_when_
+  type nonrec scope = save51_member0_checkpoint_state_tiles_item_effects_item_scope
+  type nonrec stacking = save51_member0_checkpoint_state_tiles_item_effects_item_stacking
+  type nonrec effect_ = save53_member0_checkpoint_state_tiles_item_effects_item_effect_
+  type nonrec illumination = save51_member0_checkpoint_state_tiles_item_perception_illumination
+  type nonrec remember = json_boolean
+  type nonrec concealment = save50_member0_checkpoint_state_tiles_item_perception_concealment_item
+  type nonrec emission = save41_member0_checkpoint_state_tiles_item_light_member1_emission_member1
+  type nonrec color = fragments_light23_color_member1
+  type nonrec fixture = json_boolean
+  type nonrec dx = json_number
+  type nonrec dy = json_number
+  type nonrec radius = json_number
+  type nonrec power = json_number
+  type nonrec failed = json_string
+  type nonrec revealed = json_string
+
+  type nonrec recruitment =
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+
+  type nonrec active = json_string
+
+  type nonrec pending =
+    save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item
+
+  type nonrec next_mark = json_number
+  type nonrec event = json_string
+  type nonrec speaker = json_string
+  type nonrec portrait = json_string
+  type nonrec text = json_string
+  type nonrec held_turns = json_number
+  type nonrec last_counted_round = json_number
+  type nonrec escalated = json_boolean
+  type nonrec lit = json_number
+  type nonrec unlit = json_number
+  type nonrec darkness = json_number
+  type nonrec observer = json_string
+
+  type nonrec condition =
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+
+  type nonrec include_self = json_boolean
+
+  type nonrec targets =
+    save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets
+
+  type nonrec group = json_string
+  type nonrec combine = save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine
+  type nonrec effect__case = save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0
+  type nonrec reveal_within = json_number
+
+  type nonrec requires =
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires
+
+  type nonrec predicate = json_number
+  type nonrec turns = json_number
+  type nonrec last_round = json_number
+  type nonrec light_remembered = json_boolean
+  type nonrec area = save39_member0_checkpoint_state_ground_items_item_tile
+
+  type nonrec condition_case =
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0
+
+  type nonrec damage_per_strike = json_number
+
+  type nonrec incoming_category =
+    fragments_native_state38_ground_items_item_item_attacks_item_category
+
+  type nonrec modifiers = save53_member0_checkpoint_state_map_modifiers
+
+  type nonrec terrains =
+    save48_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_terrains_member1_item
+
+  type nonrec unit_types = json_string
+  type nonrec unit_type = json_string
+  type nonrec choice = json_string
+  type nonrec flag = json_string
+
+  type nonrec conditions =
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+
+  type nonrec tile_case =
+    save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member1
+
+  type nonrec hex = save39_member0_checkpoint_state_ground_items_item_tile
+
+  type nonrec binding =
+    save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member3_binding
+
+  type nonrec current = save53_member0
+  type nonrec current_pending_enemy = json_boolean
+  type nonrec current_undo = save34_undo_member1_item
+  type nonrec current_progress = save49_member0_progress
+  type nonrec current_version = literal_53
+  type nonrec current_checkpoint = save53_member0_checkpoint
+  type nonrec current_setup = save42_member0_setup
+  type nonrec current_round = json_number
+  type nonrec current_unit_id = json_string
+  type nonrec current_changes = save34_undo_member1_item_changes_item
+  type nonrec current_entry = save49_member0_progress_entry
+  type nonrec current_seed = json_number
+  type nonrec current_state = save53_member0_checkpoint_state
+  type nonrec current_first = save41_member0_setup_first
+  type nonrec current_enemy = save39_member0_setup_enemy
+  type nonrec current_player = save42_member0_setup_player
+  type nonrec current_changes_case = save34_undo_member1_item_changes_item_member0
+  type nonrec current_kind = literal_flash
+  type nonrec current_id = json_string
+  type nonrec current_saved_at = json_number
+  type nonrec current_run = json_string
+  type nonrec current_mission = json_number
+  type nonrec current_mission_start = json_boolean
+  type nonrec current_run_id = json_string
+  type nonrec current_branch_id = json_string
+  type nonrec current_checkpoint_id = json_string
+  type nonrec current_ordinal = json_number
+  type nonrec current_map_id = json_string
+  type nonrec current_map_modifiers = save53_member0_checkpoint_state_map_modifiers
+  type nonrec current_lighting = save51_member0_checkpoint_state_lighting
+  type nonrec current_vision_groups = save53_member0_checkpoint_state_vision_groups_item
+  type nonrec current_faction = save50_member0_checkpoint_state_factions_item
+  type nonrec current_ground_items = save52_member0_checkpoint_state_ground_items_item
+  type nonrec current_armies = fragments_native_state38_armies_member1
+  type nonrec current_condition_memory = json_string
+  type nonrec current_map_revision = json_number
+  type nonrec current_cols = json_number
+  type nonrec current_rows = json_number
+  type nonrec current_side = save41_member0_setup_first
+  type nonrec current_gold = fragments_native_state38_gold
+  type nonrec current_winner = save41_member0_checkpoint_state_winner
+  type nonrec current_next_id = json_number
+  type nonrec current_combat_rng = json_number
+  type nonrec current_log = json_string
+  type nonrec current_tile = save53_member0_checkpoint_state_tiles_item
+  type nonrec current_unit_ = save52_member0_checkpoint_state_units_item
+  type nonrec current_campaign = save52_member0_checkpoint_state_campaign_member1
+  type nonrec current_last_combat = fragments_native_state38_last_combat_member2
+  type nonrec current_blocks = save35_setup_enemy_blocks_member1
+  type nonrec current_policy = save35_setup_enemy_policy
+  type nonrec current_diplomacy = save35_setup_enemy_diplomacy
+  type nonrec current_recruitment_limit = json_number
+  type nonrec current_op = literal_set
+  type nonrec current_path = json_string
+  type nonrec current_value = json_unknown
+  type nonrec current_sight = save53_member0_checkpoint_state_map_modifiers_sight
+
+  type nonrec current_damage_modifiers =
+    fragments_native_state38_ground_items_item_item_armor_member1
+
+  type nonrec current_terrain_modifiers =
+    save51_member0_checkpoint_state_map_modifiers_terrain_modifiers
+
+  type nonrec current_time = save51_member0_checkpoint_state_lighting_time
+  type nonrec current_explored = save39_member0_checkpoint_state_ground_items_item_tile
+  type nonrec current_vision_group = json_string
+  type nonrec current_phase = save41_member0_setup_first
+  type nonrec current_controller = save50_member0_checkpoint_state_factions_item_controller
+  type nonrec current_palette = json_string
+  type nonrec current_name = json_string
+  type nonrec current_recruits = save50_member0_checkpoint_state_factions_item_recruits_member1_item
+  type nonrec current_relations = save41_member0_checkpoint_state_factions_item_relations_member1
+  type nonrec current_transfer = save50_member0_checkpoint_state_factions_item_transfer_member1
+  type nonrec current_item = json_string
+  type nonrec current_effects = save53_member0_checkpoint_state_tiles_item_effects_item
+  type nonrec current_location = json_string
+  type nonrec current_col = json_number
+  type nonrec current_row = json_number
+  type nonrec current_terrain = json_string
+  type nonrec current_owner = json_string
+  type nonrec current_connection = fragments_tiles11_item_connections_member1_item
+  type nonrec current_dead_ends = fragments_tiles11_item_connections_member1_item
+  type nonrec current_walls = fragments_tiles11_item_connections_member1_item
+  type nonrec current_floor = json_string
+  type nonrec current_perception = save52_member0_checkpoint_state_tiles_item_perception
+  type nonrec current_light = save50_member0_checkpoint_state_tiles_item_light_member1
+  type nonrec current_revealed_to = json_string
+
+  type nonrec current_perception_effects =
+    save51_member0_checkpoint_state_units_item_perception_effects_item
+
+  type nonrec current_items = json_string
+  type nonrec current_ai_group = json_string
+  type nonrec current_type_ = json_string
+  type nonrec current_hp = json_number
+  type nonrec current_moved = json_boolean
+  type nonrec current_attack_spent = json_boolean
+  type nonrec current_experience = json_number
+  type nonrec current_character = json_string
+
+  type nonrec current_role =
+    save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+
+  type nonrec current_retreating = json_boolean
+  type nonrec current_rebuilding = json_boolean
+  type nonrec current_scripts = save52_member0_checkpoint_state_campaign_member1_scripts_member1
+  type nonrec current_evacuated = save52_member0_checkpoint_state_campaign_member1_evacuated_item
+  type nonrec current_recall = json_string
+
+  type nonrec current_veteran =
+    save52_member0_checkpoint_state_campaign_member1_veterans_member1_item
+
+  type nonrec current_story_veteran =
+    save52_member0_checkpoint_state_campaign_member1_veterans_member1_item
+
+  type nonrec current_fallen_companions = json_string
+  type nonrec current_carry_gold = json_number
+  type nonrec current_mark = json_string
+  type nonrec current_dialogue = save50_member0_checkpoint_state_campaign_member1_dialogue_item
+  type nonrec current_dialogue_index = json_number
+  type nonrec current_outcome = json_string
+  type nonrec current_completed = json_boolean
+  type nonrec current_refuge = fragments_native_state38_campaign_member1_refuge_member1
+  type nonrec current_vigil = fragments_native_state38_campaign_member1_vigil_member1
+  type nonrec current_hold = fragments_native_state38_campaign_member1_holds_member1
+  type nonrec current_flags = fragments_native_state38_campaign_member1_flags
+  type nonrec current_attacker_id = json_string
+  type nonrec current_attack_id = json_string
+  type nonrec current_sound = json_string
+  type nonrec current_recruiter = save35_setup_enemy_blocks_member1_recruiter
+  type nonrec current_planner = save35_setup_enemy_blocks_member1_planner
+  type nonrec current_unlimited = json_boolean
+
+  type nonrec current_sight_modifiers =
+    save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers
+
+  type nonrec current_penetrates =
+    save41_member0_checkpoint_state_vision_groups_item_sight_penetrates_item
+
+  type nonrec current_blade = json_number
+  type nonrec current_pierce = json_number
+  type nonrec current_impact = json_number
+  type nonrec current_controller_case = fragments_factions7_item_controller_member0
+  type nonrec current_cost = json_number
+  type nonrec current_to_ = json_string
+  type nonrec current_rule = save50_member0_checkpoint_state_factions_item_transfer_member1_when_
+  type nonrec current_scope = save51_member0_checkpoint_state_tiles_item_effects_item_scope
+  type nonrec current_stacking = save51_member0_checkpoint_state_tiles_item_effects_item_stacking
+  type nonrec current_effect_ = save53_member0_checkpoint_state_tiles_item_effects_item_effect_
+
+  type nonrec current_illumination =
+    save51_member0_checkpoint_state_tiles_item_perception_illumination
+
+  type nonrec current_remember = json_boolean
+
+  type nonrec current_concealment =
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item
+
+  type nonrec current_emission =
+    save41_member0_checkpoint_state_tiles_item_light_member1_emission_member1
+
+  type nonrec current_color = fragments_light23_color_member1
+  type nonrec current_fixture = json_boolean
+  type nonrec current_dx = json_number
+  type nonrec current_dy = json_number
+  type nonrec current_radius = json_number
+  type nonrec current_power = json_number
+  type nonrec current_failed = json_string
+  type nonrec current_revealed = json_string
+
+  type nonrec current_recruitment =
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+
+  type nonrec current_active = json_string
+
+  type nonrec current_pending =
+    save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item
+
+  type nonrec current_next_mark = json_number
+  type nonrec current_event = json_string
+  type nonrec current_speaker = json_string
+  type nonrec current_portrait = json_string
+  type nonrec current_text = json_string
+  type nonrec current_held_turns = json_number
+  type nonrec current_last_counted_round = json_number
+  type nonrec current_escalated = json_boolean
+  type nonrec current_lit = json_number
+  type nonrec current_unlit = json_number
+  type nonrec current_darkness = json_number
+  type nonrec current_observer = json_string
+
+  type nonrec current_condition =
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+
+  type nonrec current_include_self = json_boolean
+
+  type nonrec current_targets =
+    save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets
+
+  type nonrec current_group = json_string
+
+  type nonrec current_combine =
+    save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine
+
+  type nonrec current_effect__case =
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0
+
+  type nonrec current_reveal_within = json_number
+
+  type nonrec current_requires =
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires
+
+  type nonrec current_predicate = json_number
+  type nonrec current_turns = json_number
+  type nonrec current_last_round = json_number
+  type nonrec current_light_remembered = json_boolean
+  type nonrec current_area = save39_member0_checkpoint_state_ground_items_item_tile
+
+  type nonrec current_condition_case =
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0
+
+  type nonrec current_damage_per_strike = json_number
+
+  type nonrec current_incoming_category =
+    fragments_native_state38_ground_items_item_item_attacks_item_category
+
+  type nonrec current_modifiers = save53_member0_checkpoint_state_map_modifiers
+
+  type nonrec current_terrains =
+    save48_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_terrains_member1_item
+
+  type nonrec current_unit_types = json_string
+  type nonrec current_unit_type = json_string
+  type nonrec current_choice = json_string
+  type nonrec current_flag = json_string
+
+  type nonrec current_conditions =
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+
+  type nonrec current_tile_case =
+    save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member1
+
+  type nonrec current_hex = save39_member0_checkpoint_state_ground_items_item_tile
+
+  type nonrec current_binding =
+    save39_member0_checkpoint_state_tiles_item_fog_member1_condition_member0_tile_member3_binding
+
+  type nonrec turn = save53_member1
+  type nonrec turn_pending_enemy = literal_false
+  type nonrec turn_undo = json_undefined
+  type nonrec turn_progress = save49_member1_progress
+  type nonrec turn_version = literal_53
+  type nonrec turn_checkpoint = save53_member0_checkpoint
+  type nonrec turn_setup = save42_member0_setup
+  type nonrec turn_entry = history5_entries_item
+  type nonrec turn_seed = json_number
+  type nonrec turn_state = save53_member0_checkpoint_state
+  type nonrec turn_first = save41_member0_setup_first
+  type nonrec turn_enemy = save39_member0_setup_enemy
+  type nonrec turn_player = save42_member0_setup_player
+  type nonrec turn_kind = literal_turn
+  type nonrec turn_manual = json_boolean
+  type nonrec turn_parent_id = json_string
+  type nonrec turn_id = json_string
+  type nonrec turn_saved_at = json_number
+  type nonrec turn_run = json_string
+  type nonrec turn_mission = json_number
+  type nonrec turn_round = json_number
+  type nonrec turn_mission_start = json_boolean
+  type nonrec turn_run_id = json_string
+  type nonrec turn_branch_id = json_string
+  type nonrec turn_checkpoint_id = json_string
+  type nonrec turn_ordinal = json_number
+  type nonrec turn_map_id = json_string
+  type nonrec turn_map_modifiers = save53_member0_checkpoint_state_map_modifiers
+  type nonrec turn_lighting = save51_member0_checkpoint_state_lighting
+  type nonrec turn_vision_groups = save53_member0_checkpoint_state_vision_groups_item
+  type nonrec turn_faction = save50_member0_checkpoint_state_factions_item
+  type nonrec turn_ground_items = save52_member0_checkpoint_state_ground_items_item
+  type nonrec turn_armies = fragments_native_state38_armies_member1
+  type nonrec turn_condition_memory = json_string
+  type nonrec turn_map_revision = json_number
+  type nonrec turn_cols = json_number
+  type nonrec turn_rows = json_number
+  type nonrec turn_side = save41_member0_setup_first
+  type nonrec turn_gold = fragments_native_state38_gold
+  type nonrec turn_winner = save41_member0_checkpoint_state_winner
+  type nonrec turn_next_id = json_number
+  type nonrec turn_combat_rng = json_number
+  type nonrec turn_log = json_string
+  type nonrec turn_tile = save53_member0_checkpoint_state_tiles_item
+  type nonrec turn_unit_ = save52_member0_checkpoint_state_units_item
+  type nonrec turn_campaign = save52_member0_checkpoint_state_campaign_member1
+  type nonrec turn_last_combat = fragments_native_state38_last_combat_member2
+  type nonrec turn_blocks = save35_setup_enemy_blocks_member1
+  type nonrec turn_policy = save35_setup_enemy_policy
+  type nonrec turn_diplomacy = save35_setup_enemy_diplomacy
+  type nonrec turn_recruitment_limit = json_number
+  type nonrec turn_sight = save53_member0_checkpoint_state_map_modifiers_sight
+  type nonrec turn_damage_modifiers = fragments_native_state38_ground_items_item_item_armor_member1
+
+  type nonrec turn_terrain_modifiers =
+    save51_member0_checkpoint_state_map_modifiers_terrain_modifiers
+
+  type nonrec turn_time = save51_member0_checkpoint_state_lighting_time
+  type nonrec turn_explored = save39_member0_checkpoint_state_ground_items_item_tile
+  type nonrec turn_vision_group = json_string
+  type nonrec turn_phase = save41_member0_setup_first
+  type nonrec turn_controller = save50_member0_checkpoint_state_factions_item_controller
+  type nonrec turn_palette = json_string
+  type nonrec turn_name = json_string
+  type nonrec turn_recruits = save50_member0_checkpoint_state_factions_item_recruits_member1_item
+  type nonrec turn_relations = save41_member0_checkpoint_state_factions_item_relations_member1
+  type nonrec turn_transfer = save50_member0_checkpoint_state_factions_item_transfer_member1
+  type nonrec turn_item = json_string
+  type nonrec turn_effects = save53_member0_checkpoint_state_tiles_item_effects_item
+  type nonrec turn_location = json_string
+  type nonrec turn_col = json_number
+  type nonrec turn_row = json_number
+  type nonrec turn_terrain = json_string
+  type nonrec turn_owner = json_string
+  type nonrec turn_connection = fragments_tiles11_item_connections_member1_item
+  type nonrec turn_dead_ends = fragments_tiles11_item_connections_member1_item
+  type nonrec turn_walls = fragments_tiles11_item_connections_member1_item
+  type nonrec turn_floor = json_string
+  type nonrec turn_perception = save52_member0_checkpoint_state_tiles_item_perception
+  type nonrec turn_light = save50_member0_checkpoint_state_tiles_item_light_member1
+  type nonrec turn_revealed_to = json_string
+
+  type nonrec turn_perception_effects =
+    save51_member0_checkpoint_state_units_item_perception_effects_item
+
+  type nonrec turn_items = json_string
+  type nonrec turn_ai_group = json_string
+  type nonrec turn_type_ = json_string
+  type nonrec turn_hp = json_number
+  type nonrec turn_moved = json_boolean
+  type nonrec turn_attack_spent = json_boolean
+  type nonrec turn_experience = json_number
+  type nonrec turn_character = json_string
+
+  type nonrec turn_role =
+    save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item_units_item_role
+
+  type nonrec turn_retreating = json_boolean
+  type nonrec turn_rebuilding = json_boolean
+  type nonrec turn_scripts = save52_member0_checkpoint_state_campaign_member1_scripts_member1
+  type nonrec turn_evacuated = save52_member0_checkpoint_state_campaign_member1_evacuated_item
+  type nonrec turn_recall = json_string
+  type nonrec turn_veteran = save52_member0_checkpoint_state_campaign_member1_veterans_member1_item
+
+  type nonrec turn_story_veteran =
+    save52_member0_checkpoint_state_campaign_member1_veterans_member1_item
+
+  type nonrec turn_fallen_companions = json_string
+  type nonrec turn_carry_gold = json_number
+  type nonrec turn_mark = json_string
+  type nonrec turn_dialogue = save50_member0_checkpoint_state_campaign_member1_dialogue_item
+  type nonrec turn_dialogue_index = json_number
+  type nonrec turn_outcome = json_string
+  type nonrec turn_completed = json_boolean
+  type nonrec turn_refuge = fragments_native_state38_campaign_member1_refuge_member1
+  type nonrec turn_vigil = fragments_native_state38_campaign_member1_vigil_member1
+  type nonrec turn_hold = fragments_native_state38_campaign_member1_holds_member1
+  type nonrec turn_flags = fragments_native_state38_campaign_member1_flags
+  type nonrec turn_attacker_id = json_string
+  type nonrec turn_attack_id = json_string
+  type nonrec turn_sound = json_string
+  type nonrec turn_recruiter = save35_setup_enemy_blocks_member1_recruiter
+  type nonrec turn_planner = save35_setup_enemy_blocks_member1_planner
+  type nonrec turn_unlimited = json_boolean
+
+  type nonrec turn_sight_modifiers =
+    save51_member0_checkpoint_state_map_modifiers_sight_sight_modifiers
+
+  type nonrec turn_penetrates =
+    save41_member0_checkpoint_state_vision_groups_item_sight_penetrates_item
+
+  type nonrec turn_blade = json_number
+  type nonrec turn_pierce = json_number
+  type nonrec turn_impact = json_number
+  type nonrec turn_controller_case = fragments_factions7_item_controller_member0
+  type nonrec turn_cost = json_number
+  type nonrec turn_to_ = json_string
+  type nonrec turn_rule = save50_member0_checkpoint_state_factions_item_transfer_member1_when_
+  type nonrec turn_scope = save51_member0_checkpoint_state_tiles_item_effects_item_scope
+  type nonrec turn_stacking = save51_member0_checkpoint_state_tiles_item_effects_item_stacking
+  type nonrec turn_effect_ = save53_member0_checkpoint_state_tiles_item_effects_item_effect_
+  type nonrec turn_illumination = save51_member0_checkpoint_state_tiles_item_perception_illumination
+  type nonrec turn_remember = json_boolean
+
+  type nonrec turn_concealment =
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item
+
+  type nonrec turn_emission =
+    save41_member0_checkpoint_state_tiles_item_light_member1_emission_member1
+
+  type nonrec turn_color = fragments_light23_color_member1
+  type nonrec turn_fixture = json_boolean
+  type nonrec turn_dx = json_number
+  type nonrec turn_dy = json_number
+  type nonrec turn_radius = json_number
+  type nonrec turn_power = json_number
+  type nonrec turn_failed = json_string
+  type nonrec turn_revealed = json_string
+
+  type nonrec turn_recruitment =
+    save50_member0_checkpoint_state_campaign_member1_scripts_member1_recruitment
+
+  type nonrec turn_active = json_string
+
+  type nonrec turn_pending =
+    save41_member0_checkpoint_state_campaign_member1_scripts_member1_pending_item
+
+  type nonrec turn_next_mark = json_number
+  type nonrec turn_event = json_string
+  type nonrec turn_speaker = json_string
+  type nonrec turn_portrait = json_string
+  type nonrec turn_text = json_string
+  type nonrec turn_held_turns = json_number
+  type nonrec turn_last_counted_round = json_number
+  type nonrec turn_escalated = json_boolean
+  type nonrec turn_lit = json_number
+  type nonrec turn_unlit = json_number
+  type nonrec turn_darkness = json_number
+  type nonrec turn_observer = json_string
+
+  type nonrec turn_condition =
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition
+
+  type nonrec turn_include_self = json_boolean
+
+  type nonrec turn_targets =
+    save50_member0_checkpoint_state_ground_items_item_item_healing_member1_targets
+
+  type nonrec turn_group = json_string
+
+  type nonrec turn_combine =
+    save51_member0_checkpoint_state_tiles_item_effects_item_stacking_combine
+
+  type nonrec turn_effect__case =
+    save51_member0_checkpoint_state_tiles_item_effects_item_effect__member0
+
+  type nonrec turn_reveal_within = json_number
+
+  type nonrec turn_requires =
+    save50_member0_checkpoint_state_tiles_item_perception_concealment_item_requires
+
+  type nonrec turn_predicate = json_number
+  type nonrec turn_turns = json_number
+  type nonrec turn_last_round = json_number
+  type nonrec turn_light_remembered = json_boolean
+  type nonrec turn_area = save39_member0_checkpoint_state_ground_items_item_tile
+
+  type nonrec turn_condition_case =
+    save50_member0_checkpoint_state_factions_item_transfer_member1_when__condition_member0
+
+  type nonrec turn_damage_per_strike = json_number
+
+  type nonrec turn_incoming_category =
+    fragments_native_state38_ground_items_item_item_attacks_item_category
+
+  type nonrec turn_modifiers = save53_member0_checkpoint_state_map_modifiers
 
   type nonrec turn_terrains =
     save48_member0_checkpoint_state_tiles_item_perception_concealment_item_requires_terrains_member1_item

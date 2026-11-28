@@ -42,10 +42,12 @@
   "level": 1,
   "family": "skeleton",
   "experienceNeeded": 10,
-  "advancesTo": ["revenant", "skeleton-flanker-l2"],
+  "advancesTo": [
+    "revenant",
+    "skeleton-flanker-l2"
+  ],
   "terrainModifiers": {},
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

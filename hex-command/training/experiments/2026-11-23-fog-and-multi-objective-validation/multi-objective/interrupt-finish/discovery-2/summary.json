@@ -1,0 +1,522 @@
+[
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-watch-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-watch-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-harrow-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-harrow-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-highroad-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "full",
+    "landscape": "rl-marlow-cut-highroad-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-watch-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-watch-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-harrow-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-harrow-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-highroad-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "queued",
+    "landscape": "rl-marlow-cut-highroad-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-watch-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 1
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 7
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-watch-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-harrow-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-harrow-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-highroad-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "classic",
+    "landscape": "rl-marlow-cut-highroad-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 3
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 5
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-watch-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 3
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 5
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-watch-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-harrow-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-harrow-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-highroad-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour8",
+    "landscape": "rl-marlow-cut-highroad-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-pass-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 6
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 2
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-pass-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 3
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 5
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-watch-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerDefeat",
+        "reason": "territory",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-watch-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-harrow-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 7
+      },
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-harrow-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-highroad-interrupt",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "territory",
+        "count": 8
+      }
+    ]
+  },
+  {
+    "player": "hour10",
+    "landscape": "rl-marlow-cut-highroad-finish",
+    "games": 8,
+    "outcomes": [
+      {
+        "winner": "playerVictory",
+        "reason": "leader",
+        "count": 8
+      }
+    ]
+  }
+]

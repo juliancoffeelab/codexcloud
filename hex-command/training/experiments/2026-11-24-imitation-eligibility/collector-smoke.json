@@ -1,0 +1,9 @@
+{
+  "campaign": "rl-route-ambush",
+  "decisions": 19,
+  "streams": 1,
+  "missing": 0,
+  "teachers": [
+    "full"
+  ]
+}

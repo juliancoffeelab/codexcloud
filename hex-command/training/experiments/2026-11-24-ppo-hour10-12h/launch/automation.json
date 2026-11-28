@@ -1,0 +1,8 @@
+{
+  "id": "Automation_31fbf25c4dc88191bbc7492b1a2b11ec",
+  "title": "Monitor twelve-hour PPO",
+  "schedule": "FREQ=HOURLY",
+  "timezone": "Europe/Stockholm",
+  "healthyChecksSilent": true,
+  "disableAfterCompletion": true
+}

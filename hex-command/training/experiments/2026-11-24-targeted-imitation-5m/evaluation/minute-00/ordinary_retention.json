@@ -1,0 +1,222 @@
+{
+  "score": 0.5000000000000001,
+  "weighted_caps": 0.0,
+  "wins": 14,
+  "caps": 0,
+  "runs": 28,
+  "groups": [
+    {
+      "group": [
+        "arena",
+        "rl-twin-fords",
+        "deathmatch",
+        "classic",
+        "situational"
+      ],
+      "runs": 2,
+      "wins": 0,
+      "defeats": 2,
+      "caps": 0,
+      "mass": 0.07142857142857142,
+      "stages": {}
+    },
+    {
+      "group": [
+        "arena",
+        "rl-splitpine-clearing",
+        "deathmatch",
+        "classic",
+        "situational"
+      ],
+      "runs": 2,
+      "wins": 2,
+      "defeats": 0,
+      "caps": 0,
+      "mass": 0.07142857142857142,
+      "stages": {}
+    },
+    {
+      "group": [
+        "arena",
+        "rl-crown-gap",
+        "deathmatch",
+        "classic",
+        "situational"
+      ],
+      "runs": 2,
+      "wins": 2,
+      "defeats": 0,
+      "caps": 0,
+      "mass": 0.07142857142857142,
+      "stages": {}
+    },
+    {
+      "group": [
+        "arena",
+        "rl-jawbone-crossing",
+        "deathmatch",
+        "classic",
+        "situational"
+      ],
+      "runs": 2,
+      "wins": 0,
+      "defeats": 2,
+      "caps": 0,
+      "mass": 0.07142857142857142,
+      "stages": {}
+    },
+    {
+      "group": [
+        "arena",
+        "rl-sump-teeth",
+        "deathmatch",
+        "classic",
+        "situational"
+      ],
+      "runs": 2,
+      "wins": 2,
+      "defeats": 0,
+      "caps": 0,
+      "mass": 0.07142857142857142,
+      "stages": {}
+    },
+    {
+      "group": [
+        "arena",
+        "rl-last-lantern",
+        "deathmatch",
+        "classic",
+        "situational"
+      ],
+      "runs": 2,
+      "wins": 2,
+      "defeats": 0,
+      "caps": 0,
+      "mass": 0.07142857142857142,
+      "stages": {}
+    },
+    {
+      "group": [
+        "arena",
+        "rl-switchback-saltworks",
+        "deathmatch",
+        "classic",
+        "situational"
+      ],
+      "runs": 2,
+      "wins": 1,
+      "defeats": 1,
+      "caps": 0,
+      "mass": 0.07142857142857142,
+      "stages": {}
+    },
+    {
+      "group": [
+        "arena",
+        "rl-cinderfault",
+        "deathmatch",
+        "classic",
+        "situational"
+      ],
+      "runs": 2,
+      "wins": 0,
+      "defeats": 2,
+      "caps": 0,
+      "mass": 0.07142857142857142,
+      "stages": {}
+    },
+    {
+      "group": [
+        "arena",
+        "rl-sable-sound",
+        "deathmatch",
+        "classic",
+        "situational"
+      ],
+      "runs": 2,
+      "wins": 1,
+      "defeats": 1,
+      "caps": 0,
+      "mass": 0.07142857142857142,
+      "stages": {}
+    },
+    {
+      "group": [
+        "arena",
+        "rl-three-wells-trail",
+        "deathmatch",
+        "classic",
+        "situational"
+      ],
+      "runs": 2,
+      "wins": 0,
+      "defeats": 2,
+      "caps": 0,
+      "mass": 0.07142857142857142,
+      "stages": {}
+    },
+    {
+      "group": [
+        "arena",
+        "rl-frosthook-gate",
+        "deathmatch",
+        "classic",
+        "situational"
+      ],
+      "runs": 2,
+      "wins": 0,
+      "defeats": 2,
+      "caps": 0,
+      "mass": 0.07142857142857142,
+      "stages": {}
+    },
+    {
+      "group": [
+        "arena",
+        "rl-birch-pocket",
+        "deathmatch",
+        "classic",
+        "situational"
+      ],
+      "runs": 2,
+      "wins": 2,
+      "defeats": 0,
+      "caps": 0,
+      "mass": 0.07142857142857142,
+      "stages": {}
+    },
+    {
+      "group": [
+        "arena",
+        "rl-quarry-ring",
+        "deathmatch",
+        "classic",
+        "situational"
+      ],
+      "runs": 2,
+      "wins": 2,
+      "defeats": 0,
+      "caps": 0,
+      "mass": 0.07142857142857142,
+      "stages": {}
+    },
+    {
+      "group": [
+        "arena",
+        "rl-fordstep",
+        "deathmatch",
+        "classic",
+        "situational"
+      ],
+      "runs": 2,
+      "wins": 0,
+      "defeats": 2,
+      "caps": 0,
+      "mass": 0.07142857142857142,
+      "stages": {}
+    }
+  ],
+  "model_sha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee",
+  "minute": 0,
+  "panel": "ordinary_retention"
+}

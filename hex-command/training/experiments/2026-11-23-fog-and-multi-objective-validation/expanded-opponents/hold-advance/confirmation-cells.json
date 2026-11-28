@@ -1,0 +1,183 @@
+{
+  "discovery": "Reference at least 6/8. Advantage of at least 3 wins over Hour 10.",
+  "confirmation": "Selected reference at least 15/20. Advantage of at least 6 wins over Hour 10.",
+  "referenceTieBreak": [
+    "classic",
+    "queued",
+    "full"
+  ],
+  "selected": [
+    {
+      "scope": "clear",
+      "opponent": "classic",
+      "reference": "classic",
+      "discoveryWins": {
+        "hour8": 0,
+        "hour10": 3,
+        "classic": 6,
+        "queued": 2,
+        "full": 3
+      },
+      "discoveryGapHour8": 6,
+      "discoveryGapHour10": 3
+    },
+    {
+      "scope": "clear",
+      "opponent": "queued",
+      "reference": "classic",
+      "discoveryWins": {
+        "hour8": 0,
+        "hour10": 3,
+        "classic": 8,
+        "queued": 6,
+        "full": 6
+      },
+      "discoveryGapHour8": 8,
+      "discoveryGapHour10": 5
+    },
+    {
+      "scope": "clear",
+      "opponent": "full",
+      "reference": "queued",
+      "discoveryWins": {
+        "hour8": 3,
+        "hour10": 3,
+        "classic": 6,
+        "queued": 8,
+        "full": 8
+      },
+      "discoveryGapHour8": 5,
+      "discoveryGapHour10": 5
+    },
+    {
+      "scope": "clear",
+      "opponent": "predictor",
+      "reference": "classic",
+      "discoveryWins": {
+        "hour8": 0,
+        "hour10": 3,
+        "classic": 8,
+        "queued": 6,
+        "full": 6
+      },
+      "discoveryGapHour8": 8,
+      "discoveryGapHour10": 5
+    },
+    {
+      "scope": "player-fog",
+      "opponent": "queued",
+      "reference": "full",
+      "discoveryWins": {
+        "hour8": 1,
+        "hour10": 2,
+        "classic": 5,
+        "queued": 6,
+        "full": 7
+      },
+      "discoveryGapHour8": 6,
+      "discoveryGapHour10": 5
+    },
+    {
+      "scope": "player-fog",
+      "opponent": "full",
+      "reference": "queued",
+      "discoveryWins": {
+        "hour8": 3,
+        "hour10": 5,
+        "classic": 7,
+        "queued": 8,
+        "full": 6
+      },
+      "discoveryGapHour8": 5,
+      "discoveryGapHour10": 3
+    },
+    {
+      "scope": "player-fog",
+      "opponent": "predictor",
+      "reference": "full",
+      "discoveryWins": {
+        "hour8": 1,
+        "hour10": 2,
+        "classic": 5,
+        "queued": 6,
+        "full": 7
+      },
+      "discoveryGapHour8": 6,
+      "discoveryGapHour10": 5
+    },
+    {
+      "scope": "both-fog",
+      "opponent": "queued",
+      "reference": "queued",
+      "discoveryWins": {
+        "hour8": 0,
+        "hour10": 0,
+        "classic": 5,
+        "queued": 7,
+        "full": 7
+      },
+      "discoveryGapHour8": 7,
+      "discoveryGapHour10": 7
+    },
+    {
+      "scope": "both-fog",
+      "opponent": "full",
+      "reference": "full",
+      "discoveryWins": {
+        "hour8": 4,
+        "hour10": 1,
+        "classic": 6,
+        "queued": 3,
+        "full": 8
+      },
+      "discoveryGapHour8": 4,
+      "discoveryGapHour10": 7
+    },
+    {
+      "scope": "both-fog",
+      "opponent": "predictor",
+      "reference": "queued",
+      "discoveryWins": {
+        "hour8": 0,
+        "hour10": 0,
+        "classic": 5,
+        "queued": 7,
+        "full": 7
+      },
+      "discoveryGapHour8": 7,
+      "discoveryGapHour10": 7
+    }
+  ],
+  "rejected": [
+    {
+      "scope": "player-fog",
+      "opponent": "classic",
+      "reference": "classic",
+      "discoveryWins": {
+        "hour8": 2,
+        "hour10": 0,
+        "classic": 5,
+        "queued": 2,
+        "full": 3
+      },
+      "discoveryGapHour8": 3,
+      "discoveryGapHour10": 5,
+      "reason": "All references won fewer than six discovery matches."
+    },
+    {
+      "scope": "both-fog",
+      "opponent": "classic",
+      "reference": "classic",
+      "discoveryWins": {
+        "hour8": 0,
+        "hour10": 0,
+        "classic": 5,
+        "queued": 2,
+        "full": 4
+      },
+      "discoveryGapHour8": 5,
+      "discoveryGapHour10": 5,
+      "reason": "All references won fewer than six discovery matches."
+    }
+  ]
+}

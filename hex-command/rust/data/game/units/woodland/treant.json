@@ -65,10 +65,11 @@
   "description": "An expensive, slow forest tank. Thick bark strongly resists piercing, but axes bite into its wood. One heavy bough delivers a crushing blow. Sharp wooden spikes provide a paired piercing melee attack.",
   "level": 1,
   "family": "treant",
-  "advancesTo": ["treant-l2"],
+  "advancesTo": [
+    "treant-l2"
+  ],
   "experienceNeeded": 10,
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

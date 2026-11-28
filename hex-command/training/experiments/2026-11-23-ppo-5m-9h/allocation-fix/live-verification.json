@@ -1,0 +1,25 @@
+{
+  "elapsed": 26686.803683592007,
+  "resumed_from": 26041.891103939,
+  "new_schema": 3,
+  "ordinary_decisions_since_fix": {
+    "rl-twin-fords": 138,
+    "rl-splitpine-clearing": 219,
+    "rl-crown-gap": 694,
+    "rl-jawbone-crossing": 220,
+    "rl-sump-teeth": 135,
+    "rl-last-lantern": 153,
+    "rl-switchback-saltworks": 365,
+    "rl-cinderfault": 252,
+    "rl-sable-sound": 294,
+    "rl-three-wells-trail": 338,
+    "rl-frosthook-gate": 188,
+    "rl-birch-pocket": 176,
+    "rl-quarry-ring": 170,
+    "rl-fordstep": 221
+  },
+  "all_14_receiving_training": true,
+  "local_shared_checkpoints_verified": true,
+  "full_verify": "passed",
+  "training_suite": "41 tests passed, 1 optional dependency skip"
+}

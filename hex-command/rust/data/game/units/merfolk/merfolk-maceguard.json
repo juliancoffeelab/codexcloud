@@ -30,10 +30,11 @@
   "level": 1,
   "family": "merfolk-maceguard",
   "experienceNeeded": 10,
-  "advancesTo": ["merfolk-maceguard-l2"],
+  "advancesTo": [
+    "merfolk-maceguard-l2"
+  ],
   "terrainModifiers": {},
   "sight": {
-    "range": 0,
     "unlimited": false,
     "sightModifiers": {
       "lit": 0,

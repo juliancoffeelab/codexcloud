@@ -24,11 +24,15 @@ class HexConv(nn.Module):
             "cols", torch.tensor([p[1] + 1 for p in native.SPATIAL_KERNEL])
         )
 
-    def forward(self, x, channels=None, bias=True):
+    def forward(self, x, channels=None, bias=True, stride=1):
         weight = self.weight if channels is None else self.weight[:, channels]
         kernel = self.weight.new_zeros((*weight.shape[:2], 3, 3))
         kernel[:, :, self.rows, self.cols] = weight
-        return F.conv2d(x, kernel, self.bias if bias else None, padding=1)
+        # Anchor coarse cells at the lower-left hex of each 2x2 axial block.
+        # All four source cells then lie within the seven-hex stencil.
+        if stride == 2:
+            x = F.pad(x, (1, 1, 0, 2))
+        return F.conv2d(x, kernel, self.bias if bias else None, padding=0 if stride == 2 else 1, stride=stride)
 
 
 class SpatialPlanner(nn.Module):
@@ -37,14 +41,22 @@ class SpatialPlanner(nn.Module):
         self.convs = nn.ModuleList(
             [HexConv(len(native.SPATIAL_CHANNEL_NAMES)), HexConv(16)]
         )
+        self.coarse = nn.ModuleList(
+            [HexConv(len(native.SPATIAL_CHANNEL_NAMES)), HexConv(16)]
+        )
+        self.gru = nn.GRUCell(16, 64)
         self.head = nn.Sequential(
-            nn.Linear(len(native.FEATURE_NAMES) + 64, 64),
+            nn.Linear(len(native.FEATURE_NAMES) + 192, 64),
             nn.ReLU(),
             nn.Dropout(dropout),
             nn.Linear(64, 64),
             nn.ReLU(),
             nn.Linear(64, 1),
         )
+        with torch.no_grad():
+            self.head[0].weight[
+                :, len(native.VISIBILITY_FEATURE_NAMES) : len(native.FEATURE_NAMES)
+            ] = 0
         self.dropout = dropout
 
     def encode(self, boards):
@@ -58,72 +70,94 @@ class SpatialPlanner(nn.Module):
         return self.forward_with_pool(features, boards, indices)[0]
 
     def forward_with_pool(self, features, boards, indices):
+        scores, pooled, _ = self.forward_recurrent(features, boards, indices)
+        return scores, pooled
+
+    def encode_spatial(self, features, boards, indices):
         if features.shape[-1] < len(native.FEATURE_NAMES):
-            features = F.pad(
-                features, (0, len(native.FEATURE_NAMES) - features.shape[-1])
-            )
+            features = F.pad(features, (0, len(native.FEATURE_NAMES) - features.shape[-1]))
+        context_lookup = None
         if isinstance(boards, tuple):
-            base, contexts, owners, sites = boards
-            mask = base[:, :1]
-            # Share the costly first-layer contribution of the common planes.
-            shared = self.convs[0](base)
-            relative = self.convs[0](
-                contexts, native.ACTOR_SPATIAL_CHANNELS, bias=False
+            base, _, owners, sites = boards
+            batch_ids = torch.arange(len(base), device=owners.device)
+            matches = (owners[None, None, :] == batch_ids[:, None, None]) & (
+                sites[None, None, :] == indices[:, :, 0, None]
             )
+            defaults = (owners[None, :] == batch_ids[:, None]).to(torch.uint8).argmax(-1)
+            context_ids = torch.where(
+                matches.any(-1), matches.to(torch.uint8).argmax(-1), defaults[:, None]
+            )
+            context_lookup = (context_ids, defaults)
+        parts = []
+        pooled = None
+        for layers, stride in [(self.convs, 1), (self.coarse, 2)]:
+            gathered, candidate_pool, summary = self.encode_candidates(
+                boards, indices, layers, stride, context_lookup=context_lookup
+            )
+            parts.extend([gathered, candidate_pool])
+            if stride == 1:
+                pooled = summary  # Preserve the existing critic's 16-value input.
+        return features, parts, pooled
+
+    def forward_recurrent(self, features, boards, indices, memory=None):
+        features, parts, pooled = self.encode_spatial(features, boards, indices)
+        pooled_f32 = pooled.float()
+        if memory is None:
+            memory = pooled_f32.new_zeros((len(pooled_f32), 64))
+        with torch.amp.autocast(pooled_f32.device.type, enabled=False):
+            memory = self.gru(pooled_f32, memory.float())
+        parts.append(memory.to(features.dtype)[:, None, :].expand(-1, features.shape[1], -1))
+        return self.head(torch.cat([features, *parts], dim=-1)).squeeze(-1), pooled_f32, memory
+
+    def encode_candidates(self, boards, indices, layers, stride, context_lookup=None):
+        base = boards[0] if isinstance(boards, tuple) else boards
+        if base.shape[1] < len(native.SPATIAL_CHANNEL_NAMES):
+            base = F.pad(base, (0, 0, 0, 0, 0, len(native.SPATIAL_CHANNEL_NAMES) - base.shape[1]))
+        mask = base[:, :1]
+        if stride == 2:
+            # Non-overlapping blocks make masking independent of batch padding.
+            mask = F.max_pool2d(mask, 2, stride=2, ceil_mode=True)
+        ix = indices.clamp_min(0)
+        width = (base.shape[-1] + stride - 1) // stride
+        ix = (ix // base.shape[-1] // stride) * width + ix % base.shape[-1] // stride
+        if isinstance(boards, tuple):
+            _, contexts, owners, sites = boards
+            shared = layers[0](base, stride=stride)
+            relative = layers[0](contexts, native.ACTOR_SPATIAL_CHANNELS, bias=False, stride=stride)
             first = F.relu(shared[owners] + relative) * mask[owners]
-            spatial = F.relu(self.convs[1](first)) * mask[owners]
-            pooled_context = spatial.sum((-2, -1)) / mask[owners].sum(
-                (-2, -1)
-            ).clamp_min(1)
-            # Each candidate selects its own actor's context; EndTurn uses -1.
-            matches = (
-                owners[None, None, :]
-                == torch.arange(len(base), device=owners.device)[:, None, None]
-            ) & (sites[None, None, :] == indices[:, :, 0, None])
-            context_ids = matches.to(torch.int64).argmax(-1)
-            # Legacy actor-free observations have no actor contexts.
-            defaults = (
-                (
-                    owners[None, :]
-                    == torch.arange(len(base), device=owners.device)[:, None]
+            spatial = F.relu(layers[1](first)) * mask[owners]
+            summaries = spatial.sum((-2, -1)) / mask[owners].sum((-2, -1)).clamp_min(1)
+            if context_lookup is None:
+                batch_ids = torch.arange(len(base), device=owners.device)
+                matches = (owners[None, None, :] == batch_ids[:, None, None]) & (
+                    sites[None, None, :] == indices[:, :, 0, None]
                 )
-                .to(torch.int64)
-                .argmax(-1)
-            )
-            context_ids = torch.where(matches.any(-1), context_ids, defaults[:, None])
-            flat = spatial.flatten(2).permute(0, 2, 1)
-            gathered = flat[context_ids[:, :, None], indices.clamp_min(0)]
-            candidate_pool = pooled_context[context_ids]
-            pooled = pooled_context[defaults]
+                defaults = (owners[None, :] == batch_ids[:, None]).long().argmax(-1)
+                context_ids = torch.where(
+                    matches.any(-1), matches.long().argmax(-1), defaults[:, None]
+                )
+            else:
+                context_ids, defaults = context_lookup
+            gathered = spatial.flatten(2).permute(0, 2, 1)[context_ids[:, :, None], ix]
+            candidate_pool = summaries[context_ids]
+            pooled = summaries[defaults]
         else:
-            if boards.shape[1] < len(native.SPATIAL_CHANNEL_NAMES):
-                boards = F.pad(
-                    boards,
-                    (
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
-                        len(native.SPATIAL_CHANNEL_NAMES) - boards.shape[1],
-                    ),
-                )
-            spatial, pooled = self.encode(boards)
-            batch, count, _ = features.shape
-            gathered = spatial.flatten(2).gather(
-                2, indices.clamp_min(0).reshape(batch, 1, -1).expand(-1, 16, -1)
-            )
+            first = F.relu(layers[0](base, stride=stride)) * mask
+            spatial = F.relu(layers[1](first)) * mask
+            pooled = spatial.sum((-2, -1)) / mask.sum((-2, -1)).clamp_min(1)
+            batch, count, _ = indices.shape
+            gathered = spatial.flatten(2).gather(2, ix.reshape(batch, 1, -1).expand(-1, 16, -1))
             gathered = gathered.transpose(1, 2).reshape(batch, count, 3, 16)
             candidate_pool = pooled[:, None, :].expand(-1, count, -1)
         gathered = gathered * (indices >= 0).unsqueeze(-1)
-        inputs = torch.cat([features, gathered.flatten(2), candidate_pool], dim=-1)
-        return self.head(inputs).squeeze(-1), pooled
+        return gathered.flatten(2), candidate_pool, pooled
 
     def export(self):
         return json.dumps(
             dict(
                 schema=native.SPATIAL_SCHEMA,
                 feature_names=native.FEATURE_NAMES,
+                recurrent={name: value.detach().flatten().tolist() for name, value in (self.gru.named_parameters() if self.gru is not None else [])},
                 spatial=dict(
                     channel_names=native.SPATIAL_CHANNEL_NAMES,
                     convolutions=[
@@ -133,7 +167,7 @@ class SpatialPlanner(nn.Module):
                             weights=c.weight.detach().flatten().tolist(),
                             bias=c.bias.detach().tolist(),
                         )
-                        for c in self.convs
+                        for c in [*self.convs, *(self.coarse or [])]
                     ],
                 ),
                 layers=[

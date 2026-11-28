@@ -1,5 +1,14 @@
 //! Prepared native inference; serialized models retain their portable weight layout.
-use super::{FEATURES, Model, spatial};
+use super::{DecisionContext, FEATURES, Model, recurrent::MEMORY, spatial};
+use std::collections::HashMap;
+struct MemoryEntry {
+    map: String,
+    round: u32,
+    decision: u64,
+    generation: u64,
+    before: [f32; MEMORY],
+    after: [f32; MEMORY],
+}
 mod convolution;
 
 pub struct Evaluator {
@@ -8,6 +17,7 @@ pub struct Evaluator {
     spatial: Option<convolution::ConvolutionEncoder>,
     input: Vec<f32>,
     output: Vec<f32>,
+    memories: HashMap<String, MemoryEntry>,
 }
 
 impl Evaluator {
@@ -28,6 +38,7 @@ impl Evaluator {
             spatial,
             input: Vec::new(),
             output: Vec::new(),
+            memories: HashMap::new(),
         })
     }
 
@@ -35,19 +46,70 @@ impl Evaluator {
         self.model.spatial.is_some()
     }
 
-    /// Score one decision's candidates. Spatial arrays must be validated by the caller.
+    pub fn reset_memory(&mut self) {
+        self.memories.clear();
+    }
+    pub fn decision_scores(
+        &mut self,
+        context: &DecisionContext,
+        features: &[[f32; FEATURES]],
+        board: Option<(&spatial::SpatialBoard, &[[i64; 3]])>,
+    ) -> Vec<f64> {
+        let previous = self
+            .memories
+            .get(&context.observer)
+            .map_or([0.; MEMORY], |m| {
+                if m.map != context.map
+                    || m.generation != context.generation
+                    || context.round < m.round
+                    || context.decision < m.decision
+                {
+                    [0.; MEMORY]
+                } else if context.decision == m.decision {
+                    m.before
+                } else {
+                    m.after
+                }
+            });
+        let (scores, next) = self.recurrent_scores(features, board, &previous);
+        self.memories.insert(
+            context.observer.clone(),
+            MemoryEntry {
+                map: context.map.clone(),
+                round: context.round,
+                decision: context.decision,
+                generation: context.generation,
+                before: previous,
+                after: next,
+            },
+        );
+        scores
+    }
     pub fn scores(
         &mut self,
         features: &[[f32; FEATURES]],
         board: Option<(&spatial::SpatialBoard, &[[i64; 3]])>,
     ) -> Vec<f64> {
+        self.recurrent_scores(features, board, &[0.; MEMORY]).0
+    }
+    /// Score one decision's candidates. Spatial arrays must be validated by the caller.
+    pub fn recurrent_scores(
+        &mut self,
+        features: &[[f32; FEATURES]],
+        board: Option<(&spatial::SpatialBoard, &[[i64; 3]])>,
+        previous: &[f32; MEMORY],
+    ) -> (Vec<f64>, [f32; MEMORY]) {
         if features.is_empty() {
-            return Vec::new();
+            return (Vec::new(), *previous);
         }
         if !self.model.trees.is_empty() {
-            return features.iter().map(|row| self.model.score(row)).collect();
+            return (
+                features.iter().map(|row| self.model.score(row)).collect(),
+                *previous,
+            );
         }
         self.input.clear();
+        let mut summary = [0.; spatial::EMBEDDING];
         if let Some(encoder) = &mut self.spatial {
             let (board, indices) = board.expect("spatial observation required");
             assert_eq!(
@@ -55,9 +117,25 @@ impl Evaluator {
                 features.len(),
                 "candidate index count mismatch"
             );
-            encoder.inputs(board, indices, features, &mut self.input);
+            encoder.inputs(board, indices, features, &mut self.input, &mut summary);
         } else {
             self.input.extend(features.iter().flatten().copied());
+        }
+        let memory = self
+            .model
+            .recurrent
+            .as_ref()
+            .map_or(*previous, |g| g.step(&summary, previous));
+        if self.model.recurrent.is_some() {
+            self.output.clear();
+            for row in self
+                .input
+                .chunks_exact(FEATURES + spatial::ENCODED_FEATURES)
+            {
+                self.output.extend_from_slice(row);
+                self.output.extend_from_slice(&memory);
+            }
+            std::mem::swap(&mut self.input, &mut self.output);
         }
         let count = features.len();
         for (i, layer) in self.model.layers.iter().enumerate() {
@@ -72,6 +150,7 @@ impl Evaluator {
             // SAFETY: x is count×width, weights are outputs×width, and y is
             // count×outputs. Transposing the weight strides gives width×outputs.
             // All buffers are contiguous, initialized, disjoint and live for the call.
+            #[cfg(not(target_arch = "wasm32"))]
             unsafe {
                 gemm::gemm(
                     count,
@@ -95,6 +174,17 @@ impl Evaluator {
                     gemm::Parallelism::None,
                 );
             }
+            #[cfg(target_arch = "wasm32")]
+            for row in 0..count {
+                for out in 0..outputs {
+                    let mut sum = 0f32;
+                    for channel in 0..width {
+                        sum += self.input[row * width + channel]
+                            * self.weights[i][out * width + channel];
+                    }
+                    self.output[row * outputs + out] = sum;
+                }
+            }
             for row in self.output.chunks_exact_mut(outputs) {
                 for (value, bias) in row.iter_mut().zip(&layer.bias) {
                     *value += bias;
@@ -105,6 +195,6 @@ impl Evaluator {
             }
             std::mem::swap(&mut self.input, &mut self.output);
         }
-        self.input.iter().copied().map(f64::from).collect()
+        (self.input.iter().copied().map(f64::from).collect(), memory)
     }
 }

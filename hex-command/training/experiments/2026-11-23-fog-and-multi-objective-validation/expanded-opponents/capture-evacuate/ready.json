@@ -1,0 +1,9 @@
+{
+  "ready": true,
+  "discovery_games": 960,
+  "confirmation_games": 360,
+  "trace_games": 10,
+  "report": "REPORT.md",
+  "summary": "final-summary.json",
+  "manifest": "manifest.json"
+}

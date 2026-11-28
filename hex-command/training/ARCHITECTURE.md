@@ -37,13 +37,89 @@ slots have empty slices until reset; reset replaces the batch. Use independent
 one-slot environments to reset games individually. `close()` disconnects the
 controller and cancels its native rollout at the next decision boundary.
 
-Dense/tree schema 10 has 243 features: mechanical unit and weapon profiles,
+Dense/tree schema 16 has 254 features: mechanical unit and weapon profiles,
 terrain modifiers and movement/path costs, Campaigner duties, protected actors,
 escort/hold progress, diplomacy and known unconditional defeat deadlines. Spatial
-schema 11 supplies 79 board channels. The hex CNN shares two seven-neighbor
-convolutions across candidates, gathers actor/destination/target embeddings and a
-global pool, and scores candidates through a 64/64 head. The critic reuses the
-same pooled board encoding with its gradient detached from the policy.
+schema 19 supplies 83 board channels to two parallel hex CNN branches. Each has
+83→16 and 16→16 seven-neighbor convolutions with ReLU. The detailed branch keeps
+full resolution; the coarse branch uses stride two in its first convolution.
+Each branch supplies actor/destination/target embeddings (48 values) and a masked
+average (16 values). A GRUCell takes the detailed branch's 16-value global pool and a 64-value
+previous hidden state. Its updated state is shared by all candidates. The
+446→64→64→1 head receives 254 candidate features, 128 spatial values, and 64
+memory values. The policy has 70,817 parameters. The critic receives the detailed
+pool, hidden state, and mean candidate features, all detached from the policy.
+
+Coarse cells aggregate non-overlapping 2×2 axial blocks. Their first-convolution
+centers are (2r+1, 2q), so the seven-hex stencil covers all four block positions.
+Valid coarse cells have at least one valid source tile in their block. This mask
+and asymmetric convolution padding make scores independent of batch padding,
+including odd dimensions and jagged map edges. Candidate positions map by integer
+division of row and column by two. Actor-relative contexts are retained in both
+branches. Native inference caches separate geometry and SIMD buffers for each.
+Serialized convolution order is detailed-first, detailed-second, coarse-first,
+coarse-second. Legacy models expand with trainable coarse weights and zero head
+weights for their 64 new encoded inputs, preserving their original scores.
+
+The final four spatial channels mark our hold-objective tiles and remaining
+turns, followed by the opponent's hold-objective tiles and remaining turns.
+Countdowns are divided by 30. Separate locations carry independent countdowns;
+all tiles of a multi-tile objective carry its shared countdown. At overlapping
+holds, the smallest remaining count is shown. A marker distinguishes completed
+zeroes from tiles without a known hold. These planes use Campaigner-visible
+progress and targets, independent of actor assignments. Arena holds also supply
+the acting faction's authoritative progress through Campaigner and the scalar
+duty features. Opponent arena progress travels separately through Campaigner
+into spatial planes, without changing our duty assignments or scalar progress.
+Arena hold clocks are public objective scores in clear, fog and sight variants;
+they expose no hidden unit positions. Shared objectives mark both sides' planes
+on the same tiles, with independent countdowns relative to the acting faction.
+Older CNN checkpoints append zero convolution weights for the new planes,
+preserving their scores until further training.
+
+The candidate head includes consecutive idle turns divided by ten and an
+acted-this-turn flag. A tactical move, attack, or promotion marks the turn active.
+History is maintained per observer faction, resets for each match and chapter,
+and reaches both the live training bridge and native inference. New history
+columns start with zero weights; older model exports and PyTorch policy weights
+expand with zeros before the spatial embeddings. The spatial head input is 446
+values (254 candidate features, 128 spatial values, and 64 memory values).
+
+The candidate head also receives nine per-unit history features: a known-history
+flag, previous move/attack/promotion one-hot flags, known-move and known-attack
+flags, turns since each (divided by ten), and whether a candidate move returns to
+the origin of the unit's most recent move. Unknown events have zero age and a
+zero known flag. End Turn has no actor and receives zero unit-history features.
+History records executed tactical commands per unit and observer faction; it
+shares the match/chapter lifecycle of idle history. Considering candidates does
+not update history. The history features do not add convolution channels.
+Older schema-12/13/14/15/17/18 weights and datasets remain loadable; new head columns
+start at zero, and old embedding weights retain their meaning.
+
+Recurrent memory is explicit in Torch `forward_recurrent`: callers supply a
+batch×64 tensor and receive updated state. Ordinary `forward` and independent
+`score_spatial` calls use zero initial state. Native gameplay commits memory once
+per executed-decision boundary, retaining the input state for repeated scoring.
+State is independent per observer faction; explicit match/chapter generation,
+map changes, counter rewinds and fresh episodes reset it. `BatchEnv` exposes these
+decision contexts so Python uses the same lifecycle, including revisiting a map.
+
+Both PPO trainers retain policy and reference memory during rollouts, cache
+frozen-reference logits, and replay ordered windows of at most eight decisions.
+Hidden states stay connected inside each window; window starts use detached
+rollout states (truncated backpropagation through time). Windows are shuffled,
+individual positions within a window are not. Chapter resets split windows
+without ending campaign reward credit. Bootstrap evaluation does not commit
+memory. Checkpoint recovery restarts environments and hidden state at fresh
+seeds, as before. Legacy shuffled datasets used by the older standalone
+imitation tools remain zero-initial-state examples. The mixed pretrainer uses
+the ordered sequence path described below and rejects corpora without boundaries.
+
+GRU exports use PyTorch reset/update/candidate ordering, including reset after
+the hidden candidate bias. Native weights and explicit hidden-state parity are
+validated separately from stateless scores. Older policy checkpoints initialize
+the GRU and append zero memory-head columns, preserving their previous scores;
+optimizer/critic states require a matching recurrent architecture to resume.
 
 Native inference prepares flat dense weights and reordered convolution weights
 once per model. Candidate heads use single-threaded `gemm`; seven-neighbor
@@ -201,7 +277,7 @@ root and place mutable runs under ignored `tmp/rl/`.
 | `mixed_workload`                  | Isolated authored catalog and disjoint hierarchical seed panels  |
 | `environments`                    | Offline authoring of fixed training-only tactical fixtures       |
 | `diverse_workload`, `diverse_run` | Held-out validation and supervised PPO-only continuation         |
-| `mixed_imitation`                 | Weighted imitation over losslessly compressed shards             |
+| `mixed_imitation`                 | Weighted recurrent imitation over ordered compressed teacher streams |
 | `mixed_ppo`                       | Independent native slots and decision-budgeted multi-task PPO    |
 | `mixed_evaluate`, `handoff`       | Greedy validation and robust checkpoint selection                |
 | `overnight`                       | Restartable imitation → PPO → held-out evaluation supervisor     |
@@ -227,11 +303,46 @@ manifest through the native binding. Isolated catalogs copy the current engine
 catalog; they do not create a second set of scenario definitions. See
 [the catalog contract](../rust/data/CATALOG.md) for visibility and simulation setup.
 
-Mixed sampling assigns equal decision budgets to arenas and campaigns, then
-balances maps/campaigns and divides their objective/route variants. Recruiters and
-fixed opponents are explicit workload axes. Seed partitions separate training,
-validation and final testing. Fixed-opponent comparisons measure that opponent
-set; authored rosters, diplomacy and objective routes remain part of the case.
+Mixed sampling uses authored `samplingWeights`: **25% ordinary arena decisions,
+25% targeted-encounter decisions, 50% broad-campaign decisions**. Each pool keeps
+its own decision budget while PPO adapts map/condition weights inside it. The 28
+targeted maps include the four new multi-objective challenges. Their eight
+validated opponent/visibility combinations are registered explicitly; fixed-force
+encounters retain zero recruits and the validated initiative. Unqualified fog
+variants do not enter training. The distant-commander control shares Marlow’s map
+budget at conditionWeight0.25 versus1 for the exposed-commander challenge.
+
+`samplingMap` identifies the logical map: Ashbank's physical visibility variants
+share one budget. `mapWeights` gives each map its authored base mass. Each of the
+three escort maps has weight1/3, Bellmarket Courts and Thorn Verge1/4; other maps
+have weight1. Base weights multiply PPO mastery weights and normalize within the
+same pool. Conditions share their map's base mass using explicit `conditionWeight`, independent of condition count.
+Imitation uses the same base decision mixture; PPO additionally updates mastery
+from learned-policy outcomes. Evaluation does not adapt and keeps equal mass per
+represented family/map, independent of training curriculum weights.
+
+Reward profiles are separate from storage format and sampling group. `arena`
+pays +1 on victory and no intermediate chapter bonus, including single-stage
+encounters authored as campaigns. `campaign` pays +1 per intermediate chapter
+and +2 for the finale. Existing defeat/cap/loss penalties remain. Objective-progress
+and kill bonuses remain disabled. Profiles and map weights participate in workload
+provenance alongside cases, teachers, pool budgets, adaptive settings and native
+content fingerprints.
+
+`pretrain_imitator` may select an existing named controller or explicit
+`{recruiter, campaign, planner}` blocks. New teachers record their validated full
+composition: Classic/Mission/Classic, Balanced/Mission/Queued, or
+Predictor/Mission/Full. Native collection applies all three teacher blocks; PPO
+continues to use the learned planner. No pretraining is implied by configuration.
+Seed partitions separate training, validation and final testing. Fixed-opponent
+comparisons retain authored roster, diplomacy and objective scope.
+
+PPO allocation is hierarchical: pool, then map, then condition. Map and condition
+credits accumulate the decision share owed under the weights in effect at each
+step. Mastery changes retain those credits; live episodes reserve estimated
+remaining work. Schema 3 checkpoints persist both credit sets. Schema 2 resumes
+retain lifetime exposure and mastery statistics but initialize prospective credits
+at zero, avoiding catch-up against the historical starvation bug.
 
 Imitation learns a teacher's candidate selection. PPO uses fresh stochastic
 rollouts, a critic, GAE, clipping, entropy regularization and a frozen-reference
@@ -248,24 +359,19 @@ selection metric; teacher agreement alone does not establish game strength.
 
 ## Diverse tactical continuation
 
-The `rl-` maps and campaigns are fixed, engine-owned JSON with `human: false`.
-They are absent from default simulation schedules. The offline authoring utility
-`python -m hex_command_rl.environments` reproduces them; no runtime terrain
-generator or frontend loader is involved. Arena layouts cover meadow, woodland,
-ridge, wetlands, river crossings, islands, caverns and ruins, from 9×7 to 21×13.
-The current cavern revision uses two cave-stone chambers, rock walls and two
-connecting routes, with explicit passage openings. It replaces revision one's
-repeated mine landmarks; the archived v2 experiment and selected checkpoint used
-that earlier layout and have not been retrained on the replacement. The survival
-fixture that shares this biome uses the corrected geometry too.
-All twelve ordered race pairings are available in training. Campaign fixtures
-exercise escort/courier movement, protected fighters, deadlines, holding,
-simultaneous ownership, survival, reinforcements, fog and stage progression.
-Four longer company campaigns chain opening a crossing, escorting, holding and
-fighting across two chapters, with optional supplies and persistent survivors.
-Mirrored hex layouts also teach movement in the other direction (their bounding
-box has one extra staggered column). Some campaigns omit authored deadlines so
-the harness-cap penalty can actually occur alongside scripted deadline defeats.
+The active RL maps and campaigns are fixed, engine-owned JSON registered in
+`rust/data/simulation/rl.json`. The decision budget is 10% ordinary arenas (14 maps), 5% targeted encounters
+(28 maps), and 85% campaigns (11 maps). Adaptive sampling operates within each
+group; authored map weights and condition weights remain in effect.
+
+The campaign pool includes Underground Escape, Woodland Defense, Splitwake
+Crossing, Broken Siege, Contested Refuge, Occupied Village Chain, Flooded Prison,
+Last Ferry, Underground Hunt, Awakening Quarry, and The Three Gates. Each of the
+eight new single-map campaigns has clear, player-only fog, and both-sides fog
+conditions sharing one logical map budget. Imitation is disabled for these maps.
+The Three Gates starts with exactly one defending commander and two attacking
+liches, with 18/28/28 gold and no scripted reinforcements. The V3 training catalog and
+workload remain available in the [archived experiment](experiments/2026-11-15-visibility/experiment.json).
 
 Prepare a new workload with:
 
@@ -277,10 +383,14 @@ Prepare a new workload with:
 ```
 
 Run `mixed_evaluate --root tmp/rl/new-run --phase rl` in a second process during
-training. Training uses only the new fixtures, evenly splitting arena/campaign
-decision budgets, tasks and Classic/Predictor opponents. Existing arena maps and
-Lantern Road routes are held out; separate validation and test seeds prevent
-checkpoint selection on final test outcomes. The starting policy stays eligible.
+training. Training uses the fixtures and 10% / 5% / 85% group decision budgets in
+`simulation/rl.json`. Each task splits opponent coverage
+between Classic, Predictor, and Full with the Predictor recruiter.
+Checkpoint selection uses separate synthetic arenas and the Coastal Assault
+and Whitebank Relief campaigns. The authored showcase evaluates Lantern Road
+and the River Valley, Toll Road, and A Tide for Both battlefields after
+selection. The three panels use separate layouts and seeds. The starting
+policy stays eligible.
 PPO uses a 100-round harness cap per arena or campaign stage; authored defeat
 deadlines can end a stage earlier.
 The full panel uses twelve campaign seeds per route; the small periodic panel
@@ -352,6 +462,16 @@ relaunching processes; persisted optimizer/RNG state does not keep a process ali
   and 34,609 actor parameters. New input weights were initially zero, preserving
   the V2 policy before PPO. Validation still preferred frozen V2 overall; V3 is
   retained for comparison rather than promoted as a stronger default.
+- `checkpoints/campaign-cnn-ppo-v4/` is the final nine-hour PPO checkpoint from
+  `ppo-from-pretrain-43m-9h-20261121`, initialized from the 43-minute imitation
+  checkpoint. It includes native weights and training resume state. V4 names
+  the final checkpoint; it also won this run's recorded validation selection.
+  See the detailed V4 training history below.
+- `experiments/2026-11-22-recurrent-imitation/experiment.json` records the one-hour
+  V4 imitation continuation with the coarse branch and GRU. Its targeted gains
+  came with regressions on broader campaigns, held-out gameplay and Lantern.
+  The archived mixed-score winner is experimental; no default model was promoted.
+  Five-minute native policies and exact sequence-resume states are preserved.
 - `experiments/2026-11-15-visibility/experiment.json` records that continuation,
   including hourly validation, unused final-test seeds, actor-conditioned input
   diagrams, training curves, native rulebot comparisons and exact recovery data.
@@ -375,6 +495,102 @@ relaunching processes; persisted optimizer/RNG state does not keep a process ali
   intermediate checkpoints and all 500 detailed traces remain in the original
   ignored run directory. They are preserved research evidence, not required
   checkout dependencies.
+
+### V4: nine-hour PPO after imitation
+
+`checkpoints/campaign-cnn-ppo-v4/` freezes the **final** policy from
+`tmp/rl/ppo-from-pretrain-43m-9h-20261121`. Its native `planner.json` and Torch
+`resume.pt` are copied without changing their weights. The saved
+[training record](checkpoints/campaign-cnn-ppo-v4/training-record/provenance.json)
+contains the run identity, architecture dimensions, workload fingerprints,
+training settings, panel inventories and final results. The adjacent files
+preserve the launch scripts, parameters, launch checks and completion report;
+they describe the historical run rather than today's trainer defaults.
+
+**Architecture.** This is the older, stateless hex CNN: schema 11, 79 spatial
+channels and 243 candidate features. Two seven-tap hex convolutions map
+79 → 16 → 16 channels at the original map resolution. Candidate spatial
+readouts add 64 values to the 243 dense features; the scoring head is
+307 → 64 → 64 → 1, with ReLU hidden activations. The actor has 34,609
+parameters. V4 predates the later idle/unit history inputs, per-objective hold
+countdown channels, coarse spatial branch and GRU. The current architecture
+sections above describe subsequent development, not the contents of V4.
+
+**Training lineage.** Imitation started from the saved V2 policy, not V3.
+The teacher used the Queued planner, Predictor recruiter and Mission campaign
+controller. Cross-entropy trained the learner to select the teacher's action
+among legal candidates. The one-hour imitation job used 408 training cases and
+80 separate validation cases across the 14 arenas and three campaigns below.
+The checkpoint chosen for PPO was epoch 6, at 2,605.216 seconds (43m 25s).
+PPO then ran for 32,400.082 seconds: 5,143 updates, 10,566 completed episodes
+and 1,316,608 learner decisions. Thus “nine-hour” names the PPO stage; imitation
+and evaluation took additional time.
+
+**Training environments.** The arena IDs were `rl-twin-fords`,
+`rl-splitpine-clearing`, `rl-crown-gap`, `rl-jawbone-crossing`, `rl-sump-teeth`,
+`rl-last-lantern`, `rl-switchback-saltworks`, `rl-cinderfault`, `rl-sable-sound`,
+`rl-three-wells-trail`, `rl-frosthook-gate`, `rl-birch-pocket`, `rl-quarry-ring`
+and `rl-fordstep`. They mixed deathmatch and territory objectives, the twelve
+ordered cross-faction pairings among Human, Skeleton, Woodland and Coastal
+armies, and both arena initiatives. The three training campaigns were
+`rl-woodland-defense`, `rl-underground-escape` and `rl-splitwake-crossing`,
+each with three chapters and authored/fog routes. The workload contained
+33,120 enumerated cases; scheduling aimed for 50% arena and 50% campaign
+**decisions**, then equal tasks and variants within each family. It did not
+use the later targeted encounters or adaptive completion-based sampling.
+
+Opponents were Classic, Predictor and Full, fixed for each match. Full is
+encoded as `enemy: "predictor"` with an explicit `enemyBlocks.planner: "full"`
+override and Predictor recruiter. The learner's recruiter alternated between
+Situational and Predictor across cases; the campaign controller was Mission.
+The stored `playerBlocks.planner: "queued"` describes the workload template;
+the training harness replaced that planner with the learned policy.
+
+**Visibility.** In the three training campaigns, fog restricted the player:
+the enemy group explicitly penetrated `fog`, checked before launch. Arena
+visibility was different: each arena had two authored map variants, including
+fog or sight variants, and their roster settings generally applied to both
+sides. For example, Twin Fords fog gave both sides range 5 without fog
+penetration; Last Lantern used range 6 in its base roster and range 5 in its
+sight roster. These are historical settings from the frozen catalog, not a
+claim that every arena used player-only fog or that every base map was clear.
+
+**PPO settings and rewards.** Four environments, horizon 64, minibatch 8,
+three optimization epochs, actor learning rate 0.000005, critic learning rate
+0.001, gamma 0.999, GAE lambda 0.95, clip 0.2 and maximum gradient norm 0.5.
+Sampling temperature was 0.35; entropy coefficient 0.001, reference-policy KL
+coefficient 0.02 and critic warmup 24 episodes. The historical scorer paid
+**+1 only for completing a whole campaign, with no chapter-completion reward**.
+Campaign defeat was −1 and a campaign cap −2; escort, protected-unit and
+leader losses had recorded penalties of −2, −1.5 and −1 respectively. Arena
+win/defeat/cap rewards were +1/−1/−1. The later +1-per-chapter/+2-finale scorer
+was added after this run and did not train V4.
+
+**Selection and results.** The fixed periodic panel had 156 cases. Full
+selection used 1,344 held-out cases: eleven arenas (`open`, `wooded`,
+`crossings`, `wood-edge`, `islands`, `alder-fen`, `hart-saddle`, `herring-road`,
+`ochre-wells`, `siltbar-bend`, `drowned-kilns`) plus Coastal Assault and
+Whitebank Relief. Six candidate checkpoints, including the starting policy,
+were compared. Selection first retained candidates within 2.5 percentage
+points of the best worst stratum, then compared overall score and caps.
+The final checkpoint also won this recorded selection, with balanced score
+40.97%. This establishes how it was selected, not consistent improvement
+across all maps.
+
+The separate 1,314-case showcase used River Valley, the historically named
+`sluice` and `villages` arena IDs, and Lantern Road. Its seeds did not select
+checkpoints. Balanced showcase score fell from 31.44% at the imitation start
+to 29.39% at V4; total wins/completions fell from 477 to 449 and caps rose
+from 179 to 240. Those totals combine arenas and campaigns; the balanced
+score weights evaluation strata rather than dividing total wins by cases.
+The saved completion report includes every opponent stratum. V4 is a frozen
+experimental model with mixed results, not a blanket replacement for V2.
+
+The recorded source revision is `6b99fae284cba5a55d21ceb797ec37d008a3971c`;
+the revision alone does not reconstruct uncommitted run-time changes, so retain
+the recorded content/engine fingerprints and frozen run catalog. Original hourly
+checkpoints, traces and curves remain in the run directory. A second checkpoint
+copy remains under `/workspace/shared/ppo-from-pretrain-43m-9h-20261121/rl`.
 
 Inspect `evaluation.json` for balanced results and the archived CSVs for exact
 campaign/route/opponent counts. Trace outcomes distinguish protected-character
@@ -417,3 +633,201 @@ The selected model remains experimental: protected-unit survival and deadline
 execution are known weaknesses, especially against Predictor. Adding content
 requires fresh matched evaluations. Neither these results nor native/PyTorch
 parity establish browser deployment readiness.
+
+## Per-environment imitation teachers
+
+`simulation/rl.json` explicitly declares `pretrain_imitator` for every training
+arena and campaign variant. `classic`, `queued`, and `full` select the player
+planner while preserving the authored opponent, recruiter and campaigner. The
+named `objective_progress` and structured `{"path_to":{"col":13,"row":5}}`
+references select pretraining-only legal-action controllers using the same
+faction-observed candidate features and spatial inputs as the learned planner.
+They are not PPO policies or reward shaping. Custom path targets are validated
+against an authored single-chapter map. Unknown or missing teachers fail loading.
+
+`mixed_workload.prepare` creates disjoint train/validation/test schedules for the
+whole training pool. `mixed_imitation` collects its train and validation partitions
+with those teachers. Imitation validation uses separate seeds on the training
+map pool (`imitation_validation`), while gameplay selection/showcase panels stay
+separate and never supply training gradients. Compressed shards retain imitator identities
+and reject reuse after a teacher/provenance change. Held-out maps are not added to
+the corpus. PPO receives ordinary match configs without imitation settings and
+always selects the learned player planner. No training begins during preparation.
+
+The 24 targeted maps expose 66 selected enemy/visibility conditions. Clear,
+player-only fog and both-sides fog share the same maps/rosters and use ordinary
+events to assign the appropriate authored vision groups before play. Later
+recruits inherit the faction's selected vision group. Broad environments retain
+their existing mixed opponent and visibility settings.
+
+### Recurrent mixed imitation
+
+`collect_spatial_sequences` returns the same dense and spatial buffers as
+`collect_spatial`, plus one explicit context per label: source game index,
+observing faction, map, reset generation, round and decision counter. The old
+collection API remains available. Compressed corpus schema 1 preserves these
+contexts, teacher identities and fingerprints; missing boundaries or changed
+provenance require a new corpus rather than guessing sequence identity.
+
+The mixed trainer partitions each shard into match/faction/chapter streams.
+Map reuse does not merge matches or repeated chapters. It shuffles shards and
+whole streams, never individual positions inside a stream. Up to eight streams
+advance in parallel through windows of eight decisions (configurable through
+`--sequence-batch-size` and `--sequence-length`). Memory starts at zero at each
+stream boundary, remains connected inside a window, and carries detached values
+into its next window. Shorter streams leave the batch without contaminating
+other streams. Candidate padding contributes no loss. Cross-entropy updates the
+CNN, coarse branch, GRU and action head jointly. The existing hierarchical
+per-decision loss weights remain in use; ragged final windows use the same
+fixed loss denominator as full windows rather than receiving extra weight.
+
+Validation uses the same ordered forward path with dropout disabled and no
+gradients. It carries memory across windows and reports loss/accuracy over all
+teacher decisions with the existing group weights. Held-out gameplay panels
+remain separate. Checkpoints retain the stream permutation, active stream-batch
+position, window cursor, detached memory, optimizer and RNG states. Exact resume
+requires matching sequence settings and sequence schema; older independent-example
+checkpoints can initialize a new run through `--warm-start`, not exact resume.
+
+## Adaptive PPO practice allocation
+
+`adaptiveSampling` in `simulation/rl.json` controls PPO sampling only. For a
+smoothed learner completion rate `p`, the multiplier is
+`max(minimumMultiplier, min(1, (1-p)/(1-completionThreshold)))`. The authored
+threshold is 0.8 and the floor is 0.1: full weight through 80%, half at 90%,
+quarter at 95%, and one tenth from 98% upward. There is no separate fixed/dynamic
+mixture. These are relative weights normalized within the existing sampling
+pools; a pool whose cases are all mastered retains its authored total budget.
+
+Mastery belongs to an entire match template without its seed. This separates
+map/objective/visibility, enemy tactic, recruiter, army pair and initiative.
+The EMA starts at 0.5, updates at rate 0.1 on actual terminal outcomes, retains
+full weight for ten observations, and refreshes weights every twenty completed
+episodes globally. Campaign success means completing the full campaign. Caps
+are failures. Worker errors and unfinished episodes do not update completion.
+
+The sampler still allocates decision budgets, including reservations for live
+episodes and moving estimates of episode length. When effective weights change,
+it resets within-pool allocation debt while preserving lifetime counts and live
+reservations. This prevents old allocations delaying a newly needed case.
+Checkpoint schema 2 preserves mastery, frozen multipliers, refresh position and
+allocation counters. Live matches restart on recovery without a synthetic loss;
+the surrounding PPO checkpoint preserves the RNG for future draws.
+
+`sampling` metric events log recently observed cases, and `sampler-status.json`
+contains every case's estimate, observation count, multiplier, normalized decision
+weight and actual decision share. Imitation weights, gameplay evaluation panels,
+checkpoint-selection metrics and all reward calculations stay fixed.
+
+### Mixed-imitation run clock and collection bounds
+
+The mixed pretrainer budgets active training pipeline time. Corpus collection,
+initial/epoch validation, checkpoint writes and recovery downtime do not consume
+`--seconds`. Checkpoints store `budget_kind: training-time` and separate training
+`elapsed` and total `wall_seconds`; older wall-time checkpoints require a warm
+start. `--checkpoint-seconds` sets training-time checkpoint spacing (300 seconds
+by default). `--collection-workers` and `--games-per-shard` bound collection
+concurrency and retained games without truncating their teacher trajectories.
+The corpus manifest pins its shard layout for recovery.
+
+The optional `visible_target_path` offline teacher reuses the actor-specific
+path controller, selecting only observed hostile tiles and prioritizing observed
+defeat markers. It is configured for three validated Thorn Verge conditions;
+it is not a new PPO planner or a hidden-information oracle. Force the Crossing
+and Bellmarket also select different teachers by opponent/visibility after fresh
+matched qualification. Existing teacher selectors remain on other conditions.
+See `experiments/2026-11-23-better-targeted-teachers` for positive and rejected
+results; unresolved Tidegate/Lower Gallery deficits still matter when deciding
+whether to run broad imitation.
+
+
+### Removed task-specific offline teachers
+
+The experimental relief/recovery/refuge controllers and their `tactical` selector
+were removed on 2026-11-24 after the five-minute imitation trial. Crown Road
+Relief, Briar Saddle and Lower Gallery Refuge now select the existing Full
+planner and explicitly disable pretraining. Their maps remain in PPO.
+Historical experiment results and checkpoints remain archived; their old teacher
+API is not maintained in the current runtime.
+
+### Imitation eligibility
+
+Every training arena and campaign condition explicitly declares
+`"pretrain_enabled": true` or `false`, independently of `pretrain_imitator`.
+Only eligible conditions enter the prepared `imitation_train` and
+`imitation_validation` splits. The full `train`, gameplay validation, periodic
+and showcase splits remain unchanged. Mixed and diverse preparation both record
+the filtered cases and teacher identities in workload provenance; older broad
+corpora cannot be silently reused. Automatic collection rejects disabled or
+empty selections before writing shards. A disabled teacher can still be used in
+an explicitly requested diagnostic comparison.
+
+Eligibility is authored from matched learner/reference evidence, not inferred
+from teacher availability. Currently fifteen enemy/visibility conditions across
+eight targeted maps are enabled: Splitpine vs Classic; Echo Gate; North of
+Lantern Road (player fog); Herring Tide Road Three; Lair player
+fog vs Classic/Predictor and both fog vs Classic/Full; both clear Classic
+Hollowbank starts; and the five configured Ashbank conditions. Splitpine's other
+enemies and Lair's remaining conditions are disabled because their evidence does
+not meet the same combination of weak learner and dependable teacher. All other
+targets, ordinary arenas and broad campaigns are disabled for automatic imitation
+pending evidence. Their PPO cases, weights and adaptive sampling are retained.
+Imitation loss weights normalize over eligible maps/conditions only; PPO's
+25/25/50 allocation does not change. No training starts when setting this flag.
+
+
+The eligible-only imitation experiment of 2026-11-24 starts from the final
+hour-10 PPO actor with unchanged CNN/coarse/GRU/head architecture and a fresh Adam
+optimizer. Requested 1/3/5-minute checkpoints and full results are archived under
+`experiments/2026-11-24-targeted-imitation-5m`. It improves selected targets but
+regresses ordinary and Lantern retention; none is a promoted model version.
+
+
+The selected baseline for subsequent work is the **unmodified final hour-10 PPO
+checkpoint**, not any 1/3/5-minute imitation result. Its native model SHA-256 is
+`e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee`.
+Actor and complete PPO recovery state are preserved at
+`experiments/2026-11-23-ppo-5m-9h/extension-one-hour/recovery/hour-10/`.
+This selection starts no run and does not deploy or rename an existing model.
+
+
+A twelve-hour PPO continuation from that actor completed under
+`experiments/2026-11-24-ppo-hour10-12h`. It freezes the current 25/25/50 curriculum
+and uses the existing policy-warm-start path (fresh critic/optimizers/sampler,
+reference hour 10), then full-state recovery. Hourly fixed evaluation retains
+the baseline and selects using held-out cases only. No imitation or automatic
+model promotion is part of this run.
+
+
+Completed run result (2026-11-24): 43,200.359 trainer seconds, 3,301 updates,
+845,056 decisions. Held-out-only selection chose new-run hour 11 (actual
+39,619.576 seconds), with balanced held-out score 28.41% versus 23.30% at start;
+final hour 12 scored 24.62%. Hour 11 arena wins were 117/264 versus 101/264,
+held-out campaign clears 6/48 versus 4/48, and Lantern 4/24 versus 4/24.
+Final hour 12 retained arena gains (119/264), but held-out campaigns fell to
+2/48 and Lantern to 1/24. Training diagnostics improved to 55.07% at hour 12;
+they did not select the candidate. No model was promoted or deployed.
+All hourly actors and full PPO recovery states, frozen runtime inputs, raw
+results, actual allocation, visibility-specific chapter curves and limitations
+are archived in `experiments/2026-11-24-ppo-hour10-12h/`.
+
+
+On 2026-11-26 an additional twelve hours were authorized and launched from the
+final hour-12 actor/full PPO state (SHA `da26cde88dde2918a2f39eab5b8144ea4cfb98c8bdda7f6f61e2f7983c976bf2`).
+All state components were compared exactly at resume, including optimizers,
+critic, reference, RNG and sampler. The original hour10 KL anchor and all training
+controls remain unchanged. Target cumulative trainer time is 86,400.194862209;
+hour 13–24 panels use identical heldout/diagnostic/Lantern cases. Original hour11
+remains selection-eligible; no model is promoted. Extension evidence lives under
+`experiments/2026-11-24-ppo-hour10-12h/extension-twelve-hours-20261126/`.
+
+
+The additional twelve hours completed on 2026-11-26. Heldout-only selection across
+hours 0–24 chose hour 13 (28.98% balanced score, 120/264 arena wins, 6/48 campaign
+clears, 3/24 Lantern); final hour 24 scored 23.20%, 117/264 arenas, 1/48 campaigns and 0/24
+Lantern. Targeted diagnostic wins rose 115→121/150 from extension start to final,
+but held-out campaign and Lantern gains did not persist. Whole-extension decision
+allocation was 25.0176% ordinary/25.0151% targeted/49.9673% broad campaigns, with
+all 45 maps receiving additional work. All hourly full recovery states and raw
+results are archived in `experiments/2026-11-24-ppo-hour10-12h/extension-twelve-hours-20261126/`.
+Original archive artifacts are unchanged; no model was promoted or deployed.

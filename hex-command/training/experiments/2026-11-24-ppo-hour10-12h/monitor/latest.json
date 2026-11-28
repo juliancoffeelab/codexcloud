@@ -1,0 +1,493 @@
+{
+  "time": 1795524198.7047548,
+  "healthAgeSeconds": 2.30802321434021,
+  "training": {
+    "event": "finished",
+    "seconds": 43200.357744726,
+    "updates": 3301,
+    "episodes": 11370,
+    "decisions": 845056,
+    "rss_mib": 1721.3984375
+  },
+  "processes": {
+    "trainer": [],
+    "evaluator": [
+      82958
+    ],
+    "supervisor": [
+      83099
+    ]
+  },
+  "validatedCheckpoints": {
+    "local": {
+      "path": "checkpoints/last-1795524095845528690",
+      "elapsed": 43200.194862209,
+      "updates": 3301,
+      "episodes": 11370,
+      "modelSha256": "da26cde88dde2918a2f39eab5b8144ea4cfb98c8bdda7f6f61e2f7983c976bf2"
+    },
+    "shared": {
+      "path": "checkpoints/last-1795524095845528690",
+      "elapsed": 43200.194862209,
+      "updates": 3301,
+      "episodes": 11370,
+      "modelSha256": "da26cde88dde2918a2f39eab5b8144ea4cfb98c8bdda7f6f61e2f7983c976bf2"
+    }
+  },
+  "decisionShares": {
+    "arena": 0.2499893498182369,
+    "targeted": 0.25000828347470466,
+    "campaign": 0.5000023667070584
+  },
+  "pools": {
+    "arena": 211255,
+    "targeted": 211271,
+    "campaign": 422530
+  },
+  "maps": {
+    "arena:rl-twin-fords": 15126,
+    "arena:rl-splitpine-clearing": 15118,
+    "arena:rl-crown-gap": 15055,
+    "arena:rl-jawbone-crossing": 15109,
+    "arena:rl-sump-teeth": 15126,
+    "arena:rl-last-lantern": 15039,
+    "arena:rl-switchback-saltworks": 15146,
+    "arena:rl-cinderfault": 15052,
+    "arena:rl-sable-sound": 15038,
+    "arena:rl-three-wells-trail": 15194,
+    "arena:rl-frosthook-gate": 15070,
+    "arena:rl-birch-pocket": 15039,
+    "arena:rl-quarry-ring": 15054,
+    "arena:rl-fordstep": 15089,
+    "targeted:rl-marlow-cut-pass-finish": 4366,
+    "targeted:rl-ashbank-relay-fork-vigil": 11297,
+    "targeted:rl-bellmarket-courts": 1243,
+    "targeted:rl-breakthrough-cave5": 5363,
+    "targeted:rl-breakthrough-ford-heal08": 2201,
+    "targeted:rl-briar-saddle": 3281,
+    "targeted:rl-deadline-pines-relief8": 11301,
+    "targeted:rl-deadline-wait7": 9790,
+    "targeted:rl-defend-bracken-stand-010": 9260,
+    "targeted:rl-defend-lower-gallery-0": 11285,
+    "targeted:rl-defend-tidegate-stand-110": 10664,
+    "targeted:rl-escort-lantern-maze": 3696,
+    "targeted:rl-escort-mistfen-patrol": 3789,
+    "targeted:rl-escort-splitwake-patrol": 3663,
+    "targeted:rl-hollowbank-extraction-crossfire-late-guard": 11270,
+    "targeted:rl-hollowbank-extraction-crossfire-nearside": 11314,
+    "targeted:rl-interrupt-herring-tide-road-three": 11224,
+    "targeted:rl-interrupt-siltbar-approach": 10988,
+    "targeted:rl-interrupt-south-ford-west-post": 2277,
+    "targeted:rl-lair-outworks": 11270,
+    "targeted:rl-route-ambush": 11278,
+    "targeted:rl-route-pass-road": 9361,
+    "targeted:rl-route-pocket-leader": 11283,
+    "targeted:rl-slate-gallery": 8651,
+    "campaign:rl-splitwake-crossing": 140666,
+    "targeted:rl-thorn-verge": 840,
+    "campaign:rl-underground-escape": 141037,
+    "targeted:rl-urgent-crossing": 4593,
+    "targeted:rl-vault-rally": 11486,
+    "targeted:rl-whitecap-ford": 4237,
+    "campaign:rl-woodland-defense": 140827
+  },
+  "deltaMaps": {
+    "arena:rl-twin-fords": 1315,
+    "arena:rl-splitpine-clearing": 1235,
+    "arena:rl-crown-gap": 1218,
+    "arena:rl-jawbone-crossing": 1237,
+    "arena:rl-sump-teeth": 1204,
+    "arena:rl-last-lantern": 1215,
+    "arena:rl-switchback-saltworks": 1333,
+    "arena:rl-cinderfault": 1245,
+    "arena:rl-sable-sound": 1144,
+    "arena:rl-three-wells-trail": 1333,
+    "arena:rl-frosthook-gate": 1268,
+    "arena:rl-birch-pocket": 1239,
+    "arena:rl-quarry-ring": 1219,
+    "arena:rl-fordstep": 1110,
+    "targeted:rl-marlow-cut-pass-finish": 100,
+    "targeted:rl-ashbank-relay-fork-vigil": 1040,
+    "targeted:rl-bellmarket-courts": 42,
+    "targeted:rl-breakthrough-cave5": 193,
+    "targeted:rl-breakthrough-ford-heal08": 212,
+    "targeted:rl-briar-saddle": 176,
+    "targeted:rl-deadline-pines-relief8": 1061,
+    "targeted:rl-deadline-wait7": 899,
+    "targeted:rl-defend-bracken-stand-010": 622,
+    "targeted:rl-defend-lower-gallery-0": 1071,
+    "targeted:rl-defend-tidegate-stand-110": 837,
+    "targeted:rl-escort-lantern-maze": 327,
+    "targeted:rl-escort-mistfen-patrol": 382,
+    "targeted:rl-escort-splitwake-patrol": 285,
+    "targeted:rl-hollowbank-extraction-crossfire-late-guard": 1021,
+    "targeted:rl-hollowbank-extraction-crossfire-nearside": 1043,
+    "targeted:rl-interrupt-herring-tide-road-three": 1084,
+    "targeted:rl-interrupt-siltbar-approach": 960,
+    "targeted:rl-interrupt-south-ford-west-post": 335,
+    "targeted:rl-lair-outworks": 1057,
+    "targeted:rl-route-ambush": 1061,
+    "targeted:rl-route-pass-road": 238,
+    "targeted:rl-route-pocket-leader": 1086,
+    "targeted:rl-slate-gallery": 533,
+    "campaign:rl-splitwake-crossing": 11421,
+    "targeted:rl-thorn-verge": 24,
+    "campaign:rl-underground-escape": 11865,
+    "targeted:rl-urgent-crossing": 165,
+    "targeted:rl-vault-rally": 1166,
+    "targeted:rl-whitecap-ford": 327,
+    "campaign:rl-woodland-defense": 11661
+  },
+  "zeroIncrementMaps": [],
+  "previousCheck": 1795520582.9205508,
+  "lastUpdate": {
+    "event": "update",
+    "seconds": 43200.077787015995,
+    "update": 3301,
+    "decisions": 845056,
+    "episodes": 11370,
+    "policy_loss": -0.05606599113988606,
+    "value_loss": 0.1279192571873864,
+    "entropy": 0.49975246826017444,
+    "reference_kl": 0.1514216623142023,
+    "clip_fraction": 0.0014204545454545455,
+    "gradient_norm": 10.543230409649285,
+    "critic_explained_variance": -0.47220097451486187,
+    "warmup": false,
+    "family_decisions": {
+      "arena": 215621,
+      "campaign": 629435
+    },
+    "action_counts": {
+      "end_turn": 142785,
+      "move": 579404,
+      "attack": 115949,
+      "advance": 6918
+    }
+  },
+  "recentTraining": {
+    "arena": {
+      "lastEpisodes": 50,
+      "wins": 30,
+      "caps": 0,
+      "meanReturn": 0.2
+    },
+    "targeted": {
+      "lastEpisodes": 50,
+      "wins": 31,
+      "caps": 0,
+      "meanReturn": 0.22
+    },
+    "campaign": {
+      "lastEpisodes": 50,
+      "wins": 5,
+      "caps": 0,
+      "meanReturn": -0.02
+    }
+  },
+  "hourlyResults": [
+    {
+      "hour": 0,
+      "actualSeconds": 0,
+      "panels": {
+        "heldout": {
+          "score": 0.23295454545454516,
+          "wins": 105,
+          "caps": 34,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.4556216931216936,
+          "wins": 123,
+          "caps": 0,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.16666666666666666,
+          "wins": 4,
+          "caps": 7,
+          "runs": 24
+        }
+      }
+    },
+    {
+      "hour": 1,
+      "actualSeconds": 3690.7571609749866,
+      "panels": {
+        "heldout": {
+          "score": 0.2481060606060603,
+          "wins": 122,
+          "caps": 27,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.4641534391534399,
+          "wins": 125,
+          "caps": 1,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.08333333333333333,
+          "wins": 2,
+          "caps": 8,
+          "runs": 24
+        }
+      }
+    },
+    {
+      "hour": 2,
+      "actualSeconds": 7203.634608663997,
+      "panels": {
+        "heldout": {
+          "score": 0.27367424242424215,
+          "wins": 131,
+          "caps": 26,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.4914682539682547,
+          "wins": 131,
+          "caps": 1,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.125,
+          "wins": 3,
+          "caps": 4,
+          "runs": 24
+        }
+      }
+    },
+    {
+      "hour": 3,
+      "actualSeconds": 10898.52912798,
+      "panels": {
+        "heldout": {
+          "score": 0.23484848484848456,
+          "wins": 115,
+          "caps": 31,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.4853835978835984,
+          "wins": 141,
+          "caps": 0,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.041666666666666664,
+          "wins": 1,
+          "caps": 12,
+          "runs": 24
+        }
+      }
+    },
+    {
+      "hour": 4,
+      "actualSeconds": 14430.477922004007,
+      "panels": {
+        "heldout": {
+          "score": 0.21780303030303005,
+          "wins": 115,
+          "caps": 30,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.4833664021164027,
+          "wins": 130,
+          "caps": 1,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.125,
+          "wins": 3,
+          "caps": 15,
+          "runs": 24
+        }
+      }
+    },
+    {
+      "hour": 5,
+      "actualSeconds": 18002.45957214199,
+      "panels": {
+        "heldout": {
+          "score": 0.2727272727272725,
+          "wins": 126,
+          "caps": 31,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.4204365079365085,
+          "wins": 124,
+          "caps": 1,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.08333333333333333,
+          "wins": 2,
+          "caps": 13,
+          "runs": 24
+        }
+      }
+    },
+    {
+      "hour": 6,
+      "actualSeconds": 21669.083543833985,
+      "panels": {
+        "heldout": {
+          "score": 0.2462121212121209,
+          "wins": 121,
+          "caps": 26,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.4865079365079372,
+          "wins": 138,
+          "caps": 0,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.0,
+          "wins": 0,
+          "caps": 10,
+          "runs": 24
+        }
+      }
+    },
+    {
+      "hour": 7,
+      "actualSeconds": 25236.57375158099,
+      "panels": {
+        "heldout": {
+          "score": 0.25662878787878757,
+          "wins": 122,
+          "caps": 32,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.49411375661375717,
+          "wins": 138,
+          "caps": 2,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.041666666666666664,
+          "wins": 1,
+          "caps": 9,
+          "runs": 24
+        }
+      }
+    },
+    {
+      "hour": 8,
+      "actualSeconds": 28803.307855647,
+      "panels": {
+        "heldout": {
+          "score": 0.26041666666666635,
+          "wins": 124,
+          "caps": 30,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.45972222222222275,
+          "wins": 133,
+          "caps": 1,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.0,
+          "wins": 0,
+          "caps": 13,
+          "runs": 24
+        }
+      }
+    },
+    {
+      "hour": 9,
+      "actualSeconds": 32490.66806157201,
+      "panels": {
+        "heldout": {
+          "score": 0.24337121212121182,
+          "wins": 124,
+          "caps": 23,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.539748677248678,
+          "wins": 142,
+          "caps": 0,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.08333333333333333,
+          "wins": 2,
+          "caps": 11,
+          "runs": 24
+        }
+      }
+    },
+    {
+      "hour": 10,
+      "actualSeconds": 36053.31012577901,
+      "panels": {
+        "heldout": {
+          "score": 0.258522727272727,
+          "wins": 123,
+          "caps": 23,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.5148148148148154,
+          "wins": 140,
+          "caps": 0,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.041666666666666664,
+          "wins": 1,
+          "caps": 16,
+          "runs": 24
+        }
+      }
+    },
+    {
+      "hour": 11,
+      "actualSeconds": 39619.57562186601,
+      "panels": {
+        "heldout": {
+          "score": 0.28409090909090884,
+          "wins": 123,
+          "caps": 27,
+          "runs": 312
+        },
+        "training_diagnostic": {
+          "score": 0.5416005291005298,
+          "wins": 142,
+          "caps": 1,
+          "runs": 214
+        },
+        "lantern_showcase": {
+          "score": 0.16666666666666666,
+          "wins": 4,
+          "caps": 6,
+          "runs": 24
+        }
+      }
+    }
+  ],
+  "evaluationStatus": {
+    "time": 1795524187.092535,
+    "label": "hour-12",
+    "phase": "monitor",
+    "panel": "heldout",
+    "completed": 192,
+    "total": 312
+  },
+  "nativeAndWorkloadUnchanged": true,
+  "fullWorkloadContentHashValidated": true,
+  "recoveryNeeded": false,
+  "diskFreeGiB": 5.768791198730469,
+  "allocationHistorySnapshots": 1435,
+  "allocationHistoryLastTime": 1795524176.3819702,
+  "checkpointCount": 341
+}

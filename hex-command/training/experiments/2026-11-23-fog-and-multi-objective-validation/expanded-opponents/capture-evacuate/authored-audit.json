@@ -1,0 +1,61 @@
+{
+  "original_catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-validation/capture-evacuate/catalog-final",
+  "modified_catalog": "/workspace/codexcloud/hex-command/tmp/rl/multi-objective-expanded/capture-evacuate/catalog",
+  "variants": {
+    "rl-hollowbank-extraction-crossfire-late-guard": {
+      "unchanged_hashes": {
+        "map.json": "10e607d5b47c8692969313d97b5f02effffadb2886a3bacbca04ca500806306a",
+        "scripts.json": "0e5de2cdfebab2ed0e60d881cdf1d09fca259204185c8aa049aa13185d4af558",
+        "campaign.json": "5f993cd510bd4862922dec9f4bc4eb56fb9170cab9b7e345e62c4473bd6ad55e",
+        "stage.json": "5771f608f2f6f8025c23bb31fe51910158fcce1da53badd2126ada666f028069",
+        "story.json": "77de1c0ef59fb49240898505f8ab35bcf80a209b25dc4e73dc3633bd22c41468"
+      },
+      "exact_roster_except_added_vision_groups": true,
+      "enemy_controller": {
+        "kind": "ai",
+        "policy": null
+      },
+      "deadline": 14
+    },
+    "rl-hollowbank-extraction-crossfire-nearside": {
+      "unchanged_hashes": {
+        "map.json": "d19ac5d0fe90634b34c2b6c8365cafd977ebb0d728d91392c5deadea63423af2",
+        "scripts.json": "eaa392299c32dad2ff958430b9722374584e398526e24fa81f429121b95f92c1",
+        "campaign.json": "a0dd4f539934e4cf212741748d7f36a04340ae5c21ca7d202dac15e6ee04393c",
+        "stage.json": "4b4888cb7b05cb5566203cd0d0354d94d4414a74136fdd89ce98bee8db1ab5fc",
+        "story.json": "77de1c0ef59fb49240898505f8ab35bcf80a209b25dc4e73dc3633bd22c41468"
+      },
+      "exact_roster_except_added_vision_groups": true,
+      "enemy_controller": {
+        "kind": "ai",
+        "policy": null
+      },
+      "deadline": 14
+    }
+  },
+  "visibility": [
+    {
+      "label": "clear",
+      "route": "authored",
+      "affected_sides": [],
+      "radius": null
+    },
+    {
+      "label": "player-fog",
+      "route": "player-fog",
+      "affected_sides": [
+        "player"
+      ],
+      "radius": 3
+    },
+    {
+      "label": "both-fog",
+      "route": "both-fog",
+      "affected_sides": [
+        "player",
+        "enemy"
+      ],
+      "radius": 3
+    }
+  ]
+}

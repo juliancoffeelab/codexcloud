@@ -1,0 +1,472 @@
+[
+  {
+    "player": "classic",
+    "variant": "crossfire-tight",
+    "games": 8,
+    "wins": 6,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 6,
+      "The evacuation window closed.": 2
+    },
+    "errors": 0
+  },
+  {
+    "player": "classic",
+    "variant": "crossfire-nearside",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 7,
+      "The evacuation window closed.": 1
+    },
+    "errors": 0
+  },
+  {
+    "player": "classic",
+    "variant": "crossfire-farside",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 7,
+      "The evacuation window closed.": 1
+    },
+    "errors": 0
+  },
+  {
+    "player": "classic",
+    "variant": "crossfire-banks",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 8
+    },
+    "errors": 0
+  },
+  {
+    "player": "classic",
+    "variant": "crossfire-separation",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 7,
+      "The evacuation window closed.": 1
+    },
+    "errors": 0
+  },
+  {
+    "player": "classic",
+    "variant": "crossfire-separation-tight",
+    "games": 8,
+    "wins": 0,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 8
+    },
+    "errors": 0
+  },
+  {
+    "player": "classic",
+    "variant": "crossfire-late-guard",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 8
+    },
+    "errors": 0
+  },
+  {
+    "player": "classic",
+    "variant": "crossfire-fog",
+    "games": 8,
+    "wins": 2,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 6,
+      "Mara and Tavin both reached safety.": 2
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour10",
+    "variant": "crossfire-tight",
+    "games": 8,
+    "wins": 3,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 5,
+      "Mara and Tavin both reached safety.": 3
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour10",
+    "variant": "crossfire-nearside",
+    "games": 8,
+    "wins": 0,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 8
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour10",
+    "variant": "crossfire-farside",
+    "games": 8,
+    "wins": 6,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 6,
+      "The evacuation window closed.": 2
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour10",
+    "variant": "crossfire-banks",
+    "games": 8,
+    "wins": 3,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 5,
+      "Mara and Tavin both reached safety.": 3
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour10",
+    "variant": "crossfire-separation",
+    "games": 8,
+    "wins": 5,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 5,
+      "The evacuation window closed.": 3
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour10",
+    "variant": "crossfire-separation-tight",
+    "games": 8,
+    "wins": 0,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 8
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour10",
+    "variant": "crossfire-late-guard",
+    "games": 8,
+    "wins": 3,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 3,
+      "The evacuation window closed.": 5
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour10",
+    "variant": "crossfire-fog",
+    "games": 8,
+    "wins": 0,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 8
+    },
+    "errors": 0
+  },
+  {
+    "player": "full",
+    "variant": "crossfire-tight",
+    "games": 8,
+    "wins": 2,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 6,
+      "Mara and Tavin both reached safety.": 2
+    },
+    "errors": 0
+  },
+  {
+    "player": "full",
+    "variant": "crossfire-nearside",
+    "games": 8,
+    "wins": 5,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 3,
+      "Mara and Tavin both reached safety.": 5
+    },
+    "errors": 0
+  },
+  {
+    "player": "full",
+    "variant": "crossfire-farside",
+    "games": 8,
+    "wins": 6,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 6,
+      "The evacuation window closed.": 2
+    },
+    "errors": 0
+  },
+  {
+    "player": "full",
+    "variant": "crossfire-banks",
+    "games": 8,
+    "wins": 6,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 6,
+      "The evacuation window closed.": 2
+    },
+    "errors": 0
+  },
+  {
+    "player": "full",
+    "variant": "crossfire-separation",
+    "games": 8,
+    "wins": 6,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 6,
+      "The evacuation window closed.": 2
+    },
+    "errors": 0
+  },
+  {
+    "player": "full",
+    "variant": "crossfire-separation-tight",
+    "games": 8,
+    "wins": 1,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 7,
+      "Mara and Tavin both reached safety.": 1
+    },
+    "errors": 0
+  },
+  {
+    "player": "full",
+    "variant": "crossfire-late-guard",
+    "games": 8,
+    "wins": 6,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 2,
+      "Mara and Tavin both reached safety.": 6
+    },
+    "errors": 0
+  },
+  {
+    "player": "full",
+    "variant": "crossfire-fog",
+    "games": 8,
+    "wins": 1,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 7,
+      "Mara and Tavin both reached safety.": 1
+    },
+    "errors": 0
+  },
+  {
+    "player": "queued",
+    "variant": "crossfire-tight",
+    "games": 8,
+    "wins": 1,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 1,
+      "The evacuation window closed.": 7
+    },
+    "errors": 0
+  },
+  {
+    "player": "queued",
+    "variant": "crossfire-nearside",
+    "games": 8,
+    "wins": 3,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 5,
+      "Mara and Tavin both reached safety.": 3
+    },
+    "errors": 0
+  },
+  {
+    "player": "queued",
+    "variant": "crossfire-farside",
+    "games": 8,
+    "wins": 4,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 4,
+      "The evacuation window closed.": 4
+    },
+    "errors": 0
+  },
+  {
+    "player": "queued",
+    "variant": "crossfire-banks",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 7,
+      "The evacuation window closed.": 1
+    },
+    "errors": 0
+  },
+  {
+    "player": "queued",
+    "variant": "crossfire-separation",
+    "games": 8,
+    "wins": 4,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 4,
+      "The evacuation window closed.": 4
+    },
+    "errors": 0
+  },
+  {
+    "player": "queued",
+    "variant": "crossfire-separation-tight",
+    "games": 8,
+    "wins": 3,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 3,
+      "The evacuation window closed.": 5
+    },
+    "errors": 0
+  },
+  {
+    "player": "queued",
+    "variant": "crossfire-late-guard",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 7,
+      "The evacuation window closed.": 1
+    },
+    "errors": 0
+  },
+  {
+    "player": "queued",
+    "variant": "crossfire-fog",
+    "games": 8,
+    "wins": 0,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 8
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour8",
+    "variant": "crossfire-tight",
+    "games": 8,
+    "wins": 1,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 7,
+      "Mara and Tavin both reached safety.": 1
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour8",
+    "variant": "crossfire-nearside",
+    "games": 8,
+    "wins": 6,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 2,
+      "Mara and Tavin both reached safety.": 6
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour8",
+    "variant": "crossfire-farside",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 8
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour8",
+    "variant": "crossfire-banks",
+    "games": 8,
+    "wins": 6,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 6,
+      "The evacuation window closed.": 2
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour8",
+    "variant": "crossfire-separation",
+    "games": 8,
+    "wins": 8,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 8
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour8",
+    "variant": "crossfire-separation-tight",
+    "games": 8,
+    "wins": 7,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 1,
+      "Mara and Tavin both reached safety.": 7
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour8",
+    "variant": "crossfire-late-guard",
+    "games": 8,
+    "wins": 3,
+    "caps": 0,
+    "outcomes": {
+      "Mara and Tavin both reached safety.": 3,
+      "The evacuation window closed.": 5
+    },
+    "errors": 0
+  },
+  {
+    "player": "hour8",
+    "variant": "crossfire-fog",
+    "games": 8,
+    "wins": 0,
+    "caps": 0,
+    "outcomes": {
+      "The evacuation window closed.": 8
+    },
+    "errors": 0
+  }
+]

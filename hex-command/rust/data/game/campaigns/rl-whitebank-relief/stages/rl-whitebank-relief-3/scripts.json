@@ -1,0 +1,236 @@
+{
+  "requiredCompanions": [],
+  "events": [
+    {
+      "id": "rl-whitebank-relief-3-prisoners-freed",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "proximity": {
+              "tile": null,
+              "target": {
+                "character": "sanctuary-prisoners",
+                "role": null,
+                "side": null,
+                "faction": null,
+                "unitType": null,
+                "unitTypes": [],
+                "aiGroup": null,
+                "retreating": null
+              },
+              "radius": 1,
+              "through": true,
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "player",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-whitebank-relief-3-prisoners-freed"
+        },
+        {
+          "changeAllegiance": {
+            "units": {
+              "character": "sanctuary-prisoners",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            },
+            "faction": "player"
+          }
+        },
+        {
+          "spawn": {
+            "faction": "player",
+            "tile": {
+              "hex": {
+                "col": 16,
+                "row": 15
+              }
+            },
+            "area": [],
+            "radius": 2,
+            "aiGroup": null,
+            "units": ["adept"]
+          }
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Free the central prisoners",
+        "intent": {
+          "approach": {
+            "tile": null,
+            "target": {
+              "character": "sanctuary-prisoners",
+              "role": null,
+              "side": null,
+              "faction": null,
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            },
+            "radius": 1,
+            "through": true,
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "player",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": true,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-whitebank-relief-3-prisoners-freed"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-whitebank-relief-3-sanctuary-army-defeated",
+      "when": {
+        "all": [
+          {
+            "always": true
+          },
+          {
+            "noUnits": {
+              "character": null,
+              "role": null,
+              "side": null,
+              "faction": "enemy",
+              "unitType": null,
+              "unitTypes": [],
+              "aiGroup": null,
+              "retreating": null
+            }
+          }
+        ]
+      },
+      "actions": [
+        {
+          "setFlag": "rl-whitebank-relief-3-sanctuary-army-defeated"
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": {
+        "faction": "player",
+        "id": null,
+        "label": "Defeat the entire sanctuary army",
+        "intent": {
+          "defeat": {
+            "character": null,
+            "role": null,
+            "side": null,
+            "faction": "enemy",
+            "unitType": null,
+            "unitTypes": [],
+            "aiGroup": null,
+            "retreating": null
+          }
+        },
+        "optional": false,
+        "visibleWhen": {
+          "always": true
+        },
+        "availableWhen": {
+          "always": true
+        },
+        "satisfiedWhen": {
+          "flag": "rl-whitebank-relief-3-sanctuary-army-defeated"
+        },
+        "preserveLives": null,
+        "playerMarker": null
+      }
+    },
+    {
+      "id": "rl-whitebank-relief-3-victory",
+      "when": {
+        "flag": "rl-whitebank-relief-3-sanctuary-army-defeated"
+      },
+      "actions": [
+        {
+          "victory": "Chapter completed."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 0,
+      "objective": null
+    },
+    {
+      "id": "rl-whitebank-relief-3-commander-lost",
+      "when": {
+        "noUnits": {
+          "character": "player-leader",
+          "role": null,
+          "side": null,
+          "faction": "player",
+          "unitType": null,
+          "unitTypes": [],
+          "aiGroup": null,
+          "retreating": null
+        }
+      },
+      "actions": [
+        {
+          "defeat": "The company lost its commander."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": 100,
+      "objective": null
+    },
+    {
+      "id": "rl-whitebank-relief-3-deadline",
+      "when": {
+        "turn": 72
+      },
+      "actions": [
+        {
+          "defeat": "The operation exceeded its 71-turn deadline."
+        }
+      ],
+      "observer": null,
+      "remembers": true,
+      "priority": -100,
+      "objective": null
+    }
+  ],
+  "enemyGroups": [],
+  "enemyLeaderPost": null,
+  "defendObjectives": true
+}

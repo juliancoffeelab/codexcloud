@@ -1,0 +1,229 @@
+{
+  "sourceBaseCommit": "1aa4c4af6635f6fd66ab76d971184acc2fcbfb2d",
+  "selection": "Discovery seeds used only to choose candidate policies; confirmation seeds493110001..493110020 were disjoint from discovery and previous teacher investigations. Candidates frozen before confirmation. No tuning on confirmation.",
+  "seeds": [
+    493110001,
+    493110002,
+    493110003,
+    493110004,
+    493110005,
+    493110006,
+    493110007,
+    493110008,
+    493110009,
+    493110010,
+    493110011,
+    493110012,
+    493110013,
+    493110014,
+    493110015,
+    493110016,
+    493110017,
+    493110018,
+    493110019,
+    493110020
+  ],
+  "baselineModel": "training/experiments/2026-11-23-ppo-5m-9h/extension-one-hour/recovery/hour-10/planner.json.gz",
+  "baselineModelSha256": "e8dcc209f5cc420a616cfe6648551d19a8b476b235b1f59d67a108042eb2ebee",
+  "scope": "Native whole-game execution with unchanged authored maps, events, forces, economy, enemy blocks, fog routes and deadlines. No PPO or imitation optimizer launched.",
+  "promoted": [
+    "rl-deadline-wait7",
+    "rl-briar-saddle",
+    "rl-defend-lower-gallery-0"
+  ],
+  "rejected": [
+    "rl-vault-rally",
+    "rl-defend-tidegate-stand-110"
+  ],
+  "limits": "Fixed authored layouts. Fresh confirmation only clear Classic for Crown/Briar/Gallery and clear Predictor for Rally. Tidegate screens cover configured clear/both-fog cases, not fresh qualification. Teacher success is not learned policy improvement.",
+  "sourceVersions": {
+    "discovery": "roles-v1.rs",
+    "discovery-v2": "roles-v2.rs",
+    "discovery-v3": "roles-v3.rs",
+    "discovery-v4": "roles-v4.rs",
+    "tide-v4": "roles-v4.rs",
+    "gallery-v5": "roles-v5.rs",
+    "confirmation": "roles-v5.rs",
+    "tide-v6": "roles.rs"
+  },
+  "files": [
+    {
+      "file": "discovery-jobs.json.gz",
+      "sha256": "489d78b811b49bdca479d6ac204b1f7d5a12e045feba617362b7983d29e9998a",
+      "uncompressedBytes": 78233
+    },
+    {
+      "file": "discovery-results.jsonl.gz",
+      "sha256": "d55e0ba5feb50ad7f3bf385a00ae16cb0537f7f98a94b5297bd80401b6247546",
+      "uncompressedBytes": 18871822
+    },
+    {
+      "file": "discovery-v2-jobs.json.gz",
+      "sha256": "cff78b008a1d6088939b10d9f096153ae891bf2170f334316e165d04c32a7cf7",
+      "uncompressedBytes": 82536
+    },
+    {
+      "file": "discovery-v2-results.jsonl.gz",
+      "sha256": "311168ed92329650b0db1f33b5bab972dd5138b96290e5617b77bcec6f104078",
+      "uncompressedBytes": 26126513
+    },
+    {
+      "file": "discovery-v3-jobs.json.gz",
+      "sha256": "4073fbcca3655516961f99ca3fae29517799939ff631a12642bfbf420415abbd",
+      "uncompressedBytes": 82376
+    },
+    {
+      "file": "discovery-v3-results.jsonl.gz",
+      "sha256": "912c3df6cba00b23d143a65b2840d8eb42360606c849acb384370b48e76a51fe",
+      "uncompressedBytes": 62342917
+    },
+    {
+      "file": "discovery-v4-jobs.json.gz",
+      "sha256": "1d68cf52c5b6074cc204ac13198e3ac5992085553018054ddb1b191ecbe51b71",
+      "uncompressedBytes": 20250
+    },
+    {
+      "file": "discovery-v4-results.jsonl.gz",
+      "sha256": "34479266d490eb5ba79b8c986555c49fc4ca11b086d1853ce2df3d791012444f",
+      "uncompressedBytes": 42702249
+    },
+    {
+      "file": "tide-v4-jobs.json.gz",
+      "sha256": "c3f67f592e7e1dd27d467b4a063819c89f3d1bf4b47be032ea26ba7be242cb1d",
+      "uncompressedBytes": 15959
+    },
+    {
+      "file": "tide-v4-results.jsonl.gz",
+      "sha256": "6cff4513ccc084e71ca9636b102e1e50cb7966533183aabba0bdf7105efe5fa5",
+      "uncompressedBytes": 6108362
+    },
+    {
+      "file": "gallery-v5-jobs.json.gz",
+      "sha256": "78149c265a102fe99bc45da1db6deab9795217ad844ad1bd4dfca39290eb8471",
+      "uncompressedBytes": 10853
+    },
+    {
+      "file": "gallery-v5-results.jsonl.gz",
+      "sha256": "8a7c037c2502ef00f8c00f3d1272facac538d17b413510d92fee336d952e8733",
+      "uncompressedBytes": 37232576
+    },
+    {
+      "file": "confirmation-jobs.json.gz",
+      "sha256": "803d851eef406a147256ec0c95d104bda50044134b5dfe42d6d81fed8a13c490",
+      "uncompressedBytes": 58060
+    },
+    {
+      "file": "confirmation-teachers.jsonl.gz",
+      "sha256": "f21ad0b79f6d0ccf48dc9d914a86c981255584bd5adab36bcf6c79cd199cec89",
+      "uncompressedBytes": 17001395
+    },
+    {
+      "file": "confirmation-learner.jsonl.gz",
+      "sha256": "3de8fba283fb634295d4b6fd38fa54598295bc7775db1439d4f95f465cbcde09",
+      "uncompressedBytes": 29239
+    },
+    {
+      "file": "gallery-confirmation-jobs.json.gz",
+      "sha256": "c571f0d6bd4c4d035ebb44680bcaddfbb69cd36e322b70b1711ef99f3176dd1a",
+      "uncompressedBytes": 20842
+    },
+    {
+      "file": "gallery-confirmation-teachers.jsonl.gz",
+      "sha256": "d9a6a493305b14e35a1775cd81ae7999c171adaf3076926b44504678f4a80b16",
+      "uncompressedBytes": 12126046
+    },
+    {
+      "file": "gallery-confirmation-learner.jsonl.gz",
+      "sha256": "511d1ebe10d84192cbbc9275d1c13faea8aa39ca8236c3c897dd54fbd479656f",
+      "uncompressedBytes": 9900
+    },
+    {
+      "file": "production-parity-jobs.json.gz",
+      "sha256": "8eedb5e50e6169c8d68715ee3ae4e13181601c95c11cf5daed9d581286cd0010",
+      "uncompressedBytes": 49463
+    },
+    {
+      "file": "production-parity-results.jsonl.gz",
+      "sha256": "469a3c1e3e0cc926271d6c5c2b685cd9e3d6ec914690da397c9367428efdc73c",
+      "uncompressedBytes": 362284
+    },
+    {
+      "file": "diagnostic-job.json.gz",
+      "sha256": "a8a1d72f8d4f5107b3f01a294dbcab3be0ee27f38f2e0d6529980dc913b183b8",
+      "uncompressedBytes": 459
+    },
+    {
+      "file": "diagnostic-result.jsonl.gz",
+      "sha256": "d9a1748fe4aa5eade35a74737a4ec84056e9f24dd562049ff06bcb720fa7f008",
+      "uncompressedBytes": 578877
+    },
+    {
+      "file": "rally-debug-jobs.json.gz",
+      "sha256": "2d845fa77b6589135b45f1180486a3e1ec302962d80549f343d84ce3a7b32f08",
+      "uncompressedBytes": 392
+    },
+    {
+      "file": "rally-debug-results.jsonl.gz",
+      "sha256": "3f25758e93af3d010066364ad2fa5fb6078331699ee13a444b41203b7bc9de9c",
+      "uncompressedBytes": 613811
+    },
+    {
+      "file": "rl-before.json.gz",
+      "sha256": "188b19fb754b4941c7cd74a7f76b91b6773eb6ad22e44cfb4f7e820aca117a86",
+      "uncompressedBytes": 44900
+    },
+    {
+      "file": "tide-v6-jobs.json.gz",
+      "sha256": "44b08ae4cf25b1eec53fb36d1d42e207832344951b1b6dc49efdc107440dd828",
+      "uncompressedBytes": 15959
+    },
+    {
+      "file": "tide-v6-results.jsonl.gz",
+      "sha256": "5896afa7cbce4dae28726f0b62baa25123ff5dfd2056d7b7777b7038ce2e0a6a",
+      "uncompressedBytes": 3388665
+    },
+    {
+      "file": "learner-replay-job.json.gz",
+      "sha256": "a4144e845176f75a90c14f3b1d182ca6fd540c505436ca791cb26912e2afcb96",
+      "uncompressedBytes": 478
+    },
+    {
+      "file": "learner-replay-result.jsonl.gz",
+      "sha256": "e60b72b509bee2e44652e87509abb8613eb23345802b3d56506c0e1001ca13c8",
+      "uncompressedBytes": 263591
+    }
+  ],
+  "tideBaselineArchive": "../2026-11-23-targeted-teacher-scores/teachers.jsonl.gz",
+  "gameContentHashes": {
+    "rust/data/game/campaigns/rl-deadline-wait7/campaign.json": "1e9b3d5ccaf1c1a9324d499160b42e98348938b3c24b8c91bdd3409ad0edb526",
+    "rust/data/game/campaigns/rl-deadline-wait7/map.json": "7fe06e4c6bd57aaedba3d5e3fb774771f19eb19f791748882da4f584ddc675d6",
+    "rust/data/game/campaigns/rl-deadline-wait7/roster.json": "41d774573764aba85cac35f7b0681c18e963fdc46da6a5ec2747ceb8095d2510",
+    "rust/data/game/campaigns/rl-deadline-wait7/scripts.json": "415a795619f14668e18b51cbde902732509097c4399d232d67d84793995a390e",
+    "rust/data/game/campaigns/rl-deadline-wait7/stage.json": "43a3fa11fc0c988c3c70d70da48d34ebb64c80d943eba90d8118a7096514f2d7",
+    "rust/data/game/campaigns/rl-deadline-wait7/story.json": "d25f8d80815d54f9093acfa91f953cd07224b6cd38a7b1369ada9d67b7789f63",
+    "rust/data/game/campaigns/rl-briar-saddle/campaign.json": "1861f3812343821973dec8d74cc53615f28c1e80217a941960765fc6beacc5fd",
+    "rust/data/game/campaigns/rl-briar-saddle/map.json": "b8b3624e6a5daf3d0dd2f26333a2218f02ccb78d8a873b15ce171bddfb19b2a6",
+    "rust/data/game/campaigns/rl-briar-saddle/roster.json": "05872663ba3223c5f5e4ee4cb8759e4d1ab44b86835377106a0daa2aa854f101",
+    "rust/data/game/campaigns/rl-briar-saddle/scripts.json": "e9b2600ae6df95c499432a3d1d11b7e9ffe6d72b2132eaa66564ef08549529cb",
+    "rust/data/game/campaigns/rl-briar-saddle/stage.json": "583ff3a75bd4a95d8f5e5ac3211656bd904d090abf91b9593b67139e72b35275",
+    "rust/data/game/campaigns/rl-briar-saddle/story.json": "4fa633a19a7c6ade9ae36fe8da5617909b8e56c13e6e242c625ed7e88347be48",
+    "rust/data/game/campaigns/rl-vault-rally/campaign.json": "45c44e43d8dfbc817d1884503605fe0a55c293d87bad5171e212a7d1347b33a1",
+    "rust/data/game/campaigns/rl-vault-rally/map.json": "3607e3d5bc321bb2952c4de8adcc3bec2b568c6c716037902dfabd9e25331a12",
+    "rust/data/game/campaigns/rl-vault-rally/roster.json": "d2b676af2744def0621d75e0bc8df5775744a302e12c9b2d0fa813ef5fe2d2f1",
+    "rust/data/game/campaigns/rl-vault-rally/scripts.json": "7fbabf9074c9507b46ba89a6bc498c2f2ca90d3ba69e4cdbe0122191925f34fb",
+    "rust/data/game/campaigns/rl-vault-rally/stage.json": "b69dd27d102bbc2b08ba2b0c9cfbf07f07d4ebe489bdf4c6aca61770dfe2f0e0",
+    "rust/data/game/campaigns/rl-vault-rally/story.json": "768128ad801a2c1f2b58b3b6a3ecf06dbeca7b818636d13ace6d3004d9b5613f",
+    "rust/data/game/campaigns/rl-defend-lower-gallery-0/campaign.json": "b51b9e0578e673c773fa9377fe64bc11b109ed912187d34f2f05b18a4c0c4ac0",
+    "rust/data/game/campaigns/rl-defend-lower-gallery-0/map.json": "5b9773f77250eb33166d6eb50d039c5e6a8eedcc9f7b7a6ab9a19bfbd13ade71",
+    "rust/data/game/campaigns/rl-defend-lower-gallery-0/roster.json": "7b3f4702fbc4d38da68b3b43ca3e8c123976c275492fb759959cda3ccdf95937",
+    "rust/data/game/campaigns/rl-defend-lower-gallery-0/scripts.json": "75ad06b9a96a65418c370a73c198a4a28dc18611e436c6a163f9a92946029749",
+    "rust/data/game/campaigns/rl-defend-lower-gallery-0/stage.json": "67fef55dafd3f102a5049faa9cb6957693a6b8857037ff24e4614d0d3f5739b9",
+    "rust/data/game/campaigns/rl-defend-lower-gallery-0/story.json": "35de4fb8ab362a3966283b0a85367e4ea1ee926706e443a46272a0fe35aef287",
+    "rust/data/game/campaigns/rl-defend-tidegate-stand-110/campaign.json": "1d1fee1704fa6acf71f42ebc4efca45ba38d54d056e21a6c86001daeafb07bbe",
+    "rust/data/game/campaigns/rl-defend-tidegate-stand-110/map.json": "5284ca449129f8665a9e6a5ca31c9a1e8ac8d525bbd30d2d5c6d472d9ed7339b",
+    "rust/data/game/campaigns/rl-defend-tidegate-stand-110/roster.json": "676108c6b84970e36496485f133c960f80f3d7d1573f350f40ee235eda8e0d50",
+    "rust/data/game/campaigns/rl-defend-tidegate-stand-110/scripts.json": "2c8b2188410029b416dc829fb1a4cee2ef34069b607df29989b19c263b17634e",
+    "rust/data/game/campaigns/rl-defend-tidegate-stand-110/stage.json": "9d9c61551fe8113293f4bc8c8023456ce29a17cf9b41974997e6138b4ae2693b",
+    "rust/data/game/campaigns/rl-defend-tidegate-stand-110/story.json": "609881c51b1a6734ee2a1c3d01070a38e3160588451940c094850bd654041266"
+  }
+}

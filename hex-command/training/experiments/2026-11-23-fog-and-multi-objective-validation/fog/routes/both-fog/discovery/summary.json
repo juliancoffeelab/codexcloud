@@ -1,0 +1,107 @@
+[
+  {
+    "player": "hour8",
+    "campaign": "rl-scree-relay-v8-switch",
+    "successes": 0,
+    "defeats": 8,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 8
+    }
+  },
+  {
+    "player": "hour8",
+    "campaign": "rl-scree-relay-v8-stay",
+    "successes": 5,
+    "defeats": 3,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 5,
+      "Deadline expired.": 3
+    }
+  },
+  {
+    "player": "hour10",
+    "campaign": "rl-scree-relay-v8-switch",
+    "successes": 0,
+    "defeats": 8,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 8
+    }
+  },
+  {
+    "player": "hour10",
+    "campaign": "rl-scree-relay-v8-stay",
+    "successes": 5,
+    "defeats": 3,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 5,
+      "Deadline expired.": 3
+    }
+  },
+  {
+    "player": "full",
+    "campaign": "rl-scree-relay-v8-switch",
+    "successes": 8,
+    "defeats": 0,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "full",
+    "campaign": "rl-scree-relay-v8-stay",
+    "successes": 7,
+    "defeats": 1,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 7,
+      "Deadline expired.": 1
+    }
+  },
+  {
+    "player": "queued",
+    "campaign": "rl-scree-relay-v8-switch",
+    "successes": 1,
+    "defeats": 7,
+    "caps": 0,
+    "outcomes": {
+      "Deadline expired.": 7,
+      "The route is open.": 1
+    }
+  },
+  {
+    "player": "queued",
+    "campaign": "rl-scree-relay-v8-stay",
+    "successes": 8,
+    "defeats": 0,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "classic",
+    "campaign": "rl-scree-relay-v8-switch",
+    "successes": 8,
+    "defeats": 0,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 8
+    }
+  },
+  {
+    "player": "classic",
+    "campaign": "rl-scree-relay-v8-stay",
+    "successes": 6,
+    "defeats": 2,
+    "caps": 0,
+    "outcomes": {
+      "The route is open.": 6,
+      "Deadline expired.": 2
+    }
+  }
+]

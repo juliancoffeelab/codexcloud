@@ -1,7 +1,7 @@
 {
   "arenas": [
     {
-      "id": "rl-meadow",
+      "id": "rl-twin-fords",
       "pairs": [
         {
           "player": "human",
@@ -51,10 +51,17 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued",
+      "samplingGroup": "arena",
+      "samplingMap": "rl-twin-fords",
+      "rewardProfile": "arena",
+      "conditions": null,
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
-      "id": "rl-woodland",
+      "id": "rl-splitpine-clearing",
       "pairs": [
         {
           "player": "human",
@@ -104,10 +111,17 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued",
+      "samplingGroup": "arena",
+      "samplingMap": "rl-splitpine-clearing",
+      "rewardProfile": "arena",
+      "conditions": null,
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
-      "id": "rl-ridge",
+      "id": "rl-crown-gap",
       "pairs": [
         {
           "player": "human",
@@ -157,10 +171,17 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued",
+      "samplingGroup": "arena",
+      "samplingMap": "rl-crown-gap",
+      "rewardProfile": "arena",
+      "conditions": null,
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
-      "id": "rl-wetland",
+      "id": "rl-jawbone-crossing",
       "pairs": [
         {
           "player": "human",
@@ -210,10 +231,17 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued",
+      "samplingGroup": "arena",
+      "samplingMap": "rl-jawbone-crossing",
+      "rewardProfile": "arena",
+      "conditions": null,
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
-      "id": "rl-river",
+      "id": "rl-sump-teeth",
       "pairs": [
         {
           "player": "human",
@@ -263,10 +291,17 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued",
+      "samplingGroup": "arena",
+      "samplingMap": "rl-sump-teeth",
+      "rewardProfile": "arena",
+      "conditions": null,
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
-      "id": "rl-islands",
+      "id": "rl-last-lantern",
       "pairs": [
         {
           "player": "human",
@@ -316,10 +351,17 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued",
+      "samplingGroup": "arena",
+      "samplingMap": "rl-last-lantern",
+      "rewardProfile": "arena",
+      "conditions": null,
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
-      "id": "rl-cavern",
+      "id": "rl-switchback-saltworks",
       "pairs": [
         {
           "player": "human",
@@ -369,10 +411,17 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued",
+      "samplingGroup": "arena",
+      "samplingMap": "rl-switchback-saltworks",
+      "rewardProfile": "arena",
+      "conditions": null,
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
-      "id": "rl-ruins",
+      "id": "rl-cinderfault",
       "pairs": [
         {
           "player": "human",
@@ -422,10 +471,17 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued",
+      "samplingGroup": "arena",
+      "samplingMap": "rl-cinderfault",
+      "rewardProfile": "arena",
+      "conditions": null,
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
-      "id": "rl-broadfield",
+      "id": "rl-sable-sound",
       "pairs": [
         {
           "player": "human",
@@ -475,10 +531,17 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued",
+      "samplingGroup": "arena",
+      "samplingMap": "rl-sable-sound",
+      "rewardProfile": "arena",
+      "conditions": null,
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
-      "id": "rl-floodplain",
+      "id": "rl-three-wells-trail",
       "pairs": [
         {
           "player": "human",
@@ -528,156 +591,1706 @@
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued",
+      "samplingGroup": "arena",
+      "samplingMap": "rl-three-wells-trail",
+      "rewardProfile": "arena",
+      "conditions": null,
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
-      "id": "rl-dark-rooms",
+      "id": "rl-frosthook-gate",
       "pairs": [
         {
           "player": "human",
           "enemy": "skeletons"
-        }
-      ]
-    },
-    {
-      "id": "rl-twilight-ridge",
-      "pairs": [
+        },
         {
           "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
           "enemy": "skeletons"
-        }
-      ]
-    },
-    {
-      "id": "rl-mist-wetland",
-      "pairs": [
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
         {
           "player": "coastal",
           "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued",
+      "samplingGroup": "arena",
+      "samplingMap": "rl-frosthook-gate",
+      "rewardProfile": "arena",
+      "conditions": null,
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
     },
     {
-      "id": "rl-lantern-forest",
+      "id": "rl-birch-pocket",
       "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
         {
           "player": "woodland",
           "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
         }
-      ]
+      ],
+      "pretrain_imitator": "queued",
+      "samplingGroup": "arena",
+      "samplingMap": "rl-birch-pocket",
+      "rewardProfile": "arena",
+      "conditions": null,
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
+    },
+    {
+      "id": "rl-quarry-ring",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ],
+      "pretrain_imitator": "queued",
+      "samplingGroup": "arena",
+      "samplingMap": "rl-quarry-ring",
+      "rewardProfile": "arena",
+      "conditions": null,
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
+    },
+    {
+      "id": "rl-fordstep",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "human",
+          "enemy": "woodland"
+        },
+        {
+          "player": "human",
+          "enemy": "coastal"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "human"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "woodland"
+        },
+        {
+          "player": "skeletons",
+          "enemy": "coastal"
+        },
+        {
+          "player": "woodland",
+          "enemy": "human"
+        },
+        {
+          "player": "woodland",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "woodland",
+          "enemy": "coastal"
+        },
+        {
+          "player": "coastal",
+          "enemy": "human"
+        },
+        {
+          "player": "coastal",
+          "enemy": "skeletons"
+        },
+        {
+          "player": "coastal",
+          "enemy": "woodland"
+        }
+      ],
+      "pretrain_imitator": "queued",
+      "samplingGroup": "arena",
+      "samplingMap": "rl-fordstep",
+      "rewardProfile": "arena",
+      "conditions": null,
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
+    },
+    {
+      "id": "rl-marlow-cut-pass-finish",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        }
+      ],
+      "samplingGroup": "targeted",
+      "samplingMap": "rl-marlow-cut-pass-finish",
+      "rewardProfile": "arena",
+      "pretrain_imitator": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "conditions": {
+        "objectives": [
+          "territory"
+        ],
+        "opponents": [
+          "classic"
+        ],
+        "recruiters": [
+          "predictor"
+        ],
+        "first": [
+          "player"
+        ],
+        "recruitLimit": 0,
+        "maxRounds": 30
+      },
+      "conditionWeight": 1.0,
+      "pretrain_enabled": false
+    },
+    {
+      "id": "rl-marlow-cut-pass-interrupt",
+      "pairs": [
+        {
+          "player": "human",
+          "enemy": "skeletons"
+        }
+      ],
+      "samplingGroup": "targeted",
+      "samplingMap": "rl-marlow-cut-pass-finish",
+      "rewardProfile": "arena",
+      "pretrain_imitator": {
+        "recruiter": "balanced",
+        "campaign": "mission",
+        "planner": "queued"
+      },
+      "conditions": {
+        "objectives": [
+          "territory"
+        ],
+        "opponents": [
+          "classic"
+        ],
+        "recruiters": [
+          "predictor"
+        ],
+        "first": [
+          "player"
+        ],
+        "recruitLimit": 0,
+        "maxRounds": 30
+      },
+      "conditionWeight": 0.25,
+      "pretrain_enabled": false
     }
   ],
   "campaigns": {
-    "rl-escort": [
+    "rl-woodland-defense": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-woodland-defense",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "fog",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-woodland-defense",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
-    "rl-courier": [
+    "rl-splitwake-crossing": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-splitwake-crossing",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "fog",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-splitwake-crossing",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
-    "rl-protect": [
+    "rl-underground-escape": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-underground-escape",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "fog",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-underground-escape",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
-    "rl-reach": [
+    "rl-urgent-crossing": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "objective_progress",
+        "samplingMap": "rl-urgent-crossing",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "full"
+        },
+        "samplingMap": "rl-urgent-crossing",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
-    "rl-hold": [
+    "rl-deadline-wait7": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-deadline-wait7",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
-    "rl-capture": [
+    "rl-deadline-pines-relief8": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "objective_progress",
+        "samplingMap": "rl-deadline-pines-relief8",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      },
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "predictor"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "objective_progress",
+        "samplingMap": "rl-deadline-pines-relief8",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "objective_progress",
+        "samplingMap": "rl-deadline-pines-relief8",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
-    "rl-survive": [
+    "rl-route-ambush": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-route-ambush",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       }
     ],
-    "rl-reinforcements": [
+    "rl-route-pocket-leader": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-route-pocket-leader",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
-    "rl-fog": [
+    "rl-route-pass-road": [
       {
-        "objective": "authored",
-        "diplomacy": "unrestricted"
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-route-pass-road",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       }
     ],
-    "rl-relay": [
+    "rl-escort-lantern-maze": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic",
+          "predictor",
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-escort-lantern-maze",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
-    "rl-company-human": [
+    "rl-escort-mistfen-patrol": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic",
+          "predictor",
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-escort-mistfen-patrol",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
-    "rl-company-skeletons": [
+    "rl-escort-splitwake-patrol": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic",
+          "predictor",
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-escort-splitwake-patrol",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
-    "rl-company-woodland": [
+    "rl-defend-lower-gallery-0": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-defend-lower-gallery-0",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
-    "rl-company-coastal": [
+    "rl-defend-tidegate-stand-110": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic",
+          "predictor",
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-defend-tidegate-stand-110",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "predictor"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-defend-tidegate-stand-110",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
-    "rl-dark-escort": [
+    "rl-defend-bracken-stand-010": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic",
+          "predictor",
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-defend-bracken-stand-010",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-defend-bracken-stand-010",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-defend-bracken-stand-010",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
-    "rl-forest-evacuation": [
+    "rl-interrupt-siltbar-approach": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": {
+          "path_to": {
+            "col": 13,
+            "row": 5
+          }
+        },
+        "samplingMap": "rl-interrupt-siltbar-approach",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ],
-    "rl-twilight-hold": [
+    "rl-interrupt-herring-tide-road-three": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-interrupt-herring-tide-road-three",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
       }
     ],
-    "rl-mist-reach": [
+    "rl-interrupt-south-ford-west-post": [
       {
         "objective": "authored",
-        "diplomacy": "unrestricted"
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-interrupt-south-ford-west-post",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "rl-briar-saddle": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-briar-saddle",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "rl-whitecap-ford": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-whitecap-ford",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "predictor"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-whitecap-ford",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "predictor"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-whitecap-ford",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "rl-slate-gallery": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-slate-gallery",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic",
+          "predictor",
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-slate-gallery",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic",
+          "predictor"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-slate-gallery",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "rl-vault-rally": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "predictor"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "classic",
+        "samplingMap": "rl-vault-rally",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "rl-breakthrough-cave5": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-breakthrough-cave5",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "rl-breakthrough-ford-heal08": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-breakthrough-ford-heal08",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "rl-bellmarket-courts": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "classic",
+        "samplingMap": "rl-bellmarket-courts",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "classic",
+        "samplingMap": "rl-bellmarket-courts",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "classic",
+        "samplingMap": "rl-bellmarket-courts",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": {
+          "recruiter": "situational",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "samplingMap": "rl-bellmarket-courts",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "rl-thorn-verge": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "classic",
+        "samplingMap": "rl-thorn-verge",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "predictor",
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "visible_target_path",
+        "samplingMap": "rl-thorn-verge",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic",
+          "predictor",
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "classic",
+        "samplingMap": "rl-thorn-verge",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic",
+          "predictor"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "classic",
+        "samplingMap": "rl-thorn-verge",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "visible_target_path",
+        "samplingMap": "rl-thorn-verge",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "rl-lair-outworks": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic",
+          "predictor",
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-lair-outworks",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-lair-outworks",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "predictor"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-lair-outworks",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      },
+      {
+        "objective": "player-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-lair-outworks",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "classic"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-lair-outworks",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "predictor"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-lair-outworks",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      },
+      {
+        "objective": "both-fog",
+        "diplomacy": "unrestricted",
+        "opponents": [
+          "full"
+        ],
+        "samplingGroup": "targeted",
+        "pretrain_imitator": "full",
+        "samplingMap": "rl-lair-outworks",
+        "rewardProfile": "arena",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      }
+    ],
+    "rl-hollowbank-extraction-crossfire-late-guard": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "targeted",
+        "samplingMap": "rl-hollowbank-extraction-crossfire-late-guard",
+        "rewardProfile": "arena",
+        "recruiters": [
+          "predictor"
+        ],
+        "recruitLimit": 0,
+        "opponents": [
+          "classic"
+        ],
+        "pretrain_imitator": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      }
+    ],
+    "rl-hollowbank-extraction-crossfire-nearside": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "targeted",
+        "samplingMap": "rl-hollowbank-extraction-crossfire-nearside",
+        "rewardProfile": "arena",
+        "recruiters": [
+          "predictor"
+        ],
+        "recruitLimit": 0,
+        "opponents": [
+          "classic"
+        ],
+        "pretrain_imitator": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      }
+    ],
+    "rl-ashbank-relay-fork-vigil": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "targeted",
+        "samplingMap": "rl-ashbank-relay-fork-vigil",
+        "rewardProfile": "arena",
+        "recruiters": [
+          "predictor"
+        ],
+        "recruitLimit": 0,
+        "opponents": [
+          "predictor"
+        ],
+        "pretrain_imitator": {
+          "recruiter": "classic",
+          "campaign": "mission",
+          "planner": "classic"
+        },
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      },
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "targeted",
+        "samplingMap": "rl-ashbank-relay-fork-vigil",
+        "rewardProfile": "arena",
+        "recruiters": [
+          "predictor"
+        ],
+        "recruitLimit": 0,
+        "opponents": [
+          "full"
+        ],
+        "pretrain_imitator": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      }
+    ],
+    "rl-ashbank-relay-fork-vigil-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "targeted",
+        "samplingMap": "rl-ashbank-relay-fork-vigil",
+        "rewardProfile": "arena",
+        "recruiters": [
+          "predictor"
+        ],
+        "recruitLimit": 0,
+        "opponents": [
+          "full"
+        ],
+        "pretrain_imitator": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      }
+    ],
+    "rl-ashbank-relay-fork-vigil-both-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "targeted",
+        "samplingMap": "rl-ashbank-relay-fork-vigil",
+        "rewardProfile": "arena",
+        "recruiters": [
+          "predictor"
+        ],
+        "recruitLimit": 0,
+        "opponents": [
+          "predictor"
+        ],
+        "pretrain_imitator": {
+          "recruiter": "balanced",
+          "campaign": "mission",
+          "planner": "queued"
+        },
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      },
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "targeted",
+        "samplingMap": "rl-ashbank-relay-fork-vigil",
+        "rewardProfile": "arena",
+        "recruiters": [
+          "predictor"
+        ],
+        "recruitLimit": 0,
+        "opponents": [
+          "full"
+        ],
+        "pretrain_imitator": {
+          "recruiter": "predictor",
+          "campaign": "mission",
+          "planner": "full"
+        },
+        "conditionWeight": 1.0,
+        "pretrain_enabled": true
+      }
+    ],
+    "broken-siege": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "broken-siege",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "broken-siege-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "broken-siege",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "contested-refuge": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "contested-refuge",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "contested-refuge-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "contested-refuge",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "occupied-village-chain": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "occupied-village-chain",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "occupied-village-chain-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "occupied-village-chain",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "proto-flooded-prison": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "proto-flooded-prison",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "proto-flooded-prison-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "proto-flooded-prison",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "proto-last-ferry": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "proto-last-ferry",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "proto-last-ferry-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "proto-last-ferry",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "draft-hunt": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "draft-hunt",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "draft-hunt-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "draft-hunt",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "draft-quarry": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "draft-quarry",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "draft-quarry-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "draft-quarry",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "three-gates": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "three-gates",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "three-gates-player-fog": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "three-gates",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "rl-bone-march": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-bone-march",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "rl-threeway-clash": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-threeway-clash",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
+      }
+    ],
+    "rl-allied-crossing": [
+      {
+        "objective": "authored",
+        "diplomacy": "unrestricted",
+        "samplingGroup": "campaign",
+        "pretrain_imitator": "queued",
+        "samplingMap": "rl-allied-crossing",
+        "rewardProfile": "campaign",
+        "recruiters": null,
+        "recruitLimit": null,
+        "conditionWeight": 1.0,
+        "pretrain_enabled": false
       }
     ]
   },
-  "opponents": ["classic", "predictor"],
-  "recruiters": ["situational", "predictor"],
-  "objectives": ["deathmatch", "territory"]
+  "opponents": [
+    "classic",
+    "predictor",
+    "full"
+  ],
+  "recruiters": [
+    "predictor"
+  ],
+  "objectives": [
+    "deathmatch",
+    "territory"
+  ],
+  "samplingWeights": {
+    "arena": 0.1,
+    "targeted": 0.05,
+    "campaign": 0.85
+  },
+  "adaptiveSampling": {
+    "enabled": true,
+    "completionThreshold": 0.8,
+    "minimumMultiplier": 0.1,
+    "emaRate": 0.1,
+    "initialCompletionRate": 0.5,
+    "warmupEpisodes": 10,
+    "updateEveryEpisodes": 20
+  },
+  "mapWeights": {
+    "rl-twin-fords": 1.0,
+    "rl-splitpine-clearing": 1.0,
+    "rl-crown-gap": 1.0,
+    "rl-jawbone-crossing": 1.0,
+    "rl-sump-teeth": 1.0,
+    "rl-last-lantern": 1.0,
+    "rl-switchback-saltworks": 1.0,
+    "rl-cinderfault": 1.0,
+    "rl-sable-sound": 1.0,
+    "rl-three-wells-trail": 1.0,
+    "rl-frosthook-gate": 1.0,
+    "rl-birch-pocket": 1.0,
+    "rl-quarry-ring": 1.0,
+    "rl-fordstep": 1.0,
+    "rl-marlow-cut-pass-finish": 1.0,
+    "rl-woodland-defense": 1.0,
+    "rl-splitwake-crossing": 1.0,
+    "rl-underground-escape": 1.0,
+    "rl-urgent-crossing": 1.0,
+    "rl-deadline-wait7": 1.0,
+    "rl-deadline-pines-relief8": 1.0,
+    "rl-route-ambush": 1.0,
+    "rl-route-pocket-leader": 1.0,
+    "rl-route-pass-road": 1.0,
+    "rl-escort-lantern-maze": 0.3333333333333333,
+    "rl-escort-mistfen-patrol": 0.3333333333333333,
+    "rl-escort-splitwake-patrol": 0.3333333333333333,
+    "rl-defend-lower-gallery-0": 1.0,
+    "rl-defend-tidegate-stand-110": 1.0,
+    "rl-defend-bracken-stand-010": 1.0,
+    "rl-interrupt-siltbar-approach": 1.0,
+    "rl-interrupt-herring-tide-road-three": 1.0,
+    "rl-interrupt-south-ford-west-post": 1.0,
+    "rl-briar-saddle": 1.0,
+    "rl-whitecap-ford": 1.0,
+    "rl-slate-gallery": 1.0,
+    "rl-vault-rally": 1.0,
+    "rl-breakthrough-cave5": 1.0,
+    "rl-breakthrough-ford-heal08": 1.0,
+    "rl-bellmarket-courts": 0.25,
+    "rl-thorn-verge": 0.25,
+    "rl-lair-outworks": 1.0,
+    "rl-hollowbank-extraction-crossfire-late-guard": 1.0,
+    "rl-hollowbank-extraction-crossfire-nearside": 1.0,
+    "rl-ashbank-relay-fork-vigil": 1.0,
+    "broken-siege": 1.0,
+    "contested-refuge": 1.0,
+    "occupied-village-chain": 1.0,
+    "proto-flooded-prison": 1.0,
+    "proto-last-ferry": 1.0,
+    "draft-hunt": 1.0,
+    "draft-quarry": 1.0,
+    "three-gates": 1.0,
+    "rl-bone-march": 1.0,
+    "rl-threeway-clash": 1.0,
+    "rl-allied-crossing": 1.0
+  },
+  "rewardProfiles": {
+    "arena": {
+      "win": 1.0,
+      "chapter": 0.0
+    },
+    "campaign": {
+      "win": 2.0,
+      "chapter": 1.0
+    }
+  }
 }

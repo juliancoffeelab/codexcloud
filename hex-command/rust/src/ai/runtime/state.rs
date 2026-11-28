@@ -30,6 +30,8 @@ pub(super) struct TurnState {
     pub(super) recruitment_remaining: Option<usize>,
     pub(super) recruitment_opportunity: Option<super::context::RecruitmentOpportunity>,
     pub(super) goals: Option<Vec<Objective>>,
+    pub(super) objective_progress: Vec<ObjectiveProgress>,
+    pub(super) opponent_progress: Vec<ObjectiveProgress>,
     pub(super) diplomacy: Diplomacy,
     #[cfg(any(feature = "wasm", test))]
     pub(super) initialized: bool,
@@ -39,7 +41,7 @@ pub(super) struct TurnState {
     #[cfg(any(feature = "wasm", test))]
     pub(super) blocks: Option<Blocks>,
     pub(super) orders: Option<CampaignOrders>,
-    #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+    #[cfg(feature = "training")]
     pub(super) observation_orders: Option<TacticalOrders>,
     pub(super) report: PlanningReport,
     #[cfg(any(feature = "wasm", test))]
@@ -54,6 +56,8 @@ pub(super) struct TurnState {
 pub(crate) struct TurnConfig<'a> {
     pub seed: u32,
     pub goals: Option<&'a [Objective]>,
+    pub objective_progress: &'a [ObjectiveProgress],
+    pub opponent_progress: &'a [ObjectiveProgress],
     pub diplomacy: Diplomacy,
 }
 
@@ -124,6 +128,8 @@ impl PlanningWorkspace {
                 recruitment_remaining: recruitment_limit.into(),
                 recruitment_opportunity: None,
                 goals,
+                objective_progress: Vec::new(),
+                opponent_progress: Vec::new(),
                 diplomacy,
                 #[cfg(any(feature = "wasm", test))]
                 initialized: false,
@@ -133,7 +139,7 @@ impl PlanningWorkspace {
                 #[cfg(any(feature = "wasm", test))]
                 blocks: None,
                 orders: None,
-                #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+                #[cfg(feature = "training")]
                 observation_orders: None,
                 report: PlanningReport::default(),
                 #[cfg(any(feature = "wasm", test))]
@@ -145,6 +151,15 @@ impl PlanningWorkspace {
             },
         }
     }
+    /// Supply visible progress for externally executed objectives.
+    pub(crate) fn set_objective_progress(
+        &mut self,
+        progress: &[ObjectiveProgress],
+        opponent: &[ObjectiveProgress],
+    ) {
+        self.state.objective_progress = progress.to_vec();
+        self.state.opponent_progress = opponent.to_vec();
+    }
     pub(in crate::ai::runtime) fn state_mut(&mut self) -> &mut TurnState {
         &mut self.state
     }
@@ -152,6 +167,8 @@ impl PlanningWorkspace {
         TurnConfig {
             seed: self.state.seed,
             goals: self.state.goals.as_deref(),
+            objective_progress: &self.state.objective_progress,
+            opponent_progress: &self.state.opponent_progress,
             diplomacy: self.state.diplomacy,
         }
     }
@@ -159,7 +176,6 @@ impl PlanningWorkspace {
     pub(crate) fn orders(&self) -> Option<&CampaignOrders> {
         self.state.orders.as_ref()
     }
-    #[cfg(not(target_arch = "wasm32"))]
     pub(crate) fn finished(&self) -> bool {
         self.state.finished
     }
@@ -256,7 +272,7 @@ impl PlanningWorkspace {
     fn reset_planning(&mut self) {
         let state = &mut self.state;
         state.orders = None;
-        #[cfg(all(feature = "training", not(target_arch = "wasm32")))]
+        #[cfg(feature = "training")]
         {
             state.observation_orders = None;
         }

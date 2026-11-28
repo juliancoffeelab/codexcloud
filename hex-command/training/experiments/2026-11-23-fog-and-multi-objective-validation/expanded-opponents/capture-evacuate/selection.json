@@ -1,0 +1,289 @@
+{
+  "selected": [
+    {
+      "variant": "crossfire-late-guard",
+      "visibility": "clear",
+      "opponent": "classic",
+      "players": [
+        "hour8",
+        "hour10",
+        "classic"
+      ],
+      "reference": "classic"
+    },
+    {
+      "variant": "crossfire-late-guard",
+      "visibility": "player-fog",
+      "opponent": "classic",
+      "players": [
+        "hour8",
+        "hour10",
+        "classic"
+      ],
+      "reference": "classic"
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "clear",
+      "opponent": "classic",
+      "players": [
+        "hour8",
+        "hour10",
+        "classic"
+      ],
+      "reference": "classic"
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "clear",
+      "opponent": "queued",
+      "players": [
+        "hour8",
+        "hour10",
+        "queued"
+      ],
+      "reference": "queued"
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "clear",
+      "opponent": "full",
+      "players": [
+        "hour8",
+        "hour10",
+        "classic"
+      ],
+      "reference": "classic"
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "clear",
+      "opponent": "predictor",
+      "players": [
+        "hour8",
+        "hour10",
+        "queued"
+      ],
+      "reference": "queued"
+    }
+  ],
+  "rationale": [
+    {
+      "variant": "crossfire-late-guard",
+      "visibility": "clear",
+      "opponent": "classic",
+      "best": "classic",
+      "reference": 8,
+      "hour10_gap": 5,
+      "advanced": true
+    },
+    {
+      "variant": "crossfire-late-guard",
+      "visibility": "clear",
+      "opponent": "queued",
+      "best": "queued",
+      "reference": 8,
+      "hour10_gap": 2,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-late-guard",
+      "visibility": "clear",
+      "opponent": "full",
+      "best": "full",
+      "reference": 6,
+      "hour10_gap": 0,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-late-guard",
+      "visibility": "clear",
+      "opponent": "predictor",
+      "best": "queued",
+      "reference": 8,
+      "hour10_gap": 2,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-late-guard",
+      "visibility": "player-fog",
+      "opponent": "classic",
+      "best": "classic",
+      "reference": 6,
+      "hour10_gap": 3,
+      "advanced": true
+    },
+    {
+      "variant": "crossfire-late-guard",
+      "visibility": "player-fog",
+      "opponent": "queued",
+      "best": "classic",
+      "reference": 3,
+      "hour10_gap": 0,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-late-guard",
+      "visibility": "player-fog",
+      "opponent": "full",
+      "best": "classic",
+      "reference": 1,
+      "hour10_gap": -2,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-late-guard",
+      "visibility": "player-fog",
+      "opponent": "predictor",
+      "best": "classic",
+      "reference": 3,
+      "hour10_gap": 0,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-late-guard",
+      "visibility": "both-fog",
+      "opponent": "classic",
+      "best": "classic",
+      "reference": 2,
+      "hour10_gap": 0,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-late-guard",
+      "visibility": "both-fog",
+      "opponent": "queued",
+      "best": "classic",
+      "reference": 2,
+      "hour10_gap": 2,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-late-guard",
+      "visibility": "both-fog",
+      "opponent": "full",
+      "best": "classic",
+      "reference": 3,
+      "hour10_gap": 3,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-late-guard",
+      "visibility": "both-fog",
+      "opponent": "predictor",
+      "best": "classic",
+      "reference": 2,
+      "hour10_gap": 2,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "clear",
+      "opponent": "classic",
+      "best": "classic",
+      "reference": 7,
+      "hour10_gap": 7,
+      "advanced": true
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "clear",
+      "opponent": "queued",
+      "best": "queued",
+      "reference": 6,
+      "hour10_gap": 4,
+      "advanced": true
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "clear",
+      "opponent": "full",
+      "best": "classic",
+      "reference": 6,
+      "hour10_gap": 3,
+      "advanced": true
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "clear",
+      "opponent": "predictor",
+      "best": "queued",
+      "reference": 6,
+      "hour10_gap": 4,
+      "advanced": true
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "player-fog",
+      "opponent": "classic",
+      "best": "classic",
+      "reference": 3,
+      "hour10_gap": 1,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "player-fog",
+      "opponent": "queued",
+      "best": "classic",
+      "reference": 5,
+      "hour10_gap": 4,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "player-fog",
+      "opponent": "full",
+      "best": "classic",
+      "reference": 4,
+      "hour10_gap": -1,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "player-fog",
+      "opponent": "predictor",
+      "best": "classic",
+      "reference": 5,
+      "hour10_gap": 4,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "both-fog",
+      "opponent": "classic",
+      "best": "classic",
+      "reference": 3,
+      "hour10_gap": 3,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "both-fog",
+      "opponent": "queued",
+      "best": "queued",
+      "reference": 1,
+      "hour10_gap": 1,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "both-fog",
+      "opponent": "full",
+      "best": "classic",
+      "reference": 3,
+      "hour10_gap": 3,
+      "advanced": false
+    },
+    {
+      "variant": "crossfire-nearside",
+      "visibility": "both-fog",
+      "opponent": "predictor",
+      "best": "queued",
+      "reference": 1,
+      "hour10_gap": 1,
+      "advanced": false
+    }
+  ],
+  "rule": "Advance cells with ordinary reference >=6/8 and reference minus Hour 10 >=3/8. Reference ties prefer Classic, then Queued and Full. Confirm on 20 fresh matched seeds. Reference must clear >=15/20 and beat Hour 10 by >=6 games."
+}

@@ -1,0 +1,79 @@
+{
+  "verification": [
+    {
+      "policy": "hour10",
+      "seed": 593020001,
+      "route": "player-fog",
+      "matches": true
+    },
+    {
+      "policy": "queued",
+      "seed": 593020001,
+      "route": "player-fog",
+      "matches": true
+    },
+    {
+      "policy": "hour10",
+      "seed": 593020010,
+      "route": "player-fog",
+      "matches": true
+    },
+    {
+      "policy": "queued",
+      "seed": 593020010,
+      "route": "player-fog",
+      "matches": true
+    },
+    {
+      "policy": "hour10",
+      "seed": 593020009,
+      "route": "both-fog",
+      "matches": true
+    },
+    {
+      "policy": "queued",
+      "seed": 593020009,
+      "route": "both-fog",
+      "matches": true
+    },
+    {
+      "policy": "hour10",
+      "seed": 593020006,
+      "route": "both-fog",
+      "matches": true
+    },
+    {
+      "policy": "queued",
+      "seed": 593020006,
+      "route": "both-fog",
+      "matches": true
+    },
+    {
+      "policy": "hour10",
+      "seed": 593020005,
+      "route": "authored",
+      "matches": true
+    },
+    {
+      "policy": "queued",
+      "seed": 593020005,
+      "route": "authored",
+      "matches": true
+    },
+    {
+      "policy": "hour10",
+      "seed": 593020008,
+      "route": "authored",
+      "matches": true
+    },
+    {
+      "policy": "queued",
+      "seed": 593020008,
+      "route": "authored",
+      "matches": true
+    }
+  ],
+  "binaries": {
+    "/workspace/codexcloud/hex-command/rust/target/simulation/commander-trace-probe": "a577c0eeb127d6803157eda970b014e4e0218c66324452fbfeea7b2810c19a9a"
+  }
+}

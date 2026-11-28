@@ -1,0 +1,50 @@
+{
+  "kind": "native-planner-checkpoint",
+  "id": "campaign-cnn-ppo-v4",
+  "source_checkpoint": "tmp/rl/ppo-from-pretrain-43m-9h-20261121/rl/checkpoints/last-1795252605675922037",
+  "checkpoint_label": "last",
+  "description": "Final checkpoint of the nine-hour PPO run initialized from the 43-minute imitation checkpoint.",
+  "selection": "Final nine-hour checkpoint; also selected by the recorded held-out validation procedure.",
+  "files": {
+    "planner.json": {
+      "bytes": 1099300,
+      "sha256": "c46f1d34aa111276ca6a183f1d145e9cf94c4866756f6a5e26eacf3da7595dd0"
+    },
+    "resume.pt": {
+      "bytes": 807490,
+      "sha256": "6a5a87edaac35c069b0406186b567a5e8747d11dc07ea478b2489d677723fa66"
+    },
+    "training-record/provenance.json": {
+      "bytes": 10163,
+      "sha256": "0374d26b8c1e633b86923472a8a7aa69c8f756fa50f270f5eeb1b862def680ab"
+    }
+  },
+  "training_record": "training-record/provenance.json",
+  "source_revision": "6b99fae284cba5a55d21ceb797ec37d008a3971c",
+  "architecture": {
+    "schema": 11,
+    "dense_features": 243,
+    "spatial_channels": 79,
+    "convolutions": [
+      {
+        "input_channels": 79,
+        "output_channels": 16,
+        "spatial_taps": 7
+      },
+      {
+        "input_channels": 16,
+        "output_channels": 16,
+        "spatial_taps": 7
+      }
+    ],
+    "head_dimensions": [
+      307,
+      64,
+      64,
+      1
+    ],
+    "actor_parameters": 34609,
+    "recurrent": false,
+    "coarse_branch": false
+  }
+}

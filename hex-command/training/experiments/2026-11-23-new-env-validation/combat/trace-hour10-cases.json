@@ -1,0 +1,62 @@
+[
+  {
+    "campaign": "rl-kiln-crossing-screen-close-fog",
+    "objective": "player-fog",
+    "seed": 593020001,
+    "diplomacy": "unrestricted",
+    "player": "balanced",
+    "enemy": "classic",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "maxRounds": 100,
+    "recruitLimit": null
+  },
+  {
+    "campaign": "rl-kiln-crossing-screen-close-fog",
+    "objective": "player-fog",
+    "seed": 593020010,
+    "diplomacy": "unrestricted",
+    "player": "balanced",
+    "enemy": "classic",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "maxRounds": 100,
+    "recruitLimit": null
+  },
+  {
+    "campaign": "rl-kiln-crossing-screen-close-fog",
+    "objective": "authored",
+    "seed": 593020005,
+    "diplomacy": "unrestricted",
+    "player": "balanced",
+    "enemy": "classic",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "maxRounds": 100,
+    "recruitLimit": null
+  },
+  {
+    "campaign": "rl-kiln-crossing-screen-close-fog",
+    "objective": "authored",
+    "seed": 593020008,
+    "diplomacy": "unrestricted",
+    "player": "balanced",
+    "enemy": "classic",
+    "playerBlocks": {
+      "recruiter": "situational",
+      "campaign": "mission",
+      "planner": "queued"
+    },
+    "maxRounds": 100,
+    "recruitLimit": null
+  }
+]
