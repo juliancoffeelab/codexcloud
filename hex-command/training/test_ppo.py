@@ -190,3 +190,12 @@ class RecurrentBoundaries(unittest.TestCase):
                 policy_mps2 = SpatialPlanner(dropout=0.0).eval().to(mps)
                 policy_mps2.load_state_dict(loaded["policy"])
                 self.assertEqual(next(policy_mps2.parameters()).device.type, "mps")
+
+    def test_cosine_lr_schedule(self):
+        from hex_command_rl.mixed_ppo import cosine_lr
+
+        self.assertAlmostEqual(cosine_lr(6e-6, None, 0.5), 6e-6)
+        self.assertAlmostEqual(cosine_lr(6e-6, 1.5e-6, 0.0), 6e-6)
+        self.assertAlmostEqual(cosine_lr(6e-6, 1.5e-6, 0.5), 3.75e-6)
+        self.assertAlmostEqual(cosine_lr(6e-6, 1.5e-6, 1.0), 1.5e-6)
+        self.assertAlmostEqual(cosine_lr(6e-6, 1.5e-6, 1.5), 1.5e-6)

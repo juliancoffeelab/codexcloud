@@ -51,6 +51,13 @@ def step_reward(config, reward, truncated, result, chapter_clears, campaign_cap)
     return reward
 
 
+def cosine_lr(start_lr: float, min_lr: float | None, progress: float) -> float:
+    if min_lr is None:
+        return start_lr
+    p = min(max(progress, 0.0), 1.0)
+    return min_lr + 0.5 * (start_lr - min_lr) * (1.0 + math.cos(math.pi * p))
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--root", type=Path, required=True)
@@ -67,6 +74,8 @@ def main():
     p.add_argument("--precision", choices=["auto", "fp32", "fp16"], default="auto")
     p.add_argument("--window-batch", type=int, default=None)
     p.add_argument("--actor-lr", type=float, default=None)
+    p.add_argument("--min-actor-lr", type=float, default=None)
+    p.add_argument("--lr-horizon-seconds", type=float, default=None)
     p.add_argument("--checkpoint-seconds", type=float, default=120.0)
     p.add_argument("--critic-warmup-episodes", type=int, default=24)
     p.add_argument("--horizon", type=int, default=64)
@@ -98,6 +107,11 @@ def main():
     )
     if not actor_lr > 0:
         p.error("--actor-lr must be positive")
+    if a.min_actor_lr is not None and not (0 < a.min_actor_lr <= actor_lr):
+        p.error("--min-actor-lr must be in (0, actor_lr]")
+    lr_horizon = a.lr_horizon_seconds if a.lr_horizon_seconds is not None else a.seconds
+    if not lr_horizon > 0:
+        p.error("--lr-horizon-seconds must be positive")
     use_fp16 = (
         device.type != "cpu"
         if a.precision == "auto"
@@ -456,6 +470,12 @@ def main():
                     s["advantage"] = float(value)
                 warmup = episodes < a.critic_warmup_episodes or update < 4
                 update += 1
+                total_elapsed = elapsed + time.monotonic() - start
+                current_actor_lr = cosine_lr(
+                    actor_lr, a.min_actor_lr, total_elapsed / lr_horizon
+                )
+                for group in actor_opt.param_groups:
+                    group["lr"] = current_actor_lr
                 stats = []
                 prepared_batches = (
                     [
@@ -543,6 +563,7 @@ def main():
                         clip_fraction=m[4],
                         gradient_norm=m[5],
                         critic_explained_variance=ev,
+                        actor_lr=current_actor_lr,
                         warmup=warmup,
                         family_decisions=family,
                         action_counts=dict(action_counts),
